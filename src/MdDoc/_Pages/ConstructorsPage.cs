@@ -48,8 +48,10 @@ namespace MdDoc
             var table = Table(Row("Signature", "Description"));
             foreach(var ctor in m_Type.GetDocumentedConstrutors(m_Context))
             {
+                var signature = GetSignature(ctor);
+
                 table.Add(
-                    Row(GetSignature(ctor))
+                    Row(Link(signature, $"#{signature}"))
                 );
             }
 
