@@ -1,6 +1,7 @@
 ﻿using Mono.Cecil;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -19,10 +20,15 @@ namespace MdDoc
             m_PathProvider = new PathProvider(outDir);
             m_AssemblyFilePath = assemblyFilePath;
 
-
             m_Assembly = AssemblyDefinition.ReadAssembly(assemblyFilePath);
             m_Module = m_Assembly.MainModule;
-            m_Context = new DocumentationContext(m_Module);            
+
+            var xmlDocsPath = Path.ChangeExtension(assemblyFilePath, ".xml");
+            var docsProvider = File.Exists(xmlDocsPath)
+                ? new DefaultXmlDocProvider(m_Module, xmlDocsPath)
+                : NullXmlDocProvider.Instance;
+
+            m_Context = new DocumentationContext(m_Module, docsProvider);
         }
 
         

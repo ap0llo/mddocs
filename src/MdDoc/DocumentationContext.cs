@@ -7,15 +7,18 @@ using System.Text;
 
 namespace MdDoc
 {
-    public class DocumentationContext
+    class DocumentationContext
     {
         private readonly ModuleDefinition m_Module;
         private readonly HashSet<TypeReference> m_Types;
         private IDictionary<TypeReference, HashSet<MethodReference>> m_PropertyMethods = new Dictionary<TypeReference, HashSet<MethodReference>>();
 
-        public DocumentationContext(ModuleDefinition module)
+        public IXmlDocProvider XmlDocProvider { get; }
+
+        public DocumentationContext(ModuleDefinition module, IXmlDocProvider xmlDocProvider)
         {
             m_Module = module;
+            XmlDocProvider = xmlDocProvider;
             m_Types = m_Module.Types.Where(t => t.IsPublic).Cast<TypeReference>().ToHashSet();                        
         }
 

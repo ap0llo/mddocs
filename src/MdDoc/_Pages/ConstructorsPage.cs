@@ -34,7 +34,7 @@ namespace MdDoc
             );
 
             AddDeclaringTypeSection(document.Root);
-
+            
             AddOverloadsSection(document.Root, m_Type.GetDocumentedConstrutors(m_Context));
 
             AddDetailSections(document.Root, m_Type.GetDocumentedConstrutors(m_Context));

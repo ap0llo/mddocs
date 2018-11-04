@@ -34,6 +34,11 @@ namespace MdDoc
 
             AddTypeInfoSection(document.Root);
 
+            document.Root.Add(
+                Paragraph(
+                    m_Context.XmlDocProvider.TryGetDocumentation(m_Type).Summary
+            ));
+
             AddConstructorsSection(document.Root);
 
             AddFieldsSection(document.Root);
@@ -211,7 +216,6 @@ namespace MdDoc
             }
         }
         
-
         private LinkedList<TypeDefinition> GetInheritanceHierarchy()
         {
             var inheritance = new LinkedList<TypeDefinition>();
@@ -227,8 +231,6 @@ namespace MdDoc
         }
 
         
-
-
         protected override MdSpan GetTypeNameSpan(TypeReference type, bool noLink)
         {
             if (type.Equals(m_Type))
@@ -240,6 +242,5 @@ namespace MdDoc
                 return base.GetTypeNameSpan(type, noLink);
             }
         }
-
     }
 }

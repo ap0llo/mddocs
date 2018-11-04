@@ -21,7 +21,7 @@ namespace MdDoc
         {
             block.Add(
                 Paragraph(
-                    Bold("DeclaringType:"), " ", GetTypeNameSpan(DeclaringType)
+                    Bold("Declaring Type:"), " ", GetTypeNameSpan(DeclaringType)
             ));
         }
 
@@ -33,7 +33,7 @@ namespace MdDoc
                 var signature = GetSignature(method);
 
                 table.Add(
-                    Row(Link(signature, $"#{signature}"))
+                    Row(Link(signature, $"#{signature}"), m_Context.XmlDocProvider.TryGetDocumentation(method).Summary)
                 );
             }
 
@@ -50,6 +50,11 @@ namespace MdDoc
                 block.Add(
                     Heading(GetSignature(method), 2)
                 );
+
+                block.Add(
+                    Paragraph(
+                        m_Context.XmlDocProvider.TryGetDocumentation(method).Summary
+                ));
 
                 //TODO: Attributes
 

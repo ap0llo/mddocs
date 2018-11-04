@@ -35,6 +35,11 @@ namespace MdDoc
 
             AddDeclaringTypeSection(document.Root);
 
+            document.Root.Add(
+                Paragraph(
+                    m_Context.XmlDocProvider.TryGetDocumentation(m_Property).Summary
+            ));
+
             AddDefinitionSection(document.Root);
 
             AddPropertyValueSection(document.Root);

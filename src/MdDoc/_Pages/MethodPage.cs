@@ -46,6 +46,5 @@ namespace MdDoc
             Directory.CreateDirectory(Path.GetDirectoryName(OutputPath));
             document.Save(OutputPath);
         }
-
     }
 }
