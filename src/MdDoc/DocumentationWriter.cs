@@ -58,6 +58,13 @@ namespace MdDoc
                 {
                     yield return new ConstructorsPage(m_Context, m_PathProvider, type);
                 }
+
+
+                var methodGroups = type.GetDocumentedMethods(m_Context).GroupBy(x => x.Name);
+                foreach(var group in methodGroups)
+                {
+                    yield return new MethodPage(m_Context, m_PathProvider, type, group.Key);
+                }
             }
         }
     }

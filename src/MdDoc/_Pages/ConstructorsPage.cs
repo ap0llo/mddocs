@@ -26,6 +26,7 @@ namespace MdDoc
             m_Type = type ?? throw new ArgumentNullException(nameof(type));
         }
 
+
         public override void Save()
         {
             var document = Document(
@@ -34,65 +35,12 @@ namespace MdDoc
 
             AddDeclaringTypeSection(document.Root);
 
-            AddOverloadsSection(document.Root);
+            AddOverloadsSection(document.Root, m_Type.GetDocumentedConstrutors(m_Context));
 
-            AddDetailSections(document.Root);
+            AddDetailSections(document.Root, m_Type.GetDocumentedConstrutors(m_Context));
 
             Directory.CreateDirectory(Path.GetDirectoryName(OutputPath));
             document.Save(OutputPath);
-        }
-
-
-        private void AddOverloadsSection(MdContainerBlock block)
-        {
-            var table = Table(Row("Signature", "Description"));
-            foreach(var ctor in m_Type.GetDocumentedConstrutors(m_Context))
-            {
-                var signature = GetSignature(ctor);
-
-                table.Add(
-                    Row(Link(signature, $"#{signature}"))
-                );
-            }
-
-            block.Add(
-                Heading("Overloads", 2),
-                table
-            );
-        }
-
-        private void AddDetailSections(MdContainerBlock block)
-        {
-            foreach (var ctor in m_Type.GetDocumentedConstrutors(m_Context))
-            {
-                block.Add(
-                    Heading(GetSignature(ctor), 2)
-                );
-
-                //TODO: Attributes
-
-                if(ctor.Parameters.Any())
-                {
-                    var table = Table(Row("Name", "Type", "Description"));
-                    foreach(var parameter in ctor.Parameters)
-                    {
-                        table.Add(
-                            Row(
-                                CodeSpan(parameter.Name),
-                                GetTypeNameSpan(parameter.ParameterType),
-                                ""
-                        ));
-                    }
-
-                    block.Add(
-                        Heading("Parameters", 3),
-                        table
-                    );                    
-                }
-
-            }
-        }
-
-
+        }        
     }
 }

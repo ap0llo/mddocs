@@ -34,6 +34,14 @@ namespace MdDoc
             return new OutputPath(path);
         }
 
+        public OutputPath GetMethodOutputPath(MethodDefinition method) => GetMethodOutputPath(method.DeclaringType, method.Name);
+
+        public OutputPath GetMethodOutputPath(TypeReference type, string methodName)
+        {
+            var path = Path.Combine(GetTypeDir(type), "methods", $"{type.Name}.{methodName}.md");
+            return new OutputPath(path);
+        }
+
         private string GetTypeDir(TypeReference type)
         {
             var dir = Path.Combine(m_RootOutputPath, String.Join('/', type.Namespace.Split(s_SplitChars)));

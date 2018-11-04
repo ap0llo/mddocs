@@ -189,24 +189,25 @@ namespace MdDoc
         }
         
         private void AddMethodsSection(MdContainerBlock block)
-        {
-            if (m_Type.Kind() != TypeKind.Class && m_Type.Kind() != TypeKind.Struct && m_Type.Kind() != TypeKind.Interface)
-                return;
-            
-
-            var methods = m_Type.Methods
-                .Where(m => !m.IsConstructor)
-                .Where(m_Context.IsDocumentedItem)                
-                .ToArray();                
+        {            
+            var methods = m_Type.GetDocumentedMethods(m_Context);         
 
             if (methods.Any())
             {
+                var table = Table(Row("Name", "Description"));
+
+                foreach(var method in methods)
+                {
+                    var methodDocumentationPath = m_PathProvider.GetMethodOutputPath(method);
+                    var link = Link(GetSignature(method), OutputPath.GetRelativePathTo(methodDocumentationPath));
+
+                    table.Add(Row(link));
+                }
+
                 block.Add(
                     Heading("Methods", 2),
-                    Table(
-                        Row("Name", "Description"),
-                        methods.Select(m => Row(GetSignature(m)))
-                ));
+                    table
+                );
             }
         }
         
