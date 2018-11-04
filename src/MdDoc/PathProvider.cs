@@ -16,10 +16,11 @@ namespace MdDoc
             m_RootOutputPath = rootOutputPath ?? throw new ArgumentNullException(nameof(rootOutputPath));
         }
 
-        public string GetOutputPath(TypeReference type)
+        public OutputPath GetOutputPath(TypeReference type)
         {
             var dir = Path.Combine(m_RootOutputPath, String.Join('/', type.Namespace.Split(s_SplitChars)));
-            return Path.Combine(dir, type.Name + ".md");
+            var path = Path.Combine(dir, type.Name + ".md");
+            return new OutputPath(path);
         }
     }
 }

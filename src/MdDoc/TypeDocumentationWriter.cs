@@ -13,13 +13,15 @@ namespace MdDoc
     {
         private readonly DocumentationContext m_Context;
         private readonly PathProvider m_PathProvider;
-        private readonly TypeDefinition m_Type;        
+        private readonly TypeDefinition m_Type;
+        private readonly OutputPath m_OutputPath;
 
         public TypeDocumentationWriter(DocumentationContext context, PathProvider pathProvider, TypeDefinition type)
         {
             m_Context = context ?? throw new ArgumentNullException(nameof(context));
             m_PathProvider = pathProvider ?? throw new ArgumentNullException(nameof(pathProvider));
-            m_Type = type ?? throw new ArgumentNullException(nameof(type));            
+            m_Type = type ?? throw new ArgumentNullException(nameof(type));
+            m_OutputPath = m_PathProvider.GetOutputPath(m_Type);
         }
 
 
@@ -41,10 +43,9 @@ namespace MdDoc
 
             AddMethodsSection(document.Root);
 
-
-            var outputPath = m_PathProvider.GetOutputPath(m_Type);
-            Directory.CreateDirectory(Path.GetDirectoryName(outputPath));
-            document.Save(outputPath);
+            
+            Directory.CreateDirectory(Path.GetDirectoryName(m_OutputPath));
+            document.Save(m_OutputPath);
         }
 
 
@@ -258,23 +259,14 @@ namespace MdDoc
             }
             else
             {
+                var typeOutputPath = m_PathProvider.GetOutputPath(type);
                 return new MdLinkSpan(
                     type.Name,
-                    GetRelativePath(
-                        m_PathProvider.GetOutputPath(m_Type),
-                        m_PathProvider.GetOutputPath(type)
-                ));
+                    m_OutputPath.GetRelativePathTo(typeOutputPath)                    
+                );
             }
         }
-
-
-        public string GetRelativePath(string fromAbsolue, string toAbsolute)
-        {
-            var pathUri = new Uri(toAbsolute);
-            var relativeToUri = new Uri(fromAbsolue);
-
-            return relativeToUri.MakeRelativeUri(pathUri).ToString();
-        }
+        
 
     }
 }
