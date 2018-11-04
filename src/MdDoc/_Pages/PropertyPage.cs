@@ -11,6 +11,8 @@ namespace MdDoc
     {
         private readonly PropertyDefinition m_Property;
 
+        public override string Name => $"{m_Property.DeclaringType.Name}.{m_Property.Name} Property";
+
         protected override OutputPath OutputPath => m_PathProvider.GetOutputPath(m_Property);
 
         public PropertyPage(DocumentationContext context, PathProvider pathProvider, PropertyDefinition property)
@@ -21,7 +23,7 @@ namespace MdDoc
         }
 
 
-        public void SaveDocumentation()
+        public override void Save()
         {
             var document = Document(
                 Heading($"{m_Property.DeclaringType.Name}.{m_Property.Name} Property", 1)

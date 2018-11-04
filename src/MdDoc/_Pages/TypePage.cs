@@ -9,21 +9,24 @@ using static Grynwald.MarkdownGenerator.FactoryMethods;
 
 namespace MdDoc
 {
-    class TypeDocumentationWriter : PageBase
+    class TypePage : PageBase
     {
         private readonly TypeDefinition m_Type;
+
+
+        public override string Name => $"Type {m_Type.Name}";
 
         protected override OutputPath OutputPath => m_PathProvider.GetOutputPath(m_Type);
 
 
-        public TypeDocumentationWriter(DocumentationContext context, PathProvider pathProvider, TypeDefinition type)
+        public TypePage(DocumentationContext context, PathProvider pathProvider, TypeDefinition type)
             : base(context, pathProvider)
         {
             m_Type = type ?? throw new ArgumentNullException(nameof(type));            
         }
 
 
-        public void SaveDocumentation()
+        public override void Save()
         {
             var document = new MdDocument(
                 Heading($"{m_Type.Name} {m_Type.Kind()}", 1)

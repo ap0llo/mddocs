@@ -28,18 +28,10 @@ namespace MdDoc
         
         public void SaveDocumentation()
         {
-            foreach(var type in m_Assembly.MainModule.Types.Where(m_Context.IsDocumentedItem))
+            foreach(var page in GetPages())
             {
-                Console.WriteLine($"Generating documentation for type {type.Namespace}.{type.Name}");
-
-                var typeDocumentationWriter = new TypeDocumentationWriter(m_Context, m_PathProvider, type);
-                typeDocumentationWriter.SaveDocumentation();                
-
-                foreach(var property in type.Properties.Where(m_Context.IsDocumentedItem))
-                {
-                    var propertyDocumentationWriter = new PropertyPage(m_Context, m_PathProvider, property);
-                    propertyDocumentationWriter.SaveDocumentation();
-                }
+                Console.WriteLine($"Saving page {page.Name}");
+                page.Save();
             }            
         }
 
@@ -49,5 +41,18 @@ namespace MdDoc
             m_Module.Dispose();
             m_Assembly.Dispose();
         }        
+
+        private IEnumerable<IPage> GetPages()
+        {
+            foreach (var type in m_Assembly.MainModule.Types.Where(m_Context.IsDocumentedItem))
+            {                
+                yield return new TypePage(m_Context, m_PathProvider, type);                
+
+                foreach (var property in type.Properties.Where(m_Context.IsDocumentedItem))
+                {
+                    yield return new PropertyPage(m_Context, m_PathProvider, property);                    
+                }
+            }
+        }
     }
 }

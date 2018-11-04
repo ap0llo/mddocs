@@ -7,11 +7,13 @@ using static Grynwald.MarkdownGenerator.FactoryMethods;
 
 namespace MdDoc
 {
-    abstract class PageBase
+    abstract class PageBase : IPage
     {
         protected readonly DocumentationContext m_Context;
         protected readonly PathProvider m_PathProvider;        
 
+
+        public abstract string Name { get; }
 
         protected abstract OutputPath OutputPath { get; }
 
@@ -21,6 +23,9 @@ namespace MdDoc
             m_Context = context ?? throw new ArgumentNullException(nameof(context));
             m_PathProvider = pathProvider ?? throw new ArgumentNullException(nameof(pathProvider));
         }
+
+
+        public abstract void Save();
 
 
         protected virtual MdSpan GetTypeNameSpan(TypeReference type) => GetTypeNameSpan(type, false);
@@ -60,7 +65,5 @@ namespace MdDoc
                 );
             }
         }
-
-
     }
 }
