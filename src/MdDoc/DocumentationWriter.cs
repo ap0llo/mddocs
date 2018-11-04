@@ -32,9 +32,15 @@ namespace MdDoc
             {
                 Console.WriteLine($"Generating documentation for type {type.Namespace}.{type.Name}");
 
-                var writer = new TypeDocumentationWriter(m_Context, m_PathProvider, type);
-                writer.SaveDocumentation();
-            }
+                var typeDocumentationWriter = new TypeDocumentationWriter(m_Context, m_PathProvider, type);
+                typeDocumentationWriter.SaveDocumentation();                
+
+                foreach(var property in type.Properties.Where(m_Context.IsDocumentedItem))
+                {
+                    var propertyDocumentationWriter = new PropertyDocumentationWriter(m_Context, m_PathProvider, property);
+                    propertyDocumentationWriter.SaveDocumentation();
+                }
+            }            
         }
 
 

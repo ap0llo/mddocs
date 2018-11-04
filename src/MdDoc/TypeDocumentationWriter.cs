@@ -9,19 +9,17 @@ using static Grynwald.MarkdownGenerator.FactoryMethods;
 
 namespace MdDoc
 {
-    class TypeDocumentationWriter
+    class TypeDocumentationWriter : DocumentationWriterBase
     {
-        private readonly DocumentationContext m_Context;
-        private readonly PathProvider m_PathProvider;
         private readonly TypeDefinition m_Type;
-        private readonly OutputPath m_OutputPath;
+
+        protected override OutputPath OutputPath => m_PathProvider.GetOutputPath(m_Type);
+
 
         public TypeDocumentationWriter(DocumentationContext context, PathProvider pathProvider, TypeDefinition type)
+            : base(context, pathProvider)
         {
-            m_Context = context ?? throw new ArgumentNullException(nameof(context));
-            m_PathProvider = pathProvider ?? throw new ArgumentNullException(nameof(pathProvider));
-            m_Type = type ?? throw new ArgumentNullException(nameof(type));
-            m_OutputPath = m_PathProvider.GetOutputPath(m_Type);
+            m_Type = type ?? throw new ArgumentNullException(nameof(type));            
         }
 
 
@@ -43,9 +41,10 @@ namespace MdDoc
 
             AddMethodsSection(document.Root);
 
-            
-            Directory.CreateDirectory(Path.GetDirectoryName(m_OutputPath));
-            document.Save(m_OutputPath);
+            //TODO: Separate methods and operators
+
+            Directory.CreateDirectory(Path.GetDirectoryName(OutputPath));
+            document.Save(OutputPath);
         }
 
 
@@ -168,12 +167,21 @@ namespace MdDoc
 
             if (properties.Any())
             {
+
+                var table = Table(Row("Name", "Description"));
+
+                foreach(var property in properties)
+                {
+                    var propertyDocumentationPath = m_PathProvider.GetOutputPath(property);
+                    var link = Link(property.Name, OutputPath.GetRelativePathTo(propertyDocumentationPath));
+
+                    table.Add(Row(link));
+                }
+             
                 block.Add(
                     Heading("Properties", 2),
-                    Table(
-                        Row("Name", "Description"),
-                        properties.Select(p => Row(p.Name))
-                ));
+                    table
+                );
             }
         }
         
@@ -229,44 +237,18 @@ namespace MdDoc
             return CompositeSpan(methodName, "(", parameters, ")");            
         }
 
-        private MdSpan GetTypeNameSpan(TypeReference type) => GetTypeNameSpan(type, false);
-            
-        private MdSpan GetTypeNameSpan(TypeReference type, bool noLink)
-        {            
-            if(type.IsArray)
-            {
-                var elementTypeSpan = GetTypeNameSpan(type.GetElementType(), noLink);
-                return new MdCompositeSpan(elementTypeSpan, $"[]");
-            }
 
-            if(type is GenericInstanceType genericType && genericType.HasGenericArguments)
-            {
-                var arguments = genericType.GenericArguments;
-
-                var typeName = genericType.Name.Replace($"`{arguments.Count}", "");
-
-                return CompositeSpan(
-                    typeName,
-                    "<",
-                    arguments.Select(t => GetTypeNameSpan(t, noLink)).Join(", "),
-                    ">"
-                );
-            }
-
-            if(noLink || type.Equals(m_Type) || !m_Context.IsDocumentedItem(type))
+        protected override MdSpan GetTypeNameSpan(TypeReference type, bool noLink)
+        {
+            if (type.Equals(m_Type))
             {
                 return new MdTextSpan(type.Name);
             }
             else
             {
-                var typeOutputPath = m_PathProvider.GetOutputPath(type);
-                return new MdLinkSpan(
-                    type.Name,
-                    m_OutputPath.GetRelativePathTo(typeOutputPath)                    
-                );
+                return base.GetTypeNameSpan(type, noLink);
             }
         }
-        
 
     }
 }

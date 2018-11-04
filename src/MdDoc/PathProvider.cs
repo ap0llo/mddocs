@@ -17,10 +17,21 @@ namespace MdDoc
         }
 
         public OutputPath GetOutputPath(TypeReference type)
+        {            
+            var path = Path.Combine(GetTypeDir(type), $"{type.Name}.md");
+            return new OutputPath(path);
+        }
+
+        public OutputPath GetOutputPath(PropertyDefinition property)
+        {            
+            var path = Path.Combine(GetTypeDir(property.DeclaringType), "properties", $"{property.DeclaringType.Name}.{property.Name}.md");
+            return new OutputPath(path);
+        }
+
+        private string GetTypeDir(TypeReference type)
         {
             var dir = Path.Combine(m_RootOutputPath, String.Join('/', type.Namespace.Split(s_SplitChars)));
-            var path = Path.Combine(dir, type.Name + ".md");
-            return new OutputPath(path);
+            return Path.Combine(dir, type.Name);
         }
     }
 }
