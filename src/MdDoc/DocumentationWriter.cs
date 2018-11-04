@@ -52,6 +52,12 @@ namespace MdDoc
                 {
                     yield return new PropertyPage(m_Context, m_PathProvider, property);                    
                 }
+
+                var constructors = type.GetDocumentedConstrutors(m_Context);            
+                if(constructors.Any())
+                {
+                    yield return new ConstructorsPage(m_Context, m_PathProvider, type);
+                }
             }
         }
     }

@@ -28,6 +28,12 @@ namespace MdDoc
             return new OutputPath(path);
         }
 
+        public OutputPath GetConstructorsOutputPath(TypeReference type)
+        {
+            var path = Path.Combine(GetTypeDir(type), $"{type.Name}-constructors.md");
+            return new OutputPath(path);
+        }
+
         private string GetTypeDir(TypeReference type)
         {
             var dir = Path.Combine(m_RootOutputPath, String.Join('/', type.Namespace.Split(s_SplitChars)));

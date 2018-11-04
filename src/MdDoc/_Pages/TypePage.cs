@@ -101,22 +101,23 @@ namespace MdDoc
 
         private void AddConstructorsSection(MdContainerBlock block)
         {
-            if (m_Type.Kind() != TypeKind.Class && m_Type.Kind() != TypeKind.Struct)
-                return;
-
-            var constructors = m_Type
-                .Methods
-                .Where(m => m.IsConstructor)
-                .Where(m_Context.IsDocumentedItem);
-
+            var constructors = m_Type.GetDocumentedConstrutors(m_Context);
+         
             if (constructors.Any())
             {
+                var table = Table(Row("Name", "Description"));
+                foreach(var ctor in constructors)
+                {
+                    var ctorPage = m_PathProvider.GetConstructorsOutputPath(m_Type);
+                    var link = Link(GetSignature(ctor), OutputPath.GetRelativePathTo(ctorPage));
+
+                    table.Add(Row(link));
+                }
+
                 block.Add(
                     Heading("Constructors", 2),
-                    Table(
-                        Row("Name", "Description"),
-                        constructors.Select(x => Row(GetSignature(x)))
-                ));
+                    table
+                );
             }
         }
 
@@ -170,7 +171,6 @@ namespace MdDoc
 
             if (properties.Any())
             {
-
                 var table = Table(Row("Name", "Description"));
 
                 foreach(var property in properties)
@@ -225,20 +225,7 @@ namespace MdDoc
             return inheritance;
         }
 
-        private MdSpan GetSignature(MethodDefinition method)
-        {            
-            var methodName = method.IsConstructor
-                ? method.DeclaringType.Name
-                : method.Name;
-
-            var parameters = method
-                .Parameters
-                .Select(x => x.ParameterType)
-                .Select(t => GetTypeNameSpan(t, true))
-                .Join(", ");
-            
-            return CompositeSpan(methodName, "(", parameters, ")");            
-        }
+        
 
 
         protected override MdSpan GetTypeNameSpan(TypeReference type, bool noLink)

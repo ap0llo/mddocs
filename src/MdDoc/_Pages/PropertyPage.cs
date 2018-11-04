@@ -7,13 +7,17 @@ using static Grynwald.MarkdownGenerator.FactoryMethods;
 
 namespace MdDoc
 {
-    class PropertyPage : PageBase
+    class PropertyPage : MemberPage
     {
         private readonly PropertyDefinition m_Property;
+
 
         public override string Name => $"{m_Property.DeclaringType.Name}.{m_Property.Name} Property";
 
         protected override OutputPath OutputPath => m_PathProvider.GetOutputPath(m_Property);
+
+        protected override TypeReference DeclaringType => m_Property.DeclaringType;
+
 
         public PropertyPage(DocumentationContext context, PathProvider pathProvider, PropertyDefinition property)
             : base(context, pathProvider)
@@ -29,7 +33,8 @@ namespace MdDoc
                 Heading($"{m_Property.DeclaringType.Name}.{m_Property.Name} Property", 1)
             );
 
-            
+            AddDeclaringTypeSection(document.Root);
+
             AddDefinitionSection(document.Root);
 
             AddPropertyValueSection(document.Root);
