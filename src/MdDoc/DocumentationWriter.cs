@@ -37,7 +37,7 @@ namespace MdDoc
 
                 foreach(var property in type.Properties.Where(m_Context.IsDocumentedItem))
                 {
-                    var propertyDocumentationWriter = new PropertyDocumentationWriter(m_Context, m_PathProvider, property);
+                    var propertyDocumentationWriter = new PropertyPage(m_Context, m_PathProvider, property);
                     propertyDocumentationWriter.SaveDocumentation();
                 }
             }            

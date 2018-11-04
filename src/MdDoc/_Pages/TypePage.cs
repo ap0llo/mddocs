@@ -9,7 +9,7 @@ using static Grynwald.MarkdownGenerator.FactoryMethods;
 
 namespace MdDoc
 {
-    class TypeDocumentationWriter : DocumentationWriterBase
+    class TypeDocumentationWriter : PageBase
     {
         private readonly TypeDefinition m_Type;
 

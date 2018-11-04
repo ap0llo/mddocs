@@ -7,13 +7,13 @@ using static Grynwald.MarkdownGenerator.FactoryMethods;
 
 namespace MdDoc
 {
-    class PropertyDocumentationWriter : DocumentationWriterBase
+    class PropertyPage : PageBase
     {
         private readonly PropertyDefinition m_Property;
 
         protected override OutputPath OutputPath => m_PathProvider.GetOutputPath(m_Property);
 
-        public PropertyDocumentationWriter(DocumentationContext context, PathProvider pathProvider, PropertyDefinition property)
+        public PropertyPage(DocumentationContext context, PathProvider pathProvider, PropertyDefinition property)
             : base(context, pathProvider)
         {
             m_Property = property ?? throw new ArgumentNullException(nameof(property));

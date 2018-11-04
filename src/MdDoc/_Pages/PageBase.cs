@@ -1,15 +1,13 @@
 ﻿using Grynwald.MarkdownGenerator;
 using Mono.Cecil;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 using static Grynwald.MarkdownGenerator.FactoryMethods;
 
 namespace MdDoc
 {
-    abstract class DocumentationWriterBase
+    abstract class PageBase
     {
         protected readonly DocumentationContext m_Context;
         protected readonly PathProvider m_PathProvider;        
@@ -18,7 +16,7 @@ namespace MdDoc
         protected abstract OutputPath OutputPath { get; }
 
 
-        public DocumentationWriterBase(DocumentationContext context, PathProvider pathProvider)
+        public PageBase(DocumentationContext context, PathProvider pathProvider)
         {
             m_Context = context ?? throw new ArgumentNullException(nameof(context));
             m_PathProvider = pathProvider ?? throw new ArgumentNullException(nameof(pathProvider));
