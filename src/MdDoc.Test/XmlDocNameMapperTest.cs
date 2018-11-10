@@ -144,13 +144,13 @@ namespace MdDoc.Test
             // ARRANGE
             var mapper = new XmlDocNameMapper();
 
-            var method = m_Module.GetTypes()
+            var field = m_Module.GetTypes()
                 .Single(t => t.Name == "TestClass_Fields")
                 .Fields
                 .Single(f => f.Name == fieldName);
 
             // ACT
-            var actualName = mapper.GetXmlDocName(method);
+            var actualName = mapper.GetXmlDocName(field);
 
             // ASSERT
             Assert.Equal(expectedName, actualName);
@@ -164,13 +164,13 @@ namespace MdDoc.Test
             // ARRANGE
             var mapper = new XmlDocNameMapper();
 
-            var method = m_Module.GetTypes()
+            var property = m_Module.GetTypes()
                 .Single(t => t.Name == "TestClass_Properties")
                 .Properties
                 .Single(p => p.Name == propertyName);
 
             // ACT
-            var actualName = mapper.GetXmlDocName(method);
+            var actualName = mapper.GetXmlDocName(property);
 
             // ASSERT
             Assert.Equal(expectedName, actualName);
@@ -184,13 +184,35 @@ namespace MdDoc.Test
             // ARRANGE
             var mapper = new XmlDocNameMapper();
 
-            var method = m_Module.GetTypes()
+            var indexer = m_Module.GetTypes()
                 .Single(t => t.Name == "TestClass_Properties")
                 .Properties
                 .Single(p => p.Name == "Item" && p.Parameters.Count == parameterCount);
 
             // ACT
-            var actualName = mapper.GetXmlDocName(method);
+            var actualName = mapper.GetXmlDocName(indexer);
+
+            // ASSERT
+            Assert.Equal(expectedName, actualName);
+        }
+
+
+        [Theory]
+        [InlineData("Event1", "E:MdDoc.Test.TestData.TestClass_Events.Event1")]
+        [InlineData("Event2", "E:MdDoc.Test.TestData.TestClass_Events.Event2")]
+        [InlineData("Event3", "E:MdDoc.Test.TestData.TestClass_Events.Event3")]
+        public void Events_are_mapped_as_expected(string propertyName, string expectedName)
+        {
+            // ARRANGE
+            var mapper = new XmlDocNameMapper();
+
+            var @event = m_Module.GetTypes()
+                .Single(t => t.Name == "TestClass_Events")
+                .Events
+                .Single(e => e.Name == propertyName);
+
+            // ACT
+            var actualName = mapper.GetXmlDocName(@event);
 
             // ASSERT
             Assert.Equal(expectedName, actualName);

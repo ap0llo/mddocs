@@ -85,8 +85,14 @@ namespace MdDoc
 
         public string GetXmlDocName(FieldDefinition field)
         {            
-            // methods are prefixed with "F:", followed by the type and field names
+            // fields are prefixed with "F:", followed by the type and field names
             return $"F:{field.DeclaringType.FullName}.{field.Name}";            
+        }
+
+        public string GetXmlDocName(EventDefinition eventDefinition)
+        {
+            // events are prefixed with "E:", followed by the type and field names
+            return $"E:{eventDefinition.DeclaringType.FullName}.{eventDefinition.Name}";
         }
 
 
