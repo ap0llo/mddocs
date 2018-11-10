@@ -6,8 +6,6 @@ namespace MdDoc
 {
     interface IPage
     {
-        string Name { get; }
-
         void Save();
     }
 }

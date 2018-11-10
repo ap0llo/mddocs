@@ -13,7 +13,6 @@ namespace MdDoc
         private readonly PropertyDocumentation m_Model;
 
 
-        public override string Name => $"{m_Model.Definition.DeclaringType.Name}.{m_Model.Definition.Name} Property";
 
         protected override OutputPath OutputPath => m_PathProvider.GetOutputPath(m_Model.Definition);
 

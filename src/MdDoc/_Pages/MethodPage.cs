@@ -13,7 +13,6 @@ namespace MdDoc
     {
         private readonly MethodDocumentation m_Model;       
 
-        public override string Name => $"{m_Model.Overloads.First().DeclaringType.Name}.{m_Model.Name} Method";
 
         protected override TypeReference DeclaringType => m_Model.Overloads.First().DeclaringType;
 

@@ -13,8 +13,7 @@ namespace MdDoc
         protected readonly PathProvider m_PathProvider;        
 
 
-        public abstract string Name { get; }
-
+        
         protected abstract OutputPath OutputPath { get; }
 
 

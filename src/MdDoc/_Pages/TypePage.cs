@@ -13,10 +13,7 @@ namespace MdDoc
     class TypePage : PageBase
     {
         private readonly TypeDocumentation m_Model;
-
-
-        public override string Name => $"Type {m_Model.Name}";
-
+        
         protected override OutputPath OutputPath => m_PathProvider.GetOutputPath(m_Model.Definition);
 
 

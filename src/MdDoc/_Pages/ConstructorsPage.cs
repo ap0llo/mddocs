@@ -14,8 +14,7 @@ namespace MdDoc
     {
         private readonly MethodDocumentation m_Model;
 
-        public override string Name => $"{m_Model.Overloads.First().DeclaringType.Name} Constructors";
-
+        
         protected override OutputPath OutputPath => m_PathProvider.GetConstructorsOutputPath(m_Model.Overloads.First().DeclaringType);
 
         protected override TypeReference DeclaringType => m_Model.Overloads.First().DeclaringType;

@@ -23,8 +23,7 @@ namespace MdDoc
         public void SaveDocumentation()
         {
             foreach(var page in GetPages())
-            {
-                Console.WriteLine($"Saving page {page.Name}");
+            {            
                 page.Save();
             }            
         }
