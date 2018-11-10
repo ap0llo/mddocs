@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using MdDoc.Model;
 using Mono.Cecil;
 using static Grynwald.MarkdownGenerator.FactoryMethods;
 
@@ -10,38 +11,34 @@ namespace MdDoc
 {
     class MethodPage : MemberPage
     {
-        private readonly TypeDefinition m_Type;
-        private readonly string m_MethodName;
+        private readonly MethodDocumentation m_Model;       
 
-        public override string Name => $"{m_Type.Name}.{m_MethodName} Method";
+        public override string Name => $"{m_Model.Overloads.First().DeclaringType.Name}.{m_Model.Name} Method";
 
-        protected override TypeReference DeclaringType => m_Type;
+        protected override TypeReference DeclaringType => m_Model.Overloads.First().DeclaringType;
 
         protected override OutputPath OutputPath { get; }
 
 
-        public MethodPage(DocumentationContext context, PathProvider pathProvider, TypeDefinition type, string methodName) 
+        public MethodPage(DocumentationContext context, PathProvider pathProvider, MethodDocumentation model) 
             : base(context, pathProvider)
         {
-            m_Type = type ?? throw new ArgumentNullException(nameof(type));
-            m_MethodName = methodName ?? throw new ArgumentNullException(nameof(methodName));
-            OutputPath = m_PathProvider.GetMethodOutputPath(type, methodName);
+            m_Model = model ?? throw new ArgumentNullException(nameof(model));
+            OutputPath = m_PathProvider.GetMethodOutputPath(model.Overloads.First());
         }
 
 
         public override void Save()
         {
             var document = Document(
-                Heading($"{m_Type.Name}.{m_MethodName} Method", 1)
+                Heading($"{m_Model.Name}.{m_Model.Name} Method", 1)
             );
 
-            AddDeclaringTypeSection(document.Root);
+            AddDeclaringTypeSection(document.Root);            
 
-            var methods = m_Type.GetDocumentedMethods(m_Context).Where(x => x.Name.Equals(m_MethodName)).ToArray();
+            AddOverloadsSection(document.Root, m_Model.Overloads);
 
-            AddOverloadsSection(document.Root, methods);
-
-            AddDetailSections(document.Root, methods);
+            AddDetailSections(document.Root, m_Model.Overloads);
 
             Directory.CreateDirectory(Path.GetDirectoryName(OutputPath));
             document.Save(OutputPath);

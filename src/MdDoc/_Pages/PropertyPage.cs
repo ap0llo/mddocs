@@ -1,4 +1,5 @@
 ﻿using Grynwald.MarkdownGenerator;
+using MdDoc.Model;
 using Mono.Cecil;
 using System;
 using System.IO;
@@ -9,20 +10,20 @@ namespace MdDoc
 {
     class PropertyPage : MemberPage
     {
-        private readonly PropertyDefinition m_Property;
+        private readonly PropertyDocumentation m_Model;
 
 
-        public override string Name => $"{m_Property.DeclaringType.Name}.{m_Property.Name} Property";
+        public override string Name => $"{m_Model.Definition.DeclaringType.Name}.{m_Model.Definition.Name} Property";
 
-        protected override OutputPath OutputPath => m_PathProvider.GetOutputPath(m_Property);
+        protected override OutputPath OutputPath => m_PathProvider.GetOutputPath(m_Model.Definition);
 
-        protected override TypeReference DeclaringType => m_Property.DeclaringType;
+        protected override TypeReference DeclaringType => m_Model.Definition.DeclaringType;
 
 
-        public PropertyPage(DocumentationContext context, PathProvider pathProvider, PropertyDefinition property)
+        public PropertyPage(DocumentationContext context, PathProvider pathProvider, PropertyDocumentation model)
             : base(context, pathProvider)
         {
-            m_Property = property ?? throw new ArgumentNullException(nameof(property));
+            m_Model = model ?? throw new ArgumentNullException(nameof(model));
         
         }
 
@@ -30,14 +31,14 @@ namespace MdDoc
         public override void Save()
         {
             var document = Document(
-                Heading($"{m_Property.DeclaringType.Name}.{m_Property.Name} Property", 1)
+                Heading($"{m_Model.Definition.DeclaringType.Name}.{m_Model.Definition.Name} Property", 1)
             );
 
             AddDeclaringTypeSection(document.Root);
 
             document.Root.Add(
                 Paragraph(
-                    m_Context.XmlDocProvider.TryGetDocumentation(m_Property).Summary
+                    m_Context.XmlDocProvider.TryGetDocumentation(m_Model.Definition).Summary
             ));
 
             AddDefinitionSection(document.Root);
@@ -51,10 +52,10 @@ namespace MdDoc
 
         private void AddDefinitionSection(MdContainerBlock block)
         {
-            var hasGetter = m_Property.GetMethod?.IsPublic == true;
-            var hasSetter = m_Property.SetMethod?.IsPublic == true;
+            var hasGetter = m_Model.Definition.GetMethod?.IsPublic == true;
+            var hasSetter = m_Model.Definition.SetMethod?.IsPublic == true;
 
-            var definition = $"public {m_Property.PropertyType.Name} {m_Property.Name} {{ {(hasGetter ? "get;" : "")} {(hasSetter ? "set;" : "")} }}";
+            var definition = $"public {m_Model.Definition.PropertyType.Name} {m_Model.Definition.Name} {{ {(hasGetter ? "get;" : "")} {(hasSetter ? "set;" : "")} }}";
 
             block.Add(
                 CodeBlock(definition, "csharp")
@@ -66,7 +67,7 @@ namespace MdDoc
             block.Add(Heading("Property Value", 2));
             block.Add(
                 Paragraph(
-                    GetTypeNameSpan(m_Property.PropertyType)
+                    GetTypeNameSpan(m_Model.Definition.PropertyType)
             ));
         }
     }

@@ -1,4 +1,5 @@
 ﻿using Grynwald.MarkdownGenerator;
+using MdDoc.Model;
 using Mono.Cecil;
 using System;
 using System.Collections.Generic;
@@ -11,33 +12,33 @@ namespace MdDoc
 {
     class ConstructorsPage : MemberPage
     {
-        private readonly TypeDefinition m_Type;
+        private readonly MethodDocumentation m_Model;
 
-        public override string Name => $"{m_Type.Name} Constructors";
+        public override string Name => $"{m_Model.Overloads.First().DeclaringType.Name} Constructors";
 
-        protected override OutputPath OutputPath => m_PathProvider.GetConstructorsOutputPath(m_Type);
+        protected override OutputPath OutputPath => m_PathProvider.GetConstructorsOutputPath(m_Model.Overloads.First().DeclaringType);
 
-        protected override TypeReference DeclaringType => m_Type;
+        protected override TypeReference DeclaringType => m_Model.Overloads.First().DeclaringType;
 
         
-        public ConstructorsPage(DocumentationContext context, PathProvider pathProvider, TypeDefinition type)
+        public ConstructorsPage(DocumentationContext context, PathProvider pathProvider, MethodDocumentation model)
             : base(context, pathProvider)
         {
-            m_Type = type ?? throw new ArgumentNullException(nameof(type));
+            m_Model = model ?? throw new ArgumentNullException(nameof(model));
         }
 
 
         public override void Save()
         {
             var document = Document(
-                Heading($"{m_Type.Name} Constructors", 1)
+                Heading($"{m_Model.Overloads.First().DeclaringType.Name} Constructors", 1)
             );
 
             AddDeclaringTypeSection(document.Root);
             
-            AddOverloadsSection(document.Root, m_Type.GetDocumentedConstrutors(m_Context));
+            AddOverloadsSection(document.Root, m_Model.Overloads.First().DeclaringType.GetDocumentedConstrutors(m_Context));
 
-            AddDetailSections(document.Root, m_Type.GetDocumentedConstrutors(m_Context));
+            AddDetailSections(document.Root, m_Model.Overloads.First().DeclaringType.GetDocumentedConstrutors(m_Context));
 
             Directory.CreateDirectory(Path.GetDirectoryName(OutputPath));
             document.Save(OutputPath);

@@ -12,32 +12,32 @@ namespace MdDoc
 {
     class TypePage : PageBase
     {
-        private readonly TypeDefinition m_Type;
+        private readonly TypeDocumentation m_Model;
 
 
-        public override string Name => $"Type {m_Type.Name}";
+        public override string Name => $"Type {m_Model.Name}";
 
-        protected override OutputPath OutputPath => m_PathProvider.GetOutputPath(m_Type);
+        protected override OutputPath OutputPath => m_PathProvider.GetOutputPath(m_Model.Definition);
 
 
-        public TypePage(DocumentationContext context, PathProvider pathProvider, TypeDefinition type)
+        public TypePage(DocumentationContext context, PathProvider pathProvider, TypeDocumentation model)
             : base(context, pathProvider)
         {
-            m_Type = type ?? throw new ArgumentNullException(nameof(type));            
+            m_Model = model ?? throw new ArgumentNullException(nameof(model));            
         }
 
 
         public override void Save()
         {
             var document = new MdDocument(
-                Heading($"{m_Type.Name} {m_Type.Kind()}", 1)
+                Heading($"{m_Model.Name} {m_Model.Kind}", 1)
             );
 
             AddTypeInfoSection(document.Root);
 
             document.Root.Add(
                 Paragraph(
-                    m_Context.XmlDocProvider.TryGetDocumentation(m_Type).Summary
+                    m_Context.XmlDocProvider.TryGetDocumentation(m_Model.Definition).Summary
             ));
 
             AddConstructorsSection(document.Root);
@@ -61,12 +61,12 @@ namespace MdDoc
         {
             // Add Namespace 
             block.Add(
-                Paragraph(Bold("Namespace:"), " " + m_Type.Namespace)
+                Paragraph(Bold("Namespace:"), " " + m_Model.Namespace)
             );
 
             // Add Assembly
             block.Add(
-                Paragraph(Bold("Assembly:"), " " + m_Type.Module.Assembly.Name.Name)
+                Paragraph(Bold("Assembly:"), " " + m_Model.AssemblyName)
             );
 
 
@@ -83,38 +83,38 @@ namespace MdDoc
             }
 
             // Add class attributes
-            if (m_Type.CustomAttributes.Any())
+            if (m_Model.Definition.CustomAttributes.Any())
             {
                 block.Add(
                     Paragraph(
                         Bold("Attributes:"),
                         " ",
-                        m_Type.CustomAttributes.Select(x => x.AttributeType).Select(GetTypeNameSpan).Join(",")
+                        m_Model.Definition.CustomAttributes.Select(x => x.AttributeType).Select(GetTypeNameSpan).Join(",")
                 ));
             }
 
             // Add list of implemented interfaces
-            if (!m_Type.IsInterface && m_Type.HasInterfaces)
+            if (!m_Model.Definition.IsInterface && m_Model.Definition.HasInterfaces)
             {
                 block.Add(
                     Paragraph(
                         Bold("Implements:"),
                         " ",
-                        m_Type.Interfaces.Select(x => x.InterfaceType).Select(GetTypeNameSpan).Join(","))
+                        m_Model.Definition.Interfaces.Select(x => x.InterfaceType).Select(GetTypeNameSpan).Join(","))
                 );
             }
         }
 
         private void AddConstructorsSection(MdContainerBlock block)
         {
-            var constructors = m_Type.GetDocumentedConstrutors(m_Context);
+            var constructors = m_Model.Definition.GetDocumentedConstrutors(m_Context);
          
             if (constructors.Any())
             {
                 var table = Table(Row("Name", "Description"));
                 foreach(var ctor in constructors)
                 {
-                    var ctorPage = m_PathProvider.GetConstructorsOutputPath(m_Type);
+                    var ctorPage = m_PathProvider.GetConstructorsOutputPath(m_Model.Definition);
                     var link = Link(GetSignature(ctor), OutputPath.GetRelativePathTo(ctorPage));
 
                     table.Add(Row(link));
@@ -129,7 +129,8 @@ namespace MdDoc
 
         private void AddFieldsSection(MdContainerBlock block)
         {
-            var publicFields = m_Type
+            var publicFields = m_Model
+                .Definition
                 .Fields
                 .Where(m_Context.IsDocumentedItem);
 
@@ -148,10 +149,11 @@ namespace MdDoc
 
         private void AddEventsSection(MdContainerBlock block)
         {
-            if (m_Type.Kind() != TypeKind.Class && m_Type.Kind() != TypeKind.Struct && m_Type.Kind() != TypeKind.Interface)
+            if (m_Model.Kind != TypeKind.Class && m_Model.Kind != TypeKind.Struct && m_Model.Kind != TypeKind.Interface)
                 return;
 
-            var events = m_Type
+            var events = m_Model
+                .Definition
                 .Events
                 .Where(m_Context.IsDocumentedItem);
 
@@ -168,10 +170,11 @@ namespace MdDoc
         
         private void AddPropertiesSection(MdContainerBlock block)
         {
-            if (m_Type.Kind() != TypeKind.Class && m_Type.Kind() != TypeKind.Struct && m_Type.Kind() != TypeKind.Interface)
+            if (m_Model.Kind != TypeKind.Class && m_Model.Kind != TypeKind.Struct && m_Model.Kind != TypeKind.Interface)
                 return;
 
-            var properties = m_Type
+            var properties = m_Model
+                .Definition
                 .Properties
                 .Where(m_Context.IsDocumentedItem);
 
@@ -196,7 +199,7 @@ namespace MdDoc
         
         private void AddMethodsSection(MdContainerBlock block)
         {            
-            var methods = m_Type.GetDocumentedMethods(m_Context);         
+            var methods = m_Model.Definition.GetDocumentedMethods(m_Context);         
 
             if (methods.Any())
             {
@@ -220,8 +223,8 @@ namespace MdDoc
         private LinkedList<TypeDefinition> GetInheritanceHierarchy()
         {
             var inheritance = new LinkedList<TypeDefinition>();
-            inheritance.AddFirst(m_Type);
-            var currentBaseType = m_Type.BaseType.Resolve();
+            inheritance.AddFirst(m_Model.Definition);
+            var currentBaseType = m_Model.Definition.BaseType.Resolve();
             while (currentBaseType != null)
             {
                 inheritance.AddFirst(currentBaseType);
@@ -234,7 +237,7 @@ namespace MdDoc
         
         protected override MdSpan GetTypeNameSpan(TypeReference type, bool noLink)
         {
-            if (type.Equals(m_Type))
+            if (type.Equals(m_Model))
             {
                 return new MdTextSpan(type.Name);
             }

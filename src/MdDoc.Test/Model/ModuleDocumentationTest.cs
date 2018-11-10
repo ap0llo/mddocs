@@ -36,7 +36,7 @@ namespace MdDoc.Test.Model
             .ToArray();
 
             // ACT
-            var sut = new ModuleDocumentation(m_Module);
+            var sut = new ModuleDocumentation(m_Context, m_Module);
             var actualTypes = sut.Types;
 
             // ASSERT
@@ -60,7 +60,7 @@ namespace MdDoc.Test.Model
             .ToArray();
 
             // ACT
-            var sut = new ModuleDocumentation(m_Module);
+            var sut = new ModuleDocumentation(m_Context, m_Module);
             var actualTypes = sut.Types;
 
             // ASSERT            

@@ -36,6 +36,12 @@ namespace MdDoc.Test.Model
             Assert.Equal(expectedKind, actualKind);
         }
 
+        [Fact]
+        public void AssemblyName_returns_the_expected_value()
+        {
+            var typeDocumentation = GetTypeDocumentation(typeof(TestClass_Type));
+            Assert.Equal(typeof(TestClass_Type).Assembly.GetName().Name, typeDocumentation.AssemblyName);
+        }
 
         [Fact]
         public void Fields_returns_expected_fields_for_classes()

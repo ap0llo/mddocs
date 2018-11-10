@@ -7,6 +7,7 @@ using System.Text;
 
 namespace MdDoc
 {
+    [Obsolete("Context class will no longer be necessary once the refactoring is complete (will be replaced by Model classes)")]
     public class DocumentationContext
     {
         private readonly ModuleDefinition m_Module;

@@ -9,6 +9,12 @@ namespace MdDoc.Model
     {
         private readonly DocumentationContext m_Context;
 
+        public string Name => Definition.Name;
+
+        public string Namespace => Definition.Namespace;
+
+        public string AssemblyName => Definition.Module.Assembly.Name.Name;
+
         public TypeKind Kind { get; }
         
         public TypeDefinition Definition { get; }    

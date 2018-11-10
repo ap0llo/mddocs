@@ -15,10 +15,11 @@ namespace MdDoc.Model
 
 
 
-        public ModuleDocumentation(ModuleDefinition module)
+        public ModuleDocumentation(DocumentationContext context, ModuleDefinition module)
         {
+            m_Context = context ?? throw new ArgumentNullException(nameof(context));
             m_Module = module ?? throw new ArgumentNullException(nameof(module));
-            m_Context = new DocumentationContext(module, NullXmlDocProvider.Instance);
+            
 
             Types = m_Module
                 .Types
