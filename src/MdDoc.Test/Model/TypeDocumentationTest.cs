@@ -172,6 +172,16 @@ namespace MdDoc.Test.Model
         }
 
         [Fact]
+        public void Methods_do_not_include_operator_overloads()
+        {
+            var sut = GetTypeDocumentation(typeof(TestClass_Operators));
+            Assert.NotNull(sut.Methods);
+            Assert.Empty(sut.Methods);
+        }
+
+        //TODO: Methods do not include property getters and setters
+
+        [Fact]
         public void Constructors_returns_the_expected_constructor_overloads_for_classes_01()
         {
             var sut = GetTypeDocumentation(typeof(TestClass_Methods));
@@ -221,5 +231,25 @@ namespace MdDoc.Test.Model
             var sut = GetTypeDocumentation(typeof(TestEnum_Type));
             Assert.Null(sut.Constructors);
         }
+
+
+        [Fact]
+        public void Operators_contains_expected_number_of_operator_overloads()
+        {
+            var sut = GetTypeDocumentation(typeof(TestClass_Operators));
+            Assert.NotNull(sut.Operators);
+            Assert.Equal(26, sut.Operators.Count);
+        }
+
+
+        [Fact]
+        public void Multiple_overoads_of_the_same_operator_are_gropued()
+        {
+            var sut = GetTypeDocumentation(typeof(TestClass_MultipleOperatorOverloads));
+
+            Assert.NotNull(sut.Operators);
+            Assert.Equal(1, sut.Operators.Count);
+        }
+        
     }
 }

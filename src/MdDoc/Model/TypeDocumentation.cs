@@ -23,7 +23,8 @@ namespace MdDoc.Model
 
         public IReadOnlyCollection<MethodDocumentation> Methods { get; }
 
-        //TODO: Operators
+        public IReadOnlyCollection<OperatorDocumentation> Operators { get; }
+        
 
         public TypeDocumentation(DocumentationContext context, TypeDefinition definition)
         {
@@ -51,9 +52,16 @@ namespace MdDoc.Model
                 Constructors = new MethodDocumentation(m_Context, ctors);
 
             Methods = definition.GetDocumentedMethods(m_Context)
+                .Where(m => !m.IsOperatorOverload())
                 .GroupBy(x => x.Name)
                 .Select(x => new MethodDocumentation(m_Context, x))
                 .ToArray();
+
+            Operators = definition.GetDocumentedMethods(m_Context)               
+               .GroupBy(x => x.GetOperatorKind())
+               .Where(group => group.Key.HasValue)
+               .Select(group => new OperatorDocumentation(m_Context, group))
+               .ToArray();
         }
 
     }
