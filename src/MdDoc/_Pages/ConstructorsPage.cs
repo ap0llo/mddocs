@@ -15,9 +15,9 @@ namespace MdDoc
         private readonly MethodDocumentation m_Model;
 
         
-        protected override OutputPath OutputPath => m_PathProvider.GetConstructorsOutputPath(m_Model.Overloads.First().DeclaringType);
+        protected override OutputPath OutputPath => m_PathProvider.GetConstructorsOutputPath(m_Model.Definitions.First().DeclaringType);
 
-        protected override TypeReference DeclaringType => m_Model.Overloads.First().DeclaringType;
+        protected override TypeReference DeclaringType => m_Model.Definitions.First().DeclaringType;
 
         
         public ConstructorsPage(DocumentationContext context, PathProvider pathProvider, MethodDocumentation model)
@@ -30,14 +30,14 @@ namespace MdDoc
         public override void Save()
         {
             var document = Document(
-                Heading($"{m_Model.Overloads.First().DeclaringType.Name} Constructors", 1)
+                Heading($"{m_Model.Definitions.First().DeclaringType.Name} Constructors", 1)
             );
 
             AddDeclaringTypeSection(document.Root);
             
-            AddOverloadsSection(document.Root, m_Model.Overloads.First().DeclaringType.GetDocumentedConstrutors(m_Context));
+            AddOverloadsSection(document.Root, m_Model.Definitions.First().DeclaringType.GetDocumentedConstrutors(m_Context));
 
-            AddDetailSections(document.Root, m_Model.Overloads.First().DeclaringType.GetDocumentedConstrutors(m_Context));
+            AddDetailSections(document.Root, m_Model.Definitions.First().DeclaringType.GetDocumentedConstrutors(m_Context));
 
             Directory.CreateDirectory(Path.GetDirectoryName(OutputPath));
             document.Save(OutputPath);

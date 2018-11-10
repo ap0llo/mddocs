@@ -14,7 +14,7 @@ namespace MdDoc
         private readonly MethodDocumentation m_Model;       
 
 
-        protected override TypeReference DeclaringType => m_Model.Overloads.First().DeclaringType;
+        protected override TypeReference DeclaringType => m_Model.Definitions.First().DeclaringType;
 
         protected override OutputPath OutputPath { get; }
 
@@ -23,7 +23,7 @@ namespace MdDoc
             : base(context, pathProvider)
         {
             m_Model = model ?? throw new ArgumentNullException(nameof(model));
-            OutputPath = m_PathProvider.GetMethodOutputPath(model.Overloads.First());
+            OutputPath = m_PathProvider.GetMethodOutputPath(model.Definitions.First());
         }
 
 
@@ -35,9 +35,9 @@ namespace MdDoc
 
             AddDeclaringTypeSection(document.Root);            
 
-            AddOverloadsSection(document.Root, m_Model.Overloads);
+            AddOverloadsSection(document.Root, m_Model.Definitions);
 
-            AddDetailSections(document.Root, m_Model.Overloads);
+            AddDetailSections(document.Root, m_Model.Definitions);
 
             Directory.CreateDirectory(Path.GetDirectoryName(OutputPath));
             document.Save(OutputPath);

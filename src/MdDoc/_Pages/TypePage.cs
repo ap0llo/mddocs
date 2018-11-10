@@ -32,10 +32,7 @@ namespace MdDoc
 
             AddTypeInfoSection(document.Root);
 
-            document.Root.Add(
-                Paragraph(
-                    m_Context.XmlDocProvider.TryGetDocumentation(m_Model.Definition).Summary
-            ));
+            //TODO: Include info from XML docs
 
             AddConstructorsSection(document.Root);
 
@@ -46,6 +43,8 @@ namespace MdDoc
             AddPropertiesSection(document.Root);
 
             AddMethodsSection(document.Root);
+
+            AddOperatorsSection(document.Root);
 
             //TODO: Separate methods and operators
 
@@ -195,19 +194,20 @@ namespace MdDoc
         }
         
         private void AddMethodsSection(MdContainerBlock block)
-        {            
-            var methods = m_Model.Definition.GetDocumentedMethods(m_Context);         
-
-            if (methods.Any())
+        {   
+            if (m_Model.Methods.Count > 0)
             {
                 var table = Table(Row("Name", "Description"));
 
-                foreach(var method in methods)
+                foreach(var method in m_Model.Methods)
                 {
-                    var methodDocumentationPath = m_PathProvider.GetMethodOutputPath(method);
-                    var link = Link(GetSignature(method), OutputPath.GetRelativePathTo(methodDocumentationPath));
+                    foreach(var overload in method.Definitions)
+                    {
+                        var methodDocumentationPath = m_PathProvider.GetMethodOutputPath(overload);
+                        var link = Link(GetSignature(overload), OutputPath.GetRelativePathTo(methodDocumentationPath));
 
-                    table.Add(Row(link));
+                        table.Add(Row(link));
+                    }
                 }
 
                 block.Add(
@@ -216,7 +216,33 @@ namespace MdDoc
                 );
             }
         }
+
+
+        private void AddOperatorsSection(MdContainerBlock block)
+        {
+            if (m_Model.Operators.Count > 0)
+            {
+                var table = Table(Row("Name", "Description"));
+
+                foreach (var method in m_Model.Operators)
+                {
+                    foreach (var overload in method.Definitions)
+                    {
+                        var methodDocumentationPath = m_PathProvider.GetMethodOutputPath(overload);
+                        var link = Link(GetSignature(overload), OutputPath.GetRelativePathTo(methodDocumentationPath));
+
+                        table.Add(Row(link));
+                    }
+                }
+
+                block.Add(
+                    Heading("Operators", 2),
+                    table
+                );
+            }
+        }
         
+
         private LinkedList<TypeDefinition> GetInheritanceHierarchy()
         {
             var inheritance = new LinkedList<TypeDefinition>();

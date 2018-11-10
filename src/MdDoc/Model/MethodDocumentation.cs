@@ -13,15 +13,15 @@ namespace MdDoc.Model
 
         public string Name { get; }
 
-        public IReadOnlyCollection<MethodDefinition> Overloads { get; }
+        public IReadOnlyCollection<MethodDefinition> Definitions { get; }
 
 
-        public MethodDocumentation(DocumentationContext context, IEnumerable<MethodDefinition> overloads)
+        public MethodDocumentation(DocumentationContext context, IEnumerable<MethodDefinition> definitions)
         {
             m_Context = context ?? throw new ArgumentNullException(nameof(context));
-            Overloads = overloads?.ToList() ?? throw new ArgumentNullException(nameof(overloads));
+            Definitions = definitions?.ToList() ?? throw new ArgumentNullException(nameof(definitions));
             
-            Name = overloads.Select(x => x.Name).Distinct().Single();
+            Name = definitions.Select(x => x.Name).Distinct().Single();
         }
         
     }
