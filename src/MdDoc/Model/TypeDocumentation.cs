@@ -10,10 +10,12 @@ namespace MdDoc.Model
         private readonly DocumentationContext m_Context;
 
         public TypeKind Kind { get; }
-
+        
         public TypeDefinition Definition { get; }
 
         public IReadOnlyCollection<PropertyDocumentation> Properties { get; }
+
+        public MethodDocumentation Constructors { get; }
 
         public IReadOnlyCollection<MethodDocumentation> Methods { get; }
 
@@ -29,6 +31,11 @@ namespace MdDoc.Model
                 .Where(m_Context.IsDocumentedItem)
                 .Select(p => new PropertyDocumentation(m_Context, p))
                 .ToArray();
+
+            var ctors = definition.GetDocumentedConstrutors(m_Context);
+
+            if(ctors.Any())
+                Constructors = new MethodDocumentation(m_Context, ctors);
 
             Methods = definition.GetDocumentedMethods(m_Context)
                 .GroupBy(x => x.Name)

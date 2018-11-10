@@ -121,5 +121,57 @@ namespace MdDoc.Test.Model
             Assert.Equal(3, method.Overloads.Count);
             Assert.Single(method.Overloads.Where(x => x.HasGenericParameters));
         }
+
+        [Fact]
+        public void Constructors_returns_the_expected_constructor_overloads_for_classes_01()
+        {
+            var sut = GetTypeDocumentation(typeof(TestClass_Methods));
+
+            Assert.NotNull(sut.Constructors);
+            Assert.Single(sut.Constructors.Overloads);
+            Assert.Equal(".ctor", sut.Constructors.Name);
+        }
+
+        [Fact]
+        public void Constructors_returns_the_expected_constructor_overloads_for_classes_02()
+        {
+            var sut = GetTypeDocumentation(typeof(TestClass_Constructors));
+
+            Assert.NotNull(sut.Constructors);
+            Assert.Equal(2, sut.Constructors.Overloads.Count);
+            Assert.Equal(".ctor", sut.Constructors.Name);
+        }
+
+        [Fact]
+        public void Constructors_returns_the_expected_constructor_overloads_for_structs_01()
+        {
+            var sut = GetTypeDocumentation(typeof(TestStruct_Type));
+            Assert.Null(sut.Constructors);            
+        }
+
+        [Fact]
+        public void Constructors_returns_the_expected_constructor_overloads_for_structs_02()
+        {
+            var sut = GetTypeDocumentation(typeof(TestStruct_Constructors));
+
+            Assert.NotNull(sut.Constructors);
+            Assert.Equal(2, sut.Constructors.Overloads.Count);
+            Assert.Equal(".ctor", sut.Constructors.Name);
+        }
+
+        [Fact]
+        public void Constructors_returns_null_for_interfaces()
+        {
+            var sut = GetTypeDocumentation(typeof(TestInterface_Type));
+            Assert.Null(sut.Constructors);            
+        }
+
+
+        [Fact]
+        public void Constructors_returns_null_for_enums()
+        {
+            var sut = GetTypeDocumentation(typeof(TestEnum_Type));
+            Assert.Null(sut.Constructors);
+        }
     }
 }

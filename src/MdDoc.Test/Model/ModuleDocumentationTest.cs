@@ -21,6 +21,7 @@ namespace MdDoc.Test.Model
                 typeof(TestClass_Operators),
                 typeof(TestClass_Properties),
                 typeof(TestStruct_Properties),
+                typeof(TestStruct_Constructors),
                 typeof(TestInterface_Properties),
                 typeof(TestClass_Type),
                 typeof(TestStruct_Type),
