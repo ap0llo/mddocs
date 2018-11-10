@@ -7,7 +7,7 @@ using System.Text;
 
 namespace MdDoc
 {
-    class DocumentationContext
+    public class DocumentationContext
     {
         private readonly ModuleDefinition m_Module;
         private readonly HashSet<TypeReference> m_Types;

@@ -7,24 +7,8 @@ using Xunit;
 
 namespace MdDoc.Test
 {
-    public class XmlDocNameMapperTest : IDisposable
-    {
-        private readonly AssemblyDefinition m_Assembly;
-        private readonly ModuleDefinition m_Module;
-
-        public XmlDocNameMapperTest()
-        {
-            m_Assembly = AssemblyDefinition.ReadAssembly(Assembly.GetAssembly(typeof(TestClass_Type)).Location);
-            m_Module = m_Assembly.MainModule;
-        }
-
-        public void Dispose()
-        {
-            m_Module.Dispose();
-            m_Assembly.Dispose();
-        }
-
-
+    public class XmlDocNameMapperTest : TestBase
+    {        
         [Theory]
         [InlineData("TestClass_Type", "T:MdDoc.Test.TestData.TestClass_Type")]
         [InlineData("TestClass_GenericType`1", "T:MdDoc.Test.TestData.TestClass_GenericType`1")]

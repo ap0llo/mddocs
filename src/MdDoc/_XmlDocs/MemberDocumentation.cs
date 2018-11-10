@@ -6,7 +6,7 @@ using System.Xml.Linq;
 
 namespace MdDoc
 {
-    class MemberDocumentation
+    public class MemberDocumentation
     {
         public static readonly MemberDocumentation Empty = new MemberDocumentation();
 

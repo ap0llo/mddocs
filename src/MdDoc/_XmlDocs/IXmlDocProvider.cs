@@ -4,7 +4,7 @@ using Mono.Cecil;
 
 namespace MdDoc
 {
-    interface IXmlDocProvider
+    public interface IXmlDocProvider
     {
         MemberDocumentation TryGetDocumentation(MemberReference member);
     }
