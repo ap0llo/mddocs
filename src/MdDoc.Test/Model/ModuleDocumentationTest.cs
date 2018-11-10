@@ -26,6 +26,7 @@ namespace MdDoc.Test.Model
                 typeof(TestStruct_Type),
                 typeof(TestInterface_Type),
                 typeof(TestEnum_Type),
+                typeof(TestClass_MethodOverloads)
             })
             .Distinct()
             .Select(GetTypeDefinition)

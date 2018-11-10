@@ -2,6 +2,7 @@
 using MdDoc.Test.TestData;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Xunit;
 
@@ -9,12 +10,6 @@ namespace MdDoc.Test.Model
 {
     public class TypeDocumentationTest : TestBase
     {
-        private readonly DocumentationContext m_Context;
-
-        public TypeDocumentationTest()
-        {
-            m_Context = new DocumentationContext(m_Module, NullXmlDocProvider.Instance);
-        }
 
         private TypeDocumentation GetTypeDocumentation(Type type)
         {
@@ -70,8 +65,7 @@ namespace MdDoc.Test.Model
             Assert.Contains(properties, prop => prop.Definition.Name == "Property1");
             Assert.Contains(properties, prop => prop.Definition.Name == "Property2");
             Assert.Contains(properties, prop => prop.Definition.Name == "Item");
-        }
-    
+        }    
 
         [Fact]
         public void Properties_returns_expected_properties_03()
@@ -87,5 +81,45 @@ namespace MdDoc.Test.Model
             Assert.Contains(properties, prop => prop.Definition.Name == "Item");
         }
 
+        [Fact]
+        public void Methods_returns_the_expected_methods()
+        {
+            // ARRANGE / ACT
+            var sut = GetTypeDocumentation(typeof(TestClass_Methods));
+            
+            // ASSERT
+            Assert.Equal(9, sut.Methods.Count);
+            Assert.All(sut.Methods, method => Assert.Single(method.Overloads));
+            Assert.Contains(sut.Methods, m => m.Name == "TestMethod1");
+            Assert.Contains(sut.Methods, m => m.Name == "TestMethod2");
+            Assert.Contains(sut.Methods, m => m.Name == "TestMethod3");
+            Assert.Contains(sut.Methods, m => m.Name == "TestMethod4");
+            Assert.Contains(sut.Methods, m => m.Name == "TestMethod5");
+            Assert.Contains(sut.Methods, m => m.Name == "TestMethod6");
+            Assert.Contains(sut.Methods, m => m.Name == "TestMethod7");
+            Assert.Contains(sut.Methods, m => m.Name == "TestMethod8");
+            Assert.Contains(sut.Methods, m => m.Name == "TestMethod9");
+        }
+
+        [Fact]
+        public void Methods_do_not_include_constructors()
+        {
+            var sut = GetTypeDocumentation(typeof(TestClass_Constructors));
+            Assert.NotNull(sut.Methods);            
+            Assert.Empty(sut.Methods);            
+        }
+            
+        [Fact]
+        public void Methods_include_overloads_with_generic_parameters()
+        {
+            var sut = GetTypeDocumentation(typeof(TestClass_MethodOverloads));
+
+            Assert.Single(sut.Methods);
+            var method = sut.Methods.Single();
+
+            Assert.Equal("TestMethod1", method.Name);
+            Assert.Equal(3, method.Overloads.Count);
+            Assert.Single(method.Overloads.Where(x => x.HasGenericParameters));
+        }
     }
 }

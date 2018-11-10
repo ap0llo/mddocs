@@ -10,11 +10,13 @@ namespace MdDoc.Test
     {
         protected readonly AssemblyDefinition m_Assembly;
         protected readonly ModuleDefinition m_Module;
+        protected readonly DocumentationContext m_Context;
 
         public TestBase()
         {
             m_Assembly = AssemblyDefinition.ReadAssembly(Assembly.GetAssembly(typeof(TestClass_Type)).Location);
             m_Module = m_Assembly.MainModule;
+            m_Context = new DocumentationContext(m_Module, NullXmlDocProvider.Instance);
         }
 
         public void Dispose()
