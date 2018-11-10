@@ -8,11 +8,15 @@ namespace MdDoc.Model
     public class TypeDocumentation
     {
 
-        public TypeReference TypeReference { get; }
+        public TypeKind Kind { get; }
 
-        public TypeDocumentation(DocumentationContext context, TypeReference typeReference)
+        public TypeDefinition Definition { get; }
+
+
+        public TypeDocumentation(DocumentationContext context, TypeDefinition typeReference)
         {
-            TypeReference = typeReference ?? throw new ArgumentNullException(nameof(typeReference));
+            Definition = typeReference ?? throw new ArgumentNullException(nameof(typeReference));
+            Kind = typeReference.Kind();
         }
 
     }

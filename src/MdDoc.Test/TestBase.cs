@@ -1,6 +1,7 @@
 ﻿using MdDoc.Test.TestData;
 using Mono.Cecil;
 using System;
+using System.Linq;
 using System.Reflection;
 
 namespace MdDoc.Test
@@ -20,6 +21,12 @@ namespace MdDoc.Test
         {
             m_Module.Dispose();
             m_Assembly.Dispose();
+        }
+
+
+        protected TypeDefinition GetTypeDefinition(Type t)
+        {
+            return m_Module.GetTypes().Single(typeDef => typeDef.Name == t.Name);
         }
 
     }

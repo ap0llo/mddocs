@@ -4,6 +4,7 @@ using System.Linq;
 using System.IO;
 using Mono.Cecil;
 using Grynwald.MarkdownGenerator;
+using MdDoc.Model;
 
 using static Grynwald.MarkdownGenerator.FactoryMethods;
 
