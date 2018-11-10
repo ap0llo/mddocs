@@ -7,7 +7,7 @@ namespace MdDoc.Test.TestData
     /// <summary>
     /// Test class 4
     /// </summary>
-    public class TestClass_Properties
+    public struct TestStruct_Properties
     {        
         /// <summary>
         /// Property 1

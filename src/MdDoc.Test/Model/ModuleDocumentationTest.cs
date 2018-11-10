@@ -20,11 +20,14 @@ namespace MdDoc.Test.Model
                 typeof(TestClass_Methods),
                 typeof(TestClass_Operators),
                 typeof(TestClass_Properties),
+                typeof(TestStruct_Properties),
+                typeof(TestInterface_Properties),
                 typeof(TestClass_Type),
                 typeof(TestStruct_Type),
                 typeof(TestInterface_Type),
                 typeof(TestEnum_Type),
             })
+            .Distinct()
             .Select(GetTypeDefinition)
             .ToArray();
 

@@ -27,25 +27,24 @@ namespace MdDoc.Test
         }
 
         [Theory]
-        [InlineData("TestClass_Methods", "TestMethod1", "M:MdDoc.Test.TestData.TestClass_Methods.TestMethod1")]
-        [InlineData("TestClass_Methods", "TestMethod2", "M:MdDoc.Test.TestData.TestClass_Methods.TestMethod2(System.String)")]
-        [InlineData("TestClass_Methods", "TestMethod3", "M:MdDoc.Test.TestData.TestClass_Methods.TestMethod3(System.String)")]
-        [InlineData("TestClass_Methods", "TestMethod4", "M:MdDoc.Test.TestData.TestClass_Methods.TestMethod4(System.String,System.String)")]
-        [InlineData("TestClass_Methods", "TestMethod5", "M:MdDoc.Test.TestData.TestClass_Methods.TestMethod5``1(``0,System.String)")]
-        [InlineData("TestClass_Methods", "TestMethod6", "M:MdDoc.Test.TestData.TestClass_Methods.TestMethod6(System.Collections.Generic.IEnumerable{System.String})")]
-        [InlineData("TestClass_Methods", "TestMethod7", "M:MdDoc.Test.TestData.TestClass_Methods.TestMethod7``2(``0,``1)")]
-        [InlineData("TestClass_Methods", "TestMethod8", "M:MdDoc.Test.TestData.TestClass_Methods.TestMethod8``2(``0,``1)")]
-        [InlineData("TestClass_Methods", "TestMethod9", "M:MdDoc.Test.TestData.TestClass_Methods.TestMethod9``2(``1,``0)")]
-        [InlineData("TestClass_GenericType`1", "TestMethod1", "M:MdDoc.Test.TestData.TestClass_GenericType`1.TestMethod1(`0)")]
-        [InlineData("TestClass_GenericType`1", "TestMethod2", "M:MdDoc.Test.TestData.TestClass_GenericType`1.TestMethod2``1(``0)")]
-        [InlineData("TestClass_GenericType`1", "TestMethod3", "M:MdDoc.Test.TestData.TestClass_GenericType`1.TestMethod3``1(``0,`0)")]
-        public void Method_names_are_mapped_as_expected(string typeName, string methodName, string expectedName)
+        [InlineData(typeof(TestClass_Methods), "TestMethod1", "M:MdDoc.Test.TestData.TestClass_Methods.TestMethod1")]
+        [InlineData(typeof(TestClass_Methods), "TestMethod2", "M:MdDoc.Test.TestData.TestClass_Methods.TestMethod2(System.String)")]
+        [InlineData(typeof(TestClass_Methods), "TestMethod3", "M:MdDoc.Test.TestData.TestClass_Methods.TestMethod3(System.String)")]
+        [InlineData(typeof(TestClass_Methods), "TestMethod4", "M:MdDoc.Test.TestData.TestClass_Methods.TestMethod4(System.String,System.String)")]
+        [InlineData(typeof(TestClass_Methods), "TestMethod5", "M:MdDoc.Test.TestData.TestClass_Methods.TestMethod5``1(``0,System.String)")]
+        [InlineData(typeof(TestClass_Methods), "TestMethod6", "M:MdDoc.Test.TestData.TestClass_Methods.TestMethod6(System.Collections.Generic.IEnumerable{System.String})")]
+        [InlineData(typeof(TestClass_Methods), "TestMethod7", "M:MdDoc.Test.TestData.TestClass_Methods.TestMethod7``2(``0,``1)")]
+        [InlineData(typeof(TestClass_Methods), "TestMethod8", "M:MdDoc.Test.TestData.TestClass_Methods.TestMethod8``2(``0,``1)")]
+        [InlineData(typeof(TestClass_Methods), "TestMethod9", "M:MdDoc.Test.TestData.TestClass_Methods.TestMethod9``2(``1,``0)")]
+        [InlineData(typeof(TestClass_GenericType<>), "TestMethod1", "M:MdDoc.Test.TestData.TestClass_GenericType`1.TestMethod1(`0)")]
+        [InlineData(typeof(TestClass_GenericType<>), "TestMethod2", "M:MdDoc.Test.TestData.TestClass_GenericType`1.TestMethod2``1(``0)")]
+        [InlineData(typeof(TestClass_GenericType<>), "TestMethod3", "M:MdDoc.Test.TestData.TestClass_GenericType`1.TestMethod3``1(``0,`0)")]
+        public void Method_names_are_mapped_as_expected(Type type, string methodName, string expectedName)
         {
             // ARRANGE
             var mapper = new XmlDocNameMapper();
             
-            var method = m_Module.GetTypes()
-                .Single(t => t.Name == typeName)
+            var method = GetTypeDefinition(type)
                 .Methods
                 .Single(m => m.Name == methodName);
 
@@ -89,8 +88,7 @@ namespace MdDoc.Test
             // ARRANGE
             var mapper = new XmlDocNameMapper();
 
-            var method = m_Module.GetTypes()
-                .Single(t => t.Name == "TestClass_Operators")
+            var method = GetTypeDefinition(typeof(TestClass_Operators))
                 .Methods
                 .Single(m => m.Name == methodName);
 
@@ -109,8 +107,7 @@ namespace MdDoc.Test
             // ARRANGE
             var mapper = new XmlDocNameMapper();
             
-            var method = m_Module.GetTypes()
-                .Single(t => t.Name == "TestClass_Constructors")
+            var method = GetTypeDefinition(typeof(TestClass_Constructors))
                 .Methods
                 .Single(m => m.IsConstructor && m.Parameters.Count == parameterCount);
 
@@ -128,8 +125,7 @@ namespace MdDoc.Test
             // ARRANGE
             var mapper = new XmlDocNameMapper();
 
-            var field = m_Module.GetTypes()
-                .Single(t => t.Name == "TestClass_Fields")
+            var field = GetTypeDefinition(typeof(TestClass_Fields))
                 .Fields
                 .Single(f => f.Name == fieldName);
 
@@ -148,8 +144,7 @@ namespace MdDoc.Test
             // ARRANGE
             var mapper = new XmlDocNameMapper();
 
-            var property = m_Module.GetTypes()
-                .Single(t => t.Name == "TestClass_Properties")
+            var property = GetTypeDefinition(typeof(TestClass_Properties))
                 .Properties
                 .Single(p => p.Name == propertyName);
 
@@ -168,8 +163,7 @@ namespace MdDoc.Test
             // ARRANGE
             var mapper = new XmlDocNameMapper();
 
-            var indexer = m_Module.GetTypes()
-                .Single(t => t.Name == "TestClass_Properties")
+            var indexer = GetTypeDefinition(typeof(TestClass_Properties))
                 .Properties
                 .Single(p => p.Name == "Item" && p.Parameters.Count == parameterCount);
 
@@ -190,8 +184,7 @@ namespace MdDoc.Test
             // ARRANGE
             var mapper = new XmlDocNameMapper();
 
-            var @event = m_Module.GetTypes()
-                .Single(t => t.Name == "TestClass_Events")
+            var @event = GetTypeDefinition(typeof(TestClass_Events))
                 .Events
                 .Single(e => e.Name == propertyName);
 
