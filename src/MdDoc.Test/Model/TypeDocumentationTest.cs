@@ -36,7 +36,56 @@ namespace MdDoc.Test.Model
             Assert.Equal(expectedKind, actualKind);
         }
 
-        
+
+        [Fact]
+        public void Fields_returns_expected_fields_for_classes()
+        {
+            // ARRANGE / ACT
+            var sut = GetTypeDocumentation(typeof(TestClass_Fields));
+
+            // ASSERT
+            Assert.Single(sut.Fields);
+            Assert.Contains(sut.Fields, field => field.Definition.Name == "Field1");
+        }
+
+        [Fact]
+        public void Fields_returns_expected_fields_for_enums()
+        {
+            // ARRANGE / ACT
+            var sut = GetTypeDocumentation(typeof(TestEnum_Type));
+
+            // ASSERT
+            Assert.Equal(2, sut.Fields.Count);
+            Assert.Contains(sut.Fields, field => field.Definition.Name == "Value1");
+            Assert.Contains(sut.Fields, field => field.Definition.Name == "Value2");
+        }
+
+        [Fact]
+        public void Events_returns_expected_events_for_classes()
+        {
+            // ARRANGE / ACT
+            var sut = GetTypeDocumentation(typeof(TestClass_Events));
+
+            // ASSERT
+            Assert.Equal(3, sut.Events.Count);
+            Assert.Contains(sut.Events, e => e.Definition.Name == "Event1");
+            Assert.Contains(sut.Events, e => e.Definition.Name == "Event2");
+            Assert.Contains(sut.Events, e => e.Definition.Name == "Event3");
+        }
+
+        [Fact]
+        public void Events_returns_expected_events_for_interfaces()
+        {
+            // ARRANGE / ACT
+            var sut = GetTypeDocumentation(typeof(TestInterface_Events));
+
+            // ASSERT
+            Assert.Equal(3, sut.Events.Count);
+            Assert.Contains(sut.Events, e => e.Definition.Name == "Event1");
+            Assert.Contains(sut.Events, e => e.Definition.Name == "Event2");
+            Assert.Contains(sut.Events, e => e.Definition.Name == "Event3");
+        }
+
         [Fact]
         public void Properties_returns_expected_properties_01()
         {
@@ -165,7 +214,6 @@ namespace MdDoc.Test.Model
             var sut = GetTypeDocumentation(typeof(TestInterface_Type));
             Assert.Null(sut.Constructors);            
         }
-
 
         [Fact]
         public void Constructors_returns_null_for_enums()
