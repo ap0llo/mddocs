@@ -78,13 +78,13 @@ namespace MdDoc
             }
 
             // Add class attributes
-            if (m_Model.Definition.CustomAttributes.Any())
+            if (m_Model.Attributes.Count > 0)
             {
                 block.Add(
                     Paragraph(
                         Bold("Attributes:"),
                         " ",
-                        m_Model.Definition.CustomAttributes.Select(x => x.AttributeType).Select(GetTypeNameSpan).Join(",")
+                        m_Model.Attributes.Select(GetTypeNameSpan).Join(",")
                 ));
             }
 

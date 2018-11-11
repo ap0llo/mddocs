@@ -33,6 +33,8 @@ namespace MdDoc.Model
         
         public IReadOnlyCollection<TypeReference> InheritanceHierarchy { get; }
 
+        public IReadOnlyCollection<TypeReference> Attributes { get; }
+
 
         public TypeDocumentation(DocumentationContext context, TypeDefinition definition)
         {
@@ -70,15 +72,15 @@ namespace MdDoc.Model
                .Where(group => group.Key.HasValue)
                .Select(group => new OperatorDocumentation(m_Context, group))
                .ToArray();
-
             
             InheritanceHierarchy = LoadInheritanceHierarchy();
+            Attributes = Definition.CustomAttributes.Select(x => x.AttributeType).ToArray();
         }
 
 
-        private IReadOnlyCollection<TypeDefinition> LoadInheritanceHierarchy()
+        private IReadOnlyCollection<TypeReference> LoadInheritanceHierarchy()
         {
-            var inheritance = new LinkedList<TypeDefinition>();
+            var inheritance = new LinkedList<TypeReference>();
             inheritance.AddFirst(Definition);
 
             if (Kind == TypeKind.Interface)

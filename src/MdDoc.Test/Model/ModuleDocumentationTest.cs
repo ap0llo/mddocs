@@ -29,7 +29,12 @@ namespace MdDoc.Test.Model
                 typeof(TestEnum_Type),
                 typeof(TestClass_MethodOverloads),
                 typeof(TestInterface_Events),
-                typeof(TestClass_MultipleOperatorOverloads)
+                typeof(TestClass_MultipleOperatorOverloads),
+                typeof(TestClass_Attributes),
+                typeof(TestStruct_Attributes),
+                typeof(TestInterface_Attributes),
+                typeof(TestEnum_Attributes),
+                typeof(TestAttribute)
             })
             .Distinct()
             .Select(GetTypeDefinition)

@@ -322,6 +322,28 @@ namespace MdDoc.Test.Model
             Assert.Equal(expectedSequence.Length, sut.InheritanceHierarchy.Count);
             Assert.True(expectedSequence.SequenceEqual(sut.InheritanceHierarchy.Select(x => x.FullName)));
         }
-        
+
+
+
+        [Theory]
+        [InlineData(typeof(TestClass_Attributes))]
+        [InlineData(typeof(TestStruct_Attributes))]
+        [InlineData(typeof(TestInterface_Attributes))]
+        [InlineData(typeof(TestEnum_Attributes))]
+        public void Attributes_returns_the_expected_types(Type testType)
+        {
+            var expectedAttributes = new[]
+            {
+                typeof(ObsoleteAttribute).FullName,
+                typeof(TestAttribute).FullName
+            };
+
+            var sut = GetTypeDocumentation(testType);
+
+            Assert.NotNull(sut.Attributes);
+            Assert.Equal(expectedAttributes.Length, sut.Attributes.Count);
+            //Assert.True(expectedAttributes.SequenceEqual(sut.InheritanceHierarchy.Select(x => x.FullName)));
+        }
+
     }
 }
