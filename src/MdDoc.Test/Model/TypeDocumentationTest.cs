@@ -247,7 +247,6 @@ namespace MdDoc.Test.Model
             Assert.Equal(26, sut.Operators.Count);
         }
 
-
         [Fact]
         public void Multiple_overoads_of_the_same_operator_are_gropued()
         {
@@ -255,6 +254,73 @@ namespace MdDoc.Test.Model
 
             Assert.NotNull(sut.Operators);
             Assert.Equal(1, sut.Operators.Count);
+        }
+
+        [Fact]
+        public void InheritanceHierarchy_contains_the_expected_types_01()
+        {
+            var expectedSequence = new[]
+            {
+                typeof(object).FullName,
+                typeof(TestClass_Type).FullName
+            };
+
+            var sut = GetTypeDocumentation(typeof(TestClass_Type));
+
+            Assert.NotNull(sut.InheritanceHierarchy);
+            Assert.Equal(expectedSequence.Length, sut.InheritanceHierarchy.Count);
+            Assert.True(expectedSequence.SequenceEqual(sut.InheritanceHierarchy.Select(x => x.FullName)));            
+        }
+
+        [Fact]
+        public void InheritanceHierarchy_contains_the_expected_types_02()
+        {
+            var expectedSequence = new[]
+            {
+                typeof(object).FullName,
+                typeof(ValueType).FullName,
+                typeof(TestStruct_Type).FullName
+            };
+
+            var sut = GetTypeDocumentation(typeof(TestStruct_Type));
+
+            Assert.NotNull(sut.InheritanceHierarchy);
+            Assert.Equal(expectedSequence.Length, sut.InheritanceHierarchy.Count);
+            Assert.True(expectedSequence.SequenceEqual(sut.InheritanceHierarchy.Select(x => x.FullName)));
+        }
+
+
+        [Fact]
+        public void InheritanceHierarchy_contains_the_expected_types_03()
+        {
+            var expectedSequence = new[]
+            {
+                typeof(object).FullName,
+                typeof(ValueType).FullName,
+                typeof(Enum).FullName,
+                typeof(TestEnum_Type).FullName
+            };
+
+            var sut = GetTypeDocumentation(typeof(TestEnum_Type));
+
+            Assert.NotNull(sut.InheritanceHierarchy);
+            Assert.Equal(expectedSequence.Length, sut.InheritanceHierarchy.Count);       
+            Assert.True(expectedSequence.SequenceEqual(sut.InheritanceHierarchy.Select(x => x.FullName)));
+        }
+
+        [Fact]
+        public void InheritanceHierarchy_contains_the_expected_types_04()
+        {
+            var expectedSequence = new[]
+            {
+                typeof(TestInterface_Type).FullName
+            };
+
+            var sut = GetTypeDocumentation(typeof(TestInterface_Type));
+
+            Assert.NotNull(sut.InheritanceHierarchy);
+            Assert.Equal(expectedSequence.Length, sut.InheritanceHierarchy.Count);
+            Assert.True(expectedSequence.SequenceEqual(sut.InheritanceHierarchy.Select(x => x.FullName)));
         }
         
     }

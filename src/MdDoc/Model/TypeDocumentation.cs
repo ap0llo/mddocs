@@ -31,6 +31,8 @@ namespace MdDoc.Model
 
         public IReadOnlyCollection<OperatorDocumentation> Operators { get; }
         
+        public IReadOnlyCollection<TypeReference> InheritanceHierarchy { get; }
+
 
         public TypeDocumentation(DocumentationContext context, TypeDefinition definition)
         {
@@ -68,6 +70,30 @@ namespace MdDoc.Model
                .Where(group => group.Key.HasValue)
                .Select(group => new OperatorDocumentation(m_Context, group))
                .ToArray();
+
+            
+            InheritanceHierarchy = LoadInheritanceHierarchy();
+        }
+
+
+        private IReadOnlyCollection<TypeDefinition> LoadInheritanceHierarchy()
+        {
+            var inheritance = new LinkedList<TypeDefinition>();
+            inheritance.AddFirst(Definition);
+
+            if (Kind == TypeKind.Interface)
+            {
+                return inheritance;
+            }
+            
+            var currentBaseType = Definition.BaseType.Resolve();
+            while (currentBaseType != null)
+            {
+                inheritance.AddFirst(currentBaseType);
+                currentBaseType = currentBaseType.BaseType?.Resolve();
+            }
+
+            return inheritance;
         }
 
     }

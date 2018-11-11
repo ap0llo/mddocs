@@ -66,15 +66,14 @@ namespace MdDoc
             );
 
 
-            // Add list of base types
-            var inheritance = GetInheritanceHierarchy();
-            if (inheritance.Count > 1)
+            // Add list of base types            
+            if (m_Model.InheritanceHierarchy.Count > 1)
             {
                 block.Add(
                     Paragraph(
                         Bold("Inheritance:"),
                         " ",
-                        inheritance.Select(GetTypeNameSpan).Join(" → ")
+                        m_Model.InheritanceHierarchy.Select(GetTypeNameSpan).Join(" → ")
                 ));
             }
 
@@ -242,21 +241,6 @@ namespace MdDoc
             }
         }
         
-
-        private LinkedList<TypeDefinition> GetInheritanceHierarchy()
-        {
-            var inheritance = new LinkedList<TypeDefinition>();
-            inheritance.AddFirst(m_Model.Definition);
-            var currentBaseType = m_Model.Definition.BaseType.Resolve();
-            while (currentBaseType != null)
-            {
-                inheritance.AddFirst(currentBaseType);
-                currentBaseType = currentBaseType.BaseType?.Resolve();
-            }
-
-            return inheritance;
-        }
-
         
         protected override MdSpan GetTypeNameSpan(TypeReference type, bool noLink)
         {
