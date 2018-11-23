@@ -8,30 +8,23 @@ using System.Text;
 
 namespace MdDoc
 {
-    public class PageFactory : IDisposable
+    public class PageFactory
     {
         private readonly PathProvider m_PathProvider;        
         private readonly AssemblyDocumentation m_Model;
 
-        public PageFactory(string assemblyFilePath, string outDir)
-        {            
-            m_PathProvider = new PathProvider(outDir);
-            m_Model = AssemblyDocumentation.FromFile(assemblyFilePath);            
-        }
-
-        
-        public void SaveDocumentation()
+        public PageFactory(AssemblyDocumentation assemblyDocumentation, string outDir)
         {
-            foreach(var page in GetPages())
-            {            
-                page.Save();
-            }            
+            if (string.IsNullOrEmpty(outDir))
+                throw new ArgumentException("Value must not be null or empty", nameof(outDir));
+
+            m_PathProvider = new PathProvider(outDir);
+            m_Model = assemblyDocumentation ?? throw new ArgumentNullException(nameof(assemblyDocumentation));
         }
 
+                
 
-        public void Dispose() => m_Model.Dispose();
-
-        private IEnumerable<IPage> GetPages()
+        public IEnumerable<IPage> GetPages()
         {
             foreach (var type in m_Model.MainModuleDocumentation.Types)
             {                

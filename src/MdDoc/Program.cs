@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MdDoc.Model;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -17,9 +18,15 @@ namespace MdDoc
             if (Directory.Exists(outDir))
                 Directory.Delete(outDir, true);
 
-            var documentationWriter = new PageFactory(assemblyPath, outDir);
-            documentationWriter.SaveDocumentation();
 
+            using (var assemblyDocumentation = AssemblyDocumentation.FromFile(assemblyPath))
+            {
+                var factory = new PageFactory(assemblyDocumentation, outDir);
+                foreach (var page in factory.GetPages())
+                {
+                    page.Save();
+                }
+            }
             
             if (Debugger.IsAttached)
             {

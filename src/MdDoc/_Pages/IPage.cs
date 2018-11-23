@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MdDoc
 {
-    interface IPage
+    public interface IPage
     {
         void Save();
     }
