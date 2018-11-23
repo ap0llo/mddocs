@@ -22,7 +22,7 @@ namespace MdDoc
             using (var assemblyDocumentation = AssemblyDocumentation.FromFile(assemblyPath))
             {
                 var factory = new PageFactory(assemblyDocumentation, outDir);
-                foreach (var page in factory.GetPages())
+                foreach (var page in factory.AllPages)
                 {
                     page.Save();
                 }
