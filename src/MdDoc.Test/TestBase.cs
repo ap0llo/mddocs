@@ -24,6 +24,8 @@ namespace MdDoc.Test
         }
 
 
+        protected TypeReference GetTypeReference(Type t) => GetTypeDefinition(t);
+        
         protected TypeDefinition GetTypeDefinition(Type t)
         {
             return m_AssemblyDocumentation.MainModuleDocumentation.Definition.GetTypes().Single(typeDef => typeDef.Name == t.Name);

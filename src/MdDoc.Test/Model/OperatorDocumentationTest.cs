@@ -8,7 +8,7 @@ using Xunit;
 
 namespace MdDoc.Test.Model
 {
-    public class OperatorDocumentationTest : TestBase
+    public class OperatorDocumentationTest : MemberDocumentationTest
     {
 
         [Theory]
@@ -53,7 +53,7 @@ namespace MdDoc.Test.Model
         [Fact]
         public void Constructor_throw_ArgumentException_if_specified_method_is_not_an_operator_overload()
         {
-            
+
             var method = GetTypeDefinition(typeof(TestClass_Methods))
                 .Methods
                 .Single(x => x.Name == nameof(TestClass_Methods.TestMethod1));
@@ -71,5 +71,12 @@ namespace MdDoc.Test.Model
 
             Assert.Throws<ArgumentException>(() => new OperatorDocumentation(GetTypeDocumentation(typeof(TestClass_Operators)), m_Context, methods));
         }
+
+
+        protected override MdDoc.Model.MemberDocumentation GetMemberDocumentationInstance()
+        {
+            return GetTypeDocumentation(typeof(TestClass_Operators)).Operators.First();
+        }
+
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using Mono.Cecil;
 
 namespace MdDoc.Model
 {
@@ -14,5 +13,7 @@ namespace MdDoc.Model
             TypeDocumentation = typeDocumentation ?? throw new ArgumentNullException(nameof(typeDocumentation));
         }
 
+        public TypeDocumentation TryGetDocumentation(TypeReference typeReference) => 
+            TypeDocumentation.TryGetDocumentation(typeReference);
     }
 }

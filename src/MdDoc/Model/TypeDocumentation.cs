@@ -81,6 +81,9 @@ namespace MdDoc.Model
         }
 
 
+        public TypeDocumentation TryGetDocumentation(TypeReference typeReference) => ModuleDocumentation.TryGetDocumentation(typeReference);
+
+
         private IReadOnlyCollection<TypeReference> LoadInheritanceHierarchy()
         {
             var inheritance = new LinkedList<TypeReference>();

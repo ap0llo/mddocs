@@ -8,7 +8,7 @@ using Xunit;
 
 namespace MdDoc.Test.Model
 {
-    public class MethodDocumentationTest : TestBase
+    public class MethodDocumentationTest : MemberDocumentationTest
     {
         [Fact]
         public void Name_returns_the_expected_value_for_generic_overloads()
@@ -24,6 +24,13 @@ namespace MdDoc.Test.Model
             var sut = new MethodDocumentation(GetTypeDocumentation(typeof(TestClass_MethodOverloads)), m_Context, methods);
 
             Assert.Equal(methodName, sut.Name);
+        }
+
+
+
+        protected override MdDoc.Model.MemberDocumentation GetMemberDocumentationInstance()
+        {
+            return GetTypeDocumentation(typeof(TestClass_Methods)).Methods.First();
         }
 
     }

@@ -1,4 +1,5 @@
-﻿using Mono.Cecil;
+﻿using Grynwald.Utilities.Collections;
+using Mono.Cecil;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,7 @@ namespace MdDoc.Model
 {
     public class ModuleDocumentation : IDocumentation
     {
+        private readonly IDictionary<TypeReference, TypeDocumentation> m_Types;
         private readonly DocumentationContext m_Context;
 
 
@@ -25,11 +27,16 @@ namespace MdDoc.Model
             Definition = definition ?? throw new ArgumentNullException(nameof(definition));
             AssemblyDocumentation = assemblyDocumentation ?? throw new ArgumentNullException(nameof(assemblyDocumentation));
 
-            Types = Definition
+            m_Types = Definition
                 .Types
                 .Where(m_Context.IsDocumentedItem)
-                .Select(typeDefinition => new TypeDocumentation(this, m_Context, typeDefinition))
-                .ToArray();
-        }        
+                .ToDictionary(typeDefinition => (TypeReference)typeDefinition, typeDefinition => new TypeDocumentation(this, m_Context, typeDefinition));
+
+            Types = ReadOnlyCollectionAdapter.Create(m_Types.Values);
+
+        }
+
+
+        public TypeDocumentation TryGetDocumentation(TypeReference typeReference) => m_Types.GetValueOrDefault(typeReference);
     }
 }
