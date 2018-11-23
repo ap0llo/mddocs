@@ -3,11 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Mono.Cecil;
-
-using static Grynwald.MarkdownGenerator.FactoryMethods;
 using System.Linq;
 
-namespace MdDoc
+using static Grynwald.MarkdownGenerator.FactoryMethods;
+
+namespace MdDoc.Pages
 {
     abstract class MemberPage : PageBase
     {

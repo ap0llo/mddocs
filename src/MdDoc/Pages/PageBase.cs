@@ -5,7 +5,7 @@ using System.Linq;
 
 using static Grynwald.MarkdownGenerator.FactoryMethods;
 
-namespace MdDoc
+namespace MdDoc.Pages
 {
     abstract class PageBase : IPage
     {

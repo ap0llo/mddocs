@@ -9,7 +9,7 @@ using System.Text;
 
 using static Grynwald.MarkdownGenerator.FactoryMethods;
 
-namespace MdDoc
+namespace MdDoc.Pages
 {
     class ConstructorsPage : MemberPage
     {

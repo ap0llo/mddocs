@@ -7,7 +7,7 @@ using MdDoc.Model;
 using Mono.Cecil;
 using static Grynwald.MarkdownGenerator.FactoryMethods;
 
-namespace MdDoc
+namespace MdDoc.Pages
 {
     class MethodPage : MemberPage
     {

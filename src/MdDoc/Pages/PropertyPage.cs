@@ -6,7 +6,7 @@ using System.IO;
 
 using static Grynwald.MarkdownGenerator.FactoryMethods;
 
-namespace MdDoc
+namespace MdDoc.Pages
 {
     class PropertyPage : MemberPage
     {

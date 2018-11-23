@@ -8,7 +8,7 @@ using MdDoc.Model;
 
 using static Grynwald.MarkdownGenerator.FactoryMethods;
 
-namespace MdDoc
+namespace MdDoc.Pages
 {
     class TypePage : PageBase
     {
