@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace MdDoc.Model
 {
-    public class TypeDocumentation
+    public class TypeDocumentation : IDocumentation
     {
         private readonly DocumentationContext m_Context;
 

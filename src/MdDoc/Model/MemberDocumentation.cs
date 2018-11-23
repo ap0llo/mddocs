@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MdDoc.Model
 {
-    public abstract class MemberDocumentation
+    public abstract class MemberDocumentation: IDocumentation
     {
         public TypeDocumentation TypeDocumentation { get; }
 

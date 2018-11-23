@@ -6,7 +6,7 @@ using System.Text;
 
 namespace MdDoc.Model
 {
-    public class ModuleDocumentation
+    public class ModuleDocumentation : IDocumentation
     {
         private readonly DocumentationContext m_Context;
 

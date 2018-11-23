@@ -5,7 +5,7 @@ using System.Text;
 
 namespace MdDoc.Model
 {
-    public class AssemblyDocumentation : IDisposable
+    public class AssemblyDocumentation : IDisposable, IDocumentation
     {
         public AssemblyDefinition Definition { get; }
 
