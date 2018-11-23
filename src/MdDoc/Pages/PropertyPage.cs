@@ -19,8 +19,8 @@ namespace MdDoc.Pages
         protected override TypeReference DeclaringType => m_Model.Definition.DeclaringType;
 
 
-        public PropertyPage(DocumentationContext context, PathProvider pathProvider, PropertyDocumentation model)
-            : base(context, pathProvider)
+        public PropertyPage(PageFactory pageFactory, DocumentationContext context, PathProvider pathProvider, PropertyDocumentation model)
+            : base(pageFactory, context, pathProvider)
         {
             m_Model = model ?? throw new ArgumentNullException(nameof(model));
         

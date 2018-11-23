@@ -20,21 +20,21 @@ namespace MdDoc.Pages
             {
                 foreach (var type in m_Model.MainModuleDocumentation.Types)
                 {
-                    yield return new TypePage(m_Model.Context, m_PathProvider, type);
+                    yield return new TypePage(this, m_Model.Context, m_PathProvider, type);
 
                     foreach (var property in type.Properties)
                     {
-                        yield return new PropertyPage(m_Model.Context, m_PathProvider, property);
+                        yield return new PropertyPage(this, m_Model.Context, m_PathProvider, property);
                     }
 
                     if (type.Constructors != null)
                     {
-                        yield return new ConstructorsPage(m_Model.Context, m_PathProvider, type.Constructors);
+                        yield return new ConstructorsPage(this, m_Model.Context, m_PathProvider, type.Constructors);
                     }
 
                     foreach (var method in type.Methods)
                     {
-                        yield return new MethodPage(m_Model.Context, m_PathProvider, method);
+                        yield return new MethodPage(this, m_Model.Context, m_PathProvider, method);
                     }
 
                     //TODO: Events, Fields, Operators

@@ -13,12 +13,14 @@ namespace MdDoc.Pages
         protected readonly PathProvider m_PathProvider;        
 
 
-        
         protected abstract OutputPath OutputPath { get; }
 
+        protected PageFactory PageFactory { get; }
 
-        public PageBase(DocumentationContext context, PathProvider pathProvider)
+
+        public PageBase(PageFactory pageFactory, DocumentationContext context, PathProvider pathProvider)
         {
+            PageFactory = pageFactory ?? throw new ArgumentNullException(nameof(pageFactory));
             m_Context = context ?? throw new ArgumentNullException(nameof(context));
             m_PathProvider = pathProvider ?? throw new ArgumentNullException(nameof(pathProvider));
         }
