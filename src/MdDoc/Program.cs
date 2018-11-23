@@ -17,7 +17,7 @@ namespace MdDoc
             if (Directory.Exists(outDir))
                 Directory.Delete(outDir, true);
 
-            var documentationWriter = new DocumentationWriter(assemblyPath, outDir);
+            var documentationWriter = new PageFactory(assemblyPath, outDir);
             documentationWriter.SaveDocumentation();
 
             

@@ -8,12 +8,12 @@ using System.Text;
 
 namespace MdDoc
 {
-    public class DocumentationWriter : IDisposable
+    public class PageFactory : IDisposable
     {
         private readonly PathProvider m_PathProvider;        
         private readonly AssemblyDocumentation m_Model;
 
-        public DocumentationWriter(string assemblyFilePath, string outDir)
+        public PageFactory(string assemblyFilePath, string outDir)
         {            
             m_PathProvider = new PathProvider(outDir);
             m_Model = AssemblyDocumentation.FromFile(assemblyFilePath);            
