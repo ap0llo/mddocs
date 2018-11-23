@@ -11,14 +11,6 @@ namespace MdDoc.Test.Model
     public class TypeDocumentationTest : TestBase
     {
 
-        private TypeDocumentation GetTypeDocumentation(Type type)
-        {
-            var typeDefinition = GetTypeDefinition(type);
-            var sut = new TypeDocumentation(m_Context, typeDefinition);
-            return sut;
-        }
-
-
         [Theory]
         [InlineData(typeof(TestClass_Type), TypeKind.Class)]
         [InlineData(typeof(TestStruct_Type), TypeKind.Struct)]

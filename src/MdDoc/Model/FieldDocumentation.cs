@@ -5,14 +5,14 @@ using System.Text;
 
 namespace MdDoc.Model
 {
-    public class FieldDocumentation
+    public class FieldDocumentation : MemberDocumentation
     {
         private readonly DocumentationContext m_Context;
         
         public FieldDefinition Definition { get; }
 
 
-        public FieldDocumentation(DocumentationContext context, FieldDefinition definition)
+        public FieldDocumentation(TypeDocumentation typeDocumentation, DocumentationContext context, FieldDefinition definition) : base(typeDocumentation)
         {
             m_Context = context ?? throw new ArgumentNullException(nameof(context));
             Definition = definition ?? throw new ArgumentNullException(nameof(definition));

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace MdDoc.Model
 {
-    public class OperatorDocumentation
+    public class OperatorDocumentation : MemberDocumentation
     {
         private readonly DocumentationContext m_Context;
 
@@ -15,7 +15,7 @@ namespace MdDoc.Model
         public IReadOnlyCollection<MethodDefinition> Definitions { get; }
 
 
-        public OperatorDocumentation(DocumentationContext context, IEnumerable<MethodDefinition> definitions)
+        public OperatorDocumentation(TypeDocumentation typeDocumentation, DocumentationContext context, IEnumerable<MethodDefinition> definitions) : base(typeDocumentation)
         {
             m_Context = context ?? throw new ArgumentNullException(nameof(context));
             Definitions = definitions?.ToArray() ?? throw new ArgumentNullException(nameof(definitions));

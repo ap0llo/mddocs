@@ -1,4 +1,5 @@
-﻿using MdDoc.Test.TestData;
+﻿using MdDoc.Model;
+using MdDoc.Test.TestData;
 using Mono.Cecil;
 using System;
 using System.Linq;
@@ -8,27 +9,31 @@ namespace MdDoc.Test
 {
     public class TestBase : IDisposable
     {
-        protected readonly AssemblyDefinition m_Assembly;
-        protected readonly ModuleDefinition m_Module;
+        protected AssemblyDocumentation m_AssemblyDocumentation;
         protected readonly DocumentationContext m_Context;
 
         public TestBase()
         {
-            m_Assembly = AssemblyDefinition.ReadAssembly(Assembly.GetAssembly(typeof(TestClass_Type)).Location);
-            m_Module = m_Assembly.MainModule;
-            m_Context = new DocumentationContext(m_Module, NullXmlDocProvider.Instance);
+            m_AssemblyDocumentation = AssemblyDocumentation.FromFile(Assembly.GetAssembly(typeof(TestClass_Type)).Location);            
+            m_Context = new DocumentationContext(m_AssemblyDocumentation.MainModuleDocumentation.Definition, NullXmlDocProvider.Instance);
         }
 
         public void Dispose()
         {
-            m_Module.Dispose();
-            m_Assembly.Dispose();
+            m_AssemblyDocumentation.Dispose();
         }
 
 
         protected TypeDefinition GetTypeDefinition(Type t)
         {
-            return m_Module.GetTypes().Single(typeDef => typeDef.Name == t.Name);
+            return m_AssemblyDocumentation.MainModuleDocumentation.Definition.GetTypes().Single(typeDef => typeDef.Name == t.Name);
+        }
+
+        protected TypeDocumentation GetTypeDocumentation(Type type)
+        {
+            var typeDefinition = GetTypeDefinition(type);
+            var sut = new TypeDocumentation(m_AssemblyDocumentation.MainModuleDocumentation, m_Context, typeDefinition);
+            return sut;
         }
 
     }

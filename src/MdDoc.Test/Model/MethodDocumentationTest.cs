@@ -21,7 +21,7 @@ namespace MdDoc.Test.Model
                 .Methods
                 .Where(x => x.Name.StartsWith(methodName));
 
-            var sut = new MethodDocumentation(m_Context, methods);
+            var sut = new MethodDocumentation(GetTypeDocumentation(typeof(TestClass_MethodOverloads)), m_Context, methods);
 
             Assert.Equal(methodName, sut.Name);
         }

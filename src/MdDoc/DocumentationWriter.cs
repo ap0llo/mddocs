@@ -33,7 +33,7 @@ namespace MdDoc
 
         private IEnumerable<IPage> GetPages()
         {
-            foreach (var type in m_Model.MainModule.Types)
+            foreach (var type in m_Model.MainModuleDocumentation.Types)
             {                
                 yield return new TypePage(m_Model.Context, m_PathProvider, type);                
 

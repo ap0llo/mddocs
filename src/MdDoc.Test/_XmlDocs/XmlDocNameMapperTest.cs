@@ -16,8 +16,8 @@ namespace MdDoc.Test
         {
             // ARRANGE
             var mapper = new XmlDocNameMapper();
-            var types = m_Module.GetTypes().ToArray();
-            var typeDefinition = m_Module.GetTypes().Single(t => t.Name == typeName);
+            var types = m_AssemblyDocumentation.MainModuleDocumentation.Definition.Types.ToArray();
+            var typeDefinition = m_AssemblyDocumentation.MainModuleDocumentation.Definition.GetTypes().Single(t => t.Name == typeName);
             
             // ACT
             var actualName = mapper.GetXmlDocName(typeDefinition);

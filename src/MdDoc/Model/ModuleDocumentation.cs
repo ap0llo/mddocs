@@ -8,23 +8,27 @@ namespace MdDoc.Model
 {
     public class ModuleDocumentation
     {
-        private readonly ModuleDefinition m_Module;
         private readonly DocumentationContext m_Context;
+
+
+        public AssemblyDocumentation AssemblyDocumentation { get; }
+
+        public ModuleDefinition Definition { get; }
 
         public IReadOnlyCollection<TypeDocumentation> Types { get; }
 
 
 
-        public ModuleDocumentation(DocumentationContext context, ModuleDefinition module)
+        public ModuleDocumentation(AssemblyDocumentation assemblyDocumentation, DocumentationContext context, ModuleDefinition definition)
         {
             m_Context = context ?? throw new ArgumentNullException(nameof(context));
-            m_Module = module ?? throw new ArgumentNullException(nameof(module));
-            
+            Definition = definition ?? throw new ArgumentNullException(nameof(definition));
+            AssemblyDocumentation = assemblyDocumentation ?? throw new ArgumentNullException(nameof(assemblyDocumentation));
 
-            Types = m_Module
+            Types = Definition
                 .Types
                 .Where(m_Context.IsDocumentedItem)
-                .Select(typeDefinition => new TypeDocumentation(m_Context, typeDefinition))
+                .Select(typeDefinition => new TypeDocumentation(this, m_Context, typeDefinition))
                 .ToArray();
         }        
     }
