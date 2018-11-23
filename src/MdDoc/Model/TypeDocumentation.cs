@@ -27,7 +27,7 @@ namespace MdDoc.Model
 
         public IReadOnlyCollection<PropertyDocumentation> Properties { get; }
 
-        public MethodDocumentation Constructors { get; }
+        public ConstructorDocumentation Constructors { get; }
 
         public IReadOnlyCollection<MethodDocumentation> Methods { get; }
 
@@ -62,7 +62,7 @@ namespace MdDoc.Model
 
             var ctors = definition.GetDocumentedConstrutors(m_Context);
             if(ctors.Any())
-                Constructors = new MethodDocumentation(this, m_Context, ctors);
+                Constructors = new ConstructorDocumentation(this, m_Context, ctors);
 
             Methods = definition.GetDocumentedMethods(m_Context)
                 .Where(m => !m.IsOperatorOverload())

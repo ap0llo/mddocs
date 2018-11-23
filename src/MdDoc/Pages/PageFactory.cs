@@ -1,10 +1,7 @@
-﻿using MdDoc.Model;
-using Mono.Cecil;
+﻿using Grynwald.Utilities.Collections;
+using MdDoc.Model;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
 
 namespace MdDoc.Pages
 {
@@ -12,33 +9,27 @@ namespace MdDoc.Pages
     {
         private readonly PathProvider m_PathProvider;        
         private readonly AssemblyDocumentation m_Model;
+        private readonly IDictionary<TypeDocumentation, TypePage> m_TypePages = new Dictionary<TypeDocumentation, TypePage>();
+        private readonly IDictionary<PropertyDocumentation, PropertyPage> m_PropertyPages = new Dictionary<PropertyDocumentation, PropertyPage>();
+        private readonly IDictionary<ConstructorDocumentation, ConstructorsPage> m_ConstructorPages = new Dictionary<ConstructorDocumentation, ConstructorsPage>();
+        private readonly IDictionary<MethodDocumentation, MethodPage> m_MethodPages = new Dictionary<MethodDocumentation, MethodPage>();
 
 
         public IEnumerable<IPage> AllPages
         {
             get
             {
-                foreach (var type in m_Model.MainModuleDocumentation.Types)
-                {
-                    yield return new TypePage(this, m_Model.Context, m_PathProvider, type);
+                foreach (var page in m_TypePages.Values)
+                    yield return page;
 
-                    foreach (var property in type.Properties)
-                    {
-                        yield return new PropertyPage(this, m_Model.Context, m_PathProvider, property);
-                    }
+                foreach (var page in m_PropertyPages.Values)
+                    yield return page;
 
-                    if (type.Constructors != null)
-                    {
-                        yield return new ConstructorsPage(this, m_Model.Context, m_PathProvider, type.Constructors);
-                    }
+                foreach (var page in m_ConstructorPages.Values)
+                    yield return page;
 
-                    foreach (var method in type.Methods)
-                    {
-                        yield return new MethodPage(this, m_Model.Context, m_PathProvider, method);
-                    }
-
-                    //TODO: Events, Fields, Operators
-                }
+                foreach (var page in m_MethodPages.Values)
+                    yield return page;
             }
         }
 
@@ -50,7 +41,44 @@ namespace MdDoc.Pages
 
             m_PathProvider = new PathProvider(outDir);
             m_Model = assemblyDocumentation ?? throw new ArgumentNullException(nameof(assemblyDocumentation));
+
+
+            LoadPages();
         }
 
+
+        public IPage TryGetPage(TypeDocumentation type) => m_TypePages.GetValueOrDefault(type);
+
+        public IPage TryGetPage(PropertyDocumentation property) => m_PropertyPages.GetValueOrDefault(property);
+
+        public IPage TryGetPage(ConstructorDocumentation constructor) => m_ConstructorPages.GetValueOrDefault(constructor);
+
+        public IPage TryGetPage(MethodDocumentation method) => m_MethodPages.GetValueOrDefault(method);
+
+
+        private void LoadPages()
+        {
+            foreach (var type in m_Model.MainModuleDocumentation.Types)
+            {
+                m_TypePages.Add(type, new TypePage(this, m_Model.Context, m_PathProvider, type));
+                
+                foreach (var property in type.Properties)
+                {
+                    m_PropertyPages.Add(property, new PropertyPage(this, m_Model.Context, m_PathProvider, property));
+                }
+
+                if (type.Constructors != null)
+                {
+                    m_ConstructorPages.Add(type.Constructors, new ConstructorsPage(this, m_Model.Context, m_PathProvider, type.Constructors));
+                }
+
+                foreach (var method in type.Methods)
+                {
+                    m_MethodPages.Add(method, new MethodPage(this, m_Model.Context, m_PathProvider, method));
+                }
+
+                //TODO: Events, Fields, Operators
+            }
+        }
     }
 }
