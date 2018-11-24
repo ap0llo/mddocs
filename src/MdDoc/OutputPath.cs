@@ -2,7 +2,7 @@
 
 namespace MdDoc
 {
-    sealed class OutputPath
+    public sealed class OutputPath
     {        
         public string Value { get; }
 

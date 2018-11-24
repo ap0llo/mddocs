@@ -14,15 +14,16 @@ namespace MdDoc.Pages
 
 
 
-        protected override OutputPath OutputPath => m_PathProvider.GetOutputPath(m_Model.Definition);
+        public override OutputPath OutputPath =>
+            new OutputPath(Path.Combine(GetTypeDir(m_Model.TypeDocumentation.Definition), "properties", $"{m_Model.TypeDocumentation.Name}.{m_Model.Definition.Name}.md"));
 
         protected override TypeReference DeclaringType => m_Model.Definition.DeclaringType;
 
         protected override IDocumentation Model => m_Model;
 
 
-        public PropertyPage(PageFactory pageFactory, PathProvider pathProvider, PropertyDocumentation model)
-            : base(pageFactory, pathProvider)
+        public PropertyPage(PageFactory pageFactory, string rootOutputPath, PropertyDocumentation model)
+            : base(pageFactory, rootOutputPath)
         {
             m_Model = model ?? throw new ArgumentNullException(nameof(model));
         
@@ -70,6 +71,6 @@ namespace MdDoc.Pages
                 Paragraph(
                     GetTypeNameSpan(m_Model.Definition.PropertyType)
             ));
-        }
+        }        
     }
 }

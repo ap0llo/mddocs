@@ -2,6 +2,7 @@
 using MdDoc.Model;
 using Mono.Cecil;
 using System;
+using System.IO;
 using System.Linq;
 
 using static Grynwald.MarkdownGenerator.FactoryMethods;
@@ -10,20 +11,22 @@ namespace MdDoc.Pages
 {
     abstract class PageBase : IPage
     {
-        protected readonly PathProvider m_PathProvider;        
+        private static char[] s_SplitChars = ".".ToCharArray();
 
+        private readonly string m_RootOutputPath;
 
-        protected abstract OutputPath OutputPath { get; }
+        public abstract OutputPath OutputPath { get; }
 
         protected PageFactory PageFactory { get; }
 
         protected abstract IDocumentation Model { get; }
 
 
-        public PageBase(PageFactory pageFactory, PathProvider pathProvider)
+
+        public PageBase(PageFactory pageFactory, string rootOutputPath)
         {
             PageFactory = pageFactory ?? throw new ArgumentNullException(nameof(pageFactory));
-            m_PathProvider = pathProvider ?? throw new ArgumentNullException(nameof(pathProvider));
+            m_RootOutputPath = rootOutputPath ?? throw new ArgumentNullException(nameof(rootOutputPath));
         }
 
 
@@ -73,10 +76,10 @@ namespace MdDoc.Pages
                 }
                 else
                 {
-                    var typeOutputPath = m_PathProvider.GetOutputPath(type);
+                                        
                     return new MdLinkSpan(
                         type.Name,
-                        OutputPath.GetRelativePathTo(typeOutputPath)
+                        OutputPath.GetRelativePathTo(typePage.OutputPath)
                     );
                 }
 
@@ -97,6 +100,12 @@ namespace MdDoc.Pages
                 .Join(", ");
 
             return CompositeSpan(methodName, "(", parameters, ")");
+        }
+
+        protected string GetTypeDir(TypeReference type)
+        {
+            var dir = Path.Combine(m_RootOutputPath, String.Join('/', type.Namespace.Split(s_SplitChars)));
+            return Path.Combine(dir, type.Name);
         }
     }
 }

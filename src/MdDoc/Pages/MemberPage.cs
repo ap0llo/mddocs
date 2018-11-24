@@ -13,7 +13,7 @@ namespace MdDoc.Pages
     {
         protected abstract TypeReference DeclaringType { get; }
 
-        public MemberPage(PageFactory pageFactory, PathProvider pathProvider) : base(pageFactory, pathProvider)
+        public MemberPage(PageFactory pageFactory, string rootOutputPath) : base(pageFactory, rootOutputPath)
         { }
 
 

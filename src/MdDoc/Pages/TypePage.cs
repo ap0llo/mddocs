@@ -14,13 +14,14 @@ namespace MdDoc.Pages
     {
         private readonly TypeDocumentation m_Model;
         
-        protected override OutputPath OutputPath => m_PathProvider.GetOutputPath(m_Model.Definition);
+        public override OutputPath OutputPath =>
+            new OutputPath(Path.Combine(GetTypeDir(m_Model.Definition), $"{m_Model.Name}.md"));
 
         protected override IDocumentation Model => m_Model;
 
 
-        public TypePage(PageFactory pageFactory, PathProvider pathProvider, TypeDocumentation model)
-            : base(pageFactory, pathProvider)
+        public TypePage(PageFactory pageFactory, string rootOutputPath, TypeDocumentation model)
+            : base(pageFactory, rootOutputPath)
         {
             m_Model = model ?? throw new ArgumentNullException(nameof(model));            
         }
@@ -109,10 +110,17 @@ namespace MdDoc.Pages
                 var table = Table(Row("Name", "Description"));
                 foreach(var ctor in m_Model.Constructors.Definitions)
                 {
-                    var ctorPage = m_PathProvider.GetConstructorsOutputPath(m_Model.Definition);
-                    var link = Link(GetSignature(ctor), OutputPath.GetRelativePathTo(ctorPage));
+                    var ctorPagePath = PageFactory.TryGetPage(m_Model.Constructors)?.OutputPath;
 
-                    table.Add(Row(link));
+                    if(ctorPagePath != null)
+                    {
+                        var link = Link(GetSignature(ctor), OutputPath.GetRelativePathTo(ctorPagePath));
+                        table.Add(Row(link));
+                    }
+                    else
+                    {                        
+                        table.Add(Row(GetSignature(ctor)));
+                    }                    
                 }
 
                 block.Add(
@@ -165,10 +173,19 @@ namespace MdDoc.Pages
 
                 foreach(var property in m_Model.Properties)
                 {
-                    var propertyDocumentationPath = m_PathProvider.GetOutputPath(property.Definition);
-                    var link = Link(property.Definition.Name, OutputPath.GetRelativePathTo(propertyDocumentationPath));
+                    var propertyPage = PageFactory.TryGetPage(property);
 
-                    table.Add(Row(link));
+                    if(propertyPage != null)
+                    {                        
+                        var link = Link(property.Definition.Name, OutputPath.GetRelativePathTo(propertyPage.OutputPath));
+                        table.Add(Row(link));
+                    }
+                    else
+                    {
+                        table.Add(Row(property.Definition.Name));
+                    }
+
+
                 }
              
                 block.Add(
@@ -186,12 +203,19 @@ namespace MdDoc.Pages
 
                 foreach(var method in m_Model.Methods)
                 {
+                    var methodPage = PageFactory.TryGetPage(method);
+
                     foreach(var overload in method.Definitions)
                     {
-                        var methodDocumentationPath = m_PathProvider.GetMethodOutputPath(overload);
-                        var link = Link(GetSignature(overload), OutputPath.GetRelativePathTo(methodDocumentationPath));
-
-                        table.Add(Row(link));
+                        if(methodPage != null)
+                        {                            
+                            var link = Link(GetSignature(overload), OutputPath.GetRelativePathTo(methodPage.OutputPath));
+                            table.Add(Row(link));
+                        }
+                        else
+                        {                            
+                            table.Add(Row(GetSignature(overload)));
+                        }
                     }
                 }
 
@@ -209,14 +233,21 @@ namespace MdDoc.Pages
             {
                 var table = Table(Row("Name", "Description"));
 
-                foreach (var method in m_Model.Operators)
+                foreach (var operatorOverload in m_Model.Operators)
                 {
-                    foreach (var overload in method.Definitions)
+                    var operatorPage = PageFactory.TryGetPage(operatorOverload);
+                    foreach (var overload in operatorOverload.Definitions)
                     {
-                        var methodDocumentationPath = m_PathProvider.GetMethodOutputPath(overload);
-                        var link = Link(GetSignature(overload), OutputPath.GetRelativePathTo(methodDocumentationPath));
+                        if(operatorPage != null)
+                        {                            
+                            var link = Link(GetSignature(overload), OutputPath.GetRelativePathTo(operatorPage.OutputPath));
+                            table.Add(Row(link));
+                        }
+                        else
+                        {                            
+                            table.Add(Row(GetSignature(overload)));
+                        }
 
-                        table.Add(Row(link));
                     }
                 }
 
@@ -239,5 +270,6 @@ namespace MdDoc.Pages
                 return base.GetTypeNameSpan(type, noLink);
             }
         }
+
     }
 }

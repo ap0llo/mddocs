@@ -16,15 +16,17 @@ namespace MdDoc.Pages
         private readonly MethodDocumentation m_Model;
 
         
-        protected override OutputPath OutputPath => m_PathProvider.GetConstructorsOutputPath(m_Model.Definitions.First().DeclaringType);
+        public override OutputPath OutputPath => 
+            new OutputPath(Path.Combine(GetTypeDir(m_Model.TypeDocumentation.Definition), $"{m_Model.TypeDocumentation.Name}-constructors.md"));
 
         protected override TypeReference DeclaringType => m_Model.Definitions.First().DeclaringType;
 
         protected override IDocumentation Model => m_Model;
 
 
-        public ConstructorsPage(PageFactory pageFactory, PathProvider pathProvider, MethodDocumentation model)
-            : base(pageFactory, pathProvider)
+        
+        public ConstructorsPage(PageFactory pageFactory, string rootOutputPath, MethodDocumentation model)
+            : base(pageFactory, rootOutputPath)
         {
             m_Model = model ?? throw new ArgumentNullException(nameof(model));
         }
@@ -44,6 +46,8 @@ namespace MdDoc.Pages
 
             Directory.CreateDirectory(Path.GetDirectoryName(OutputPath));
             document.Save(OutputPath);
-        }        
+        }
+
+        
     }
 }

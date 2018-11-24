@@ -16,16 +16,16 @@ namespace MdDoc.Pages
 
         protected override TypeReference DeclaringType => m_Model.Definitions.First().DeclaringType;
 
-        protected override OutputPath OutputPath { get; }
+        public override OutputPath OutputPath =>
+            new OutputPath(Path.Combine(GetTypeDir(m_Model.TypeDocumentation.Definition), "methods", $"{m_Model.TypeDocumentation.Name}.{m_Model.Name}.md"));
 
         protected override IDocumentation Model => m_Model;
 
 
-        public MethodPage(PageFactory pageFactory, PathProvider pathProvider, MethodDocumentation model) 
-            : base(pageFactory, pathProvider)
+        public MethodPage(PageFactory pageFactory, string rootOutputPath, MethodDocumentation model) 
+            : base(pageFactory, rootOutputPath)
         {
-            m_Model = model ?? throw new ArgumentNullException(nameof(model));
-            OutputPath = m_PathProvider.GetMethodOutputPath(model.Definitions.First());
+            m_Model = model ?? throw new ArgumentNullException(nameof(model));            
         }
 
 
