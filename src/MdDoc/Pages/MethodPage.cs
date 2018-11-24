@@ -18,9 +18,11 @@ namespace MdDoc.Pages
 
         protected override OutputPath OutputPath { get; }
 
+        protected override IDocumentation Model => m_Model;
 
-        public MethodPage(PageFactory pageFactory, DocumentationContext context, PathProvider pathProvider, MethodDocumentation model) 
-            : base(pageFactory, context, pathProvider)
+
+        public MethodPage(PageFactory pageFactory, PathProvider pathProvider, MethodDocumentation model) 
+            : base(pageFactory, pathProvider)
         {
             m_Model = model ?? throw new ArgumentNullException(nameof(model));
             OutputPath = m_PathProvider.GetMethodOutputPath(model.Definitions.First());

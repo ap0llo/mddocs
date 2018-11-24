@@ -16,9 +16,11 @@ namespace MdDoc.Pages
         
         protected override OutputPath OutputPath => m_PathProvider.GetOutputPath(m_Model.Definition);
 
+        protected override IDocumentation Model => m_Model;
 
-        public TypePage(PageFactory pageFactory, DocumentationContext context, PathProvider pathProvider, TypeDocumentation model)
-            : base(pageFactory, context, pathProvider)
+
+        public TypePage(PageFactory pageFactory, PathProvider pathProvider, TypeDocumentation model)
+            : base(pageFactory, pathProvider)
         {
             m_Model = model ?? throw new ArgumentNullException(nameof(model));            
         }
@@ -101,13 +103,11 @@ namespace MdDoc.Pages
         }
 
         private void AddConstructorsSection(MdContainerBlock block)
-        {
-            var constructors = m_Model.Definition.GetDocumentedConstrutors(m_Context);
-         
-            if (constructors.Any())
+        {         
+            if (m_Model.Constructors != null)
             {
                 var table = Table(Row("Name", "Description"));
-                foreach(var ctor in constructors)
+                foreach(var ctor in m_Model.Constructors.Definitions)
                 {
                     var ctorPage = m_PathProvider.GetConstructorsOutputPath(m_Model.Definition);
                     var link = Link(GetSignature(ctor), OutputPath.GetRelativePathTo(ctorPage));
@@ -124,18 +124,13 @@ namespace MdDoc.Pages
 
         private void AddFieldsSection(MdContainerBlock block)
         {
-            var publicFields = m_Model
-                .Definition
-                .Fields
-                .Where(m_Context.IsDocumentedItem);
-
-            if (publicFields.Any())
+            if (m_Model.Fields.Any())
             {
                 block.Add(
                     Heading("Fields", 2),
                     Table(
                         Row("Name", "Description"),
-                        publicFields.Select(x => Row(x.Name))
+                        m_Model.Fields.Select(x => Row(x.Definition.Name))
                     )
                 );
             }
@@ -146,19 +141,14 @@ namespace MdDoc.Pages
         {
             if (m_Model.Kind != TypeKind.Class && m_Model.Kind != TypeKind.Struct && m_Model.Kind != TypeKind.Interface)
                 return;
-
-            var events = m_Model
-                .Definition
-                .Events
-                .Where(m_Context.IsDocumentedItem);
-
-            if (events.Any())
+            
+            if (m_Model.Events.Any())
             {
                 block.Add(
                     Heading("Events", 2),
                     Table(
                         Row("Name", "Description"),
-                        events.Select(x => Row(x.Name))
+                        m_Model.Events.Select(x => Row(x.Definition.Name))
                 ));
             }
         }
@@ -167,20 +157,16 @@ namespace MdDoc.Pages
         {
             if (m_Model.Kind != TypeKind.Class && m_Model.Kind != TypeKind.Struct && m_Model.Kind != TypeKind.Interface)
                 return;
+            
 
-            var properties = m_Model
-                .Definition
-                .Properties
-                .Where(m_Context.IsDocumentedItem);
-
-            if (properties.Any())
+            if (m_Model.Properties.Any())
             {
                 var table = Table(Row("Name", "Description"));
 
-                foreach(var property in properties)
+                foreach(var property in m_Model.Properties)
                 {
-                    var propertyDocumentationPath = m_PathProvider.GetOutputPath(property);
-                    var link = Link(property.Name, OutputPath.GetRelativePathTo(propertyDocumentationPath));
+                    var propertyDocumentationPath = m_PathProvider.GetOutputPath(property.Definition);
+                    var link = Link(property.Definition.Name, OutputPath.GetRelativePathTo(propertyDocumentationPath));
 
                     table.Add(Row(link));
                 }

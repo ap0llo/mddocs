@@ -10,12 +10,10 @@ namespace MdDoc.Test
     public class TestBase : IDisposable
     {
         protected AssemblyDocumentation m_AssemblyDocumentation;
-        protected readonly DocumentationContext m_Context;
 
         public TestBase()
         {
-            m_AssemblyDocumentation = AssemblyDocumentation.FromFile(Assembly.GetAssembly(typeof(TestClass_Type)).Location);            
-            m_Context = new DocumentationContext(m_AssemblyDocumentation.MainModuleDocumentation.Definition, NullXmlDocProvider.Instance);
+            m_AssemblyDocumentation = AssemblyDocumentation.FromFile(Assembly.GetAssembly(typeof(TestClass_Type)).Location);                        
         }
 
         public void Dispose()
@@ -34,7 +32,7 @@ namespace MdDoc.Test
         protected TypeDocumentation GetTypeDocumentation(Type type)
         {
             var typeDefinition = GetTypeDefinition(type);
-            var sut = new TypeDocumentation(m_AssemblyDocumentation.MainModuleDocumentation, m_Context, typeDefinition);
+            var sut = new TypeDocumentation(m_AssemblyDocumentation.MainModuleDocumentation, typeDefinition);
             return sut;
         }
 

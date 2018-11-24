@@ -7,8 +7,6 @@ namespace MdDoc.Model
 {
     public class TypeDocumentation : IDocumentation
     {
-        private readonly DocumentationContext m_Context;
-
         public ModuleDocumentation ModuleDocumentation { get; }
 
         public string Name => Definition.Name;
@@ -38,42 +36,41 @@ namespace MdDoc.Model
         public IReadOnlyCollection<TypeReference> Attributes { get; }
 
 
-        public TypeDocumentation(ModuleDocumentation moduleDocumentation, DocumentationContext context, TypeDefinition definition)
+        public TypeDocumentation(ModuleDocumentation moduleDocumentation, TypeDefinition definition)
         {
             ModuleDocumentation = moduleDocumentation ?? throw new ArgumentNullException(nameof(moduleDocumentation));
-            m_Context = context ?? throw new ArgumentNullException(nameof(context));
             Definition = definition ?? throw new ArgumentNullException(nameof(definition));
             Kind = definition.Kind();
 
             Fields = definition.Fields
-                .Where(m_Context.IsDocumentedItem)
-                .Select(field => new FieldDocumentation(this, m_Context, field))
+                .Where(field => field.IsPublic && !field.Attributes.HasFlag(FieldAttributes.SpecialName))                
+                .Select(field => new FieldDocumentation(this, field))
                 .ToArray();
 
             Events = definition.Events
-                .Where(m_Context.IsDocumentedItem)
-                .Select(e => new EventDocumentation(this, m_Context, e))
+                .Where(ev => (ev.AddMethod?.IsPublic == true || ev.RemoveMethod?.IsPublic == true))
+                .Select(e => new EventDocumentation(this, e))
                 .ToArray();
 
             Properties = definition.Properties
-                .Where(m_Context.IsDocumentedItem)
-                .Select(p => new PropertyDocumentation(this, m_Context, p))
+                .Where(property => (property.GetMethod?.IsPublic == true || property.SetMethod?.IsPublic == true))
+                .Select(p => new PropertyDocumentation(this, p))
                 .ToArray();
 
-            var ctors = definition.GetDocumentedConstrutors(m_Context);
+            var ctors = definition.GetDocumentedConstrutors();
             if(ctors.Any())
-                Constructors = new ConstructorDocumentation(this, m_Context, ctors);
+                Constructors = new ConstructorDocumentation(this, ctors);
 
-            Methods = definition.GetDocumentedMethods(m_Context)
+            Methods = definition.GetDocumentedMethods()
                 .Where(m => !m.IsOperatorOverload())
                 .GroupBy(x => x.Name)
-                .Select(x => new MethodDocumentation(this, m_Context, x))
+                .Select(x => new MethodDocumentation(this, x))
                 .ToArray();
 
-            Operators = definition.GetDocumentedMethods(m_Context)               
+            Operators = definition.GetDocumentedMethods()               
                .GroupBy(x => x.GetOperatorKind())
                .Where(group => group.Key.HasValue)
-               .Select(group => new OperatorDocumentation(this, m_Context, group))
+               .Select(group => new OperatorDocumentation(this, group))
                .ToArray();
             
             InheritanceHierarchy = LoadInheritanceHierarchy();

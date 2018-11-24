@@ -1,4 +1,5 @@
 ﻿using Grynwald.MarkdownGenerator;
+using MdDoc.Model;
 using Mono.Cecil;
 using System;
 using System.Linq;
@@ -9,7 +10,6 @@ namespace MdDoc.Pages
 {
     abstract class PageBase : IPage
     {
-        protected readonly DocumentationContext m_Context;
         protected readonly PathProvider m_PathProvider;        
 
 
@@ -17,11 +17,12 @@ namespace MdDoc.Pages
 
         protected PageFactory PageFactory { get; }
 
+        protected abstract IDocumentation Model { get; }
 
-        public PageBase(PageFactory pageFactory, DocumentationContext context, PathProvider pathProvider)
+
+        public PageBase(PageFactory pageFactory, PathProvider pathProvider)
         {
             PageFactory = pageFactory ?? throw new ArgumentNullException(nameof(pageFactory));
-            m_Context = context ?? throw new ArgumentNullException(nameof(context));
             m_PathProvider = pathProvider ?? throw new ArgumentNullException(nameof(pathProvider));
         }
 
@@ -53,17 +54,33 @@ namespace MdDoc.Pages
                 );
             }
 
-            if (noLink || !m_Context.IsDocumentedItem(type))
+            if (noLink)
             {
                 return new MdTextSpan(type.Name);
             }
             else
             {
-                var typeOutputPath = m_PathProvider.GetOutputPath(type);
-                return new MdLinkSpan(
-                    type.Name,
-                    OutputPath.GetRelativePathTo(typeOutputPath)
-                );
+                IPage typePage = default;
+                var documentation = Model.TryGetDocumentation(type);
+                if(documentation != null)
+                {
+                    typePage = PageFactory.TryGetPage(documentation);
+                }
+
+                if(typePage == default)
+                {
+                    return new MdTextSpan(type.Name);
+                }
+                else
+                {
+                    var typeOutputPath = m_PathProvider.GetOutputPath(type);
+                    return new MdLinkSpan(
+                        type.Name,
+                        OutputPath.GetRelativePathTo(typeOutputPath)
+                    );
+                }
+
+
             }
         }
 

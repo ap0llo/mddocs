@@ -60,21 +60,21 @@ namespace MdDoc.Pages
         {
             foreach (var type in m_Model.MainModuleDocumentation.Types)
             {
-                m_TypePages.Add(type, new TypePage(this, m_Model.Context, m_PathProvider, type));
+                m_TypePages.Add(type, new TypePage(this, m_PathProvider, type));
                 
                 foreach (var property in type.Properties)
                 {
-                    m_PropertyPages.Add(property, new PropertyPage(this, m_Model.Context, m_PathProvider, property));
+                    m_PropertyPages.Add(property, new PropertyPage(this, m_PathProvider, property));
                 }
 
                 if (type.Constructors != null)
                 {
-                    m_ConstructorPages.Add(type.Constructors, new ConstructorsPage(this, m_Model.Context, m_PathProvider, type.Constructors));
+                    m_ConstructorPages.Add(type.Constructors, new ConstructorsPage(this, m_PathProvider, type.Constructors));
                 }
 
                 foreach (var method in type.Methods)
                 {
-                    m_MethodPages.Add(method, new MethodPage(this, m_Model.Context, m_PathProvider, method));
+                    m_MethodPages.Add(method, new MethodPage(this, m_PathProvider, method));
                 }
 
                 //TODO: Events, Fields, Operators

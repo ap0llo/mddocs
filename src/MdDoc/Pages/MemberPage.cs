@@ -13,7 +13,7 @@ namespace MdDoc.Pages
     {
         protected abstract TypeReference DeclaringType { get; }
 
-        public MemberPage(PageFactory pageFactory, DocumentationContext context, PathProvider pathProvider) : base(pageFactory, context, pathProvider)
+        public MemberPage(PageFactory pageFactory, PathProvider pathProvider) : base(pageFactory, pathProvider)
         { }
 
 
@@ -33,7 +33,7 @@ namespace MdDoc.Pages
                 var signature = GetSignature(method);
 
                 table.Add(
-                    Row(Link(signature, $"#{signature}"), m_Context.XmlDocProvider.TryGetDocumentation(method).Summary)
+                    Row(Link(signature, $"#{signature}"))
                 );
             }
 
@@ -51,10 +51,10 @@ namespace MdDoc.Pages
                     Heading(GetSignature(method), 2)
                 );
 
-                block.Add(
-                    Paragraph(
-                        m_Context.XmlDocProvider.TryGetDocumentation(method).Summary
-                ));
+                //block.Add(
+                //    Paragraph(
+                //        m_Context.XmlDocProvider.TryGetDocumentation(method).Summary
+                //));
 
                 //TODO: Attributes
 

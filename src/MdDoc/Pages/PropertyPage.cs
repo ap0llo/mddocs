@@ -18,9 +18,11 @@ namespace MdDoc.Pages
 
         protected override TypeReference DeclaringType => m_Model.Definition.DeclaringType;
 
+        protected override IDocumentation Model => m_Model;
 
-        public PropertyPage(PageFactory pageFactory, DocumentationContext context, PathProvider pathProvider, PropertyDocumentation model)
-            : base(pageFactory, context, pathProvider)
+
+        public PropertyPage(PageFactory pageFactory, PathProvider pathProvider, PropertyDocumentation model)
+            : base(pageFactory, pathProvider)
         {
             m_Model = model ?? throw new ArgumentNullException(nameof(model));
         
@@ -35,10 +37,10 @@ namespace MdDoc.Pages
 
             AddDeclaringTypeSection(document.Root);
 
-            document.Root.Add(
-                Paragraph(
-                    m_Context.XmlDocProvider.TryGetDocumentation(m_Model.Definition).Summary
-            ));
+            //document.Root.Add(
+            //    Paragraph(
+            //        m_Context.XmlDocProvider.TryGetDocumentation(m_Model.Definition).Summary
+            //));
 
             AddDefinitionSection(document.Root);
 

@@ -20,9 +20,11 @@ namespace MdDoc.Pages
 
         protected override TypeReference DeclaringType => m_Model.Definitions.First().DeclaringType;
 
-        
-        public ConstructorsPage(PageFactory pageFactory, DocumentationContext context, PathProvider pathProvider, MethodDocumentation model)
-            : base(pageFactory, context, pathProvider)
+        protected override IDocumentation Model => m_Model;
+
+
+        public ConstructorsPage(PageFactory pageFactory, PathProvider pathProvider, MethodDocumentation model)
+            : base(pageFactory, pathProvider)
         {
             m_Model = model ?? throw new ArgumentNullException(nameof(model));
         }
@@ -36,9 +38,9 @@ namespace MdDoc.Pages
 
             AddDeclaringTypeSection(document.Root);
             
-            AddOverloadsSection(document.Root, m_Model.Definitions.First().DeclaringType.GetDocumentedConstrutors(m_Context));
+            AddOverloadsSection(document.Root, m_Model.Definitions.First().DeclaringType.GetDocumentedConstrutors());
 
-            AddDetailSections(document.Root, m_Model.Definitions.First().DeclaringType.GetDocumentedConstrutors(m_Context));
+            AddDetailSections(document.Root, m_Model.Definitions.First().DeclaringType.GetDocumentedConstrutors());
 
             Directory.CreateDirectory(Path.GetDirectoryName(OutputPath));
             document.Save(OutputPath);

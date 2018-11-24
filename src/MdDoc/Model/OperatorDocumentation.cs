@@ -8,16 +8,13 @@ namespace MdDoc.Model
 {
     public class OperatorDocumentation : MemberDocumentation
     {
-        private readonly DocumentationContext m_Context;
-
         public OperatorKind Kind { get; }
 
         public IReadOnlyCollection<MethodDefinition> Definitions { get; }
 
 
-        public OperatorDocumentation(TypeDocumentation typeDocumentation, DocumentationContext context, IEnumerable<MethodDefinition> definitions) : base(typeDocumentation)
+        public OperatorDocumentation(TypeDocumentation typeDocumentation, IEnumerable<MethodDefinition> definitions) : base(typeDocumentation)
         {
-            m_Context = context ?? throw new ArgumentNullException(nameof(context));
             Definitions = definitions?.ToArray() ?? throw new ArgumentNullException(nameof(definitions));
 
             var definitionList = new List<MethodDefinition>();
