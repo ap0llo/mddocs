@@ -13,10 +13,8 @@ namespace MdDoc.Pages
 {
     class ConstructorsPage : MemberPage<ConstructorDocumentation>
     {                
-        public override OutputPath OutputPath => 
-            new OutputPath(Path.Combine(GetTypeDir(Model.TypeDocumentation.Definition), $"{Model.TypeDocumentation.Name}-constructors.md"));
-
-
+        public override OutputPath OutputPath { get; }
+        
         protected override TypeReference DeclaringType => Model.Definitions.First().DeclaringType;
 
         protected override ConstructorDocumentation Model { get; }
@@ -26,6 +24,7 @@ namespace MdDoc.Pages
             : base(pageFactory, rootOutputPath)
         {
             Model = model ?? throw new ArgumentNullException(nameof(model));
+            OutputPath = new OutputPath(Path.Combine(GetTypeDir(Model.TypeDocumentation), $"{Model.TypeDocumentation.Name}-constructors.md"));
         }
 
 

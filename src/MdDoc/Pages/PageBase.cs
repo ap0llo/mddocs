@@ -12,8 +12,8 @@ namespace MdDoc.Pages
     abstract class PageBase<TModel> : IPage where TModel : IDocumentation
     {
         private static char[] s_SplitChars = ".".ToCharArray();
-
         private readonly string m_RootOutputPath;
+
 
         public abstract OutputPath OutputPath { get; }
 
@@ -102,7 +102,7 @@ namespace MdDoc.Pages
             return CompositeSpan(methodName, "(", parameters, ")");
         }
 
-        protected string GetTypeDir(TypeReference type)
+        protected string GetTypeDir(TypeDocumentation type)
         {
             var dir = Path.Combine(m_RootOutputPath, String.Join('/', type.Namespace.Split(s_SplitChars)));
             return Path.Combine(dir, type.Name);

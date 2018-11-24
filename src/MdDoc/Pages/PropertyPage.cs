@@ -10,8 +10,7 @@ namespace MdDoc.Pages
 {
     class PropertyPage : MemberPage<PropertyDocumentation>
     {        
-        public override OutputPath OutputPath =>
-            new OutputPath(Path.Combine(GetTypeDir(Model.TypeDocumentation.Definition), "properties", $"{Model.TypeDocumentation.Name}.{Model.Definition.Name}.md"));
+        public override OutputPath OutputPath { get; }            
 
 
         protected override TypeReference DeclaringType => Model.Definition.DeclaringType;
@@ -23,6 +22,7 @@ namespace MdDoc.Pages
             : base(pageFactory, rootOutputPath)
         {
             Model = model ?? throw new ArgumentNullException(nameof(model));
+            OutputPath = new OutputPath(Path.Combine(GetTypeDir(Model.TypeDocumentation), "properties", $"{Model.TypeDocumentation.Name}.{Model.Definition.Name}.md"));
         }
 
 

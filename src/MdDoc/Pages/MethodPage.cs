@@ -11,9 +11,8 @@ namespace MdDoc.Pages
 {
     class MethodPage : MemberPage<MethodDocumentation>
     {
-        public override OutputPath OutputPath =>
-            new OutputPath(Path.Combine(GetTypeDir(Model.TypeDocumentation.Definition), "methods", $"{Model.TypeDocumentation.Name}.{Model.Name}.md"));
-
+        public override OutputPath OutputPath { get; }
+            
 
         protected override TypeReference DeclaringType => Model.Definitions.First().DeclaringType;
         
@@ -23,7 +22,8 @@ namespace MdDoc.Pages
         public MethodPage(PageFactory pageFactory, string rootOutputPath, MethodDocumentation model) 
             : base(pageFactory, rootOutputPath)
         {
-            Model = model ?? throw new ArgumentNullException(nameof(model));            
+            Model = model ?? throw new ArgumentNullException(nameof(model));   
+            OutputPath = new OutputPath(Path.Combine(GetTypeDir(Model.TypeDocumentation), "methods", $"{Model.TypeDocumentation.Name}.{Model.Name}.md"));
         }
 
 

@@ -12,9 +12,8 @@ namespace MdDoc.Pages
 {
     class TypePage : PageBase<TypeDocumentation>
     {
+        public override OutputPath OutputPath { get; }
         
-        public override OutputPath OutputPath =>
-            new OutputPath(Path.Combine(GetTypeDir(Model.Definition), $"{Model.Name}.md"));
 
         protected override TypeDocumentation Model { get; }
 
@@ -22,7 +21,8 @@ namespace MdDoc.Pages
         public TypePage(PageFactory pageFactory, string rootOutputPath, TypeDocumentation model)
             : base(pageFactory, rootOutputPath)
         {
-            Model = model ?? throw new ArgumentNullException(nameof(model));            
+            Model = model ?? throw new ArgumentNullException(nameof(model));    
+            OutputPath = new OutputPath(Path.Combine(GetTypeDir(Model), $"{Model.Name}.md"));
         }
 
 
