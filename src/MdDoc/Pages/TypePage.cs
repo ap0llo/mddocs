@@ -137,7 +137,7 @@ namespace MdDoc.Pages
                     Heading("Fields", 2),
                     Table(
                         Row("Name", "Description"),
-                        Model.Fields.Select(x => Row(x.Definition.Name))
+                        Model.Fields.Select(field => Row(field.Name))
                     )
                 );
             }

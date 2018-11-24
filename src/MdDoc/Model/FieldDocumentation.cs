@@ -7,14 +7,14 @@ namespace MdDoc.Model
 {
     public class FieldDocumentation : MemberDocumentation
     {
-        
+        public string Name => Definition.Name;
+
         public FieldDefinition Definition { get; }
 
 
         public FieldDocumentation(TypeDocumentation typeDocumentation, FieldDefinition definition) : base(typeDocumentation)
         {
             Definition = definition ?? throw new ArgumentNullException(nameof(definition));
-        }
-        
+        }        
     }
 }

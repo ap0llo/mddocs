@@ -42,7 +42,7 @@ namespace MdDoc.Test.Model
 
             // ASSERT
             Assert.Single(sut.Fields);
-            Assert.Contains(sut.Fields, field => field.Definition.Name == "Field1");
+            Assert.Contains(sut.Fields, field => field.Name == "Field1");
         }
 
         [Fact]
@@ -53,8 +53,8 @@ namespace MdDoc.Test.Model
 
             // ASSERT
             Assert.Equal(2, sut.Fields.Count);
-            Assert.Contains(sut.Fields, field => field.Definition.Name == "Value1");
-            Assert.Contains(sut.Fields, field => field.Definition.Name == "Value2");
+            Assert.Contains(sut.Fields, field => field.Name == "Value1");
+            Assert.Contains(sut.Fields, field => field.Name == "Value2");
         }
 
         [Fact]
