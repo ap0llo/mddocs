@@ -7,7 +7,8 @@ namespace MdDoc.Model
 {
     public class EventDocumentation : MemberDocumentation
     {
-        
+        public string Name => Definition.Name;
+
         public EventDefinition Definition { get; }
 
 

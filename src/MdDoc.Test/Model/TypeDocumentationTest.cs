@@ -65,9 +65,9 @@ namespace MdDoc.Test.Model
 
             // ASSERT
             Assert.Equal(3, sut.Events.Count);
-            Assert.Contains(sut.Events, e => e.Definition.Name == "Event1");
-            Assert.Contains(sut.Events, e => e.Definition.Name == "Event2");
-            Assert.Contains(sut.Events, e => e.Definition.Name == "Event3");
+            Assert.Contains(sut.Events, e => e.Name == "Event1");
+            Assert.Contains(sut.Events, e => e.Name == "Event2");
+            Assert.Contains(sut.Events, e => e.Name == "Event3");
         }
 
         [Fact]
@@ -78,9 +78,9 @@ namespace MdDoc.Test.Model
 
             // ASSERT
             Assert.Equal(3, sut.Events.Count);
-            Assert.Contains(sut.Events, e => e.Definition.Name == "Event1");
-            Assert.Contains(sut.Events, e => e.Definition.Name == "Event2");
-            Assert.Contains(sut.Events, e => e.Definition.Name == "Event3");
+            Assert.Contains(sut.Events, e => e.Name == "Event1");
+            Assert.Contains(sut.Events, e => e.Name == "Event2");
+            Assert.Contains(sut.Events, e => e.Name == "Event3");
         }
 
         [Fact]

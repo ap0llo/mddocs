@@ -155,7 +155,7 @@ namespace MdDoc.Pages
                     Heading("Events", 2),
                     Table(
                         Row("Name", "Description"),
-                        Model.Events.Select(x => Row(x.Definition.Name))
+                        Model.Events.Select(x => Row(x.Name))
                 ));
             }
         }
