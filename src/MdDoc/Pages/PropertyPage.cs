@@ -29,7 +29,7 @@ namespace MdDoc.Pages
         public override void Save()
         {
             var document = Document(
-                Heading($"{Model.Definition.DeclaringType.Name}.{Model.Definition.Name} Property", 1)
+                Heading($"{Model.Definition.DeclaringType.Name}.{Model.Name} Property", 1)
             );
 
             AddDeclaringTypeSection(document.Root);
@@ -53,7 +53,7 @@ namespace MdDoc.Pages
             var hasGetter = Model.Definition.GetMethod?.IsPublic == true;
             var hasSetter = Model.Definition.SetMethod?.IsPublic == true;
 
-            var definition = $"public {Model.Definition.PropertyType.Name} {Model.Definition.Name} {{ {(hasGetter ? "get;" : "")} {(hasSetter ? "set;" : "")} }}";
+            var definition = $"public {Model.Definition.PropertyType.Name} {Model.Name} {{ {(hasGetter ? "get;" : "")} {(hasSetter ? "set;" : "")} }}";
 
             block.Add(
                 CodeBlock(definition, "csharp")

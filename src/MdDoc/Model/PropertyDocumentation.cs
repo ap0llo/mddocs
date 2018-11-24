@@ -6,7 +6,9 @@ using System.Text;
 namespace MdDoc.Model
 {
     public class PropertyDocumentation : MemberDocumentation
-    {        
+    {
+        public string Name => Definition.Name;
+
         public PropertyDefinition Definition { get; }
 
 

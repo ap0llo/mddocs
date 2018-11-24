@@ -176,12 +176,12 @@ namespace MdDoc.Pages
 
                     if(propertyPage != null)
                     {                        
-                        var link = Link(property.Definition.Name, OutputPath.GetRelativePathTo(propertyPage.OutputPath));
+                        var link = Link(property.Name, OutputPath.GetRelativePathTo(propertyPage.OutputPath));
                         table.Add(Row(link));
                     }
                     else
                     {
-                        table.Add(Row(property.Definition.Name));
+                        table.Add(Row(property.Name));
                     }
 
 

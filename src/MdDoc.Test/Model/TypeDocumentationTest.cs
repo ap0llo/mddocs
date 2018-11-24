@@ -92,11 +92,11 @@ namespace MdDoc.Test.Model
 
             // ASSERT
             Assert.Equal(4, properties.Count);
-            Assert.Contains(properties, prop => prop.Definition.Name == "Property1");
-            Assert.Contains(properties, prop => prop.Definition.Name == "Property2");
-            Assert.Contains(properties, prop => prop.Definition.Name == "Item");
-            Assert.DoesNotContain(properties, prop => prop.Definition.Name == "Property3");
-            Assert.DoesNotContain(properties, prop => prop.Definition.Name == "Property4");
+            Assert.Contains(properties, prop => prop.Name == "Property1");
+            Assert.Contains(properties, prop => prop.Name == "Property2");
+            Assert.Contains(properties, prop => prop.Name == "Item");
+            Assert.DoesNotContain(properties, prop => prop.Name == "Property3");
+            Assert.DoesNotContain(properties, prop => prop.Name == "Property4");
         }
 
         [Fact]
@@ -108,9 +108,9 @@ namespace MdDoc.Test.Model
 
             // ASSERT
             Assert.Equal(4, properties.Count);
-            Assert.Contains(properties, prop => prop.Definition.Name == "Property1");
-            Assert.Contains(properties, prop => prop.Definition.Name == "Property2");
-            Assert.Contains(properties, prop => prop.Definition.Name == "Item");
+            Assert.Contains(properties, prop => prop.Name == "Property1");
+            Assert.Contains(properties, prop => prop.Name == "Property2");
+            Assert.Contains(properties, prop => prop.Name == "Item");
         }    
 
         [Fact]
@@ -122,9 +122,9 @@ namespace MdDoc.Test.Model
 
             // ASSERT
             Assert.Equal(4, properties.Count);
-            Assert.Contains(properties, prop => prop.Definition.Name == "Property1");
-            Assert.Contains(properties, prop => prop.Definition.Name == "Property2");
-            Assert.Contains(properties, prop => prop.Definition.Name == "Item");
+            Assert.Contains(properties, prop => prop.Name == "Property1");
+            Assert.Contains(properties, prop => prop.Name == "Property2");
+            Assert.Contains(properties, prop => prop.Name == "Item");
         }
 
         [Fact]
