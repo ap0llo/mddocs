@@ -10,27 +10,26 @@ using static Grynwald.MarkdownGenerator.FactoryMethods;
 
 namespace MdDoc.Pages
 {
-    class TypePage : PageBase
+    class TypePage : PageBase<TypeDocumentation>
     {
-        private readonly TypeDocumentation m_Model;
         
         public override OutputPath OutputPath =>
-            new OutputPath(Path.Combine(GetTypeDir(m_Model.Definition), $"{m_Model.Name}.md"));
+            new OutputPath(Path.Combine(GetTypeDir(Model.Definition), $"{Model.Name}.md"));
 
-        protected override IDocumentation Model => m_Model;
+        protected override TypeDocumentation Model { get; }
 
 
         public TypePage(PageFactory pageFactory, string rootOutputPath, TypeDocumentation model)
             : base(pageFactory, rootOutputPath)
         {
-            m_Model = model ?? throw new ArgumentNullException(nameof(model));            
+            Model = model ?? throw new ArgumentNullException(nameof(model));            
         }
 
 
         public override void Save()
         {
             var document = new MdDocument(
-                Heading($"{m_Model.Name} {m_Model.Kind}", 1)
+                Heading($"{Model.Name} {Model.Kind}", 1)
             );
 
             AddTypeInfoSection(document.Root);
@@ -60,57 +59,57 @@ namespace MdDoc.Pages
         {
             // Add Namespace 
             block.Add(
-                Paragraph(Bold("Namespace:"), " " + m_Model.Namespace)
+                Paragraph(Bold("Namespace:"), " " + Model.Namespace)
             );
 
             // Add Assembly
             block.Add(
-                Paragraph(Bold("Assembly:"), " " + m_Model.AssemblyName)
+                Paragraph(Bold("Assembly:"), " " + Model.AssemblyName)
             );
 
 
             // Add list of base types            
-            if (m_Model.InheritanceHierarchy.Count > 1)
+            if (Model.InheritanceHierarchy.Count > 1)
             {
                 block.Add(
                     Paragraph(
                         Bold("Inheritance:"),
                         " ",
-                        m_Model.InheritanceHierarchy.Select(GetTypeNameSpan).Join(" → ")
+                        Model.InheritanceHierarchy.Select(GetTypeNameSpan).Join(" → ")
                 ));
             }
 
             // Add class attributes
-            if (m_Model.Attributes.Count > 0)
+            if (Model.Attributes.Count > 0)
             {
                 block.Add(
                     Paragraph(
                         Bold("Attributes:"),
                         " ",
-                        m_Model.Attributes.Select(GetTypeNameSpan).Join(",")
+                        Model.Attributes.Select(GetTypeNameSpan).Join(",")
                 ));
             }
 
             // Add list of implemented interfaces
-            if (!m_Model.Definition.IsInterface && m_Model.Definition.HasInterfaces)
+            if (!Model.Definition.IsInterface && Model.Definition.HasInterfaces)
             {
                 block.Add(
                     Paragraph(
                         Bold("Implements:"),
                         " ",
-                        m_Model.Definition.Interfaces.Select(x => x.InterfaceType).Select(GetTypeNameSpan).Join(","))
+                        Model.Definition.Interfaces.Select(x => x.InterfaceType).Select(GetTypeNameSpan).Join(","))
                 );
             }
         }
 
         private void AddConstructorsSection(MdContainerBlock block)
         {         
-            if (m_Model.Constructors != null)
+            if (Model.Constructors != null)
             {
                 var table = Table(Row("Name", "Description"));
-                foreach(var ctor in m_Model.Constructors.Definitions)
+                foreach(var ctor in Model.Constructors.Definitions)
                 {
-                    var ctorPagePath = PageFactory.TryGetPage(m_Model.Constructors)?.OutputPath;
+                    var ctorPagePath = PageFactory.TryGetPage(Model.Constructors)?.OutputPath;
 
                     if(ctorPagePath != null)
                     {
@@ -132,13 +131,13 @@ namespace MdDoc.Pages
 
         private void AddFieldsSection(MdContainerBlock block)
         {
-            if (m_Model.Fields.Any())
+            if (Model.Fields.Any())
             {
                 block.Add(
                     Heading("Fields", 2),
                     Table(
                         Row("Name", "Description"),
-                        m_Model.Fields.Select(x => Row(x.Definition.Name))
+                        Model.Fields.Select(x => Row(x.Definition.Name))
                     )
                 );
             }
@@ -147,31 +146,31 @@ namespace MdDoc.Pages
 
         private void AddEventsSection(MdContainerBlock block)
         {
-            if (m_Model.Kind != TypeKind.Class && m_Model.Kind != TypeKind.Struct && m_Model.Kind != TypeKind.Interface)
+            if (Model.Kind != TypeKind.Class && Model.Kind != TypeKind.Struct && Model.Kind != TypeKind.Interface)
                 return;
             
-            if (m_Model.Events.Any())
+            if (Model.Events.Any())
             {
                 block.Add(
                     Heading("Events", 2),
                     Table(
                         Row("Name", "Description"),
-                        m_Model.Events.Select(x => Row(x.Definition.Name))
+                        Model.Events.Select(x => Row(x.Definition.Name))
                 ));
             }
         }
         
         private void AddPropertiesSection(MdContainerBlock block)
         {
-            if (m_Model.Kind != TypeKind.Class && m_Model.Kind != TypeKind.Struct && m_Model.Kind != TypeKind.Interface)
+            if (Model.Kind != TypeKind.Class && Model.Kind != TypeKind.Struct && Model.Kind != TypeKind.Interface)
                 return;
             
 
-            if (m_Model.Properties.Any())
+            if (Model.Properties.Any())
             {
                 var table = Table(Row("Name", "Description"));
 
-                foreach(var property in m_Model.Properties)
+                foreach(var property in Model.Properties)
                 {
                     var propertyPage = PageFactory.TryGetPage(property);
 
@@ -197,11 +196,11 @@ namespace MdDoc.Pages
         
         private void AddMethodsSection(MdContainerBlock block)
         {   
-            if (m_Model.Methods.Count > 0)
+            if (Model.Methods.Count > 0)
             {
                 var table = Table(Row("Name", "Description"));
 
-                foreach(var method in m_Model.Methods)
+                foreach(var method in Model.Methods)
                 {
                     var methodPage = PageFactory.TryGetPage(method);
 
@@ -229,11 +228,11 @@ namespace MdDoc.Pages
 
         private void AddOperatorsSection(MdContainerBlock block)
         {
-            if (m_Model.Operators.Count > 0)
+            if (Model.Operators.Count > 0)
             {
                 var table = Table(Row("Name", "Description"));
 
-                foreach (var operatorOverload in m_Model.Operators)
+                foreach (var operatorOverload in Model.Operators)
                 {
                     var operatorPage = PageFactory.TryGetPage(operatorOverload);
                     foreach (var overload in operatorOverload.Definitions)
@@ -261,7 +260,7 @@ namespace MdDoc.Pages
         
         protected override MdSpan GetTypeNameSpan(TypeReference type, bool noLink)
         {
-            if (type.Equals(m_Model))
+            if (type.Equals(Model))
             {
                 return new MdTextSpan(type.Name);
             }

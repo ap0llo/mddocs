@@ -6,12 +6,14 @@ using Mono.Cecil;
 using System.Linq;
 
 using static Grynwald.MarkdownGenerator.FactoryMethods;
+using MdDoc.Model;
 
 namespace MdDoc.Pages
 {
-    abstract class MemberPage : PageBase
+    abstract class MemberPage<TModel> : PageBase<TModel> where TModel : IDocumentation
     {
         protected abstract TypeReference DeclaringType { get; }
+
 
         public MemberPage(PageFactory pageFactory, string rootOutputPath) : base(pageFactory, rootOutputPath)
         { }
@@ -79,8 +81,5 @@ namespace MdDoc.Pages
 
             }
         }
-
-
-
     }
 }

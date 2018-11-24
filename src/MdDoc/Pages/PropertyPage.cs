@@ -8,32 +8,28 @@ using static Grynwald.MarkdownGenerator.FactoryMethods;
 
 namespace MdDoc.Pages
 {
-    class PropertyPage : MemberPage
-    {
-        private readonly PropertyDocumentation m_Model;
-
-
-
+    class PropertyPage : MemberPage<PropertyDocumentation>
+    {        
         public override OutputPath OutputPath =>
-            new OutputPath(Path.Combine(GetTypeDir(m_Model.TypeDocumentation.Definition), "properties", $"{m_Model.TypeDocumentation.Name}.{m_Model.Definition.Name}.md"));
+            new OutputPath(Path.Combine(GetTypeDir(Model.TypeDocumentation.Definition), "properties", $"{Model.TypeDocumentation.Name}.{Model.Definition.Name}.md"));
 
-        protected override TypeReference DeclaringType => m_Model.Definition.DeclaringType;
 
-        protected override IDocumentation Model => m_Model;
+        protected override TypeReference DeclaringType => Model.Definition.DeclaringType;
+
+        protected override PropertyDocumentation Model { get; }
 
 
         public PropertyPage(PageFactory pageFactory, string rootOutputPath, PropertyDocumentation model)
             : base(pageFactory, rootOutputPath)
         {
-            m_Model = model ?? throw new ArgumentNullException(nameof(model));
-        
+            Model = model ?? throw new ArgumentNullException(nameof(model));
         }
 
 
         public override void Save()
         {
             var document = Document(
-                Heading($"{m_Model.Definition.DeclaringType.Name}.{m_Model.Definition.Name} Property", 1)
+                Heading($"{Model.Definition.DeclaringType.Name}.{Model.Definition.Name} Property", 1)
             );
 
             AddDeclaringTypeSection(document.Root);
@@ -54,10 +50,10 @@ namespace MdDoc.Pages
 
         private void AddDefinitionSection(MdContainerBlock block)
         {
-            var hasGetter = m_Model.Definition.GetMethod?.IsPublic == true;
-            var hasSetter = m_Model.Definition.SetMethod?.IsPublic == true;
+            var hasGetter = Model.Definition.GetMethod?.IsPublic == true;
+            var hasSetter = Model.Definition.SetMethod?.IsPublic == true;
 
-            var definition = $"public {m_Model.Definition.PropertyType.Name} {m_Model.Definition.Name} {{ {(hasGetter ? "get;" : "")} {(hasSetter ? "set;" : "")} }}";
+            var definition = $"public {Model.Definition.PropertyType.Name} {Model.Definition.Name} {{ {(hasGetter ? "get;" : "")} {(hasSetter ? "set;" : "")} }}";
 
             block.Add(
                 CodeBlock(definition, "csharp")
@@ -69,7 +65,7 @@ namespace MdDoc.Pages
             block.Add(Heading("Property Value", 2));
             block.Add(
                 Paragraph(
-                    GetTypeNameSpan(m_Model.Definition.PropertyType)
+                    GetTypeNameSpan(Model.Definition.PropertyType)
             ));
         }        
     }

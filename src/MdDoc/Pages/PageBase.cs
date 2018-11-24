@@ -9,7 +9,7 @@ using static Grynwald.MarkdownGenerator.FactoryMethods;
 
 namespace MdDoc.Pages
 {
-    abstract class PageBase : IPage
+    abstract class PageBase<TModel> : IPage where TModel : IDocumentation
     {
         private static char[] s_SplitChars = ".".ToCharArray();
 
@@ -19,7 +19,7 @@ namespace MdDoc.Pages
 
         protected PageFactory PageFactory { get; }
 
-        protected abstract IDocumentation Model { get; }
+        protected abstract TModel Model { get; }
 
 
 
