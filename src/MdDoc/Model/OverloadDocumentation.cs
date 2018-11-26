@@ -24,7 +24,7 @@ namespace MdDoc.Model
             
             Parameters = definition.HasParameters
                 ? Array.Empty<ParameterDocumentation>()
-                : definition.Parameters.Select(p => new ParameterDocumentation(p)).ToArray();
+                : definition.Parameters.Select(p => new ParameterDocumentation(this, p)).ToArray();
         }
 
         public abstract TypeDocumentation TryGetDocumentation(TypeReference typeReference);
