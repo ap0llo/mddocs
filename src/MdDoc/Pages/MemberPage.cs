@@ -27,10 +27,8 @@ namespace MdDoc.Pages
             var table = Table(Row("Signature", "Description"));
             foreach (var method in methods)
             {
-                var signature = method.Signature;
-
                 table.Add(
-                    Row(Link(signature, $"#{signature}"))
+                    Row(method.Signature)
                 );
             }
 
