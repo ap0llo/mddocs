@@ -48,15 +48,15 @@ namespace MdDoc.Pages
                     Heading(method.Signature, 2)
                 );
 
-                if (method.Definition.Parameters.Any())
+                if (method.Parameters.Count > 0)
                 {
                     var table = Table(Row("Name", "Type", "Description"));
-                    foreach (var parameter in method.Definition.Parameters)
+                    foreach (var parameter in method.Parameters)
                     {
                         table.Add(
                             Row(
                                 CodeSpan(parameter.Name),
-                                GetTypeNameSpan(parameter.ParameterType),
+                                GetTypeNameSpan(parameter.Type),
                                 ""
                         ));
                     }
