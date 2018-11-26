@@ -35,7 +35,10 @@ namespace MdDoc.Test.Model
                 typeof(TestStruct_Attributes),
                 typeof(TestInterface_Attributes),
                 typeof(TestEnum_Attributes),
-                typeof(TestAttribute)
+                typeof(TestAttribute),
+                typeof(TestClass_InterfaceImplementation),
+                typeof(TestStruct_InterfaceImplementation),
+                typeof(TestInterface_Inheritance)
             })
             .Distinct()
             .Select(GetTypeDefinition)

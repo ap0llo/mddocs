@@ -33,6 +33,8 @@ namespace MdDoc.Model
         
         public IReadOnlyCollection<TypeReference> InheritanceHierarchy { get; }
 
+        public IReadOnlyCollection<TypeReference> ImplementedInterfaces { get; }
+
         public IReadOnlyCollection<TypeReference> Attributes { get; }
 
 
@@ -75,6 +77,8 @@ namespace MdDoc.Model
             
             InheritanceHierarchy = LoadInheritanceHierarchy();
             Attributes = Definition.CustomAttributes.Select(x => x.AttributeType).ToArray();
+            ImplementedInterfaces = LoadImplementedInterfaces();
+
         }
 
 
@@ -83,13 +87,11 @@ namespace MdDoc.Model
 
         private IReadOnlyCollection<TypeReference> LoadInheritanceHierarchy()
         {
+            if (Kind == TypeKind.Interface)
+                return Array.Empty<TypeReference>();
+
             var inheritance = new LinkedList<TypeReference>();
             inheritance.AddFirst(Definition);
-
-            if (Kind == TypeKind.Interface)
-            {
-                return inheritance;
-            }
             
             var currentBaseType = Definition.BaseType.Resolve();
             while (currentBaseType != null)
@@ -101,5 +103,12 @@ namespace MdDoc.Model
             return inheritance;
         }
 
+        private IReadOnlyCollection<TypeReference> LoadImplementedInterfaces()
+        {
+            if (!Definition.HasInterfaces)
+                return Array.Empty<TypeReference>();
+            else
+                return Definition.Interfaces.Select(x => x.InterfaceType).ToArray();
+        }
     }
 }

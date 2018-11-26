@@ -300,21 +300,24 @@ namespace MdDoc.Test.Model
         }
 
         [Fact]
-        public void InheritanceHierarchy_contains_the_expected_types_04()
+        public void InheritanceHierarchy_Is_empty_for_interfaces_01()
         {
-            var expectedSequence = new[]
-            {
-                typeof(TestInterface_Type).FullName
-            };
-
             var sut = GetTypeDocumentation(typeof(TestInterface_Type));
 
             Assert.NotNull(sut.InheritanceHierarchy);
-            Assert.Equal(expectedSequence.Length, sut.InheritanceHierarchy.Count);
-            Assert.True(expectedSequence.SequenceEqual(sut.InheritanceHierarchy.Select(x => x.FullName)));
+            Assert.Empty(sut.InheritanceHierarchy);
         }
 
 
+
+        [Fact]
+        public void InheritanceHierarchy_Is_empty_for_interfaces_02()
+        {
+            var sut = GetTypeDocumentation(typeof(TestInterface_Inheritance));
+
+            Assert.NotNull(sut.InheritanceHierarchy);
+            Assert.Empty(sut.InheritanceHierarchy);
+        }
 
         [Theory]
         [InlineData(typeof(TestClass_Attributes))]
@@ -336,7 +339,6 @@ namespace MdDoc.Test.Model
             //Assert.True(expectedAttributes.SequenceEqual(sut.InheritanceHierarchy.Select(x => x.FullName)));
         }
 
-
         [Fact]
         public void TryGetDocumentation_returns_null_for_an_undocumented_type()
         {
@@ -350,7 +352,6 @@ namespace MdDoc.Test.Model
             // ASSERT
             Assert.Null(documentation);
         }
-
 
         [Fact]
         public void TryGetDocumenation_returns_expected_documentation_item_for_an_documented_type()
@@ -368,5 +369,86 @@ namespace MdDoc.Test.Model
         }
 
 
+        [Fact]
+        public void ImplementedInterfaces_is_empty_for_interfaces_which_do_not_inherit_from_other_interfaces()
+        {
+            // ARRANGE            
+            var sut = GetTypeDocumentation(typeof(TestInterface_Type));
+
+            // ASSERT
+            Assert.NotNull(sut.ImplementedInterfaces);
+            Assert.Empty(sut.ImplementedInterfaces);            
+        }
+
+        [Fact]
+        public void ImplementedInterfaces_returns_the_expected_list_of_interfaces_for_interfaces()
+        {
+            // ARRANGE            
+            var sut = GetTypeDocumentation(typeof(TestInterface_Inheritance));
+
+            // ASSERT
+            Assert.NotNull(sut.ImplementedInterfaces);
+            Assert.Single(sut.ImplementedInterfaces);
+            Assert.Contains(sut.ImplementedInterfaces, i => i.FullName == "System.IDisposable");
+        }
+
+        [Fact]
+        public void ImplementedInterfaces_is_empty_for_enums()
+        {
+            // ARRANGE            
+            var sut = GetTypeDocumentation(typeof(TestEnum_Type));
+
+            // ASSERT
+            Assert.NotNull(sut.ImplementedInterfaces);
+            Assert.Empty(sut.ImplementedInterfaces);
+        }
+
+        [Fact]
+        public void ImplementedInterfaces_returns_the_expected_list_of_interfaces_for_classes()
+        {
+            // ARRANGE            
+            var sut = GetTypeDocumentation(typeof(TestClass_InterfaceImplementation));
+
+            // ASSERT
+            Assert.NotNull(sut.ImplementedInterfaces);
+            Assert.Equal(2, sut.ImplementedInterfaces.Count);
+            Assert.Contains(sut.ImplementedInterfaces, i => i.Equals(GetTypeReference(typeof(TestInterface_Type))));
+            Assert.Contains(sut.ImplementedInterfaces, i => i.FullName == "System.IDisposable");
+        }
+
+        [Fact]
+        public void ImplementedInterfaces_is_empty_for_classes_that_do_not_implement_interfaces()
+        {
+            // ARRANGE            
+            var sut = GetTypeDocumentation(typeof(TestClass_Type));
+
+            // ASSERT
+            Assert.NotNull(sut.ImplementedInterfaces);
+            Assert.Empty(sut.ImplementedInterfaces);           
+        }
+
+        [Fact]
+        public void ImplementedInterfaces_returns_the_expected_list_of_interfaces_for_structs()
+        {
+            // ARRANGE            
+            var sut = GetTypeDocumentation(typeof(TestStruct_InterfaceImplementation));
+
+            // ASSERT
+            Assert.NotNull(sut.ImplementedInterfaces);
+            Assert.Equal(2, sut.ImplementedInterfaces.Count);
+            Assert.Contains(sut.ImplementedInterfaces, i => i.Equals(GetTypeReference(typeof(TestInterface_Type))));
+            Assert.Contains(sut.ImplementedInterfaces, i => i.FullName == "System.IDisposable");
+        }
+
+        [Fact]
+        public void ImplementedInterfaces_is_empty_for_structs_that_do_not_implement_interfaces()
+        {
+            // ARRANGE            
+            var sut = GetTypeDocumentation(typeof(TestStruct_Type));
+
+            // ASSERT
+            Assert.NotNull(sut.ImplementedInterfaces);
+            Assert.Empty(sut.ImplementedInterfaces);
+        }
     }
 }

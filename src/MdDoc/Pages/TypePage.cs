@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.IO;
-using Mono.Cecil;
+using System.Linq;
 using Grynwald.MarkdownGenerator;
 using MdDoc.Model;
+using Mono.Cecil;
 
 using static Grynwald.MarkdownGenerator.FactoryMethods;
 
@@ -14,7 +13,6 @@ namespace MdDoc.Pages
     {
         public override OutputPath OutputPath { get; }
         
-
         protected override TypeDocumentation Model { get; }
 
 
@@ -47,8 +45,6 @@ namespace MdDoc.Pages
             AddMethodsSection(document.Root);
 
             AddOperatorsSection(document.Root);
-
-            //TODO: Separate methods and operators
 
             Directory.CreateDirectory(Path.GetDirectoryName(OutputPath));
             document.Save(OutputPath);
@@ -91,13 +87,13 @@ namespace MdDoc.Pages
             }
 
             // Add list of implemented interfaces
-            if (!Model.Definition.IsInterface && Model.Definition.HasInterfaces)
+            if (Model.ImplementedInterfaces.Count > 0)
             {
                 block.Add(
                     Paragraph(
                         Bold("Implements:"),
                         " ",
-                        Model.Definition.Interfaces.Select(x => x.InterfaceType).Select(GetTypeNameSpan).Join(","))
+                        Model.ImplementedInterfaces.Select(GetTypeNameSpan).Join(","))
                 );
             }
         }
@@ -107,10 +103,10 @@ namespace MdDoc.Pages
             if (Model.Constructors != null)
             {
                 var table = Table(Row("Name", "Description"));
+                var ctorPagePath = PageFactory.TryGetPage(Model.Constructors)?.OutputPath;
+
                 foreach(var ctor in Model.Constructors.Definitions)
                 {
-                    var ctorPagePath = PageFactory.TryGetPage(Model.Constructors)?.OutputPath;
-
                     if(ctorPagePath != null)
                     {
                         var link = Link(GetSignature(ctor), OutputPath.GetRelativePathTo(ctorPagePath));
@@ -119,7 +115,7 @@ namespace MdDoc.Pages
                     else
                     {                        
                         table.Add(Row(GetSignature(ctor)));
-                    }                    
+                    }
                 }
 
                 block.Add(
@@ -235,6 +231,7 @@ namespace MdDoc.Pages
                 foreach (var operatorOverload in Model.Operators)
                 {
                     var operatorPage = PageFactory.TryGetPage(operatorOverload);
+
                     foreach (var overload in operatorOverload.Definitions)
                     {
                         if(operatorPage != null)
@@ -246,7 +243,6 @@ namespace MdDoc.Pages
                         {                            
                             table.Add(Row(GetSignature(overload)));
                         }
-
                     }
                 }
 
