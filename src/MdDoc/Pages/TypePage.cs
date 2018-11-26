@@ -51,6 +51,19 @@ namespace MdDoc.Pages
         }
 
 
+        protected override MdSpan GetTypeNameSpan(TypeReference type, bool noLink)
+        {
+            if (type.Equals(Model))
+            {
+                return new MdTextSpan(type.Name);
+            }
+            else
+            {
+                return base.GetTypeNameSpan(type, noLink);
+            }
+        }
+
+
         private void AddTypeInfoSection(MdContainerBlock block)
         {
             // Add Namespace 
@@ -127,7 +140,7 @@ namespace MdDoc.Pages
 
         private void AddFieldsSection(MdContainerBlock block)
         {
-            if (Model.Fields.Any())
+            if (Model.Fields.Count > 0)
             {
                 block.Add(
                     Heading("Fields", 2),
@@ -141,11 +154,8 @@ namespace MdDoc.Pages
         }
 
         private void AddEventsSection(MdContainerBlock block)
-        {
-            if (Model.Kind != TypeKind.Class && Model.Kind != TypeKind.Struct && Model.Kind != TypeKind.Interface)
-                return;
-            
-            if (Model.Events.Any())
+        {            
+            if (Model.Events.Count > 0)
             {
                 block.Add(
                     Heading("Events", 2),
@@ -157,12 +167,8 @@ namespace MdDoc.Pages
         }
         
         private void AddPropertiesSection(MdContainerBlock block)
-        {
-            if (Model.Kind != TypeKind.Class && Model.Kind != TypeKind.Struct && Model.Kind != TypeKind.Interface)
-                return;
-            
-
-            if (Model.Properties.Any())
+        {            
+            if (Model.Properties.Count > 0)
             {
                 var table = Table(Row("Name", "Description"));
 
@@ -179,8 +185,6 @@ namespace MdDoc.Pages
                     {
                         table.Add(Row(property.Name));
                     }
-
-
                 }
              
                 block.Add(
@@ -221,7 +225,6 @@ namespace MdDoc.Pages
             }
         }
 
-
         private void AddOperatorsSection(MdContainerBlock block)
         {
             if (Model.Operators.Count > 0)
@@ -253,18 +256,5 @@ namespace MdDoc.Pages
             }
         }
         
-        
-        protected override MdSpan GetTypeNameSpan(TypeReference type, bool noLink)
-        {
-            if (type.Equals(Model))
-            {
-                return new MdTextSpan(type.Name);
-            }
-            else
-            {
-                return base.GetTypeNameSpan(type, noLink);
-            }
-        }
-
     }
 }

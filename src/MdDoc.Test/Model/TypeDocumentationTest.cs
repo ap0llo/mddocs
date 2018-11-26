@@ -84,6 +84,17 @@ namespace MdDoc.Test.Model
         }
 
         [Fact]
+        public void Events_is_empty_for_enums()
+        {
+            // ARRANGE / ACT
+            var sut = GetTypeDocumentation(typeof(TestEnum_Type));
+
+            // ASSERT
+            Assert.NotNull(sut.Events);
+            Assert.Empty(sut.Events);            
+        }
+
+        [Fact]
         public void Properties_returns_expected_properties_01()
         {
             // ARRANGE / ACT
@@ -125,6 +136,17 @@ namespace MdDoc.Test.Model
             Assert.Contains(properties, prop => prop.Name == "Property1");
             Assert.Contains(properties, prop => prop.Name == "Property2");
             Assert.Contains(properties, prop => prop.Name == "Item");
+        }
+
+        [Fact]
+        public void Properties_is_empty_for_enums()
+        {
+            // ARRANGE / ACT
+            var sut = GetTypeDocumentation(typeof(TestEnum_Type));
+
+            // ASSERT
+            Assert.NotNull(sut.Properties);
+            Assert.Empty(sut.Properties);
         }
 
         [Fact]
