@@ -5,7 +5,7 @@ using System.Text;
 
 namespace MdDoc.Test.TestData
 {
-    class TestClass_TypeFormatter
+    class TestClass_TypeNameFormatter
     {                
         public int Property1 { get; set; }
 
@@ -51,7 +51,7 @@ namespace MdDoc.Test.TestData
 
     }
 
-    class TestClass_TypeFormatter<T1, T2>
+    class TestClass_TypeNameFormatter<T1, T2>
     {
         public IEnumerable<T1> Property1 { get; set; }
 
