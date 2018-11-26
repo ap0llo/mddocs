@@ -1,7 +1,7 @@
-﻿using Grynwald.Utilities.Collections;
-using MdDoc.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Grynwald.Utilities.Collections;
+using MdDoc.Model;
 
 namespace MdDoc.Pages
 {

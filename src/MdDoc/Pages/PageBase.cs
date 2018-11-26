@@ -32,6 +32,8 @@ namespace MdDoc.Pages
         public abstract void Save();
 
 
+        protected virtual MdSpan GetTypeNameSpan(TypeDocumentation type) => GetTypeNameSpan(type.Definition, false);
+
         protected virtual MdSpan GetTypeNameSpan(TypeReference type) => GetTypeNameSpan(type, false);
 
         protected virtual MdSpan GetTypeNameSpan(TypeReference type, bool noLink)

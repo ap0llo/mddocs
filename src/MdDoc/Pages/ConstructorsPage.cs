@@ -1,11 +1,6 @@
-﻿using Grynwald.MarkdownGenerator;
-using MdDoc.Model;
-using Mono.Cecil;
+﻿using MdDoc.Model;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 
 using static Grynwald.MarkdownGenerator.FactoryMethods;
 
@@ -30,14 +25,14 @@ namespace MdDoc.Pages
         public override void Save()
         {
             var document = Document(
-                Heading($"{Model.Definitions.First().DeclaringType.Name} Constructors", 1)
+                Heading($"{Model.TypeDocumentation.Name} Constructors", 1)
             );
 
             AddDeclaringTypeSection(document.Root);
             
-            AddOverloadsSection(document.Root, Model.Definitions.First().DeclaringType.GetDocumentedConstrutors());
+            AddOverloadsSection(document.Root, Model.Definitions);
 
-            AddDetailSections(document.Root, Model.Definitions.First().DeclaringType.GetDocumentedConstrutors());
+            AddDetailSections(document.Root, Model.Definitions);
 
             Directory.CreateDirectory(Path.GetDirectoryName(OutputPath));
             document.Save(OutputPath);

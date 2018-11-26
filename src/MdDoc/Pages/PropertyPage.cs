@@ -1,8 +1,7 @@
-﻿using Grynwald.MarkdownGenerator;
-using MdDoc.Model;
-using Mono.Cecil;
-using System;
+﻿using System;
 using System.IO;
+using Grynwald.MarkdownGenerator;
+using MdDoc.Model;
 
 using static Grynwald.MarkdownGenerator.FactoryMethods;
 
