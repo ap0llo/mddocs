@@ -10,27 +10,22 @@ namespace MdDoc.Model
     {
         public OperatorKind Kind { get; }
 
-        public IReadOnlyCollection<MethodOverload> Overloads { get; }
+        public IReadOnlyCollection<OperatorOverload> Overloads { get; }
 
 
-        public OperatorDocumentation(TypeDocumentation typeDocumentation, IEnumerable<MethodOverload> overloads) : base(typeDocumentation)
+        public OperatorDocumentation(TypeDocumentation typeDocumentation, IEnumerable<OperatorOverload> overloads) : base(typeDocumentation)
         {
             Overloads = overloads?.ToArray() ?? throw new ArgumentNullException(nameof(overloads));
-
-            var definitionList = new List<MethodDefinition>();
-
+           
             OperatorKind? previousKind = null;
             foreach (var overload in overloads)
-            {
-                var kind = overload.Definition.GetOperatorKind() ?? throw new ArgumentException($"Method '{overload.MethodName}' is not a operator overload");
-                definitionList.Add(overload.Definition);
-
-                if(previousKind.HasValue && previousKind.Value != kind)
+            {                
+                if(previousKind.HasValue && previousKind.Value != overload.OperatorKind)
                 {
                     throw new ArgumentException("Cannot combine overloads of different operators");
                 }
-                previousKind = kind;
-                Kind = kind;
+                previousKind = overload.OperatorKind;
+                Kind = overload.OperatorKind;
             }            
         }
         

@@ -15,7 +15,6 @@ namespace MdDoc.Model
             if (!methodDefinition.IsSpecialName)
                 return null;
 
-
             switch (methodDefinition.Name)
             {
                 case "op_UnaryPlus":

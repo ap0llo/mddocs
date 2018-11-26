@@ -72,7 +72,7 @@ namespace MdDoc.Model
             Operators = definition.GetDocumentedMethods()               
                .GroupBy(x => x.GetOperatorKind())
                .Where(group => group.Key.HasValue)
-               .Select(group => new OperatorDocumentation(this, group.Select(x => new MethodOverload(x))))
+               .Select(group => new OperatorDocumentation(this, group.Select(x => new OperatorOverload(x))))
                .ToArray();
             
             InheritanceHierarchy = LoadInheritanceHierarchy();
