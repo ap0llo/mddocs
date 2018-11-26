@@ -88,21 +88,6 @@ namespace MdDoc.Pages
             }
         }
 
-        protected MdSpan GetSignature(MethodDefinition method)
-        {
-            var methodName = method.IsConstructor
-                ? method.DeclaringType.Name
-                : method.Name;
-
-            var parameters = method
-                .Parameters
-                .Select(x => x.ParameterType)
-                .Select(t => GetTypeNameSpan(t, noLink: true))
-                .Join(", ");
-
-            return CompositeSpan(methodName, "(", parameters, ")");
-        }
-
         protected string GetTypeDir(TypeDocumentation type)
         {
             var dir = Path.Combine(m_RootOutputPath, String.Join('/', type.Namespace.Split(s_SplitChars)));

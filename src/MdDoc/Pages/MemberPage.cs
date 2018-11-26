@@ -27,7 +27,7 @@ namespace MdDoc.Pages
             var table = Table(Row("Signature", "Description"));
             foreach (var method in methods)
             {
-                var signature = GetSignature(method.Definition);
+                var signature = method.Signature;
 
                 table.Add(
                     Row(Link(signature, $"#{signature}"))
@@ -45,7 +45,7 @@ namespace MdDoc.Pages
             foreach (var method in methods)
             {
                 block.Add(
-                    Heading(GetSignature(method.Definition), 2)
+                    Heading(method.Signature, 2)
                 );
 
                 if (method.Definition.Parameters.Any())

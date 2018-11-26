@@ -121,12 +121,12 @@ namespace MdDoc.Pages
                 {
                     if(ctorPagePath != null)
                     {
-                        var link = Link(GetSignature(ctor.Definition), OutputPath.GetRelativePathTo(ctorPagePath));
+                        var link = Link(ctor.Signature, OutputPath.GetRelativePathTo(ctorPagePath));
                         table.Add(Row(link));
                     }
                     else
                     {                        
-                        table.Add(Row(GetSignature(ctor.Definition)));
+                        table.Add(Row(ctor.Signature));
                     }
                 }
 
@@ -207,12 +207,12 @@ namespace MdDoc.Pages
                     {
                         if(methodPage != null)
                         {                            
-                            var link = Link(GetSignature(overload.Definition), OutputPath.GetRelativePathTo(methodPage.OutputPath));
+                            var link = Link(overload.Signature, OutputPath.GetRelativePathTo(methodPage.OutputPath));
                             table.Add(Row(link));
                         }
                         else
                         {                            
-                            table.Add(Row(GetSignature(overload.Definition)));
+                            table.Add(Row(overload.Signature));
                         }
                     }
                 }
@@ -238,12 +238,12 @@ namespace MdDoc.Pages
                     {
                         if(operatorPage != null)
                         {                            
-                            var link = Link(GetSignature(overload.Definition), OutputPath.GetRelativePathTo(operatorPage.OutputPath));
+                            var link = Link(overload.Signature, OutputPath.GetRelativePathTo(operatorPage.OutputPath));
                             table.Add(Row(link));
                         }
                         else
                         {                            
-                            table.Add(Row(GetSignature(overload.Definition)));
+                            table.Add(Row(overload.Signature));
                         }
                     }
                 }
