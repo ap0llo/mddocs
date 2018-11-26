@@ -38,7 +38,8 @@ namespace MdDoc.Test.Model
                 typeof(TestAttribute),
                 typeof(TestClass_InterfaceImplementation),
                 typeof(TestStruct_InterfaceImplementation),
-                typeof(TestInterface_Inheritance)
+                typeof(TestInterface_Inheritance),
+                typeof(TestClass_Properties_CSharpDefinition)
             })
             .Distinct()
             .Select(GetTypeDefinition)

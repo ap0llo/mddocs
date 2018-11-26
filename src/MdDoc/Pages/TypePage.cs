@@ -9,6 +9,7 @@ using static Grynwald.MarkdownGenerator.FactoryMethods;
 
 namespace MdDoc.Pages
 {
+    //TODO: Add documentation from XML comments
     class TypePage : PageBase<TypeDocumentation>
     {
         public override OutputPath OutputPath { get; }
@@ -31,8 +32,6 @@ namespace MdDoc.Pages
             );
 
             AddTypeInfoSection(document.Root);
-
-            //TODO: Include info from XML docs
 
             AddConstructorsSection(document.Root);
 

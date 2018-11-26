@@ -22,7 +22,6 @@ namespace MdDoc.Pages
         protected abstract TModel Model { get; }
 
 
-
         public PageBase(PageFactory pageFactory, string rootOutputPath)
         {
             PageFactory = pageFactory ?? throw new ArgumentNullException(nameof(pageFactory));

@@ -9,6 +9,7 @@ using static Grynwald.MarkdownGenerator.FactoryMethods;
 
 namespace MdDoc.Pages
 {
+    //TODO: Add documentation from XML comments
     class MethodPage : MemberPage<MethodDocumentation>
     {
         public override OutputPath OutputPath { get; }

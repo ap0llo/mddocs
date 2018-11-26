@@ -8,6 +8,7 @@ using static Grynwald.MarkdownGenerator.FactoryMethods;
 
 namespace MdDoc.Pages
 {
+    //TODO: Add documentation from XML comments
     class PropertyPage : MemberPage<PropertyDocumentation>
     {        
         public override OutputPath OutputPath { get; }            
@@ -34,11 +35,6 @@ namespace MdDoc.Pages
 
             AddDeclaringTypeSection(document.Root);
 
-            //document.Root.Add(
-            //    Paragraph(
-            //        m_Context.XmlDocProvider.TryGetDocumentation(m_Model.Definition).Summary
-            //));
-
             AddDefinitionSection(document.Root);
 
             AddPropertyValueSection(document.Root);
@@ -49,14 +45,9 @@ namespace MdDoc.Pages
 
 
         private void AddDefinitionSection(MdContainerBlock block)
-        {
-            var hasGetter = Model.Definition.GetMethod?.IsPublic == true;
-            var hasSetter = Model.Definition.SetMethod?.IsPublic == true;
-
-            var definition = $"public {Model.Definition.PropertyType.Name} {Model.Name} {{ {(hasGetter ? "get;" : "")} {(hasSetter ? "set;" : "")} }}";
-
+        {            
             block.Add(
-                CodeBlock(definition, "csharp")
+                CodeBlock(Model.CSharpDefinition, "csharp")
             );
         }
 
