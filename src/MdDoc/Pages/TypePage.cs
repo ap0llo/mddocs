@@ -117,16 +117,16 @@ namespace MdDoc.Pages
                 var table = Table(Row("Name", "Description"));
                 var ctorPagePath = PageFactory.TryGetPage(Model.Constructors)?.OutputPath;
 
-                foreach(var ctor in Model.Constructors.Definitions)
+                foreach(var ctor in Model.Constructors.Overloads)
                 {
                     if(ctorPagePath != null)
                     {
-                        var link = Link(GetSignature(ctor), OutputPath.GetRelativePathTo(ctorPagePath));
+                        var link = Link(GetSignature(ctor.Definition), OutputPath.GetRelativePathTo(ctorPagePath));
                         table.Add(Row(link));
                     }
                     else
                     {                        
-                        table.Add(Row(GetSignature(ctor)));
+                        table.Add(Row(GetSignature(ctor.Definition)));
                     }
                 }
 
@@ -203,16 +203,16 @@ namespace MdDoc.Pages
                 {
                     var methodPage = PageFactory.TryGetPage(method);
 
-                    foreach(var overload in method.Definitions)
+                    foreach(var overload in method.Overloads)
                     {
                         if(methodPage != null)
                         {                            
-                            var link = Link(GetSignature(overload), OutputPath.GetRelativePathTo(methodPage.OutputPath));
+                            var link = Link(GetSignature(overload.Definition), OutputPath.GetRelativePathTo(methodPage.OutputPath));
                             table.Add(Row(link));
                         }
                         else
                         {                            
-                            table.Add(Row(GetSignature(overload)));
+                            table.Add(Row(GetSignature(overload.Definition)));
                         }
                     }
                 }

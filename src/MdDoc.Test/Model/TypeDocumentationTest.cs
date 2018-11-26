@@ -157,7 +157,7 @@ namespace MdDoc.Test.Model
             
             // ASSERT
             Assert.Equal(9, sut.Methods.Count);
-            Assert.All(sut.Methods, method => Assert.Single(method.Definitions));
+            Assert.All(sut.Methods, method => Assert.Single(method.Overloads));
             Assert.Contains(sut.Methods, m => m.Name == "TestMethod1");
             Assert.Contains(sut.Methods, m => m.Name == "TestMethod2");
             Assert.Contains(sut.Methods, m => m.Name == "TestMethod3");
@@ -186,8 +186,8 @@ namespace MdDoc.Test.Model
             var method = sut.Methods.Single();
 
             Assert.Equal("TestMethod1", method.Name);
-            Assert.Equal(3, method.Definitions.Count);
-            Assert.Single(method.Definitions.Where(x => x.HasGenericParameters));
+            Assert.Equal(3, method.Overloads.Count);
+            Assert.Single(method.Overloads.Where(x => x.Definition.HasGenericParameters));
         }
 
         [Fact]
@@ -206,7 +206,7 @@ namespace MdDoc.Test.Model
             var sut = GetTypeDocumentation(typeof(TestClass_Methods));
 
             Assert.NotNull(sut.Constructors);
-            Assert.Single(sut.Constructors.Definitions);
+            Assert.Single(sut.Constructors.Overloads);
             Assert.Equal(".ctor", sut.Constructors.Name);
         }
 
@@ -216,7 +216,7 @@ namespace MdDoc.Test.Model
             var sut = GetTypeDocumentation(typeof(TestClass_Constructors));
 
             Assert.NotNull(sut.Constructors);
-            Assert.Equal(2, sut.Constructors.Definitions.Count);
+            Assert.Equal(2, sut.Constructors.Overloads.Count);
             Assert.Equal(".ctor", sut.Constructors.Name);
         }
 
@@ -233,7 +233,7 @@ namespace MdDoc.Test.Model
             var sut = GetTypeDocumentation(typeof(TestStruct_Constructors));
 
             Assert.NotNull(sut.Constructors);
-            Assert.Equal(2, sut.Constructors.Definitions.Count);
+            Assert.Equal(2, sut.Constructors.Overloads.Count);
             Assert.Equal(".ctor", sut.Constructors.Name);
         }
 

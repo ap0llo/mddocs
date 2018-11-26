@@ -59,14 +59,14 @@ namespace MdDoc.Model
                 .Select(p => new PropertyDocumentation(this, p))
                 .ToArray();
 
-            var ctors = definition.GetDocumentedConstrutors();
+            var ctors = definition.GetDocumentedConstrutors().Select(x => new MethodOverload(x));
             if(ctors.Any())
                 Constructors = new ConstructorDocumentation(this, ctors);
 
             Methods = definition.GetDocumentedMethods()
                 .Where(m => !m.IsOperatorOverload())
                 .GroupBy(x => x.Name)
-                .Select(x => new MethodDocumentation(this, x))
+                .Select(group => new MethodDocumentation(this, group.Select(x => new MethodOverload(x))))
                 .ToArray();
 
             Operators = definition.GetDocumentedMethods()               

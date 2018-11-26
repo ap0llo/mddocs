@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Grynwald.MarkdownGenerator;
+using MdDoc.Model;
 using Mono.Cecil;
 
 using static Grynwald.MarkdownGenerator.FactoryMethods;
@@ -21,12 +22,12 @@ namespace MdDoc.Pages
             ));
         }
 
-        protected void AddOverloadsSection(MdContainerBlock block, IEnumerable<MethodDefinition> methods)
+        protected void AddOverloadsSection(MdContainerBlock block, IEnumerable<MethodOverload> methods)
         {
             var table = Table(Row("Signature", "Description"));
             foreach (var method in methods)
             {
-                var signature = GetSignature(method);
+                var signature = GetSignature(method.Definition);
 
                 table.Add(
                     Row(Link(signature, $"#{signature}"))
@@ -39,18 +40,18 @@ namespace MdDoc.Pages
             );
         }
 
-        protected void AddDetailSections(MdContainerBlock block, IEnumerable<MethodDefinition> methods)
+        protected void AddDetailSections(MdContainerBlock block, IEnumerable<MethodOverload> methods)
         {
             foreach (var method in methods)
             {
                 block.Add(
-                    Heading(GetSignature(method), 2)
+                    Heading(GetSignature(method.Definition), 2)
                 );
 
-                if (method.Parameters.Any())
+                if (method.Definition.Parameters.Any())
                 {
                     var table = Table(Row("Name", "Type", "Description"));
-                    foreach (var parameter in method.Parameters)
+                    foreach (var parameter in method.Definition.Parameters)
                     {
                         table.Add(
                             Row(

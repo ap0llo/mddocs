@@ -30,9 +30,9 @@ namespace MdDoc.Pages
 
             AddDeclaringTypeSection(document.Root);
             
-            AddOverloadsSection(document.Root, Model.Definitions);
+            AddOverloadsSection(document.Root, Model.Overloads);
 
-            AddDetailSections(document.Root, Model.Definitions);
+            AddDetailSections(document.Root, Model.Overloads);
 
             Directory.CreateDirectory(Path.GetDirectoryName(OutputPath));
             document.Save(OutputPath);

@@ -17,11 +17,12 @@ namespace MdDoc.Test.Model
             
             // get methods, use StartsWith() as generic overloads are suffixed with the numer
             // of type parameters
-            var methods = GetTypeDefinition(typeof(TestClass_MethodOverloads))
+            var methodOverloads = GetTypeDefinition(typeof(TestClass_MethodOverloads))
                 .Methods
-                .Where(x => x.Name.StartsWith(methodName));
+                .Where(x => x.Name.StartsWith(methodName))
+                .Select(x => new MethodOverload(x));
 
-            var sut = new MethodDocumentation(GetTypeDocumentation(typeof(TestClass_MethodOverloads)), methods);
+            var sut = new MethodDocumentation(GetTypeDocumentation(typeof(TestClass_MethodOverloads)), methodOverloads);
 
             Assert.Equal(methodName, sut.Name);
         }

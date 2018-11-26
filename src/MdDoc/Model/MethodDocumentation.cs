@@ -10,14 +10,12 @@ namespace MdDoc.Model
     {
         public string Name { get; }
 
-        public IReadOnlyCollection<MethodDefinition> Definitions { get; }
+        public IReadOnlyCollection<MethodOverload> Overloads { get; }
 
-
-        public MethodDocumentation(TypeDocumentation typeDocumentation, IEnumerable<MethodDefinition> definitions) : base(typeDocumentation)
+        public MethodDocumentation(TypeDocumentation typeDocumentation, IEnumerable<MethodOverload> overloads) : base(typeDocumentation)
         {
-            Definitions = definitions?.ToList() ?? throw new ArgumentNullException(nameof(definitions));
-            
-            Name = definitions.Select(x => x.Name).Distinct().Single();
+            Overloads = overloads?.ToArray() ?? throw new ArgumentNullException(nameof(overloads));
+            Name = overloads.Select(x => x.MethodName).Distinct().Single();
         }
         
     }
