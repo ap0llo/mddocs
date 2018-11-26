@@ -10,11 +10,8 @@ using MdDoc.Model;
 
 namespace MdDoc.Pages
 {
-    abstract class MemberPage<TModel> : PageBase<TModel> where TModel : IDocumentation
-    {
-        protected abstract TypeReference DeclaringType { get; }
-
-
+    abstract class MemberPage<TModel> : PageBase<TModel> where TModel : Model.MemberDocumentation
+    {        
         public MemberPage(PageFactory pageFactory, string rootOutputPath) : base(pageFactory, rootOutputPath)
         { }
 
@@ -23,7 +20,7 @@ namespace MdDoc.Pages
         {
             block.Add(
                 Paragraph(
-                    Bold("Declaring Type:"), " ", GetTypeNameSpan(DeclaringType)
+                    Bold("Declaring Type:"), " ", GetTypeNameSpan(Model.TypeDocumentation.Definition)
             ));
         }
 

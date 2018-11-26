@@ -16,8 +16,6 @@ namespace MdDoc.Pages
     {                
         public override OutputPath OutputPath { get; }
         
-        protected override TypeReference DeclaringType => Model.Definitions.First().DeclaringType;
-
         protected override ConstructorDocumentation Model { get; }
 
         

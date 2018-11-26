@@ -13,9 +13,6 @@ namespace MdDoc.Pages
     {        
         public override OutputPath OutputPath { get; }            
 
-
-        protected override TypeReference DeclaringType => Model.Definition.DeclaringType;
-
         protected override PropertyDocumentation Model { get; }
 
 
@@ -23,14 +20,14 @@ namespace MdDoc.Pages
             : base(pageFactory, rootOutputPath)
         {
             Model = model ?? throw new ArgumentNullException(nameof(model));
-            OutputPath = new OutputPath(Path.Combine(GetTypeDir(Model.TypeDocumentation), "properties", $"{Model.TypeDocumentation.Name}.{Model.Definition.Name}.md"));
+            OutputPath = new OutputPath(Path.Combine(GetTypeDir(Model.TypeDocumentation), "properties", $"{Model.TypeDocumentation.Name}.{Model.Name}.md"));
         }
 
 
         public override void Save()
         {
             var document = Document(
-                Heading($"{Model.Definition.DeclaringType.Name}.{Model.Name} Property", 1)
+                Heading($"{Model.TypeDocumentation.Name}.{Model.Name} Property", 1)
             );
 
             AddDeclaringTypeSection(document.Root);
@@ -56,7 +53,7 @@ namespace MdDoc.Pages
             block.Add(Heading("Property Value", 2));
             block.Add(
                 Paragraph(
-                    GetTypeNameSpan(Model.Definition.PropertyType)
+                    GetTypeNameSpan(Model.Type)
             ));
         }        
     }

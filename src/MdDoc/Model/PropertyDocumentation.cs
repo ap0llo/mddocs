@@ -10,6 +10,11 @@ namespace MdDoc.Model
     {
         public string Name => Definition.Name;
 
+        public TypeReference Type => Definition.PropertyType;
+
+        // Indexeres are modeled as properties with parameters
+        public bool IsIndexer => Definition.HasParameters;
+
         public PropertyDefinition Definition { get; }
 
         public string CSharpDefinition
@@ -28,9 +33,8 @@ namespace MdDoc.Model
                     definitionBuilder.Append("this");
                 else
                     definitionBuilder.Append(Name);
-
-                // Indexeres are modeled as properties with parameters
-                if(Definition.HasParameters)
+                
+                if(IsIndexer)
                 {
                     definitionBuilder.Append("[");
 
