@@ -6,7 +6,7 @@ using Mono.Cecil;
 
 namespace MdDoc.Model
 {
-    public abstract class OverloadDocumentation
+    public abstract class OverloadDocumentation : IDocumentation
     {
         private readonly MethodFormatter m_MethodFormatter = MethodFormatter.Instance;
 
@@ -27,5 +27,6 @@ namespace MdDoc.Model
                 : definition.Parameters.Select(p => new ParameterDocumentation(p)).ToArray();
         }
 
+        public abstract TypeDocumentation TryGetDocumentation(TypeReference typeReference);
     }
 }

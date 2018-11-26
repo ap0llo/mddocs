@@ -13,10 +13,13 @@ namespace MdDoc.Model
         public IReadOnlyCollection<MethodOverloadDocumentation> Overloads { get; }
 
 
-        public MethodDocumentation(TypeDocumentation typeDocumentation, IEnumerable<MethodOverloadDocumentation> overloads) : base(typeDocumentation)
+        public MethodDocumentation(TypeDocumentation typeDocumentation, IEnumerable<MethodDefinition> definitions) : base(typeDocumentation)
         {
-            Overloads = overloads?.ToArray() ?? throw new ArgumentNullException(nameof(overloads));
-            Name = overloads.Select(x => x.MethodName).Distinct().Single();
+            if (definitions == null)
+                throw new ArgumentNullException(nameof(definitions));
+
+            Overloads = definitions.Select(d => new MethodOverloadDocumentation(this, d)).ToArray();
+            Name = Overloads.Select(x => x.MethodName).Distinct().Single();
         }
         
     }

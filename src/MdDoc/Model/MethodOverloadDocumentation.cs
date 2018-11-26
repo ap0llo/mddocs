@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using Mono.Cecil;
 
 namespace MdDoc.Model
@@ -9,8 +7,16 @@ namespace MdDoc.Model
     {
         public string MethodName => Definition.Name;
 
+        public MethodDocumentation MethodDocumentation { get; }
 
-        public MethodOverloadDocumentation(MethodDefinition definition) : base(definition)
-        { }        
+
+        public MethodOverloadDocumentation(MethodDocumentation methodDocumentation, MethodDefinition definition) : base(definition)
+        {
+            MethodDocumentation = methodDocumentation ?? throw new ArgumentNullException(nameof(methodDocumentation));
+        }
+
+
+        public override TypeDocumentation TryGetDocumentation(TypeReference typeReference) => 
+            MethodDocumentation.TryGetDocumentation(typeReference);
     }
 }

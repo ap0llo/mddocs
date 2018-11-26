@@ -13,12 +13,15 @@ namespace MdDoc.Model
         public IReadOnlyCollection<OperatorOverloadDocumentation> Overloads { get; }
 
 
-        public OperatorDocumentation(TypeDocumentation typeDocumentation, IEnumerable<OperatorOverloadDocumentation> overloads) : base(typeDocumentation)
-        {
-            Overloads = overloads?.ToArray() ?? throw new ArgumentNullException(nameof(overloads));
+        public OperatorDocumentation(TypeDocumentation typeDocumentation, IEnumerable<MethodDefinition> definitions) : base(typeDocumentation)
+        {        
+            if (definitions == null)
+                throw new ArgumentNullException(nameof(definitions));
+
+            Overloads = definitions.Select(d => new OperatorOverloadDocumentation(this, d)).ToArray();
            
             OperatorKind? previousKind = null;
-            foreach (var overload in overloads)
+            foreach (var overload in Overloads)
             {                
                 if(previousKind.HasValue && previousKind.Value != overload.OperatorKind)
                 {

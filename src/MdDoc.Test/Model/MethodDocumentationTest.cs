@@ -19,8 +19,7 @@ namespace MdDoc.Test.Model
             // of type parameters
             var methodOverloads = GetTypeDefinition(typeof(TestClass_MethodOverloads))
                 .Methods
-                .Where(x => x.Name.StartsWith(methodName))
-                .Select(x => new MethodOverloadDocumentation(x));
+                .Where(x => x.Name.StartsWith(methodName));
 
             var sut = new MethodDocumentation(GetTypeDocumentation(typeof(TestClass_MethodOverloads)), methodOverloads);
 
