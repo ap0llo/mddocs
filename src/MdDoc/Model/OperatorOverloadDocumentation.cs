@@ -5,12 +5,12 @@ using Mono.Cecil;
 
 namespace MdDoc.Model
 {
-    public sealed class MethodOverload
+    public sealed class OperatorOverloadDocumentation
     {
         private readonly MethodFormatter m_MethodFormatter = MethodFormatter.Instance;
 
 
-        public string MethodName => Definition.Name;
+        public OperatorKind OperatorKind { get; }
 
         public MethodDefinition Definition { get; }
 
@@ -19,13 +19,14 @@ namespace MdDoc.Model
         public IReadOnlyList<ParameterDocumentation> Parameters { get; }
 
 
-        public MethodOverload(MethodDefinition definition)
+        public OperatorOverloadDocumentation(MethodDefinition definition)
         {
             Definition = definition ?? throw new ArgumentNullException(nameof(definition));
+            OperatorKind = definition.GetOperatorKind() ?? throw new ArgumentException($"Method {definition.Name} is not an operator overload");
 
             Parameters = definition.HasParameters
                 ? Array.Empty<ParameterDocumentation>()
-                : definition.Parameters.Select(p => new ParameterDocumentation(p)).ToArray();            
+                : definition.Parameters.Select(p => new ParameterDocumentation(p)).ToArray();
         }
     }
 }

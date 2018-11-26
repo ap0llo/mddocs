@@ -22,7 +22,7 @@ namespace MdDoc.Pages
             ));
         }
 
-        protected void AddOverloadsSection(MdContainerBlock block, IEnumerable<MethodOverload> methods)
+        protected void AddOverloadsSection(MdContainerBlock block, IEnumerable<MethodOverloadDocumentation> methods)
         {
             var table = Table(Row("Signature", "Description"));
             foreach (var method in methods)
@@ -40,7 +40,7 @@ namespace MdDoc.Pages
             );
         }
 
-        protected void AddDetailSections(MdContainerBlock block, IEnumerable<MethodOverload> methods)
+        protected void AddDetailSections(MdContainerBlock block, IEnumerable<MethodOverloadDocumentation> methods)
         {
             foreach (var method in methods)
             {

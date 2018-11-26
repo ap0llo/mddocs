@@ -59,20 +59,20 @@ namespace MdDoc.Model
                 .Select(p => new PropertyDocumentation(this, p))
                 .ToArray();
 
-            var ctors = definition.GetDocumentedConstrutors().Select(x => new MethodOverload(x));
+            var ctors = definition.GetDocumentedConstrutors().Select(x => new MethodOverloadDocumentation(x));
             if(ctors.Any())
                 Constructors = new ConstructorDocumentation(this, ctors);
 
             Methods = definition.GetDocumentedMethods()
                 .Where(m => !m.IsOperatorOverload())
                 .GroupBy(x => x.Name)
-                .Select(group => new MethodDocumentation(this, group.Select(x => new MethodOverload(x))))
+                .Select(group => new MethodDocumentation(this, group.Select(x => new MethodOverloadDocumentation(x))))
                 .ToArray();
 
             Operators = definition.GetDocumentedMethods()               
                .GroupBy(x => x.GetOperatorKind())
                .Where(group => group.Key.HasValue)
-               .Select(group => new OperatorDocumentation(this, group.Select(x => new OperatorOverload(x))))
+               .Select(group => new OperatorDocumentation(this, group.Select(x => new OperatorOverloadDocumentation(x))))
                .ToArray();
             
             InheritanceHierarchy = LoadInheritanceHierarchy();

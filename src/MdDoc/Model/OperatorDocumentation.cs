@@ -10,10 +10,10 @@ namespace MdDoc.Model
     {
         public OperatorKind Kind { get; }
 
-        public IReadOnlyCollection<OperatorOverload> Overloads { get; }
+        public IReadOnlyCollection<OperatorOverloadDocumentation> Overloads { get; }
 
 
-        public OperatorDocumentation(TypeDocumentation typeDocumentation, IEnumerable<OperatorOverload> overloads) : base(typeDocumentation)
+        public OperatorDocumentation(TypeDocumentation typeDocumentation, IEnumerable<OperatorOverloadDocumentation> overloads) : base(typeDocumentation)
         {
             Overloads = overloads?.ToArray() ?? throw new ArgumentNullException(nameof(overloads));
            

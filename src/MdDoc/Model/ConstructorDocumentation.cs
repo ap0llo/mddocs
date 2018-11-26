@@ -4,7 +4,7 @@ namespace MdDoc.Model
 {
     public class ConstructorDocumentation : MethodDocumentation
     {
-        public ConstructorDocumentation(TypeDocumentation typeDocumentation, IEnumerable<MethodOverload> overloads) 
+        public ConstructorDocumentation(TypeDocumentation typeDocumentation, IEnumerable<MethodOverloadDocumentation> overloads) 
             : base(typeDocumentation, overloads)
         {
         }

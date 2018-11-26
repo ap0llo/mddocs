@@ -10,10 +10,10 @@ namespace MdDoc.Model
     {
         public string Name { get; }
 
-        public IReadOnlyCollection<MethodOverload> Overloads { get; }
+        public IReadOnlyCollection<MethodOverloadDocumentation> Overloads { get; }
 
 
-        public MethodDocumentation(TypeDocumentation typeDocumentation, IEnumerable<MethodOverload> overloads) : base(typeDocumentation)
+        public MethodDocumentation(TypeDocumentation typeDocumentation, IEnumerable<MethodOverloadDocumentation> overloads) : base(typeDocumentation)
         {
             Overloads = overloads?.ToArray() ?? throw new ArgumentNullException(nameof(overloads));
             Name = overloads.Select(x => x.MethodName).Distinct().Single();
