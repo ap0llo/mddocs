@@ -52,7 +52,7 @@ namespace MdDoc.Pages
 
         protected override MdSpan GetTypeNameSpan(TypeReference type, bool noLink)
         {
-            if (type.Equals(Model))
+            if (type.Equals(Model.Definition))
             {
                 return new MdTextSpan(type.Name);
             }
