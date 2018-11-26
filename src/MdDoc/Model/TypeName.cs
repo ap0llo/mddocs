@@ -31,49 +31,91 @@ namespace MdDoc.Model
         private readonly TypeReference m_TypeReference;
 
 
+        /// <summary>
+        /// Gets the type's namespace
+        /// </summary>
+        public string Namespace => m_TypeReference.Namespace;
+
+        /// <summary>
+        /// Gets the full name of the type including type parameters and namespace
+        /// </summary>
+        public string FullName => $"{Namespace}.{Name}";
+
+        /// <summary>
+        /// Gets the name of the types including type parameters
+        /// </summary>
         public string Name { get; }
+
+        /// <summary>
+        /// Gets the base name of the type (the name without type parameters)
+        /// </summary>
+        public string BaseName { get; }
+
+        /// <summary>
+        /// Gets whether the type is an array
+        /// </summary>
+        public bool IsArray => ElementType != null;
+
+        /// <summary>
+        /// Gets the array element type if the type is an array (null otherwise)
+        /// </summary>
+        public TypeName ElementType { get; }
+
+        /// <summary>
+        /// Gets the type's generic type arguments. 
+        /// For non-generic types returns an empty list
+        /// </summary>
+        public IReadOnlyList<TypeName> TypeArguments { get; } = Array.Empty<TypeName>();
 
 
         public TypeName(TypeReference typeReference)
         {
             m_TypeReference = typeReference ?? throw new ArgumentNullException(nameof(typeReference));
-            Name = GetTypeName(typeReference);
+
+            BaseName = m_TypeReference.Name;
+            if(m_TypeReference.IsArray)
+            {
+                ElementType = new TypeName(typeReference.GetElementType());
+            }
+            else if (typeReference is GenericInstanceType genericType && genericType.HasGenericArguments)
+            {
+                // The number of type parameters is appended to the type name after a '`'
+                // Remove this suffix to determine the "base name" of the type
+                BaseName = genericType.Name.Replace($"`{genericType.GenericArguments.Count}", "");
+
+                TypeArguments = genericType.GenericArguments.Select(x => new TypeName(x)).ToArray();
+            }
+
+            Name = GetTypeName();            
         }
 
 
         public override string ToString() => Name;
 
-        private string GetTypeName(TypeReference reference)
-        {
-            if (s_BuiltInTypes.ContainsKey(reference.FullName))
+        private string GetTypeName()
+        {            
+            if (s_BuiltInTypes.ContainsKey(m_TypeReference.FullName))
             {
-                return s_BuiltInTypes[reference.FullName];
+                return s_BuiltInTypes[m_TypeReference.FullName];
             }
-            else if (reference.IsArray)
-            {
-                var elementTypeName = GetTypeName(reference.GetElementType());
-                return $"{elementTypeName}[]";
+            else if (IsArray)
+            {                
+                return $"{ElementType}[]";
             }
-            else if (reference is GenericInstanceType genericType && genericType.HasGenericArguments)
+            else if (TypeArguments.Count > 0)
             {
                 var resultBuilder = new StringBuilder();
-                
-                // The numer of type parameters is appended to the type name after a '`'
-                // Remove this suffix from the type name as the parameters will be appended in C# syntax (< and >)
-                var typeName = genericType.Name.Replace($"`{genericType.GenericArguments.Count}", "");
-                resultBuilder.Append(typeName);
 
-
+                resultBuilder.Append(BaseName);
                 resultBuilder.Append("<");
-                resultBuilder.AppendJoin(", ", genericType.GenericArguments.Select(GetTypeName));
+                resultBuilder.AppendJoin(", ", TypeArguments);
                 resultBuilder.Append(">");
 
                 return resultBuilder.ToString();
-
             }
             else
             {
-                return reference.Name;
+                return m_TypeReference.Name;
             }
         }
     }
