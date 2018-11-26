@@ -10,20 +10,20 @@ namespace MdDoc.Model
     {
         public OperatorKind Kind { get; }
 
-        public IReadOnlyCollection<MethodDefinition> Definitions { get; }
+        public IReadOnlyCollection<MethodOverload> Overloads { get; }
 
 
-        public OperatorDocumentation(TypeDocumentation typeDocumentation, IEnumerable<MethodDefinition> definitions) : base(typeDocumentation)
+        public OperatorDocumentation(TypeDocumentation typeDocumentation, IEnumerable<MethodOverload> overloads) : base(typeDocumentation)
         {
-            Definitions = definitions?.ToArray() ?? throw new ArgumentNullException(nameof(definitions));
+            Overloads = overloads?.ToArray() ?? throw new ArgumentNullException(nameof(overloads));
 
             var definitionList = new List<MethodDefinition>();
 
             OperatorKind? previousKind = null;
-            foreach (var definition in definitions)
+            foreach (var overload in overloads)
             {
-                var kind = definition.GetOperatorKind() ?? throw new ArgumentException($"Method '{definition.Name}' is not a operator overload");
-                definitionList.Add(definition);
+                var kind = overload.Definition.GetOperatorKind() ?? throw new ArgumentException($"Method '{overload.MethodName}' is not a operator overload");
+                definitionList.Add(overload.Definition);
 
                 if(previousKind.HasValue && previousKind.Value != kind)
                 {

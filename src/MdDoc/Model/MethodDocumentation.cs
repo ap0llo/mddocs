@@ -12,6 +12,7 @@ namespace MdDoc.Model
 
         public IReadOnlyCollection<MethodOverload> Overloads { get; }
 
+
         public MethodDocumentation(TypeDocumentation typeDocumentation, IEnumerable<MethodOverload> overloads) : base(typeDocumentation)
         {
             Overloads = overloads?.ToArray() ?? throw new ArgumentNullException(nameof(overloads));

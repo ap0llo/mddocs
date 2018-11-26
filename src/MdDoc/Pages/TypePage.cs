@@ -234,16 +234,16 @@ namespace MdDoc.Pages
                 {
                     var operatorPage = PageFactory.TryGetPage(operatorOverload);
 
-                    foreach (var overload in operatorOverload.Definitions)
+                    foreach (var overload in operatorOverload.Overloads)
                     {
                         if(operatorPage != null)
                         {                            
-                            var link = Link(GetSignature(overload), OutputPath.GetRelativePathTo(operatorPage.OutputPath));
+                            var link = Link(GetSignature(overload.Definition), OutputPath.GetRelativePathTo(operatorPage.OutputPath));
                             table.Add(Row(link));
                         }
                         else
                         {                            
-                            table.Add(Row(GetSignature(overload)));
+                            table.Add(Row(GetSignature(overload.Definition)));
                         }
                     }
                 }

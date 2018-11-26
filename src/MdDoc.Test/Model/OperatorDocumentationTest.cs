@@ -44,7 +44,7 @@ namespace MdDoc.Test.Model
                 .Methods
                 .Single(m => m.Name == methodName);
 
-            var operatorDocumentation = new OperatorDocumentation(GetTypeDocumentation(typeof(TestClass_Operators)), new[] { methodDefinition });
+            var operatorDocumentation = new OperatorDocumentation(GetTypeDocumentation(typeof(TestClass_Operators)), new[] { new MethodOverload(methodDefinition) });
 
             Assert.Equal(expectedKind, operatorDocumentation.Kind);
 
@@ -58,7 +58,7 @@ namespace MdDoc.Test.Model
                 .Methods
                 .Single(x => x.Name == nameof(TestClass_Methods.TestMethod1));
 
-            Assert.Throws<ArgumentException>(() => new OperatorDocumentation(GetTypeDocumentation(typeof(TestClass_Methods)), new[] { method }));
+            Assert.Throws<ArgumentException>(() => new OperatorDocumentation(GetTypeDocumentation(typeof(TestClass_Methods)), new[] { new MethodOverload(method) }));
         }
 
 
@@ -67,7 +67,8 @@ namespace MdDoc.Test.Model
         {
             var methods = GetTypeDefinition(typeof(TestClass_Operators))
                 .Methods
-                .Where(x => x.GetOperatorKind() == OperatorKind.Subtraction || x.GetOperatorKind() == OperatorKind.Addition);
+                .Where(x => x.GetOperatorKind() == OperatorKind.Subtraction || x.GetOperatorKind() == OperatorKind.Addition)
+                .Select(x => new MethodOverload(x));
 
             Assert.Throws<ArgumentException>(() => new OperatorDocumentation(GetTypeDocumentation(typeof(TestClass_Operators)), methods));
         }
