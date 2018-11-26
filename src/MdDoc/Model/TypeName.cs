@@ -6,10 +6,8 @@ using System.Text;
 
 namespace MdDoc.Model
 {
-    sealed class TypeNameFormatter
-    {
-        public static readonly TypeNameFormatter Instance = new TypeNameFormatter();
-
+    public sealed class TypeName
+    {        
         private static readonly IReadOnlyDictionary<string, string> s_BuiltInTypes = new Dictionary<string, string>()
         {
             { "System.Boolean", "bool" },
@@ -30,12 +28,22 @@ namespace MdDoc.Model
 
         };
 
-        private TypeNameFormatter()
+        private readonly TypeReference m_TypeReference;
+
+
+        public string Name { get; }
+
+
+        public TypeName(TypeReference typeReference)
         {
+            m_TypeReference = typeReference ?? throw new ArgumentNullException(nameof(typeReference));
+            Name = GetTypeName(typeReference);
         }
 
 
-        public string GetTypeName(TypeReference reference)
+        public override string ToString() => Name;
+
+        private string GetTypeName(TypeReference reference)
         {
             if (s_BuiltInTypes.ContainsKey(reference.FullName))
             {

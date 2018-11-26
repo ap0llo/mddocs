@@ -1,8 +1,6 @@
-﻿using Mono.Cecil;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Text;
+using Mono.Cecil;
 
 namespace MdDoc.Model
 {
@@ -10,9 +8,7 @@ namespace MdDoc.Model
     {
         public static readonly MethodFormatter Instance = new MethodFormatter();
 
-        private readonly TypeNameFormatter m_TypeNameFormatter = TypeNameFormatter.Instance;
-
-
+        
         private MethodFormatter()
         { }
 
@@ -40,7 +36,7 @@ namespace MdDoc.Model
             signatureBuilder.Append("(");
             signatureBuilder.AppendJoin(
                 ", ",
-                method.Parameters.Select(p => $"{m_TypeNameFormatter.GetTypeName(p.ParameterType)} {p.Name}")
+                method.Parameters.Select(p => $"{new TypeName(p.ParameterType)} {p.Name}")
             );
             signatureBuilder.Append(")");
 

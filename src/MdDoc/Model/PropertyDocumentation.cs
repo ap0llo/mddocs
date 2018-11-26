@@ -7,8 +7,6 @@ namespace MdDoc.Model
 {
     public class PropertyDocumentation : MemberDocumentation
     {
-        private readonly TypeNameFormatter m_TypeNameFormatter = TypeNameFormatter.Instance;
-
         public string Name => Definition.Name;
 
         public TypeReference Type => Definition.PropertyType;
@@ -27,7 +25,7 @@ namespace MdDoc.Model
 
                 var definitionBuilder = new StringBuilder();
                 definitionBuilder.Append("public ");
-                definitionBuilder.Append(m_TypeNameFormatter.GetTypeName(Definition.PropertyType));
+                definitionBuilder.Append(new TypeName(Definition.PropertyType));
                 definitionBuilder.Append(" ");
 
                 if(Definition.HasParameters)
@@ -41,7 +39,7 @@ namespace MdDoc.Model
 
                     definitionBuilder.AppendJoin(
                         ", ",
-                        Definition.Parameters.Select(x => $"{m_TypeNameFormatter.GetTypeName(x.ParameterType)} {x.Name}")
+                        Definition.Parameters.Select(x => $"{new TypeName(x.ParameterType)} {x.Name}")
                     );
 
                     definitionBuilder.Append("]");
