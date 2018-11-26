@@ -1,6 +1,5 @@
 ﻿using Mono.Cecil;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
@@ -8,6 +7,8 @@ namespace MdDoc.Model
 {
     public class PropertyDocumentation : MemberDocumentation
     {
+        private readonly TypeNameFormatter m_TypeNameFormatter = TypeNameFormatter.Instance;
+
         public string Name => Definition.Name;
 
         public TypeReference Type => Definition.PropertyType;
@@ -26,7 +27,7 @@ namespace MdDoc.Model
 
                 var definitionBuilder = new StringBuilder();
                 definitionBuilder.Append("public ");
-                definitionBuilder.Append(GetTypeName(Definition.PropertyType));
+                definitionBuilder.Append(m_TypeNameFormatter.GetTypeName(Definition.PropertyType));
                 definitionBuilder.Append(" ");
 
                 if(Definition.HasParameters)
@@ -40,7 +41,7 @@ namespace MdDoc.Model
 
                     definitionBuilder.AppendJoin(
                         ", ",
-                        Definition.Parameters.Select(x => $"{GetTypeName(x.ParameterType)} {x.Name}")
+                        Definition.Parameters.Select(x => $"{m_TypeNameFormatter.GetTypeName(x.ParameterType)} {x.Name}")
                     );
 
                     definitionBuilder.Append("]");
@@ -73,47 +74,6 @@ namespace MdDoc.Model
         {
             Definition = definition ?? throw new ArgumentNullException(nameof(definition));
         }        
-
-
-        private string GetTypeName(TypeReference type)
-        {
-            switch (type.FullName)
-            {
-                case "System.Boolean":
-                    return "bool";
-                case "System.Byte":
-                    return "byte";
-                case "System.SByte":
-                    return "sbyte";
-                case "System.Char":
-                    return "char";
-                case "System.Decimal":
-                    return "decimal";
-                case "System.Double":
-                    return "double";
-                case "System.Single":
-                    return "float";
-                case "System.Int32":
-                    return "int";
-                case "System.UInt32":
-                    return "uint";
-                case "System.Int64":
-                    return "long";
-                case "System.UInt64":
-                    return "ulong";
-                case "System.Object":
-                    return "object";
-                case "System.Int16":
-                    return "short";
-                case "System.UInt16":
-                    return "ushort";
-                case "System.String":
-                    return "string";
-                default:
-                    return type.Name;
-            }
-
-        }
 
     }
 }

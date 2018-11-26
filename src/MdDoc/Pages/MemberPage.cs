@@ -50,13 +50,6 @@ namespace MdDoc.Pages
                     Heading(GetSignature(method), 2)
                 );
 
-                //block.Add(
-                //    Paragraph(
-                //        m_Context.XmlDocProvider.TryGetDocumentation(method).Summary
-                //));
-
-                //TODO: Attributes
-
                 if (method.Parameters.Any())
                 {
                     var table = Table(Row("Name", "Type", "Description"));
@@ -75,7 +68,6 @@ namespace MdDoc.Pages
                         table
                     );
                 }
-
             }
         }
     }

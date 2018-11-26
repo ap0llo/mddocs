@@ -95,7 +95,7 @@ namespace MdDoc.Pages
             var parameters = method
                 .Parameters
                 .Select(x => x.ParameterType)
-                .Select(t => GetTypeNameSpan(t, true))
+                .Select(t => GetTypeNameSpan(t, noLink: true))
                 .Join(", ");
 
             return CompositeSpan(methodName, "(", parameters, ")");
