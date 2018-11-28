@@ -9,12 +9,10 @@ namespace MdDoc.Model
     {
         public ModuleDocumentation ModuleDocumentation { get; }
 
-        public string Name => Definition.Name;
-
-        public string Namespace => Definition.Namespace;
-
+        public TypeName Name { get; }
+        
         public string AssemblyName => Definition.Module.Assembly.Name.Name;
-
+        
         public TypeKind Kind { get; }
         
         public TypeDefinition Definition { get; }    
@@ -31,11 +29,11 @@ namespace MdDoc.Model
 
         public IReadOnlyCollection<OperatorDocumentation> Operators { get; }
         
-        public IReadOnlyCollection<TypeReference> InheritanceHierarchy { get; }
+        public IReadOnlyCollection<TypeName> InheritanceHierarchy { get; }
 
-        public IReadOnlyCollection<TypeReference> ImplementedInterfaces { get; }
+        public IReadOnlyCollection<TypeName> ImplementedInterfaces { get; }
 
-        public IReadOnlyCollection<TypeReference> Attributes { get; }
+        public IReadOnlyCollection<TypeName> Attributes { get; }
 
 
         public TypeDocumentation(ModuleDocumentation moduleDocumentation, TypeDefinition definition)
@@ -43,6 +41,7 @@ namespace MdDoc.Model
             ModuleDocumentation = moduleDocumentation ?? throw new ArgumentNullException(nameof(moduleDocumentation));
             Definition = definition ?? throw new ArgumentNullException(nameof(definition));
             Kind = definition.Kind();
+            Name = new TypeName(definition);
 
             Fields = definition.Fields
                 .Where(field => field.IsPublic && !field.Attributes.HasFlag(FieldAttributes.SpecialName))                
@@ -76,39 +75,39 @@ namespace MdDoc.Model
                .ToArray();
             
             InheritanceHierarchy = LoadInheritanceHierarchy();
-            Attributes = Definition.CustomAttributes.Select(x => x.AttributeType).ToArray();
+            Attributes = Definition.CustomAttributes.Select(x => new TypeName(x.AttributeType)).ToArray();
             ImplementedInterfaces = LoadImplementedInterfaces();
 
         }
 
 
-        public TypeDocumentation TryGetDocumentation(TypeReference typeReference) => ModuleDocumentation.TryGetDocumentation(typeReference);
+        public TypeDocumentation TryGetDocumentation(TypeName type) => ModuleDocumentation.TryGetDocumentation(type);
 
 
-        private IReadOnlyCollection<TypeReference> LoadInheritanceHierarchy()
+        private IReadOnlyCollection<TypeName> LoadInheritanceHierarchy()
         {
             if (Kind == TypeKind.Interface)
-                return Array.Empty<TypeReference>();
+                return Array.Empty<TypeName>();
 
-            var inheritance = new LinkedList<TypeReference>();
-            inheritance.AddFirst(Definition);
+            var inheritance = new LinkedList<TypeName>();
+            inheritance.AddFirst(Name);
             
             var currentBaseType = Definition.BaseType.Resolve();
             while (currentBaseType != null)
             {
-                inheritance.AddFirst(currentBaseType);
+                inheritance.AddFirst(new TypeName(currentBaseType));
                 currentBaseType = currentBaseType.BaseType?.Resolve();
             }
 
             return inheritance;
         }
 
-        private IReadOnlyCollection<TypeReference> LoadImplementedInterfaces()
+        private IReadOnlyCollection<TypeName> LoadImplementedInterfaces()
         {
             if (!Definition.HasInterfaces)
-                return Array.Empty<TypeReference>();
+                return Array.Empty<TypeName>();
             else
-                return Definition.Interfaces.Select(x => x.InterfaceType).ToArray();
+                return Definition.Interfaces.Select(x => new TypeName(x.InterfaceType)).ToArray();
         }
     }
 }

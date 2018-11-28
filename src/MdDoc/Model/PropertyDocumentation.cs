@@ -9,7 +9,7 @@ namespace MdDoc.Model
     {
         public string Name => Definition.Name;
 
-        public TypeReference Type => Definition.PropertyType;
+        public TypeName Type { get; }
 
         // Indexeres are modeled as properties with parameters
         public bool IsIndexer => Definition.HasParameters;
@@ -71,6 +71,7 @@ namespace MdDoc.Model
         public PropertyDocumentation(TypeDocumentation typeDocumentation, PropertyDefinition definition) : base(typeDocumentation)
         {
             Definition = definition ?? throw new ArgumentNullException(nameof(definition));
+            Type = new TypeName(definition.PropertyType);
         }        
 
     }

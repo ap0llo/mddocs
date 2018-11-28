@@ -22,7 +22,7 @@ namespace MdDoc.Test
         }
 
 
-        protected TypeReference GetTypeReference(Type t) => GetTypeDefinition(t);
+        protected TypeName GetTypeName(Type t) => GetTypeDefinition(t).ToTypeName();
         
         protected TypeDefinition GetTypeDefinition(Type t)
         {

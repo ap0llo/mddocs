@@ -9,7 +9,7 @@ namespace MdDoc.Model
 {
     public class ModuleDocumentation : IDocumentation
     {
-        private readonly IDictionary<TypeReference, TypeDocumentation> m_Types;
+        private readonly IDictionary<TypeName, TypeDocumentation> m_Types;
 
 
         public AssemblyDocumentation AssemblyDocumentation { get; }
@@ -28,14 +28,14 @@ namespace MdDoc.Model
 
             m_Types = Definition.Types
                 .Where(t => t.IsPublic)
-                .ToDictionary(typeDefinition => (TypeReference)typeDefinition, typeDefinition => new TypeDocumentation(this, typeDefinition));
+                .ToDictionary(typeDefinition => new TypeName(typeDefinition), typeDefinition => new TypeDocumentation(this, typeDefinition));
 
             Types = ReadOnlyCollectionAdapter.Create(m_Types.Values);
 
         }
 
 
-        public TypeDocumentation TryGetDocumentation(TypeReference typeReference) => m_Types.GetValueOrDefault(typeReference);
+        public TypeDocumentation TryGetDocumentation(TypeName type) => m_Types.GetValueOrDefault(type);
 
     }
 }

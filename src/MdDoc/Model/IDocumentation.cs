@@ -8,6 +8,6 @@ namespace MdDoc.Model
         /// Tries to get the documentation for the specified type
         /// </summary>
         /// <returns>Returns documentation for the specified type or null if the type is unknown or not documented</returns>
-        TypeDocumentation TryGetDocumentation(TypeReference typeReference);
+        TypeDocumentation TryGetDocumentation(TypeName type);
     }
 }

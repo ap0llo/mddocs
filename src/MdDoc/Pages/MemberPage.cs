@@ -2,7 +2,6 @@
 using System.Linq;
 using Grynwald.MarkdownGenerator;
 using MdDoc.Model;
-using Mono.Cecil;
 
 using static Grynwald.MarkdownGenerator.FactoryMethods;
 
@@ -18,7 +17,7 @@ namespace MdDoc.Pages
         {
             block.Add(
                 Paragraph(
-                    Bold("Declaring Type:"), " ", GetTypeNameSpan(Model.TypeDocumentation)
+                    Bold("Declaring Type:"), " ", GetTypeNameSpan(Model.TypeDocumentation.Name)
             ));
         }
 

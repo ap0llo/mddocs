@@ -28,13 +28,11 @@ namespace MdDoc.Model
 
         };
 
-        private readonly TypeReference m_TypeReference;
-
 
         /// <summary>
         /// Gets the type's namespace
         /// </summary>
-        public string Namespace => m_TypeReference.Namespace;
+        public string Namespace => Defintion.Namespace;
 
         /// <summary>
         /// Gets the full name of the type including type parameters and namespace
@@ -67,17 +65,19 @@ namespace MdDoc.Model
         /// </summary>
         public IReadOnlyList<TypeName> TypeArguments { get; } = Array.Empty<TypeName>();
 
+        internal TypeReference Defintion { get; }
 
-        public TypeName(TypeReference typeReference)
+
+        public TypeName(TypeReference definition)
         {
-            m_TypeReference = typeReference ?? throw new ArgumentNullException(nameof(typeReference));
+            Defintion = definition ?? throw new ArgumentNullException(nameof(definition));
 
-            BaseName = m_TypeReference.Name;
-            if(m_TypeReference.IsArray)
+            BaseName = Defintion.Name;
+            if(Defintion.IsArray)
             {
-                ElementType = new TypeName(typeReference.GetElementType());
+                ElementType = new TypeName(definition.GetElementType());
             }
-            else if (typeReference is GenericInstanceType genericType && genericType.HasGenericArguments)
+            else if (definition is GenericInstanceType genericType && genericType.HasGenericArguments)
             {
                 // The number of type parameters is appended to the type name after a '`'
                 // Remove this suffix to determine the "base name" of the type
@@ -94,9 +94,9 @@ namespace MdDoc.Model
 
         private string GetTypeName()
         {            
-            if (s_BuiltInTypes.ContainsKey(m_TypeReference.FullName))
+            if (s_BuiltInTypes.ContainsKey(Defintion.FullName))
             {
-                return s_BuiltInTypes[m_TypeReference.FullName];
+                return s_BuiltInTypes[Defintion.FullName];
             }
             else if (IsArray)
             {                
@@ -115,18 +115,18 @@ namespace MdDoc.Model
             }
             else
             {
-                return m_TypeReference.Name;
+                return Defintion.Name;
             }
         }
 
 
-        public override int GetHashCode() => m_TypeReference.GetHashCode();
+        public override int GetHashCode() => Defintion.GetHashCode();
 
         public override bool Equals(object obj) => Equals(obj as TypeName);
 
         public bool Equals(TypeName other)
         {
-            return other != null && m_TypeReference.Equals(other.m_TypeReference);
+            return other != null && Defintion.Equals(other.Defintion);
         }
 
     }

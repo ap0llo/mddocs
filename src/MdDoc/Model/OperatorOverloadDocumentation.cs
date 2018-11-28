@@ -17,7 +17,7 @@ namespace MdDoc.Model
         }
 
 
-        public override TypeDocumentation TryGetDocumentation(TypeReference typeReference) => 
-            OperatorDocumentation.TryGetDocumentation(typeReference);
+        public override TypeDocumentation TryGetDocumentation(TypeName type) => 
+            OperatorDocumentation.TryGetDocumentation(type);
     }
 }

@@ -85,7 +85,7 @@ namespace MdDoc.Test.Model
         public void TryGetDocumentation_returns_null_for_an_undocumented_type()
         {
             // ARRANGE
-            var typeReference = GetTypeReference(typeof(TestClass_InternalType));
+            var typeReference = GetTypeName(typeof(TestClass_InternalType));
             var sut = m_AssemblyDocumentation.MainModuleDocumentation;
 
             // ACT
@@ -100,15 +100,15 @@ namespace MdDoc.Test.Model
         public void TryGetDocumenation_returns_expected_documentation_item_for_an_documented_type()
         {
             // ARRANGE
-            var typeReference = GetTypeReference(typeof(TestClass_Type));
+            var typeName = GetTypeName(typeof(TestClass_Type));
             var sut = m_AssemblyDocumentation.MainModuleDocumentation;
 
             // ACT
-            var documentation = sut.TryGetDocumentation(typeReference);
+            var documentation = sut.TryGetDocumentation(typeName);
 
             // ASSERT
             Assert.NotNull(documentation);
-            Assert.Equal(typeReference, documentation.Definition);
+            Assert.Equal(typeName, documentation.Name);
         }
 
     }

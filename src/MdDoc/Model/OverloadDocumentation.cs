@@ -27,6 +27,6 @@ namespace MdDoc.Model
                 : definition.Parameters.Select(p => new ParameterDocumentation(this, p)).ToArray();
         }
 
-        public abstract TypeDocumentation TryGetDocumentation(TypeReference typeReference);
+        public abstract TypeDocumentation TryGetDocumentation(TypeName type);
     }
 }

@@ -34,7 +34,7 @@ namespace MdDoc.Model
             return new AssemblyDocumentation(assemblyDefinition);
         }
 
-        public TypeDocumentation TryGetDocumentation(TypeReference typeReference) => 
-            MainModuleDocumentation.TryGetDocumentation(typeReference);
+        public TypeDocumentation TryGetDocumentation(TypeName type) => 
+            MainModuleDocumentation.TryGetDocumentation(type);
     }
 }

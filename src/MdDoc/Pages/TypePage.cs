@@ -3,7 +3,6 @@ using System.IO;
 using System.Linq;
 using Grynwald.MarkdownGenerator;
 using MdDoc.Model;
-using Mono.Cecil;
 
 using static Grynwald.MarkdownGenerator.FactoryMethods;
 
@@ -50,7 +49,7 @@ namespace MdDoc.Pages
         }
 
 
-        protected override MdSpan GetTypeNameSpan(TypeReference type, bool noLink)
+        protected override MdSpan GetTypeNameSpan(TypeName type, bool noLink)
         {
             if (type.Equals(Model.Definition))
             {
@@ -67,7 +66,7 @@ namespace MdDoc.Pages
         {
             // Add Namespace 
             block.Add(
-                Paragraph(Bold("Namespace:"), " " + Model.Namespace)
+                Paragraph(Bold("Namespace:"), " " + Model.Name.Namespace)
             );
 
             // Add Assembly

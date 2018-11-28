@@ -1,6 +1,5 @@
 ﻿using Grynwald.MarkdownGenerator;
 using MdDoc.Model;
-using Mono.Cecil;
 using System;
 using System.IO;
 using System.Linq;
@@ -31,29 +30,24 @@ namespace MdDoc.Pages
 
         public abstract void Save();
 
+        
+        protected virtual MdSpan GetTypeNameSpan(TypeName type) => GetTypeNameSpan(type, false);
 
-        protected virtual MdSpan GetTypeNameSpan(TypeDocumentation type) => GetTypeNameSpan(type.Definition, false);
-
-        protected virtual MdSpan GetTypeNameSpan(TypeReference type) => GetTypeNameSpan(type, false);
-
-        protected virtual MdSpan GetTypeNameSpan(TypeReference type, bool noLink)
+        //TODO: Add tests
+        protected virtual MdSpan GetTypeNameSpan(TypeName type, bool noLink)
         {
             if (type.IsArray)
             {
-                var elementTypeSpan = GetTypeNameSpan(type.GetElementType(), noLink);
+                var elementTypeSpan = GetTypeNameSpan(type.ElementType, noLink);
                 return new MdCompositeSpan(elementTypeSpan, $"[]");
             }
 
-            if (type is GenericInstanceType genericType && genericType.HasGenericArguments)
-            {
-                var arguments = genericType.GenericArguments;
-
-                var typeName = genericType.Name.Replace($"`{arguments.Count}", "");
-
+            if (type.TypeArguments.Count > 0)
+            {                
                 return CompositeSpan(
-                    typeName,
+                    type.BaseName,
                     "<",
-                    arguments.Select(t => GetTypeNameSpan(t, noLink)).Join(", "),
+                    type.TypeArguments.Select(t => GetTypeNameSpan(t, noLink)).Join(", "),
                     ">"
                 );
             }
@@ -90,8 +84,17 @@ namespace MdDoc.Pages
 
         protected string GetTypeDir(TypeDocumentation type)
         {
-            var dir = Path.Combine(m_RootOutputPath, String.Join('/', type.Namespace.Split(s_SplitChars)));
-            return Path.Combine(dir, type.Name);
+            var namespaceDir = Path.Combine(m_RootOutputPath, String.Join('/', type.Name.Namespace.Split(s_SplitChars)));
+
+            var dirName = type.Name.BaseName;
+            if(type.Name.TypeArguments.Count > 0)
+            {
+                dirName += "-" + type.Name.TypeArguments.Count;
+            }
+
+            return Path.Combine(namespaceDir, dirName);
         }
     }
+
+
 }

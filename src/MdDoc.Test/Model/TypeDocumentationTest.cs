@@ -282,7 +282,7 @@ namespace MdDoc.Test.Model
 
             Assert.NotNull(sut.InheritanceHierarchy);
             Assert.Equal(expectedSequence.Length, sut.InheritanceHierarchy.Count);
-            Assert.True(expectedSequence.SequenceEqual(sut.InheritanceHierarchy.Select(x => x.FullName)));            
+            Assert.True(expectedSequence.SequenceEqual(sut.InheritanceHierarchy.Select(x => x.Defintion.FullName)));            
         }
 
         [Fact]
@@ -299,7 +299,7 @@ namespace MdDoc.Test.Model
 
             Assert.NotNull(sut.InheritanceHierarchy);
             Assert.Equal(expectedSequence.Length, sut.InheritanceHierarchy.Count);
-            Assert.True(expectedSequence.SequenceEqual(sut.InheritanceHierarchy.Select(x => x.FullName)));
+            Assert.True(expectedSequence.SequenceEqual(sut.InheritanceHierarchy.Select(x => x.Defintion.FullName)));
         }
 
 
@@ -318,7 +318,7 @@ namespace MdDoc.Test.Model
 
             Assert.NotNull(sut.InheritanceHierarchy);
             Assert.Equal(expectedSequence.Length, sut.InheritanceHierarchy.Count);       
-            Assert.True(expectedSequence.SequenceEqual(sut.InheritanceHierarchy.Select(x => x.FullName)));
+            Assert.True(expectedSequence.SequenceEqual(sut.InheritanceHierarchy.Select(x => x.Defintion.FullName)));
         }
 
         [Fact]
@@ -365,11 +365,11 @@ namespace MdDoc.Test.Model
         public void TryGetDocumentation_returns_null_for_an_undocumented_type()
         {
             // ARRANGE
-            var typeReference = GetTypeReference(typeof(TestClass_InternalType));
+            var typeName = GetTypeName(typeof(TestClass_InternalType));
             var sut = GetTypeDocumentation(typeof(TestClass_Type));
             
             // ACT
-            var documentation = sut.TryGetDocumentation(typeReference);
+            var documentation = sut.TryGetDocumentation(typeName);
 
             // ASSERT
             Assert.Null(documentation);
@@ -379,15 +379,15 @@ namespace MdDoc.Test.Model
         public void TryGetDocumenation_returns_expected_documentation_item_for_an_documented_type()
         {
             // ARRANGE
-            var typeReference = GetTypeReference(typeof(TestClass_Type));
+            var typeName = GetTypeName(typeof(TestClass_Type));
             var sut = GetTypeDocumentation(typeof(TestClass_Type));
 
             // ACT
-            var documentation = sut.TryGetDocumentation(typeReference);
+            var documentation = sut.TryGetDocumentation(typeName);
 
             // ASSERT
             Assert.NotNull(documentation);
-            Assert.Equal(typeReference, (TypeReference)documentation.Definition);
+            Assert.Equal(typeName, documentation.Name);
         }
 
 
@@ -434,7 +434,7 @@ namespace MdDoc.Test.Model
             // ASSERT
             Assert.NotNull(sut.ImplementedInterfaces);
             Assert.Equal(2, sut.ImplementedInterfaces.Count);
-            Assert.Contains(sut.ImplementedInterfaces, i => i.Equals(GetTypeReference(typeof(TestInterface_Type))));
+            Assert.Contains(sut.ImplementedInterfaces, i => i.Equals(GetTypeName(typeof(TestInterface_Type))));
             Assert.Contains(sut.ImplementedInterfaces, i => i.FullName == "System.IDisposable");
         }
 
@@ -458,7 +458,7 @@ namespace MdDoc.Test.Model
             // ASSERT
             Assert.NotNull(sut.ImplementedInterfaces);
             Assert.Equal(2, sut.ImplementedInterfaces.Count);
-            Assert.Contains(sut.ImplementedInterfaces, i => i.Equals(GetTypeReference(typeof(TestInterface_Type))));
+            Assert.Contains(sut.ImplementedInterfaces, i => i.Equals(GetTypeName(typeof(TestInterface_Type))));
             Assert.Contains(sut.ImplementedInterfaces, i => i.FullName == "System.IDisposable");
         }
 

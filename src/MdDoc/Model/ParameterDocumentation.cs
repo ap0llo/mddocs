@@ -9,7 +9,7 @@ namespace MdDoc.Model
     {
         public string Name => Definition.Name;
 
-        public TypeReference Type => Definition.ParameterType;
+        public TypeName Type { get; }
 
         public OverloadDocumentation OverloadDocumentation { get; }
 
@@ -20,10 +20,11 @@ namespace MdDoc.Model
         {
             OverloadDocumentation = overloadDocumentation ?? throw new ArgumentNullException(nameof(overloadDocumentation));
             Definition = definition ?? throw new ArgumentNullException(nameof(definition));
+            Type = new TypeName(definition.ParameterType);
         }
 
 
-        public TypeDocumentation TryGetDocumentation(TypeReference typeReference) => 
-            OverloadDocumentation.TryGetDocumentation(typeReference);
+        public TypeDocumentation TryGetDocumentation(TypeName type) => 
+            OverloadDocumentation.TryGetDocumentation(type);
     }
 }

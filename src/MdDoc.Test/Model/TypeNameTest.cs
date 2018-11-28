@@ -118,13 +118,7 @@ namespace MdDoc.Test.Model
         [InlineData(typeof(TestClass_TypeName), "MdDoc.Test.TestData")]
         public void Namespace_returns_the_expected_value(Type type, string expectedNamespace)
         {
-            // ARRANGE
-            var typeReference = GetTypeReference(type);
-                
-            // ACT
-            var typeName = new TypeName(typeReference);
-
-            // ASSERT
+            var typeName = GetTypeName(type);
             Assert.Equal(expectedNamespace, typeName.Namespace);
         }
 
@@ -132,13 +126,7 @@ namespace MdDoc.Test.Model
         [InlineData(typeof(TestClass_TypeName), "MdDoc.Test.TestData.TestClass_TypeName")]
         public void FullName_returns_the_expected_value(Type type, string expectedFullName)
         {
-            // ARRANGE
-            var typeReference = GetTypeReference(type);
-
-            // ACT
-            var typeName = new TypeName(typeReference);
-
-            // ASSERT
+            var typeName = GetTypeName(type);
             Assert.Equal(expectedFullName, typeName.FullName);
         }
 
