@@ -1,8 +1,9 @@
 ﻿using System;
+using System.IO;
 
 namespace MdDoc
 {
-    public sealed class OutputPath
+    public sealed class OutputPath : IEquatable<OutputPath>
     {        
         public string Value { get; }
 
@@ -19,7 +20,7 @@ namespace MdDoc
             if (String.IsNullOrEmpty(value))
                 throw new ArgumentException("Value must not be empty", nameof(value));
 
-            Value = value;
+            Value = Path.GetFullPath(value).Normalize();
         }
 
 
@@ -32,6 +33,13 @@ namespace MdDoc
         }
 
         public string GetRelativePathTo(OutputPath absolutePath) => GetRelativePathTo(absolutePath.Value);
+
+        public override int GetHashCode() => StringComparer.OrdinalIgnoreCase.GetHashCode(Value);
+
+        public override bool Equals(object obj) => Equals(obj as OutputPath);
+
+        public bool Equals(OutputPath other) => 
+            other != null && StringComparer.OrdinalIgnoreCase.Equals(Value, other.Value);
 
 
         public static implicit operator string(OutputPath instance) => instance?.Value;

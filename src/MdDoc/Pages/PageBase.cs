@@ -34,7 +34,7 @@ namespace MdDoc.Pages
         protected virtual MdSpan GetTypeNameSpan(TypeName type) => GetTypeNameSpan(type, false);
 
         //TODO: Add tests
-        protected virtual MdSpan GetTypeNameSpan(TypeName type, bool noLink)
+        protected MdSpan GetTypeNameSpan(TypeName type, bool noLink)
         {
             if (type.IsArray)
             {
@@ -69,9 +69,13 @@ namespace MdDoc.Pages
                 {
                     return new MdTextSpan(type.Name);
                 }
-                else
+                else if(OutputPath.Equals(typePage.OutputPath))
                 {
-                                        
+                    // do not create self-links
+                    return new MdTextSpan(type.Name);
+                }
+                else
+                {                                        
                     return new MdLinkSpan(
                         type.Name,
                         OutputPath.GetRelativePathTo(typePage.OutputPath)

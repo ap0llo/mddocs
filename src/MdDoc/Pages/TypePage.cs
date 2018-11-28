@@ -49,19 +49,6 @@ namespace MdDoc.Pages
         }
 
 
-        protected override MdSpan GetTypeNameSpan(TypeName type, bool noLink)
-        {
-            if (type.Equals(Model.Definition))
-            {
-                return new MdTextSpan(type.Name);
-            }
-            else
-            {
-                return base.GetTypeNameSpan(type, noLink);
-            }
-        }
-
-
         private void AddTypeInfoSection(MdContainerBlock block)
         {
             // Add Namespace 
