@@ -3,7 +3,6 @@ using Mono.Cecil;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace MdDoc.Model
 {
@@ -14,10 +13,9 @@ namespace MdDoc.Model
 
         public AssemblyDocumentation AssemblyDocumentation { get; }
 
-        public ModuleDefinition Definition { get; }
-
         public IReadOnlyCollection<TypeDocumentation> Types { get; }
 
+        internal ModuleDefinition Definition { get; }
 
 
         public ModuleDocumentation(AssemblyDocumentation assemblyDocumentation, ModuleDefinition definition)

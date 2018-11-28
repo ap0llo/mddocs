@@ -1,5 +1,4 @@
 ﻿using System;
-using Mono.Cecil;
 
 namespace MdDoc.Model
 {

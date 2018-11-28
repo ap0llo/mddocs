@@ -1,7 +1,7 @@
-﻿using Mono.Cecil;
-using System;
+﻿using System;
 using System.Linq;
 using System.Text;
+using Mono.Cecil;
 
 namespace MdDoc.Model
 {
@@ -14,7 +14,7 @@ namespace MdDoc.Model
         // Indexeres are modeled as properties with parameters
         public bool IsIndexer => Definition.HasParameters;
 
-        public PropertyDefinition Definition { get; }
+        internal PropertyDefinition Definition { get; }
 
         public string CSharpDefinition
         {

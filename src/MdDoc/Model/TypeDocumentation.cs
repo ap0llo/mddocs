@@ -1,7 +1,7 @@
-﻿using Mono.Cecil;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Mono.Cecil;
 
 namespace MdDoc.Model
 {
@@ -15,8 +15,6 @@ namespace MdDoc.Model
         
         public TypeKind Kind { get; }
         
-        public TypeDefinition Definition { get; }    
-
         public IReadOnlyCollection<FieldDocumentation> Fields { get; }
 
         public IReadOnlyCollection<EventDocumentation> Events { get; }
@@ -34,6 +32,8 @@ namespace MdDoc.Model
         public IReadOnlyCollection<TypeName> ImplementedInterfaces { get; }
 
         public IReadOnlyCollection<TypeName> Attributes { get; }
+
+        internal TypeDefinition Definition { get; }
 
 
         public TypeDocumentation(ModuleDocumentation moduleDocumentation, TypeDefinition definition)

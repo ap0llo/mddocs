@@ -7,7 +7,7 @@ namespace MdDoc.Model
 {
     public class AssemblyDocumentation : IDisposable, IDocumentation
     {
-        public AssemblyDefinition Definition { get; }
+        internal AssemblyDefinition Definition { get; }
 
         public ModuleDocumentation MainModuleDocumentation { get; }
 

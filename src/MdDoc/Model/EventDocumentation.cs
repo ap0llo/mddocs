@@ -9,7 +9,7 @@ namespace MdDoc.Model
     {
         public string Name => Definition.Name;
 
-        public EventDefinition Definition { get; }
+        internal EventDefinition Definition { get; }
 
 
         public EventDocumentation(TypeDocumentation typeDocumentation, EventDefinition definition) : base(typeDocumentation)

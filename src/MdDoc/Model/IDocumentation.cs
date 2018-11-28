@@ -1,6 +1,4 @@
-﻿using Mono.Cecil;
-
-namespace MdDoc.Model
+﻿namespace MdDoc.Model
 {
     public interface IDocumentation
     {

@@ -9,7 +9,7 @@ namespace MdDoc.Model
     {
         public string Name => Definition.Name;
 
-        public FieldDefinition Definition { get; }
+        internal FieldDefinition Definition { get; }
 
 
         public FieldDocumentation(TypeDocumentation typeDocumentation, FieldDefinition definition) : base(typeDocumentation)

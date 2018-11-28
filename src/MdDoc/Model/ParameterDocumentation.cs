@@ -1,7 +1,5 @@
 ﻿using Mono.Cecil;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MdDoc.Model
 {
@@ -13,7 +11,7 @@ namespace MdDoc.Model
 
         public OverloadDocumentation OverloadDocumentation { get; }
 
-        public ParameterDefinition Definition { get; }
+        internal ParameterDefinition Definition { get; }
 
 
         public ParameterDocumentation(OverloadDocumentation overloadDocumentation, ParameterDefinition definition)

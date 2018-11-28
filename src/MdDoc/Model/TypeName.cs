@@ -1,8 +1,8 @@
-﻿using Mono.Cecil;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Mono.Cecil;
 
 namespace MdDoc.Model
 {
@@ -24,8 +24,7 @@ namespace MdDoc.Model
             { "System.Object", "object" },
             { "System.Int16", "short" },
             { "System.UInt16", "ushort" },
-            { "System.String", "string" },
-
+            { "System.String", "string" }
         };
 
 
