@@ -6,7 +6,7 @@ using System.Text;
 
 namespace MdDoc.Model
 {
-    public sealed class TypeName
+    public sealed class TypeName : IEquatable<TypeName>
     {        
         private static readonly IReadOnlyDictionary<string, string> s_BuiltInTypes = new Dictionary<string, string>()
         {
@@ -118,5 +118,16 @@ namespace MdDoc.Model
                 return m_TypeReference.Name;
             }
         }
+
+
+        public override int GetHashCode() => m_TypeReference.GetHashCode();
+
+        public override bool Equals(object obj) => Equals(obj as TypeName);
+
+        public bool Equals(TypeName other)
+        {
+            return other != null && m_TypeReference.Equals(other.m_TypeReference);
+        }
+
     }
 }
