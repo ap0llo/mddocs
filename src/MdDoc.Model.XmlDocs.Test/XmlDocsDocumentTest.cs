@@ -22,11 +22,11 @@ namespace MdDoc.Model.XmlDocs.Test
         public void Members_returns_the_expected_elements()
         {
             var document = new XDocument(
-                new XElement("doc"), 
-                new XElement("members",
-                    new XElement("member", new XAttribute("name", "Member1")),
-                    new XElement("member", new XAttribute("name", "Member2"))
-            ));
+                new XElement("doc", 
+                    new XElement("members",
+                        new XElement("member", new XAttribute("name", "Member1")),
+                        new XElement("member", new XAttribute("name", "Member2"))
+            )));
         
             var xmlDocs = new XmlDocsDocument(document);
 

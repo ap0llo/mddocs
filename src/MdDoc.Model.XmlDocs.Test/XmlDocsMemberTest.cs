@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 using Xunit;
 
 namespace MdDoc.Model.XmlDocs.Test
 {
-    public class XmlDocsMemberTest
+    public class XmlDocsMemberTest : TestBase
     {
         [Fact]
         public void Constructor_throws_Exception_if_element_name_is_not_member()
@@ -38,6 +39,14 @@ namespace MdDoc.Model.XmlDocs.Test
             Assert.Equal("SomeName", member.Name);
         }
 
+        [Fact]
+        public void A_members_summary_is_loaded()
+        {
+            var testData = GetMember("T:MdDoc.Test.TestData.TestClass_XmlDocs");
 
+            var sut = new XmlDocsMember(testData);
+            
+            Assert.NotNull(sut.Summary);            
+        }
     }
 }

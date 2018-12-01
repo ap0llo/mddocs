@@ -5,26 +5,35 @@ namespace MdDoc.Model.XmlDocs
 {
     public class XmlDocsMember
     {
-        private readonly XElement m_Element;
-
-
         public string Name { get; }
 
+        public XmlDocsTextBlock Summary { get; }
 
-        public XmlDocsMember(XElement element)
+        internal XElement Xml { get; }
+
+
+        public XmlDocsMember(XElement xml)
         {
-            if (element.Name != "member")
-                throw new InvalidXmlDocsException($"Unrecognized element name '{element.Name}', expected 'member'");
+            if (xml.Name != "member")
+                throw new InvalidXmlDocsException($"Unrecognized element name '{xml.Name}', expected 'member'");
 
-            var nameAttribute = element.Attribute("name");
+            var nameAttribute = xml.Attribute("name");
             if (nameAttribute == null)
                 throw new InvalidXmlDocsException("Attribute 'name' is missing");
 
             if (String.IsNullOrEmpty(nameAttribute.Value))
                 throw new InvalidXmlDocsException("Value of attribute 'name' must not be empty");
 
-            m_Element = element ?? throw new ArgumentNullException(nameof(element));
+            Xml = xml ?? throw new ArgumentNullException(nameof(xml));
             Name = nameAttribute.Value;
+            
+
+            foreach(var element in xml.Elements())
+            {
+                if (element.Name == "summary")
+                    Summary = new XmlDocsTextBlock(element);
+            }
+
         }
     }
 }

@@ -7,23 +7,21 @@ namespace MdDoc.Model.XmlDocs
 {
     public sealed class XmlDocsDocument
     {
-        private readonly XDocument m_Document;
-
-
         public IReadOnlyCollection<XmlDocsMember> Members { get; }
 
+        internal XDocument Xml { get; }
 
         public XmlDocsDocument(string path) : this(XDocument.Load(path))
         { }
 
-        public XmlDocsDocument(XDocument document)
+        public XmlDocsDocument(XDocument xml)
         {            
-            if (document.Root.Name != "doc")
-                throw new InvalidXmlDocsException($"Unrecognized root element name '{document.Root.Name}', expected 'doc'");
+            if (xml.Root.Name != "doc")
+                throw new InvalidXmlDocsException($"Unrecognized root element name '{xml.Root.Name}', expected 'doc'");
 
-            m_Document = document ?? throw new ArgumentNullException(nameof(document));
+            Xml = xml ?? throw new ArgumentNullException(nameof(xml));
 
-            var membersElement = document.Root.Element("members");
+            var membersElement = xml.Root.Element("members");
             Members = membersElement == null
                 ? Array.Empty<XmlDocsMember>()
                 : membersElement.Elements("member").Select(x => new XmlDocsMember(x)).ToArray();
