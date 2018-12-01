@@ -9,5 +9,22 @@ namespace MdDoc.Test.TestData
     /// </summary>
     public class TestClass_XmlDocs
     {
+        /// <summary>
+        /// Line1
+        /// </summary>
+        public void TestMethod_Summary_01() { }
+
+        /// <summary>
+        /// Line1
+        /// Line2
+        /// </summary>
+        public void TestMethod_Summary_02() { }
+
+        /// <summary>
+        /// Line1
+        /// 
+        /// Line2
+        /// </summary>
+        public void TestMethod_Summary_03() { }
     }
 }

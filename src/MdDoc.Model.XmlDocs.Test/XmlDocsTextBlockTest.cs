@@ -8,16 +8,18 @@ namespace MdDoc.Model.XmlDocs.Test
 {
     public class XmlDocsTextBlockTest : TestBase
     {
-        [Fact]
-        public void Value_returns_the_expected_elements()
+        [Theory]        
+        [InlineData("TestMethod_Summary_01", "Line1")]
+        [InlineData("TestMethod_Summary_02", "Line1\r\nLine2")]
+        [InlineData("TestMethod_Summary_03", "Line1\r\n\r\nLine2")]
+        public void Text_returns_the_expected_value(string memberName, string expectedText)
         {
-            var testData = GetMember("T:MdDoc.Test.TestData.TestClass_XmlDocs").Element("summary");
+            var testData = GetMember($"M:MdDoc.Test.TestData.TestClass_XmlDocs.{memberName}").Element("summary");
 
             var sut = new XmlDocsTextBlock(testData);
 
             Assert.NotNull(sut.Text);
-            Assert.Equal("This is a test class for testing parsing of XML documentation", sut.Text);
+            Assert.Equal(expectedText, sut.Text);
         }
-
     }
 }

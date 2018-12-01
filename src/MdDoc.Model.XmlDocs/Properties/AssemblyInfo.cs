@@ -1,3 +1,3 @@
 ﻿using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("MdDoc.MdDoc.Model.XmlDocs.Test")]
+[assembly: InternalsVisibleTo("MdDoc.Model.XmlDocs.Test")]
