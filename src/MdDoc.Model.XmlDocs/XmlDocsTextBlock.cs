@@ -8,17 +8,71 @@ namespace MdDoc.Model.XmlDocs
 {
     public class XmlDocsTextBlock
     {
-        public string Text { get; }
+        private readonly XElement m_Xml;
 
-        public XmlDocsTextBlock(XElement textNode)
+        
+        public IReadOnlyList<Element> Elements { get; }
+
+
+
+        public XmlDocsTextBlock(XElement xml)
         {
-            var text = textNode.Value.TrimEmptyLines();
+            m_Xml = xml ?? throw new ArgumentNullException(nameof(xml));
+
+            Elements = LoadElements().ToArray();          
             
-            var lines = text.Split("\r\n".ToCharArray());
-                    
-            if(lines.Length == 0)
+        }
+
+
+        private IEnumerable<Element> LoadElements()
+        {
+            string prefix = default;
+
+            foreach(var node in m_Xml.Nodes())
             {
-                Text = "";
+                switch (node)
+                {
+                    case XText textNode:
+                        var text = textNode.Value;
+
+                        if(node.PreviousNode == null)
+                        {
+                            text = text.TrimEmptyLines();
+                            prefix = GetTrailingWhitespace(text);
+                        }
+
+                        if (prefix != null)
+                            text = RemoveLinePrefix(text, prefix);
+
+                        yield return new PlainTextElement(text);
+                        break;
+
+                    case XElement element:
+
+                        switch(element.Name.LocalName)
+                        {
+                            case "see":
+                                yield return new SeeElement(element.Attribute("cref").Value);
+                                break;
+                        }
+
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+        }
+
+
+
+        private string GetTrailingWhitespace(string text)
+        {            
+            var lines = text.Split("\r\n".ToCharArray());
+
+            if (lines.Length == 0)
+            {
+                return null;
             }
             else
             {
@@ -26,22 +80,33 @@ namespace MdDoc.Model.XmlDocs
                 int i;
                 for (i = 0; i < lines[0].Length && char.IsWhiteSpace(lines[0][i]); i++) ;
                 var prefix = lines[0].Substring(0, i);
+                return prefix;
+            }
+        }
 
+        private string RemoveLinePrefix(string text, string prefix)
+        {
+            
+            var lines = text.Split("\r\n".ToCharArray());
+
+            if (lines.Length == 0)
+            {
+                return "";
+            }
+            else
+            {                
                 // remove prefix from all lines
                 for (int j = 0; j < lines.Length; j++)
                 {
-                    if(lines[j].StartsWith(prefix))
+                    if (lines[j].StartsWith(prefix))
                     {
                         lines[j] = lines[j].Remove(0, prefix.Length);
                     }
                 }
 
-                Text = String.Join(Environment.NewLine, lines).TrimEnd('\r', '\n');
+                return String.Join(Environment.NewLine, lines);
             }
-
-
-
         }
-
+        
     }
 }

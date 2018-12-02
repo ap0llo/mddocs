@@ -26,5 +26,19 @@ namespace MdDoc.Test.TestData
         /// Line2
         /// </summary>
         public void TestMethod_Summary_03() { }
+
+        /// <summary>
+        /// Line1
+        /// <see cref="TestClass_Events"/>
+        /// Line2
+        /// </summary>
+        public void TestMethod_Summary_04() { }
+
+
+        /// <summary>
+        /// Content <see cref="TestClass_Events"/> Content
+        /// </summary>
+        public void TestMethod_Summary_05() { }
+
     }
 }
