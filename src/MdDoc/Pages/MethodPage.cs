@@ -27,7 +27,7 @@ namespace MdDoc.Pages
         public override void Save()
         {
             var document = Document(
-                Heading($"{Model.Name}.{Model.Name} Method", 1)
+                Heading($"{Model.TypeDocumentation.Name}.{Model.Name} Method", 1)
             );
 
             AddDeclaringTypeSection(document.Root);            

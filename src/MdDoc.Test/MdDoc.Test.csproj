@@ -17,4 +17,11 @@
     <ProjectReference Include="..\MdDoc.Test.TestData\MdDoc.Test.TestData.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Include="..\MdDoc.Test.TestData\bin\$(Configuration)\netcoreapp2.1\MdDoc.Test.TestData.xml" Link="MdDoc.Test.TestData.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+
 </Project>

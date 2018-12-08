@@ -1,23 +1,28 @@
-﻿using Mono.Cecil;
+﻿using MdDoc.XmlDocs;
+using Mono.Cecil;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace MdDoc.Model
 {
     public class AssemblyDocumentation : IDisposable, IDocumentation
     {
+        private readonly IXmlDocsProvider m_XmlDocsProvider;
+
         internal AssemblyDefinition Definition { get; }
 
         public ModuleDocumentation MainModuleDocumentation { get; }
 
 
 
-        private AssemblyDocumentation(AssemblyDefinition assembly)
+        private AssemblyDocumentation(AssemblyDefinition definition, IXmlDocsProvider xmlDocsProvider)
         {
-            Definition = assembly ?? throw new ArgumentNullException(nameof(assembly));
+            Definition = definition ?? throw new ArgumentNullException(nameof(definition));
+            m_XmlDocsProvider = xmlDocsProvider ?? throw new ArgumentNullException(nameof(xmlDocsProvider));
 
-            MainModuleDocumentation = new ModuleDocumentation(this, assembly.MainModule);
+            MainModuleDocumentation = new ModuleDocumentation(this, definition.MainModule, m_XmlDocsProvider);
         }
 
 
@@ -30,8 +35,14 @@ namespace MdDoc.Model
         public static AssemblyDocumentation FromFile(string filePath)
         {
             var assemblyDefinition = AssemblyDefinition.ReadAssembly(filePath);
-                        
-            return new AssemblyDocumentation(assemblyDefinition);
+
+            var docsFilePath = Path.ChangeExtension(filePath, ".xml");
+
+            var xmlDocsProvider = File.Exists(docsFilePath)
+                ? (IXmlDocsProvider) new XmlDocsProvider(docsFilePath)
+                : (IXmlDocsProvider) new NullXmlDocsProvider();
+
+            return new AssemblyDocumentation(assemblyDefinition, xmlDocsProvider);
         }
 
         public TypeDocumentation TryGetDocumentation(TypeName type) => 

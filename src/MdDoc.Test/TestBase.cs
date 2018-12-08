@@ -1,5 +1,6 @@
 ﻿using MdDoc.Model;
 using MdDoc.Test.TestData;
+using MdDoc.XmlDocs;
 using Mono.Cecil;
 using System;
 using System.Linq;
@@ -32,7 +33,7 @@ namespace MdDoc.Test
         protected TypeDocumentation GetTypeDocumentation(Type type)
         {
             var typeDefinition = GetTypeDefinition(type);
-            var sut = new TypeDocumentation(m_AssemblyDocumentation.MainModuleDocumentation, typeDefinition);
+            var sut = new TypeDocumentation(m_AssemblyDocumentation.MainModuleDocumentation, typeDefinition, new NullXmlDocsProvider());
             return sut;
         }
 

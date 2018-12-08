@@ -1,12 +1,13 @@
-﻿using Mono.Cecil;
+﻿using MdDoc.XmlDocs;
+using Mono.Cecil;
 using System.Collections.Generic;
 
 namespace MdDoc.Model
 {
     public class ConstructorDocumentation : MethodDocumentation
     {
-        public ConstructorDocumentation(TypeDocumentation typeDocumentation, IEnumerable<MethodDefinition> definitions) 
-            : base(typeDocumentation, definitions)
+        internal ConstructorDocumentation(TypeDocumentation typeDocumentation, IEnumerable<MethodDefinition> definitions, IXmlDocsProvider xmlDocsProvider) 
+            : base(typeDocumentation, definitions, xmlDocsProvider)
         {
         }
     }

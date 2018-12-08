@@ -32,6 +32,8 @@ namespace MdDoc.Pages
 
             AddTypeInfoSection(document.Root);
 
+            AddSummarySection(document.Root);
+
             AddConstructorsSection(document.Root);
 
             AddFieldsSection(document.Root);
@@ -93,6 +95,15 @@ namespace MdDoc.Pages
                         " ",
                         Model.ImplementedInterfaces.Select(GetTypeNameSpan).Join(","))
                 );
+            }
+        }
+    
+        private void AddSummarySection(MdContainerBlock block)
+        {
+            if(Model.Summary != null)
+            {
+                block.Add(Heading("Summary", 2));                
+                block.Add(XmlDocToMarkdownConverter.ConvertToBlock(Model.Summary));
             }
         }
 
@@ -191,14 +202,18 @@ namespace MdDoc.Pages
 
                     foreach(var overload in method.Overloads)
                     {
+                        var summary = overload.Summary != null
+                            ? XmlDocToMarkdownConverter.ConvertToSpan(overload.Summary)
+                            : new MdTextSpan("No summary found");
+
                         if(methodPage != null)
                         {                            
-                            var link = Link(overload.Signature, OutputPath.GetRelativePathTo(methodPage.OutputPath));
-                            table.Add(Row(link));
+                            var link = Link(overload.Signature, OutputPath.GetRelativePathTo(methodPage.OutputPath));                           
+                            table.Add(Row(link, summary));
                         }
                         else
                         {                            
-                            table.Add(Row(overload.Signature));
+                            table.Add(Row(overload.Signature, summary));
                         }
                     }
                 }

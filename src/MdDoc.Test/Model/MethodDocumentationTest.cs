@@ -1,5 +1,6 @@
 ﻿using MdDoc.Model;
 using MdDoc.Test.TestData;
+using MdDoc.XmlDocs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +22,7 @@ namespace MdDoc.Test.Model
                 .Methods
                 .Where(x => x.Name.StartsWith(methodName));
 
-            var sut = new MethodDocumentation(GetTypeDocumentation(typeof(TestClass_MethodOverloads)), methodOverloads);
+            var sut = new MethodDocumentation(GetTypeDocumentation(typeof(TestClass_MethodOverloads)), methodOverloads, new NullXmlDocsProvider());
 
             Assert.Equal(methodName, sut.Name);
         }

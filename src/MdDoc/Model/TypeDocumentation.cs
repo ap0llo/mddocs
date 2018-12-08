@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using MdDoc.XmlDocs;
 using Mono.Cecil;
+using NuDoq;
 
 namespace MdDoc.Model
 {
     public class TypeDocumentation : IDocumentation
     {
+        private readonly IXmlDocsProvider m_XmlDocsProvider;
+
         public ModuleDocumentation ModuleDocumentation { get; }
 
         public TypeName Name { get; }
@@ -33,13 +37,18 @@ namespace MdDoc.Model
 
         public IReadOnlyCollection<TypeName> Attributes { get; }
 
+        public Summary Summary { get; }
+
+
         internal TypeDefinition Definition { get; }
 
 
-        public TypeDocumentation(ModuleDocumentation moduleDocumentation, TypeDefinition definition)
+        internal TypeDocumentation(ModuleDocumentation moduleDocumentation, TypeDefinition definition, IXmlDocsProvider xmlDocsProvider)
         {
             ModuleDocumentation = moduleDocumentation ?? throw new ArgumentNullException(nameof(moduleDocumentation));
             Definition = definition ?? throw new ArgumentNullException(nameof(definition));
+            m_XmlDocsProvider = xmlDocsProvider ?? throw new ArgumentNullException(nameof(xmlDocsProvider));
+
             Kind = definition.Kind();
             Name = new TypeName(definition);
 
@@ -60,12 +69,12 @@ namespace MdDoc.Model
 
             var ctors = definition.GetDocumentedConstrutors();
             if(ctors.Any())
-                Constructors = new ConstructorDocumentation(this, ctors);
+                Constructors = new ConstructorDocumentation(this, ctors, xmlDocsProvider);
 
             Methods = definition.GetDocumentedMethods()
                 .Where(m => !m.IsOperatorOverload())
                 .GroupBy(x => x.Name)
-                .Select(group => new MethodDocumentation(this, group))
+                .Select(group => new MethodDocumentation(this, group, xmlDocsProvider))
                 .ToArray();
 
             Operators = definition.GetDocumentedMethods()               
@@ -77,7 +86,8 @@ namespace MdDoc.Model
             InheritanceHierarchy = LoadInheritanceHierarchy();
             Attributes = Definition.CustomAttributes.Select(x => new TypeName(x.AttributeType)).ToArray();
             ImplementedInterfaces = LoadImplementedInterfaces();
-
+            
+            Summary = m_XmlDocsProvider.TryGetSummary(definition);
         }
 
 

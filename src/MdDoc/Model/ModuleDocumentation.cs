@@ -1,4 +1,5 @@
 ﻿using Grynwald.Utilities.Collections;
+using MdDoc.XmlDocs;
 using Mono.Cecil;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ namespace MdDoc.Model
     public class ModuleDocumentation : IDocumentation
     {
         private readonly IDictionary<TypeName, TypeDocumentation> m_Types;
-
+        private readonly IXmlDocsProvider m_XmlDocsProvider;
 
         public AssemblyDocumentation AssemblyDocumentation { get; }
 
@@ -18,18 +19,18 @@ namespace MdDoc.Model
         internal ModuleDefinition Definition { get; }
 
 
-        public ModuleDocumentation(AssemblyDocumentation assemblyDocumentation, ModuleDefinition definition)
+        internal ModuleDocumentation(AssemblyDocumentation assemblyDocumentation, ModuleDefinition definition, IXmlDocsProvider xmlDocsProvider)
         {
             Definition = definition ?? throw new ArgumentNullException(nameof(definition));
-            AssemblyDocumentation = assemblyDocumentation ?? throw new ArgumentNullException(nameof(assemblyDocumentation));
+            m_XmlDocsProvider = xmlDocsProvider ?? throw new ArgumentNullException(nameof(xmlDocsProvider));
 
+            AssemblyDocumentation = assemblyDocumentation ?? throw new ArgumentNullException(nameof(assemblyDocumentation));
 
             m_Types = Definition.Types
                 .Where(t => t.IsPublic)
-                .ToDictionary(typeDefinition => new TypeName(typeDefinition), typeDefinition => new TypeDocumentation(this, typeDefinition));
+                .ToDictionary(typeDefinition => new TypeName(typeDefinition), typeDefinition => new TypeDocumentation(this, typeDefinition, m_XmlDocsProvider));
 
             Types = ReadOnlyCollectionAdapter.Create(m_Types.Values);
-
         }
 
 
