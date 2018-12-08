@@ -11,5 +11,11 @@ namespace MdDoc.XmlDocs
         public Summary TryGetSummary(TypeReference type) => default;
 
         public Summary TryGetSummary(MethodDefinition method) => default;
+
+        public Summary TryGetSummary(FieldDefinition method) => default;
+
+        public Summary TryGetSummary(PropertyDefinition property) => default;
+
+        public Summary TryGetSummary(EventDefinition ev) => default;
     }
 }

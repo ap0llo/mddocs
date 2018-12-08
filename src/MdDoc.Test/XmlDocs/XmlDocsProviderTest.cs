@@ -61,6 +61,57 @@ namespace MdDoc.Test.XmlDocs
             Assert.Null(summary);
         }
 
+        [Theory]
+        [InlineData(typeof(TestClass_NoDocumentation), nameof(TestClass_NoDocumentation.Field1))]
+        public void TryGetSummary_returns_null_for_field_without_summary(Type type, string fieldName)
+        {
+            // ARRANGE
+            var fieldDefinition = GetTypeDefinition(type)
+                .Fields
+                .Single(x => x.Name == fieldName);
+
+            // ACT
+            var sut = new XmlDocsProvider(m_XmlDocsPath);
+            var summary = sut.TryGetSummary(fieldDefinition);
+
+            // ASSERT
+            Assert.Null(summary);
+        }
+
+
+        [Theory]
+        [InlineData(typeof(TestClass_NoDocumentation), nameof(TestClass_NoDocumentation.Property1))]
+        public void TryGetSummary_returns_null_for_property_without_summary(Type type, string propertyName)
+        {
+            // ARRANGE
+            var propertyDefinition = GetTypeDefinition(type)
+                .Properties
+                .Single(x => x.Name == propertyName);
+
+            // ACT
+            var sut = new XmlDocsProvider(m_XmlDocsPath);
+            var summary = sut.TryGetSummary(propertyDefinition);
+
+            // ASSERT
+            Assert.Null(summary);
+        }
+
+        [Theory]
+        [InlineData(typeof(TestClass_NoDocumentation), nameof(TestClass_NoDocumentation.Event1))]
+        public void TryGetSummary_returns_null_for_event_without_summary(Type type, string eventName)
+        {
+            // ARRANGE
+            var eventDefinition = GetTypeDefinition(type)
+                .Events
+                .Single(x => x.Name == eventName);
+
+            // ACT
+            var sut = new XmlDocsProvider(m_XmlDocsPath);
+            var summary = sut.TryGetSummary(eventDefinition);
+
+            // ASSERT
+            Assert.Null(summary);
+        }
 
         [Theory]
         [InlineData(typeof(TestClass_Type))]
@@ -80,7 +131,7 @@ namespace MdDoc.Test.XmlDocs
 
         [Theory]
         [InlineData(typeof(TestClass_Methods), nameof(TestClass_Methods.TestMethod1))]
-        public void TryGetSummary_gets_summary_for_method(Type type, string methodName)
+        public void TryGetSummary_gets_summary_for_a_method(Type type, string methodName)
         {
             // ARRANGE
             var methodDefinition = GetTypeDefinition(type)
@@ -95,6 +146,57 @@ namespace MdDoc.Test.XmlDocs
             Assert.NotNull(summary);
         }
 
+        [Theory]
+        [InlineData(typeof(TestClass_Fields), nameof(TestClass_Fields.Field1))]
+        public void TryGetSummary_gets_summary_for_a_field(Type type, string fieldName)
+        {
+            // ARRANGE
+            // ARRANGE
+            var fieldDefinition = GetTypeDefinition(type)
+                .Fields
+                .Single(x => x.Name == fieldName);
 
+            // ACT
+            var sut = new XmlDocsProvider(m_XmlDocsPath);
+            var summary = sut.TryGetSummary(fieldDefinition);
+
+            // ASSERT
+            Assert.NotNull(summary);
+        }        
+
+        [Theory]
+        [InlineData(typeof(TestClass_Properties), nameof(TestClass_Properties.Property1))]
+        public void TryGetSummary_gets_summary_for_a_property(Type type, string propertyName)
+        {
+            // ARRANGE
+            var propertyDefinition = GetTypeDefinition(type)
+                .Properties
+                .Single(x => x.Name == propertyName);
+
+            // ACT
+            var sut = new XmlDocsProvider(m_XmlDocsPath);
+            var summary = sut.TryGetSummary(propertyDefinition);
+
+            // ASSERT
+            Assert.NotNull(summary);
+        }
+
+
+        [Theory]
+        [InlineData(typeof(TestClass_Events), nameof(TestClass_Events.Event1))]
+        public void TryGetSummary_gets_summary_for_a_event(Type type, string eventName)
+        {
+            // ARRANGE
+            var eventDefinition = GetTypeDefinition(type)
+                .Events
+                .Single(x => x.Name == eventName);
+
+            // ACT
+            var sut = new XmlDocsProvider(m_XmlDocsPath);
+            var summary = sut.TryGetSummary(eventDefinition);
+
+            // ASSERT
+            Assert.NotNull(summary);
+        }
     }
 }

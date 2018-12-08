@@ -30,6 +30,27 @@ namespace MdDoc.XmlDocs
                 m_CurrentMember = null;
             }
 
+            public override void VisitField(Field field)
+            {
+                m_CurrentMember = field;
+                base.VisitField(field);
+                m_CurrentMember = null;
+            }
+
+            public override void VisitProperty(Property property)
+            {
+                m_CurrentMember = property;
+                base.VisitProperty(property);
+                m_CurrentMember = null;
+            }
+
+            public override void VisitEvent(Event ev)
+            {
+                m_CurrentMember = ev;
+                base.VisitEvent(ev);
+                m_CurrentMember = null;
+            }
+
             public override void VisitSummary(Summary summary)
             {
                 if(m_CurrentMember != null)
@@ -65,6 +86,24 @@ namespace MdDoc.XmlDocs
         public Summary TryGetSummary(MethodDefinition method)
         {
             var id = m_NameMapper.GetXmlDocName(method);
+            return m_Summaries.GetValueOrDefault(id);
+        }
+
+        public Summary TryGetSummary(FieldDefinition field)
+        {
+            var id = m_NameMapper.GetXmlDocName(field);
+            return m_Summaries.GetValueOrDefault(id);
+        }
+
+        public Summary TryGetSummary(PropertyDefinition property)
+        {
+            var id = m_NameMapper.GetXmlDocName(property);
+            return m_Summaries.GetValueOrDefault(id);
+        }
+
+        public Summary TryGetSummary(EventDefinition ev)
+        {
+            var id = m_NameMapper.GetXmlDocName(ev);
             return m_Summaries.GetValueOrDefault(id);
         }
     }

@@ -11,5 +11,11 @@ namespace MdDoc.XmlDocs
         Summary TryGetSummary(TypeReference type);
 
         Summary TryGetSummary(MethodDefinition method);
+
+        Summary TryGetSummary(PropertyDefinition property);
+
+        Summary TryGetSummary(FieldDefinition field);
+
+        Summary TryGetSummary(EventDefinition ev);
     }
 }
