@@ -3,15 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MdDoc", "MdDoc\MdDoc.csproj", "{C9C174E1-75AA-48A1-ACC7-448D5ED19D9D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MdDoc", "MdDoc\MdDoc.csproj", "{C9C174E1-75AA-48A1-ACC7-448D5ED19D9D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MdDoc.Test", "MdDoc.Test\MdDoc.Test.csproj", "{3C7495C3-B003-4F6F-A92D-ECD60317C8D9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MdDoc.Test", "MdDoc.Test\MdDoc.Test.csproj", "{3C7495C3-B003-4F6F-A92D-ECD60317C8D9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MdDoc.Test.TestData", "MdDoc.Test.TestData\MdDoc.Test.TestData.csproj", "{3E404569-2C6B-491D-9DF7-7CEC65633154}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MdDoc.Test.TestData", "MdDoc.Test.TestData\MdDoc.Test.TestData.csproj", "{3E404569-2C6B-491D-9DF7-7CEC65633154}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MdDoc.Model.XmlDocs", "MdDoc.Model.XmlDocs\MdDoc.Model.XmlDocs.csproj", "{EA3E5204-5FD9-40E9-A009-7A2DECD2512C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MdDoc.Model.XmlDocs", "MdDoc.Model.XmlDocs\MdDoc.Model.XmlDocs.csproj", "{EA3E5204-5FD9-40E9-A009-7A2DECD2512C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MdDoc.Model.XmlDocs.Test", "MdDoc.Model.XmlDocs.Test\MdDoc.Model.XmlDocs.Test.csproj", "{903DBCE7-3EFE-4F4C-A8B5-22D066DD6117}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MdDoc.Model.XmlDocs.Test", "MdDoc.Model.XmlDocs.Test\MdDoc.Model.XmlDocs.Test.csproj", "{903DBCE7-3EFE-4F4C-A8B5-22D066DD6117}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NuDoq", "..\deps\nudoq\src\NuDoq\NuDoq.csproj", "{03EBBA52-2421-4552-8977-15B4A6BA8CCD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "deps", "deps", "{5A46F037-3049-46A6-8A4B-B596D1580BA4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,9 +25,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{C9C174E1-75AA-48A1-ACC7-448D5ED19D9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -86,5 +87,26 @@ Global
 		{903DBCE7-3EFE-4F4C-A8B5-22D066DD6117}.Release|x64.Build.0 = Release|Any CPU
 		{903DBCE7-3EFE-4F4C-A8B5-22D066DD6117}.Release|x86.ActiveCfg = Release|Any CPU
 		{903DBCE7-3EFE-4F4C-A8B5-22D066DD6117}.Release|x86.Build.0 = Release|Any CPU
+		{03EBBA52-2421-4552-8977-15B4A6BA8CCD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03EBBA52-2421-4552-8977-15B4A6BA8CCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03EBBA52-2421-4552-8977-15B4A6BA8CCD}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{03EBBA52-2421-4552-8977-15B4A6BA8CCD}.Debug|x64.Build.0 = Debug|Any CPU
+		{03EBBA52-2421-4552-8977-15B4A6BA8CCD}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{03EBBA52-2421-4552-8977-15B4A6BA8CCD}.Debug|x86.Build.0 = Debug|Any CPU
+		{03EBBA52-2421-4552-8977-15B4A6BA8CCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03EBBA52-2421-4552-8977-15B4A6BA8CCD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03EBBA52-2421-4552-8977-15B4A6BA8CCD}.Release|x64.ActiveCfg = Release|Any CPU
+		{03EBBA52-2421-4552-8977-15B4A6BA8CCD}.Release|x64.Build.0 = Release|Any CPU
+		{03EBBA52-2421-4552-8977-15B4A6BA8CCD}.Release|x86.ActiveCfg = Release|Any CPU
+		{03EBBA52-2421-4552-8977-15B4A6BA8CCD}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{03EBBA52-2421-4552-8977-15B4A6BA8CCD} = {5A46F037-3049-46A6-8A4B-B596D1580BA4}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6774E9D8-488A-4F3B-9F91-41065B9DE8BE}
 	EndGlobalSection
 EndGlobal

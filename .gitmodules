@@ -1,0 +1,3 @@
+[submodule "deps/nudoq"]
+	path = deps/nudoq
+	url = https://github.com/ap0llo/NuDoq.git
