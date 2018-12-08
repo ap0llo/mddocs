@@ -40,7 +40,7 @@ namespace MdDoc.Test.Model
 
 
 
-        protected abstract MdDoc.Model.MemberDocumentation GetMemberDocumentationInstance();
+        protected abstract MemberDocumentation GetMemberDocumentationInstance();
 
     }
 }

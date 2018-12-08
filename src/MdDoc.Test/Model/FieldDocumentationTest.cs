@@ -1,4 +1,5 @@
-﻿using MdDoc.Test.TestData;
+﻿using MdDoc.Model;
+using MdDoc.Test.TestData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ namespace MdDoc.Test.Model
 {
     public class FieldDocumentationTest : MemberDocumentationTest
     {
-        protected override MdDoc.Model.MemberDocumentation GetMemberDocumentationInstance()
+        protected override MemberDocumentation GetMemberDocumentationInstance()
         {
             return GetTypeDocumentation(typeof(TestClass_Fields)).Fields.First();
         }

@@ -29,7 +29,7 @@ namespace MdDoc.Test.Model
 
 
 
-        protected override MdDoc.Model.MemberDocumentation GetMemberDocumentationInstance()
+        protected override MemberDocumentation GetMemberDocumentationInstance()
         {
             return GetTypeDocumentation(typeof(TestClass_Methods)).Methods.First();
         }

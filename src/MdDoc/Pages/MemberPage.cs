@@ -7,7 +7,7 @@ using static Grynwald.MarkdownGenerator.FactoryMethods;
 
 namespace MdDoc.Pages
 {
-    abstract class MemberPage<TModel> : PageBase<TModel> where TModel : Model.MemberDocumentation
+    abstract class MemberPage<TModel> : PageBase<TModel> where TModel : MemberDocumentation
     {        
         public MemberPage(PageFactory pageFactory, string rootOutputPath) : base(pageFactory, rootOutputPath)
         { }

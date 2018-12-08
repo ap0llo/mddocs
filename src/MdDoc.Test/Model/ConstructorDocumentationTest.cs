@@ -8,7 +8,7 @@ namespace MdDoc.Test.Model
 {
     public class ConstructorDocumentationTest : MemberDocumentationTest
     {
-        protected override MdDoc.Model.MemberDocumentation GetMemberDocumentationInstance()
+        protected override MemberDocumentation GetMemberDocumentationInstance()
         {
             return GetTypeDocumentation(typeof(TestClass_Constructors)).Constructors;
         }
