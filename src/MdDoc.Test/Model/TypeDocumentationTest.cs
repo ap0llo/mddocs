@@ -342,10 +342,12 @@ namespace MdDoc.Test.Model
         }
 
         [Theory]
+#pragma warning disable CS0618 // Type or member is obsolete
         [InlineData(typeof(TestClass_Attributes))]
         [InlineData(typeof(TestStruct_Attributes))]
         [InlineData(typeof(TestInterface_Attributes))]
         [InlineData(typeof(TestEnum_Attributes))]
+#pragma warning restore CS0618 // Type or member is obsolete
         public void Attributes_returns_the_expected_types(Type testType)
         {
             var expectedAttributes = new[]
