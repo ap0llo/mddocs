@@ -2,9 +2,9 @@
 using System.Linq;
 using Mono.Cecil;
 
-namespace MdDoc
+namespace MdDoc.XmlDocs
 {
-    class XmlDocNameMapper
+    class XmlDocsNameMapper
     {        
         public string GetXmlDocName(TypeReference type) => $"T:{type.FullName}";
 

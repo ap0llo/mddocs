@@ -1,13 +1,14 @@
 using MdDoc.Test.TestData;
+using MdDoc.XmlDocs;
 using Mono.Cecil;
 using System;
 using System.Linq;
 using System.Reflection;
 using Xunit;
 
-namespace MdDoc.Test
+namespace MdDoc.Test.XmlDocs
 {
-    public class XmlDocNameMapperTest : TestBase
+    public class XmlDocsNameMapperTest : TestBase
     {        
         [Theory]
         [InlineData("TestClass_Type", "T:MdDoc.Test.TestData.TestClass_Type")]
@@ -15,7 +16,7 @@ namespace MdDoc.Test
         public void Type_names_are_mapped_as_expected(string typeName, string expectedName)
         {
             // ARRANGE
-            var mapper = new XmlDocNameMapper();
+            var mapper = new XmlDocsNameMapper();
             var types = m_AssemblyDocumentation.MainModuleDocumentation.Definition.Types.ToArray();
             var typeDefinition = m_AssemblyDocumentation.MainModuleDocumentation.Definition.GetTypes().Single(t => t.Name == typeName);
             
@@ -42,7 +43,7 @@ namespace MdDoc.Test
         public void Method_names_are_mapped_as_expected(Type type, string methodName, string expectedName)
         {
             // ARRANGE
-            var mapper = new XmlDocNameMapper();
+            var mapper = new XmlDocsNameMapper();
             
             var method = GetTypeDefinition(type)
                 .Methods
@@ -86,7 +87,7 @@ namespace MdDoc.Test
         public void Operator_overloads_are_mapped_as_expected(string methodName, string expectedName)
         {
             // ARRANGE
-            var mapper = new XmlDocNameMapper();
+            var mapper = new XmlDocsNameMapper();
 
             var method = GetTypeDefinition(typeof(TestClass_Operators))
                 .Methods
@@ -105,7 +106,7 @@ namespace MdDoc.Test
         public void Constructors_are_mapped_as_expected(int parameterCount, string expectedName)
         {
             // ARRANGE
-            var mapper = new XmlDocNameMapper();
+            var mapper = new XmlDocsNameMapper();
             
             var method = GetTypeDefinition(typeof(TestClass_Constructors))
                 .Methods
@@ -123,7 +124,7 @@ namespace MdDoc.Test
         public void Fields_are_mapped_as_expected(string fieldName, string expectedName)
         {
             // ARRANGE
-            var mapper = new XmlDocNameMapper();
+            var mapper = new XmlDocsNameMapper();
 
             var field = GetTypeDefinition(typeof(TestClass_Fields))
                 .Fields
@@ -142,7 +143,7 @@ namespace MdDoc.Test
         public void Properties_are_mapped_as_expected(string propertyName, string expectedName)
         {
             // ARRANGE
-            var mapper = new XmlDocNameMapper();
+            var mapper = new XmlDocsNameMapper();
 
             var property = GetTypeDefinition(typeof(TestClass_Properties))
                 .Properties
@@ -161,7 +162,7 @@ namespace MdDoc.Test
         public void Indexers_are_mapped_as_expected(int parameterCount, string expectedName)
         {
             // ARRANGE
-            var mapper = new XmlDocNameMapper();
+            var mapper = new XmlDocsNameMapper();
 
             var indexer = GetTypeDefinition(typeof(TestClass_Properties))
                 .Properties
@@ -182,7 +183,7 @@ namespace MdDoc.Test
         public void Events_are_mapped_as_expected(string propertyName, string expectedName)
         {
             // ARRANGE
-            var mapper = new XmlDocNameMapper();
+            var mapper = new XmlDocsNameMapper();
 
             var @event = GetTypeDefinition(typeof(TestClass_Events))
                 .Events

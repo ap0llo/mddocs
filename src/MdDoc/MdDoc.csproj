@@ -11,4 +11,8 @@
     <PackageReference Include="Mono.Cecil" Version="0.10.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\deps\nudoq\src\NuDoq\NuDoq.csproj" />
+  </ItemGroup>
+
 </Project>
