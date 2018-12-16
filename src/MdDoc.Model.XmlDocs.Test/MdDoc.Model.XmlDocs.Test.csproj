@@ -6,12 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="..\MdDoc.Test.TestData\bin\$(Configuration)\netcoreapp2.1\MdDoc.Test.TestData.xml" Link="MdDoc.Test.TestData.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.8.0" />
     <PackageReference Include="xunit" Version="2.3.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
@@ -21,5 +15,11 @@
     <ProjectReference Include="..\MdDoc.Model.XmlDocs\MdDoc.Model.XmlDocs.csproj" />
     <ProjectReference Include="..\MdDoc.Test.TestData\MdDoc.Test.TestData.csproj" />
   </ItemGroup>
+
+  <Target Name="CopyTestDataXmlDocs" AfterTargets="Build">
+    <Copy SourceFiles="$(MSBuildThisFileDirectory)..\MdDoc.Test.TestData\bin\$(Configuration)\netcoreapp2.1\MdDoc.Test.TestData.xml"
+          DestinationFolder="$(OutputPath)"
+          SkipUnchangedFiles="true" />
+  </Target>
 
 </Project>
