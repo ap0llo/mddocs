@@ -42,7 +42,7 @@ namespace MdDoc.Model.XmlDocs.Test
         [Fact]
         public void A_members_summary_is_loaded()
         {
-            var testData = GetMember("T:MdDoc.Test.TestData.TestClass_XmlDocs");
+            var testData = GetMember("T:MdDoc.Test.TestData.TestClass_XmlDocs`2");
 
             var sut = new XmlDocsMember(testData);
             

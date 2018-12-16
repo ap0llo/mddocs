@@ -1,6 +1,5 @@
-﻿using MdDoc.XmlDocs;
+﻿using MdDoc.Model.XmlDocs;
 using Mono.Cecil;
-using NuDoq;
 using System;
 using System.Collections.Generic;
 using System.Linq;

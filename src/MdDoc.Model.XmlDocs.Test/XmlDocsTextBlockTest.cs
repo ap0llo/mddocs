@@ -8,12 +8,12 @@ namespace MdDoc.Model.XmlDocs.Test
 {
     public class XmlDocsTextBlockTest : TestBase
     {
-        private const string s_ClassName = "MdDoc.Test.TestData.TestClass_XmlDocs";
+        private const string s_ClassName = "MdDoc.Test.TestData.TestClass_XmlDocs`2";
 
         [Theory]        
-        [InlineData("TestMethod_Summary_01", "Line1\r\n")]
-        [InlineData("TestMethod_Summary_02", "Line1\r\nLine2\r\n")]
-        [InlineData("TestMethod_Summary_03", "Line1\r\n\r\nLine2\r\n")]
+        [InlineData("TestMethod01(System.String)", "Line1\r\n")]
+        [InlineData("TestMethod02", "Line1\r\nLine2\r\n")]
+        [InlineData("TestMethod03", "Line1\r\n\r\nLine2\r\n")]
         public void Elements_returns_the_expected_items_01(string memberName, string expectedText)
         {
             var testData = GetMember($"M:{s_ClassName}.{memberName}").Element("summary");
@@ -27,7 +27,7 @@ namespace MdDoc.Model.XmlDocs.Test
 
 
         [Theory] 
-        [InlineData("TestMethod_Summary_04")]
+        [InlineData("TestMethod04")]
         public void Elements_returns_the_expected_items_02(string memberName)
         {
             var testData = GetMember($"M:{s_ClassName}.{memberName}").Element("summary");
@@ -42,7 +42,7 @@ namespace MdDoc.Model.XmlDocs.Test
         }
 
         [Theory]
-        [InlineData("TestMethod_Summary_05")]
+        [InlineData("TestMethod05")]
         public void Elements_returns_the_expected_items_03(string memberName)
         {
             var testData = GetMember($"M:{s_ClassName}.{memberName}").Element("summary");

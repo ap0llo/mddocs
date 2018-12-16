@@ -1,4 +1,4 @@
-﻿using MdDoc.XmlDocs;
+﻿using MdDoc.Model.XmlDocs;
 using Mono.Cecil;
 using System.Collections.Generic;
 

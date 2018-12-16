@@ -19,7 +19,7 @@ namespace MdDoc.Model.XmlDocs.Test
             // select "Enable debug symbol and xml documentation comment generation"
             // (see https://docs.microsoft.com/en-us/visualstudio/test/live-unit-testing?view=vs-2017#configure-live-unit-testing)
 
-            var assemblyPath = new Uri(typeof(TestClass_XmlDocs).Assembly.CodeBase).LocalPath;
+            var assemblyPath = new Uri(typeof(TestClass_XmlDocs<,>).Assembly.CodeBase).LocalPath;
             var docsPath = Path.ChangeExtension(assemblyPath, ".xml");
 
             m_TestData = XDocument.Load(docsPath);            

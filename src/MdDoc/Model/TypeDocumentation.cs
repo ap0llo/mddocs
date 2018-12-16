@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using MdDoc.XmlDocs;
+using MdDoc.Model.XmlDocs;
 using Mono.Cecil;
-using NuDoq;
 
 namespace MdDoc.Model
 {
@@ -37,7 +36,7 @@ namespace MdDoc.Model
 
         public IReadOnlyCollection<TypeName> Attributes { get; }
 
-        public Summary Summary { get; }
+        public SummaryElement Summary { get; }
 
 
         internal TypeDefinition Definition { get; }
@@ -87,7 +86,7 @@ namespace MdDoc.Model
             Attributes = Definition.CustomAttributes.Select(x => new TypeName(x.AttributeType)).ToArray();
             ImplementedInterfaces = LoadImplementedInterfaces();
             
-            Summary = m_XmlDocsProvider.TryGetSummary(definition);
+            Summary = m_XmlDocsProvider.TryGetDocumentationComments(definition)?.Summary;
         }
 
 

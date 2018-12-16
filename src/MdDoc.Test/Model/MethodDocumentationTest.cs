@@ -1,6 +1,6 @@
 ﻿using MdDoc.Model;
 using MdDoc.Test.TestData;
-using MdDoc.XmlDocs;
+using MdDoc.Model.XmlDocs;
 using System;
 using System.Collections.Generic;
 using System.Linq;

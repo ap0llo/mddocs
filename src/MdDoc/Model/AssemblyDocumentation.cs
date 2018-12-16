@@ -1,9 +1,7 @@
-﻿using MdDoc.XmlDocs;
-using Mono.Cecil;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
-using System.Text;
+using MdDoc.Model.XmlDocs;
+using Mono.Cecil;
 
 namespace MdDoc.Model
 {

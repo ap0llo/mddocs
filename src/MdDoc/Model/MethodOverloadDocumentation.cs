@@ -1,7 +1,6 @@
 ﻿using System;
-using MdDoc.XmlDocs;
+using MdDoc.Model.XmlDocs;
 using Mono.Cecil;
-using NuDoq;
 
 namespace MdDoc.Model
 {
@@ -13,7 +12,7 @@ namespace MdDoc.Model
 
         public MethodDocumentation MethodDocumentation { get; }
 
-        public Summary Summary { get; }
+        public SummaryElement Summary { get; }
 
 
         internal MethodOverloadDocumentation(MethodDocumentation methodDocumentation, MethodDefinition definition, IXmlDocsProvider xmlDocsProvider) : base(definition)
@@ -21,7 +20,7 @@ namespace MdDoc.Model
             MethodDocumentation = methodDocumentation ?? throw new ArgumentNullException(nameof(methodDocumentation));
             m_XmlDocsProvider = xmlDocsProvider ?? throw new ArgumentNullException(nameof(xmlDocsProvider));
 
-            Summary = m_XmlDocsProvider.TryGetSummary(definition);
+            Summary = m_XmlDocsProvider.TryGetDocumentationComments(definition)?.Summary;
         }
 
 

@@ -1,6 +1,6 @@
 ﻿using MdDoc.Model;
 using MdDoc.Test.TestData;
-using MdDoc.XmlDocs;
+using MdDoc.Model.XmlDocs;
 using Mono.Cecil;
 using System;
 using System.Linq;

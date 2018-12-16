@@ -2,7 +2,7 @@
 using System.Linq;
 using Mono.Cecil;
 
-namespace MdDoc.XmlDocs
+namespace MdDoc.Model.XmlDocs
 {
     class XmlDocsNameMapper
     {        

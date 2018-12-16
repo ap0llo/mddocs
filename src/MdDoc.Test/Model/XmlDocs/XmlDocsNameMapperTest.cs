@@ -1,12 +1,10 @@
-using MdDoc.Test.TestData;
-using MdDoc.XmlDocs;
-using Mono.Cecil;
 using System;
 using System.Linq;
-using System.Reflection;
+using MdDoc.Test.TestData;
+using MdDoc.Model.XmlDocs;
 using Xunit;
 
-namespace MdDoc.Test.XmlDocs
+namespace MdDoc.Test.Model.XmlDocs
 {
     public class XmlDocsNameMapperTest : TestBase
     {        
