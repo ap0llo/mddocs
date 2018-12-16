@@ -4,9 +4,6 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <IsPackable>false</IsPackable>
     <NoWarn>$(NoWarn),1591,67,660,661</NoWarn>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>$(AssemblyName).xml</DocumentationFile>
   </PropertyGroup>
 
