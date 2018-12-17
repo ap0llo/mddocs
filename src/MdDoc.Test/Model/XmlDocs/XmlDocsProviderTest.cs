@@ -4,6 +4,7 @@ using System.Linq;
 using MdDoc.Test.TestData;
 using MdDoc.Model.XmlDocs;
 using Xunit;
+using Mono.Cecil;
 
 namespace MdDoc.Test.Model.XmlDocs
 {
@@ -34,7 +35,7 @@ namespace MdDoc.Test.Model.XmlDocs
             var typeDefinition = GetTypeDefinition(type);
 
             // ACT
-            var sut = new XmlDocsProvider(m_XmlDocsPath);
+            var sut = new XmlDocsProvider(m_XmlDocsPath, m_AssemblyDocumentation.Definition);
             var docs = sut.TryGetDocumentationComments(typeDefinition);
 
             // ASSERT
@@ -51,7 +52,7 @@ namespace MdDoc.Test.Model.XmlDocs
                 .Single(x => x.Name == methodName);
 
             // ACT
-            var sut = new XmlDocsProvider(m_XmlDocsPath);
+            var sut = new XmlDocsProvider(m_XmlDocsPath, m_AssemblyDocumentation.Definition);
             var docs = sut.TryGetDocumentationComments(methodDefinition);
 
             // ASSERT
@@ -68,7 +69,7 @@ namespace MdDoc.Test.Model.XmlDocs
                 .Single(x => x.Name == fieldName);
 
             // ACT
-            var sut = new XmlDocsProvider(m_XmlDocsPath);
+            var sut = new XmlDocsProvider(m_XmlDocsPath, m_AssemblyDocumentation.Definition);
             var docs = sut.TryGetDocumentationComments(fieldDefinition);
 
             // ASSERT
@@ -85,7 +86,7 @@ namespace MdDoc.Test.Model.XmlDocs
                 .Single(x => x.Name == propertyName);
 
             // ACT
-            var sut = new XmlDocsProvider(m_XmlDocsPath);
+            var sut = new XmlDocsProvider(m_XmlDocsPath, m_AssemblyDocumentation.Definition);
             var docs = sut.TryGetDocumentationComments(propertyDefinition);
 
             // ASSERT
@@ -102,7 +103,7 @@ namespace MdDoc.Test.Model.XmlDocs
                 .Single(x => x.Name == eventName);
 
             // ACT
-            var sut = new XmlDocsProvider(m_XmlDocsPath);
+            var sut = new XmlDocsProvider(m_XmlDocsPath, m_AssemblyDocumentation.Definition);
             var summary = sut.TryGetDocumentationComments(eventDefinition);
 
             // ASSERT
@@ -118,11 +119,14 @@ namespace MdDoc.Test.Model.XmlDocs
             var typeDefinition = GetTypeDefinition(type);
 
             // ACT
-            var sut = new XmlDocsProvider(m_XmlDocsPath);
+            var sut = new XmlDocsProvider(m_XmlDocsPath, m_AssemblyDocumentation.Definition);
             var docs = sut.TryGetDocumentationComments(typeDefinition);
 
             // ASSERT
             Assert.NotNull(docs);
+
+            Assert.NotNull(docs.Reference);
+            Assert.IsAssignableFrom<TypeReference>(docs.Reference);
 
             Assert.NotNull(docs.Summary);
 
@@ -146,11 +150,14 @@ namespace MdDoc.Test.Model.XmlDocs
                 .Single(x => x.Name == methodName);
 
             // ACT
-            var sut = new XmlDocsProvider(m_XmlDocsPath);
+            var sut = new XmlDocsProvider(m_XmlDocsPath, m_AssemblyDocumentation.Definition);
             var docs = sut.TryGetDocumentationComments(methodDefinition);
 
             // ASSERT
             Assert.NotNull(docs);
+
+            Assert.NotNull(docs.Reference);
+            Assert.IsAssignableFrom<MethodReference>(docs.Reference);
 
             Assert.NotNull(docs.Remarks);
 
@@ -180,14 +187,21 @@ namespace MdDoc.Test.Model.XmlDocs
                 .Single(x => x.Name == fieldName);
 
             // ACT
-            var sut = new XmlDocsProvider(m_XmlDocsPath);
+            var sut = new XmlDocsProvider(m_XmlDocsPath, m_AssemblyDocumentation.Definition);
             var docs = sut.TryGetDocumentationComments(fieldDefinition);
 
             // ASSERT
             Assert.NotNull(docs);
+
+            Assert.NotNull(docs.Reference);
+            Assert.IsAssignableFrom<FieldReference>(docs.Reference);
+
             Assert.NotNull(docs.Summary);
+
             Assert.NotNull(docs.Remarks);
+
             Assert.NotNull(docs.Example);
+
             Assert.NotNull(docs.Value);
         }
 
@@ -201,11 +215,14 @@ namespace MdDoc.Test.Model.XmlDocs
                 .Single(x => x.Name == propertyName);
 
             // ACT
-            var sut = new XmlDocsProvider(m_XmlDocsPath);
+            var sut = new XmlDocsProvider(m_XmlDocsPath, m_AssemblyDocumentation.Definition);
             var docs = sut.TryGetDocumentationComments(propertyDefinition);
 
             // ASSERT
             Assert.NotNull(docs);
+
+            Assert.NotNull(docs.Reference);
+            Assert.IsAssignableFrom<PropertyReference>(docs.Reference);
 
             Assert.NotNull(docs.Summary);
 
@@ -230,13 +247,19 @@ namespace MdDoc.Test.Model.XmlDocs
                 .Single(x => x.Name == eventName);
 
             // ACT
-            var sut = new XmlDocsProvider(m_XmlDocsPath);
+            var sut = new XmlDocsProvider(m_XmlDocsPath, m_AssemblyDocumentation.Definition);
             var docs = sut.TryGetDocumentationComments(eventDefinition);
 
             // ASSERT
             Assert.NotNull(docs);
+
+            Assert.NotNull(docs.Reference);
+            Assert.IsAssignableFrom<EventReference>(docs.Reference);
+
             Assert.NotNull(docs.Summary);
+
             Assert.NotNull(docs.Remarks);
+
             Assert.NotNull(docs.Example);
         }
     }

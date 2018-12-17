@@ -37,7 +37,7 @@ namespace MdDoc.Model
             var docsFilePath = Path.ChangeExtension(filePath, ".xml");
 
             var xmlDocsProvider = File.Exists(docsFilePath)
-                ? (IXmlDocsProvider) new XmlDocsProvider(docsFilePath)
+                ? (IXmlDocsProvider) new XmlDocsProvider(docsFilePath, assemblyDefinition)
                 : (IXmlDocsProvider) new NullXmlDocsProvider();
 
             return new AssemblyDocumentation(assemblyDefinition, xmlDocsProvider);

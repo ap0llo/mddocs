@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using Mono.Cecil;
 using System.Text;
 
 namespace MdDoc.Model.XmlDocs
 {
     public sealed class MemberElement
     {
-        public string Id { get;}
-
+        public MemberReference Reference { get; }
 
         public SummaryElement Summary { get; }
 
@@ -27,7 +27,7 @@ namespace MdDoc.Model.XmlDocs
 
 
         public MemberElement(
-            string id, 
+            MemberReference reference,
             SummaryElement summary,
             RemarksElement remarks,
             ExampleElement example,
@@ -37,10 +37,7 @@ namespace MdDoc.Model.XmlDocs
             ValueElement value,
             ReturnsElement returns)
         {
-            if (string.IsNullOrEmpty(id))
-                throw new ArgumentException("Value must not be empty", nameof(id));
-
-            Id = id;
+            Reference = reference ?? throw new ArgumentNullException(nameof(reference));
             Summary = summary;
             Remarks = remarks;
             Example = example;

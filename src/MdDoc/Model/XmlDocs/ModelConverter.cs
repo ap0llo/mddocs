@@ -1,4 +1,5 @@
-﻿using NuDoq;
+﻿using Mono.Cecil;
+using NuDoq;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,7 +8,9 @@ namespace MdDoc.Model.XmlDocs
 {
     static class ModelConverter
     {
-        public static IReadOnlyList<MemberElement> ConvertModel(DocumentMembers nuDoqModel)
+        public static IReadOnlyList<MemberElement> ConvertModel(
+            DocumentMembers nuDoqModel, 
+            IReadOnlyDictionary<string, MemberReference> assemblyMembers)
         {
             var result = new List<MemberElement>();
             foreach(Member member in nuDoqModel.Elements)
@@ -15,17 +18,22 @@ namespace MdDoc.Model.XmlDocs
                 var visitor = new MemberVisitor();
                 member.Accept(visitor);
 
-                var element = new MemberElement(member.Id,
-                    visitor.Summary,
-                    visitor.Remarks,
-                    visitor.Example,
-                    visitor.Exceptions,
-                    visitor.TypeParameters,
-                    visitor.Parameters,
-                    visitor.Value,
-                    visitor.Returns);
+                // ignore members not found in the assembly
+                if(assemblyMembers.ContainsKey(member.Id))
+                {
+                    var element = new MemberElement(
+                        assemblyMembers[member.Id],
+                        visitor.Summary,
+                        visitor.Remarks,
+                        visitor.Example,
+                        visitor.Exceptions,
+                        visitor.TypeParameters,
+                        visitor.Parameters,
+                        visitor.Value,
+                        visitor.Returns);
 
-                result.Add(element);
+                    result.Add(element);
+                }
             }
 
             return result;
