@@ -1,14 +1,21 @@
-﻿using System.Text;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Mono.Cecil;
 
 namespace MdDoc.Model.XmlDocs
 {
-    class XmlDocsNameMapper
-    {        
-        public string GetXmlDocName(TypeReference type) => $"T:{type.FullName}";
+    /// <summary>
+    /// Extensions for Mono.Cecil types that make it easier to work with XML docs
+    /// </summary>
+    internal static class MonoCecilXmlDocExtensions
+    {
 
-        public string GetXmlDocName(MethodDefinition method)
+        public static string GetXmlDocId(this TypeReference type) => $"T:{type.FullName}";
+
+        //MethodReference cannot be used here, becuase it does not define the IsConstructor property
+        public static string GetXmlDocId(this MethodDefinition method)
         {
             var stringBuilder = new StringBuilder();
 
@@ -16,6 +23,7 @@ namespace MdDoc.Model.XmlDocs
             stringBuilder.Append("M:");
             stringBuilder.Append(method.DeclaringType.FullName);
             stringBuilder.Append(".");
+
 
             // the name of the method is "#ctor" if it is a constructor
             if (method.IsConstructor)
@@ -26,9 +34,9 @@ namespace MdDoc.Model.XmlDocs
             {
                 stringBuilder.Append(method.Name);
             }
-        
+
             //If the method has generic parameters, the number of parameters is appended to the name
-            if(method.HasGenericParameters)
+            if (method.HasGenericParameters)
             {
                 stringBuilder.Append("``");
                 stringBuilder.Append(method.GenericParameters.Count);
@@ -39,8 +47,8 @@ namespace MdDoc.Model.XmlDocs
             {
                 var parameterNames = method.Parameters.Select(p => GetSerializedTypeName(p.ParameterType));
 
-                stringBuilder.Append("(");            
-                stringBuilder.AppendJoin(",", parameterNames);               
+                stringBuilder.Append("(");
+                stringBuilder.AppendJoin(",", parameterNames);
                 stringBuilder.Append(")");
             }
 
@@ -48,7 +56,7 @@ namespace MdDoc.Model.XmlDocs
             // the return type is appended to the name (separated by '~')
             if (method.IsSpecialName)
             {
-                if(method.Name == "op_Implicit" || method.Name == "op_Explicit")
+                if (method.Name == "op_Implicit" || method.Name == "op_Explicit")
                 {
                     stringBuilder.Append("~");
                     stringBuilder.Append(GetSerializedTypeName(method.ReturnType));
@@ -58,7 +66,7 @@ namespace MdDoc.Model.XmlDocs
             return stringBuilder.ToString();
         }
 
-        public string GetXmlDocName(PropertyDefinition property)
+        public static string GetXmlDocId(this PropertyReference property)
         {
             var stringBuilder = new StringBuilder();
 
@@ -71,7 +79,7 @@ namespace MdDoc.Model.XmlDocs
             stringBuilder.Append(property.Name);
 
             // indexers are implemented as properties with parameters
-            if (property.HasParameters)
+            if (property.Parameters.Count > 0)
             {
                 var parameterNames = property.Parameters.Select(p => GetSerializedTypeName(p.ParameterType));
 
@@ -83,21 +91,21 @@ namespace MdDoc.Model.XmlDocs
             return stringBuilder.ToString();
         }
 
-        public string GetXmlDocName(FieldDefinition field)
-        {            
+        public static string GetXmlDocId(this FieldReference field)
+        {
             // fields are prefixed with "F:", followed by the type and field names
-            return $"F:{field.DeclaringType.FullName}.{field.Name}";            
+            return $"F:{field.DeclaringType.FullName}.{field.Name}";
         }
 
-        public string GetXmlDocName(EventDefinition eventDefinition)
+        public static string GetXmlDocId(this EventReference eventDefinition)
         {
             // events are prefixed with "E:", followed by the type and field names
             return $"E:{eventDefinition.DeclaringType.FullName}.{eventDefinition.Name}";
         }
 
 
-        private string GetSerializedTypeName(TypeReference type)
-        {      
+        private static string GetSerializedTypeName(TypeReference type)
+        {
             //
             // Generic parameters are serialized as the index of the parameter, prefixed by ` or ``
             // - '`' refers to a generic parameter of a type
@@ -114,7 +122,7 @@ namespace MdDoc.Model.XmlDocs
                 if (genericParameter.DeclaringMethod != null)
                 {
                     return $"``{genericParameter.DeclaringMethod.GenericParameters.IndexOf(genericParameter)}";
-                    
+
                 }
                 else
                 {
@@ -148,6 +156,6 @@ namespace MdDoc.Model.XmlDocs
 
             // if no generics are involved, simply return the type name
             return type.FullName;
-        }        
+        }
     }
 }

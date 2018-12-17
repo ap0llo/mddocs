@@ -8,10 +8,10 @@ namespace MdDoc.Model.XmlDocs
 
         MemberElement TryGetDocumentationComments(MethodDefinition method);
 
-        MemberElement TryGetDocumentationComments(PropertyDefinition property);
+        MemberElement TryGetDocumentationComments(PropertyReference property);
 
-        MemberElement TryGetDocumentationComments(FieldDefinition field);
+        MemberElement TryGetDocumentationComments(FieldReference field);
 
-        MemberElement TryGetDocumentationComments(EventDefinition ev);
+        MemberElement TryGetDocumentationComments(EventReference ev);
     }
 }

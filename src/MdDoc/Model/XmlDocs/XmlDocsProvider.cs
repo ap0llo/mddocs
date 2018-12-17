@@ -11,8 +11,7 @@ namespace MdDoc.Model.XmlDocs
     class XmlDocsProvider : IXmlDocsProvider
     {
 
-        private readonly IReadOnlyDictionary<string, MemberElement> m_Members;
-        private readonly XmlDocsNameMapper m_NameMapper = new XmlDocsNameMapper();
+        private readonly IReadOnlyDictionary<string, MemberElement> m_Members;        
 
         public XmlDocsProvider(string path)
         {
@@ -26,31 +25,31 @@ namespace MdDoc.Model.XmlDocs
 
         public MemberElement TryGetDocumentationComments(TypeReference type)
         {
-            var id = m_NameMapper.GetXmlDocName(type);
+            var id = type.GetXmlDocId();
             return m_Members.GetValueOrDefault(id);
         }
     
         public MemberElement TryGetDocumentationComments(MethodDefinition method)
         {
-            var id = m_NameMapper.GetXmlDocName(method);
+            var id = method.GetXmlDocId();
             return m_Members.GetValueOrDefault(id);
         }
 
-        public MemberElement TryGetDocumentationComments(FieldDefinition field)
+        public MemberElement TryGetDocumentationComments(FieldReference field)
         {
-            var id = m_NameMapper.GetXmlDocName(field);
+            var id = field.GetXmlDocId();
             return m_Members.GetValueOrDefault(id);
         }
 
-        public MemberElement TryGetDocumentationComments(PropertyDefinition property)
+        public MemberElement TryGetDocumentationComments(PropertyReference property)
         {
-            var id = m_NameMapper.GetXmlDocName(property);
+            var id = property.GetXmlDocId();
             return m_Members.GetValueOrDefault(id);
         }
 
-        public MemberElement TryGetDocumentationComments(EventDefinition ev)
+        public MemberElement TryGetDocumentationComments(EventReference ev)
         {
-            var id = m_NameMapper.GetXmlDocName(ev);
+            var id = ev.GetXmlDocId();
             return m_Members.GetValueOrDefault(id);
         }
     }
