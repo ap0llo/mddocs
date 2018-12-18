@@ -103,6 +103,31 @@ namespace MdDoc.Test.Model.XmlDocs
             }
         }
 
+        public class PropertyIdTestCasesAttribute : DataAttribute
+        {
+            public override IEnumerable<object[]> GetData(MethodInfo testMethod)
+            {
+                foreach (var testCase in GetTestCases())
+                {
+                    yield return new object[] { testCase };
+                }
+
+            }
+
+            private IEnumerable<MemberIdParserPropertyIdTestCase> GetTestCases()
+            {
+                yield return new MemberIdParserPropertyIdTestCase(
+                    "P:MdDoc.Test.TestData.TestClass_Properties.Property1",
+                    new PropertyId(new TypeId("MdDoc.Test.TestData", "TestClass_Properties"), "Property1")
+                );
+
+                yield return new MemberIdParserPropertyIdTestCase(
+                    "P:MdDoc.Test.TestData.TestClass_Properties.Item(System.Int32)",
+                    new PropertyId(new TypeId("MdDoc.Test.TestData", "TestClass_Properties"), "Item", new[] { new TypeId("System", "Int32") })
+                );
+            }
+        }
+
         public class TypeIdTestCasesAttribute : DataAttribute
         {
             public override IEnumerable<object[]> GetData(MethodInfo testMethod)
@@ -192,6 +217,22 @@ namespace MdDoc.Test.Model.XmlDocs
 
             Assert.Equal(testCase.ExpectedMethodId, methodId);
         }
+
+        [Theory]
+        [PropertyIdTestCases]
+        public void Member_ids_for_properties_are_parsed_as_expected(MemberIdParserPropertyIdTestCase testCase)
+        {
+            var parser = new MemberIdParser(testCase.Input);
+            var memberId = parser.Parse();
+
+            Assert.NotNull(memberId);
+            Assert.IsType<PropertyId>(memberId);
+
+            var propertyId = (PropertyId)memberId;
+
+            Assert.Equal(testCase.ExpectedPropertyId, propertyId);
+        }
+
 
         [Theory]
         [FieldIdTestCases]
