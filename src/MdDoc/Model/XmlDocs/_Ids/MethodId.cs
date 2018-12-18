@@ -28,6 +28,9 @@ namespace MdDoc.Model.XmlDocs
 
         public MethodId(TypeId definingType, string name, int arity, IReadOnlyList<TypeId> parameters, TypeId returnType)
         {
+            if (String.IsNullOrEmpty(name))
+                throw new ArgumentException("Value must not be null or empty", nameof(name));
+
             DefiningType = definingType ?? throw new ArgumentNullException(nameof(definingType));
             Name = name;
             Arity = arity;
