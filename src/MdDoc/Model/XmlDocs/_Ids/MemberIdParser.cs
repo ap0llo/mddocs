@@ -176,7 +176,7 @@ namespace MdDoc.Model.XmlDocs
 
             // field id and event id need at least two name segments (type name + field/event name)
             if (nameSegments.Count < 2)
-                throw new MemberIdParserException("Invlaid input, method id requires name of defining type and method");
+                throw new MemberIdParserException("Invalid input, method id requires name of defining type and method");
 
             var namespaceName = String.Join(".", nameSegments.Take(nameSegments.Count - 2));
             var typeName = nameSegments[nameSegments.Count - 2];
@@ -251,7 +251,7 @@ namespace MdDoc.Model.XmlDocs
 
             // method id needs at least two name segments (type name + method name)
             if (nameSegments.Count < 2)
-                throw new MemberIdParserException("Invlaid input, method id requires name of defining type and method");
+                throw new MemberIdParserException("Invalid input, method id requires name of defining type and method");
 
 
             var namespaceName = String.Join(".", nameSegments.Take(nameSegments.Count - 2));
