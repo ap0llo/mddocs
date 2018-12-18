@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MdDoc.Model.XmlDocs
 {
-    public sealed class TypeId : MemberId
+    public sealed class TypeId : MemberId, IEquatable<TypeId>
     {
         public string NamespaceName { get; }
 
@@ -41,6 +42,40 @@ namespace MdDoc.Model.XmlDocs
             Name = name;
             Arity = arity;
             TypeArguments = typeArguments;
+        }
+
+
+        public override bool Equals(object obj) => Equals(obj as TypeId);
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hash = StringComparer.Ordinal.GetHashCode(NamespaceName) * 397;
+                hash ^= StringComparer.Ordinal.GetHashCode(Name);
+                
+                foreach(var arguemnt in TypeArguments)
+                {
+                    hash ^= arguemnt.GetHashCode();
+                }
+
+                return hash;
+            }
+        }
+
+        public bool Equals(TypeId other)
+        {
+            if (ReferenceEquals(this, other))
+                return true;
+
+            if (other == null)
+                return false;
+
+
+            return StringComparer.Ordinal.Equals(NamespaceName, other.NamespaceName) &&
+                StringComparer.Ordinal.Equals(Name, other.Name) &&
+                Arity == other.Arity &&
+                TypeArguments.SequenceEqual(other.TypeArguments);
         }
     }
 }

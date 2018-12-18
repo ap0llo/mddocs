@@ -175,7 +175,7 @@ namespace MdDoc.Test.Model.XmlDocs
 
             var typeId = (TypeId)memberId;
 
-            AssertEqual(testCase.ExpectedTypeId, typeId);
+            Assert.Equal(testCase.ExpectedTypeId, typeId);
         }
 
         [Theory]
@@ -190,7 +190,7 @@ namespace MdDoc.Test.Model.XmlDocs
 
             var methodId = (MethodId)memberId;
 
-            AssertEqual(testCase.ExpectedMethodId, methodId);
+            Assert.Equal(testCase.ExpectedMethodId, methodId);
         }
 
         [Theory]
@@ -205,7 +205,7 @@ namespace MdDoc.Test.Model.XmlDocs
 
             var fieldId = (FieldId)memberId;
 
-            AssertEqual(testCase.ExpectedFieldId, fieldId);
+            Assert.Equal(testCase.ExpectedFieldId, fieldId);
         }
 
         [Theory]
@@ -220,7 +220,7 @@ namespace MdDoc.Test.Model.XmlDocs
 
             var eventId = (EventId)memberId;
 
-            AssertEqual(testCase.ExpectedEventId, eventId);
+            Assert.Equal(testCase.ExpectedEventId, eventId);
         }
 
         [Theory]
@@ -239,58 +239,6 @@ namespace MdDoc.Test.Model.XmlDocs
         public void Parse_throws_Exception_for_invalid_input_data(string input)
         {
             Assert.Throws<MemberIdParserException>(() => new MemberIdParser(input).Parse());
-        }
-
-
-        private static void AssertEqual(TypeId expected, TypeId actual)
-        {
-            Assert.Equal(expected.NamespaceName, actual.NamespaceName);
-            Assert.Equal(expected.Name, actual.Name);
-            Assert.Equal(expected.Arity, actual.Arity);
-
-            Assert.Equal(expected.TypeArguments.Count, actual.TypeArguments.Count);
-            for (int i = 0; i < expected.TypeArguments.Count; i++)
-            {
-                AssertEqual(expected.TypeArguments[i], actual.TypeArguments[i]);
-            }
-
-        }
-
-        private static void AssertEqual(MethodId expected, MethodId actual)
-        {
-            AssertEqual(expected.DefiningType, actual.DefiningType);
-
-            Assert.Equal(expected.Name, actual.Name);
-            Assert.Equal(expected.Arity, actual.Arity);
-
-            Assert.Equal(expected.Parameters.Count, actual.Parameters.Count);
-            for (int i = 0; i < expected.Parameters.Count; i++)
-            {
-                AssertEqual(expected.Parameters[i], actual.Parameters[i]);
-            }
-
-            if (expected.ReturnType == null)
-            {
-                Assert.Null(actual.ReturnType);
-            }
-            else
-            {
-                AssertEqual(expected.ReturnType, actual.ReturnType);
-            }
-        }
-
-        private static void AssertEqual(FieldId expected, FieldId actual)
-        {
-            AssertEqual(expected.DefiningType, actual.DefiningType);
-
-            Assert.Equal(expected.Name, actual.Name);
-        }
-
-        private static void AssertEqual(EventId expected, EventId actual)
-        {
-            AssertEqual(expected.DefiningType, actual.DefiningType);
-
-            Assert.Equal(expected.Name, actual.Name);
         }
     }
 }
