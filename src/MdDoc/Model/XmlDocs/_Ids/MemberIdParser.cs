@@ -93,7 +93,7 @@ namespace MdDoc.Model.XmlDocs
             }
 
             // check tokens after names and dots
-            switch(Current.Kind)
+            switch (Current.Kind)
             {
                 // for non-generic types we have already read all name and dot tokens
                 case TokenKind.Eof:
@@ -115,8 +115,10 @@ namespace MdDoc.Model.XmlDocs
             var namespaceName = String.Join(".", nameSegments.Take(nameSegments.Count - 1));
             var typeName = nameSegments[nameSegments.Count - 1];
 
-            return new TypeId(namespaceName, typeName, arity);
+            return CreateTypeId(namespaceName, typeName, arity);
         }
+
+     
 
         private FieldId ParseFieldId()
         {
@@ -182,7 +184,7 @@ namespace MdDoc.Model.XmlDocs
             var typeName = nameSegments[nameSegments.Count - 2];
             var name = nameSegments[nameSegments.Count - 1];
 
-            return (new TypeId(namespaceName, typeName, typeArity), name);
+            return (CreateTypeId(namespaceName, typeName, typeArity), name);
         }
 
         //TODO: type parameters in parameter list
@@ -256,7 +258,7 @@ namespace MdDoc.Model.XmlDocs
 
             var namespaceName = String.Join(".", nameSegments.Take(nameSegments.Count - 2));
             var typeName = nameSegments[nameSegments.Count - 2];
-            var definingType = new TypeId(namespaceName, typeName, typeArity);
+            var definingType = CreateTypeId(namespaceName, typeName, typeArity);
 
             var methodName = nameSegments[nameSegments.Count - 1];
 
@@ -319,7 +321,7 @@ namespace MdDoc.Model.XmlDocs
 
             var namespaceName = String.Join(".", nameSegments.Take(nameSegments.Count - 2));
             var typeName = nameSegments[nameSegments.Count - 2];
-            var definingType = new TypeId(namespaceName, typeName, typeArity);
+            var definingType = CreateTypeId(namespaceName, typeName, typeArity);
 
             var methodName = nameSegments[nameSegments.Count - 1];
 
@@ -392,8 +394,15 @@ namespace MdDoc.Model.XmlDocs
 
             var namespaceName = String.Join(".", nameSegments.Take(nameSegments.Count - 1));
             var typeName = nameSegments[nameSegments.Count - 1];
-            return new TypeId(namespaceName, typeName, typeArguments ?? Array.Empty<TypeId>());
 
+            if(typeArguments != null)
+            {
+                return new GenericTypeInstanceId(namespaceName, typeName, typeArguments);
+            }
+            else
+            {
+                return new SimpleTypeId(namespaceName, typeName);
+            }
         }
 
         private string MatchToken(TokenKind kind)
@@ -413,6 +422,18 @@ namespace MdDoc.Model.XmlDocs
         private MemberIdParserException UnexpectedToken(params TokenKind[] expected)
         {
             return new MemberIdParserException($"Unexpected token. Expected {String.Join(",", expected)} but was {Current.Kind}");
-        }   
+        }
+
+        private static TypeId CreateTypeId(string namespaceName, string typeName, int arity)
+        {
+            if (arity > 0)
+            {
+                return new GenericTypeId(namespaceName, typeName, arity);
+            }
+            else
+            {
+                return new SimpleTypeId(namespaceName, typeName);
+            }
+        }
     }
 }
