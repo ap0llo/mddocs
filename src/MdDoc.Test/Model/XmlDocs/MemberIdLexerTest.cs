@@ -231,6 +231,24 @@ namespace MdDoc.Test.Model.XmlDocs
                     new Token(TokenKind.Name, "String"),
                     new Token(TokenKind.Eof, "")
                 );
+                yield return new MemberIdLexerTestCase(
+                    "M:Namespace.Type.Method(System.Int32[])",
+                    new Token(TokenKind.IdentifierType, "M"),
+                    new Token(TokenKind.Colon, ":"),
+                    new Token(TokenKind.Name, "Namespace"),
+                    new Token(TokenKind.Dot, "."),
+                    new Token(TokenKind.Name, "Type"),
+                    new Token(TokenKind.Dot, "."),
+                    new Token(TokenKind.Name, "Method"),
+                    new Token(TokenKind.OpenParenthesis, "("),
+                    new Token(TokenKind.Name, "System"),
+                    new Token(TokenKind.Dot, "."),
+                    new Token(TokenKind.Name, "Int32"),
+                    new Token(TokenKind.OpenSquareBracket, "["),
+                    new Token(TokenKind.CloseSquareBracket, "]"),
+                    new Token(TokenKind.CloseParenthesis, ")"),
+                    new Token(TokenKind.Eof, "")
+                );
 
             }
         }

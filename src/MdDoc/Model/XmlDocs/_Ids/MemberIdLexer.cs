@@ -67,12 +67,20 @@ namespace MdDoc.Model.XmlDocs
         /// </summary>
         Tilde,
         /// <summary>
+        /// A open square bracket ('[') token
+        /// </summary>
+        OpenSquareBracket,
+        /// <summary>
+        /// A close square bracket (']') token
+        /// </summary>
+        CloseSquareBracket,
+        /// <summary>
         /// A token indicating the end of the text to parse
         /// </summary>
         Eof
     }
 
-    internal struct Token
+    internal struct Token 
     {
         public string Value { get; set; }
 
@@ -201,6 +209,16 @@ namespace MdDoc.Model.XmlDocs
                         m_Position++;
                         break;
 
+                    case '[':
+                        yield return new Token(TokenKind.OpenSquareBracket, "[");
+                        m_Position++;
+                        break;
+
+                    case ']':
+                        yield return new Token(TokenKind.CloseSquareBracket, "]");
+                        m_Position++;
+                        break;
+
                     case '~':
                         yield return new Token(TokenKind.Tilde, "~");
                         m_Position++;
@@ -248,6 +266,8 @@ namespace MdDoc.Model.XmlDocs
                     Current == ')' ||
                     Current == '{' ||
                     Current == '}' ||
+                    Current == '[' ||
+                    Current == ']' ||
                     Current == ','||
                     Current == '~')
                 {

@@ -92,30 +92,32 @@ namespace MdDoc.Model.XmlDocs
                     MatchToken(TokenKind.Dot);
             }
 
-            // check tokens after names and dots
-            switch (Current.Kind)
+            // optional part: number of type arguments for generic types
+            if(Current.Kind == TokenKind.Backtick)
             {
-                // for non-generic types we have already read all name and dot tokens
-                case TokenKind.Eof:
-                    break;
-
-                // for generic types, the number of type parameters is encoded using a backtick + the number of parameters
-                case TokenKind.Backtick:
-                    MatchToken(TokenKind.Backtick);
-                    arity = int.Parse(MatchToken(TokenKind.Number));
-                    break;
-
-                default:
-                    throw UnexpectedToken(TokenKind.Eof, TokenKind.Backtick);
+                MatchToken(TokenKind.Backtick);
+                arity = int.Parse(MatchToken(TokenKind.Number));                
             }
-
-            // all token should be parsed now
-            MatchToken(TokenKind.Eof);
 
             var namespaceName = String.Join(".", nameSegments.Take(nameSegments.Count - 1));
             var typeName = nameSegments[nameSegments.Count - 1];
+            var type = CreateTypeId(namespaceName, typeName, arity);
 
-            return CreateTypeId(namespaceName, typeName, arity);
+            // if the type if followed by square brackets, the id refers to an array type
+            // arrays of arrays are allowed, too
+            while(Current.Kind == TokenKind.OpenSquareBracket)
+            {
+                MatchToken(TokenKind.OpenSquareBracket);
+                MatchToken(TokenKind.CloseSquareBracket);
+
+                // wrap type into an array
+                type = new ArrayTypeId(type);
+            }
+            
+            // all token should be parsed now
+            MatchToken(TokenKind.Eof);
+
+            return type;
         }
 
      
@@ -359,10 +361,10 @@ namespace MdDoc.Model.XmlDocs
 
             nameSegments.Add(MatchToken(TokenKind.Name));
 
+            var arrayDepth = 0;
             var done = false;
             while(!done)
             {
-
                 switch (Current.Kind)
                 {
                     case TokenKind.Dot:
@@ -383,10 +385,22 @@ namespace MdDoc.Model.XmlDocs
                         done = true;
                         break;
 
+                    case TokenKind.OpenSquareBracket:
+                        MatchToken(TokenKind.OpenSquareBracket);
+                        MatchToken(TokenKind.CloseSquareBracket);
+                        arrayDepth++;
+                        break;
+
                     default:
                         throw UnexpectedToken(
-                            TokenKind.Dot, TokenKind.OpenBrace, TokenKind.CloseBrace, TokenKind.Comma, 
-                            TokenKind.CloseParenthesis, TokenKind.Eof
+                            TokenKind.Dot, 
+                            TokenKind.OpenBrace, 
+                            TokenKind.CloseBrace, 
+                            TokenKind.Comma, 
+                            TokenKind.CloseParenthesis,
+                            TokenKind.OpenSquareBracket,
+                            TokenKind.CloseSquareBracket,
+                            TokenKind.Eof
                         );
                 }
 
@@ -395,14 +409,22 @@ namespace MdDoc.Model.XmlDocs
             var namespaceName = String.Join(".", nameSegments.Take(nameSegments.Count - 1));
             var typeName = nameSegments[nameSegments.Count - 1];
 
+            TypeId type;
             if(typeArguments != null)
             {
-                return new GenericTypeInstanceId(namespaceName, typeName, typeArguments);
+                type = new GenericTypeInstanceId(namespaceName, typeName, typeArguments);
             }
             else
             {
-                return new SimpleTypeId(namespaceName, typeName);
+                type = new SimpleTypeId(namespaceName, typeName);
             }
+
+            while(arrayDepth > 0)
+            {
+                type = new ArrayTypeId(type);
+                arrayDepth -= 1;
+            }
+            return type;
         }
 
         private string MatchToken(TokenKind kind)

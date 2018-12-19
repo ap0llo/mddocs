@@ -42,6 +42,11 @@ namespace MdDoc.Test.Model.XmlDocs
                     TypeId = new GenericTypeInstanceId(namespaceName, name, typeArguments.Select(x => x.TypeId).ToArray());
                     break;
 
+                case nameof(ArrayTypeId):
+                    var elementType = info.GetValue<XunitSerializableTypeId>(nameof(ArrayTypeId.ElementType));
+                    TypeId = new ArrayTypeId(elementType);
+                    break;
+
                 default:
                     throw new NotImplementedException();
             }
@@ -67,6 +72,11 @@ namespace MdDoc.Test.Model.XmlDocs
                 case GenericTypeInstanceId typeInstance:
                     info.AddValue("type", nameof(GenericTypeInstanceId));
                     info.AddValue(nameof(GenericTypeInstanceId.TypeArguments), typeInstance.TypeArguments.Select(x => new XunitSerializableTypeId(x)).ToArray());
+                    break;
+
+                case ArrayTypeId arrayType:
+                    info.AddValue("type", nameof(ArrayTypeId));
+                    info.AddValue(nameof(ArrayTypeId.ElementType), new XunitSerializableTypeId(arrayType.ElementType));
                     break;
 
                 default:

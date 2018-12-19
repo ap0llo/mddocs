@@ -100,6 +100,23 @@ namespace MdDoc.Test.Model.XmlDocs
                     )
                 );
 
+                yield return new MemberIdParserTestCase(
+                    "M:TestClass.TestMethod(System.Int32[])",
+                    new MethodId(
+                        new SimpleTypeId("", "TestClass"),
+                        "TestMethod",
+                        new TypeId[] {  new ArrayTypeId(new SimpleTypeId("System", "Int32")) })
+                );
+                
+                yield return new MemberIdParserTestCase(
+                    "M:TestClass.TestMethod(System.String[],System.Int32[])",
+                    new MethodId(
+                        new SimpleTypeId("", "TestClass"),
+                        "TestMethod",
+                        new TypeId[] {new ArrayTypeId(new SimpleTypeId("System", "String")), new ArrayTypeId(new SimpleTypeId("System", "Int32")) })
+                );
+
+
             }
         }
 
@@ -142,7 +159,10 @@ namespace MdDoc.Test.Model.XmlDocs
             public IEnumerable<MemberIdParserTestCase> GetTestCases()
             {
                 yield return new MemberIdParserTestCase("T:System.String", new SimpleTypeId("System", "String"));
+                yield return new MemberIdParserTestCase("T:System.String[]", new ArrayTypeId(new SimpleTypeId("System", "String")));
+                yield return new MemberIdParserTestCase("T:System.String[][]", new ArrayTypeId(new ArrayTypeId(new SimpleTypeId("System", "String"))));
                 yield return new MemberIdParserTestCase("T:System.Collections.Generic.IEnumerable`1", new GenericTypeId("System.Collections.Generic", "IEnumerable", 1));
+                yield return new MemberIdParserTestCase("T:System.Collections.Generic.IEnumerable`1[]", new ArrayTypeId(new GenericTypeId("System.Collections.Generic", "IEnumerable", 1)));
                 yield return new MemberIdParserTestCase("T:System.Collections.Generic.IEnumerable`23", new GenericTypeId("System.Collections.Generic", "IEnumerable", 23));
                 yield return new MemberIdParserTestCase("T:System.Collections.Generic.IDictionary`2", new GenericTypeId("System.Collections.Generic", "IDictionary", 2));
             }
@@ -194,7 +214,7 @@ namespace MdDoc.Test.Model.XmlDocs
         [PropertyIdTestCases]
         [EventIdTestCases]
         [FieldIdTestCases]
-        public void Member_ids_for_properties_are_parsed_as_expected(MemberIdParserTestCase testCase)
+        public void Member_ids_are_parsed_as_expected(MemberIdParserTestCase testCase)
         {
             var parser = new MemberIdParser(testCase.Input);
             var memberId = parser.Parse();
