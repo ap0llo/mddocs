@@ -1,21 +1,19 @@
 ﻿using Mono.Cecil;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace MdDoc.Model
 {
-    public static class MethodDefinitionExtensions
+    public static class MethodReferenceExtensions
     {
-        public static bool IsOperatorOverload(this MethodDefinition methodDefinition) => 
-            methodDefinition.GetOperatorKind().HasValue;
+        public static bool IsOperatorOverload(this MethodReference methodReference) =>
+            methodReference.GetOperatorKind().HasValue;
 
-        public static OperatorKind? GetOperatorKind(this MethodDefinition methodDefinition)
+        public static OperatorKind? GetOperatorKind(this MethodReference methodReference)
         {
-            if (!methodDefinition.IsSpecialName)
-                return null;
-
-            switch (methodDefinition.Name)
+            switch (methodReference.Name)
             {
                 case "op_UnaryPlus":
                     return OperatorKind.UnaryPlus;
@@ -74,6 +72,29 @@ namespace MdDoc.Model
                     return null;
             }
 
+        }
+
+
+        public static MemberId ToMemberId(this MethodReference method)
+        {
+            var parameters = method.Parameters.Count > 0
+                ? method.Parameters.Select(p => p.ParameterType.ToTypeId()).ToArray()
+                : Array.Empty<TypeId>();
+
+            TypeId returnType = default;
+            var operatorKind = method.GetOperatorKind();
+            if(operatorKind == OperatorKind.ImplicitConversion || operatorKind == OperatorKind.ExplicitConversion)
+            {
+                returnType = method.ReturnType.ToTypeId();
+            }
+            
+            return new MethodId(
+                method.DeclaringType.ToTypeId(),
+                method.Name,                
+                method.GenericParameters.Count,
+                parameters,
+                returnType
+            );
         }
 
     }

@@ -7,7 +7,10 @@ namespace MdDoc.Model
     {
         public static TypeName ToTypeName(this TypeReference typeReference) => new TypeName(typeReference);
 
-        public static MemberId ToMemberId(this TypeReference typeReference)
+        public static MemberId ToMemberId(this TypeReference typeReference) =>
+            typeReference.ToTypeId();
+
+        public static TypeId ToTypeId(this TypeReference typeReference)
         {
             if(typeReference.HasGenericParameters)
             {
@@ -19,7 +22,7 @@ namespace MdDoc.Model
                 var name = genericInstanceType.Name.Substring(0, genericInstanceType.Name.LastIndexOf('`'));
 
                 var typeArguments = genericInstanceType.GenericArguments
-                    .Select(x => (TypeId) x.ToMemberId())
+                    .Select(x => x.ToTypeId())
                     .ToArray();
 
                 return new GenericTypeInstanceId(
@@ -29,7 +32,7 @@ namespace MdDoc.Model
             }
             else if (typeReference is ArrayType arrayType)
             {
-                return new ArrayTypeId((TypeId)arrayType.ElementType.ToMemberId(), arrayType.Dimensions.Count);
+                return new ArrayTypeId(arrayType.ElementType.ToTypeId(), arrayType.Dimensions.Count);
             }
             else if (typeReference is GenericParameter genericParameter)
             {
