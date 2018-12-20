@@ -4,49 +4,45 @@ using MdDoc.Model;
 
 namespace MdDoc.Test.Model.XmlDocs
 {
-    public class MemberIdParserTestCase : IXunitSerializable
+    public class XunitSerializableMemberId : IXunitSerializable
     {
-        public string Input { get; private set; }
-
-        public MemberId ExpectedMemberId { get; private set; }
+        public MemberId MemberId { get; private set; }
 
 
         // parameterless constructor required by xunit
-        public MemberIdParserTestCase()
+        public XunitSerializableMemberId()
         { }
 
-        public MemberIdParserTestCase(string input, MemberId expectedMemberId)
-        {
-            Input = input;
-            ExpectedMemberId = expectedMemberId;
+        public XunitSerializableMemberId(MemberId memberId)
+        {            
+            MemberId = memberId;
         }
 
 
         public void Deserialize(IXunitSerializationInfo info)
-        {
-            Input = info.GetValue<string>(nameof(Input));
+        { 
             var type = info.GetValue<string>("type");
 
             switch (type)
             {
                 case nameof(TypeId):
-                    ExpectedMemberId = info.GetValue<XunitSerializableTypeId>(nameof(ExpectedMemberId));
+                    MemberId = info.GetValue<XunitSerializableTypeId>(nameof(MemberId));
                     break;
 
                 case nameof(MethodId):
-                    ExpectedMemberId = info.GetValue<XunitSerializableMethodId>(nameof(ExpectedMemberId));
+                    MemberId = info.GetValue<XunitSerializableMethodId>(nameof(MemberId));
                     break;
 
                 case nameof(PropertyId):
-                    ExpectedMemberId = info.GetValue<XunitSerializablePropertyId>(nameof(ExpectedMemberId));
+                    MemberId = info.GetValue<XunitSerializablePropertyId>(nameof(MemberId));
                     break;
 
                 case nameof(FieldId):
-                    ExpectedMemberId = info.GetValue<XunitSerializableFieldId>(nameof(ExpectedMemberId));
+                    MemberId = info.GetValue<XunitSerializableFieldId>(nameof(MemberId));
                     break;
 
                 case nameof(EventId):
-                    ExpectedMemberId = info.GetValue<XunitSerializableEventId>(nameof(ExpectedMemberId));
+                    MemberId = info.GetValue<XunitSerializableEventId>(nameof(MemberId));
                     break;
 
                 default:
@@ -56,33 +52,31 @@ namespace MdDoc.Test.Model.XmlDocs
 
         public void Serialize(IXunitSerializationInfo info)
         {
-            info.AddValue(nameof(Input), Input);
-
-            switch (ExpectedMemberId)
+            switch (MemberId)
             {
                 case TypeId typeId:
                     info.AddValue("type", nameof(TypeId));
-                    info.AddValue(nameof(ExpectedMemberId), new XunitSerializableTypeId(typeId));
+                    info.AddValue(nameof(MemberId), new XunitSerializableTypeId(typeId));
                     break;
 
                 case MethodId methodId:
                     info.AddValue("type", nameof(MethodId));
-                    info.AddValue(nameof(ExpectedMemberId), new XunitSerializableMethodId(methodId));
+                    info.AddValue(nameof(MemberId), new XunitSerializableMethodId(methodId));
                     break;
 
                 case PropertyId propertyId:
                     info.AddValue("type", nameof(PropertyId));
-                    info.AddValue(nameof(ExpectedMemberId), new XunitSerializablePropertyId(propertyId));
+                    info.AddValue(nameof(MemberId), new XunitSerializablePropertyId(propertyId));
                     break;
 
                 case FieldId fieldId:
                     info.AddValue("type", nameof(FieldId));
-                    info.AddValue(nameof(ExpectedMemberId), new XunitSerializableFieldId(fieldId));
+                    info.AddValue(nameof(MemberId), new XunitSerializableFieldId(fieldId));
                     break;
 
                 case EventId eventId:
                     info.AddValue("type", nameof(EventId));
-                    info.AddValue(nameof(ExpectedMemberId), new XunitSerializableEventId(eventId));
+                    info.AddValue(nameof(MemberId), new XunitSerializableEventId(eventId));
                     break;
                     
                 default:
@@ -90,6 +84,6 @@ namespace MdDoc.Test.Model.XmlDocs
             }            
         }
 
-        public override string ToString() => Input;
+        public static implicit operator MemberId(XunitSerializableMemberId serializable) => serializable?.MemberId;
     }
 }

@@ -4,12 +4,47 @@ using System.Reflection;
 using MdDoc.Model;
 using MdDoc.Model.XmlDocs;
 using Xunit;
+using Xunit.Abstractions;
 using Xunit.Sdk;
 
 namespace MdDoc.Test.Model.XmlDocs
 {
     public class MemberIdParserTest
     {
+        public class MemberIdParserTestCase : IXunitSerializable
+        {
+            public string Input { get; private set; }
+
+            public MemberId ExpectedMemberId { get; private set; }
+
+
+            // parameterless constructor required by xunit
+            public MemberIdParserTestCase()
+            { }
+
+            public MemberIdParserTestCase(string input, MemberId expectedMemberId)
+            {
+                Input = input;
+                ExpectedMemberId = expectedMemberId;
+            }
+
+
+            public void Deserialize(IXunitSerializationInfo info)
+            {
+                Input = info.GetValue<string>(nameof(Input));
+                ExpectedMemberId = info.GetValue<XunitSerializableMemberId>(nameof(ExpectedMemberId));
+            }
+
+            public void Serialize(IXunitSerializationInfo info)
+            {
+                info.AddValue(nameof(Input), Input);
+                info.AddValue(nameof(ExpectedMemberId), new XunitSerializableMemberId(ExpectedMemberId));
+            }
+
+            public override string ToString() => Input;
+        }
+
+
         public class MethodIdTestCasesAttribute : DataAttribute
         {
             public override IEnumerable<object[]> GetData(MethodInfo testMethod)
