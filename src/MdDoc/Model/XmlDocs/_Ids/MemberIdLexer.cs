@@ -132,39 +132,34 @@ namespace MdDoc.Model.XmlDocs
 
         private IEnumerable<Token> EnumerateTokens()
         {
-            // for an empry string, only return the EOF token
-            if (Current == '\0')
-            {
-                yield return new Token(TokenKind.Eof, ""); 
-                yield break;
-            }
-
-            // a identifier always start with a character identifiyng the type of identifier (type, field, method...)
-            // followed by a colon            
-            yield return ReadIdentifierTypeToken();
-
-            if (Current != ':')
-            {
-                throw new MemberIdLexerException($"Expected ':' at position {m_Position}");
-            }
-            else
-            {
-                yield return new Token(TokenKind.Colon, ":");
-                m_Position++;
-            }
-
             //iterate over the input text
             while (Current != '\0')
-            {
-                // number => read as number token, names can contain digits but never start with a digit
-                if (char.IsDigit(Current))
-                {
-                    yield return ReadNumberToken();
-                    continue;
-                }
-
+            {                
                 switch (Current)
                 {
+                    // number => read as number token, names can contain digits but never start with a digit
+                    case '0':
+                    case '1':
+                    case '2':
+                    case '3':
+                    case '4':
+                    case '5':
+                    case '6':
+                    case '7':
+                    case '8':
+                    case '9':
+                        yield return ReadNumberToken();
+                        break;
+
+                    case 'T' when m_Position  == 0:
+                    case 'F' when m_Position  == 0:
+                    case 'E' when m_Position  == 0:
+                    case 'P' when m_Position  == 0:
+                    case 'M' when m_Position  == 0:
+                        yield return new Token(TokenKind.IdentifierType, Current);
+                        m_Position++;
+                        break;
+
                     case '.':
                         yield return new Token(TokenKind.Dot, ".");
                         m_Position++;
@@ -237,25 +232,6 @@ namespace MdDoc.Model.XmlDocs
 
             // return EOF token to signal the end of the text
             yield return new Token(TokenKind.Eof, "");
-        }
-
-
-        private Token ReadIdentifierTypeToken()
-        {            
-            switch (Current)
-            {
-                case 'T':
-                case 'F':
-                case 'P':
-                case 'M':
-                case 'E':
-                    var token = new Token(TokenKind.IdentifierType, Current);
-                    m_Position++;
-                    return token;
-
-                default:
-                    throw new MemberIdLexerException("Member id must start with prefix indicating the member kind, expected T, F, P, M, or E");
-            }
         }
 
         private Token ReadNameToken()

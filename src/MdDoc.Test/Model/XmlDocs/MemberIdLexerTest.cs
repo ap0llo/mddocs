@@ -320,15 +320,6 @@ namespace MdDoc.Test.Model.XmlDocs
                 Assert.Equal(testCase.ExpectedTokens[i].Kind, actualTokens[i].Kind);
                 Assert.Equal(testCase.ExpectedTokens[i].Value, actualTokens[i].Value);
             }
-        }
-
-
-        [Theory]
-        [InlineData("F")]
-        [InlineData("X:")]
-        public void Tokenizer_throws_exception_for_invalid_input(string input)
-        {
-            Assert.Throws<MemberIdLexerException>(() => new MemberIdLexer(input).GetTokens());
-        }
+        }        
     }
 }
