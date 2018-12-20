@@ -125,7 +125,6 @@ namespace MdDoc.Model.XmlDocs
             return CreateTypeIdFromMemberNameSegments(nameSegments, typeArity);
         }
 
-        //TODO: type parameters in parameter list
         private MethodId ParseMethodId()
         {
             // id always starts with a name            
@@ -161,8 +160,7 @@ namespace MdDoc.Model.XmlDocs
             
             return new MethodId(definingType, methodName, methodArity, methodParameters, methodReturnType);
         }
-
-        //TODO: type parameters in parameter list
+        
         private PropertyId ParsePropertyId()
         {
             // id always starts with a name            
@@ -275,7 +273,7 @@ namespace MdDoc.Model.XmlDocs
         }
 
         private IReadOnlyList<TypeId> ParseParameterList()
-        {
+        {            
             if (TestAndMatchToken(TokenKind.OpenParenthesis))
             {
                 var parameters = ParseTypeNameList();
@@ -291,7 +289,7 @@ namespace MdDoc.Model.XmlDocs
         private IReadOnlyList<TypeId> ParseTypeNameList()
         {        
             var parameters = new List<TypeId>();
-
+            
             // there needs to be at least one type name in the list
             do
             {
@@ -304,28 +302,43 @@ namespace MdDoc.Model.XmlDocs
 
         private TypeId ParseTypeName()
         {
-            var nameSegments = ParseNameSegments();
-            
-            // optional part: type arguments (enclosed by '{' and '}')
-            var typeArguments = default(IReadOnlyList<TypeId>);
-            if(TestAndMatchToken(TokenKind.OpenBrace))
-            {                
-                typeArguments = ParseTypeNameList();
-                MatchToken(TokenKind.CloseBrace);
-            }
-
-            var namespaceName = String.Join(".", nameSegments.Take(nameSegments.Count - 1));
-            var typeName = nameSegments[nameSegments.Count - 1];
-
             TypeId type;
-            if (typeArguments != null)
+            if (TestAndMatchToken(TokenKind.Backtick))
             {
-                type = new GenericTypeInstanceId(namespaceName, typeName, typeArguments);
+                var index = int.Parse(MatchToken(TokenKind.Number));
+                type = new GenericTypeParameterId(GenericTypeParameterId.MemberKind.Type, index);
+            }
+            else if (TestAndMatchToken(TokenKind.DoubleBacktick))
+            {
+                var index = int.Parse(MatchToken(TokenKind.Number));
+                type = new GenericTypeParameterId(GenericTypeParameterId.MemberKind.Method, index);
             }
             else
             {
-                type = new SimpleTypeId(namespaceName, typeName);
+                var nameSegments = ParseNameSegments();
+            
+                // optional part: type arguments (enclosed by '{' and '}')
+                var typeArguments = default(IReadOnlyList<TypeId>);
+                if(TestAndMatchToken(TokenKind.OpenBrace))
+                {                
+                    typeArguments = ParseTypeNameList();
+                    MatchToken(TokenKind.CloseBrace);
+                }
+
+                var namespaceName = String.Join(".", nameSegments.Take(nameSegments.Count - 1));
+                var typeName = nameSegments[nameSegments.Count - 1];
+
+                
+                if (typeArguments != null)
+                {
+                    type = new GenericTypeInstanceId(namespaceName, typeName, typeArguments);
+                }
+                else
+                {
+                    type = new SimpleTypeId(namespaceName, typeName);
+                }
             }
+
 
             // optinal part: array declaration
             // if the type if followed by square brackets, the id refers to an array type

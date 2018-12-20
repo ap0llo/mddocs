@@ -1,0 +1,39 @@
+﻿using System;
+
+namespace MdDoc.Model.XmlDocs
+{
+    public sealed class GenericTypeParameterId : TypeId, IEquatable<GenericTypeParameterId>
+    {
+        public enum MemberKind
+        {
+            Type,
+            Method
+        }
+
+        public MemberKind DefiningMemberKind { get; }
+
+        public int Index { get; }
+
+        public GenericTypeParameterId(MemberKind definingMemberKind, int index) : base("", $"T{index + 1}")
+        {
+            DefiningMemberKind = definingMemberKind;
+            Index = index;
+        }
+
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hash = DefiningMemberKind.GetHashCode() * 397;
+                hash ^= Index.GetHashCode(); 
+                return hash;
+            }
+        }
+
+        public bool Equals(GenericTypeParameterId other) => 
+            other != null && DefiningMemberKind == other.DefiningMemberKind && Index == other.Index;
+
+        public override bool Equals(object obj) => Equals(obj as GenericTypeParameterId);        
+    }
+}

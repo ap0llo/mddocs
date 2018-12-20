@@ -48,6 +48,13 @@ namespace MdDoc.Test.Model.XmlDocs
                     TypeId = new ArrayTypeId(elementType, dimensions);
                     break;
 
+
+                case nameof(GenericTypeParameterId):
+                    var index = info.GetValue<int>(nameof(GenericTypeParameterId.Index));
+                    var definingMemberKind = info.GetValue<string>(nameof(GenericTypeParameterId.DefiningMemberKind));
+                    TypeId = new GenericTypeParameterId(Enum.Parse<GenericTypeParameterId.MemberKind>(definingMemberKind), index);                    
+                    break;
+
                 default:
                     throw new NotImplementedException();
             }
@@ -79,6 +86,12 @@ namespace MdDoc.Test.Model.XmlDocs
                     info.AddValue("type", nameof(ArrayTypeId));
                     info.AddValue(nameof(ArrayTypeId.ElementType), new XunitSerializableTypeId(arrayType.ElementType));
                     info.AddValue(nameof(ArrayTypeId.Dimensions), arrayType.Dimensions);
+                    break;
+
+                case GenericTypeParameterId typeParameter:
+                    info.AddValue("type", nameof(GenericTypeParameterId));
+                    info.AddValue(nameof(GenericTypeParameterId.DefiningMemberKind), typeParameter.DefiningMemberKind.ToString());
+                    info.AddValue(nameof(GenericTypeParameterId.Index), typeParameter.Index);
                     break;
 
                 default:

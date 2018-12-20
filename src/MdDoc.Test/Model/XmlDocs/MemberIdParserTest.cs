@@ -50,15 +50,27 @@ namespace MdDoc.Test.Model.XmlDocs
                         new TypeId[] { new SimpleTypeId("System", "String"), new SimpleTypeId("System", "Int32") })
                 );
 
-                //yield return new MemberIdParserTestCase(
-                //    "M:MdDoc.Test.TestData.TestClass_GenericType`1.TestMethod1(`0)",
-                //    new MethodId(new TypeId("MdDoc.Test.TestData", "TestClass_GenericType", 1), "TestMethod1", 0, new[] { "`0" })
-                //);
+                yield return new MemberIdParserTestCase(
+                    "M:MdDoc.Test.TestData.TestClass_GenericType`1.TestMethod1(`0)",
+                    new MethodId(
+                        new GenericTypeId("MdDoc.Test.TestData", "TestClass_GenericType", 1),
+                        "TestMethod1",
+                        0,
+                        new[] { new GenericTypeParameterId(GenericTypeParameterId.MemberKind.Type, 0) })
+                );
 
-                //yield return new MemberIdParserTestCase(
-                //    "M:MdDoc.Test.TestData.TestClass_GenericType`1.TestMethod1``2(``0)",
-                //    new MethodId(new TypeId("MdDoc.Test.TestData", "TestClass_GenericType", 1), "TestMethod1", 2, new[] { "``0" })
-                //);
+                yield return new MemberIdParserTestCase(
+                    "M:MdDoc.Test.TestData.TestClass_GenericType`1.TestMethod1``2(``0,``1)",
+                    new MethodId(
+                        new GenericTypeId("MdDoc.Test.TestData", "TestClass_GenericType", 1),
+                        "TestMethod1",
+                        2,
+                        new[] 
+                        {
+                            new GenericTypeParameterId(GenericTypeParameterId.MemberKind.Method, 0),
+                            new GenericTypeParameterId(GenericTypeParameterId.MemberKind.Method, 1)
+                        })
+                );
 
                 yield return new MemberIdParserTestCase(
                     "M:Class.Method(System.Collections.Generic.IEnumerable{System.String})",
@@ -105,7 +117,7 @@ namespace MdDoc.Test.Model.XmlDocs
                     new MethodId(
                         new SimpleTypeId("", "TestClass"),
                         "TestMethod",
-                        new TypeId[] {  new ArrayTypeId(new SimpleTypeId("System", "Int32")) })
+                        new TypeId[] { new ArrayTypeId(new SimpleTypeId("System", "Int32")) })
                 );
 
                 yield return new MemberIdParserTestCase(
@@ -122,7 +134,7 @@ namespace MdDoc.Test.Model.XmlDocs
                     new MethodId(
                         new SimpleTypeId("", "TestClass"),
                         "TestMethod",
-                        new TypeId[] {new ArrayTypeId(new SimpleTypeId("System", "String")), new ArrayTypeId(new SimpleTypeId("System", "Int32")) })
+                        new TypeId[] { new ArrayTypeId(new SimpleTypeId("System", "String")), new ArrayTypeId(new SimpleTypeId("System", "Int32")) })
                 );
 
                 yield return new MemberIdParserTestCase(
@@ -187,6 +199,14 @@ namespace MdDoc.Test.Model.XmlDocs
                 yield return new MemberIdParserTestCase(
                     "P:MdDoc.Test.TestData.TestClass_Properties.Item(System.Int32)",
                     new PropertyId(new SimpleTypeId("MdDoc.Test.TestData", "TestClass_Properties"), "Item", new[] { new SimpleTypeId("System", "Int32") })
+                );
+
+                yield return new MemberIdParserTestCase(
+                    "P:Class`1.Item(`0)",
+                    new PropertyId(
+                        new GenericTypeId("", "Class", 1), 
+                        "Item", 
+                        new[] { new GenericTypeParameterId(GenericTypeParameterId.MemberKind.Type, 0) })
                 );
 
                 yield return new MemberIdParserTestCase(
@@ -285,7 +305,7 @@ namespace MdDoc.Test.Model.XmlDocs
             }
         }
 
-        
+
 
         [Theory]
         [TypeIdTestCases]
@@ -300,7 +320,7 @@ namespace MdDoc.Test.Model.XmlDocs
 
             Assert.NotNull(memberId);
             Assert.Equal(testCase.ExpectedMemberId, memberId);
-        }      
+        }
 
         [Theory]
         [InlineData("")]
