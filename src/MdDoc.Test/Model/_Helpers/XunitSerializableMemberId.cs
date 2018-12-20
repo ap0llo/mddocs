@@ -2,7 +2,7 @@
 using Xunit.Abstractions;
 using MdDoc.Model;
 
-namespace MdDoc.Test.Model.XmlDocs
+namespace MdDoc.Test.Model
 {
     public class XunitSerializableMemberId : IXunitSerializable
     {

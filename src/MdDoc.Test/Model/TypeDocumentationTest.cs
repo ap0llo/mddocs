@@ -156,7 +156,7 @@ namespace MdDoc.Test.Model
             var sut = GetTypeDocumentation(typeof(TestClass_Methods));
             
             // ASSERT
-            Assert.Equal(9, sut.Methods.Count);
+            Assert.Equal(12, sut.Methods.Count);
             Assert.All(sut.Methods, method => Assert.Single(method.Overloads));
             Assert.Contains(sut.Methods, m => m.Name == "TestMethod1");
             Assert.Contains(sut.Methods, m => m.Name == "TestMethod2");
@@ -167,6 +167,9 @@ namespace MdDoc.Test.Model
             Assert.Contains(sut.Methods, m => m.Name == "TestMethod7");
             Assert.Contains(sut.Methods, m => m.Name == "TestMethod8");
             Assert.Contains(sut.Methods, m => m.Name == "TestMethod9");
+            Assert.Contains(sut.Methods, m => m.Name == "TestMethod10");
+            Assert.Contains(sut.Methods, m => m.Name == "TestMethod11");
+            Assert.Contains(sut.Methods, m => m.Name == "TestMethod12");
         }
 
         [Fact]

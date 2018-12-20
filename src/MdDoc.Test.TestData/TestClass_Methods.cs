@@ -57,5 +57,21 @@ namespace MdDoc.Test.TestData
         public T2 TestMethod9<T1, T2>(T2 foo, T1 bar) { throw new NotImplementedException(); }
 
 
+        /// <summary>
+        /// Test Method 10
+        /// </summary>
+        public void TestMethod10(string[] parameter) { }
+
+        /// <summary>
+        /// Test Method 11
+        /// </summary>
+        public void TestMethod11(string[][] parameter) { }
+
+
+        /// <summary>
+        /// Test Method 12
+        /// </summary>
+        public void TestMethod12(string[,] parameter) { }
+
     }
 }
