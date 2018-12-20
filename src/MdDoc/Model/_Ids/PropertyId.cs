@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
-namespace MdDoc.Model.XmlDocs
+namespace MdDoc.Model
 {
     public class PropertyId : MemberId, IEquatable<PropertyId>
     {

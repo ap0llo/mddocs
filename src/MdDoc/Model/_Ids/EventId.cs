@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MdDoc.Model.XmlDocs
+namespace MdDoc.Model
 {
     public sealed class EventId : MemberId, IEquatable<EventId>
     {

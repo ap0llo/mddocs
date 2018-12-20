@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace MdDoc.Model.XmlDocs
+namespace MdDoc.Model
 {
     /// <summary>
     /// Identifies an unbound generic type

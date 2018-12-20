@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace MdDoc.Model.XmlDocs
+namespace MdDoc.Model
 {
     public class ArrayTypeId : TypeId, IEquatable<ArrayTypeId>
     {

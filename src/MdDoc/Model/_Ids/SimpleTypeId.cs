@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MdDoc.Model.XmlDocs
+namespace MdDoc.Model
 {
     /// <summary>
     /// Identifies a non-generic type
@@ -13,6 +13,8 @@ namespace MdDoc.Model.XmlDocs
 
         public override bool Equals(object obj) => Equals(obj as SimpleTypeId);     
 
-        public bool Equals(SimpleTypeId other) => Equals((TypeId)other); 
+        public bool Equals(SimpleTypeId other) => Equals((TypeId)other);
+
+        public override int GetHashCode() => base.GetHashCode();
     }
 }

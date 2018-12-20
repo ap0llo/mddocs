@@ -1,7 +1,8 @@
-﻿using MdDoc.Model.XmlDocs;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using MdDoc.Model;
+using MdDoc.Model.XmlDocs;
 using Xunit;
 using Xunit.Sdk;
 

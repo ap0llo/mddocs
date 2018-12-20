@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 
-namespace MdDoc.Model.XmlDocs
+namespace MdDoc.Model
 {
     public abstract class TypeId : MemberId, IEquatable<TypeId>
     {

@@ -1,9 +1,9 @@
-﻿using MdDoc.Model.XmlDocs;
+﻿using MdDoc.Model;
 using System;
 using System.Linq;
 using Xunit.Abstractions;
 
-namespace MdDoc.Test.Model.XmlDocs
+namespace MdDoc.Test.Model
 {
     class XunitSerializableTypeId : IXunitSerializable
     {

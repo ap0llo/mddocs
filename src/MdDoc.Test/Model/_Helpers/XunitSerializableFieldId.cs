@@ -1,10 +1,10 @@
-﻿using MdDoc.Model.XmlDocs;
+﻿using MdDoc.Model;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using Xunit.Abstractions;
 
-namespace MdDoc.Test.Model.XmlDocs
+namespace MdDoc.Test.Model
 {
     class XunitSerializableFieldId : IXunitSerializable
     {

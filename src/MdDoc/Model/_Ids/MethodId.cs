@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace MdDoc.Model.XmlDocs
+namespace MdDoc.Model
 {
     public sealed class MethodId : MemberId, IEquatable<MethodId>
     {

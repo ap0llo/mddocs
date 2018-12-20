@@ -1,4 +1,4 @@
-﻿namespace MdDoc.Model.XmlDocs
+﻿namespace MdDoc.Model
 {
     public abstract class MemberId
     {

@@ -1,6 +1,6 @@
-﻿using MdDoc.Model.XmlDocs;
-using System;
+﻿using System;
 using Xunit.Abstractions;
+using MdDoc.Model;
 
 namespace MdDoc.Test.Model.XmlDocs
 {

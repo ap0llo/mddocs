@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace MdDoc.Model.XmlDocs
+namespace MdDoc.Model
 {
     /// <summary>
     /// Identifies a constructed type (a generic type with type arguments)
