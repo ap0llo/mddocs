@@ -20,7 +20,7 @@ namespace MdDoc.Model
             MethodDocumentation = methodDocumentation ?? throw new ArgumentNullException(nameof(methodDocumentation));
             m_XmlDocsProvider = xmlDocsProvider ?? throw new ArgumentNullException(nameof(xmlDocsProvider));
 
-            Summary = m_XmlDocsProvider.TryGetDocumentationComments(definition)?.Summary;
+            Summary = m_XmlDocsProvider.TryGetDocumentationComments(MemberId)?.Summary;
         }
 
 

@@ -5,6 +5,7 @@ using MdDoc.Test.TestData;
 using MdDoc.Model.XmlDocs;
 using Xunit;
 using Mono.Cecil;
+using MdDoc.Model;
 
 namespace MdDoc.Test.Model.XmlDocs
 {
@@ -32,11 +33,11 @@ namespace MdDoc.Test.Model.XmlDocs
         public void TryGetDocumentationComments_returns_null_for_type_without_documentation(Type type)
         {
             // ARRANGE
-            var typeDefinition = GetTypeDefinition(type);
+            var id = GetTypeDefinition(type).ToMemberId();
 
             // ACT
             var sut = new XmlDocsProvider(m_XmlDocsPath, m_AssemblyDocumentation.Definition);
-            var docs = sut.TryGetDocumentationComments(typeDefinition);
+            var docs = sut.TryGetDocumentationComments(id);
 
             // ASSERT
             Assert.Null(docs);
@@ -47,13 +48,14 @@ namespace MdDoc.Test.Model.XmlDocs
         public void TryGetDocumentationComments_returns_null_for_method_without_documentation(Type type, string methodName)
         {
             // ARRANGE
-            var methodDefinition = GetTypeDefinition(type)
+            var id = GetTypeDefinition(type)
                 .Methods
-                .Single(x => x.Name == methodName);
+                .Single(x => x.Name == methodName)
+                .ToMemberId();
 
             // ACT
             var sut = new XmlDocsProvider(m_XmlDocsPath, m_AssemblyDocumentation.Definition);
-            var docs = sut.TryGetDocumentationComments(methodDefinition);
+            var docs = sut.TryGetDocumentationComments(id);
 
             // ASSERT
             Assert.Null(docs);
@@ -64,13 +66,14 @@ namespace MdDoc.Test.Model.XmlDocs
         public void TryGetDocumentationComments_returns_null_for_field_without_documentation(Type type, string fieldName)
         {
             // ARRANGE
-            var fieldDefinition = GetTypeDefinition(type)
+            var id = GetTypeDefinition(type)
                 .Fields
-                .Single(x => x.Name == fieldName);
+                .Single(x => x.Name == fieldName)
+                .ToMemberId();
 
             // ACT
             var sut = new XmlDocsProvider(m_XmlDocsPath, m_AssemblyDocumentation.Definition);
-            var docs = sut.TryGetDocumentationComments(fieldDefinition);
+            var docs = sut.TryGetDocumentationComments(id);
 
             // ASSERT
             Assert.Null(docs);
@@ -81,13 +84,14 @@ namespace MdDoc.Test.Model.XmlDocs
         public void TryGetDocumentationComments_returns_null_for_property_without_documentation(Type type, string propertyName)
         {
             // ARRANGE
-            var propertyDefinition = GetTypeDefinition(type)
+            var id = GetTypeDefinition(type)
                 .Properties
-                .Single(x => x.Name == propertyName);
+                .Single(x => x.Name == propertyName)
+                .ToMemberId();
 
             // ACT
             var sut = new XmlDocsProvider(m_XmlDocsPath, m_AssemblyDocumentation.Definition);
-            var docs = sut.TryGetDocumentationComments(propertyDefinition);
+            var docs = sut.TryGetDocumentationComments(id);
 
             // ASSERT
             Assert.Null(docs);
@@ -98,13 +102,14 @@ namespace MdDoc.Test.Model.XmlDocs
         public void TryGetDocumentationComments_returns_null_for_event_without_documentation(Type type, string eventName)
         {
             // ARRANGE
-            var eventDefinition = GetTypeDefinition(type)
+            var id = GetTypeDefinition(type)
                 .Events
-                .Single(x => x.Name == eventName);
+                .Single(x => x.Name == eventName)
+                .ToMemberId();
 
             // ACT
             var sut = new XmlDocsProvider(m_XmlDocsPath, m_AssemblyDocumentation.Definition);
-            var summary = sut.TryGetDocumentationComments(eventDefinition);
+            var summary = sut.TryGetDocumentationComments(id);
 
             // ASSERT
             Assert.Null(summary);
@@ -116,17 +121,17 @@ namespace MdDoc.Test.Model.XmlDocs
         public void TryGetDocumentationComments_gets_expected_docs_summary_for_type(Type type)
         {
             // ARRANGE
-            var typeDefinition = GetTypeDefinition(type);
+            var id = GetTypeDefinition(type).ToMemberId();
 
             // ACT
             var sut = new XmlDocsProvider(m_XmlDocsPath, m_AssemblyDocumentation.Definition);
-            var docs = sut.TryGetDocumentationComments(typeDefinition);
+            var docs = sut.TryGetDocumentationComments(id);
 
             // ASSERT
             Assert.NotNull(docs);
 
-            Assert.NotNull(docs.Reference);
-            Assert.IsAssignableFrom<TypeReference>(docs.Reference);
+            Assert.NotNull(docs.MemberId);
+           Assert.IsAssignableFrom<GenericTypeId>(docs.MemberId);
 
             Assert.NotNull(docs.Summary);
 
@@ -145,19 +150,20 @@ namespace MdDoc.Test.Model.XmlDocs
         public void TryGetDocumentationComments_gets_expected_docs_for_a_method(Type type, string methodName)
         {
             // ARRANGE
-            var methodDefinition = GetTypeDefinition(type)
+            var id = GetTypeDefinition(type)
                 .Methods
-                .Single(x => x.Name == methodName);
+                .Single(x => x.Name == methodName)
+                .ToMemberId();
 
             // ACT
             var sut = new XmlDocsProvider(m_XmlDocsPath, m_AssemblyDocumentation.Definition);
-            var docs = sut.TryGetDocumentationComments(methodDefinition);
+            var docs = sut.TryGetDocumentationComments(id);
 
             // ASSERT
             Assert.NotNull(docs);
 
-            Assert.NotNull(docs.Reference);
-            Assert.IsAssignableFrom<MethodReference>(docs.Reference);
+            Assert.NotNull(docs.MemberId);
+            Assert.IsAssignableFrom<MethodId>(docs.MemberId);
 
             Assert.NotNull(docs.Remarks);
 
@@ -182,19 +188,20 @@ namespace MdDoc.Test.Model.XmlDocs
         {
             // ARRANGE
             // ARRANGE
-            var fieldDefinition = GetTypeDefinition(type)
+            var id = GetTypeDefinition(type)
                 .Fields
-                .Single(x => x.Name == fieldName);
+                .Single(x => x.Name == fieldName)
+                .ToMemberId();
 
             // ACT
             var sut = new XmlDocsProvider(m_XmlDocsPath, m_AssemblyDocumentation.Definition);
-            var docs = sut.TryGetDocumentationComments(fieldDefinition);
+            var docs = sut.TryGetDocumentationComments(id);
 
             // ASSERT
             Assert.NotNull(docs);
 
-            Assert.NotNull(docs.Reference);
-            Assert.IsAssignableFrom<FieldReference>(docs.Reference);
+            Assert.NotNull(docs.MemberId);
+            Assert.IsAssignableFrom<FieldId>(docs.MemberId);
 
             Assert.NotNull(docs.Summary);
 
@@ -210,19 +217,20 @@ namespace MdDoc.Test.Model.XmlDocs
         public void TryGetDocumentationComments_gets_expected_docs_for_a_property(Type type, string propertyName)
         {
             // ARRANGE
-            var propertyDefinition = GetTypeDefinition(type)
+            var id = GetTypeDefinition(type)
                 .Properties
-                .Single(x => x.Name == propertyName);
+                .Single(x => x.Name == propertyName)
+                .ToMemberId();
 
             // ACT
             var sut = new XmlDocsProvider(m_XmlDocsPath, m_AssemblyDocumentation.Definition);
-            var docs = sut.TryGetDocumentationComments(propertyDefinition);
+            var docs = sut.TryGetDocumentationComments(id);
 
             // ASSERT
             Assert.NotNull(docs);
 
-            Assert.NotNull(docs.Reference);
-            Assert.IsAssignableFrom<PropertyReference>(docs.Reference);
+            Assert.NotNull(docs.MemberId);
+            Assert.IsAssignableFrom<PropertyId>(docs.MemberId);
 
             Assert.NotNull(docs.Summary);
 
@@ -242,19 +250,20 @@ namespace MdDoc.Test.Model.XmlDocs
         public void TryGetDocumentationComments_gets_expected_docs_for_a_event(Type type, string eventName)
         {
             // ARRANGE
-            var eventDefinition = GetTypeDefinition(type)
+            var id = GetTypeDefinition(type)
                 .Events
-                .Single(x => x.Name == eventName);
+                .Single(x => x.Name == eventName)
+                .ToMemberId();
 
             // ACT
             var sut = new XmlDocsProvider(m_XmlDocsPath, m_AssemblyDocumentation.Definition);
-            var docs = sut.TryGetDocumentationComments(eventDefinition);
+            var docs = sut.TryGetDocumentationComments(id);
 
             // ASSERT
             Assert.NotNull(docs);
 
-            Assert.NotNull(docs.Reference);
-            Assert.IsAssignableFrom<EventReference>(docs.Reference);
+            Assert.NotNull(docs.MemberId);
+            Assert.IsAssignableFrom<EventId>(docs.MemberId);
 
             Assert.NotNull(docs.Summary);
 

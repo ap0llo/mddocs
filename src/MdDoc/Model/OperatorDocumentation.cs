@@ -9,8 +9,7 @@ namespace MdDoc.Model
     {
         public OperatorKind Kind { get; }
 
-        public IReadOnlyCollection<OperatorOverloadDocumentation> Overloads { get; }
-
+        public IReadOnlyCollection<OperatorOverloadDocumentation> Overloads { get; }       
 
         public OperatorDocumentation(TypeDocumentation typeDocumentation, IEnumerable<MethodDefinition> definitions) : base(typeDocumentation)
         {        

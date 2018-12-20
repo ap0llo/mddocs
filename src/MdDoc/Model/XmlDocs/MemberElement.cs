@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using Mono.Cecil;
-using System.Text;
 
 namespace MdDoc.Model.XmlDocs
 {
     public sealed class MemberElement
     {
-        public MemberReference Reference { get; }
+        public MemberId MemberId { get; }
 
         public SummaryElement Summary { get; }
 
@@ -27,7 +25,7 @@ namespace MdDoc.Model.XmlDocs
 
 
         public MemberElement(
-            MemberReference reference,
+            MemberId memberId,
             SummaryElement summary,
             RemarksElement remarks,
             ExampleElement example,
@@ -37,7 +35,7 @@ namespace MdDoc.Model.XmlDocs
             ValueElement value,
             ReturnsElement returns)
         {
-            Reference = reference ?? throw new ArgumentNullException(nameof(reference));
+            MemberId = memberId ?? throw new ArgumentNullException(nameof(memberId));
             Summary = summary;
             Remarks = remarks;
             Example = example;

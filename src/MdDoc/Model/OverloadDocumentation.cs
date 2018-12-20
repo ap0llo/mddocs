@@ -10,6 +10,8 @@ namespace MdDoc.Model
         private readonly MethodFormatter m_MethodFormatter = MethodFormatter.Instance;
 
 
+        public MemberId MemberId { get; }
+
         public string Signature => m_MethodFormatter.GetSignature(Definition);
 
         public IReadOnlyList<ParameterDocumentation> Parameters { get; }
@@ -20,7 +22,8 @@ namespace MdDoc.Model
         public OverloadDocumentation(MethodDefinition definition)
         {
             Definition = definition ?? throw new ArgumentNullException(nameof(definition));
-            
+            MemberId = definition.ToMemberId();
+
             Parameters = definition.HasParameters
                 ? Array.Empty<ParameterDocumentation>()
                 : definition.Parameters.Select(p => new ParameterDocumentation(this, p)).ToArray();

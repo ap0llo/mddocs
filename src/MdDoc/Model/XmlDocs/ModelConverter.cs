@@ -8,9 +8,7 @@ namespace MdDoc.Model.XmlDocs
 {
     static class ModelConverter
     {
-        public static IReadOnlyList<MemberElement> ConvertModel(
-            DocumentMembers nuDoqModel, 
-            IReadOnlyDictionary<string, MemberReference> assemblyMembers)
+        public static IReadOnlyList<MemberElement> ConvertModel(DocumentMembers nuDoqModel)
         {
             var result = new List<MemberElement>();
             foreach(Member member in nuDoqModel.Elements)
@@ -18,11 +16,11 @@ namespace MdDoc.Model.XmlDocs
                 var visitor = new MemberVisitor();
                 member.Accept(visitor);
 
-                // ignore members not found in the assembly
-                if(assemblyMembers.ContainsKey(member.Id))
-                {
-                    var element = new MemberElement(
-                        assemblyMembers[member.Id],
+                var memberId = new MemberIdParser(member.Id).Parse();
+
+
+                var element = new MemberElement(
+                        memberId,
                         visitor.Summary,
                         visitor.Remarks,
                         visitor.Example,
@@ -32,8 +30,7 @@ namespace MdDoc.Model.XmlDocs
                         visitor.Value,
                         visitor.Returns);
 
-                    result.Add(element);
-                }
+                result.Add(element);               
             }
 
             return result;

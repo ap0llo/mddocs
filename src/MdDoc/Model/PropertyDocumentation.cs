@@ -7,6 +7,8 @@ namespace MdDoc.Model
 {
     public class PropertyDocumentation : MemberDocumentation
     {
+        public MemberId MemberId { get; }
+
         public string Name => Definition.Name;
 
         public TypeName Type { get; }
@@ -72,6 +74,7 @@ namespace MdDoc.Model
         {
             Definition = definition ?? throw new ArgumentNullException(nameof(definition));
             Type = new TypeName(definition.PropertyType);
+            MemberId = definition.ToMemberId();
         }        
 
     }

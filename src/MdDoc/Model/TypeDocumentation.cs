@@ -10,6 +10,8 @@ namespace MdDoc.Model
     {
         private readonly IXmlDocsProvider m_XmlDocsProvider;
 
+        public MemberId MemberId { get; }
+
         public ModuleDocumentation ModuleDocumentation { get; }
 
         public TypeName Name { get; }
@@ -44,6 +46,8 @@ namespace MdDoc.Model
 
         internal TypeDocumentation(ModuleDocumentation moduleDocumentation, TypeDefinition definition, IXmlDocsProvider xmlDocsProvider)
         {
+            MemberId = definition.ToMemberId();
+
             ModuleDocumentation = moduleDocumentation ?? throw new ArgumentNullException(nameof(moduleDocumentation));
             Definition = definition ?? throw new ArgumentNullException(nameof(definition));
             m_XmlDocsProvider = xmlDocsProvider ?? throw new ArgumentNullException(nameof(xmlDocsProvider));
@@ -86,7 +90,7 @@ namespace MdDoc.Model
             Attributes = Definition.CustomAttributes.Select(x => new TypeName(x.AttributeType)).ToArray();
             ImplementedInterfaces = LoadImplementedInterfaces();
             
-            Summary = m_XmlDocsProvider.TryGetDocumentationComments(definition)?.Summary;
+            Summary = m_XmlDocsProvider.TryGetDocumentationComments(MemberId)?.Summary;
         }
 
 
