@@ -180,6 +180,11 @@ namespace MdDoc.Test.Model.XmlDocs
                 );
 
                 yield return new MemberIdParserTestCase(
+                    "P:MdDoc.Test.TestData.TestClass_Properties`23.Property1",
+                    new PropertyId(new GenericTypeId("MdDoc.Test.TestData", "TestClass_Properties", 23), "Property1")
+                );
+
+                yield return new MemberIdParserTestCase(
                     "P:MdDoc.Test.TestData.TestClass_Properties.Item(System.Int32)",
                     new PropertyId(new SimpleTypeId("MdDoc.Test.TestData", "TestClass_Properties"), "Item", new[] { new SimpleTypeId("System", "Int32") })
                 );
@@ -303,6 +308,7 @@ namespace MdDoc.Test.Model.XmlDocs
         [InlineData("T:System.Collections.Generic.IEnumerable`1foo")]
         [InlineData("T:System.Collections.Generic.IEnumerable`foo")]
         [InlineData("T:.Foo")]
+        [InlineData("T:Foo[,)]")]
         [InlineData("M:MdDoc.Test.TestData.TestClass_GenericType`1TestMethod1``2()")]
         [InlineData("M:MdDoc.Test.TestData.TestClass_GenericType`1.TestMethod1()")]
         [InlineData("M:MdDoc.Test.TestData.TestClass_GenericType`1``2()")]
