@@ -224,6 +224,11 @@ namespace MdDoc.Model.XmlDocs
                         m_Position++;
                         break;
 
+                    case ':':
+                        yield return new Token(TokenKind.Colon, ":");
+                        m_Position++;
+                        break;
+
                     default:
                         yield return ReadNameToken();
                         break;

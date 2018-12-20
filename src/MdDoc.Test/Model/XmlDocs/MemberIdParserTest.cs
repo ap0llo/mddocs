@@ -107,7 +107,16 @@ namespace MdDoc.Test.Model.XmlDocs
                         "TestMethod",
                         new TypeId[] {  new ArrayTypeId(new SimpleTypeId("System", "Int32")) })
                 );
-                
+
+                yield return new MemberIdParserTestCase(
+                    "M:TestClass.TestMethod(System.Int32[][])",
+                    new MethodId(
+                        new SimpleTypeId("", "TestClass"),
+                        "TestMethod",
+                        new TypeId[] { new ArrayTypeId(new ArrayTypeId(new SimpleTypeId("System", "Int32"))) })
+                );
+
+
                 yield return new MemberIdParserTestCase(
                     "M:TestClass.TestMethod(System.String[],System.Int32[])",
                     new MethodId(
@@ -116,6 +125,38 @@ namespace MdDoc.Test.Model.XmlDocs
                         new TypeId[] {new ArrayTypeId(new SimpleTypeId("System", "String")), new ArrayTypeId(new SimpleTypeId("System", "Int32")) })
                 );
 
+                yield return new MemberIdParserTestCase(
+                    "M:TestClass.TestMethod(System.Int32[,])",
+                    new MethodId(
+                        new SimpleTypeId("", "TestClass"),
+                        "TestMethod",
+                        new TypeId[] { new ArrayTypeId(new SimpleTypeId("System", "Int32"), 2) })
+                );
+
+
+                yield return new MemberIdParserTestCase(
+                    "M:TestClass.TestMethod(System.Int32[0:,0:])",
+                    new MethodId(
+                        new SimpleTypeId("", "TestClass"),
+                        "TestMethod",
+                        new TypeId[] { new ArrayTypeId(new SimpleTypeId("System", "Int32"), 2) })
+                );
+
+                yield return new MemberIdParserTestCase(
+                    "M:TestClass.TestMethod(System.Int32[0:1,0:1])",
+                    new MethodId(
+                        new SimpleTypeId("", "TestClass"),
+                        "TestMethod",
+                        new TypeId[] { new ArrayTypeId(new SimpleTypeId("System", "Int32"), 2) })
+                );
+
+                yield return new MemberIdParserTestCase(
+                    "M:TestClass.TestMethod(System.Int32[,0:1])",
+                    new MethodId(
+                        new SimpleTypeId("", "TestClass"),
+                        "TestMethod",
+                        new TypeId[] { new ArrayTypeId(new SimpleTypeId("System", "Int32"), 2) })
+                );
 
             }
         }
@@ -142,6 +183,31 @@ namespace MdDoc.Test.Model.XmlDocs
                     "P:MdDoc.Test.TestData.TestClass_Properties.Item(System.Int32)",
                     new PropertyId(new SimpleTypeId("MdDoc.Test.TestData", "TestClass_Properties"), "Item", new[] { new SimpleTypeId("System", "Int32") })
                 );
+
+                yield return new MemberIdParserTestCase(
+                    "P:MdDoc.Test.TestData.TestClass_Properties.Item(System.Int32[])",
+                    new PropertyId(new SimpleTypeId("MdDoc.Test.TestData", "TestClass_Properties"), "Item", new[] { new ArrayTypeId(new SimpleTypeId("System", "Int32")) })
+                );
+
+                yield return new MemberIdParserTestCase(
+                    "P:MdDoc.Test.TestData.TestClass_Properties.Item(System.Int32[,])",
+                    new PropertyId(new SimpleTypeId("MdDoc.Test.TestData", "TestClass_Properties"), "Item", new[] { new ArrayTypeId(new SimpleTypeId("System", "Int32"), 2) })
+                );
+
+                yield return new MemberIdParserTestCase(
+                    "P:MdDoc.Test.TestData.TestClass_Properties.Item(System.Int32[0:,0:])",
+                    new PropertyId(new SimpleTypeId("MdDoc.Test.TestData", "TestClass_Properties"), "Item", new[] { new ArrayTypeId(new SimpleTypeId("System", "Int32"), 2) })
+                );
+
+                yield return new MemberIdParserTestCase(
+                    "P:MdDoc.Test.TestData.TestClass_Properties.Item(System.Int32[0:1,0:1])",
+                    new PropertyId(new SimpleTypeId("MdDoc.Test.TestData", "TestClass_Properties"), "Item", new[] { new ArrayTypeId(new SimpleTypeId("System", "Int32"), 2) })
+                );
+
+                yield return new MemberIdParserTestCase(
+                    "P:MdDoc.Test.TestData.TestClass_Properties.Item(System.Int32[0:,0:,])",
+                    new PropertyId(new SimpleTypeId("MdDoc.Test.TestData", "TestClass_Properties"), "Item", new[] { new ArrayTypeId(new SimpleTypeId("System", "Int32"), 3) })
+                );
             }
         }
 
@@ -160,6 +226,14 @@ namespace MdDoc.Test.Model.XmlDocs
             {
                 yield return new MemberIdParserTestCase("T:System.String", new SimpleTypeId("System", "String"));
                 yield return new MemberIdParserTestCase("T:System.String[]", new ArrayTypeId(new SimpleTypeId("System", "String")));
+                yield return new MemberIdParserTestCase("T:System.String[,]", new ArrayTypeId(new SimpleTypeId("System", "String"), 2));
+                yield return new MemberIdParserTestCase("T:System.String[0:,]", new ArrayTypeId(new SimpleTypeId("System", "String"), 2));
+                yield return new MemberIdParserTestCase("T:System.String[0:,0:]", new ArrayTypeId(new SimpleTypeId("System", "String"), 2));
+                yield return new MemberIdParserTestCase("T:System.String[0:5,0:]", new ArrayTypeId(new SimpleTypeId("System", "String"), 2));
+                yield return new MemberIdParserTestCase("T:System.String[,0:6]", new ArrayTypeId(new SimpleTypeId("System", "String"), 2));
+                yield return new MemberIdParserTestCase("T:System.String[,0:]", new ArrayTypeId(new SimpleTypeId("System", "String"), 2));
+                yield return new MemberIdParserTestCase("T:System.String[,0:,,]", new ArrayTypeId(new SimpleTypeId("System", "String"), 4));
+                yield return new MemberIdParserTestCase("T:System.String[,:5,,]", new ArrayTypeId(new SimpleTypeId("System", "String"), 4));
                 yield return new MemberIdParserTestCase("T:System.String[][]", new ArrayTypeId(new ArrayTypeId(new SimpleTypeId("System", "String"))));
                 yield return new MemberIdParserTestCase("T:System.Collections.Generic.IEnumerable`1", new GenericTypeId("System.Collections.Generic", "IEnumerable", 1));
                 yield return new MemberIdParserTestCase("T:System.Collections.Generic.IEnumerable`1[]", new ArrayTypeId(new GenericTypeId("System.Collections.Generic", "IEnumerable", 1)));

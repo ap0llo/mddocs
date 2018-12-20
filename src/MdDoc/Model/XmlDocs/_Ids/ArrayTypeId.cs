@@ -8,17 +8,24 @@ namespace MdDoc.Model.XmlDocs
     {
         public TypeId ElementType { get; }
 
+        public int Dimensions { get; }
 
-        public ArrayTypeId(TypeId elementType) : base("System", "Array")
+        public ArrayTypeId(TypeId elementType) : this(elementType, 1)
+        { }
+
+        public ArrayTypeId(TypeId elementType, int dimensions) : base("System", "Array")
         {
             ElementType = elementType ?? throw new ArgumentNullException(nameof(elementType));
+            Dimensions = dimensions >= 1 
+                ? dimensions 
+                : throw new ArgumentOutOfRangeException(nameof(dimensions), "Value needs to be equal or greater than 1");
         }
 
         
         
         public bool Equals(ArrayTypeId other)
         {
-            return other != null && ElementType.Equals(other.ElementType);
+            return other != null && ElementType.Equals(other.ElementType) && Dimensions == other.Dimensions;
         }
 
         public override bool Equals(object obj) => Equals(obj as ArrayTypeId);
@@ -27,7 +34,9 @@ namespace MdDoc.Model.XmlDocs
         {
             unchecked
             {
-                return ElementType.GetHashCode() * 397;
+                var hash = ElementType.GetHashCode() * 397;
+                hash ^= Dimensions.GetHashCode();
+                return hash;
             }
         }      
     }

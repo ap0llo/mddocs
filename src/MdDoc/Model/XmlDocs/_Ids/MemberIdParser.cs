@@ -108,19 +108,65 @@ namespace MdDoc.Model.XmlDocs
             while(Current.Kind == TokenKind.OpenSquareBracket)
             {
                 MatchToken(TokenKind.OpenSquareBracket);
+
+                var dimensions = ParseArrayDimensions();
+
                 MatchToken(TokenKind.CloseSquareBracket);
 
                 // wrap type into an array
-                type = new ArrayTypeId(type);
+                type = new ArrayTypeId(type, dimensions);
             }
-            
+
             // all token should be parsed now
             MatchToken(TokenKind.Eof);
 
             return type;
         }
 
-     
+        private int ParseArrayDimensions()
+        {
+            var dimensions = 1;
+
+            // optional part: lower bound and size for each dimension, separated by commas
+            while (Current.Kind != TokenKind.CloseSquareBracket)
+            {
+                switch (Current.Kind)
+                {
+                    case TokenKind.Comma:
+                        MatchToken(TokenKind.Comma);
+                        dimensions++;
+                        break;
+
+                    // lower bound and size are optional
+                    // if neither lower bound nor size is known, the colon is omitted as well
+                    // this means the following sequences are possible
+                    // - lowerBound:size
+                    // - lowerBound:
+                    // - :size                        
+                    // Both lower bound and size are ignored as they are not required
+                    // for identifying a type
+
+                    case TokenKind.Colon:
+                        MatchToken(TokenKind.Colon);
+                        MatchToken(TokenKind.Number);
+                        break;
+
+                    case TokenKind.Number:
+                        MatchToken(TokenKind.Number);
+                        MatchToken(TokenKind.Colon);
+                        if (Current.Kind == TokenKind.Number)
+                        {
+                            MatchToken(TokenKind.Number);
+                        }
+                        break;
+
+                    default:
+                        throw UnexpectedToken(TokenKind.Comma, TokenKind.Colon, TokenKind.Number);
+                }
+            }
+
+            return dimensions;
+        }
 
         private FieldId ParseFieldId()
         {
@@ -361,7 +407,7 @@ namespace MdDoc.Model.XmlDocs
 
             nameSegments.Add(MatchToken(TokenKind.Name));
 
-            var arrayDepth = 0;
+            var arrayDimensions = new List<int>();
             var done = false;
             while(!done)
             {
@@ -387,8 +433,8 @@ namespace MdDoc.Model.XmlDocs
 
                     case TokenKind.OpenSquareBracket:
                         MatchToken(TokenKind.OpenSquareBracket);
+                        arrayDimensions.Add(ParseArrayDimensions());
                         MatchToken(TokenKind.CloseSquareBracket);
-                        arrayDepth++;
                         break;
 
                     default:
@@ -419,11 +465,11 @@ namespace MdDoc.Model.XmlDocs
                 type = new SimpleTypeId(namespaceName, typeName);
             }
 
-            while(arrayDepth > 0)
+            for(int i = 0; i < arrayDimensions.Count; i++)
             {
-                type = new ArrayTypeId(type);
-                arrayDepth -= 1;
+                type = new ArrayTypeId(type, arrayDimensions[i]);
             }
+            
             return type;
         }
 

@@ -44,7 +44,8 @@ namespace MdDoc.Test.Model.XmlDocs
 
                 case nameof(ArrayTypeId):
                     var elementType = info.GetValue<XunitSerializableTypeId>(nameof(ArrayTypeId.ElementType));
-                    TypeId = new ArrayTypeId(elementType);
+                    var dimensions = info.GetValue<int>(nameof(ArrayTypeId.Dimensions));
+                    TypeId = new ArrayTypeId(elementType, dimensions);
                     break;
 
                 default:
@@ -77,6 +78,7 @@ namespace MdDoc.Test.Model.XmlDocs
                 case ArrayTypeId arrayType:
                     info.AddValue("type", nameof(ArrayTypeId));
                     info.AddValue(nameof(ArrayTypeId.ElementType), new XunitSerializableTypeId(arrayType.ElementType));
+                    info.AddValue(nameof(ArrayTypeId.Dimensions), arrayType.Dimensions);
                     break;
 
                 default:

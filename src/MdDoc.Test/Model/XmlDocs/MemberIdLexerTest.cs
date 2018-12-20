@@ -250,6 +250,58 @@ namespace MdDoc.Test.Model.XmlDocs
                     new Token(TokenKind.Eof, "")
                 );
 
+                yield return new MemberIdLexerTestCase(
+                    "M:Type.Method(object[,])",
+                    new Token(TokenKind.IdentifierType, "M"),
+                    new Token(TokenKind.Colon, ":"),
+                    new Token(TokenKind.Name, "Type"),
+                    new Token(TokenKind.Dot, "."),
+                    new Token(TokenKind.Name, "Method"),
+                    new Token(TokenKind.OpenParenthesis, "("),
+                    new Token(TokenKind.Name, "object"),
+                    new Token(TokenKind.OpenSquareBracket, "["),
+                    new Token(TokenKind.Comma, ","),
+                    new Token(TokenKind.CloseSquareBracket, "]"),
+                    new Token(TokenKind.CloseParenthesis, ")"),
+                    new Token(TokenKind.Eof, "")
+                );
+
+                yield return new MemberIdLexerTestCase(
+                    "M:Type.Method(object[1:,])",
+                    new Token(TokenKind.IdentifierType, "M"),
+                    new Token(TokenKind.Colon, ":"),
+                    new Token(TokenKind.Name, "Type"),
+                    new Token(TokenKind.Dot, "."),
+                    new Token(TokenKind.Name, "Method"),
+                    new Token(TokenKind.OpenParenthesis, "("),
+                    new Token(TokenKind.Name, "object"),
+                    new Token(TokenKind.OpenSquareBracket, "["),
+                    new Token(TokenKind.Number, "1"),
+                    new Token(TokenKind.Colon, ":"),
+                    new Token(TokenKind.Comma, ","),
+                    new Token(TokenKind.CloseSquareBracket, "]"),
+                    new Token(TokenKind.CloseParenthesis, ")"),
+                    new Token(TokenKind.Eof, "")
+                );
+
+                yield return new MemberIdLexerTestCase(
+                    "M:Type.Method(object[1:2,])",
+                    new Token(TokenKind.IdentifierType, "M"),
+                    new Token(TokenKind.Colon, ":"),
+                    new Token(TokenKind.Name, "Type"),
+                    new Token(TokenKind.Dot, "."),
+                    new Token(TokenKind.Name, "Method"),
+                    new Token(TokenKind.OpenParenthesis, "("),
+                    new Token(TokenKind.Name, "object"),
+                    new Token(TokenKind.OpenSquareBracket, "["),
+                    new Token(TokenKind.Number, "1"),
+                    new Token(TokenKind.Colon, ":"),
+                    new Token(TokenKind.Number, "2"),
+                    new Token(TokenKind.Comma, ","),
+                    new Token(TokenKind.CloseSquareBracket, "]"),
+                    new Token(TokenKind.CloseParenthesis, ")"),
+                    new Token(TokenKind.Eof, "")
+                );
             }
         }
 
