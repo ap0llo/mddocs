@@ -1,8 +1,7 @@
-﻿using System;
-using MdDoc.Test.TestData;
-using System.Linq;
-using Xunit;
+﻿using System.Linq;
 using MdDoc.Model;
+using MdDoc.Test.TestData;
+using Xunit;
 
 namespace MdDoc.Test.Model
 {
@@ -34,7 +33,6 @@ namespace MdDoc.Test.Model
             // ASSERT
             Assert.Equal(expected, actual);
         }
-
 
         [Theory]
         [InlineData(1, @"public int this[object parameter] { get; }")]

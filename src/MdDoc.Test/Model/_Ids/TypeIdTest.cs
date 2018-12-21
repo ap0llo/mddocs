@@ -1,6 +1,6 @@
-﻿using MdDoc.Model;
+﻿using System.Linq;
+using MdDoc.Model;
 using MdDoc.Test.TestData;
-using System.Linq;
 using Xunit;
 
 namespace MdDoc.Test.Model
@@ -38,7 +38,6 @@ namespace MdDoc.Test.Model
             Assert.Equal(expectedTypeName, typeName.DisplayName);
         }
 
-
         [Theory]
         [InlineData(nameof(TestClass_TypeIdDisplayName.Property17), "string[]")]
         [InlineData(nameof(TestClass_TypeIdDisplayName.Property18), "Stream[]")]
@@ -56,7 +55,6 @@ namespace MdDoc.Test.Model
             // ASSERT
             Assert.Equal(expectedTypeName, typeId.DisplayName);
         }
-
 
         [Theory]
         [InlineData(nameof(TestClass_TypeIdDisplayName.Property19), "IEnumerable<string>")]
@@ -76,8 +74,6 @@ namespace MdDoc.Test.Model
             // ASSERT
             Assert.Equal(expectedTypeName, typeId.DisplayName);
         }
-
-
 
         [Theory]
         [InlineData(nameof(TestClass_TypeIdDisplayName<object, object>.Method1), "IEnumerable<T1>")]

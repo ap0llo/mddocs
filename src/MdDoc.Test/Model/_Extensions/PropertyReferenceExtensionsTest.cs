@@ -1,10 +1,7 @@
-﻿using MdDoc.Model;
+﻿using System.Linq;
+using MdDoc.Model;
 using MdDoc.Test.TestData;
 using Mono.Cecil;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Xunit;
 
 namespace MdDoc.Test.Model
@@ -56,6 +53,5 @@ namespace MdDoc.Test.Model
             // ASSERT
             Assert.Equal(expectedMemberId, actualMemberId);
         }        
-
     }
 }

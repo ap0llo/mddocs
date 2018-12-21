@@ -1,10 +1,13 @@
-﻿using MdDoc.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using MdDoc.Model;
 using Xunit.Abstractions;
 
 namespace MdDoc.Test.Model
 {
+    /// <summary>
+    /// Adapter to make <see cref="PropertyId"/> serializable by xunit
+    /// </summary>
     class XunitSerializablePropertyId : IXunitSerializable
     {
         public PropertyId PropertyId { get; private set; }

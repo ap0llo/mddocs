@@ -51,6 +51,5 @@ namespace MdDoc.Test.Model
             // ASSERT
             Assert.Equal(expectedSignature, actualSignature);
         }
-
     }
 }

@@ -1,9 +1,12 @@
 ﻿using System;
-using Xunit.Abstractions;
 using MdDoc.Model;
+using Xunit.Abstractions;
 
 namespace MdDoc.Test.Model
 {
+    /// <summary>
+    /// Adapter to make <see cref="MemberId"/> serializable by xunit
+    /// </summary>
     public class XunitSerializableMemberId : IXunitSerializable
     {
         public MemberId MemberId { get; private set; }

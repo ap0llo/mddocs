@@ -1,9 +1,6 @@
-﻿using MdDoc.Model;
+﻿using System.Linq;
+using MdDoc.Model;
 using MdDoc.Test.TestData;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace MdDoc.Test.Model
 {

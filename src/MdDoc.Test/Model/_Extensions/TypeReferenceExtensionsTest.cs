@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
+﻿using System.Linq;
 using MdDoc.Model;
 using MdDoc.Test.TestData;
 using Xunit;
-using Xunit.Sdk;
 
 namespace MdDoc.Test.Model
 {
@@ -14,11 +10,14 @@ namespace MdDoc.Test.Model
         [Fact]
         public void ToMemberId_returns_expected_value_for_type_definitions_01()
         {            
+            // ARRANGE
             var typeReference = GetTypeDefinition(typeof(TestClass_Type));
             var expectedMemberId = new SimpleTypeId("MdDoc.Test.TestData", "TestClass_Type");
 
+            // ACT
             var actualMemberId = typeReference.ToMemberId();
             
+            // ASSERT
             Assert.NotNull(actualMemberId);
             Assert.Equal(expectedMemberId, actualMemberId);
         }
@@ -26,11 +25,14 @@ namespace MdDoc.Test.Model
         [Fact]
         public void ToMemberId_returns_expected_value_for_type_definitions_02()
         {
+            // ARRANGE
             var typeReference = GetTypeDefinition(typeof(TestClass_GenericType<>));
             var expectedMemberId = new GenericTypeId("MdDoc.Test.TestData", "TestClass_GenericType", 1);
 
+            // ACT
             var actualMemberId = typeReference.ToMemberId();
 
+            // ASSERT
             Assert.NotNull(actualMemberId);
             Assert.Equal(expectedMemberId, actualMemberId);
         }
@@ -38,21 +40,24 @@ namespace MdDoc.Test.Model
         [Fact]
         public void ToMemberId_returns_expected_value_for_constructued_types()
         {
+            // ARRANGE
             var typeReference = GetTypeDefinition(typeof(TestClass_Methods))
                 .Methods
                 .Single(x => x.Name == nameof(TestClass_Methods.TestMethod6))
                 .Parameters
                 .Single()
                 .ParameterType;
-            
-
+                    
             var expectedMemberId = new GenericTypeInstanceId(
                 "System.Collections.Generic",
                 "IEnumerable",
-                new[] { new SimpleTypeId("System", "String") });
+                new[] { new SimpleTypeId("System", "String") }
+            );
 
+            // ACT
             var actualMemberId = typeReference.ToMemberId();
 
+            // ASSERT
             Assert.NotNull(actualMemberId);
             Assert.Equal(expectedMemberId, actualMemberId);
         }
@@ -60,6 +65,7 @@ namespace MdDoc.Test.Model
         [Fact]
         public void ToMemberId_returns_expected_value_for_array_types_01()
         {
+            // ARRANGE
             var typeReference = GetTypeDefinition(typeof(TestClass_Methods))
                 .Methods
                 .Single(x => x.Name == nameof(TestClass_Methods.TestMethod10))
@@ -68,9 +74,11 @@ namespace MdDoc.Test.Model
                 .ParameterType;
 
             var expectedMemberId = new ArrayTypeId(new SimpleTypeId("System", "String"));
-                
+
+            // ACT
             var actualMemberId = typeReference.ToMemberId();
 
+            // ASSERT
             Assert.NotNull(actualMemberId);
             Assert.Equal(expectedMemberId, actualMemberId);
         }
@@ -78,6 +86,7 @@ namespace MdDoc.Test.Model
         [Fact]
         public void ToMemberId_returns_expected_value_for_array_types_02()
         {
+            // ARRANGE
             var typeReference = GetTypeDefinition(typeof(TestClass_Methods))
                 .Methods
                 .Single(x => x.Name == nameof(TestClass_Methods.TestMethod11))
@@ -87,8 +96,10 @@ namespace MdDoc.Test.Model
 
             var expectedMemberId = new ArrayTypeId(new ArrayTypeId(new SimpleTypeId("System", "String")));
 
+            // ACT
             var actualMemberId = typeReference.ToMemberId();
 
+            // ASSERT
             Assert.NotNull(actualMemberId);
             Assert.Equal(expectedMemberId, actualMemberId);
         }
@@ -96,6 +107,7 @@ namespace MdDoc.Test.Model
         [Fact]
         public void ToMemberId_returns_expected_value_for_array_types_03()
         {
+            // ARRANGE
             var typeReference = GetTypeDefinition(typeof(TestClass_Methods))
                 .Methods
                 .Single(x => x.Name == nameof(TestClass_Methods.TestMethod12))
@@ -105,8 +117,10 @@ namespace MdDoc.Test.Model
 
             var expectedMemberId = new ArrayTypeId(new SimpleTypeId("System", "String"), 2);
 
+            // ACT
             var actualMemberId = typeReference.ToMemberId();
 
+            // ASSERT
             Assert.NotNull(actualMemberId);
             Assert.Equal(expectedMemberId, actualMemberId);
         }
@@ -114,7 +128,7 @@ namespace MdDoc.Test.Model
         [Fact]
         public void ToMemberId_returns_expected_value_for_generic_parameters_01()
         {
-
+            // ARRANGE
             var typeReference = GetTypeDefinition(typeof(TestClass_Methods))
                 .Methods
                 .Single(x => x.Name == nameof(TestClass_Methods.TestMethod9))
@@ -124,8 +138,10 @@ namespace MdDoc.Test.Model
 
             var expectedMemberId = new GenericTypeParameterId(GenericTypeParameterId.MemberKind.Method, 1);
 
+            // ACT
             var actualMemberId = typeReference.ToMemberId();
 
+            // ASSERT
             Assert.NotNull(actualMemberId);
             Assert.Equal(expectedMemberId, actualMemberId);
         }
@@ -133,7 +149,7 @@ namespace MdDoc.Test.Model
         [Fact]
         public void ToMemberId_returns_expected_value_for_generic_parameters_02()
         {
-
+            // ARRANGE
             var typeReference = GetTypeDefinition(typeof(TestClass_GenericType<>))
                 .Methods
                 .Single(x => x.Name == nameof(TestClass_GenericType<object>.TestMethod1))
@@ -143,8 +159,10 @@ namespace MdDoc.Test.Model
 
             var expectedMemberId = new GenericTypeParameterId(GenericTypeParameterId.MemberKind.Type, 0);
 
+            // ACT
             var actualMemberId = typeReference.ToMemberId();
 
+            // ASSERT
             Assert.NotNull(actualMemberId);
             Assert.Equal(expectedMemberId, actualMemberId);
         }

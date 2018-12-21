@@ -1,9 +1,5 @@
 ﻿using MdDoc.Model;
 using MdDoc.Test.TestData;
-using Mono.Cecil;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Xunit;
 
 namespace MdDoc.Test.Model

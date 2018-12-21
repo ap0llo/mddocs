@@ -1,11 +1,10 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using MdDoc.Test.TestData;
-using MdDoc.Model.XmlDocs;
-using Xunit;
-using Mono.Cecil;
 using MdDoc.Model;
+using MdDoc.Model.XmlDocs;
+using MdDoc.Test.TestData;
+using Xunit;
 
 namespace MdDoc.Test.Model.XmlDocs
 {
@@ -131,7 +130,7 @@ namespace MdDoc.Test.Model.XmlDocs
             Assert.NotNull(docs);
 
             Assert.NotNull(docs.MemberId);
-           Assert.IsAssignableFrom<GenericTypeId>(docs.MemberId);
+            Assert.IsAssignableFrom<GenericTypeId>(docs.MemberId);
 
             Assert.NotNull(docs.Summary);
 
@@ -173,7 +172,6 @@ namespace MdDoc.Test.Model.XmlDocs
             Assert.Equal(2, docs.Exceptions.Count);
             Assert.Contains(docs.Exceptions, x => x.Cref == "T:System.InvalidOperationException");
             Assert.Contains(docs.Exceptions, x => x.Cref == "T:System.ArgumentException");
-              
 
             Assert.NotNull(docs.Parameters);
             Assert.Single(docs.Parameters);
@@ -186,7 +184,6 @@ namespace MdDoc.Test.Model.XmlDocs
         [InlineData(typeof(TestClass_XmlDocs<,>), nameof(TestClass_XmlDocs<object,object>.Field1))]
         public void TryGetDocumentationComments_gets_expected_docs_for_a_field(Type type, string fieldName)
         {
-            // ARRANGE
             // ARRANGE
             var id = GetTypeDefinition(type)
                 .Fields

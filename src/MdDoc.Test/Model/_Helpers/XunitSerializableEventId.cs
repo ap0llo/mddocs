@@ -1,11 +1,12 @@
-﻿using MdDoc.Model;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
+using MdDoc.Model;
 using Xunit.Abstractions;
 
 namespace MdDoc.Test.Model
 {
+    /// <summary>
+    /// 
+    /// </summary>
     class XunitSerializableEventId : IXunitSerializable
     {
         public EventId EventId { get; private set; }

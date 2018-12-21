@@ -1,10 +1,7 @@
-﻿using MdDoc.Model;
-using MdDoc.Test.TestData;
+﻿using System.Linq;
+using MdDoc.Model;
 using MdDoc.Model.XmlDocs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using MdDoc.Test.TestData;
 using Xunit;
 
 namespace MdDoc.Test.Model
@@ -28,11 +25,9 @@ namespace MdDoc.Test.Model
         }
 
 
-
         protected override MemberDocumentation GetMemberDocumentationInstance()
         {
             return GetTypeDocumentation(typeof(TestClass_Methods)).Methods.First();
         }
-
     }
 }

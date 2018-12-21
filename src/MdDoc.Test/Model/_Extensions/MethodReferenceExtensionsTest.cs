@@ -10,7 +10,7 @@ using Xunit;
 namespace MdDoc.Test.Model
 {
     public class MethodReferenceExtensionsTest : TestBase
-    {
+    {        
         private static readonly TypeId s_TestClass_Methods = new SimpleTypeId("MdDoc.Test.TestData", "TestClass_Methods");
         private static readonly TypeId s_TestClass_Operators = new SimpleTypeId("MdDoc.Test.TestData", "TestClass_Operators");
         private static readonly TypeId s_System_String = new SimpleTypeId("System", "String");
@@ -121,7 +121,5 @@ namespace MdDoc.Test.Model
             // ASSERT
             Assert.Equal(expectedMemberId, actualMemberId);
         }
-
     }
-
 }

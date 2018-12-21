@@ -1,11 +1,12 @@
-﻿using MdDoc.Model;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
+using MdDoc.Model;
 using Xunit.Abstractions;
 
 namespace MdDoc.Test.Model
 {
+    /// <summary>
+    /// Adapter to make <see cref="FieldId"/> serializable by xunit
+    /// </summary>
     class XunitSerializableFieldId : IXunitSerializable
     {
         public FieldId FieldId { get; private set; }

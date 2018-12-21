@@ -1,7 +1,7 @@
-using System;
+﻿using System;
 using System.Linq;
-using MdDoc.Test.TestData;
 using MdDoc.Model.XmlDocs;
+using MdDoc.Test.TestData;
 using Xunit;
 
 namespace MdDoc.Test.Model.XmlDocs
@@ -50,7 +50,6 @@ namespace MdDoc.Test.Model.XmlDocs
             // ASSERT
             Assert.Equal(expectedId, actualId);
         }
-
 
         [Theory]
         [InlineData("op_UnaryPlus", "M:MdDoc.Test.TestData.TestClass_Operators.op_UnaryPlus(MdDoc.Test.TestData.TestClass_Operators)")]
@@ -159,7 +158,6 @@ namespace MdDoc.Test.Model.XmlDocs
             // ASSERT
             Assert.Equal(expectedId, actualId);
         }
-
 
         [Theory]
         [InlineData("Event1", "E:MdDoc.Test.TestData.TestClass_Events.Event1")]

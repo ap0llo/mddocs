@@ -1,5 +1,5 @@
-﻿using MdDoc.Test.TestData;
-using System.Linq;
+﻿using System.Linq;
+using MdDoc.Test.TestData;
 
 namespace MdDoc.Test.Model
 {
@@ -9,6 +9,5 @@ namespace MdDoc.Test.Model
         {
             return GetTypeDocumentation(typeof(TestClass_Operators)).Operators.First().Overloads.First();
         }
-
     }
 }

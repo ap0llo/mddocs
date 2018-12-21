@@ -1,7 +1,7 @@
-﻿using MdDoc.Model.XmlDocs;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using MdDoc.Model.XmlDocs;
 using Xunit;
 using Xunit.Abstractions;
 using Xunit.Sdk;
@@ -64,10 +64,7 @@ namespace MdDoc.Test.Model.XmlDocs
             public override IEnumerable<object[]> GetData(MethodInfo testMethod)
             {
                 foreach (var testCase in GetTestCases())
-                {
                     yield return new object[] { testCase };
-                }
-
             }
 
             public IEnumerable<MemberIdLexerTestCase> GetTestCases()
@@ -78,6 +75,7 @@ namespace MdDoc.Test.Model.XmlDocs
                 yield return new MemberIdLexerTestCase("P:", new Token(TokenKind.IdentifierType, "P"), new Token(TokenKind.Colon, ":"), new Token(TokenKind.Eof, ""));
                 yield return new MemberIdLexerTestCase("M:", new Token(TokenKind.IdentifierType, "M"), new Token(TokenKind.Colon, ":"), new Token(TokenKind.Eof, ""));
                 yield return new MemberIdLexerTestCase("E:", new Token(TokenKind.IdentifierType, "E"), new Token(TokenKind.Colon, ":"), new Token(TokenKind.Eof, ""));
+
                 yield return new MemberIdLexerTestCase(
                     "T:Namespace",
                     new Token(TokenKind.IdentifierType, "T"),
@@ -85,6 +83,7 @@ namespace MdDoc.Test.Model.XmlDocs
                     new Token(TokenKind.Name, "Namespace"),
                     new Token(TokenKind.Eof, "")
                 );
+
                 yield return new MemberIdLexerTestCase(
                     "T:Namespace1.Namespace2",
                     new Token(TokenKind.IdentifierType, "T"),
@@ -106,6 +105,7 @@ namespace MdDoc.Test.Model.XmlDocs
                     new Token(TokenKind.Name, "Length"),
                     new Token(TokenKind.Eof, "")
                 );
+
                 yield return new MemberIdLexerTestCase(
                     "F:System.String`2.Length",
                     new Token(TokenKind.IdentifierType, "F"),
@@ -119,6 +119,7 @@ namespace MdDoc.Test.Model.XmlDocs
                     new Token(TokenKind.Name, "Length"),
                     new Token(TokenKind.Eof, "")
                 );
+
                 yield return new MemberIdLexerTestCase(
                     "M:String.#ctor",
                     new Token(TokenKind.IdentifierType, "M"),
@@ -128,6 +129,7 @@ namespace MdDoc.Test.Model.XmlDocs
                     new Token(TokenKind.Name, ".ctor"),
                     new Token(TokenKind.Eof, "")
                 );
+
                 yield return new MemberIdLexerTestCase(
                     "T:GenericType`2",
                     new Token(TokenKind.IdentifierType, "T"),
@@ -137,6 +139,7 @@ namespace MdDoc.Test.Model.XmlDocs
                     new Token(TokenKind.Number, "2"),
                     new Token(TokenKind.Eof, "")
                 );
+
                 yield return new MemberIdLexerTestCase(
                     "M:Namespace.Type.Method(System.String)",
                     new Token(TokenKind.IdentifierType, "M"),
@@ -153,6 +156,7 @@ namespace MdDoc.Test.Model.XmlDocs
                     new Token(TokenKind.CloseParenthesis, ")"),
                     new Token(TokenKind.Eof, "")
                 );
+
                 yield return new MemberIdLexerTestCase(
                     "M:Namespace.Type.Method(System.String,System.Int32)",
                     new Token(TokenKind.IdentifierType, "M"),
@@ -173,6 +177,7 @@ namespace MdDoc.Test.Model.XmlDocs
                     new Token(TokenKind.CloseParenthesis, ")"),
                     new Token(TokenKind.Eof, "")
                 );
+
                 yield return new MemberIdLexerTestCase(
                     "M:Namespace.Type.Method``1(``0,System.Int32)",
                     new Token(TokenKind.IdentifierType, "M"),
@@ -194,6 +199,7 @@ namespace MdDoc.Test.Model.XmlDocs
                     new Token(TokenKind.CloseParenthesis, ")"),
                     new Token(TokenKind.Eof, "")
                 );
+
                 yield return new MemberIdLexerTestCase(
                     "M:Namespace.Type.Method(Type2{System.String})",
                     new Token(TokenKind.IdentifierType, "M"),
@@ -213,6 +219,7 @@ namespace MdDoc.Test.Model.XmlDocs
                     new Token(TokenKind.CloseParenthesis, ")"),
                     new Token(TokenKind.Eof, "")
                 );
+
                 yield return new MemberIdLexerTestCase(
                     "M:Namespace.Type.op_Implicit(Type)~System.String",
                     new Token(TokenKind.IdentifierType, "M"),
@@ -231,6 +238,7 @@ namespace MdDoc.Test.Model.XmlDocs
                     new Token(TokenKind.Name, "String"),
                     new Token(TokenKind.Eof, "")
                 );
+
                 yield return new MemberIdLexerTestCase(
                     "M:Namespace.Type.Method(System.Int32[])",
                     new Token(TokenKind.IdentifierType, "M"),
@@ -310,12 +318,16 @@ namespace MdDoc.Test.Model.XmlDocs
         [MemberIdLexerTestData]
         public void Tokenizer_returns_expected_Tokens(MemberIdLexerTestCase testCase)
         {
+            // ARRANGE
             var tokenizer = new MemberIdLexer(testCase.Input);
+
+            // ACT
             var actualTokens = tokenizer.GetTokens();
 
+            // ASSERT
             Assert.NotNull(actualTokens);
             Assert.Equal(testCase.ExpectedTokens.Count, actualTokens.Count);
-            for (int i = 0; i < testCase.ExpectedTokens.Count; i++)
+            for (var i = 0; i < testCase.ExpectedTokens.Count; i++)
             {
                 Assert.Equal(testCase.ExpectedTokens[i].Kind, actualTokens[i].Kind);
                 Assert.Equal(testCase.ExpectedTokens[i].Value, actualTokens[i].Value);

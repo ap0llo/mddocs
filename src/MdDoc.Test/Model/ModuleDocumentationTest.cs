@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using MdDoc.Model;
 using MdDoc.Test.TestData;
-using Mono.Cecil;
 using Xunit;
 
 namespace MdDoc.Test.Model
@@ -60,7 +59,6 @@ namespace MdDoc.Test.Model
                 expectedType => Assert.Contains(actualTypes, x => x.Definition.Equals(expectedType))
             );
         }
-
         
         [Fact]
         public void Types_does_not_include_internal_types()
@@ -84,7 +82,6 @@ namespace MdDoc.Test.Model
             );
         }
 
-
         [Fact]
         public void TryGetDocumentation_returns_null_for_an_undocumented_type()
         {
@@ -98,7 +95,6 @@ namespace MdDoc.Test.Model
             // ASSERT
             Assert.Null(documentation);
         }
-
 
         [Fact]
         public void TryGetDocumenation_returns_expected_documentation_item_for_an_documented_type()

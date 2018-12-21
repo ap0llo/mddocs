@@ -1,14 +1,13 @@
-﻿using MdDoc.Model;
-using MdDoc.Test.TestData;
-using System;
+﻿using System;
 using System.Linq;
+using MdDoc.Model;
+using MdDoc.Test.TestData;
 using Xunit;
 
 namespace MdDoc.Test.Model
 {
     public class TypeDocumentationTest : TestBase
     {
-
         [Theory]
         [InlineData(typeof(TestClass_Type), TypeKind.Class)]
         [InlineData(typeof(TestStruct_Type), TypeKind.Struct)]
@@ -29,7 +28,10 @@ namespace MdDoc.Test.Model
         [Fact]
         public void AssemblyName_returns_the_expected_value()
         {
+            // ARRANGE / ACT
             var typeDocumentation = GetTypeDocumentation(typeof(TestClass_Type));
+
+            // ASSERT
             Assert.Equal(typeof(TestClass_Type).Assembly.GetName().Name, typeDocumentation.AssemblyName);
         }
 
@@ -174,7 +176,10 @@ namespace MdDoc.Test.Model
         [Fact]
         public void Methods_do_not_include_constructors()
         {
+            // ARRANGE / ACT        
             var sut = GetTypeDocumentation(typeof(TestClass_Constructors));
+
+            // ASSERT
             Assert.NotNull(sut.Methods);            
             Assert.Empty(sut.Methods);            
         }
@@ -182,8 +187,10 @@ namespace MdDoc.Test.Model
         [Fact]
         public void Methods_include_overloads_with_generic_parameters()
         {
+            // ARRANGE / ACT
             var sut = GetTypeDocumentation(typeof(TestClass_MethodOverloads));
 
+            // ASSERT
             Assert.Single(sut.Methods);
             var method = sut.Methods.Single();
 
@@ -195,7 +202,10 @@ namespace MdDoc.Test.Model
         [Fact]
         public void Methods_do_not_include_operator_overloads()
         {
+            // ARRANGE / ACT
             var sut = GetTypeDocumentation(typeof(TestClass_Operators));
+
+            // ASSERT
             Assert.NotNull(sut.Methods);
             Assert.Empty(sut.Methods);
         }
@@ -205,8 +215,10 @@ namespace MdDoc.Test.Model
         [Fact]
         public void Constructors_returns_the_expected_constructor_overloads_for_classes_01()
         {
+            // ARRANGE / ACT
             var sut = GetTypeDocumentation(typeof(TestClass_Methods));
 
+            // ASSERT
             Assert.NotNull(sut.Constructors);
             Assert.Single(sut.Constructors.Overloads);
             Assert.Equal(".ctor", sut.Constructors.Name);
@@ -215,8 +227,10 @@ namespace MdDoc.Test.Model
         [Fact]
         public void Constructors_returns_the_expected_constructor_overloads_for_classes_02()
         {
+            // ARRANGE / ACT
             var sut = GetTypeDocumentation(typeof(TestClass_Constructors));
 
+            // ASSERT
             Assert.NotNull(sut.Constructors);
             Assert.Equal(2, sut.Constructors.Overloads.Count);
             Assert.Equal(".ctor", sut.Constructors.Name);
@@ -225,15 +239,20 @@ namespace MdDoc.Test.Model
         [Fact]
         public void Constructors_returns_the_expected_constructor_overloads_for_structs_01()
         {
+            // ARRANGE / ACT
             var sut = GetTypeDocumentation(typeof(TestStruct_Type));
+
+            // ASSERT
             Assert.Null(sut.Constructors);            
         }
 
         [Fact]
         public void Constructors_returns_the_expected_constructor_overloads_for_structs_02()
         {
+            // ARRANGE / ACT
             var sut = GetTypeDocumentation(typeof(TestStruct_Constructors));
 
+            // ASSERT
             Assert.NotNull(sut.Constructors);
             Assert.Equal(2, sut.Constructors.Overloads.Count);
             Assert.Equal(".ctor", sut.Constructors.Name);
@@ -242,14 +261,20 @@ namespace MdDoc.Test.Model
         [Fact]
         public void Constructors_returns_null_for_interfaces()
         {
+            // ARRANGE / ACT
             var sut = GetTypeDocumentation(typeof(TestInterface_Type));
+
+            // ASSERT
             Assert.Null(sut.Constructors);            
         }
 
         [Fact]
         public void Constructors_returns_null_for_enums()
         {
+            // ARRANGE / ACT
             var sut = GetTypeDocumentation(typeof(TestEnum_Type));
+
+            // ASSERT
             Assert.Null(sut.Constructors);
         }
 
@@ -257,7 +282,10 @@ namespace MdDoc.Test.Model
         [Fact]
         public void Operators_contains_expected_number_of_operator_overloads()
         {
+            // ARRANGE / ACT
             var sut = GetTypeDocumentation(typeof(TestClass_Operators));
+
+            // ASSERT
             Assert.NotNull(sut.Operators);
             Assert.Equal(26, sut.Operators.Count);
         }
@@ -265,8 +293,10 @@ namespace MdDoc.Test.Model
         [Fact]
         public void Multiple_overoads_of_the_same_operator_are_gropued()
         {
+            // ARRANGE / ACT
             var sut = GetTypeDocumentation(typeof(TestClass_MultipleOperatorOverloads));
 
+            // ASSERT
             Assert.NotNull(sut.Operators);
             Assert.Equal(1, sut.Operators.Count);
         }
@@ -274,14 +304,17 @@ namespace MdDoc.Test.Model
         [Fact]
         public void InheritanceHierarchy_contains_the_expected_types_01()
         {
+            // ARRANGE
             var expectedSequence = new[]
             {
                 new SimpleTypeId("System", "Object"),
                 new SimpleTypeId("MdDoc.Test.TestData", "TestClass_Type")
             };
 
+            // ACT
             var sut = GetTypeDocumentation(typeof(TestClass_Type));
 
+            // ASSERT
             Assert.NotNull(sut.InheritanceHierarchy);
             Assert.Equal(expectedSequence.Length, sut.InheritanceHierarchy.Count);
             Assert.True(expectedSequence.SequenceEqual(sut.InheritanceHierarchy));            
@@ -290,6 +323,7 @@ namespace MdDoc.Test.Model
         [Fact]
         public void InheritanceHierarchy_contains_the_expected_types_02()
         {
+            // ARRANGE
             var expectedSequence = new[]
             {
                 new SimpleTypeId("System", "Object"),
@@ -297,8 +331,10 @@ namespace MdDoc.Test.Model
                 new SimpleTypeId("MdDoc.Test.TestData", "TestStruct_Type")
             };
 
+            // ACT
             var sut = GetTypeDocumentation(typeof(TestStruct_Type));
 
+            // ASSERT
             Assert.NotNull(sut.InheritanceHierarchy);
             Assert.Equal(expectedSequence.Length, sut.InheritanceHierarchy.Count);
             Assert.True(expectedSequence.SequenceEqual(sut.InheritanceHierarchy));
@@ -308,6 +344,7 @@ namespace MdDoc.Test.Model
         [Fact]
         public void InheritanceHierarchy_contains_the_expected_types_03()
         {
+            // ARRANGE
             var expectedSequence = new[]
             {
                 new SimpleTypeId("System", "Object"),
@@ -316,8 +353,10 @@ namespace MdDoc.Test.Model
                 new SimpleTypeId("MdDoc.Test.TestData", "TestEnum_Type")
             };
 
+            // ACT
             var sut = GetTypeDocumentation(typeof(TestEnum_Type));
 
+            // ASSERT
             Assert.NotNull(sut.InheritanceHierarchy);
             Assert.Equal(expectedSequence.Length, sut.InheritanceHierarchy.Count);       
             Assert.True(expectedSequence.SequenceEqual(sut.InheritanceHierarchy));
@@ -326,19 +365,21 @@ namespace MdDoc.Test.Model
         [Fact]
         public void InheritanceHierarchy_Is_empty_for_interfaces_01()
         {
+            // ARRANGE / ACT
             var sut = GetTypeDocumentation(typeof(TestInterface_Type));
 
+            // ASSERT
             Assert.NotNull(sut.InheritanceHierarchy);
             Assert.Empty(sut.InheritanceHierarchy);
         }
-
-
-
+        
         [Fact]
         public void InheritanceHierarchy_Is_empty_for_interfaces_02()
         {
+            // ARRANGE / ACT
             var sut = GetTypeDocumentation(typeof(TestInterface_Inheritance));
 
+            // ASSERT
             Assert.NotNull(sut.InheritanceHierarchy);
             Assert.Empty(sut.InheritanceHierarchy);
         }
@@ -352,17 +393,20 @@ namespace MdDoc.Test.Model
 #pragma warning restore CS0618 // Type or member is obsolete
         public void Attributes_returns_the_expected_types(Type testType)
         {
+            // ARRANGE
             var expectedAttributes = new[]
             {
-                typeof(ObsoleteAttribute).FullName,
-                typeof(TestAttribute).FullName
+                new SimpleTypeId("System", "ObsoleteAttribute"),
+                new SimpleTypeId("MdDoc.Test.TestData", "TestAttribute")
             };
 
+            // ACT
             var sut = GetTypeDocumentation(testType);
 
+            // ASSERT
             Assert.NotNull(sut.Attributes);
             Assert.Equal(expectedAttributes.Length, sut.Attributes.Count);
-            //Assert.True(expectedAttributes.SequenceEqual(sut.InheritanceHierarchy.Select(x => x.FullName)));
+            Assert.True(expectedAttributes.SequenceEqual(sut.Attributes));
         }
 
         [Fact]
@@ -395,11 +439,10 @@ namespace MdDoc.Test.Model
             Assert.Equal(typeId, ((TypeDocumentation)documentation).TypeId);
         }
 
-
         [Fact]
         public void ImplementedInterfaces_is_empty_for_interfaces_which_do_not_inherit_from_other_interfaces()
         {
-            // ARRANGE            
+            // ARRANGE / ACT        
             var sut = GetTypeDocumentation(typeof(TestInterface_Type));
 
             // ASSERT
@@ -410,7 +453,7 @@ namespace MdDoc.Test.Model
         [Fact]
         public void ImplementedInterfaces_returns_the_expected_list_of_interfaces_for_interfaces()
         {
-            // ARRANGE            
+            // ARRANGE / ACT      
             var sut = GetTypeDocumentation(typeof(TestInterface_Inheritance));
 
             // ASSERT
@@ -422,7 +465,7 @@ namespace MdDoc.Test.Model
         [Fact]
         public void ImplementedInterfaces_is_empty_for_enums()
         {
-            // ARRANGE            
+            // ARRANGE / ACT        
             var sut = GetTypeDocumentation(typeof(TestEnum_Type));
 
             // ASSERT
@@ -433,20 +476,20 @@ namespace MdDoc.Test.Model
         [Fact]
         public void ImplementedInterfaces_returns_the_expected_list_of_interfaces_for_classes()
         {
-            // ARRANGE            
+            // ARRANGE / ACT
             var sut = GetTypeDocumentation(typeof(TestClass_InterfaceImplementation));
 
             // ASSERT
             Assert.NotNull(sut.ImplementedInterfaces);
             Assert.Equal(2, sut.ImplementedInterfaces.Count);
-            Assert.Contains(sut.ImplementedInterfaces, i => i.Equals(GetTypeId(typeof(TestInterface_Type))));
+            Assert.Contains(sut.ImplementedInterfaces, i => i.Equals(new SimpleTypeId("MdDoc.Test.TestData", "TestInterface_Type"))); 
             Assert.Contains(sut.ImplementedInterfaces, i => i.Equals(new SimpleTypeId("System", "IDisposable")));
         }
 
         [Fact]
         public void ImplementedInterfaces_is_empty_for_classes_that_do_not_implement_interfaces()
         {
-            // ARRANGE            
+            // ARRANGE / ACT
             var sut = GetTypeDocumentation(typeof(TestClass_Type));
 
             // ASSERT
@@ -457,20 +500,20 @@ namespace MdDoc.Test.Model
         [Fact]
         public void ImplementedInterfaces_returns_the_expected_list_of_interfaces_for_structs()
         {
-            // ARRANGE            
+            // ARRANGE / ACT
             var sut = GetTypeDocumentation(typeof(TestStruct_InterfaceImplementation));
 
             // ASSERT
             Assert.NotNull(sut.ImplementedInterfaces);
             Assert.Equal(2, sut.ImplementedInterfaces.Count);
-            Assert.Contains(sut.ImplementedInterfaces, i => i.Equals(GetTypeId(typeof(TestInterface_Type))));
+            Assert.Contains(sut.ImplementedInterfaces, i => i.Equals(new SimpleTypeId("MdDoc.Test.TestData", "TestInterface_Type")));
             Assert.Contains(sut.ImplementedInterfaces, i => i.Equals(new SimpleTypeId("System", "IDisposable")));
         }
 
         [Fact]
         public void ImplementedInterfaces_is_empty_for_structs_that_do_not_implement_interfaces()
         {
-            // ARRANGE            
+            // ARRANGE / ACT
             var sut = GetTypeDocumentation(typeof(TestStruct_Type));
 
             // ASSERT

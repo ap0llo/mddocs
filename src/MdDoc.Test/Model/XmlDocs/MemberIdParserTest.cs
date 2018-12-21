@@ -50,10 +50,7 @@ namespace MdDoc.Test.Model.XmlDocs
             public override IEnumerable<object[]> GetData(MethodInfo testMethod)
             {
                 foreach (var testCase in GetTestCases())
-                {
                     yield return new object[] { testCase };
-                }
-
             }
 
             private IEnumerable<MemberIdParserTestCase> GetTestCases()
@@ -214,10 +211,7 @@ namespace MdDoc.Test.Model.XmlDocs
             public override IEnumerable<object[]> GetData(MethodInfo testMethod)
             {
                 foreach (var testCase in GetTestCases())
-                {
                     yield return new object[] { testCase };
-                }
-
             }
 
             private IEnumerable<MemberIdParserTestCase> GetTestCases()
@@ -277,10 +271,7 @@ namespace MdDoc.Test.Model.XmlDocs
             public override IEnumerable<object[]> GetData(MethodInfo testMethod)
             {
                 foreach (var testCase in GetTestCases())
-                {
                     yield return new object[] { testCase };
-                }
-
             }
 
             public IEnumerable<MemberIdParserTestCase> GetTestCases()
@@ -308,10 +299,7 @@ namespace MdDoc.Test.Model.XmlDocs
             public override IEnumerable<object[]> GetData(MethodInfo testMethod)
             {
                 foreach (var testCase in GetTestCases())
-                {
                     yield return new object[] { testCase };
-                }
-
             }
 
             public IEnumerable<MemberIdParserTestCase> GetTestCases()
@@ -327,10 +315,7 @@ namespace MdDoc.Test.Model.XmlDocs
             public override IEnumerable<object[]> GetData(MethodInfo testMethod)
             {
                 foreach (var testCase in GetTestCases())
-                {
                     yield return new object[] { testCase };
-                }
-
             }
 
             public IEnumerable<MemberIdParserTestCase> GetTestCases()
@@ -342,7 +327,6 @@ namespace MdDoc.Test.Model.XmlDocs
         }
 
 
-
         [Theory]
         [TypeIdTestCases]
         [MethodIdTestCases]
@@ -351,9 +335,13 @@ namespace MdDoc.Test.Model.XmlDocs
         [FieldIdTestCases]
         public void Member_ids_are_parsed_as_expected(MemberIdParserTestCase testCase)
         {
-            var parser = new MemberIdParser(testCase.Input);
+            // ARRANGE
+            var parser = new MemberIdParser(testCase.Input);            
+
+            // ACT
             var memberId = parser.Parse();
 
+            // ASSERT
             Assert.NotNull(memberId);
             Assert.Equal(testCase.ExpectedMemberId, memberId);
         }

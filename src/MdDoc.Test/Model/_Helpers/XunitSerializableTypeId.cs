@@ -1,10 +1,13 @@
-﻿using MdDoc.Model;
-using System;
+﻿using System;
 using System.Linq;
+using MdDoc.Model;
 using Xunit.Abstractions;
 
 namespace MdDoc.Test.Model
 {
+    /// <summary>
+    /// Adapter to make <see cref="TypeIdId"/> serializable by xunit
+    /// </summary>
     class XunitSerializableTypeId : IXunitSerializable
     {
         public TypeId TypeId { get; private set; }
@@ -48,7 +51,6 @@ namespace MdDoc.Test.Model
                     TypeId = new ArrayTypeId(elementType, dimensions);
                     break;
 
-
                 case nameof(GenericTypeParameterId):
                     var index = info.GetValue<int>(nameof(GenericTypeParameterId.Index));
                     var definingMemberKind = info.GetValue<string>(nameof(GenericTypeParameterId.DefiningMemberKind));
@@ -57,8 +59,7 @@ namespace MdDoc.Test.Model
 
                 default:
                     throw new NotImplementedException();
-            }
-            
+            }            
         }
 
         public void Serialize(IXunitSerializationInfo info)
@@ -96,9 +97,7 @@ namespace MdDoc.Test.Model
 
                 default:
                     throw new NotImplementedException();
-            }
-
-            
+            }            
         }
 
         public static implicit operator TypeId(XunitSerializableTypeId serializable) => serializable?.TypeId; 

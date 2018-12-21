@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using MdDoc.Model;
+﻿using MdDoc.Model;
 using MdDoc.Test.TestData;
 
 namespace MdDoc.Test.Model

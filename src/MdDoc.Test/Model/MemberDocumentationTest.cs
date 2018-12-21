@@ -1,6 +1,5 @@
 ﻿using MdDoc.Model;
 using MdDoc.Test.TestData;
-using Mono.Cecil;
 using Xunit;
 
 namespace MdDoc.Test.Model

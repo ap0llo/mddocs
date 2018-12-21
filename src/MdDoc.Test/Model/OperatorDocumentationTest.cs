@@ -1,16 +1,13 @@
-﻿using MdDoc.Model;
-using MdDoc.Test.TestData;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
-using System.Text;
+using MdDoc.Model;
+using MdDoc.Test.TestData;
 using Xunit;
 
 namespace MdDoc.Test.Model
 {
     public class OperatorDocumentationTest : MemberDocumentationTest
     {
-
         [Theory]
         [InlineData("op_UnaryPlus", OperatorKind.UnaryPlus)]
         [InlineData("op_UnaryNegation", OperatorKind.UnaryNegation)]
@@ -40,35 +37,39 @@ namespace MdDoc.Test.Model
         [InlineData("op_Explicit", OperatorKind.ExplicitConversion)]
         public void Kind_returns_the_expected_value(string methodName, OperatorKind expectedKind)
         {
+            // ARRANGE
             var methodDefinition = GetTypeDefinition(typeof(TestClass_Operators))
                 .Methods
                 .Single(m => m.Name == methodName);
 
+            // ACT
             var operatorDocumentation = new OperatorDocumentation(GetTypeDocumentation(typeof(TestClass_Operators)), new[] { methodDefinition });
 
+            // ASSERT
             Assert.Equal(expectedKind, operatorDocumentation.Kind);
-
         }
 
         [Fact]
         public void Constructor_throw_ArgumentException_if_specified_method_is_not_an_operator_overload()
         {
-
+            // ARRANGE
             var method = GetTypeDefinition(typeof(TestClass_Methods))
                 .Methods
                 .Single(x => x.Name == nameof(TestClass_Methods.TestMethod1));
 
+            // ACT / ASSERT
             Assert.Throws<ArgumentException>(() => new OperatorDocumentation(GetTypeDocumentation(typeof(TestClass_Methods)), new[] { method }));
         }
-
 
         [Fact]
         public void Constructor_throw_ArgumentException_if_overloads_of_different_operators_are_passed_in()
         {
+            // ARRANGE
             var methods = GetTypeDefinition(typeof(TestClass_Operators))
                 .Methods
                 .Where(x => x.GetOperatorKind() == OperatorKind.Subtraction || x.GetOperatorKind() == OperatorKind.Addition);
 
+            // ACT / ASSERT
             Assert.Throws<ArgumentException>(() => new OperatorDocumentation(GetTypeDocumentation(typeof(TestClass_Operators)), methods));
         }
 
@@ -77,6 +78,5 @@ namespace MdDoc.Test.Model
         {
             return GetTypeDocumentation(typeof(TestClass_Operators)).Operators.First();
         }
-
     }
 }

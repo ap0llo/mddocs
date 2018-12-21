@@ -1,10 +1,10 @@
-﻿using MdDoc.Model;
-using MdDoc.Test.TestData;
-using MdDoc.Model.XmlDocs;
-using Mono.Cecil;
-using System;
+﻿using System;
 using System.Linq;
 using System.Reflection;
+using MdDoc.Model;
+using MdDoc.Model.XmlDocs;
+using MdDoc.Test.TestData;
+using Mono.Cecil;
 
 namespace MdDoc.Test
 {
@@ -25,16 +25,9 @@ namespace MdDoc.Test
         
         protected TypeId GetTypeId(Type t) => GetTypeDefinition(t).ToTypeId();
 
-        protected TypeDefinition GetTypeDefinition(Type t)
-        {
-            return GetTypeDefinition(t.Name);
-        }
+        protected TypeDefinition GetTypeDefinition(Type t) => GetTypeDefinition(t.Name);
 
-        protected TypeDefinition GetTypeDefinition(string  name)
-        {
-            return m_AssemblyDocumentation.MainModuleDocumentation.Definition.GetTypes().Single(typeDef => typeDef.Name == name);
-        }
-
+        protected TypeDefinition GetTypeDefinition(string name) => m_AssemblyDocumentation.MainModuleDocumentation.Definition.GetTypes().Single(typeDef => typeDef.Name == name);
 
         protected TypeDocumentation GetTypeDocumentation(Type type)
         {
@@ -42,6 +35,5 @@ namespace MdDoc.Test
             var sut = new TypeDocumentation(m_AssemblyDocumentation.MainModuleDocumentation, typeDefinition, new NullXmlDocsProvider());
             return sut;
         }
-
     }
 }

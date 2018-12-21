@@ -1,11 +1,13 @@
-﻿using MdDoc.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using MdDoc.Model;
 using Xunit.Abstractions;
 
 namespace MdDoc.Test.Model
 {
+    /// <summary>
+    /// Adapter to make <see cref="MethodId"/> serializable by xunit
+    /// </summary>
     class XunitSerializableMethodId : IXunitSerializable
     {
         public MethodId MethodId { get; private set; }
