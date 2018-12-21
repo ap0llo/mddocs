@@ -8,7 +8,7 @@ using static Grynwald.MarkdownGenerator.FactoryMethods;
 
 namespace MdDoc.Pages
 {
-    abstract class PageBase<TModel> : IPage where TModel : IDocumentation
+    abstract class PageBase<TModel> : IMdSpanFactory, IPage where TModel : IDocumentation
     {
         private static readonly char[] s_SplitChars = ".".ToCharArray();
         private readonly string m_RootOutputPath;
@@ -102,6 +102,35 @@ namespace MdDoc.Pages
 
             return Path.Combine(namespaceDir, dirName);
         }
+
+        public MdSpan GetMdSpan(MemberId id) => GetMdSpan(id, false);
+
+        public MdSpan GetMdSpan(MemberId id, bool noLink)
+        {
+            switch (id)
+            {
+                case TypeId typeId:
+                    return GetTypeNameSpan(typeId);
+
+                case TypeMemberId typeMemberId:
+                    var modelItem = Model.TryGetDocumentation(typeMemberId);
+                    var page = modelItem != null ? PageFactory.TryGetPage(modelItem) : null;
+                    if(page == null || noLink)
+                    {
+                        return new MdTextSpan(typeMemberId.Name);
+                    }
+                    else
+                    {
+                        return new MdLinkSpan(
+                            typeMemberId.Name,
+                            OutputPath.GetRelativePathTo(page.OutputPath)
+                        );  
+                    }               
+
+                default:
+                    return MdEmptySpan.Instance;                    
+            }
+        }       
     }
 
 

@@ -12,7 +12,7 @@ namespace MdDoc.Model.XmlDocs
 
         public XmlDocsProvider(string xmlDocsPath, AssemblyDefinition assembly)
         {
-            var nuDoqModel = DocReader.Read(xmlDocsPath, new ReaderOptions() { KeepNewLinesInText = true });
+            var nuDoqModel = DocReader.Read(xmlDocsPath);
 
             var model = ModelConverter.ConvertModel(nuDoqModel);
 

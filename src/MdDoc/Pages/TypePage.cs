@@ -112,7 +112,7 @@ namespace MdDoc.Pages
         {
             if(Model.Summary != null)
             {                              
-                block.Add(XmlDocToMarkdownConverter.ConvertToBlock(Model.Summary));
+                block.Add(XmlDocToMarkdownConverter.ConvertToBlock(Model.Summary, this));
             }
         }
 
@@ -121,12 +121,13 @@ namespace MdDoc.Pages
             if (Model.Remarks != null)
             {
                 block.Add(Heading(2, "Remarks"));
-                block.Add(XmlDocToMarkdownConverter.ConvertToBlock(Model.Remarks));
+                block.Add(XmlDocToMarkdownConverter.ConvertToBlock(Model.Remarks, this));
             }
         }
 
         private void AddConstructorsSection(MdContainerBlock block)
-        {         
+        {
+            //TODO: Skip constructors when it is compiler-generated, i.e. only the implict default constructor
             if (Model.Constructors != null)
             {
                 var table = Table(Row("Name", "Description"));
@@ -215,7 +216,8 @@ namespace MdDoc.Pages
         }
         
         private void AddMethodsSection(MdContainerBlock block)
-        {   
+        {
+            //TODO: Do not include add/remove methods of events
             if (Model.Methods.Count > 0)
             {
                 var table = Table(Row("Name", "Description"));
@@ -279,9 +281,9 @@ namespace MdDoc.Pages
         }
 
 
-        private static MdSpan ConvertToSpan(SummaryElement summary)
+        private MdSpan ConvertToSpan(SummaryElement summary)
         {
-            return summary == null ? MdEmptySpan.Instance : XmlDocToMarkdownConverter.ConvertToSpan(summary);
+            return summary == null ? MdEmptySpan.Instance : XmlDocToMarkdownConverter.ConvertToSpan(summary, this);
         }
 
     }
