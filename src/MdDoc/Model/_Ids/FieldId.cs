@@ -4,16 +4,9 @@ namespace MdDoc.Model
 {
     public sealed class FieldId : TypeMemberId, IEquatable<FieldId>
     {
-        public string Name { get; }
+        public FieldId(TypeId definingType, string name) : base(definingType, name)
+        { }
 
-
-        public FieldId(TypeId definingType, string name) : base(definingType)
-        {
-            if (String.IsNullOrEmpty(name))
-                throw new ArgumentException("Value must not be empty", nameof(name));
-
-            Name = name;
-        }
 
         public override bool Equals(object obj) => Equals(obj as FieldId);
 

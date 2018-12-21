@@ -4,16 +4,8 @@ namespace MdDoc.Model
 {
     public sealed class EventId : TypeMemberId, IEquatable<EventId>
     {
-        public string Name { get; }
-
-
-        public EventId(TypeId definingType, string name) : base(definingType)
-        {
-            if (String.IsNullOrEmpty(name))
-                throw new ArgumentException("Value must not be empty", nameof(name));
-
-            Name = name;
-        }
+        public EventId(TypeId definingType, string name) : base(definingType, name)
+        { }
 
 
         public override bool Equals(object obj) => Equals(obj as EventId);

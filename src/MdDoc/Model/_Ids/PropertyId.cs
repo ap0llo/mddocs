@@ -6,23 +6,17 @@ namespace MdDoc.Model
 {
     public sealed class PropertyId : TypeMemberId, IEquatable<PropertyId>
     {
-        public string Name { get; }
-        
         public IReadOnlyList<TypeId> Parameters { get; }
 
 
         public PropertyId(TypeId definingType, string name) : this(definingType, name, Array.Empty<TypeId>())
         { }
 
-        public PropertyId(TypeId definingType, string name, IReadOnlyList<TypeId> parameters) : base(definingType)
+        public PropertyId(TypeId definingType, string name, IReadOnlyList<TypeId> parameters) : base(definingType, name)
         {            
-            if (String.IsNullOrEmpty(name))
-                throw new ArgumentException("Value must not be null or empty", nameof(name));
-
             if (parameters == null)
                 throw new ArgumentNullException(nameof(parameters));
             
-            Name = name;
             Parameters = parameters;
         }
 

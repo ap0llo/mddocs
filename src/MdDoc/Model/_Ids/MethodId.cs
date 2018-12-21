@@ -5,9 +5,7 @@ using System.Linq;
 namespace MdDoc.Model
 {
     public sealed class MethodId : TypeMemberId, IEquatable<MethodId>
-    {       
-        public string Name { get; }
-
+    {   
         public int Arity { get; }
 
         public IReadOnlyList<TypeId> Parameters { get; }
@@ -24,12 +22,8 @@ namespace MdDoc.Model
         public MethodId(TypeId definingType, string name, int arity, IReadOnlyList<TypeId> parameters) : this(definingType, name, arity, parameters, null)
         { }
 
-        public MethodId(TypeId definingType, string name, int arity, IReadOnlyList<TypeId> parameters, TypeId returnType) : base(definingType)
+        public MethodId(TypeId definingType, string name, int arity, IReadOnlyList<TypeId> parameters, TypeId returnType) : base(definingType, name)
         {
-            if (String.IsNullOrEmpty(name))
-                throw new ArgumentException("Value must not be null or empty", nameof(name));
-
-            Name = name;
             Arity = arity;
             Parameters = parameters ?? throw new ArgumentNullException(nameof(parameters));
             ReturnType = returnType;
