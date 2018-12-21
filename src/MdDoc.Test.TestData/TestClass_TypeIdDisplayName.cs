@@ -5,7 +5,7 @@ using System.Text;
 
 namespace MdDoc.Test.TestData
 {
-    class TestClass_TypeName
+    class TestClass_TypeIdDisplayName
     {                
         public int Property1 { get; set; }
 
@@ -51,12 +51,16 @@ namespace MdDoc.Test.TestData
 
     }
 
-    class TestClass_TypeName<T1, T2>
+    class TestClass_TypeIdDisplayName<T1, T2>
     {
-        public IEnumerable<T1> Property1 { get; set; }
+        public IEnumerable<T1> Method1() => throw new NotImplementedException();
 
-        public IEnumerable<T2> Property2 { get; set; }
+        public IEnumerable<T2> Method2() => throw new NotImplementedException();
 
-        public Dictionary<T1, T2> Property3 { get; set; }
+        public Dictionary<T1, T2> Method3() => throw new NotImplementedException();
+
+        public Dictionary<TKey, TValue> Method4<TKey, TValue>() => throw new NotImplementedException();
     }
+
+
 }

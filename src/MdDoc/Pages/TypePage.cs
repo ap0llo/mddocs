@@ -20,14 +20,14 @@ namespace MdDoc.Pages
             : base(pageFactory, rootOutputPath)
         {
             Model = model ?? throw new ArgumentNullException(nameof(model));    
-            OutputPath = new OutputPath(Path.Combine(GetTypeDir(Model), $"{Model.Name}.md"));
+            OutputPath = new OutputPath(Path.Combine(GetTypeDir(Model), $"{Model.TypeId.Name}.md"));
         }
 
 
         public override void Save()
         {
             var document = new MdDocument(
-                Heading($"{Model.Name} {Model.Kind}", 1)
+                Heading($"{Model.DisplayName} {Model.Kind}", 1)
             );
 
             AddTypeInfoSection(document.Root);
@@ -55,7 +55,7 @@ namespace MdDoc.Pages
         {
             // Add Namespace 
             block.Add(
-                Paragraph(Bold("Namespace:"), " " + Model.Name.Namespace)
+                Paragraph(Bold("Namespace:"), " " + Model.Namespace)
             );
 
             // Add Assembly

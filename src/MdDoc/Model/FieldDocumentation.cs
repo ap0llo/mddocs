@@ -9,7 +9,7 @@ namespace MdDoc.Model
     {
         public string Name => Definition.Name;
 
-        public MemberId MemberId { get; }
+        public MemberId MemberId { get; }       
 
         internal FieldDefinition Definition { get; }
 
@@ -18,6 +18,9 @@ namespace MdDoc.Model
         {
             Definition = definition ?? throw new ArgumentNullException(nameof(definition));
             MemberId = definition.ToMemberId();
-        }        
+        }
+
+        public override IDocumentation TryGetDocumentation(MemberId id) =>
+            MemberId.Equals(id) ? this : TypeDocumentation.TryGetDocumentation(id);
     }
 }

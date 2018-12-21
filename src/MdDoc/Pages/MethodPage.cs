@@ -20,14 +20,14 @@ namespace MdDoc.Pages
             : base(pageFactory, rootOutputPath)
         {
             Model = model ?? throw new ArgumentNullException(nameof(model));   
-            OutputPath = new OutputPath(Path.Combine(GetTypeDir(Model.TypeDocumentation), "methods", $"{Model.TypeDocumentation.Name}.{Model.Name}.md"));
+            OutputPath = new OutputPath(Path.Combine(GetTypeDir(Model.TypeDocumentation), "methods", $"{Model.TypeDocumentation.TypeId.Name}.{Model.Name}.md"));
         }
 
 
         public override void Save()
         {
             var document = Document(
-                Heading($"{Model.TypeDocumentation.Name}.{Model.Name} Method", 1)
+                Heading($"{Model.TypeDocumentation.DisplayName}.{Model.Name} Method", 1)
             );
 
             AddDeclaringTypeSection(document.Root);            

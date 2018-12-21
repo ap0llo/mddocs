@@ -2,22 +2,16 @@
 
 namespace MdDoc.Model
 {
-    public sealed class EventId : MemberId, IEquatable<EventId>
+    public sealed class EventId : TypeMemberId, IEquatable<EventId>
     {
-        public TypeId DefiningType { get; }
-
         public string Name { get; }
 
 
-        public EventId(TypeId definingType, string name)
+        public EventId(TypeId definingType, string name) : base(definingType)
         {
-            if (definingType == null)
-                throw new ArgumentNullException(nameof(definingType));
-
             if (String.IsNullOrEmpty(name))
                 throw new ArgumentException("Value must not be empty", nameof(name));
 
-            DefiningType = definingType;
             Name = name;
         }
 

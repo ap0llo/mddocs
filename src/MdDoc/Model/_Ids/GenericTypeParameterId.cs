@@ -14,7 +14,13 @@ namespace MdDoc.Model
 
         public int Index { get; }
 
-        public GenericTypeParameterId(MemberKind definingMemberKind, int index) : base("", $"T{index + 1}")
+        public override string DisplayName => Name;
+
+
+        public GenericTypeParameterId(MemberKind definingMemberKind, int index) : this(definingMemberKind, index, $"T{index + 1}")
+        { }
+
+        public GenericTypeParameterId(MemberKind definingMemberKind, int index, string displayName) : base("", displayName)
         {
             DefiningMemberKind = definingMemberKind;
             Index = index;

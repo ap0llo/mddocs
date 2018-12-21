@@ -19,14 +19,14 @@ namespace MdDoc.Pages
             : base(pageFactory, rootOutputPath)
         {
             Model = model ?? throw new ArgumentNullException(nameof(model));
-            OutputPath = new OutputPath(Path.Combine(GetTypeDir(Model.TypeDocumentation), "properties", $"{Model.TypeDocumentation.Name}.{Model.Name}.md"));
+            OutputPath = new OutputPath(Path.Combine(GetTypeDir(Model.TypeDocumentation), "properties", $"{Model.TypeDocumentation.TypeId.Name}.{Model.Name}.md"));
         }
 
 
         public override void Save()
         {
             var document = Document(
-                Heading($"{Model.TypeDocumentation.Name}.{Model.Name} Property", 1)
+                Heading($"{Model.TypeDocumentation.DisplayName}.{Model.Name} Property", 1)
             );
 
             AddDeclaringTypeSection(document.Root);
@@ -52,7 +52,7 @@ namespace MdDoc.Pages
             block.Add(Heading("Property Value", 2));
             block.Add(
                 Paragraph(
-                    GetTypeNameSpan(Model.Type)
+                    GetTypeNameSpan(Model.PropertyType)
             ));
         }        
     }

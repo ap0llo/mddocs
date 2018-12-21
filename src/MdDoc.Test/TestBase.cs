@@ -22,9 +22,9 @@ namespace MdDoc.Test
             m_AssemblyDocumentation.Dispose();
         }
 
-
-        protected TypeName GetTypeName(Type t) => GetTypeDefinition(t).ToTypeName();
         
+        protected TypeId GetTypeId(Type t) => GetTypeDefinition(t).ToTypeId();
+
         protected TypeDefinition GetTypeDefinition(Type t)
         {
             return GetTypeDefinition(t.Name);

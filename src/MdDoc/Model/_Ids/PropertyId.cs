@@ -4,10 +4,8 @@ using System.Linq;
 
 namespace MdDoc.Model
 {
-    public class PropertyId : MemberId, IEquatable<PropertyId>
+    public sealed class PropertyId : TypeMemberId, IEquatable<PropertyId>
     {
-        public TypeId DefiningType { get; }
-
         public string Name { get; }
         
         public IReadOnlyList<TypeId> Parameters { get; }
@@ -16,18 +14,14 @@ namespace MdDoc.Model
         public PropertyId(TypeId definingType, string name) : this(definingType, name, Array.Empty<TypeId>())
         { }
 
-        public PropertyId(TypeId definingType, string name, IReadOnlyList<TypeId> parameters)
-        {
-            if (definingType == null)
-                throw new ArgumentNullException(nameof(definingType));
-
-            if (string.IsNullOrEmpty(name))
+        public PropertyId(TypeId definingType, string name, IReadOnlyList<TypeId> parameters) : base(definingType)
+        {            
+            if (String.IsNullOrEmpty(name))
                 throw new ArgumentException("Value must not be null or empty", nameof(name));
 
             if (parameters == null)
                 throw new ArgumentNullException(nameof(parameters));
-
-            DefiningType = definingType;
+            
             Name = name;
             Parameters = parameters;
         }

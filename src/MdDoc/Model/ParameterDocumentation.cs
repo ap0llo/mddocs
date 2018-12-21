@@ -7,7 +7,7 @@ namespace MdDoc.Model
     {
         public string Name => Definition.Name;
 
-        public TypeName Type { get; }
+        public TypeId ParameterType { get; }
 
         public OverloadDocumentation OverloadDocumentation { get; }
 
@@ -18,11 +18,14 @@ namespace MdDoc.Model
         {
             OverloadDocumentation = overloadDocumentation ?? throw new ArgumentNullException(nameof(overloadDocumentation));
             Definition = definition ?? throw new ArgumentNullException(nameof(definition));
-            Type = new TypeName(definition.ParameterType);
+            ParameterType = definition.ParameterType.ToTypeId();
         }
 
 
-        public TypeDocumentation TryGetDocumentation(TypeName type) => 
-            OverloadDocumentation.TryGetDocumentation(type);
+        public IDocumentation TryGetDocumentation(MemberId id) => 
+            OverloadDocumentation.TryGetDocumentation(id);
+
+
+
     }
 }

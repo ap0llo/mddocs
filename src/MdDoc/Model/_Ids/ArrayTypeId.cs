@@ -2,11 +2,14 @@
 
 namespace MdDoc.Model
 {
-    public class ArrayTypeId : TypeId, IEquatable<ArrayTypeId>
+    public sealed class ArrayTypeId : TypeId, IEquatable<ArrayTypeId>
     {
         public TypeId ElementType { get; }
 
         public int Dimensions { get; }
+        
+        public override string DisplayName => $"{ElementType.DisplayName}[{new String(',', Dimensions - 1)}]";
+
 
         public ArrayTypeId(TypeId elementType) : this(elementType, 1)
         { }
@@ -19,8 +22,7 @@ namespace MdDoc.Model
                 : throw new ArgumentOutOfRangeException(nameof(dimensions), "Value needs to be equal or greater than 1");
         }
 
-        
-        
+                
         public bool Equals(ArrayTypeId other)
         {
             return other != null && ElementType.Equals(other.ElementType) && Dimensions == other.Dimensions;

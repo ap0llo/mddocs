@@ -3,9 +3,9 @@
     public interface IDocumentation
     {
         /// <summary>
-        /// Tries to get the documentation for the specified type
+        /// Tries to get the documentation for the specified member
         /// </summary>
-        /// <returns>Returns documentation for the specified type or null if the type is unknown or not documented</returns>
-        TypeDocumentation TryGetDocumentation(TypeName type);
+        /// <returns>Returns documentation for the specified member or null if it is unknown or not documented</returns>
+        IDocumentation TryGetDocumentation(MemberId member);
     }
 }

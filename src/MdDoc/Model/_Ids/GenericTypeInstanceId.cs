@@ -7,9 +7,12 @@ namespace MdDoc.Model
     /// <summary>
     /// Identifies a constructed type (a generic type with type arguments)
     /// </summary>
-    public class GenericTypeInstanceId : TypeId, IEquatable<GenericTypeInstanceId>
+    public sealed class GenericTypeInstanceId : TypeId, IEquatable<GenericTypeInstanceId>
     {
         public IReadOnlyList<TypeId> TypeArguments { get; }
+        
+        public override string DisplayName =>
+            $"{Name}<{String.Join(", ", TypeArguments.Select(a => a.DisplayName))}>";
 
 
         public GenericTypeInstanceId(string namespaceName, string name, IReadOnlyList<TypeId> typeArguments) : base(namespaceName, name)

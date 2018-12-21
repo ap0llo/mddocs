@@ -17,7 +17,7 @@ namespace MdDoc.Pages
         {
             block.Add(
                 Paragraph(
-                    Bold("Declaring Type:"), " ", GetTypeNameSpan(Model.TypeDocumentation.Name)
+                    Bold("Declaring Type:"), " ", GetTypeNameSpan(Model.TypeDocumentation.TypeId)
             ));
         }
 
@@ -53,7 +53,7 @@ namespace MdDoc.Pages
                         table.Add(
                             Row(
                                 CodeSpan(parameter.Name),
-                                GetTypeNameSpan(parameter.Type),
+                                GetTypeNameSpan(parameter.ParameterType),
                                 ""
                         ));
                     }

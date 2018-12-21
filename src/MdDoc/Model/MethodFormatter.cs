@@ -36,7 +36,7 @@ namespace MdDoc.Model
             signatureBuilder.Append("(");
             signatureBuilder.AppendJoin(
                 ", ",
-                method.Parameters.Select(p => $"{new TypeName(p.ParameterType)} {p.Name}")
+                method.Parameters.Select(p => $"{p.ParameterType.ToTypeId().DisplayName} {p.Name}")
             );
             signatureBuilder.Append(")");
 

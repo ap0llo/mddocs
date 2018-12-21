@@ -55,6 +55,7 @@ namespace MdDoc.Pages
 
             public object Visit(SummaryElement element, object parameter)
             {
+                // end previous paragraph
                 PushParagraph();
 
                 foreach (var child in element.Elements)
@@ -62,6 +63,7 @@ namespace MdDoc.Pages
                     child.Accept(this, parameter);
                 }
 
+                PushParagraph();
                 return null;
             }
 
@@ -107,13 +109,12 @@ namespace MdDoc.Pages
 
             private void PushParagraph()
             {
-                if(m_CurrentParagraph.Spans.Count > 0)
+                if (m_CurrentParagraph.Spans.Count > 0)
                 {
                     Result.Add(new MdParagraph(m_CurrentParagraph));
                 }
                 m_CurrentParagraph = new MdCompositeSpan();
-
-            }
+            }            
         }
 
         class ConvertToSpanVisitor : IVisitor<object, object>

@@ -1,8 +1,5 @@
-﻿using MdDoc.Test.TestData;
-using Mono.Cecil;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using MdDoc.Model;
+using MdDoc.Test.TestData;
 using Xunit;
 
 namespace MdDoc.Test.Model
@@ -13,31 +10,30 @@ namespace MdDoc.Test.Model
         public void TryGetDocumentation_returns_null_for_an_undocumented_type()
         {
             // ARRANGE
-            var typeReference = GetTypeName(typeof(TestClass_InternalType));
+            var typeId = GetTypeId(typeof(TestClass_InternalType));
             var sut = m_AssemblyDocumentation;
 
             // ACT
-            var documentation = sut.TryGetDocumentation(typeReference);
+            var documentation = sut.TryGetDocumentation(typeId);
 
             // ASSERT
             Assert.Null(documentation);            
         }
 
-
         [Fact]
-        public void TryGetDocumenation_returns_expected_documentation_item_for_an_documented_type()
+        public void TryGetDocumentation_returns_expected_documentation_item_for_an_documented_type()
         {
             // ARRANGE
-            var typeName = GetTypeName(typeof(TestClass_Type));
+            var typeId = GetTypeId(typeof(TestClass_Type));
             var sut = m_AssemblyDocumentation;
 
             // ACT
-            var documentation = sut.TryGetDocumentation(typeName);
+            var documentation = sut.TryGetDocumentation(typeId);
 
             // ASSERT
             Assert.NotNull(documentation);
-            Assert.Equal(typeName, documentation.Name);
+            Assert.IsType<TypeDocumentation>(documentation);
+            Assert.Equal(typeId, ((TypeDocumentation)documentation).TypeId);
         }
-
     }
 }

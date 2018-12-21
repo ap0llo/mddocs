@@ -6,8 +6,12 @@ namespace MdDoc.Model
     {
         public string NamespaceName { get; }
 
-        public string Name { get; }
-        
+        public string Name { get; }        
+
+        public abstract string DisplayName { get; }
+
+        protected string NamespaceAndName => String.IsNullOrEmpty(NamespaceName) ? Name : $"{NamespaceName}.{Name}";
+
 
         public TypeId(string namespaceName, string name)
         {
@@ -39,6 +43,6 @@ namespace MdDoc.Model
 
             return StringComparer.Ordinal.Equals(NamespaceName, other.NamespaceName) &&
                 StringComparer.Ordinal.Equals(Name, other.Name);
-        }
+        }        
     }
 }

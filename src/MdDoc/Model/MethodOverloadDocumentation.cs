@@ -24,7 +24,7 @@ namespace MdDoc.Model
         }
 
 
-        public override TypeDocumentation TryGetDocumentation(TypeName type) => 
-            MethodDocumentation.TryGetDocumentation(type);
+        public override IDocumentation TryGetDocumentation(MemberId id) =>
+            MemberId.Equals(id) ? this : MethodDocumentation.TryGetDocumentation(id);
     }
 }

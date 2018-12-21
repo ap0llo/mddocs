@@ -30,6 +30,6 @@ namespace MdDoc.Model
         }
 
 
-        public abstract TypeDocumentation TryGetDocumentation(TypeName type);
+        public abstract IDocumentation TryGetDocumentation(MemberId id);
     }
 }

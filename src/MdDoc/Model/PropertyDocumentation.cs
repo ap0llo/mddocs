@@ -11,7 +11,7 @@ namespace MdDoc.Model
 
         public string Name => Definition.Name;
 
-        public TypeName Type { get; }
+        public TypeId PropertyType { get; }
 
         // Indexeres are modeled as properties with parameters
         public bool IsIndexer => Definition.HasParameters;
@@ -27,7 +27,7 @@ namespace MdDoc.Model
 
                 var definitionBuilder = new StringBuilder();
                 definitionBuilder.Append("public ");
-                definitionBuilder.Append(new TypeName(Definition.PropertyType));
+                definitionBuilder.Append(Definition.PropertyType.ToTypeId().DisplayName);
                 definitionBuilder.Append(" ");
 
                 if(Definition.HasParameters)
@@ -41,7 +41,7 @@ namespace MdDoc.Model
 
                     definitionBuilder.AppendJoin(
                         ", ",
-                        Definition.Parameters.Select(x => $"{new TypeName(x.ParameterType)} {x.Name}")
+                        Definition.Parameters.Select(x => $"{x.ParameterType.ToTypeId().DisplayName} {x.Name}")
                     );
 
                     definitionBuilder.Append("]");
@@ -73,9 +73,12 @@ namespace MdDoc.Model
         public PropertyDocumentation(TypeDocumentation typeDocumentation, PropertyDefinition definition) : base(typeDocumentation)
         {
             Definition = definition ?? throw new ArgumentNullException(nameof(definition));
-            Type = new TypeName(definition.PropertyType);
+            PropertyType = definition.PropertyType.ToTypeId();
             MemberId = definition.ToMemberId();
-        }        
+        }
 
+
+        public override IDocumentation TryGetDocumentation(MemberId id) =>
+            MemberId.Equals(id) ? this : TypeDocumentation.TryGetDocumentation(id);
     }
 }

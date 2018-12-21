@@ -31,23 +31,23 @@ namespace MdDoc.Pages
         public abstract void Save();
 
         
-        protected virtual MdSpan GetTypeNameSpan(TypeName type) => GetTypeNameSpan(type, false);
+        protected virtual MdSpan GetTypeNameSpan(TypeId type) => GetTypeNameSpan(type, false);
 
         //TODO: Add tests
-        protected MdSpan GetTypeNameSpan(TypeName type, bool noLink)
+        protected MdSpan GetTypeNameSpan(TypeId type, bool noLink)
         {
-            if (type.IsArray)
+            if (type is ArrayTypeId arrayType)
             {
-                var elementTypeSpan = GetTypeNameSpan(type.ElementType, noLink);
+                var elementTypeSpan = GetTypeNameSpan(arrayType.ElementType, noLink);
                 return new MdCompositeSpan(elementTypeSpan, $"[]");
             }
 
-            if (type.TypeArguments.Count > 0)
+            if (type is GenericTypeInstanceId genericType)
             {                
                 return CompositeSpan(
-                    type.BaseName,
+                    genericType.Name,
                     "<",
-                    type.TypeArguments.Select(t => GetTypeNameSpan(t, noLink)).Join(", "),
+                    genericType.TypeArguments.Select(t => GetTypeNameSpan(t, noLink)).Join(", "),
                     ">"
                 );
             }
@@ -88,12 +88,16 @@ namespace MdDoc.Pages
 
         protected string GetTypeDir(TypeDocumentation type)
         {
-            var namespaceDir = Path.Combine(m_RootOutputPath, String.Join('/', type.Name.Namespace.Split(s_SplitChars)));
+            var namespaceDir = Path.Combine(m_RootOutputPath, String.Join('/', type.Namespace.Split(s_SplitChars)));
 
-            var dirName = type.Name.BaseName;
-            if(type.Name.TypeArguments.Count > 0)
+            var dirName = type.TypeId.Name;
+            if(type.TypeId is GenericTypeInstanceId genericTypeInstance)
             {
-                dirName += "-" + type.Name.TypeArguments.Count;
+                dirName += "-" + genericTypeInstance.TypeArguments.Count;
+            }
+            else if(type.TypeId is GenericTypeId genericType)
+            {
+                dirName += "-" + genericType.Arity;
             }
 
             return Path.Combine(namespaceDir, dirName);

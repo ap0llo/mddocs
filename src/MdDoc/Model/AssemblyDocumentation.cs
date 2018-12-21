@@ -43,7 +43,7 @@ namespace MdDoc.Model
             return new AssemblyDocumentation(assemblyDefinition, xmlDocsProvider);
         }
 
-        public TypeDocumentation TryGetDocumentation(TypeName type) => 
-            MainModuleDocumentation.TryGetDocumentation(type);
+        public IDocumentation TryGetDocumentation(MemberId member) => 
+            MainModuleDocumentation.TryGetDocumentation(member);
     }
 }

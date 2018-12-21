@@ -4,10 +4,8 @@ using System.Linq;
 
 namespace MdDoc.Model
 {
-    public sealed class MethodId : MemberId, IEquatable<MethodId>
-    {
-        public TypeId DefiningType { get; }
-
+    public sealed class MethodId : TypeMemberId, IEquatable<MethodId>
+    {       
         public string Name { get; }
 
         public int Arity { get; }
@@ -26,12 +24,11 @@ namespace MdDoc.Model
         public MethodId(TypeId definingType, string name, int arity, IReadOnlyList<TypeId> parameters) : this(definingType, name, arity, parameters, null)
         { }
 
-        public MethodId(TypeId definingType, string name, int arity, IReadOnlyList<TypeId> parameters, TypeId returnType)
+        public MethodId(TypeId definingType, string name, int arity, IReadOnlyList<TypeId> parameters, TypeId returnType) : base(definingType)
         {
             if (String.IsNullOrEmpty(name))
                 throw new ArgumentException("Value must not be null or empty", nameof(name));
 
-            DefiningType = definingType ?? throw new ArgumentNullException(nameof(definingType));
             Name = name;
             Arity = arity;
             Parameters = parameters ?? throw new ArgumentNullException(nameof(parameters));

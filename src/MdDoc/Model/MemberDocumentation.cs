@@ -2,7 +2,7 @@
 
 namespace MdDoc.Model
 {
-    public abstract class MemberDocumentation: IDocumentation
+    public abstract class MemberDocumentation : IDocumentation
     {
         public TypeDocumentation TypeDocumentation { get; }        
 
@@ -12,7 +12,6 @@ namespace MdDoc.Model
             TypeDocumentation = typeDocumentation ?? throw new ArgumentNullException(nameof(typeDocumentation));
         }
 
-        public TypeDocumentation TryGetDocumentation(TypeName type) => 
-            TypeDocumentation.TryGetDocumentation(type);
+        public abstract IDocumentation TryGetDocumentation(MemberId id);
     }
 }

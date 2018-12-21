@@ -1,6 +1,5 @@
 ﻿using MdDoc.Model;
 using MdDoc.Test.TestData;
-using Mono.Cecil;
 using System;
 using System.Linq;
 using Xunit;
@@ -277,15 +276,15 @@ namespace MdDoc.Test.Model
         {
             var expectedSequence = new[]
             {
-                typeof(object).FullName,
-                typeof(TestClass_Type).FullName
+                new SimpleTypeId("System", "Object"),
+                new SimpleTypeId("MdDoc.Test.TestData", "TestClass_Type")
             };
 
             var sut = GetTypeDocumentation(typeof(TestClass_Type));
 
             Assert.NotNull(sut.InheritanceHierarchy);
             Assert.Equal(expectedSequence.Length, sut.InheritanceHierarchy.Count);
-            Assert.True(expectedSequence.SequenceEqual(sut.InheritanceHierarchy.Select(x => x.Defintion.FullName)));            
+            Assert.True(expectedSequence.SequenceEqual(sut.InheritanceHierarchy));            
         }
 
         [Fact]
@@ -293,16 +292,16 @@ namespace MdDoc.Test.Model
         {
             var expectedSequence = new[]
             {
-                typeof(object).FullName,
-                typeof(ValueType).FullName,
-                typeof(TestStruct_Type).FullName
+                new SimpleTypeId("System", "Object"),
+                new SimpleTypeId("System", "ValueType"),
+                new SimpleTypeId("MdDoc.Test.TestData", "TestStruct_Type")
             };
 
             var sut = GetTypeDocumentation(typeof(TestStruct_Type));
 
             Assert.NotNull(sut.InheritanceHierarchy);
             Assert.Equal(expectedSequence.Length, sut.InheritanceHierarchy.Count);
-            Assert.True(expectedSequence.SequenceEqual(sut.InheritanceHierarchy.Select(x => x.Defintion.FullName)));
+            Assert.True(expectedSequence.SequenceEqual(sut.InheritanceHierarchy));
         }
 
 
@@ -311,17 +310,17 @@ namespace MdDoc.Test.Model
         {
             var expectedSequence = new[]
             {
-                typeof(object).FullName,
-                typeof(ValueType).FullName,
-                typeof(Enum).FullName,
-                typeof(TestEnum_Type).FullName
+                new SimpleTypeId("System", "Object"),
+                new SimpleTypeId("System", "ValueType"),
+                new SimpleTypeId("System", "Enum"),
+                new SimpleTypeId("MdDoc.Test.TestData", "TestEnum_Type")
             };
 
             var sut = GetTypeDocumentation(typeof(TestEnum_Type));
 
             Assert.NotNull(sut.InheritanceHierarchy);
             Assert.Equal(expectedSequence.Length, sut.InheritanceHierarchy.Count);       
-            Assert.True(expectedSequence.SequenceEqual(sut.InheritanceHierarchy.Select(x => x.Defintion.FullName)));
+            Assert.True(expectedSequence.SequenceEqual(sut.InheritanceHierarchy));
         }
 
         [Fact]
@@ -370,11 +369,11 @@ namespace MdDoc.Test.Model
         public void TryGetDocumentation_returns_null_for_an_undocumented_type()
         {
             // ARRANGE
-            var typeName = GetTypeName(typeof(TestClass_InternalType));
+            var typeId = GetTypeId(typeof(TestClass_InternalType));
             var sut = GetTypeDocumentation(typeof(TestClass_Type));
             
             // ACT
-            var documentation = sut.TryGetDocumentation(typeName);
+            var documentation = sut.TryGetDocumentation(typeId);
 
             // ASSERT
             Assert.Null(documentation);
@@ -384,15 +383,16 @@ namespace MdDoc.Test.Model
         public void TryGetDocumenation_returns_expected_documentation_item_for_an_documented_type()
         {
             // ARRANGE
-            var typeName = GetTypeName(typeof(TestClass_Type));
+            var typeId = GetTypeId(typeof(TestClass_Type));
             var sut = GetTypeDocumentation(typeof(TestClass_Type));
 
             // ACT
-            var documentation = sut.TryGetDocumentation(typeName);
+            var documentation = sut.TryGetDocumentation(typeId);
 
             // ASSERT
             Assert.NotNull(documentation);
-            Assert.Equal(typeName, documentation.Name);
+            Assert.IsType<TypeDocumentation>(documentation);
+            Assert.Equal(typeId, ((TypeDocumentation)documentation).TypeId);
         }
 
 
@@ -416,7 +416,7 @@ namespace MdDoc.Test.Model
             // ASSERT
             Assert.NotNull(sut.ImplementedInterfaces);
             Assert.Single(sut.ImplementedInterfaces);
-            Assert.Contains(sut.ImplementedInterfaces, i => i.FullName == "System.IDisposable");
+            Assert.Contains(sut.ImplementedInterfaces, i => i.Equals(new SimpleTypeId("System", "IDisposable")));
         }
 
         [Fact]
@@ -439,8 +439,8 @@ namespace MdDoc.Test.Model
             // ASSERT
             Assert.NotNull(sut.ImplementedInterfaces);
             Assert.Equal(2, sut.ImplementedInterfaces.Count);
-            Assert.Contains(sut.ImplementedInterfaces, i => i.Equals(GetTypeName(typeof(TestInterface_Type))));
-            Assert.Contains(sut.ImplementedInterfaces, i => i.FullName == "System.IDisposable");
+            Assert.Contains(sut.ImplementedInterfaces, i => i.Equals(GetTypeId(typeof(TestInterface_Type))));
+            Assert.Contains(sut.ImplementedInterfaces, i => i.Equals(new SimpleTypeId("System", "IDisposable")));
         }
 
         [Fact]
@@ -463,8 +463,8 @@ namespace MdDoc.Test.Model
             // ASSERT
             Assert.NotNull(sut.ImplementedInterfaces);
             Assert.Equal(2, sut.ImplementedInterfaces.Count);
-            Assert.Contains(sut.ImplementedInterfaces, i => i.Equals(GetTypeName(typeof(TestInterface_Type))));
-            Assert.Contains(sut.ImplementedInterfaces, i => i.FullName == "System.IDisposable");
+            Assert.Contains(sut.ImplementedInterfaces, i => i.Equals(GetTypeId(typeof(TestInterface_Type))));
+            Assert.Contains(sut.ImplementedInterfaces, i => i.Equals(new SimpleTypeId("System", "IDisposable")));
         }
 
         [Fact]

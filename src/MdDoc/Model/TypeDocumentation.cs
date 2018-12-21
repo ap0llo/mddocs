@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Grynwald.Utilities.Collections;
 using MdDoc.Model.XmlDocs;
 using Mono.Cecil;
 
@@ -9,13 +10,22 @@ namespace MdDoc.Model
     public class TypeDocumentation : IDocumentation
     {
         private readonly IXmlDocsProvider m_XmlDocsProvider;
+        private readonly IDictionary<MemberId, FieldDocumentation> m_Fields;
+        private readonly IDictionary<MemberId, EventDocumentation> m_Events;
+        private readonly IDictionary<MemberId, PropertyDocumentation> m_Properties;        
+        private readonly IDictionary<string, MethodDocumentation> m_Methods;
+        private readonly IDictionary<OperatorKind, OperatorDocumentation> m_Operators;
 
-        public MemberId MemberId { get; }
+        public MemberId MemberId => TypeId;
+
+        public TypeId TypeId { get; }
 
         public ModuleDocumentation ModuleDocumentation { get; }
 
-        public TypeName Name { get; }
-        
+        public string Namespace => TypeId.NamespaceName;
+
+        public string DisplayName => TypeId.DisplayName;
+
         public string AssemblyName => Definition.Module.Assembly.Name.Name;
         
         public TypeKind Kind { get; }
@@ -32,11 +42,11 @@ namespace MdDoc.Model
 
         public IReadOnlyCollection<OperatorDocumentation> Operators { get; }
         
-        public IReadOnlyCollection<TypeName> InheritanceHierarchy { get; }
+        public IReadOnlyCollection<TypeId> InheritanceHierarchy { get; }
 
-        public IReadOnlyCollection<TypeName> ImplementedInterfaces { get; }
+        public IReadOnlyCollection<TypeId> ImplementedInterfaces { get; }
 
-        public IReadOnlyCollection<TypeName> Attributes { get; }
+        public IReadOnlyCollection<TypeId> Attributes { get; }
 
         public SummaryElement Summary { get; }
 
@@ -46,81 +56,127 @@ namespace MdDoc.Model
 
         internal TypeDocumentation(ModuleDocumentation moduleDocumentation, TypeDefinition definition, IXmlDocsProvider xmlDocsProvider)
         {
-            MemberId = definition.ToMemberId();
+            TypeId = definition.ToTypeId();
 
             ModuleDocumentation = moduleDocumentation ?? throw new ArgumentNullException(nameof(moduleDocumentation));
             Definition = definition ?? throw new ArgumentNullException(nameof(definition));
             m_XmlDocsProvider = xmlDocsProvider ?? throw new ArgumentNullException(nameof(xmlDocsProvider));
 
-            Kind = definition.Kind();
-            Name = new TypeName(definition);
+            Kind = definition.Kind();            
 
-            Fields = definition.Fields
+            m_Fields = definition.Fields
                 .Where(field => field.IsPublic && !field.Attributes.HasFlag(FieldAttributes.SpecialName))                
                 .Select(field => new FieldDocumentation(this, field))
-                .ToArray();
+                .ToDictionary(f => f.MemberId);
 
-            Events = definition.Events
+            Fields = ReadOnlyCollectionAdapter.Create(m_Fields.Values);
+
+            m_Events = definition.Events
                 .Where(ev => (ev.AddMethod?.IsPublic == true || ev.RemoveMethod?.IsPublic == true))
                 .Select(e => new EventDocumentation(this, e))
-                .ToArray();
+                .ToDictionary(e => e.MemberId);
 
-            Properties = definition.Properties
+            Events = ReadOnlyCollectionAdapter.Create(m_Events.Values);
+
+            m_Properties = definition.Properties
                 .Where(property => (property.GetMethod?.IsPublic == true || property.SetMethod?.IsPublic == true))
                 .Select(p => new PropertyDocumentation(this, p))
-                .ToArray();
+                .ToDictionary(p => p.MemberId);
+
+            Properties = ReadOnlyCollectionAdapter.Create(m_Properties.Values);
 
             var ctors = definition.GetDocumentedConstrutors();
             if(ctors.Any())
                 Constructors = new ConstructorDocumentation(this, ctors, xmlDocsProvider);
 
-            Methods = definition.GetDocumentedMethods()
+            m_Methods = definition.GetDocumentedMethods()
                 .Where(m => !m.IsOperatorOverload())
                 .GroupBy(x => x.Name)
                 .Select(group => new MethodDocumentation(this, group, xmlDocsProvider))
-                .ToArray();
+                .ToDictionary(m => m.Name);
 
-            Operators = definition.GetDocumentedMethods()               
+            Methods = ReadOnlyCollectionAdapter.Create(m_Methods.Values);
+
+            m_Operators = definition.GetDocumentedMethods()               
                .GroupBy(x => x.GetOperatorKind())
                .Where(group => group.Key.HasValue)
                .Select(group => new OperatorDocumentation(this, group))
-               .ToArray();
+               .ToDictionary(x => x.Kind);
+
+            Operators = ReadOnlyCollectionAdapter.Create(m_Operators.Values);
             
             InheritanceHierarchy = LoadInheritanceHierarchy();
-            Attributes = Definition.CustomAttributes.Select(x => new TypeName(x.AttributeType)).ToArray();
+            Attributes = Definition.CustomAttributes.Select(x => x.AttributeType.ToTypeId()).ToArray();
             ImplementedInterfaces = LoadImplementedInterfaces();
             
             Summary = m_XmlDocsProvider.TryGetDocumentationComments(MemberId)?.Summary;
         }
 
 
-        public TypeDocumentation TryGetDocumentation(TypeName type) => ModuleDocumentation.TryGetDocumentation(type);
+        public IDocumentation TryGetDocumentation(MemberId id)
+        {
+            switch (id)
+            {
+                case TypeId typeId when typeId.Equals(TypeId):
+                    return this;
 
+                case FieldId fieldId when fieldId.DefiningType.Equals(TypeId):
+                    return m_Fields.GetValueOrDefault(fieldId);
 
-        private IReadOnlyCollection<TypeName> LoadInheritanceHierarchy()
+                case EventId eventId when eventId.DefiningType.Equals(TypeId):
+                    return m_Events.GetValueOrDefault(eventId);
+
+                case PropertyId propertyId when propertyId.DefiningType.Equals(TypeId):
+                    return m_Properties.GetValueOrDefault(propertyId);
+
+                case MethodId methodId when methodId.DefiningType.Equals(TypeId):                    
+                    if (methodId.IsConstructor())
+                    {
+                        return Constructors.TryGetDocumentation(methodId);
+                    }
+
+                    if (m_Methods.ContainsKey(methodId.Name))
+                    {
+                        return m_Methods[methodId.Name].TryGetDocumentation(methodId);
+                    }
+
+                    var operatorKind = methodId.GetOperatorKind();
+                    if (operatorKind.HasValue && m_Operators.ContainsKey(operatorKind.Value))
+                    {
+                        return m_Operators[operatorKind.Value].TryGetDocumentation(methodId);
+                    }
+
+                    return null;
+
+                default:
+                    return ModuleDocumentation.TryGetDocumentation(id);
+            }            
+        }
+
+        private IReadOnlyCollection<TypeId> LoadInheritanceHierarchy()
         {
             if (Kind == TypeKind.Interface)
-                return Array.Empty<TypeName>();
+                return Array.Empty<TypeId>();
 
-            var inheritance = new LinkedList<TypeName>();
-            inheritance.AddFirst(Name);
+            var inheritance = new LinkedList<TypeId>();
+            inheritance.AddFirst(TypeId);
             
             var currentBaseType = Definition.BaseType.Resolve();
             while (currentBaseType != null)
             {
-                inheritance.AddFirst(new TypeName(currentBaseType));
+                inheritance.AddFirst(currentBaseType.ToTypeId());
                 currentBaseType = currentBaseType.BaseType?.Resolve();
             }
 
             return inheritance;
         }
 
-        private IReadOnlyCollection<TypeName> LoadImplementedInterfaces()
+        private IReadOnlyCollection<TypeId> LoadImplementedInterfaces()
         {
             if (!Definition.HasInterfaces)
-                return Array.Empty<TypeName>();
+                return Array.Empty<TypeId>();
             else
-                return Definition.Interfaces.Select(x => new TypeName(x.InterfaceType)).ToArray();
+                return Definition.Interfaces.Select(x => x.InterfaceType.ToTypeId()).ToArray();
         }
     }
 }
