@@ -32,7 +32,13 @@ namespace MdDoc.Test
         protected TypeDocumentation GetTypeDocumentation(Type type)
         {
             var typeDefinition = GetTypeDefinition(type);
-            var sut = new TypeDocumentation(m_AssemblyDocumentation.MainModuleDocumentation, typeDefinition, new NullXmlDocsProvider());
+
+            var sut = new TypeDocumentation(
+                m_AssemblyDocumentation.MainModuleDocumentation,
+                typeDefinition,
+                NullXmlDocsProvider.Instance
+            );
+
             return sut;
         }
     }

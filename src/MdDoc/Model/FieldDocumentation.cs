@@ -1,4 +1,5 @@
 ﻿using System;
+using MdDoc.Model.XmlDocs;
 using Mono.Cecil;
 
 namespace MdDoc.Model
@@ -9,13 +10,16 @@ namespace MdDoc.Model
 
         public MemberId MemberId { get; }       
 
+        public SummaryElement Summary { get; }
+
         internal FieldDefinition Definition { get; }
+        
 
-
-        public FieldDocumentation(TypeDocumentation typeDocumentation, FieldDefinition definition) : base(typeDocumentation)
+        internal FieldDocumentation(TypeDocumentation typeDocumentation, FieldDefinition definition, IXmlDocsProvider xmlDocsProvider) : base(typeDocumentation)
         {
             Definition = definition ?? throw new ArgumentNullException(nameof(definition));
             MemberId = definition.ToMemberId();
+            Summary = xmlDocsProvider.TryGetDocumentationComments(MemberId)?.Summary;
         }
 
 

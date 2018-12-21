@@ -150,6 +150,7 @@ namespace MdDoc.Pages
 
             public object Visit(SeeElement element, object parameter)
             {
+                //TODO: link to referenced item
                 return null;
             }
 
@@ -170,6 +171,11 @@ namespace MdDoc.Pages
 
             public object Visit(RemarksElement element, object parameter)
             {
+                foreach (var child in element.Elements)
+                {
+                    child.Accept(this, parameter);
+                }
+
                 return null;
             }
 
@@ -210,7 +216,14 @@ namespace MdDoc.Pages
             summary.Accept(visitor, null);
 
             return visitor.Result;
+        }
 
+        public static MdBlock ConvertToBlock(RemarksElement remarks)
+        {
+            var visitor = new ConvertToBlockVisitor();
+            remarks.Accept(visitor, null);
+
+            return visitor.Result;
         }
 
         public static MdSpan ConvertToSpan(SummaryElement summary)

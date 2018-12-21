@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Text;
+using MdDoc.Model.XmlDocs;
 using Mono.Cecil;
 
 namespace MdDoc.Model
@@ -67,14 +68,17 @@ namespace MdDoc.Model
             }
         }
 
+        public SummaryElement Summary { get; }
+
         internal PropertyDefinition Definition { get; }
 
 
-        public PropertyDocumentation(TypeDocumentation typeDocumentation, PropertyDefinition definition) : base(typeDocumentation)
+        internal PropertyDocumentation(TypeDocumentation typeDocumentation, PropertyDefinition definition, IXmlDocsProvider xmlDocsProvider) : base(typeDocumentation)
         {
             Definition = definition ?? throw new ArgumentNullException(nameof(definition));
             PropertyType = definition.PropertyType.ToTypeId();
             MemberId = definition.ToMemberId();
+            Summary = xmlDocsProvider.TryGetDocumentationComments(MemberId)?.Summary;
         }
 
 

@@ -41,7 +41,7 @@ namespace MdDoc.Model
 
             var xmlDocsProvider = File.Exists(docsFilePath)
                 ? (IXmlDocsProvider) new XmlDocsProvider(docsFilePath, assemblyDefinition)
-                : (IXmlDocsProvider) new NullXmlDocsProvider();
+                : (IXmlDocsProvider) NullXmlDocsProvider.Instance;
 
             return new AssemblyDocumentation(assemblyDefinition, xmlDocsProvider);
         }        

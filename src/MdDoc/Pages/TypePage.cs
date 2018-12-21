@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using Grynwald.MarkdownGenerator;
 using MdDoc.Model;
-
+using MdDoc.Model.XmlDocs;
 using static Grynwald.MarkdownGenerator.FactoryMethods;
 
 namespace MdDoc.Pages
@@ -34,6 +34,10 @@ namespace MdDoc.Pages
 
             AddSummarySection(document.Root);
 
+            //TODO: CSharpDefinition
+
+            AddRemarksSection(document.Root);
+
             AddConstructorsSection(document.Root);
 
             AddFieldsSection(document.Root);
@@ -45,6 +49,12 @@ namespace MdDoc.Pages
             AddMethodsSection(document.Root);
 
             AddOperatorsSection(document.Root);
+
+            //TODO: Explicit interface implementations
+
+            //TODO: Extension methods
+
+            //TODO: "See also" section
 
             Directory.CreateDirectory(Path.GetDirectoryName(OutputPath));
             document.Save(OutputPath);
@@ -101,9 +111,17 @@ namespace MdDoc.Pages
         private void AddSummarySection(MdContainerBlock block)
         {
             if(Model.Summary != null)
-            {
-                block.Add(Heading("Summary", 2));                
+            {                              
                 block.Add(XmlDocToMarkdownConverter.ConvertToBlock(Model.Summary));
+            }
+        }
+
+        private void AddRemarksSection(MdContainerBlock block)
+        {
+            if (Model.Remarks != null)
+            {
+                block.Add(Heading(2, "Remarks"));
+                block.Add(XmlDocToMarkdownConverter.ConvertToBlock(Model.Remarks));
             }
         }
 
@@ -114,16 +132,17 @@ namespace MdDoc.Pages
                 var table = Table(Row("Name", "Description"));
                 var ctorPagePath = PageFactory.TryGetPage(Model.Constructors)?.OutputPath;
 
-                foreach(var ctor in Model.Constructors.Overloads)
+                //TODO: Sort (unsure by what)
+                foreach (var ctor in Model.Constructors.Overloads)
                 {
-                    if(ctorPagePath != null)
+                    if (ctorPagePath != null)
                     {
                         var link = Link(ctor.Signature, OutputPath.GetRelativePathTo(ctorPagePath));
-                        table.Add(Row(link));
+                        table.Add(Row(link, ConvertToSpan(ctor.Summary)));
                     }
                     else
-                    {                        
-                        table.Add(Row(ctor.Signature));
+                    {
+                        table.Add(Row(ctor.Signature, ConvertToSpan(ctor.Summary)));
                     }
                 }
 
@@ -138,11 +157,13 @@ namespace MdDoc.Pages
         {
             if (Model.Fields.Count > 0)
             {
+                //TODO: Add page for field, insert link
+                //TODO: Sort by name
                 block.Add(
                     Heading("Fields", 2),
                     Table(
                         Row("Name", "Description"),
-                        Model.Fields.Select(field => Row(field.Name))
+                        Model.Fields.Select(field => Row(field.Name, ConvertToSpan(field.Summary)))
                     )
                 );
             }
@@ -153,11 +174,13 @@ namespace MdDoc.Pages
         {            
             if (Model.Events.Count > 0)
             {
+                //TODO: Add event page, insert link to page
+                //TODO: Sort by name
                 block.Add(
                     Heading("Events", 2),
                     Table(
                         Row("Name", "Description"),
-                        Model.Events.Select(x => Row(x.Name))
+                        Model.Events.Select(ev => Row(ev.Name, ConvertToSpan(ev.Summary)))
                 ));
             }
         }
@@ -168,18 +191,19 @@ namespace MdDoc.Pages
             {
                 var table = Table(Row("Name", "Description"));
 
-                foreach(var property in Model.Properties)
+                //TODO: Sort by name
+                foreach (var property in Model.Properties)
                 {
                     var propertyPage = PageFactory.TryGetPage(property);
 
                     if(propertyPage != null)
                     {                        
                         var link = Link(property.Name, OutputPath.GetRelativePathTo(propertyPage.OutputPath));
-                        table.Add(Row(link));
+                        table.Add(Row(link, ConvertToSpan(property.Summary)));
                     }
                     else
                     {
-                        table.Add(Row(property.Name));
+                        table.Add(Row(property.Name, ConvertToSpan(property.Summary)));
                     }
                 }
              
@@ -196,24 +220,21 @@ namespace MdDoc.Pages
             {
                 var table = Table(Row("Name", "Description"));
 
+                //TODO: Sort methods by name
                 foreach(var method in Model.Methods)
                 {
                     var methodPage = PageFactory.TryGetPage(method);
 
                     foreach(var overload in method.Overloads)
-                    {
-                        var summary = overload.Summary != null
-                            ? XmlDocToMarkdownConverter.ConvertToSpan(overload.Summary)
-                            : new MdTextSpan("No summary found");
-
+                    {                        
                         if(methodPage != null)
                         {                            
                             var link = Link(overload.Signature, OutputPath.GetRelativePathTo(methodPage.OutputPath));                           
-                            table.Add(Row(link, summary));
+                            table.Add(Row(link, ConvertToSpan(overload.Summary)));
                         }
                         else
                         {                            
-                            table.Add(Row(overload.Signature, summary));
+                            table.Add(Row(overload.Signature, ConvertToSpan(overload.Summary)));
                         }
                     }
                 }
@@ -224,13 +245,14 @@ namespace MdDoc.Pages
                 );
             }
         }
-
+        
         private void AddOperatorsSection(MdContainerBlock block)
         {
             if (Model.Operators.Count > 0)
             {
                 var table = Table(Row("Name", "Description"));
 
+                // TODO: Sort by operator
                 foreach (var operatorOverload in Model.Operators)
                 {
                     var operatorPage = PageFactory.TryGetPage(operatorOverload);
@@ -240,11 +262,11 @@ namespace MdDoc.Pages
                         if(operatorPage != null)
                         {                            
                             var link = Link(overload.Signature, OutputPath.GetRelativePathTo(operatorPage.OutputPath));
-                            table.Add(Row(link));
+                            table.Add(Row(link, ConvertToSpan(overload.Summary)));
                         }
                         else
                         {                            
-                            table.Add(Row(overload.Signature));
+                            table.Add(Row(overload.Signature, ConvertToSpan(overload.Summary)));
                         }
                     }
                 }
@@ -255,5 +277,12 @@ namespace MdDoc.Pages
                 );
             }
         }
+
+
+        private static MdSpan ConvertToSpan(SummaryElement summary)
+        {
+            return summary == null ? MdEmptySpan.Instance : XmlDocToMarkdownConverter.ConvertToSpan(summary);
+        }
+
     }
 }

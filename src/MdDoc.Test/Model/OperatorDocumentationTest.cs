@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using MdDoc.Model;
+using MdDoc.Model.XmlDocs;
 using MdDoc.Test.TestData;
 using Xunit;
 
@@ -43,7 +44,10 @@ namespace MdDoc.Test.Model
                 .Single(m => m.Name == methodName);
 
             // ACT
-            var operatorDocumentation = new OperatorDocumentation(GetTypeDocumentation(typeof(TestClass_Operators)), new[] { methodDefinition });
+            var operatorDocumentation = new OperatorDocumentation(
+                GetTypeDocumentation(typeof(TestClass_Operators)),
+                new[] { methodDefinition },
+                NullXmlDocsProvider.Instance);
 
             // ASSERT
             Assert.Equal(expectedKind, operatorDocumentation.Kind);
@@ -58,7 +62,11 @@ namespace MdDoc.Test.Model
                 .Single(x => x.Name == nameof(TestClass_Methods.TestMethod1));
 
             // ACT / ASSERT
-            Assert.Throws<ArgumentException>(() => new OperatorDocumentation(GetTypeDocumentation(typeof(TestClass_Methods)), new[] { method }));
+            Assert.Throws<ArgumentException>(() => new OperatorDocumentation(
+                GetTypeDocumentation(typeof(TestClass_Methods)),
+                new[] { method },
+                NullXmlDocsProvider.Instance)
+            );
         }
 
         [Fact]
@@ -70,7 +78,11 @@ namespace MdDoc.Test.Model
                 .Where(x => x.GetOperatorKind() == OperatorKind.Subtraction || x.GetOperatorKind() == OperatorKind.Addition);
 
             // ACT / ASSERT
-            Assert.Throws<ArgumentException>(() => new OperatorDocumentation(GetTypeDocumentation(typeof(TestClass_Operators)), methods));
+            Assert.Throws<ArgumentException>(() => new OperatorDocumentation(
+                GetTypeDocumentation(typeof(TestClass_Operators)),
+                methods,
+                NullXmlDocsProvider.Instance)
+            );
         }
 
 

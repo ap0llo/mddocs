@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Grynwald.Utilities.Collections;
+using MdDoc.Model.XmlDocs;
 using Mono.Cecil;
 
 namespace MdDoc.Model
@@ -16,13 +17,13 @@ namespace MdDoc.Model
         public IReadOnlyCollection<OperatorOverloadDocumentation> Overloads { get; }       
 
 
-        public OperatorDocumentation(TypeDocumentation typeDocumentation, IEnumerable<MethodDefinition> definitions) : base(typeDocumentation)
+        internal OperatorDocumentation(TypeDocumentation typeDocumentation, IEnumerable<MethodDefinition> definitions, IXmlDocsProvider xmlDocsProvider) : base(typeDocumentation)
         {        
             if (definitions == null)
                 throw new ArgumentNullException(nameof(definitions));
 
             m_Overloads = definitions
-                .Select(d => new OperatorOverloadDocumentation(this, d))
+                .Select(d => new OperatorOverloadDocumentation(this, d, xmlDocsProvider))
                 .ToDictionary(x => x.MemberId);
 
             Overloads = ReadOnlyCollectionAdapter.Create(m_Overloads.Values);

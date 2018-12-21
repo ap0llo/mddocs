@@ -51,6 +51,8 @@ namespace MdDoc.Model
 
         public SummaryElement Summary { get; }
 
+        public RemarksElement Remarks { get; }
+
         internal TypeDefinition Definition { get; }
 
 
@@ -66,21 +68,21 @@ namespace MdDoc.Model
 
             m_Fields = definition.Fields
                 .Where(field => field.IsPublic && !field.Attributes.HasFlag(FieldAttributes.SpecialName))                
-                .Select(field => new FieldDocumentation(this, field))
+                .Select(field => new FieldDocumentation(this, field, xmlDocsProvider))
                 .ToDictionary(f => f.MemberId);
 
             Fields = ReadOnlyCollectionAdapter.Create(m_Fields.Values);
 
             m_Events = definition.Events
                 .Where(ev => (ev.AddMethod?.IsPublic == true || ev.RemoveMethod?.IsPublic == true))
-                .Select(e => new EventDocumentation(this, e))
+                .Select(e => new EventDocumentation(this, e, xmlDocsProvider))
                 .ToDictionary(e => e.MemberId);
 
             Events = ReadOnlyCollectionAdapter.Create(m_Events.Values);
 
             m_Properties = definition.Properties
                 .Where(property => (property.GetMethod?.IsPublic == true || property.SetMethod?.IsPublic == true))
-                .Select(p => new PropertyDocumentation(this, p))
+                .Select(p => new PropertyDocumentation(this, p, xmlDocsProvider))
                 .ToDictionary(p => p.MemberId);
 
             Properties = ReadOnlyCollectionAdapter.Create(m_Properties.Values);
@@ -100,7 +102,7 @@ namespace MdDoc.Model
             m_Operators = definition.GetDocumentedMethods()               
                .GroupBy(x => x.GetOperatorKind())
                .Where(group => group.Key.HasValue)
-               .Select(group => new OperatorDocumentation(this, group))
+               .Select(group => new OperatorDocumentation(this, group, xmlDocsProvider))
                .ToDictionary(x => x.Kind);
 
             Operators = ReadOnlyCollectionAdapter.Create(m_Operators.Values);
@@ -110,6 +112,7 @@ namespace MdDoc.Model
             ImplementedInterfaces = LoadImplementedInterfaces();
             
             Summary = m_XmlDocsProvider.TryGetDocumentationComments(MemberId)?.Summary;
+            Remarks = m_XmlDocsProvider.TryGetDocumentationComments(MemberId)?.Remarks;
         }
 
 
