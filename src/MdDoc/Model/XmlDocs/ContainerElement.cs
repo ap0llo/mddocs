@@ -6,7 +6,6 @@ namespace MdDoc.Model.XmlDocs
 {
     public abstract class ContainerElement : Element
     {       
-
         public IReadOnlyList<Element> Elements { get; }
 
 

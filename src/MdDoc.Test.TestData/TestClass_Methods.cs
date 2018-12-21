@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace MdDoc.Test.TestData
 {
@@ -9,12 +8,10 @@ namespace MdDoc.Test.TestData
     /// </summary>
     public class TestClass_Methods
     {
-
         /// <summary>
         /// Test Method 1
         /// </summary>
         public void TestMethod1() { }
-
 
         /// <summary>
         /// Test Method 2
@@ -56,7 +53,6 @@ namespace MdDoc.Test.TestData
         /// </summary>
         public T2 TestMethod9<T1, T2>(T2 foo, T1 bar) { throw new NotImplementedException(); }
 
-
         /// <summary>
         /// Test Method 10
         /// </summary>
@@ -67,11 +63,9 @@ namespace MdDoc.Test.TestData
         /// </summary>
         public void TestMethod11(string[][] parameter) { }
 
-
         /// <summary>
         /// Test Method 12
         /// </summary>
         public void TestMethod12(string[,] parameter) { }
-
     }
 }

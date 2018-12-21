@@ -12,6 +12,7 @@ namespace MdDoc.Model
             TypeDocumentation = typeDocumentation ?? throw new ArgumentNullException(nameof(typeDocumentation));
         }
 
+
         public abstract IDocumentation TryGetDocumentation(MemberId id);
     }
 }

@@ -1,7 +1,5 @@
-﻿using Mono.Cecil;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
+using Mono.Cecil;
 
 namespace MdDoc.Model
 {
@@ -19,6 +17,7 @@ namespace MdDoc.Model
             Definition = definition ?? throw new ArgumentNullException(nameof(definition));
             MemberId = definition.ToMemberId();
         }
+
 
         public override IDocumentation TryGetDocumentation(MemberId id) =>
             MemberId.Equals(id) ? this : TypeDocumentation.TryGetDocumentation(id);

@@ -1,6 +1,4 @@
-﻿using Mono.Cecil;
-
-namespace MdDoc.Model.XmlDocs
+﻿namespace MdDoc.Model.XmlDocs
 {
     interface IXmlDocsProvider
     {

@@ -1,6 +1,6 @@
-﻿using MdDoc.Model.XmlDocs;
+﻿using System.Collections.Generic;
+using MdDoc.Model.XmlDocs;
 using Mono.Cecil;
-using System.Collections.Generic;
 
 namespace MdDoc.Model
 {

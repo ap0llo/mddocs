@@ -255,6 +255,5 @@ namespace MdDoc.Pages
                 );
             }
         }
-        
     }
 }

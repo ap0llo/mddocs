@@ -1,8 +1,8 @@
-﻿using Grynwald.MarkdownGenerator;
-using MdDoc.Model;
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
+using Grynwald.MarkdownGenerator;
+using MdDoc.Model;
 
 using static Grynwald.MarkdownGenerator.FactoryMethods;
 
@@ -10,7 +10,7 @@ namespace MdDoc.Pages
 {
     abstract class PageBase<TModel> : IPage where TModel : IDocumentation
     {
-        private static char[] s_SplitChars = ".".ToCharArray();
+        private static readonly char[] s_SplitChars = ".".ToCharArray();
         private readonly string m_RootOutputPath;
 
 

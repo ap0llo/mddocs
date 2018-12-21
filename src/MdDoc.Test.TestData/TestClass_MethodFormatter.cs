@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace MdDoc.Test.TestData
 {
@@ -23,8 +22,8 @@ namespace MdDoc.Test.TestData
         {
         }
 
-        public void Method1() { }
 
+        public void Method1() { }
 
         public string Method2() => throw new NotImplementedException();
 
@@ -37,6 +36,5 @@ namespace MdDoc.Test.TestData
         public object Method6<T>(T foo) => throw new NotImplementedException();
 
         public object Method7<T1, T2>(T1 foo, T2 bar) => throw new NotImplementedException();
-
     }
 }

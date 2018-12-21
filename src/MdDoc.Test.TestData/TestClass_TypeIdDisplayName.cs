@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace MdDoc.Test.TestData
 {
@@ -61,6 +60,4 @@ namespace MdDoc.Test.TestData
 
         public Dictionary<TKey, TValue> Method4<TKey, TValue>() => throw new NotImplementedException();
     }
-
-
 }

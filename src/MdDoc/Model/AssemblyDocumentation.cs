@@ -9,6 +9,7 @@ namespace MdDoc.Model
     {
         private readonly IXmlDocsProvider m_XmlDocsProvider;
 
+
         internal AssemblyDefinition Definition { get; }
 
         public ModuleDocumentation MainModuleDocumentation { get; }
@@ -29,6 +30,8 @@ namespace MdDoc.Model
             Definition.Dispose();
         }
 
+        public IDocumentation TryGetDocumentation(MemberId member) =>
+            MainModuleDocumentation.TryGetDocumentation(member);
 
         public static AssemblyDocumentation FromFile(string filePath)
         {
@@ -41,9 +44,6 @@ namespace MdDoc.Model
                 : (IXmlDocsProvider) new NullXmlDocsProvider();
 
             return new AssemblyDocumentation(assemblyDefinition, xmlDocsProvider);
-        }
-
-        public IDocumentation TryGetDocumentation(MemberId member) => 
-            MainModuleDocumentation.TryGetDocumentation(member);
+        }        
     }
 }

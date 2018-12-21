@@ -1,7 +1,6 @@
-﻿using NuDoq;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using NuDoq;
 
 namespace MdDoc.Model.XmlDocs
 {

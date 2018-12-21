@@ -1,7 +1,5 @@
-﻿using Mono.Cecil;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
+using Mono.Cecil;
 
 namespace MdDoc.Model
 {

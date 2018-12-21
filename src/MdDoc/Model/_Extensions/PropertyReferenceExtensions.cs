@@ -1,6 +1,6 @@
-﻿using Mono.Cecil;
-using System;
+﻿using System;
 using System.Linq;
+using Mono.Cecil;
 
 namespace MdDoc.Model
 {

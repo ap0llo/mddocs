@@ -1,11 +1,8 @@
-﻿using MdDoc.Model;
-using MdDoc.Pages;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
+using MdDoc.Model;
+using MdDoc.Pages;
 
 namespace MdDoc
 {

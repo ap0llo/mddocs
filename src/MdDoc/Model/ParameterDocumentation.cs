@@ -1,5 +1,5 @@
-﻿using Mono.Cecil;
-using System;
+﻿using System;
+using Mono.Cecil;
 
 namespace MdDoc.Model
 {
@@ -24,8 +24,5 @@ namespace MdDoc.Model
 
         public IDocumentation TryGetDocumentation(MemberId id) => 
             OverloadDocumentation.TryGetDocumentation(id);
-
-
-
     }
 }

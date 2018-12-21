@@ -41,7 +41,6 @@ namespace MdDoc
         public bool Equals(OutputPath other) => 
             other != null && StringComparer.OrdinalIgnoreCase.Equals(Value, other.Value);
 
-
         public static implicit operator string(OutputPath instance) => instance?.Value;
     }
 }

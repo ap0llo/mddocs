@@ -1,5 +1,5 @@
-﻿using NuDoq;
-using System;
+﻿using System;
+using NuDoq;
 
 namespace MdDoc.Model.XmlDocs
 {
@@ -15,6 +15,7 @@ namespace MdDoc.Model.XmlDocs
         {
             m_NuDoqModel = nuDoqModel ?? throw new ArgumentNullException(nameof(nuDoqModel));
         }
+
 
         public override TResult Accept<TResult, TParameter>(IVisitor<TResult, TParameter> visitor, TParameter parameter) => visitor.Visit(this, parameter);
     }

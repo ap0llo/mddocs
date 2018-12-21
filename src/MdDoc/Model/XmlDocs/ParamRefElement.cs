@@ -16,6 +16,5 @@ namespace MdDoc.Model.XmlDocs
         }
 
         public override TResult Accept<TResult, TParameter>(IVisitor<TResult, TParameter> visitor, TParameter parameter) => visitor.Visit(this, parameter);
-
     }
 }

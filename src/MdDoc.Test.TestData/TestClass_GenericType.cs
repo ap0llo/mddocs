@@ -21,6 +21,5 @@ namespace MdDoc.Test.TestData
         /// Test method 3
         /// </summary>
         public void TestMethod3<T2>(T2 foo, T1 bar) { throw new NotImplementedException(); }
-
     }
 }

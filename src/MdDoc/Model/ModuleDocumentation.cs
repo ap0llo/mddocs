@@ -1,9 +1,9 @@
-﻿using Grynwald.Utilities.Collections;
-using MdDoc.Model.XmlDocs;
-using Mono.Cecil;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Grynwald.Utilities.Collections;
+using MdDoc.Model.XmlDocs;
+using Mono.Cecil;
 
 namespace MdDoc.Model
 {
@@ -11,6 +11,7 @@ namespace MdDoc.Model
     {
         private readonly IDictionary<TypeId, TypeDocumentation> m_Types;
         private readonly IXmlDocsProvider m_XmlDocsProvider;
+
 
         public AssemblyDocumentation AssemblyDocumentation { get; }
 

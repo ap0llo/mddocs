@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MdDoc.Test.TestData
 {
@@ -13,7 +11,6 @@ namespace MdDoc.Test.TestData
     /// <typeparam name="T2">Type parameter 2</typeparam>
     public class TestClass_XmlDocs<T1, T2>
     {
-
         /// <summary>
         /// Summary
         /// </summary>
@@ -21,6 +18,7 @@ namespace MdDoc.Test.TestData
         /// <example>Example</example>
         /// <value>Value</value>
         public string Field1;
+
 
         /// <summary>
         /// Summary
@@ -31,12 +29,14 @@ namespace MdDoc.Test.TestData
         /// <exception cref="ArgumentException">Exception 1</exception>
         public string Property1 { get; }
 
+
         /// <summary>
         /// Summary
         /// </summary>
         /// <remarks>Remarks</remarks>
         /// <example>Example</example>
         public event EventHandler Event1;
+
 
         /// <summary>
         /// Line1
@@ -69,12 +69,9 @@ namespace MdDoc.Test.TestData
         /// </summary>
         public void TestMethod04() { }
 
-
         /// <summary>
         /// Content <see cref="TestClass_Events"/> Content
         /// </summary>
         public void TestMethod05() { }
-
     }
-    
 }

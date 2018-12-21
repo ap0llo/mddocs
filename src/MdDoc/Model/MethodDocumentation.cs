@@ -9,8 +9,8 @@ namespace MdDoc.Model
 {
     public class MethodDocumentation : MemberDocumentation
     {
-        private readonly IDictionary<MemberId, MethodOverloadDocumentation> m_Overloads;
-        private readonly IXmlDocsProvider m_XmlDocsProvider;
+        private readonly IDictionary<MemberId, MethodOverloadDocumentation> m_Overloads;        
+
 
         public string Name { get; }
 

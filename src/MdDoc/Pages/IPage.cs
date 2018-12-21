@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MdDoc.Pages
+﻿namespace MdDoc.Pages
 {
     public interface IPage
     {

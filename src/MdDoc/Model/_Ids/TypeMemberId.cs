@@ -11,6 +11,5 @@ namespace MdDoc.Model
         {
             DefiningType = definingType ?? throw new ArgumentNullException(nameof(definingType));
         }
-
     }
 }

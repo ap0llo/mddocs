@@ -1,8 +1,5 @@
-﻿using Mono.Cecil;
+﻿using System.Collections.Generic;
 using NuDoq;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MdDoc.Model.XmlDocs
 {

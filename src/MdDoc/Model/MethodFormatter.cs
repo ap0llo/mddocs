@@ -42,6 +42,5 @@ namespace MdDoc.Model
 
             return signatureBuilder.ToString();
         }
-
     }
 }

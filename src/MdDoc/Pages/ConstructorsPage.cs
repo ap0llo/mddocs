@@ -1,6 +1,6 @@
-﻿using MdDoc.Model;
-using System;
+﻿using System;
 using System.IO;
+using MdDoc.Model;
 
 using static Grynwald.MarkdownGenerator.FactoryMethods;
 

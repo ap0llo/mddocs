@@ -8,7 +8,7 @@ namespace MdDoc.Model
 {
     static class TypeDefinitionExtensions
     {
-        private static object s_Lock = new object();
+        private static readonly object s_Lock = new object();
         private static IDictionary<TypeReference, HashSet<MethodReference>> s_PropertyMethods = new Dictionary<TypeReference, HashSet<MethodReference>>();
 
 
@@ -26,7 +26,6 @@ namespace MdDoc.Model
             
             throw new InvalidOperationException();
         }
-
 
         public static IEnumerable<MethodDefinition> GetDocumentedConstrutors(this TypeDefinition type)
         {

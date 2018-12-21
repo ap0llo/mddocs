@@ -1,11 +1,12 @@
-﻿using NuDoq;
-using System;
+﻿using System;
+using NuDoq;
 
 namespace MdDoc.Model.XmlDocs
 {
     public sealed class SeeElement : Element
     {
         private readonly See m_NuDoqModel;
+
 
         public string Cref => m_NuDoqModel.Cref;
 
@@ -17,6 +18,7 @@ namespace MdDoc.Model.XmlDocs
             m_NuDoqModel = nuDoqModel ?? throw new ArgumentNullException(nameof(nuDoqModel));
             MemberId = new MemberIdParser(nuDoqModel.Cref).Parse();
         }
+
 
         public override TResult Accept<TResult, TParameter>(IVisitor<TResult, TParameter> visitor, TParameter parameter) => visitor.Visit(this, parameter);
     }

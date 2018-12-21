@@ -8,6 +8,7 @@ namespace MdDoc.Model
     {
         private readonly IXmlDocsProvider m_XmlDocsProvider;
 
+
         public string MethodName => Definition.Name;
 
         public MethodDocumentation MethodDocumentation { get; }

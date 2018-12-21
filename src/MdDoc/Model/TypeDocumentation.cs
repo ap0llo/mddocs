@@ -16,6 +16,7 @@ namespace MdDoc.Model
         private readonly IDictionary<string, MethodDocumentation> m_Methods;
         private readonly IDictionary<OperatorKind, OperatorDocumentation> m_Operators;
 
+
         public MemberId MemberId => TypeId;
 
         public TypeId TypeId { get; }
@@ -49,7 +50,6 @@ namespace MdDoc.Model
         public IReadOnlyCollection<TypeId> Attributes { get; }
 
         public SummaryElement Summary { get; }
-
 
         internal TypeDefinition Definition { get; }
 
@@ -152,6 +152,7 @@ namespace MdDoc.Model
                     return ModuleDocumentation.TryGetDocumentation(id);
             }            
         }
+
 
         private IReadOnlyCollection<TypeId> LoadInheritanceHierarchy()
         {

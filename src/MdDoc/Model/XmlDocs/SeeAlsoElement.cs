@@ -1,5 +1,5 @@
-﻿using NuDoq;
-using System;
+﻿using System;
+using NuDoq;
 
 namespace MdDoc.Model.XmlDocs
 {
@@ -18,7 +18,7 @@ namespace MdDoc.Model.XmlDocs
             MemberId = new MemberIdParser(nuDoqModel.Cref).Parse();
         }
 
-        public override TResult Accept<TResult, TParameter>(IVisitor<TResult, TParameter> visitor, TParameter parameter) => visitor.Visit(this, parameter);
 
+        public override TResult Accept<TResult, TParameter>(IVisitor<TResult, TParameter> visitor, TParameter parameter) => visitor.Visit(this, parameter);
     }
 }

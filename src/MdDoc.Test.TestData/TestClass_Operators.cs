@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MdDoc.Test.TestData
 {
@@ -68,7 +66,6 @@ namespace MdDoc.Test.TestData
         /// Right shift operator
         /// </summary>
         public static TestClass_Operators operator >>(TestClass_Operators left, int count) { throw new NotImplementedException(); }
-
 
         /// <summary>
         /// Unary negation operator

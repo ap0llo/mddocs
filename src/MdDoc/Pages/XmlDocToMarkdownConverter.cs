@@ -1,9 +1,5 @@
 ﻿using Grynwald.MarkdownGenerator;
 using MdDoc.Model.XmlDocs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace MdDoc.Pages
 {

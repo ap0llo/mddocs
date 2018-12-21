@@ -15,9 +15,7 @@ namespace MdDoc.Model
 
         // Indexeres are modeled as properties with parameters
         public bool IsIndexer => Definition.HasParameters;
-
-        internal PropertyDefinition Definition { get; }
-
+        
         public string CSharpDefinition
         {
             get
@@ -68,6 +66,8 @@ namespace MdDoc.Model
                 return definitionBuilder.ToString();
             }
         }
+
+        internal PropertyDefinition Definition { get; }
 
 
         public PropertyDocumentation(TypeDocumentation typeDocumentation, PropertyDefinition definition) : base(typeDocumentation)

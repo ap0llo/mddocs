@@ -1,16 +1,12 @@
 ﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
-
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MdDoc.Test.TestData
 {
     public class TestClass_NoDocumentation
     {
         public string Field1;
-
 
         public event EventHandler Event1;
 

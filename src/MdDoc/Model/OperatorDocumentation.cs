@@ -15,6 +15,7 @@ namespace MdDoc.Model
 
         public IReadOnlyCollection<OperatorOverloadDocumentation> Overloads { get; }       
 
+
         public OperatorDocumentation(TypeDocumentation typeDocumentation, IEnumerable<MethodDefinition> definitions) : base(typeDocumentation)
         {        
             if (definitions == null)
@@ -26,17 +27,13 @@ namespace MdDoc.Model
 
             Overloads = ReadOnlyCollectionAdapter.Create(m_Overloads.Values);
 
-            OperatorKind? previousKind = null;
-            foreach (var overload in Overloads)
-            {                
-                if(previousKind.HasValue && previousKind.Value != overload.OperatorKind)
-                {
-                    throw new ArgumentException("Cannot combine overloads of different operators");
-                }
-                previousKind = overload.OperatorKind;
-                Kind = overload.OperatorKind;
-            }            
+            var operatorKinds = Overloads.Select(x => x.OperatorKind).Distinct().ToArray();
+
+            Kind = operatorKinds.Length == 1
+                ? operatorKinds[0]
+                : throw new ArgumentException("Cannot combine overloads of different operators");
         }
+
 
         public override IDocumentation TryGetDocumentation(MemberId id)
         {
