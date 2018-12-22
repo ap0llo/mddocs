@@ -14,8 +14,15 @@ namespace MdDoc.Model
 
             var definitionBuilder = new StringBuilder();
             definitionBuilder.Append("public ");
+
+            if(!property.HasThis)
+            {
+                definitionBuilder.Append("static ");
+            }
+
             definitionBuilder.Append(property.PropertyType.ToTypeId().DisplayName);
             definitionBuilder.Append(" ");
+
 
             if (property.HasParameters)
                 definitionBuilder.Append("this");

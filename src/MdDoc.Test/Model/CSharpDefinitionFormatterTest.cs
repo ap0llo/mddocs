@@ -15,6 +15,7 @@ namespace MdDoc.Test.Model
         [InlineData(nameof(TestClass_Properties_CSharpDefinition.Property5), @"public string Property5 { set; }")]
         [InlineData(nameof(TestClass_Properties_CSharpDefinition.Property6), @"public Stream Property6 { get; }")]
         [InlineData(nameof(TestClass_Properties_CSharpDefinition.Property7), @"public IEnumerable<string> Property7 { get; }")]
+        [InlineData(nameof(TestClass_Properties_CSharpDefinition.Property8), @"public static IEnumerable<string> Property8 { get; }")]
         public void GetDefinition_returns_the_expected_definition_for_properties(string propertyName, string expected)
         {
             // ARRANGE

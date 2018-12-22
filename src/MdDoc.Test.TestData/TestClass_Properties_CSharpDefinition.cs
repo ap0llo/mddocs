@@ -20,6 +20,8 @@ namespace MdDoc.Test.TestData
 
         public IEnumerable<string> Property7 { get; }
 
+        public static IEnumerable<string> Property8 { get; }
+
         public int this[object parameter] { get { throw new NotImplementedException(); } }
 
         public int this[object parameter1, Stream parameter2] { get { throw new NotImplementedException(); } }
