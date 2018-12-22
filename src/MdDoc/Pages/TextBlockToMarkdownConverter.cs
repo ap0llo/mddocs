@@ -4,7 +4,6 @@ using MdDoc.Model.XmlDocs;
 
 namespace MdDoc.Pages
 {
-    //TODO: This needs cleanup
     class TextBlockToMarkdownConverter
     {
         class ConvertToBlockVisitor : IVisitor
@@ -12,12 +11,13 @@ namespace MdDoc.Pages
             private MdCompositeSpan m_CurrentParagraph = new MdCompositeSpan();
             private IMdSpanFactory m_SpanFactory;
 
+
             public MdContainerBlock Result { get; } = new MdContainerBlock();
 
 
             public ConvertToBlockVisitor(IMdSpanFactory spanFactory)
             {
-                m_SpanFactory = spanFactory ?? throw new System.ArgumentNullException(nameof(spanFactory));
+                m_SpanFactory = spanFactory ?? throw new ArgumentNullException(nameof(spanFactory));
             }
 
 
@@ -41,7 +41,10 @@ namespace MdDoc.Pages
 
             public void Visit(CodeElement element)
             {
+                // end the current paragraph
                 PushParagraph();
+
+                // add a new code block (can be added directory to Result as CodeElement has no child-elements)
                 Result.Add(new MdCodeBlock(element.Content));
             }
 
@@ -55,32 +58,35 @@ namespace MdDoc.Pages
                 m_CurrentParagraph.Add(m_SpanFactory.GetMdSpan(element.MemberId));
             }
 
-            public void Visit(TextBlock textBlock)
-            {
-                // end previous paragraph
-                PushParagraph();
-
-                foreach (var child in textBlock.Elements)
-                {
-                    child.Accept(this);
-                }
-
-                PushParagraph();
-            }            
-
             public void Visit(ParaElement element)
             {
                 Visit(element.Text);
             }
-            
-            
+
+            public void Visit(TextBlock textBlock)
+            {
+                // end the current paragraph
+                PushParagraph();
+
+                // visit text elements
+                foreach (var element in textBlock.Elements)
+                {
+                    element.Accept(this);
+                }
+
+                // end the paragraph to make sure all content gets added to Result
+                PushParagraph();
+            }            
+
+                      
             private void PushParagraph()
             {
+                // begin a new paragraph if the current one has any content
                 if (m_CurrentParagraph.Spans.Count > 0)
                 {
                     Result.Add(new MdParagraph(m_CurrentParagraph));
+                    m_CurrentParagraph = new MdCompositeSpan();
                 }
-                m_CurrentParagraph = new MdCompositeSpan();
             }            
         }
 
@@ -94,7 +100,7 @@ namespace MdDoc.Pages
 
             public ConvertToSpanVisitor(IMdSpanFactory spanFactory)
             {
-                m_SpanFactory = spanFactory ?? throw new System.ArgumentNullException(nameof(spanFactory));
+                m_SpanFactory = spanFactory ?? throw new ArgumentNullException(nameof(spanFactory));
             }
 
 
@@ -133,9 +139,9 @@ namespace MdDoc.Pages
 
             public void Visit(TextBlock text)
             {
-                foreach(var child in  text.Elements)
+                foreach(var element in text.Elements)
                 {
-                    child.Accept(this);
+                    element.Accept(this);
                 }
             }
 
@@ -143,9 +149,11 @@ namespace MdDoc.Pages
             {
                 // a single span cannot contain multplie paragraphs, but we can at least add a line break
                 Result.Add(new MdTextSpan("\r\n"));
+
+                // visit text block in paragraph
+                element.Text.Accept(this);
             }
         }
-
 
 
         public static MdBlock ConvertToBlock(TextBlock text, IMdSpanFactory spanFactory)
@@ -155,7 +163,6 @@ namespace MdDoc.Pages
 
             return visitor.Result;
         }
-
         
         public static MdSpan ConvertToSpan(TextBlock text, IMdSpanFactory spanFactory)
         {
