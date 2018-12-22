@@ -31,9 +31,7 @@ namespace MdDoc.Pages
             );
 
             AddTypeInfoSection(document.Root);
-
-            AddSummarySection(document.Root);
-
+            
             //TODO: CSharpDefinition
 
             AddRemarksSection(document.Root);
@@ -73,6 +71,10 @@ namespace MdDoc.Pages
                 Paragraph(Bold("Assembly:"), " " + Model.AssemblyName)
             );
 
+            if (Model.Summary != null)
+            {
+                block.Add(XmlDocToMarkdownConverter.ConvertToBlock(Model.Summary, this));
+            }
 
             // Add list of base types            
             if (Model.InheritanceHierarchy.Count > 1)
@@ -107,14 +109,7 @@ namespace MdDoc.Pages
                 );
             }
         }
-    
-        private void AddSummarySection(MdContainerBlock block)
-        {
-            if(Model.Summary != null)
-            {                              
-                block.Add(XmlDocToMarkdownConverter.ConvertToBlock(Model.Summary, this));
-            }
-        }
+   
 
         private void AddRemarksSection(MdContainerBlock block)
         {
