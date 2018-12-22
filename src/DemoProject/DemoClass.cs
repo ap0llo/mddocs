@@ -36,7 +36,13 @@ namespace DemoProject
     /// <see cref="IDemoInterface" />. References to types outside the assembly are written to the output
     /// but cannot be linked to, e.g. a reference to <see cref="String"/>
     /// </para>
+    /// <para>
+    /// The last section is the "See Also" section with links provided inline using the <c>seealso</c> tag
+    /// </para>
     /// </remarks>
+    /// <seealso cref="IDemoInterface"/>
+    /// <seealso cref="System.String">String might also be interesting</seealso>
+    /// <seealso cref="DemoStruct">DemoStruct has a similar purpose but is a value type</seealso>
     public class DemoClass
     {
         /// <summary>

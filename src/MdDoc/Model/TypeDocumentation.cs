@@ -53,6 +53,8 @@ namespace MdDoc.Model
 
         public RemarksElement Remarks { get; }
 
+        public IReadOnlyCollection<SeeAlsoElement> SeeAlso { get; }
+
         internal TypeDefinition Definition { get; }
 
 
@@ -110,9 +112,11 @@ namespace MdDoc.Model
             InheritanceHierarchy = LoadInheritanceHierarchy();
             Attributes = Definition.CustomAttributes.Select(x => x.AttributeType.ToTypeId()).ToArray();
             ImplementedInterfaces = LoadImplementedInterfaces();
-            
-            Summary = m_XmlDocsProvider.TryGetDocumentationComments(MemberId)?.Summary;
-            Remarks = m_XmlDocsProvider.TryGetDocumentationComments(MemberId)?.Remarks;
+
+            var documentationComments = m_XmlDocsProvider.TryGetDocumentationComments(MemberId);
+            Summary = documentationComments?.Summary;
+            Remarks = documentationComments?.Remarks;
+            SeeAlso = documentationComments?.SeeAlso ?? Array.Empty<SeeAlsoElement>();
         }
 
 

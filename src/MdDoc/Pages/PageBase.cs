@@ -30,10 +30,9 @@ namespace MdDoc.Pages
 
         public abstract void Save();
 
-        
+
         protected virtual MdSpan GetTypeNameSpan(TypeId type) => GetTypeNameSpan(type, false);
 
-        //TODO: Add tests
         protected MdSpan GetTypeNameSpan(TypeId type, bool noLink)
         {
             if (type is ArrayTypeId arrayType)
@@ -43,7 +42,7 @@ namespace MdDoc.Pages
             }
 
             if (type is GenericTypeInstanceId genericType)
-            {                
+            {
                 return CompositeSpan(
                     genericType.Name,
                     "<",
@@ -58,31 +57,7 @@ namespace MdDoc.Pages
             }
             else
             {
-                IPage typePage = default;
-                var documentation = Model.TryGetDocumentation(type);
-                if(documentation != null)
-                {
-                    typePage = PageFactory.TryGetPage(documentation);
-                }
-
-                if(typePage == default)
-                {
-                    return new MdTextSpan(type.Name);
-                }
-                else if(OutputPath.Equals(typePage.OutputPath))
-                {
-                    // do not create self-links
-                    return new MdTextSpan(type.Name);
-                }
-                else
-                {                                        
-                    return new MdLinkSpan(
-                        type.Name,
-                        OutputPath.GetRelativePathTo(typePage.OutputPath)
-                    );
-                }
-
-
+                return CreateLink(type, type.Name);
             }
         }
 
@@ -91,11 +66,11 @@ namespace MdDoc.Pages
             var namespaceDir = Path.Combine(m_RootOutputPath, String.Join('/', type.Namespace.Split(s_SplitChars)));
 
             var dirName = type.TypeId.Name;
-            if(type.TypeId is GenericTypeInstanceId genericTypeInstance)
+            if (type.TypeId is GenericTypeInstanceId genericTypeInstance)
             {
                 dirName += "-" + genericTypeInstance.TypeArguments.Count;
             }
-            else if(type.TypeId is GenericTypeId genericType)
+            else if (type.TypeId is GenericTypeId genericType)
             {
                 dirName += "-" + genericType.Arity;
             }
@@ -113,24 +88,27 @@ namespace MdDoc.Pages
                     return GetTypeNameSpan(typeId);
 
                 case TypeMemberId typeMemberId:
-                    var modelItem = Model.TryGetDocumentation(typeMemberId);
-                    var page = modelItem != null ? PageFactory.TryGetPage(modelItem) : null;
-                    if(page == null || noLink)
-                    {
-                        return new MdTextSpan(typeMemberId.Name);
-                    }
-                    else
-                    {
-                        return new MdLinkSpan(
-                            typeMemberId.Name,
-                            OutputPath.GetRelativePathTo(page.OutputPath)
-                        );  
-                    }               
-
+                    return CreateLink(typeMemberId, typeMemberId.Name);
+                    
                 default:
-                    return MdEmptySpan.Instance;                    
+                    return MdEmptySpan.Instance;
             }
-        }       
+        }
+
+        public MdSpan CreateLink(MemberId target, MdSpan text)
+        {
+            var modelItem = Model.TryGetDocumentation(target);
+            var page = modelItem != null ? PageFactory.TryGetPage(modelItem) : null;
+
+            if (page == null)
+                return text;
+
+            // do not create self-links
+            if (OutputPath.Equals(page.OutputPath))
+                return text;
+
+            return new MdLinkSpan(text, OutputPath.GetRelativePathTo(page.OutputPath));
+        }
     }
 
 

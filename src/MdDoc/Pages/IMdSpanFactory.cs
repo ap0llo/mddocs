@@ -5,8 +5,10 @@ namespace MdDoc.Pages
 {
     interface IMdSpanFactory
     {
-        MdSpan GetMdSpan(MemberId type);
+        MdSpan CreateLink(MemberId target, MdSpan text);
 
-        MdSpan GetMdSpan(MemberId type, bool noLink);
+        MdSpan GetMdSpan(MemberId id);
+
+        MdSpan GetMdSpan(MemberId id, bool noLink);
     }
 }

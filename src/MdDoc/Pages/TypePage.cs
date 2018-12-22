@@ -4,6 +4,7 @@ using System.Linq;
 using Grynwald.MarkdownGenerator;
 using MdDoc.Model;
 using MdDoc.Model.XmlDocs;
+
 using static Grynwald.MarkdownGenerator.FactoryMethods;
 
 namespace MdDoc.Pages
@@ -54,7 +55,7 @@ namespace MdDoc.Pages
 
             //TODO: Extension methods
 
-            //TODO: "See also" section
+            AddSeeAlsoSection(document.Root);
 
             Directory.CreateDirectory(Path.GetDirectoryName(OutputPath));
             document.Save(OutputPath);
@@ -280,11 +281,26 @@ namespace MdDoc.Pages
             }
         }
 
+        private void AddSeeAlsoSection(MdContainerBlock block)
+        {
+            if(Model.SeeAlso.Count > 0)
+            {
+                block.Add(Heading(2, "See Also"));
+                block.Add(
+                    BulletList(
+                        Model.SeeAlso.Select(seeAlso => ListItem(ConvertToSpan(seeAlso)))
+                ));
+            }
+        }
 
         private MdSpan ConvertToSpan(SummaryElement summary)
         {
             return summary == null ? MdEmptySpan.Instance : XmlDocToMarkdownConverter.ConvertToSpan(summary, this);
         }
 
+        private MdSpan ConvertToSpan(SeeAlsoElement seeAlso)
+        {            
+            return XmlDocToMarkdownConverter.ConvertToSpan(seeAlso, this);
+        }
     }
 }

@@ -23,6 +23,8 @@ namespace MdDoc.Model.XmlDocs
 
         public ReturnsElement Returns { get; }
 
+        public IReadOnlyList<SeeAlsoElement> SeeAlso { get; }
+
 
         public MemberElement(
             MemberId memberId,
@@ -33,7 +35,8 @@ namespace MdDoc.Model.XmlDocs
             IReadOnlyList<TypeParamElement> typeParameters,
             IReadOnlyList<ParamElement> parameters,
             ValueElement value,
-            ReturnsElement returns)
+            ReturnsElement returns,
+            IReadOnlyList<SeeAlsoElement> seeAlso)
         {
             MemberId = memberId ?? throw new ArgumentNullException(nameof(memberId));
             Summary = summary;
@@ -44,6 +47,7 @@ namespace MdDoc.Model.XmlDocs
             Parameters = parameters ?? Array.Empty<ParamElement>();
             Value = value;
             Returns = returns;
+            SeeAlso = seeAlso ?? Array.Empty<SeeAlsoElement>();
         }
         
     }

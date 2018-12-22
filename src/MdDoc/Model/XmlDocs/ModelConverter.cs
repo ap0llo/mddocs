@@ -15,7 +15,6 @@ namespace MdDoc.Model.XmlDocs
 
                 var memberId = new MemberIdParser(member.Id).Parse();
 
-
                 var element = new MemberElement(
                         memberId,
                         visitor.Summary,
@@ -25,7 +24,8 @@ namespace MdDoc.Model.XmlDocs
                         visitor.TypeParameters,
                         visitor.Parameters,
                         visitor.Value,
-                        visitor.Returns);
+                        visitor.Returns,
+                        visitor.SeeAlso);
 
                 result.Add(element);               
             }
@@ -53,6 +53,7 @@ namespace MdDoc.Model.XmlDocs
 
         public ReturnsElement Returns { get; private set; }
 
+        public List<SeeAlsoElement> SeeAlso { get; } = new List<SeeAlsoElement>();
 
 
         public override void VisitSummary(Summary summary)
@@ -95,6 +96,11 @@ namespace MdDoc.Model.XmlDocs
             Returns = new ReturnsElement(GetElements(returns));
         }
 
+        public override void VisitSeeAlso(SeeAlso seeAlso)
+        {
+            SeeAlso.Add(new SeeAlsoElement(seeAlso, GetElements(seeAlso)));
+        }
+
         private IEnumerable<Element> GetElements(Container container)
         {
             var visitor = new ContainerVisitor();
@@ -125,9 +131,7 @@ namespace MdDoc.Model.XmlDocs
         public override void VisitTypeParamRef(TypeParamRef typeParamRef) => Elements.Add(new TypeParamRefElement(typeParamRef));
 
         public override void VisitText(Text text) => Elements.Add(new TextElement(text));
-
-        public override void VisitSeeAlso(SeeAlso seeAlso) => Elements.Add(new SeeAlsoElement(seeAlso));
-
+        
         public override void VisitSee(See see) => Elements.Add(new SeeElement(see));
 
 

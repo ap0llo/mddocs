@@ -4,6 +4,7 @@ using MdDoc.Model.XmlDocs;
 
 namespace MdDoc.Pages
 {
+    //TODO: This needs cleanup
     class XmlDocToMarkdownConverter
     {
         class ConvertToBlockVisitor : IVisitor<object, object>
@@ -187,8 +188,23 @@ namespace MdDoc.Pages
                 return null;
             }
 
-            public object Visit(SeeAlsoElement element, object parameter)
+            public object Visit(SeeAlsoElement seeAlso, object parameter)
             {
+                if(seeAlso.Elements.Count > 0)
+                {
+                    var visitor = new ConvertToSpanVisitor(m_SpanFactory);
+                    foreach(var element in seeAlso.Elements)
+                    {
+                        element.Accept(visitor, null);
+                    }
+
+                    Result.Add(m_SpanFactory.CreateLink(seeAlso.MemberId, visitor.Result));
+                }
+                else
+                {
+                    Result.Add(m_SpanFactory.GetMdSpan(seeAlso.MemberId));
+                }
+
                 return null;
             }
 
@@ -278,5 +294,13 @@ namespace MdDoc.Pages
             return visitor.Result;
         }
 
+
+        public static MdSpan ConvertToSpan(SeeAlsoElement seeAlso, IMdSpanFactory spanFactory)
+        {
+            var visitor = new ConvertToSpanVisitor(spanFactory);
+            seeAlso.Accept(visitor, null);
+
+            return visitor.Result;
+        }
     }    
 }

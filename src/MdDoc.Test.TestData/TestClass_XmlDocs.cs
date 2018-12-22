@@ -9,6 +9,8 @@ namespace MdDoc.Test.TestData
     /// <example>Example1</example>    
     /// <typeparam name="T1">Type parameter 1</typeparam>
     /// <typeparam name="T2">Type parameter 2</typeparam>
+    /// <seealso  cref="TestClass_Type">Some text</seealso>
+    /// <seealso  cref="TestInterface_Type" />
     public class TestClass_XmlDocs<T1, T2>
     {
         /// <summary>
@@ -17,6 +19,8 @@ namespace MdDoc.Test.TestData
         /// <remarks>Remarks</remarks>
         /// <example>Example</example>
         /// <value>Value</value>
+        /// <seealso  cref="TestClass_Type">Some text</seealso>
+        /// <seealso  cref="TestInterface_Type" />
         public string Field1;
 
 
@@ -27,6 +31,8 @@ namespace MdDoc.Test.TestData
         /// <example>Example</example>
         /// <value>Value</value>
         /// <exception cref="ArgumentException">Exception 1</exception>
+        /// <seealso  cref="TestClass_Type">Some text</seealso>
+        /// <seealso  cref="TestInterface_Type" />
         public string Property1 { get; }
 
 
@@ -35,6 +41,8 @@ namespace MdDoc.Test.TestData
         /// </summary>
         /// <remarks>Remarks</remarks>
         /// <example>Example</example>
+        /// <seealso  cref="TestClass_Type">Some text</seealso>
+        /// <seealso  cref="TestInterface_Type" />
         public event EventHandler Event1;
 
 
@@ -47,6 +55,8 @@ namespace MdDoc.Test.TestData
         /// <exception cref="ArgumentException">Exception 2</exception>
         /// <param name="parameter1">Documentation for parameter 1</param>
         /// <returns>The method returns an object</returns>
+        /// <seealso cref="TestClass_Type">Some text</seealso>
+        /// <seealso cref="TestInterface_Type" />
         public object TestMethod01(string parameter1) => null;
 
         /// <summary>

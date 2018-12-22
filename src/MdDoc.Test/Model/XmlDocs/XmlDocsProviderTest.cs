@@ -117,7 +117,7 @@ namespace MdDoc.Test.Model.XmlDocs
 
         [Theory]
         [InlineData(typeof(TestClass_XmlDocs<object,object>))]
-        public void TryGetDocumentationComments_gets_expected_docs_summary_for_type(Type type)
+        public void TryGetDocumentationComments_gets_expected_docs_for_type(Type type)
         {
             // ARRANGE
             var id = GetTypeDefinition(type).ToMemberId();
@@ -142,6 +142,16 @@ namespace MdDoc.Test.Model.XmlDocs
             Assert.Equal(2, docs.TypeParameters.Count);
             Assert.Contains(docs.TypeParameters, x => x.Name == "T1");
             Assert.Contains(docs.TypeParameters, x => x.Name == "T2");
+
+            Assert.Equal(2, docs.SeeAlso.Count);
+            Assert.Single(
+                docs.SeeAlso,
+                seeAlso => seeAlso.Elements.Count == 1 && seeAlso.MemberId.Equals(new SimpleTypeId("MdDoc.Test.TestData", "TestClass_Type"))
+            );
+            Assert.Single(
+                docs.SeeAlso,
+                seeAlso => seeAlso.Elements.Count == 0 && seeAlso.MemberId.Equals(new SimpleTypeId("MdDoc.Test.TestData", "TestInterface_Type"))
+            );
         }
 
         [Theory]
@@ -178,6 +188,16 @@ namespace MdDoc.Test.Model.XmlDocs
             Assert.Contains(docs.Parameters, x => x.Name == "parameter1");
 
             Assert.NotNull(docs.Returns);
+
+            Assert.Equal(2, docs.SeeAlso.Count);
+            Assert.Single(
+                docs.SeeAlso,
+                seeAlso => seeAlso.Elements.Count == 1 && seeAlso.MemberId.Equals(new SimpleTypeId("MdDoc.Test.TestData", "TestClass_Type"))
+            );
+            Assert.Single(
+                docs.SeeAlso,
+                seeAlso => seeAlso.Elements.Count == 0 && seeAlso.MemberId.Equals(new SimpleTypeId("MdDoc.Test.TestData", "TestInterface_Type"))
+            );
         }
 
         [Theory]
@@ -207,6 +227,16 @@ namespace MdDoc.Test.Model.XmlDocs
             Assert.NotNull(docs.Example);
 
             Assert.NotNull(docs.Value);
+
+            Assert.Equal(2, docs.SeeAlso.Count);
+            Assert.Single(
+                docs.SeeAlso,
+                seeAlso => seeAlso.Elements.Count == 1 && seeAlso.MemberId.Equals(new SimpleTypeId("MdDoc.Test.TestData", "TestClass_Type"))
+            );
+            Assert.Single(
+                docs.SeeAlso,
+                seeAlso => seeAlso.Elements.Count == 0 && seeAlso.MemberId.Equals(new SimpleTypeId("MdDoc.Test.TestData", "TestInterface_Type"))
+            );
         }
 
         [Theory]
@@ -239,7 +269,17 @@ namespace MdDoc.Test.Model.XmlDocs
 
             Assert.NotNull(docs.Exceptions);
             Assert.Single(docs.Exceptions);
-            Assert.Contains(docs.Exceptions, x => x.Cref == "T:System.ArgumentException");            
+            Assert.Contains(docs.Exceptions, x => x.Cref == "T:System.ArgumentException");
+
+            Assert.Equal(2, docs.SeeAlso.Count);
+            Assert.Single(
+                docs.SeeAlso,
+                seeAlso => seeAlso.Elements.Count == 1 && seeAlso.MemberId.Equals(new SimpleTypeId("MdDoc.Test.TestData", "TestClass_Type"))
+            );
+            Assert.Single(
+                docs.SeeAlso,
+                seeAlso => seeAlso.Elements.Count == 0 && seeAlso.MemberId.Equals(new SimpleTypeId("MdDoc.Test.TestData", "TestInterface_Type"))
+            );
         }
 
         [Theory]
@@ -267,6 +307,16 @@ namespace MdDoc.Test.Model.XmlDocs
             Assert.NotNull(docs.Remarks);
 
             Assert.NotNull(docs.Example);
+
+            Assert.Equal(2, docs.SeeAlso.Count);
+            Assert.Single(
+                docs.SeeAlso,
+                seeAlso => seeAlso.Elements.Count == 1 && seeAlso.MemberId.Equals(new SimpleTypeId("MdDoc.Test.TestData", "TestClass_Type"))
+            );
+            Assert.Single(
+                docs.SeeAlso,
+                seeAlso => seeAlso.Elements.Count == 0 && seeAlso.MemberId.Equals(new SimpleTypeId("MdDoc.Test.TestData", "TestInterface_Type"))
+            );
         }
     }
 }
