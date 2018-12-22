@@ -14,6 +14,7 @@ namespace MdDoc.Pages
 
             public MdContainerBlock Result { get; } = new MdContainerBlock();
 
+
             public ConvertToBlockVisitor(IMdSpanFactory spanFactory)
             {
                 m_SpanFactory = spanFactory ?? throw new System.ArgumentNullException(nameof(spanFactory));
@@ -22,11 +23,13 @@ namespace MdDoc.Pages
 
             public object Visit(ParamRefElement element, object parameter)
             {
+                m_CurrentParagraph.Add(new MdCodeSpan(element.Name));
                 return null;
             }
 
             public object Visit(TypeParamRefElement element, object parameter)
             {
+                m_CurrentParagraph.Add(new MdCodeSpan(element.Name));
                 return null;
             }
 
@@ -74,7 +77,8 @@ namespace MdDoc.Pages
 
             public object Visit(ParaElement element, object parameter)
             {
-                return Visit(element.Text, parameter);
+                Visit(element.Text, parameter);
+                return null;
             }
             
             
@@ -104,11 +108,13 @@ namespace MdDoc.Pages
 
             public object Visit(ParamRefElement element, object parameter)
             {
+                Result.Add(new MdCodeSpan(element.Name));
                 return null;
             }
 
             public object Visit(TypeParamRefElement element, object parameter)
             {
+                Result.Add(new MdCodeSpan(element.Name));
                 return null;
             }
 
@@ -123,6 +129,7 @@ namespace MdDoc.Pages
 
             public object Visit(CodeElement element, object parameter)
             {
+                // <code></code> cannot be converted to a span => ignore element
                 return null;
             }
 
@@ -131,26 +138,6 @@ namespace MdDoc.Pages
                 Result.Add(new MdTextSpan(element.Content));
                 return null;
             }
-
-            //public object Visit(SeeAlsoElement seeAlso, object parameter)
-            //{
-            //    if(seeAlso.Text.Elements.Count > 0)
-            //    {
-            //        var visitor = new ConvertToSpanVisitor(m_SpanFactory);
-            //        foreach(var element in seeAlso.Elements)
-            //        {
-            //            element.Accept(visitor, null);
-            //        }
-
-            //        Result.Add(m_SpanFactory.CreateLink(seeAlso.MemberId, visitor.Result));
-            //    }
-            //    else
-            //    {
-            //        Result.Add(m_SpanFactory.GetMdSpan(seeAlso.MemberId));
-            //    }
-
-            //    return null;
-            //}
 
             public object Visit(SeeElement element, object parameter)
             {
@@ -170,6 +157,8 @@ namespace MdDoc.Pages
 
             public object Visit(ParaElement element, object parameter)
             {
+                // a single span cannot contain multplie paragraphs, but we can at least add a line break
+                Result.Add(new MdTextSpan("\r\n"));
                 return null;
             }
         }
