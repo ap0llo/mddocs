@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using Grynwald.MarkdownGenerator;
 using MdDoc.Model;
-
+using MdDoc.Model.XmlDocs;
 using static Grynwald.MarkdownGenerator.FactoryMethods;
 
 namespace MdDoc.Pages
@@ -109,6 +109,13 @@ namespace MdDoc.Pages
 
             return new MdLinkSpan(text, OutputPath.GetRelativePathTo(page.OutputPath));
         }
+
+
+        protected MdSpan ConvertToSpan(TextBlock textBlock)
+        {
+            return textBlock == null ? MdEmptySpan.Instance : TextBlockToMarkdownConverter.ConvertToSpan(textBlock, this);
+        }
+
     }
 
 

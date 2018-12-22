@@ -26,7 +26,7 @@ namespace MdDoc.Pages
             foreach (var method in methods)
             {
                 table.Add(
-                    Row(method.Signature)
+                    Row(method.Signature, ConvertToSpan(method.Summary))
                 );
             }
 
@@ -43,6 +43,11 @@ namespace MdDoc.Pages
                 block.Add(
                     Heading(method.Signature, 2)
                 );
+
+                //TODO: Summary
+
+                //TODO: C# Definition
+                
 
                 if (method.Parameters.Count > 0)
                 {
@@ -62,6 +67,11 @@ namespace MdDoc.Pages
                         table
                     );
                 }
+
+                //TODO: Exceptions
+                //TODO: Remarks
+                //TODO: Examples
+
             }
         }
     }

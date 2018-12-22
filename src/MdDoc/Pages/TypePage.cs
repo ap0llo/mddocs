@@ -159,14 +159,13 @@ namespace MdDoc.Pages
         private void AddEventsSection(MdContainerBlock block)
         {            
             if (Model.Events.Count > 0)
-            {
-                //TODO: Add event page, insert link to page
+            {                
                 //TODO: Sort by name
                 block.Add(
                     Heading("Events", 2),
                     Table(
                         Row("Name", "Description"),
-                        Model.Events.Select(ev => Row(ev.Name, ConvertToSpan(ev.Summary)))
+                        Model.Events.Select(ev => Row(CreateLink(ev.MemberId, ev.Name), ConvertToSpan(ev.Summary)))
                 ));
             }
         }
@@ -246,11 +245,7 @@ namespace MdDoc.Pages
             }
         }
 
-        private MdSpan ConvertToSpan(TextBlock textBlock)
-        {
-            return textBlock == null ? MdEmptySpan.Instance : TextBlockToMarkdownConverter.ConvertToSpan(textBlock, this);
-        }
-
+        
         private MdSpan ConvertToSpan(SeeAlsoElement seeAlso)
         {
             if (seeAlso.Text.Elements.Count > 0)

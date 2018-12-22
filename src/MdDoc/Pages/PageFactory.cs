@@ -28,9 +28,24 @@ namespace MdDoc.Pages
         }
 
 
-        public IPage TryGetPage(IDocumentation item) => m_Pages.GetValueOrDefault(item);
+        public IPage TryGetPage(IDocumentation item)
+        {
+            switch (item)
+            {
+                // all overloads of an method / operator are combined to a single page
+                // so when the page of an overlaod is requested, return the combined page                
 
-        
+                case MethodOverloadDocumentation methodOverload:
+                    return TryGetPage(methodOverload.MethodDocumentation);
+
+                case OperatorOverloadDocumentation operatorOverload:
+                    return TryGetPage(operatorOverload.OperatorDocumentation);
+                    
+                default:
+                    return m_Pages.GetValueOrDefault(item);
+            }
+        }
+
         private void LoadPages()
         {
             foreach (var type in m_Model.MainModuleDocumentation.Types)
@@ -57,7 +72,15 @@ namespace MdDoc.Pages
                     m_Pages.Add(field, new FieldPage(this, m_RootOutputPath, field));
                 }
 
-                //TODO: Events, Operators
+                foreach(var ev in type.Events)
+                {
+                    m_Pages.Add(ev, new EventPage(this, m_RootOutputPath, ev));
+                }
+
+                foreach(var op in type.Operators)
+                {
+                    m_Pages.Add(op, new OperatorPage(this, m_RootOutputPath, op));
+                }                
             }
         }
     }

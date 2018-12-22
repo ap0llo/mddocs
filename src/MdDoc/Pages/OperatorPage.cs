@@ -6,36 +6,36 @@ using static Grynwald.MarkdownGenerator.FactoryMethods;
 
 namespace MdDoc.Pages
 {
-    //TODO: Use a different layout if the method is not overloaded
-    class MethodPage : MemberPage<MethodDocumentation>
+    //TODO: Use a different layout if there is only a single overloads for this operator
+    class OperatorPage : MemberPage<OperatorDocumentation>
     {
         public override OutputPath OutputPath { get; }
             
-        protected override MethodDocumentation Model { get; }
+        protected override OperatorDocumentation Model { get; }
 
 
-        public MethodPage(PageFactory pageFactory, string rootOutputPath, MethodDocumentation model) 
+        public OperatorPage(PageFactory pageFactory, string rootOutputPath, OperatorDocumentation model) 
             : base(pageFactory, rootOutputPath)
         {
             Model = model ?? throw new ArgumentNullException(nameof(model));   
-            OutputPath = new OutputPath(Path.Combine(GetTypeDir(Model.TypeDocumentation), "methods", $"{Model.TypeDocumentation.TypeId.Name}.{Model.Name}.md"));
+            OutputPath = new OutputPath(Path.Combine(GetTypeDir(Model.TypeDocumentation), "operators", $"{Model.TypeDocumentation.TypeId.Name}.{Model.Kind}.md"));
         }
 
 
         public override void Save()
         {
             var document = Document(
-                Heading($"{Model.TypeDocumentation.DisplayName}.{Model.Name} Method", 1)
+                Heading($"{Model.TypeDocumentation.DisplayName}.{Model.Kind} Operator", 1)
             );
 
             AddDeclaringTypeSection(document.Root);            
 
             //TODO: Summary
 
-            AddOverloadsSection(document.Root, Model.Overloads);
-
-            AddDetailSections(document.Root, Model.Overloads);
-
+            //TODO: Overloads
+           
+            //TODO: Details section
+           
             Directory.CreateDirectory(Path.GetDirectoryName(OutputPath));
             document.Save(OutputPath);
         }

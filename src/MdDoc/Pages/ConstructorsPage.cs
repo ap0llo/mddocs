@@ -29,8 +29,13 @@ namespace MdDoc.Pages
             );
 
             AddDeclaringTypeSection(document.Root);
-            
+
+            //TODO: Add Summary
+
             AddOverloadsSection(document.Root, Model.Overloads);
+
+            //TODO: Add Remarks
+
 
             AddDetailSections(document.Root, Model.Overloads);
 
