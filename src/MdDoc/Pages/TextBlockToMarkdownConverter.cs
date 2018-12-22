@@ -5,7 +5,7 @@ using MdDoc.Model.XmlDocs;
 namespace MdDoc.Pages
 {
     //TODO: This needs cleanup
-    class XmlDocToMarkdownConverter
+    class TextBlockToMarkdownConverter
     {
         class ConvertToBlockVisitor : IVisitor
         {

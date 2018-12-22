@@ -73,7 +73,7 @@ namespace MdDoc.Pages
 
             if (Model.Summary != null)
             {
-                block.Add(XmlDocToMarkdownConverter.ConvertToBlock(Model.Summary, this));
+                block.Add(TextBlockToMarkdownConverter.ConvertToBlock(Model.Summary, this));
             }
 
             // Add list of base types            
@@ -116,7 +116,7 @@ namespace MdDoc.Pages
             if (Model.Remarks != null)
             {
                 block.Add(Heading(2, "Remarks"));
-                block.Add(XmlDocToMarkdownConverter.ConvertToBlock(Model.Remarks, this));
+                block.Add(TextBlockToMarkdownConverter.ConvertToBlock(Model.Remarks, this));
             }
         }
 
@@ -288,14 +288,14 @@ namespace MdDoc.Pages
 
         private MdSpan ConvertToSpan(TextBlock textBlock)
         {
-            return textBlock == null ? MdEmptySpan.Instance : XmlDocToMarkdownConverter.ConvertToSpan(textBlock, this);
+            return textBlock == null ? MdEmptySpan.Instance : TextBlockToMarkdownConverter.ConvertToSpan(textBlock, this);
         }
 
         private MdSpan ConvertToSpan(SeeAlsoElement seeAlso)
         {
             if (seeAlso.Text.Elements.Count > 0)
             {
-                var text = XmlDocToMarkdownConverter.ConvertToSpan(seeAlso.Text, this);
+                var text = TextBlockToMarkdownConverter.ConvertToSpan(seeAlso.Text, this);
                 return CreateLink(seeAlso.MemberId, text);
             }
             else
