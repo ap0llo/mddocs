@@ -34,8 +34,8 @@ namespace MdDoc.Test.Model
         [InlineData("op_GreaterThan", OperatorKind.GreaterThan)]
         [InlineData("op_LessThanOrEqual", OperatorKind.LessThanOrEqual)]
         [InlineData("op_GreaterThanOrEqual", OperatorKind.GreaterThanOrEqual)]
-        [InlineData("op_Implicit", OperatorKind.ImplicitConversion)]
-        [InlineData("op_Explicit", OperatorKind.ExplicitConversion)]
+        [InlineData("op_Implicit", OperatorKind.Implicit)]
+        [InlineData("op_Explicit", OperatorKind.Explicit)]
         public void Kind_returns_the_expected_value(string methodName, OperatorKind expectedKind)
         {
             // ARRANGE

@@ -36,5 +36,10 @@ namespace MdDoc.Test.TestData
         public object Method6<T>(T foo) => throw new NotImplementedException();
 
         public object Method7<T1, T2>(T1 foo, T2 bar) => throw new NotImplementedException();
+
+
+        public static TestClass_MethodFormatter operator +(TestClass_MethodFormatter left, TestClass_MethodFormatter right) => throw new NotImplementedException();
+
+        public static implicit operator string(TestClass_MethodFormatter instance) => throw new NotImplementedException();
     }
 }

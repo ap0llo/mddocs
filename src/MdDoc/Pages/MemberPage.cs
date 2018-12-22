@@ -46,8 +46,7 @@ namespace MdDoc.Pages
 
                 //TODO: Summary
 
-                //TODO: C# Definition
-                
+                //TODO: C# Definition                
 
                 if (method.Parameters.Count > 0)
                 {
@@ -68,6 +67,7 @@ namespace MdDoc.Pages
                     );
                 }
 
+                //TODO: Returns
                 //TODO: Exceptions
                 //TODO: Remarks
                 //TODO: Examples

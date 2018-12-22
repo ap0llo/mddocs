@@ -26,7 +26,7 @@
         GreaterThan,
         LessThanOrEqual,
         GreaterThanOrEqual,
-        ImplicitConversion,
-        ExplicitConversion
+        Implicit,
+        Explicit
     }
 }

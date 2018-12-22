@@ -17,9 +17,14 @@ namespace MdDoc.Model
         {
             var signatureBuilder = new StringBuilder();
 
+            var operatorKind = method.GetOperatorKind();
             if(method.IsConstructor)
             {
                 signatureBuilder.Append(method.DeclaringType.Name);
+            }
+            else if(operatorKind.HasValue)
+            {
+                signatureBuilder.Append(operatorKind.Value);
             }
             else
             {
@@ -33,14 +38,25 @@ namespace MdDoc.Model
                 signatureBuilder.Append(">");
             }
 
+            
             signatureBuilder.Append("(");
-            signatureBuilder.AppendJoin(
-                ", ",
-                method.Parameters.Select(p => $"{p.ParameterType.ToTypeId().DisplayName} {p.Name}")
-            );
+            if(operatorKind == OperatorKind.Implicit || operatorKind == OperatorKind.Explicit)
+            {
+                signatureBuilder.Append(method.Parameters[0].ParameterType.ToTypeId().DisplayName);
+                signatureBuilder.Append(" to ");
+                signatureBuilder.Append(method.ReturnType.ToTypeId().DisplayName);
+            }
+            else
+            {
+                signatureBuilder.AppendJoin(
+                    ", ",
+                    method.Parameters.Select(p => p.ParameterType.ToTypeId().DisplayName)
+                );
+            }
             signatureBuilder.Append(")");
 
             return signatureBuilder.ToString();
         }
+
     }
 }

@@ -222,7 +222,11 @@ namespace MdDoc.Pages
                 {
                     foreach (var overload in operatorOverload.Overloads)
                     {                        
-                        table.Add(Row(CreateLink(overload.MemberId, overload.Signature), ConvertToSpan(overload.Summary)));
+                        table.Add(
+                            Row(
+                                CreateLink(overload.MemberId, overload.Signature),
+                                ConvertToSpan(overload.Summary)
+                        ));
                     }
                 }
 

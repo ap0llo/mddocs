@@ -55,9 +55,9 @@
                 case "op_GreaterThanOrEqual":
                     return OperatorKind.GreaterThanOrEqual;
                 case "op_Implicit":
-                    return OperatorKind.ImplicitConversion;
+                    return OperatorKind.Implicit;
                 case "op_Explicit":
-                    return OperatorKind.ExplicitConversion;
+                    return OperatorKind.Explicit;
 
                 default:
                     return null;

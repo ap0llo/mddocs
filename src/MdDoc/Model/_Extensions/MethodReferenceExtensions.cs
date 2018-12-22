@@ -20,7 +20,7 @@ namespace MdDoc.Model
 
             TypeId returnType = default;
             var operatorKind = method.GetOperatorKind();
-            if(operatorKind == OperatorKind.ImplicitConversion || operatorKind == OperatorKind.ExplicitConversion)
+            if(operatorKind == OperatorKind.Implicit || operatorKind == OperatorKind.Explicit)
             {
                 returnType = method.ReturnType.ToTypeId();
             }
