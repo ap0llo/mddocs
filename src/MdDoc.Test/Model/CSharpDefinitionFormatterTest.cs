@@ -46,6 +46,29 @@ namespace MdDoc.Test.Model
             // ASSERT
             Assert.Equal(expected, actual);
         }
+        
+        
+        
+        
+
+        [Theory]
+        [InlineData(nameof(TestClass_Properties_CSharpDefinition.Field1), @"public string Field1;")]
+        [InlineData(nameof(TestClass_Properties_CSharpDefinition.Field2), @"public static string Field2;")]
+        [InlineData(nameof(TestClass_Properties_CSharpDefinition.Field3), @"public const string Field3;")]
+        [InlineData(nameof(TestClass_Properties_CSharpDefinition.Field4), @"public static readonly int Field4;")]
+        public void GetDefinition_returns_the_expected_definition_for_fields(string fieldName, string expected)
+        {
+            // ARRANGE
+            var fieldDefinition = GetTypeDefinition(typeof(TestClass_Properties_CSharpDefinition))
+                .Fields
+                .Single(p => p.Name == fieldName);
+
+            // ACT
+            var actual = CSharpDefinitionFormatter.GetDefinition(fieldDefinition);
+
+            // ASSERT
+            Assert.Equal(expected, actual);
+        }
 
     }
 }

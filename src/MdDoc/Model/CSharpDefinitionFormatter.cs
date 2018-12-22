@@ -63,5 +63,36 @@ namespace MdDoc.Model
 
         }
 
+        public static string GetDefinition(FieldDefinition field)
+        {            
+            var definitionBuilder = new StringBuilder();
+            definitionBuilder.Append("public ");
+            
+            if(field.IsStatic && !field.HasConstant)
+            {
+                definitionBuilder.Append("static ");
+            }
+
+            if(field.HasConstant)
+            {
+                definitionBuilder.Append("const ");
+            }
+
+            if(field.Attributes.HasFlag(FieldAttributes.InitOnly))
+            {
+                definitionBuilder.Append("readonly ");
+            }
+
+            definitionBuilder.Append(field.FieldType.ToTypeId().DisplayName);
+            definitionBuilder.Append(" ");
+
+
+            definitionBuilder.Append(field.Name);
+
+            definitionBuilder.Append(";");
+
+            return definitionBuilder.ToString();
+        }
+
     }
 }

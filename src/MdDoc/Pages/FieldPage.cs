@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using Grynwald.MarkdownGenerator;
 using MdDoc.Model;
 
 using static Grynwald.MarkdownGenerator.FactoryMethods;
@@ -31,7 +32,9 @@ namespace MdDoc.Pages
 
             //TODO: Summary
 
-            //TODO: C# Definition           
+            document.Root.Add(
+                new MdCodeBlock(Model.CSharpDefinition, "csharp")
+            );
 
             //TODO: Field Value
 

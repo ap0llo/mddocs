@@ -5,7 +5,16 @@ using System.IO;
 namespace MdDoc.Test.TestData
 {
     public class TestClass_Properties_CSharpDefinition
-    {                
+    {
+        public string Field1;
+
+        public static string Field2;
+
+        public const string Field3 ="";
+
+        public static readonly int Field4;
+
+
         public int Property1 { get; set; }
 
         public byte Property2 { get; set; }
