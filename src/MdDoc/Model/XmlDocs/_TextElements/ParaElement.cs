@@ -11,6 +11,6 @@ namespace MdDoc.Model.XmlDocs
             Text = text ?? throw new ArgumentNullException(nameof(text));
         }
 
-        public override TResult Accept<TResult, TParameter>(IVisitor<TResult, TParameter> visitor, TParameter parameter) => visitor.Visit(this, parameter);
+        public override void Accept(IVisitor visitor) => visitor.Visit(this);
     }
 }

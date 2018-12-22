@@ -14,7 +14,6 @@ namespace MdDoc.Model.XmlDocs
             Elements = elements?.ToArray() ?? throw new ArgumentNullException(nameof(elements));
         }
 
-        public override TResult Accept<TResult, TParameter>(IVisitor<TResult, TParameter> visitor, TParameter parameter) =>
-            visitor.Visit(this, parameter);
+        public override void Accept(IVisitor visitor) => visitor.Visit(this);
     }
 }

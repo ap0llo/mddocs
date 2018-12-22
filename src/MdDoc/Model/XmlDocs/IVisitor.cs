@@ -1,21 +1,21 @@
 ﻿namespace MdDoc.Model.XmlDocs
 {
-    public interface IVisitor<TResult, TParameter>
+    public interface IVisitor
     {        
-        TResult Visit(ParamRefElement element, TParameter parameter);
+        void Visit(ParamRefElement element);
 
-        TResult Visit(TypeParamRefElement element, TParameter parameter);
+        void Visit(TypeParamRefElement element);
 
-        TResult Visit(CElement element, TParameter parameter);
+        void Visit(CElement element);
 
-        TResult Visit(CodeElement element, TParameter parameter);
+        void Visit(CodeElement element);
 
-        TResult Visit(TextElement element, TParameter parameter);
+        void Visit(TextElement element);
        
-        TResult Visit(SeeElement element, TParameter parameter);
+        void Visit(SeeElement element);
 
-        TResult Visit(TextBlock textBlock, TParameter parameter);
+        void Visit(TextBlock textBlock);
         
-        TResult Visit(ParaElement element, TParameter parameter);               
+        void Visit(ParaElement element);               
     }
 }

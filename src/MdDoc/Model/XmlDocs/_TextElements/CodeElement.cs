@@ -16,6 +16,6 @@ namespace MdDoc.Model.XmlDocs
             m_Code = code ?? throw new ArgumentNullException(nameof(code));
         }
 
-        public override TResult Accept<TResult, TParameter>(IVisitor<TResult, TParameter> visitor, TParameter parameter) => visitor.Visit(this, parameter);
+        public override void Accept(IVisitor visitor) => visitor.Visit(this);
     }
 }

@@ -2,6 +2,6 @@
 {
     public abstract class Element
     {
-        public abstract TResult Accept<TResult, TParameter>(IVisitor<TResult, TParameter> visitor, TParameter parameter);
+        public abstract void Accept(IVisitor visitor);
     }
 }

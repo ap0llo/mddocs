@@ -7,7 +7,7 @@ namespace MdDoc.Pages
     //TODO: This needs cleanup
     class XmlDocToMarkdownConverter
     {
-        class ConvertToBlockVisitor : IVisitor<object, object>
+        class ConvertToBlockVisitor : IVisitor
         {
             private MdCompositeSpan m_CurrentParagraph = new MdCompositeSpan();
             private IMdSpanFactory m_SpanFactory;
@@ -21,64 +21,56 @@ namespace MdDoc.Pages
             }
 
 
-            public object Visit(ParamRefElement element, object parameter)
+            public void Visit(ParamRefElement element)
             {
-                m_CurrentParagraph.Add(new MdCodeSpan(element.Name));
-                return null;
+                m_CurrentParagraph.Add(new MdCodeSpan(element.Name));                
             }
 
-            public object Visit(TypeParamRefElement element, object parameter)
+            public void Visit(TypeParamRefElement element)
             {
                 m_CurrentParagraph.Add(new MdCodeSpan(element.Name));
-                return null;
             }
 
-            public object Visit(CElement element, object parameter)
+            public void Visit(CElement element)
             {
                 if (!String.IsNullOrEmpty(element.Content))
                 {
                     m_CurrentParagraph.Add(new MdCodeSpan(element.Content));
                 }
-                return null;
             }
 
-            public object Visit(CodeElement element, object parameter)
+            public void Visit(CodeElement element)
             {
                 PushParagraph();
                 Result.Add(new MdCodeBlock(element.Content));
-                return null;
             }
 
-            public object Visit(TextElement element, object parameter)
+            public void Visit(TextElement element)
             {
                 m_CurrentParagraph.Add(new MdTextSpan(element.Content));
-                return null;
             }
 
-            public object Visit(SeeElement element, object parameter)
+            public void Visit(SeeElement element)
             {
                 m_CurrentParagraph.Add(m_SpanFactory.GetMdSpan(element.MemberId));
-                return null;
             }
 
-            public object Visit(TextBlock textBlock, object parameter)
+            public void Visit(TextBlock textBlock)
             {
                 // end previous paragraph
                 PushParagraph();
 
                 foreach (var child in textBlock.Elements)
                 {
-                    child.Accept(this, parameter);
+                    child.Accept(this);
                 }
 
                 PushParagraph();
-                return null;
             }            
 
-            public object Visit(ParaElement element, object parameter)
+            public void Visit(ParaElement element)
             {
-                Visit(element.Text, parameter);
-                return null;
+                Visit(element.Text);
             }
             
             
@@ -92,7 +84,7 @@ namespace MdDoc.Pages
             }            
         }
 
-        class ConvertToSpanVisitor : IVisitor<object, object>
+        class ConvertToSpanVisitor : IVisitor
         {
             private IMdSpanFactory m_SpanFactory;
 
@@ -106,60 +98,51 @@ namespace MdDoc.Pages
             }
 
 
-            public object Visit(ParamRefElement element, object parameter)
+            public void Visit(ParamRefElement element)
             {
                 Result.Add(new MdCodeSpan(element.Name));
-                return null;
             }
 
-            public object Visit(TypeParamRefElement element, object parameter)
+            public void Visit(TypeParamRefElement element)
             {
                 Result.Add(new MdCodeSpan(element.Name));
-                return null;
             }
 
-            public object Visit(CElement element, object parameter)
+            public void Visit(CElement element)
             {
                 if (!String.IsNullOrEmpty(element.Content))
                 {
                     Result.Add(new MdCodeSpan(element.Content));
                 }
-                return null;
             }
 
-            public object Visit(CodeElement element, object parameter)
+            public void Visit(CodeElement element)
             {
                 // <code></code> cannot be converted to a span => ignore element
-                return null;
             }
 
-            public object Visit(TextElement element, object parameter)
+            public void Visit(TextElement element)
             {
                 Result.Add(new MdTextSpan(element.Content));
-                return null;
             }
 
-            public object Visit(SeeElement element, object parameter)
+            public void Visit(SeeElement element)
             {
                 Result.Add(m_SpanFactory.GetMdSpan(element.MemberId));
-                return null;
             }
 
-            public object Visit(TextBlock text, object parameter)
+            public void Visit(TextBlock text)
             {
                 foreach(var child in  text.Elements)
                 {
-                    child.Accept(this, parameter);
+                    child.Accept(this);
                 }
+            }
 
-                return null;
-            }            
-
-            public object Visit(ParaElement element, object parameter)
+            public void Visit(ParaElement element)
             {
                 // a single span cannot contain multplie paragraphs, but we can at least add a line break
                 Result.Add(new MdTextSpan("\r\n"));
-                return null;
             }
         }
 
@@ -168,7 +151,7 @@ namespace MdDoc.Pages
         public static MdBlock ConvertToBlock(TextBlock text, IMdSpanFactory spanFactory)
         {
             var visitor = new ConvertToBlockVisitor(spanFactory);
-            text.Accept(visitor, null);
+            text.Accept(visitor);
 
             return visitor.Result;
         }
@@ -177,7 +160,7 @@ namespace MdDoc.Pages
         public static MdSpan ConvertToSpan(TextBlock text, IMdSpanFactory spanFactory)
         {
             var visitor = new ConvertToSpanVisitor(spanFactory);
-            text.Accept(visitor, null);
+            text.Accept(visitor);
 
             return visitor.Result;
         }
