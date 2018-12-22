@@ -200,7 +200,7 @@ namespace MdDoc.Test.Model
         }
 
         [Fact]
-        public void Methods_do_not_include_operator_overloads()
+        public void Methods_does_not_include_operator_overloads()
         {
             // ARRANGE / ACT
             var sut = GetTypeDocumentation(typeof(TestClass_Operators));
@@ -210,7 +210,27 @@ namespace MdDoc.Test.Model
             Assert.Empty(sut.Methods);
         }
 
-        //TODO: Methods do not include property getters and setters
+        [Fact]
+        public void Methods_does_not_include_property_getters_and_setters()
+        {
+            // ARRANGE / ACT
+            var sut = GetTypeDocumentation(typeof(TestClass_Properties));
+
+            // ASSERT
+            Assert.NotNull(sut.Methods);
+            Assert.Empty(sut.Methods);
+        }
+
+        [Fact]
+        public void Methods_does_not_include_event_accessors()
+        {
+            // ARRANGE / ACT
+            var sut = GetTypeDocumentation(typeof(TestClass_Events));
+
+            // ASSERT
+            Assert.NotNull(sut.Methods);
+            Assert.Empty(sut.Methods);
+        }
 
         [Fact]
         public void Constructors_returns_the_expected_constructor_overloads_for_classes_01()

@@ -9,7 +9,8 @@ namespace MdDoc.Model
     static class TypeDefinitionExtensions
     {
         private static readonly object s_Lock = new object();
-        private static IDictionary<TypeReference, HashSet<MethodReference>> s_PropertyMethods = new Dictionary<TypeReference, HashSet<MethodReference>>();
+        private static IDictionary<TypeReference, HashSet<MethodReference>> s_PropertyAccessors = new Dictionary<TypeReference, HashSet<MethodReference>>();
+        private static IDictionary<TypeReference, HashSet<MethodReference>> s_EventAccessors = new Dictionary<TypeReference, HashSet<MethodReference>>();
 
 
         public static TypeKind Kind(this TypeDefinition type)
@@ -33,7 +34,7 @@ namespace MdDoc.Model
             {
                 return type
                     .Methods
-                    .Where(m => m.IsConstructor && m.IsPublic && !IsPropertyMethod(m));
+                    .Where(m => m.IsConstructor && m.IsPublic && !IsPropertyAccessor(m));
             }
             else
             {
@@ -46,7 +47,7 @@ namespace MdDoc.Model
             if (type.Kind() == TypeKind.Class || type.Kind() == TypeKind.Struct || type.Kind() == TypeKind.Interface)
             {
                 return type.Methods
-                    .Where(m => !m.IsConstructor && m.IsPublic && !IsPropertyMethod(m));
+                    .Where(m => !m.IsConstructor && m.IsPublic && !IsPropertyAccessor(m) && !IsEventAccessor(m));
             }
             else
             {
@@ -55,19 +56,31 @@ namespace MdDoc.Model
         }
 
 
-        private static bool IsPropertyMethod(MethodDefinition method)
+        private static bool IsPropertyAccessor(MethodDefinition method)
         {
             lock (s_Lock)
             {
-                return s_PropertyMethods.GetOrAdd(
+                return s_PropertyAccessors.GetOrAdd(
                     method.DeclaringType,
-                    () => GetPropertyMethods(method.DeclaringType).ToHashSet()
+                    () => GetPropertyAccessors(method.DeclaringType).ToHashSet()
                 )
                 .Contains(method);
             }
         }
 
-        private static IEnumerable<MethodReference> GetPropertyMethods(TypeDefinition type)
+        private static bool IsEventAccessor(MethodDefinition method)
+        {
+            lock (s_Lock)
+            {
+                return s_EventAccessors.GetOrAdd(
+                    method.DeclaringType,
+                    () => GetEventAccessors(method.DeclaringType).ToHashSet()
+                )
+                .Contains(method);
+            }
+        }
+
+        private static IEnumerable<MethodReference> GetPropertyAccessors(TypeDefinition type)
         {
             foreach (var property in type.Properties)
             {
@@ -76,6 +89,18 @@ namespace MdDoc.Model
 
                 if (property.SetMethod != null)
                     yield return property.SetMethod;
+            }
+        }
+
+        private static IEnumerable<MethodReference> GetEventAccessors(TypeDefinition type)
+        {
+            foreach (var ev in type.Events)
+            {
+                if (ev.AddMethod != null)
+                    yield return ev.AddMethod;
+
+                if (ev.RemoveMethod != null)
+                    yield return ev.RemoveMethod;
             }
         }
     }

@@ -9,7 +9,6 @@ using static Grynwald.MarkdownGenerator.FactoryMethods;
 
 namespace MdDoc.Pages
 {
-    //TODO: Add documentation from XML comments
     class TypePage : PageBase<TypeDocumentation>
     {
         public override OutputPath OutputPath { get; }
@@ -218,7 +217,6 @@ namespace MdDoc.Pages
         
         private void AddMethodsSection(MdContainerBlock block)
         {
-            //TODO: Do not include add/remove methods of events
             if (Model.Methods.Count > 0)
             {
                 var table = Table(Row("Name", "Description"));
