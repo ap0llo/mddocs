@@ -52,7 +52,12 @@ namespace MdDoc.Pages
                     m_Pages.Add(method, new MethodPage(this, m_RootOutputPath, method));
                 }
 
-                //TODO: Events, Fields, Operators
+                foreach(var field in type.Fields)
+                {
+                    m_Pages.Add(field, new FieldPage(this, m_RootOutputPath, field));
+                }
+
+                //TODO: Events, Operators
             }
         }
     }

@@ -126,20 +126,11 @@ namespace MdDoc.Pages
             if (Model.Constructors != null)
             {
                 var table = Table(Row("Name", "Description"));
-                var ctorPagePath = PageFactory.TryGetPage(Model.Constructors)?.OutputPath;
-
+                
                 //TODO: Sort (unsure by what)
                 foreach (var ctor in Model.Constructors.Overloads)
                 {
-                    if (ctorPagePath != null)
-                    {
-                        var link = Link(ctor.Signature, OutputPath.GetRelativePathTo(ctorPagePath));
-                        table.Add(Row(link, ConvertToSpan(ctor.Summary)));
-                    }
-                    else
-                    {
-                        table.Add(Row(ctor.Signature, ConvertToSpan(ctor.Summary)));
-                    }
+                    table.Add(Row(CreateLink(ctor.MemberId, ctor.Signature), ConvertToSpan(ctor.Summary)));
                 }
 
                 block.Add(
@@ -152,14 +143,13 @@ namespace MdDoc.Pages
         private void AddFieldsSection(MdContainerBlock block)
         {
             if (Model.Fields.Count > 0)
-            {
-                //TODO: Add page for field, insert link
+            {                
                 //TODO: Sort by name
                 block.Add(
                     Heading("Fields", 2),
                     Table(
                         Row("Name", "Description"),
-                        Model.Fields.Select(field => Row(field.Name, ConvertToSpan(field.Summary)))
+                        Model.Fields.Select(field => Row(CreateLink(field.MemberId, field.Name), ConvertToSpan(field.Summary)))
                     )
                 );
             }
@@ -189,18 +179,8 @@ namespace MdDoc.Pages
 
                 //TODO: Sort by name
                 foreach (var property in Model.Properties)
-                {
-                    var propertyPage = PageFactory.TryGetPage(property);
-
-                    if(propertyPage != null)
-                    {                        
-                        var link = Link(property.Name, OutputPath.GetRelativePathTo(propertyPage.OutputPath));
-                        table.Add(Row(link, ConvertToSpan(property.Summary)));
-                    }
-                    else
-                    {
-                        table.Add(Row(property.Name, ConvertToSpan(property.Summary)));
-                    }
+                {                    
+                    table.Add(Row(CreateLink(property.MemberId, property.Name), ConvertToSpan(property.Summary)));
                 }
              
                 block.Add(
@@ -218,20 +198,10 @@ namespace MdDoc.Pages
 
                 //TODO: Sort methods by name
                 foreach(var method in Model.Methods)
-                {
-                    var methodPage = PageFactory.TryGetPage(method);
-
+                {                    
                     foreach(var overload in method.Overloads)
-                    {                        
-                        if(methodPage != null)
-                        {                            
-                            var link = Link(overload.Signature, OutputPath.GetRelativePathTo(methodPage.OutputPath));                           
-                            table.Add(Row(link, ConvertToSpan(overload.Summary)));
-                        }
-                        else
-                        {                            
-                            table.Add(Row(overload.Signature, ConvertToSpan(overload.Summary)));
-                        }
+                    {                                                
+                        table.Add(Row(CreateLink(overload.MemberId, overload.Signature), ConvertToSpan(overload.Summary)));
                     }
                 }
 
@@ -251,19 +221,9 @@ namespace MdDoc.Pages
                 // TODO: Sort by operator
                 foreach (var operatorOverload in Model.Operators)
                 {
-                    var operatorPage = PageFactory.TryGetPage(operatorOverload);
-
                     foreach (var overload in operatorOverload.Overloads)
-                    {
-                        if(operatorPage != null)
-                        {                            
-                            var link = Link(overload.Signature, OutputPath.GetRelativePathTo(operatorPage.OutputPath));
-                            table.Add(Row(link, ConvertToSpan(overload.Summary)));
-                        }
-                        else
-                        {                            
-                            table.Add(Row(overload.Signature, ConvertToSpan(overload.Summary)));
-                        }
+                    {                        
+                        table.Add(Row(CreateLink(overload.MemberId, overload.Signature), ConvertToSpan(overload.Summary)));
                     }
                 }
 
