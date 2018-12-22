@@ -17,56 +17,7 @@ namespace MdDoc.Model
         // Indexeres are modeled as properties with parameters
         public bool IsIndexer => Definition.HasParameters;
         
-        public string CSharpDefinition
-        {
-            get
-            {
-                var hasGetter = Definition.GetMethod?.IsPublic == true;
-                var hasSetter = Definition.SetMethod?.IsPublic == true;
-
-                var definitionBuilder = new StringBuilder();
-                definitionBuilder.Append("public ");
-                definitionBuilder.Append(Definition.PropertyType.ToTypeId().DisplayName);
-                definitionBuilder.Append(" ");
-
-                if(Definition.HasParameters)
-                    definitionBuilder.Append("this");
-                else
-                    definitionBuilder.Append(Name);
-                
-                if(IsIndexer)
-                {
-                    definitionBuilder.Append("[");
-
-                    definitionBuilder.AppendJoin(
-                        ", ",
-                        Definition.Parameters.Select(x => $"{x.ParameterType.ToTypeId().DisplayName} {x.Name}")
-                    );
-
-                    definitionBuilder.Append("]");
-                }
-
-
-                definitionBuilder.Append(" ");
-                definitionBuilder.Append("{ ");
-
-                if (hasGetter)
-                    definitionBuilder.Append("get;");
-
-
-                if(hasSetter)
-                {
-                    if(hasGetter)
-                        definitionBuilder.Append(" ");
-
-                    definitionBuilder.Append("set;");
-                }
-
-                definitionBuilder.Append(" }");
-
-                return definitionBuilder.ToString();
-            }
-        }
+        public string CSharpDefinition { get; }
 
         public TextBlock Summary { get; }
 
@@ -79,6 +30,7 @@ namespace MdDoc.Model
             PropertyType = definition.PropertyType.ToTypeId();
             MemberId = definition.ToMemberId();
             Summary = xmlDocsProvider.TryGetDocumentationComments(MemberId)?.Summary;
+            CSharpDefinition = CSharpDefinitionFormatter.GetDefinition(definition);
         }
 
 
