@@ -4,14 +4,17 @@ using System.Linq;
 
 namespace MdDoc.Model.XmlDocs
 {
-    public abstract class ContainerElement : Element
+    public sealed class TextBlock : Element
     {       
         public IReadOnlyList<Element> Elements { get; }
 
 
-        internal ContainerElement(IEnumerable<Element> elements)
+        internal TextBlock(IEnumerable<Element> elements)
         {
             Elements = elements?.ToArray() ?? throw new ArgumentNullException(nameof(elements));
         }
+
+        public override TResult Accept<TResult, TParameter>(IVisitor<TResult, TParameter> visitor, TParameter parameter) =>
+            visitor.Visit(this, parameter);
     }
 }

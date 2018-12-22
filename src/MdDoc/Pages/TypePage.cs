@@ -286,14 +286,22 @@ namespace MdDoc.Pages
             }
         }
 
-        private MdSpan ConvertToSpan(SummaryElement summary)
+        private MdSpan ConvertToSpan(TextBlock textBlock)
         {
-            return summary == null ? MdEmptySpan.Instance : XmlDocToMarkdownConverter.ConvertToSpan(summary, this);
+            return textBlock == null ? MdEmptySpan.Instance : XmlDocToMarkdownConverter.ConvertToSpan(textBlock, this);
         }
 
         private MdSpan ConvertToSpan(SeeAlsoElement seeAlso)
-        {            
-            return XmlDocToMarkdownConverter.ConvertToSpan(seeAlso, this);
+        {
+            if (seeAlso.Text.Elements.Count > 0)
+            {
+                var text = XmlDocToMarkdownConverter.ConvertToSpan(seeAlso.Text, this);
+                return CreateLink(seeAlso.MemberId, text);
+            }
+            else
+            {
+                return GetMdSpan(seeAlso.MemberId);
+            }
         }
     }
 }

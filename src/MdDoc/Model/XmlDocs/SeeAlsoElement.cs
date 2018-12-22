@@ -4,7 +4,7 @@ using NuDoq;
 
 namespace MdDoc.Model.XmlDocs
 {
-    public class SeeAlsoElement : ContainerElement
+    public class SeeAlsoElement
     {
         private readonly SeeAlso m_NuDoqModel;
 
@@ -12,14 +12,15 @@ namespace MdDoc.Model.XmlDocs
 
         public MemberId MemberId { get; }
 
+        public TextBlock Text { get; }
 
-        public SeeAlsoElement(SeeAlso nuDoqModel, IEnumerable<Element> elements)  : base(elements)
+
+        public SeeAlsoElement(SeeAlso nuDoqModel, TextBlock text)
         {
             m_NuDoqModel = nuDoqModel ?? throw new ArgumentNullException(nameof(nuDoqModel));
+            Text = text ?? throw new ArgumentNullException(nameof(text));
             MemberId = new MemberIdParser(nuDoqModel.Cref).Parse();
         }
-
-
-        public override TResult Accept<TResult, TParameter>(IVisitor<TResult, TParameter> visitor, TParameter parameter) => visitor.Visit(this, parameter);
+        
     }
 }

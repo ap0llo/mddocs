@@ -13,7 +13,7 @@ namespace MdDoc.Model
 
         public MethodDocumentation MethodDocumentation { get; }
 
-        public SummaryElement Summary { get; }
+        public TextBlock Summary { get; }
 
 
         internal MethodOverloadDocumentation(MethodDocumentation methodDocumentation, MethodDefinition definition, IXmlDocsProvider xmlDocsProvider) : base(definition)

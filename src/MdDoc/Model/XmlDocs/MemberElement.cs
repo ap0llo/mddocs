@@ -7,11 +7,11 @@ namespace MdDoc.Model.XmlDocs
     {
         public MemberId MemberId { get; }
 
-        public SummaryElement Summary { get; }
+        public TextBlock Summary { get; }
 
-        public RemarksElement Remarks { get; }
+        public TextBlock Remarks { get; }
 
-        public ExampleElement Example { get; }
+        public TextBlock Example { get; }
 
         public IReadOnlyList<ExceptionElement> Exceptions { get; }
 
@@ -19,23 +19,23 @@ namespace MdDoc.Model.XmlDocs
 
         public IReadOnlyList<ParamElement> Parameters { get; }
 
-        public ValueElement Value { get; }
+        public TextBlock Value { get; }
 
-        public ReturnsElement Returns { get; }
+        public TextBlock Returns { get; }
 
         public IReadOnlyList<SeeAlsoElement> SeeAlso { get; }
 
 
         public MemberElement(
             MemberId memberId,
-            SummaryElement summary,
-            RemarksElement remarks,
-            ExampleElement example,
+            TextBlock summary,
+            TextBlock remarks,
+            TextBlock example,
             IReadOnlyList<ExceptionElement> exceptions, 
             IReadOnlyList<TypeParamElement> typeParameters,
             IReadOnlyList<ParamElement> parameters,
-            ValueElement value,
-            ReturnsElement returns,
+            TextBlock value,
+            TextBlock returns,
             IReadOnlyList<SeeAlsoElement> seeAlso)
         {
             MemberId = memberId ?? throw new ArgumentNullException(nameof(memberId));

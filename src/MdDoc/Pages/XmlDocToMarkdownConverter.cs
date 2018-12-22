@@ -52,89 +52,32 @@ namespace MdDoc.Pages
                 return null;
             }
 
-            public object Visit(SeeAlsoElement element, object parameter)
-            {
-                return null;
-            }
-
             public object Visit(SeeElement element, object parameter)
             {
                 m_CurrentParagraph.Add(m_SpanFactory.GetMdSpan(element.MemberId));
                 return null;
             }
 
-            public object Visit(SummaryElement element, object parameter)
+            public object Visit(TextBlock textBlock, object parameter)
             {
                 // end previous paragraph
                 PushParagraph();
 
-                foreach (var child in element.Elements)
+                foreach (var child in textBlock.Elements)
                 {
                     child.Accept(this, parameter);
                 }
 
                 PushParagraph();
                 return null;
-            }
-
-            public object Visit(ExampleElement element, object parameter)
-            {
-                return null;
-            }
-
-            public object Visit(RemarksElement element, object parameter)
-            {
-                // end previous paragraph
-                PushParagraph();
-
-                foreach (var child in element.Elements)
-                {
-                    child.Accept(this, parameter);
-                }
-
-                PushParagraph();
-                return null;
-            }
-
-            public object Visit(ExceptionElement element, object parameter)
-            {
-                return null;
-            }
+            }            
 
             public object Visit(ParaElement element, object parameter)
             {
-                // end previous paragraph
-                PushParagraph();
-
-                foreach (var child in element.Elements)
-                {
-                    child.Accept(this, parameter);
-                }
-
-                PushParagraph();
-                return null;
+                return Visit(element.Text, parameter);
             }
-
-            public object Visit(TypeParamElement element, object parameter)
-            {
-                return null;
-            }
-
-            public object Visit(ParamElement element, object parameter)
-            {
-                return null;
-            }
-
-            public object Visit(ValueElement element, object parameter)
-            {
-                return null;
-            }
-
-            public object Visit(ReturnsElement element, object parameter)
-            {
-                return null;
-            }
-
+            
+            
             private void PushParagraph()
             {
                 if (m_CurrentParagraph.Spans.Count > 0)
@@ -157,6 +100,7 @@ namespace MdDoc.Pages
             {
                 m_SpanFactory = spanFactory ?? throw new System.ArgumentNullException(nameof(spanFactory));
             }
+
 
             public object Visit(ParamRefElement element, object parameter)
             {
@@ -188,25 +132,25 @@ namespace MdDoc.Pages
                 return null;
             }
 
-            public object Visit(SeeAlsoElement seeAlso, object parameter)
-            {
-                if(seeAlso.Elements.Count > 0)
-                {
-                    var visitor = new ConvertToSpanVisitor(m_SpanFactory);
-                    foreach(var element in seeAlso.Elements)
-                    {
-                        element.Accept(visitor, null);
-                    }
+            //public object Visit(SeeAlsoElement seeAlso, object parameter)
+            //{
+            //    if(seeAlso.Text.Elements.Count > 0)
+            //    {
+            //        var visitor = new ConvertToSpanVisitor(m_SpanFactory);
+            //        foreach(var element in seeAlso.Elements)
+            //        {
+            //            element.Accept(visitor, null);
+            //        }
 
-                    Result.Add(m_SpanFactory.CreateLink(seeAlso.MemberId, visitor.Result));
-                }
-                else
-                {
-                    Result.Add(m_SpanFactory.GetMdSpan(seeAlso.MemberId));
-                }
+            //        Result.Add(m_SpanFactory.CreateLink(seeAlso.MemberId, visitor.Result));
+            //    }
+            //    else
+            //    {
+            //        Result.Add(m_SpanFactory.GetMdSpan(seeAlso.MemberId));
+            //    }
 
-                return null;
-            }
+            //    return null;
+            //}
 
             public object Visit(SeeElement element, object parameter)
             {
@@ -214,91 +158,37 @@ namespace MdDoc.Pages
                 return null;
             }
 
-            public object Visit(SummaryElement element, object parameter)
+            public object Visit(TextBlock text, object parameter)
             {
-                foreach(var child in  element.Elements)
+                foreach(var child in  text.Elements)
                 {
                     child.Accept(this, parameter);
                 }
 
                 return null;
-            }
-
-            public object Visit(ExampleElement element, object parameter)
-            {
-                return null;
-            }
-
-            public object Visit(RemarksElement element, object parameter)
-            {
-                foreach (var child in element.Elements)
-                {
-                    child.Accept(this, parameter);
-                }
-
-                return null;
-            }
-
-            public object Visit(ExceptionElement element, object parameter)
-            {
-                return null;
-            }
+            }            
 
             public object Visit(ParaElement element, object parameter)
             {
                 return null;
             }
-
-            public object Visit(TypeParamElement element, object parameter)
-            {
-                return null;
-            }
-
-            public object Visit(ParamElement element, object parameter)
-            {
-                return null;
-            }
-
-            public object Visit(ValueElement element, object parameter)
-            {
-                return null;
-            }
-
-            public object Visit(ReturnsElement element, object parameter)
-            {
-                return null;
-            }
         }
 
-        public static MdBlock ConvertToBlock(SummaryElement summary, IMdSpanFactory spanFactory)
+
+
+        public static MdBlock ConvertToBlock(TextBlock text, IMdSpanFactory spanFactory)
         {
             var visitor = new ConvertToBlockVisitor(spanFactory);
-            summary.Accept(visitor, null);
+            text.Accept(visitor, null);
 
             return visitor.Result;
         }
 
-        public static MdBlock ConvertToBlock(RemarksElement remarks, IMdSpanFactory spanFactory)
-        {
-            var visitor = new ConvertToBlockVisitor(spanFactory);
-            remarks.Accept(visitor, null);
-
-            return visitor.Result;
-        }
-
-        public static MdSpan ConvertToSpan(SummaryElement summary, IMdSpanFactory spanFactory)
+        
+        public static MdSpan ConvertToSpan(TextBlock text, IMdSpanFactory spanFactory)
         {
             var visitor = new ConvertToSpanVisitor(spanFactory);
-            summary.Accept(visitor, null);
-
-            return visitor.Result;
-        }
-
-
-        public static MdSpan ConvertToSpan(SeeAlsoElement seeAlso, IMdSpanFactory spanFactory)
-        {
-            var visitor = new ConvertToSpanVisitor(spanFactory);
-            seeAlso.Accept(visitor, null);
+            text.Accept(visitor, null);
 
             return visitor.Result;
         }

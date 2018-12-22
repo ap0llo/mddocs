@@ -49,9 +49,9 @@ namespace MdDoc.Model
 
         public IReadOnlyCollection<TypeId> Attributes { get; }
 
-        public SummaryElement Summary { get; }
+        public TextBlock Summary { get; }
 
-        public RemarksElement Remarks { get; }
+        public TextBlock Remarks { get; }
 
         public IReadOnlyCollection<SeeAlsoElement> SeeAlso { get; }
 

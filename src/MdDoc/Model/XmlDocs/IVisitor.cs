@@ -11,27 +11,11 @@
         TResult Visit(CodeElement element, TParameter parameter);
 
         TResult Visit(TextElement element, TParameter parameter);
-
-        TResult Visit(SeeAlsoElement element, TParameter parameter);
-
+       
         TResult Visit(SeeElement element, TParameter parameter);
 
-        TResult Visit(SummaryElement element, TParameter parameter);
-
-        TResult Visit(ExampleElement element, TParameter parameter);
-
-        TResult Visit(RemarksElement element, TParameter parameter);
-
-        TResult Visit(ExceptionElement element, TParameter parameter);
-
-        TResult Visit(ParaElement element, TParameter parameter);
-
-        TResult Visit(TypeParamElement element, TParameter parameter);
-
-        TResult Visit(ParamElement element, TParameter parameter);
-
-        TResult Visit(ValueElement element, TParameter parameter);
-
-        TResult Visit(ReturnsElement element, TParameter parameter);
+        TResult Visit(TextBlock textBlock, TParameter parameter);
+        
+        TResult Visit(ParaElement element, TParameter parameter);               
     }
 }

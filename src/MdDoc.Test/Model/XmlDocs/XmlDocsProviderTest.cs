@@ -146,11 +146,11 @@ namespace MdDoc.Test.Model.XmlDocs
             Assert.Equal(2, docs.SeeAlso.Count);
             Assert.Single(
                 docs.SeeAlso,
-                seeAlso => seeAlso.Elements.Count == 1 && seeAlso.MemberId.Equals(new SimpleTypeId("MdDoc.Test.TestData", "TestClass_Type"))
+                seeAlso => seeAlso.Text.Elements.Count == 1 && seeAlso.MemberId.Equals(new SimpleTypeId("MdDoc.Test.TestData", "TestClass_Type"))
             );
             Assert.Single(
                 docs.SeeAlso,
-                seeAlso => seeAlso.Elements.Count == 0 && seeAlso.MemberId.Equals(new SimpleTypeId("MdDoc.Test.TestData", "TestInterface_Type"))
+                seeAlso => seeAlso.Text.Elements.Count == 0 && seeAlso.MemberId.Equals(new SimpleTypeId("MdDoc.Test.TestData", "TestInterface_Type"))
             );
         }
 
@@ -192,11 +192,11 @@ namespace MdDoc.Test.Model.XmlDocs
             Assert.Equal(2, docs.SeeAlso.Count);
             Assert.Single(
                 docs.SeeAlso,
-                seeAlso => seeAlso.Elements.Count == 1 && seeAlso.MemberId.Equals(new SimpleTypeId("MdDoc.Test.TestData", "TestClass_Type"))
+                seeAlso => seeAlso.Text.Elements.Count == 1 && seeAlso.MemberId.Equals(new SimpleTypeId("MdDoc.Test.TestData", "TestClass_Type"))
             );
             Assert.Single(
                 docs.SeeAlso,
-                seeAlso => seeAlso.Elements.Count == 0 && seeAlso.MemberId.Equals(new SimpleTypeId("MdDoc.Test.TestData", "TestInterface_Type"))
+                seeAlso => seeAlso.Text.Elements.Count == 0 && seeAlso.MemberId.Equals(new SimpleTypeId("MdDoc.Test.TestData", "TestInterface_Type"))
             );
         }
 
@@ -231,11 +231,11 @@ namespace MdDoc.Test.Model.XmlDocs
             Assert.Equal(2, docs.SeeAlso.Count);
             Assert.Single(
                 docs.SeeAlso,
-                seeAlso => seeAlso.Elements.Count == 1 && seeAlso.MemberId.Equals(new SimpleTypeId("MdDoc.Test.TestData", "TestClass_Type"))
+                seeAlso => seeAlso.Text.Elements.Count == 1 && seeAlso.MemberId.Equals(new SimpleTypeId("MdDoc.Test.TestData", "TestClass_Type"))
             );
             Assert.Single(
                 docs.SeeAlso,
-                seeAlso => seeAlso.Elements.Count == 0 && seeAlso.MemberId.Equals(new SimpleTypeId("MdDoc.Test.TestData", "TestInterface_Type"))
+                seeAlso => seeAlso.Text.Elements.Count == 0 && seeAlso.MemberId.Equals(new SimpleTypeId("MdDoc.Test.TestData", "TestInterface_Type"))
             );
         }
 
@@ -274,11 +274,11 @@ namespace MdDoc.Test.Model.XmlDocs
             Assert.Equal(2, docs.SeeAlso.Count);
             Assert.Single(
                 docs.SeeAlso,
-                seeAlso => seeAlso.Elements.Count == 1 && seeAlso.MemberId.Equals(new SimpleTypeId("MdDoc.Test.TestData", "TestClass_Type"))
+                seeAlso => seeAlso.Text.Elements.Count == 1 && seeAlso.MemberId.Equals(new SimpleTypeId("MdDoc.Test.TestData", "TestClass_Type"))
             );
             Assert.Single(
                 docs.SeeAlso,
-                seeAlso => seeAlso.Elements.Count == 0 && seeAlso.MemberId.Equals(new SimpleTypeId("MdDoc.Test.TestData", "TestInterface_Type"))
+                seeAlso => seeAlso.Text.Elements.Count == 0 && seeAlso.MemberId.Equals(new SimpleTypeId("MdDoc.Test.TestData", "TestInterface_Type"))
             );
         }
 
@@ -311,11 +311,11 @@ namespace MdDoc.Test.Model.XmlDocs
             Assert.Equal(2, docs.SeeAlso.Count);
             Assert.Single(
                 docs.SeeAlso,
-                seeAlso => seeAlso.Elements.Count == 1 && seeAlso.MemberId.Equals(new SimpleTypeId("MdDoc.Test.TestData", "TestClass_Type"))
+                seeAlso => seeAlso.Text.Elements.Count == 1 && seeAlso.MemberId.Equals(new SimpleTypeId("MdDoc.Test.TestData", "TestClass_Type"))
             );
             Assert.Single(
                 docs.SeeAlso,
-                seeAlso => seeAlso.Elements.Count == 0 && seeAlso.MemberId.Equals(new SimpleTypeId("MdDoc.Test.TestData", "TestInterface_Type"))
+                seeAlso => seeAlso.Text.Elements.Count == 0 && seeAlso.MemberId.Equals(new SimpleTypeId("MdDoc.Test.TestData", "TestInterface_Type"))
             );
         }
     }

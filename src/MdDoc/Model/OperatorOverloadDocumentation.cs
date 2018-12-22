@@ -10,7 +10,7 @@ namespace MdDoc.Model
 
         public OperatorDocumentation OperatorDocumentation { get; }
 
-        public SummaryElement Summary { get; }
+        public TextBlock Summary { get; }
 
 
         internal OperatorOverloadDocumentation(OperatorDocumentation operatorDocumentation, MethodDefinition definition, IXmlDocsProvider xmlDocsProvider) : base(definition)

@@ -68,7 +68,7 @@ namespace MdDoc.Model
             }
         }
 
-        public SummaryElement Summary { get; }
+        public TextBlock Summary { get; }
 
         internal PropertyDefinition Definition { get; }
 

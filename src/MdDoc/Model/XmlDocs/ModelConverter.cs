@@ -37,11 +37,11 @@ namespace MdDoc.Model.XmlDocs
 
     class MemberVisitor : Visitor
     {
-        public SummaryElement Summary { get; private set; }
+        public TextBlock Summary { get; private set; }
 
-        public RemarksElement Remarks { get; private set; }
+        public TextBlock Remarks { get; private set; }
 
-        public ExampleElement Example { get; private set; }
+        public TextBlock Example { get; private set; }
 
         public List<ExceptionElement> Exceptions { get; } = new List<ExceptionElement>();
 
@@ -49,59 +49,59 @@ namespace MdDoc.Model.XmlDocs
 
         public List<ParamElement> Parameters { get; } = new List<ParamElement>();
 
-        public ValueElement Value { get; private set; }
+        public TextBlock Value { get; private set; }
 
-        public ReturnsElement Returns { get; private set; }
+        public TextBlock Returns { get; private set; }
 
         public List<SeeAlsoElement> SeeAlso { get; } = new List<SeeAlsoElement>();
 
 
         public override void VisitSummary(Summary summary)
         {
-            Summary = new SummaryElement(GetElements(summary));
+            Summary = GetTextBlock(summary);
         }
 
         public override void VisitExample(Example example)
         {
-            Example = new ExampleElement(GetElements(example));
+            Example = GetTextBlock(example);
         }
 
         public override void VisitRemarks(Remarks remarks)
         {
-            Remarks = new RemarksElement(GetElements(remarks));
+            Remarks = GetTextBlock(remarks);
         }
 
         public override void VisitException(NuDoq.Exception exception)
         {
-            Exceptions.Add(new ExceptionElement(exception, GetElements(exception)));
+            Exceptions.Add(new ExceptionElement(exception, GetTextBlock(exception)));
         }
 
         public override void VisitTypeParam(TypeParam typeParam)
         {
-            TypeParameters.Add(new TypeParamElement(typeParam, GetElements(typeParam)));
+            TypeParameters.Add(new TypeParamElement(typeParam, GetTextBlock(typeParam)));
         }
 
         public override void VisitParam(Param param)
         {
-            Parameters.Add(new ParamElement(param, GetElements(param)));
+            Parameters.Add(new ParamElement(param, GetTextBlock(param)));
         }
 
         public override void VisitValue(Value value)
         {
-            Value = new ValueElement(GetElements(value));
+            Value = GetTextBlock(value);
         }
 
         public override void VisitReturns(Returns returns)
         {
-            Returns = new ReturnsElement(GetElements(returns));
+            Returns = GetTextBlock(returns);
         }
 
         public override void VisitSeeAlso(SeeAlso seeAlso)
         {
-            SeeAlso.Add(new SeeAlsoElement(seeAlso, GetElements(seeAlso)));
+            SeeAlso.Add(new SeeAlsoElement(seeAlso, GetTextBlock(seeAlso)));
         }
 
-        private IEnumerable<Element> GetElements(Container container)
+        private TextBlock GetTextBlock(Container container)
         {
             var visitor = new ContainerVisitor();
 
@@ -110,9 +110,8 @@ namespace MdDoc.Model.XmlDocs
                 element.Accept(visitor);
             }
 
-            return visitor.Elements;
+            return new TextBlock(visitor.Elements);
         }
-
     }
 
     class ContainerVisitor : Visitor
@@ -144,7 +143,7 @@ namespace MdDoc.Model.XmlDocs
                 element.Accept(visitor);
             }
             
-            Elements.Add(new ParaElement(visitor.Elements));
+            Elements.Add(new ParaElement(new TextBlock(visitor.Elements)));
         }
     }
 }

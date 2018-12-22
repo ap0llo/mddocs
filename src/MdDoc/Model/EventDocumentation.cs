@@ -10,7 +10,7 @@ namespace MdDoc.Model
 
         public MemberId MemberId { get; }
 
-        public SummaryElement Summary { get; }
+        public TextBlock Summary { get; }
 
         internal EventDefinition Definition { get; }
 
