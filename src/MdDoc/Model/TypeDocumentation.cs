@@ -94,7 +94,7 @@ namespace MdDoc.Model
                 Constructors = new ConstructorDocumentation(this, ctors, xmlDocsProvider);
 
             m_Methods = definition.GetDocumentedMethods()
-                .Where(m => !m.IsOperatorOverload())
+                .Where(m => !m.IsOperator())
                 .GroupBy(x => x.Name)
                 .Select(group => new MethodDocumentation(this, group, xmlDocsProvider))
                 .ToDictionary(m => m.Name);

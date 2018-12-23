@@ -6,9 +6,25 @@ namespace MdDoc.Model
 {
     public static class MethodReferenceExtensions
     {
-        public static bool IsOperatorOverload(this MethodReference methodReference) =>
+        public static bool IsOperator(this MethodReference methodReference) =>
             methodReference.GetOperatorKind().HasValue;
 
+        public static bool IsOperator(this MethodReference methodReference, out OperatorKind operatorKind)
+        {
+            var kind = methodReference.GetOperatorKind();
+            if(kind.HasValue)
+            {
+                operatorKind = kind.Value;
+                return true;
+            }
+            else
+            {
+                operatorKind = (OperatorKind) (-1);
+                return false;
+            }
+        }
+
+        
         public static OperatorKind? GetOperatorKind(this MethodReference methodReference) =>
             OperatorMethodNames.GetOperatorKind(methodReference.Name);
                

@@ -39,5 +39,6 @@ namespace MdDoc.Pages
             Directory.CreateDirectory(Path.GetDirectoryName(OutputPath));
             document.Save(OutputPath);
         }
+
     }
 }

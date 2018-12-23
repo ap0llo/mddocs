@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Text;
 using Mono.Cecil;
 
@@ -129,7 +130,7 @@ namespace MdDoc.Model
                 // metho name is the name of the type
                 definitionBuilder.Append(method.DeclaringType.Name);
             }
-            // nn-constructor method
+            // non-constructor method
             else
             {
                 // public
@@ -144,10 +145,43 @@ namespace MdDoc.Model
                     definitionBuilder.Append("static ");
                 }
 
-                // return type and method name
-                definitionBuilder.Append(method.ReturnType.ToTypeId().DisplayName);
-                definitionBuilder.Append(" ");
-                definitionBuilder.Append(method.Name);
+                
+                // check if method is operator
+                if (method.IsOperator(out var operatorKind))
+                {
+                    // implict and explict conversion operators do not have a return type in the signature
+                    // instead, the return type is the operator
+                    // e.g. public static explicit operator int(myType x);
+                    if (operatorKind == OperatorKind.Implicit)
+                    {
+                        definitionBuilder.Append("implicit operator ");
+                        definitionBuilder.Append(method.ReturnType.ToTypeId().DisplayName);
+                    }
+                    else if(operatorKind == OperatorKind.Explicit)
+                    {
+                        definitionBuilder.Append("explicit operator ");
+                        definitionBuilder.Append(method.ReturnType.ToTypeId().DisplayName);
+                    }
+                    else
+                    {
+                        // return type
+                        definitionBuilder.Append(method.ReturnType.ToTypeId().DisplayName);
+                        definitionBuilder.Append(" ");
+
+                        // operator
+                        definitionBuilder.Append("operator ");
+                        definitionBuilder.Append(GetOperatorString(operatorKind));
+                    }
+                }
+                else
+                {
+                    // return type
+                    definitionBuilder.Append(method.ReturnType.ToTypeId().DisplayName);
+                    definitionBuilder.Append(" ");
+
+                    // method name
+                    definitionBuilder.Append(method.Name);
+                }
             }
 
             // type parameters
@@ -172,7 +206,67 @@ namespace MdDoc.Model
             return definitionBuilder.ToString();
         }
 
-        //TODO: Classes, interfaces, enum, structs
-        //TODO: Events        
+        //TODO: Classes, interfaces, enum, structs        
+        //TODO: Events
+
+
+        private static string GetOperatorString(OperatorKind kind)
+        {
+            switch (kind)
+            {
+                case OperatorKind.UnaryPlus:
+                case OperatorKind.Addition:
+                    return "+";
+                case OperatorKind.UnaryNegation:
+                case OperatorKind.Subtraction:
+                    return "-";
+                case OperatorKind.LogicalNot:
+                    return "!";
+                case OperatorKind.OnesComplement:
+                    return "~";
+                case OperatorKind.Increment:
+                    return "++";
+                case OperatorKind.Decrement:
+                    return "--";
+                case OperatorKind.True:
+                    return "true";
+                case OperatorKind.False:
+                    return "false";
+                case OperatorKind.Multiply:
+                    return "*";
+                case OperatorKind.Division:
+                    return "/";
+                case OperatorKind.Modulus:
+                    return "%";
+                case OperatorKind.BitwiseAnd:
+                    return "&";
+                case OperatorKind.BitwiseOr:
+                    return "|";
+                case OperatorKind.LeftShift:
+                    return "<<";                    
+                case OperatorKind.RightShift:
+                    return ">>";                    
+                case OperatorKind.ExclusiveOr:
+                    return "^";
+                case OperatorKind.Equality:
+                    return "==";
+                case OperatorKind.Inequality:
+                    return "!=";
+                case OperatorKind.LessThan:
+                    return "<";
+                case OperatorKind.GreaterThan:
+                    return ">";
+                case OperatorKind.LessThanOrEqual:
+                    return "<=";
+                case OperatorKind.GreaterThanOrEqual:
+                    return ">=";
+                case OperatorKind.Implicit:
+                case OperatorKind.Explicit:
+                    return "";
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(kind));
+            }
+        }
+
     }
 }

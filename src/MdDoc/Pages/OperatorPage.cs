@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using Grynwald.MarkdownGenerator;
 using MdDoc.Model;
 
 using static Grynwald.MarkdownGenerator.FactoryMethods;
@@ -28,16 +30,73 @@ namespace MdDoc.Pages
                 Heading($"{Model.TypeDocumentation.DisplayName}.{Model.Kind} Operator", 1)
             );
 
-            AddDeclaringTypeSection(document.Root);            
+            AddDeclaringTypeSection(document.Root);
 
             //TODO: Summary
 
-            //TODO: Overloads
-           
-            //TODO: Details section
-           
+            AddOverloadsSection(document.Root, Model.Overloads);
+
+            AddDetailSections(document.Root, Model.Overloads);
+
             Directory.CreateDirectory(Path.GetDirectoryName(OutputPath));
             document.Save(OutputPath);
+        }
+
+
+        //TODO: Reuse code from MethodPage
+        protected void AddOverloadsSection(MdContainerBlock block, IEnumerable<OperatorOverloadDocumentation> overloads)
+        {
+            var table = Table(Row("Signature", "Description"));
+            foreach (var method in overloads)
+            {
+                table.Add(
+                    Row(method.Signature, ConvertToSpan(method.Summary))
+                );
+            }
+
+            block.Add(
+                Heading("Overloads", 2),
+                table
+            );
+        }
+
+        protected void AddDetailSections(MdContainerBlock block, IEnumerable<OperatorOverloadDocumentation> overloads)
+        {
+            foreach (var method in overloads)
+            {
+                block.Add(
+                    Heading(method.Signature, 2)
+                );
+
+                //TODO: Summary
+
+                block.Add(CodeBlock(method.CSharpDefinition, "csharp"));
+
+                if (method.Parameters.Count > 0)
+                {
+                    var table = Table(Row("Name", "Type", "Description"));
+                    foreach (var parameter in method.Parameters)
+                    {
+                        table.Add(
+                            Row(
+                                CodeSpan(parameter.Name),
+                                GetTypeNameSpan(parameter.ParameterType),
+                                ""
+                        ));
+                    }
+
+                    block.Add(
+                        Heading("Parameters", 3),
+                        table
+                    );
+                }
+
+                //TODO: Returns
+                //TODO: Exceptions
+                //TODO: Remarks
+                //TODO: Examples
+
+            }
         }
     }
 }

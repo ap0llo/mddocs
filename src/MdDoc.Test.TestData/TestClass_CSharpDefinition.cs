@@ -56,5 +56,35 @@ namespace MdDoc.Test.TestData
 
         public static string Method5<TParam>(TParam parameter) => throw new NotImplementedException();
 
+
+        public static TestClass_CSharpDefinition operator +(TestClass_CSharpDefinition other) => throw new NotImplementedException();
+        public static TestClass_CSharpDefinition operator +(TestClass_CSharpDefinition left, TestClass_CSharpDefinition right) => throw new NotImplementedException();
+        public static TestClass_CSharpDefinition operator -(TestClass_CSharpDefinition other) => throw new NotImplementedException();
+        public static TestClass_CSharpDefinition operator -(TestClass_CSharpDefinition left, TestClass_CSharpDefinition right) => throw new NotImplementedException();
+        public static TestClass_CSharpDefinition operator *(TestClass_CSharpDefinition left, TestClass_CSharpDefinition right) => throw new NotImplementedException();
+        public static TestClass_CSharpDefinition operator /(TestClass_CSharpDefinition left, TestClass_CSharpDefinition right) => throw new NotImplementedException();
+        public static TestClass_CSharpDefinition operator %(TestClass_CSharpDefinition left, TestClass_CSharpDefinition right) => throw new NotImplementedException();
+        public static TestClass_CSharpDefinition operator &(TestClass_CSharpDefinition left, TestClass_CSharpDefinition right) => throw new NotImplementedException();
+        public static TestClass_CSharpDefinition operator |(TestClass_CSharpDefinition left, TestClass_CSharpDefinition right) => throw new NotImplementedException();
+        public static TestClass_CSharpDefinition operator !(TestClass_CSharpDefinition left) => throw new NotImplementedException();
+        public static TestClass_CSharpDefinition operator ~(TestClass_CSharpDefinition left) => throw new NotImplementedException();
+        public static TestClass_CSharpDefinition operator ++(TestClass_CSharpDefinition left) => throw new NotImplementedException();
+        public static TestClass_CSharpDefinition operator --(TestClass_CSharpDefinition left) => throw new NotImplementedException();
+        public static bool operator true(TestClass_CSharpDefinition left) => throw new NotImplementedException();
+        public static bool operator false(TestClass_CSharpDefinition left) => throw new NotImplementedException();
+        public static TestClass_CSharpDefinition operator <<(TestClass_CSharpDefinition left, int right) => throw new NotImplementedException();
+        public static TestClass_CSharpDefinition operator >>(TestClass_CSharpDefinition left, int right) => throw new NotImplementedException();
+        public static TestClass_CSharpDefinition operator ^(TestClass_CSharpDefinition left, TestClass_CSharpDefinition right) => throw new NotImplementedException();
+        public static bool operator ==(TestClass_CSharpDefinition left, TestClass_CSharpDefinition right) => throw new NotImplementedException();
+        public static bool operator !=(TestClass_CSharpDefinition left, TestClass_CSharpDefinition right) => throw new NotImplementedException();
+        public static bool operator <(TestClass_CSharpDefinition left, TestClass_CSharpDefinition right) => throw new NotImplementedException();
+        public static bool operator >(TestClass_CSharpDefinition left, TestClass_CSharpDefinition right) => throw new NotImplementedException();
+        public static bool operator <=(TestClass_CSharpDefinition left, TestClass_CSharpDefinition right) => throw new NotImplementedException();
+        public static bool operator >=(TestClass_CSharpDefinition left, TestClass_CSharpDefinition right) => throw new NotImplementedException();
+
+        public static implicit operator string(TestClass_CSharpDefinition left) => throw new NotImplementedException();
+
+        public static explicit operator int(TestClass_CSharpDefinition left) => throw new NotImplementedException();
+
     }
 }

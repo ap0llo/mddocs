@@ -86,8 +86,6 @@ namespace MdDoc.Test.Model
             Assert.Equal(expected, actual);
         }
 
-
-
         [Theory]
         [InlineData(0, false, @"public TestClass_CSharpDefinition();")]
         [InlineData(1, false, @"public TestClass_CSharpDefinition(string parameter);")]
@@ -106,5 +104,46 @@ namespace MdDoc.Test.Model
             Assert.Equal(expected, actual);
         }
 
+
+        [Theory]
+        [InlineData("op_UnaryPlus", @"public static TestClass_CSharpDefinition operator +(TestClass_CSharpDefinition other);")]
+        [InlineData("op_Addition", @"public static TestClass_CSharpDefinition operator +(TestClass_CSharpDefinition left, TestClass_CSharpDefinition right);")]
+        [InlineData("op_UnaryNegation", @"public static TestClass_CSharpDefinition operator -(TestClass_CSharpDefinition other);")]
+        [InlineData("op_Subtraction", @"public static TestClass_CSharpDefinition operator -(TestClass_CSharpDefinition left, TestClass_CSharpDefinition right);")]        
+        [InlineData("op_Multiply", @"public static TestClass_CSharpDefinition operator *(TestClass_CSharpDefinition left, TestClass_CSharpDefinition right);")]        
+        [InlineData("op_Division", @"public static TestClass_CSharpDefinition operator /(TestClass_CSharpDefinition left, TestClass_CSharpDefinition right);")]
+        [InlineData("op_Modulus", @"public static TestClass_CSharpDefinition operator %(TestClass_CSharpDefinition left, TestClass_CSharpDefinition right);")]
+        [InlineData("op_BitwiseAnd", @"public static TestClass_CSharpDefinition operator &(TestClass_CSharpDefinition left, TestClass_CSharpDefinition right);")]
+        [InlineData("op_BitwiseOr", @"public static TestClass_CSharpDefinition operator |(TestClass_CSharpDefinition left, TestClass_CSharpDefinition right);")]
+        [InlineData("op_LogicalNot", @"public static TestClass_CSharpDefinition operator !(TestClass_CSharpDefinition left);")]
+        [InlineData("op_OnesComplement", @"public static TestClass_CSharpDefinition operator ~(TestClass_CSharpDefinition left);")]
+        [InlineData("op_Increment", @"public static TestClass_CSharpDefinition operator ++(TestClass_CSharpDefinition left);")]
+        [InlineData("op_Decrement", @"public static TestClass_CSharpDefinition operator --(TestClass_CSharpDefinition left);")]       
+        [InlineData("op_True", @"public static bool operator true(TestClass_CSharpDefinition left);")]       
+        [InlineData("op_False", @"public static bool operator false(TestClass_CSharpDefinition left);")]       
+        [InlineData("op_LeftShift", @"public static TestClass_CSharpDefinition operator <<(TestClass_CSharpDefinition left, int right);")]       
+        [InlineData("op_RightShift", @"public static TestClass_CSharpDefinition operator >>(TestClass_CSharpDefinition left, int right);")]
+        [InlineData("op_ExclusiveOr", @"public static TestClass_CSharpDefinition operator ^(TestClass_CSharpDefinition left, TestClass_CSharpDefinition right);")]
+        [InlineData("op_Equality", @"public static bool operator ==(TestClass_CSharpDefinition left, TestClass_CSharpDefinition right);")]
+        [InlineData("op_Inequality", @"public static bool operator !=(TestClass_CSharpDefinition left, TestClass_CSharpDefinition right);")]
+        [InlineData("op_LessThan", @"public static bool operator <(TestClass_CSharpDefinition left, TestClass_CSharpDefinition right);")]
+        [InlineData("op_GreaterThan", @"public static bool operator >(TestClass_CSharpDefinition left, TestClass_CSharpDefinition right);")]
+        [InlineData("op_LessThanOrEqual", @"public static bool operator <=(TestClass_CSharpDefinition left, TestClass_CSharpDefinition right);")]
+        [InlineData("op_GreaterThanOrEqual", @"public static bool operator >=(TestClass_CSharpDefinition left, TestClass_CSharpDefinition right);")]
+        [InlineData("op_Implicit", @"public static implicit operator string(TestClass_CSharpDefinition left);")]
+        [InlineData("op_Explicit", @"public static explicit operator int(TestClass_CSharpDefinition left);")]
+        public void GetDefinition_returns_the_expected_definition_for_operators(string methodName, string expected)
+        {
+            // ARRANGE
+            var fieldDefinition = GetTypeDefinition(typeof(TestClass_CSharpDefinition))
+                .Methods
+                .Single(p => p.Name == methodName);
+
+            // ACT
+            var actual = CSharpDefinitionFormatter.GetDefinition(fieldDefinition);
+
+            // ASSERT
+            Assert.Equal(expected, actual);
+        }
     }
 }
