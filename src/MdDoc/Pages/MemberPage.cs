@@ -46,7 +46,7 @@ namespace MdDoc.Pages
 
                 //TODO: Summary
 
-                //TODO: C# Definition                
+                block.Add(CodeBlock(method.CSharpDefinition, "csharp"));                
 
                 if (method.Parameters.Count > 0)
                 {

@@ -24,7 +24,8 @@ namespace MdDoc.Model
             { "System.Object", "object" },
             { "System.Int16", "short" },
             { "System.UInt16", "ushort" },
-            { "System.String", "string" }
+            { "System.String", "string" },
+            { "System.Void", "void" }
         };
 
 

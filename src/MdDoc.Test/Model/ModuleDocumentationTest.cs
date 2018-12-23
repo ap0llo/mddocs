@@ -40,7 +40,7 @@ namespace MdDoc.Test.Model
                 typeof(TestClass_InterfaceImplementation),
                 typeof(TestStruct_InterfaceImplementation),
                 typeof(TestInterface_Inheritance),
-                typeof(TestClass_Properties_CSharpDefinition),
+                typeof(TestClass_CSharpDefinition),
                 typeof(TestClass_XmlDocs<,>),
                 typeof(TestClass_NoDocumentation)
             })

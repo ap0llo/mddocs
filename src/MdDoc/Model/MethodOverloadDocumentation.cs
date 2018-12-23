@@ -6,22 +6,21 @@ namespace MdDoc.Model
 {
     public sealed class MethodOverloadDocumentation : OverloadDocumentation
     {
-        private readonly IXmlDocsProvider m_XmlDocsProvider;
-
-
         public string MethodName => Definition.Name;
 
         public MethodDocumentation MethodDocumentation { get; }
 
         public TextBlock Summary { get; }
 
+        public string CSharpDefinition { get; }
+
 
         internal MethodOverloadDocumentation(MethodDocumentation methodDocumentation, MethodDefinition definition, IXmlDocsProvider xmlDocsProvider) : base(definition)
         {
-            MethodDocumentation = methodDocumentation ?? throw new ArgumentNullException(nameof(methodDocumentation));
-            m_XmlDocsProvider = xmlDocsProvider ?? throw new ArgumentNullException(nameof(xmlDocsProvider));
-
-            Summary = m_XmlDocsProvider.TryGetDocumentationComments(MemberId)?.Summary;
+            MethodDocumentation = methodDocumentation ?? throw new ArgumentNullException(nameof(methodDocumentation));            
+            xmlDocsProvider = xmlDocsProvider ?? throw new ArgumentNullException(nameof(xmlDocsProvider));
+            Summary = xmlDocsProvider.TryGetDocumentationComments(MemberId)?.Summary;
+            CSharpDefinition = CSharpDefinitionFormatter.GetDefinition(definition);
         }
 
 

@@ -4,7 +4,7 @@ using System.IO;
 
 namespace MdDoc.Test.TestData
 {
-    public class TestClass_Properties_CSharpDefinition
+    public class TestClass_CSharpDefinition
     {
         public string Field1;
 
@@ -34,5 +34,27 @@ namespace MdDoc.Test.TestData
         public int this[object parameter] { get { throw new NotImplementedException(); } }
 
         public int this[object parameter1, Stream parameter2] { get { throw new NotImplementedException(); } }
+
+
+        public TestClass_CSharpDefinition()
+        { }
+
+        public TestClass_CSharpDefinition(string parameter)
+        { }
+
+        static TestClass_CSharpDefinition()
+        {
+        }
+
+        public void Method1() => throw new NotImplementedException();
+
+        public string Method2() => throw new NotImplementedException();
+
+        public string Method3(string param1, Stream param2) => throw new NotImplementedException();
+
+        public static string Method4(string param1, Stream param2) => throw new NotImplementedException();        
+
+        public static string Method5<TParam>(TParam parameter) => throw new NotImplementedException();
+
     }
 }
