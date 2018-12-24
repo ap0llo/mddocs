@@ -10,6 +10,11 @@ An example of a custom attribute that is used to annotate a property with custom
 
 **Attributes:** AttributeUsageAttribute
 
+```csharp
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.All)]
+public class DemoPropertyAnnotationAttribute : Attribute
+```
+
 ## Constructors
 
 | Name                                                                                              | Description |

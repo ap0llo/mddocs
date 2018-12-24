@@ -8,6 +8,16 @@
 
 **Attributes:** FlagsAttribute
 
+```csharp
+[Flags]
+public enum PropertyFlags
+{
+    Flag1 = 0x0,
+    Flag2 = 0x1,
+    Flag3 = 0x2
+}
+```
+
 ## Fields
 
 | Name                                   | Description |

@@ -8,6 +8,15 @@ An example of an user\-defined enum
 
 **Inheritance:** Object → ValueType → Enum → DemoEnum
 
+```csharp
+public enum DemoEnum
+{
+    Item1 = 0,
+    Item2 = 1,
+    AnotherItem = 2
+}
+```
+
 ## Fields
 
 | Name                                          | Description            |

@@ -10,6 +10,11 @@ An example of an customa attribute class for methods
 
 **Attributes:** AttributeUsageAttribute
 
+```csharp
+[AttributeUsage(AttributeTargets.Method | AttributeTargets.All)]
+public class DemoAttribute : Attribute
+```
+
 ## Constructors
 
 | Name                                             | Description |

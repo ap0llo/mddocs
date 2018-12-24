@@ -8,6 +8,10 @@ A class meant to demonstrate how the generated documentation looks like.
 
 **Inheritance:** Object → DemoClass
 
+```csharp
+public class DemoClass
+```
+
 ## Remarks
 
 The main purpose of this class is to showcase the generated documentation.

@@ -55,6 +55,8 @@ namespace MdDoc.Model
 
         public IReadOnlyCollection<SeeAlsoElement> SeeAlso { get; }
 
+        public string CSharpDefinition { get; }
+
         internal TypeDefinition Definition { get; }
 
 
@@ -65,7 +67,7 @@ namespace MdDoc.Model
             ModuleDocumentation = moduleDocumentation ?? throw new ArgumentNullException(nameof(moduleDocumentation));
             Definition = definition ?? throw new ArgumentNullException(nameof(definition));
             m_XmlDocsProvider = xmlDocsProvider ?? throw new ArgumentNullException(nameof(xmlDocsProvider));
-
+            
             Kind = definition.Kind();            
 
             m_Fields = definition.Fields
@@ -117,6 +119,8 @@ namespace MdDoc.Model
             Summary = documentationComments?.Summary;
             Remarks = documentationComments?.Remarks;
             SeeAlso = documentationComments?.SeeAlso ?? Array.Empty<SeeAlsoElement>();
+
+            CSharpDefinition = CSharpDefinitionFormatter.GetDefinition(definition);
         }
 
 

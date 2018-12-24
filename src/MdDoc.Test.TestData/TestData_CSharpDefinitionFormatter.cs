@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -47,8 +48,80 @@ namespace MdDoc.Test.TestData
     {
         Value1 = 1,
         Value2 = 2,
-        Value3 = 3
+        Value3 = 3,
     }
+
+
+    public static class CSharpDefinitionTest_StaticClass
+    {
+    }
+
+    public abstract class CSharpDefinitionTest_AbstractClass
+    {
+    }
+
+    public sealed class CSharpDefinitionTest_SealedClass
+    {
+    }
+
+    public class CSharpDefinitionTest_GenericClass<TParam>
+    {
+    }
+
+    // the C# compiler emits a "Extension" attribute for classes that contain extension methods
+    // this attribute should not be included in the generated definition
+    public static class CSharpDefinitionTest_ExtensionClass
+    {
+        public static void Foo(this string str) { }
+    }
+
+    [CSharpDefinitionTest1(1)]
+    public sealed class CSharpDefinitionTest_ClassWithAttributes
+    {
+    }
+
+    public class CSharpDefinitionTest_ClassWithInterfaceImplementation : IDisposable
+    {
+        public void Dispose() => throw new NotImplementedException();
+    }
+
+    public class CSharpDefinitionTest_ClassWithMultipleInterfaceImplementations : IDisposable, IEnumerable
+    {
+        public void Dispose() => throw new NotImplementedException();
+
+        public IEnumerator GetEnumerator() => throw new NotImplementedException();
+    }
+
+    public class CSharpDefinitionTest_ClassWithbaseTypeAndInterfaceImplementations : CSharpDefinitionTest_AbstractClass, IDisposable, IEnumerable
+    {
+        public void Dispose() => throw new NotImplementedException();
+
+        public IEnumerator GetEnumerator() => throw new NotImplementedException();
+    }
+
+    public class CSharpDefinitionTest_ClassWithBaseType : CSharpDefinitionTest_AbstractClass
+    {
+    }
+
+    public interface CSharpDefinitionTest_Interface
+    { }
+
+    public interface CSharpDefinitionTest_InterfaceWithMultipleInterfaceImplementations : IDisposable, IEnumerable
+    { }
+
+    public struct CSharpDefinitionTest_Struct
+    { }
+
+    public struct CSharpDefinitionTest_StructWithMultipleInterfaceImplementations : IDisposable, IEnumerable
+    {
+        public void Dispose() => throw new NotImplementedException();
+
+        public IEnumerator GetEnumerator() => throw new NotImplementedException();
+    }
+
+    public readonly struct CSharpDefinitionTest_ReadOnlyStruct
+    { }
+
 
 
     public class TestClass_CSharpDefinition

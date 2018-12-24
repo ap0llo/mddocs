@@ -193,14 +193,9 @@ namespace MdDoc.Model
             }
 
             // type parameters
-            if (method.GenericParameters.Count > 0)
+            if(method.HasGenericParameters)
             {
-                definitionBuilder.Append("<");
-                definitionBuilder.AppendJoin(
-                    ", ",
-                    method.GenericParameters.Select(p => p.Name)
-                );
-                definitionBuilder.Append(">");
+                AppendTypeParameters(definitionBuilder, method.GenericParameters);
             }
 
             // method parameters
@@ -251,7 +246,160 @@ namespace MdDoc.Model
             return definitionBuilder.ToString();
         }
 
-        //TODO: Classes, interfaces, enum, structs        
+        //TODO: This methods needs cleanup
+        public static string GetDefinition(TypeDefinition type)
+        {
+            var typeKind = type.Kind();
+
+            var definitionBuilder = new StringBuilder();
+
+            // output type attributes but ignore some common attributes always emitted by the C# compiler
+            // - DefaultMemberAttribute when the member name is the default "Item" (for classes)
+            // - ExtensionAttributes (indicating that the class defines extension methods) (for classes)
+            // - IsReadOnly attribute (for structs, instead add the "readonly" modifier)
+            var customAttributes = type.CustomAttributes
+                .Where(attribute =>
+                {
+                    if (typeKind == TypeKind.Class &&
+                       attribute.AttributeType.FullName == Constants.DefaultMemberAttributeFullName &&
+                       attribute.ConstructorArguments[0].Value is string memberName &&
+                       memberName == "Item")
+                    {
+                        return false;
+                    }
+
+                    if (typeKind == TypeKind.Class && attribute.AttributeType.FullName == Constants.ExtensionAttributeFullName)
+                        return false;
+
+                    if (typeKind == TypeKind.Struct && attribute.AttributeType.FullName == Constants.IsReadOnlyAttributeFullName)
+                        return false;
+
+                    return true;
+                });
+
+            AppendAttributes(definitionBuilder, customAttributes);
+
+            // "public"
+            if (type.IsPublic)
+            {
+                definitionBuilder.Append("public ");
+            }
+
+            // "class" / "interface"
+            switch (typeKind)
+            {
+                case TypeKind.Class:
+
+                    // "static"
+                    //
+                    // Check if class is static, however there are no static classes on IL level
+                    // staic classes are both abstract and sealed which cannot be declared in C#,
+                    // so a abstract sealed class is assumed to be static
+                    var isStatic = type.IsSealed && type.IsAbstract;
+                    if (isStatic)
+                    {
+                        definitionBuilder.Append("static ");
+                    }
+                    // ignore "abstract" and "sealed" modifiers for static classes
+                    else
+                    {
+                        // "abstract"
+                        if (type.IsAbstract)
+                        {
+                            definitionBuilder.Append("abstract ");
+                        }
+
+                        if (type.IsSealed)
+                        {
+                            definitionBuilder.Append("sealed ");
+                        }
+                    }
+                    definitionBuilder.Append("class ");
+                    break;
+
+                case TypeKind.Struct:
+                    if (type.CustomAttributes.Any(a => a.AttributeType.FullName == Constants.IsReadOnlyAttributeFullName))
+                    {
+                        definitionBuilder.Append("readonly ");
+                    }
+                    definitionBuilder.Append("struct ");
+                    break;
+
+                case TypeKind.Interface:
+                    definitionBuilder.Append("interface ");
+                    break;
+
+                case TypeKind.Enum:
+                    definitionBuilder.Append("enum ");
+                    break;
+
+                default:
+                    throw new InvalidOperationException("Unknown type kind");
+            }
+
+            // class name and type parameters
+            if (type.HasGenericParameters)
+            {
+                // remove number of type parameters from type name
+                var name = type.Name.Substring(0, type.Name.LastIndexOf("`"));
+                definitionBuilder.Append(name);
+                AppendTypeParameters(definitionBuilder, type.GenericParameters);
+            }
+            else
+            {
+                definitionBuilder.Append(type.Name);
+            }
+
+            // base type and interface implementations
+            if (typeKind == TypeKind.Enum)
+            {
+                var underlyingType = GetUnderylingTypeForEnum(type);
+                if (!IsDefaultBaseType(underlyingType, typeKind))
+                {
+                    definitionBuilder.Append(" : ");
+                    definitionBuilder.Append(GetDisplayName(underlyingType));
+                }
+            }
+            else
+            {
+                if (type.HasInterfaces)
+                {
+                    definitionBuilder.Append(" : ");
+                    if (type.BaseType != null && !IsDefaultBaseType(type.BaseType, typeKind))
+                    {
+                        definitionBuilder.Append(GetDisplayName(type.BaseType));
+                        definitionBuilder.Append(", ");
+                    }
+                    definitionBuilder.AppendJoin(
+                        ", ",
+                        type.Interfaces.Select(i => GetDisplayName(i.InterfaceType))
+                    );
+                }
+                else if (type.BaseType != null && !IsDefaultBaseType(type.BaseType, typeKind))
+                {
+                    definitionBuilder.Append(" : ");
+                    definitionBuilder.Append(GetDisplayName(type.BaseType));
+                }
+            }
+
+            if (typeKind == TypeKind.Enum)
+            {
+                var isFlagsEnum = IsFlagsEnum(type);
+
+                definitionBuilder.AppendLine();
+                definitionBuilder.AppendLine("{");
+                definitionBuilder.AppendJoin(
+                    ",\r\n",
+                    GetEnumValues(type).Select(x => $"    {x.name} = {(isFlagsEnum ? "0x" + x.value.ToString("X") : x.value.ToString())}")
+                );
+                definitionBuilder.AppendLine();
+                definitionBuilder.AppendLine("}");
+            }
+
+            return definitionBuilder.ToString();
+
+        }
+
 
         private static void AppendAttributes(StringBuilder definitionBuilder, IEnumerable<CustomAttribute> customAttributes)
         {
@@ -282,6 +430,18 @@ namespace MdDoc.Model
                 definitionBuilder.Append("]");
                 definitionBuilder.Append("\r\n");
             }
+        }
+        
+        private static void AppendTypeParameters(StringBuilder definitionBuilder, IEnumerable<GenericParameter> genericParameters)
+        {
+            //TODO: parameter constaints
+
+            definitionBuilder.Append("<");
+            definitionBuilder.AppendJoin(
+                ", ",
+                genericParameters.Select(p => p.Name)
+            );
+            definitionBuilder.Append(">");
         }
 
         private static string GetOperatorString(OperatorKind kind)
@@ -418,6 +578,35 @@ namespace MdDoc.Model
             return definition.Fields
                 .Where(f => f.IsPublic && !f.IsSpecialName)               
                 .Select(f => (f.Name, Convert.ToInt64(f.Constant))).ToArray();
+        }
+        
+        private static string GetDisplayName(TypeReference typeReference)
+        {
+            return typeReference.ToTypeId().DisplayName;
+        }
+
+        private static bool IsDefaultBaseType(TypeReference type, TypeKind kind)
+        {
+            switch (kind)
+            {
+                case TypeKind.Class:
+                    return type.FullName == Constants.ObjectFullName;
+                    
+                case TypeKind.Struct:
+                    return type.FullName == Constants.ValueTypeFullName;
+
+                case TypeKind.Enum:
+                    return type.FullName == Constants.Int32FullName;
+
+                case TypeKind.Interface:
+                default:
+                    return false;                    
+            }
+        }
+
+        private static TypeReference GetUnderylingTypeForEnum(TypeDefinition enumType)
+        {
+            return enumType.Fields.Single(f => f.Name == "value__").FieldType;
         }
     }
 }

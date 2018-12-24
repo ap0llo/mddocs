@@ -31,9 +31,9 @@ namespace MdDoc.Pages
             );
 
             AddTypeInfoSection(document.Root);
-            
-            //TODO: CSharpDefinition
 
+            document.Root.Add(CodeBlock(Model.CSharpDefinition, "csharp"));
+            
             AddRemarksSection(document.Root);
 
             AddConstructorsSection(document.Root);
