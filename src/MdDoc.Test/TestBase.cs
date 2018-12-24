@@ -10,16 +10,25 @@ namespace MdDoc.Test
 {
     public class TestBase : IDisposable
     {
-        protected AssemblyDocumentation m_AssemblyDocumentation;
+        protected Lazy<AssemblyDefinition> m_AssemblyDefinition;
+        protected Lazy<AssemblyDocumentation> m_AssemblyDocumentation;
 
         public TestBase()
         {
-            m_AssemblyDocumentation = AssemblyDocumentation.FromFile(Assembly.GetAssembly(typeof(TestClass_Type)).Location);                        
+            var assemblyPath = Assembly.GetAssembly(typeof(TestClass_Type)).Location;
+
+            m_AssemblyDefinition = new Lazy<AssemblyDefinition>(() => AssemblyDefinition.ReadAssembly(assemblyPath));
+            m_AssemblyDocumentation = new Lazy<AssemblyDocumentation>(() => new AssemblyDocumentation(m_AssemblyDefinition.Value, NullXmlDocsProvider.Instance));
         }
 
         public void Dispose()
         {
-            m_AssemblyDocumentation.Dispose();
+            // disposing m_AssemblyDocumentation will implicitly dispose m_AssemblyDefinition
+
+            if (m_AssemblyDocumentation.IsValueCreated) 
+                m_AssemblyDocumentation.Value.Dispose();           
+            else if (m_AssemblyDefinition.IsValueCreated)
+                m_AssemblyDefinition.Value.Dispose();
         }
 
         
@@ -27,14 +36,14 @@ namespace MdDoc.Test
 
         protected TypeDefinition GetTypeDefinition(Type t) => GetTypeDefinition(t.Name);
 
-        protected TypeDefinition GetTypeDefinition(string name) => m_AssemblyDocumentation.MainModuleDocumentation.Definition.GetTypes().Single(typeDef => typeDef.Name == name);
+        protected TypeDefinition GetTypeDefinition(string name) => m_AssemblyDefinition.Value.MainModule.GetTypes().Single(typeDef => typeDef.Name == name);
 
         protected TypeDocumentation GetTypeDocumentation(Type type)
         {
             var typeDefinition = GetTypeDefinition(type);
 
             var sut = new TypeDocumentation(
-                m_AssemblyDocumentation.MainModuleDocumentation,
+                m_AssemblyDocumentation.Value.MainModuleDocumentation,
                 typeDefinition,
                 NullXmlDocsProvider.Instance
             );

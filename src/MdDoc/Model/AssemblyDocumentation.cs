@@ -16,7 +16,7 @@ namespace MdDoc.Model
 
 
 
-        private AssemblyDocumentation(AssemblyDefinition definition, IXmlDocsProvider xmlDocsProvider)
+        internal AssemblyDocumentation(AssemblyDefinition definition, IXmlDocsProvider xmlDocsProvider)
         {
             Definition = definition ?? throw new ArgumentNullException(nameof(definition));
             m_XmlDocsProvider = xmlDocsProvider ?? throw new ArgumentNullException(nameof(xmlDocsProvider));

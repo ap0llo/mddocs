@@ -56,7 +56,7 @@ namespace MdDoc.Test.Model
             .ToArray();
 
             // ACT
-            var sut = m_AssemblyDocumentation.MainModuleDocumentation;
+            var sut = m_AssemblyDocumentation.Value.MainModuleDocumentation;
             var actualTypes = sut.Types;
 
             // ASSERT
@@ -79,7 +79,7 @@ namespace MdDoc.Test.Model
             .ToArray();
 
             // ACT
-            var sut = m_AssemblyDocumentation.MainModuleDocumentation;
+            var sut = m_AssemblyDocumentation.Value.MainModuleDocumentation;
             var actualTypes = sut.Types;
 
             // ASSERT            
@@ -94,7 +94,7 @@ namespace MdDoc.Test.Model
         {
             // ARRANGE
             var typeId = GetTypeId(typeof(TestClass_InternalType));
-            var sut = m_AssemblyDocumentation.MainModuleDocumentation;
+            var sut = m_AssemblyDocumentation.Value.MainModuleDocumentation;
 
             // ACT
             var documentation = sut.TryGetDocumentation(typeId);
@@ -108,7 +108,7 @@ namespace MdDoc.Test.Model
         {
             // ARRANGE
             var typeId = GetTypeId(typeof(TestClass_Type));
-            var sut = m_AssemblyDocumentation.MainModuleDocumentation;
+            var sut = m_AssemblyDocumentation.Value.MainModuleDocumentation;
 
             // ACT
             var documentation = sut.TryGetDocumentation(typeId);

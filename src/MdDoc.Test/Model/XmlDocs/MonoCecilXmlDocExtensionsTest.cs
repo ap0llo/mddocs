@@ -14,8 +14,8 @@ namespace MdDoc.Test.Model.XmlDocs
         public void GetXmlDocId_returns_the_expected_value_for_types(string typeName, string expectedId)
         {
             // ARRANGE
-            var types = m_AssemblyDocumentation.MainModuleDocumentation.Definition.Types.ToArray();
-            var typeDefinition = m_AssemblyDocumentation.MainModuleDocumentation.Definition.GetTypes().Single(t => t.Name == typeName);
+            var types = m_AssemblyDefinition.Value.MainModule.Types.ToArray();
+            var typeDefinition = m_AssemblyDefinition.Value.MainModule.GetTypes().Single(t => t.Name == typeName);
             
             // ACT
             var actualId = typeDefinition.GetXmlDocId();

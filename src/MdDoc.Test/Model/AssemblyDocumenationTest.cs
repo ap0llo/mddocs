@@ -11,7 +11,7 @@ namespace MdDoc.Test.Model
         {
             // ARRANGE
             var typeId = GetTypeId(typeof(TestClass_InternalType));
-            var sut = m_AssemblyDocumentation;
+            var sut = m_AssemblyDocumentation.Value;
 
             // ACT
             var documentation = sut.TryGetDocumentation(typeId);
@@ -25,7 +25,7 @@ namespace MdDoc.Test.Model
         {
             // ARRANGE
             var typeId = GetTypeId(typeof(TestClass_Type));
-            var sut = m_AssemblyDocumentation;
+            var sut = m_AssemblyDocumentation.Value;
 
             // ACT
             var documentation = sut.TryGetDocumentation(typeId);

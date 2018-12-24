@@ -35,7 +35,7 @@ namespace MdDoc.Test.Model.XmlDocs
             var id = GetTypeDefinition(type).ToMemberId();
 
             // ACT
-            var sut = new XmlDocsProvider(m_XmlDocsPath, m_AssemblyDocumentation.Definition);
+            var sut = new XmlDocsProvider(m_XmlDocsPath, m_AssemblyDefinition.Value);
             var docs = sut.TryGetDocumentationComments(id);
 
             // ASSERT
@@ -53,7 +53,7 @@ namespace MdDoc.Test.Model.XmlDocs
                 .ToMemberId();
 
             // ACT
-            var sut = new XmlDocsProvider(m_XmlDocsPath, m_AssemblyDocumentation.Definition);
+            var sut = new XmlDocsProvider(m_XmlDocsPath, m_AssemblyDefinition.Value);
             var docs = sut.TryGetDocumentationComments(id);
 
             // ASSERT
@@ -71,7 +71,7 @@ namespace MdDoc.Test.Model.XmlDocs
                 .ToMemberId();
 
             // ACT
-            var sut = new XmlDocsProvider(m_XmlDocsPath, m_AssemblyDocumentation.Definition);
+            var sut = new XmlDocsProvider(m_XmlDocsPath, m_AssemblyDefinition.Value);
             var docs = sut.TryGetDocumentationComments(id);
 
             // ASSERT
@@ -89,7 +89,7 @@ namespace MdDoc.Test.Model.XmlDocs
                 .ToMemberId();
 
             // ACT
-            var sut = new XmlDocsProvider(m_XmlDocsPath, m_AssemblyDocumentation.Definition);
+            var sut = new XmlDocsProvider(m_XmlDocsPath, m_AssemblyDefinition.Value);
             var docs = sut.TryGetDocumentationComments(id);
 
             // ASSERT
@@ -107,7 +107,7 @@ namespace MdDoc.Test.Model.XmlDocs
                 .ToMemberId();
 
             // ACT
-            var sut = new XmlDocsProvider(m_XmlDocsPath, m_AssemblyDocumentation.Definition);
+            var sut = new XmlDocsProvider(m_XmlDocsPath, m_AssemblyDefinition.Value);
             var summary = sut.TryGetDocumentationComments(id);
 
             // ASSERT
@@ -123,7 +123,7 @@ namespace MdDoc.Test.Model.XmlDocs
             var id = GetTypeDefinition(type).ToMemberId();
 
             // ACT
-            var sut = new XmlDocsProvider(m_XmlDocsPath, m_AssemblyDocumentation.Definition);
+            var sut = new XmlDocsProvider(m_XmlDocsPath, m_AssemblyDefinition.Value);
             var docs = sut.TryGetDocumentationComments(id);
 
             // ASSERT
@@ -165,7 +165,7 @@ namespace MdDoc.Test.Model.XmlDocs
                 .ToMemberId();
 
             // ACT
-            var sut = new XmlDocsProvider(m_XmlDocsPath, m_AssemblyDocumentation.Definition);
+            var sut = new XmlDocsProvider(m_XmlDocsPath, m_AssemblyDefinition.Value);
             var docs = sut.TryGetDocumentationComments(id);
 
             // ASSERT
@@ -211,7 +211,7 @@ namespace MdDoc.Test.Model.XmlDocs
                 .ToMemberId();
 
             // ACT
-            var sut = new XmlDocsProvider(m_XmlDocsPath, m_AssemblyDocumentation.Definition);
+            var sut = new XmlDocsProvider(m_XmlDocsPath, m_AssemblyDefinition.Value);
             var docs = sut.TryGetDocumentationComments(id);
 
             // ASSERT
@@ -250,7 +250,7 @@ namespace MdDoc.Test.Model.XmlDocs
                 .ToMemberId();
 
             // ACT
-            var sut = new XmlDocsProvider(m_XmlDocsPath, m_AssemblyDocumentation.Definition);
+            var sut = new XmlDocsProvider(m_XmlDocsPath, m_AssemblyDefinition.Value);
             var docs = sut.TryGetDocumentationComments(id);
 
             // ASSERT
@@ -293,7 +293,7 @@ namespace MdDoc.Test.Model.XmlDocs
                 .ToMemberId();
 
             // ACT
-            var sut = new XmlDocsProvider(m_XmlDocsPath, m_AssemblyDocumentation.Definition);
+            var sut = new XmlDocsProvider(m_XmlDocsPath, m_AssemblyDefinition.Value);
             var docs = sut.TryGetDocumentationComments(id);
 
             // ASSERT
