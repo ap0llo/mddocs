@@ -17,8 +17,8 @@ namespace MdDoc.Model
             // public
             definitionBuilder.Append("public ");
 
-            // statoco
-            if(!property.HasThis)
+            // static
+            if(property.GetMethod?.IsStatic == true || property.SetMethod?.IsStatic == true)
             {
                 definitionBuilder.Append("static ");
             }
@@ -105,11 +105,11 @@ namespace MdDoc.Model
 
             return definitionBuilder.ToString();
         }
-
+        
         public static string GetDefinition(MethodDefinition method)
         {
             var definitionBuilder = new StringBuilder();
-
+            
             // constructor
             if (method.IsConstructor)
             {
@@ -197,6 +197,11 @@ namespace MdDoc.Model
 
             // method parameters
             definitionBuilder.Append("(");
+            if(method.IsExtensionMethod())
+            {
+                definitionBuilder.Append("this ");
+            }
+
             definitionBuilder.AppendJoin(
                 ", ",
                 method.Parameters.Select(p => $"{p.ParameterType.ToTypeId().DisplayName} {p.Name}")
@@ -208,7 +213,6 @@ namespace MdDoc.Model
 
         //TODO: Classes, interfaces, enum, structs        
         //TODO: Events
-
 
         private static string GetOperatorString(OperatorKind kind)
         {

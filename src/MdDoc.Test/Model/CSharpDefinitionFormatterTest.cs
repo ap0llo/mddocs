@@ -87,6 +87,22 @@ namespace MdDoc.Test.Model
         }
 
         [Theory]
+        [InlineData(nameof(TestClass_CSharpDefinition_ExtensionMethods.Method1), @"public static void Method1(this string param);")]
+        public void GetDefinition_returns_the_expected_definition_for_extension_methods(string methodName, string expected)
+        {
+            // ARRANGE
+            var fieldDefinition = GetTypeDefinition(typeof(TestClass_CSharpDefinition_ExtensionMethods))
+                .Methods
+                .Single(p => p.Name == methodName);
+
+            // ACT
+            var actual = CSharpDefinitionFormatter.GetDefinition(fieldDefinition);
+
+            // ASSERT
+            Assert.Equal(expected, actual);
+        }
+
+        [Theory]
         [InlineData(0, false, @"public TestClass_CSharpDefinition();")]
         [InlineData(1, false, @"public TestClass_CSharpDefinition(string parameter);")]
         [InlineData(0, true, @"static TestClass_CSharpDefinition();")]

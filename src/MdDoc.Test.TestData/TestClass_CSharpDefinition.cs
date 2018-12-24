@@ -87,4 +87,9 @@ namespace MdDoc.Test.TestData
         public static explicit operator int(TestClass_CSharpDefinition left) => throw new NotImplementedException();
 
     }
+
+    public static class TestClass_CSharpDefinition_ExtensionMethods
+    {
+        public static void Method1(this string param) => throw new NotImplementedException();
+    }
 }

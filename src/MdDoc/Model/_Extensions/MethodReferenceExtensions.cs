@@ -23,7 +23,6 @@ namespace MdDoc.Model
                 return false;
             }
         }
-
         
         public static OperatorKind? GetOperatorKind(this MethodReference methodReference) =>
             OperatorMethodNames.GetOperatorKind(methodReference.Name);
@@ -48,7 +47,7 @@ namespace MdDoc.Model
                 parameters,
                 returnType
             );
-        }
+        }        
 
     }
 }
