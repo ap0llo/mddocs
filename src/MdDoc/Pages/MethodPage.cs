@@ -30,6 +30,8 @@ namespace MdDoc.Pages
 
             AddDeclaringTypeSection(document.Root);            
 
+            //TODO: Attributes
+
             //TODO: Summary
 
             AddOverloadsSection(document.Root, Model.Overloads);

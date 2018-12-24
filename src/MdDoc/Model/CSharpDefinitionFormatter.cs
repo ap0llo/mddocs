@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Mono.Cecil;
@@ -13,6 +14,8 @@ namespace MdDoc.Model
             var hasSetter = property.SetMethod?.IsPublic == true;
 
             var definitionBuilder = new StringBuilder();
+
+            AppendAttributes(definitionBuilder, property.CustomAttributes);
 
             // public
             definitionBuilder.Append("public ");
@@ -70,8 +73,10 @@ namespace MdDoc.Model
         {            
             var definitionBuilder = new StringBuilder();
 
+            AppendAttributes(definitionBuilder, field.CustomAttributes);
+
             // public
-            if(field.IsPublic)
+            if (field.IsPublic)
             {
                 definitionBuilder.Append("public ");
             }
@@ -109,43 +114,46 @@ namespace MdDoc.Model
         public static string GetDefinition(MethodDefinition method)
         {
             var definitionBuilder = new StringBuilder();
-            
-            // constructor
+
+            // attributes
+            var customAttributes = method.CustomAttributes.Where(a => a.AttributeType.FullName != Constants.ExtensionAttributeFullName);
+            AppendAttributes(definitionBuilder, customAttributes);
+
+            // method is constructor
             if (method.IsConstructor)
             {
                 // omit the "public" moifier for static class initializers
-                if(method.IsStatic)
+                if (method.IsStatic)
                 {
                     definitionBuilder.Append("static ");
 
                 }
-                else if(method.IsPublic)
+                else if (method.IsPublic)
                 {
                     definitionBuilder.Append("public ");
-
                 }
 
                 // no return type
 
-                // metho name is the name of the type
+                // method name is the name of the type
                 definitionBuilder.Append(method.DeclaringType.Name);
             }
             // non-constructor method
             else
             {
-                // public
+                // "public"
                 if (method.IsPublic)
                 {
                     definitionBuilder.Append("public ");
                 }
 
-                // static
+                // "static"
                 if (method.IsStatic)
                 {
                     definitionBuilder.Append("static ");
                 }
 
-                
+
                 // check if method is operator
                 if (method.IsOperator(out var operatorKind))
                 {
@@ -157,7 +165,7 @@ namespace MdDoc.Model
                         definitionBuilder.Append("implicit operator ");
                         definitionBuilder.Append(method.ReturnType.ToTypeId().DisplayName);
                     }
-                    else if(operatorKind == OperatorKind.Explicit)
+                    else if (operatorKind == OperatorKind.Explicit)
                     {
                         definitionBuilder.Append("explicit operator ");
                         definitionBuilder.Append(method.ReturnType.ToTypeId().DisplayName);
@@ -185,7 +193,7 @@ namespace MdDoc.Model
             }
 
             // type parameters
-            if(method.GenericParameters.Count > 0)
+            if (method.GenericParameters.Count > 0)
             {
                 definitionBuilder.Append("<");
                 definitionBuilder.AppendJoin(
@@ -197,7 +205,7 @@ namespace MdDoc.Model
 
             // method parameters
             definitionBuilder.Append("(");
-            if(method.IsExtensionMethod())
+            if (method.IsExtensionMethod())
             {
                 definitionBuilder.Append("this ");
             }
@@ -210,10 +218,12 @@ namespace MdDoc.Model
 
             return definitionBuilder.ToString();
         }
-
+        
         public static string GetDefinition(EventDefinition @event)
         {
             var definitionBuilder = new StringBuilder();
+
+            AppendAttributes(definitionBuilder, @event.CustomAttributes);
 
             // "public"
             if (@event.AddMethod?.IsPublic == true || @event.RemoveMethod?.IsPublic == true)
@@ -242,7 +252,38 @@ namespace MdDoc.Model
         }
 
         //TODO: Classes, interfaces, enum, structs        
-        
+
+        private static void AppendAttributes(StringBuilder definitionBuilder, IEnumerable<CustomAttribute> customAttributes)
+        {
+            foreach (var attribute in customAttributes)
+            {
+                var attributeName = attribute.AttributeType.ToTypeId().DisplayName;
+
+                // remove the "Attribute" suffix from the attribute type's name
+                if (attributeName.EndsWith("Attribute"))
+                    attributeName = attributeName.Substring(0, attributeName.Length - "Attribute".Length);
+
+                definitionBuilder.Append("[");
+                definitionBuilder.Append(attributeName);
+
+                // if there are any paramters or properties defined, append them as well)
+                if (attribute.HasConstructorArguments || attribute.HasProperties)
+                {
+                    definitionBuilder.Append("(");
+                    definitionBuilder.AppendJoin(", ",
+                        Enumerable.Union(
+                            attribute.ConstructorArguments.Select(GetLiteral),
+                            attribute.Properties.Select(p => $"{p.Name} = {GetLiteral(p.Argument)}")
+                        )
+                    );
+                    definitionBuilder.Append(")");
+                }
+
+                definitionBuilder.Append("]");
+                definitionBuilder.Append("\r\n");
+            }
+        }
+
         private static string GetOperatorString(OperatorKind kind)
         {
             switch (kind)
@@ -301,5 +342,82 @@ namespace MdDoc.Model
             }
         }
 
+        private static string GetLiteral(CustomAttributeArgument attributeArgument)
+        {
+            // string => put in quotation marks
+            if (attributeArgument.Type.FullName == Constants.StringFullName)
+            {
+                return $"\"{attributeArgument.Value}\"";
+            }
+            // special handling for enums
+            else if(IsEnum(attributeArgument.Type))
+            {
+                // get the definition of the enum
+                var typeDefinition = attributeArgument.Type.Resolve();
+
+                // get the arguments value and all possible values for the enum
+                var intValue = Convert.ToInt64(attributeArgument.Value);
+                var values = GetEnumValues(typeDefinition);
+
+                // get the friendly name for the enum
+                var enumName = typeDefinition.ToTypeId().DisplayName;
+
+                // for "Flags" enums, return all values
+                if (IsFlagsEnum(typeDefinition))
+                {
+                    var builder = new StringBuilder();
+
+                    foreach (var (name, value) in values)
+                    {
+                        if ((intValue & value) != 0)
+                        {
+                            if (builder.Length > 0)
+                                builder.Append(" | ");
+
+                            builder.Append(enumName);
+                            builder.Append(".");
+                            builder.Append(name);
+                        }
+                    }
+
+                    return builder.ToString();
+                }
+                // for "normal" enums, return the name of the value
+                else if(values.Any(x => x.value == intValue))
+                {
+                    return $"{enumName}.{values.First(x => x.value == intValue).name}";
+                }
+                // on error (e.g. a value not defined in the enum), just return the plain value
+                else
+                {
+                    return attributeArgument.Value.ToString();
+                }
+            }
+            // otherwise: convert value to string
+            else
+            {
+                return attributeArgument.Value.ToString();
+            }
+        }
+
+        private static bool IsFlagsEnum(TypeDefinition type)
+        {
+            return type.HasCustomAttributes &&
+                   type.CustomAttributes.Any(a => a.AttributeType.FullName == Constants.FlagsAttributeFullName);
+        }
+
+        private static bool IsEnum(TypeReference type)
+        {
+            var definition = type.Resolve();
+            return definition != null &&
+                   definition.Kind() == TypeKind.Enum;
+        }
+
+        private static (string name, long value)[] GetEnumValues(TypeDefinition definition)
+        {
+            return definition.Fields
+                .Where(f => f.IsPublic && !f.IsSpecialName)               
+                .Select(f => (f.Name, Convert.ToInt64(f.Constant))).ToArray();
+        }
     }
 }

@@ -61,6 +61,12 @@ namespace DemoProject
         public string Property1 { get; }
 
         /// <summary>
+        /// Gets the value of <see cref="Property2"/>
+        /// </summary>
+        [DemoPropertyAnnotation(PropertyFlags.Flag2 | PropertyFlags.Flag3)]
+        public string Property2 { get; }
+
+        /// <summary>
         /// Initializes a new instance of <see cref="DemoClass"/>
         /// </summary>
         public DemoClass()
@@ -78,6 +84,12 @@ namespace DemoProject
         /// Does something ;)
         /// </summary>        
         public void DoSomething(string parameter) => throw new NotImplementedException();
+
+        /// <summary>
+        /// Does something else
+        /// </summary>        
+        [Demo]
+        public void DoSomethingElse() => throw new NotImplementedException();
 
         /// <summary>
         /// Combines two instances of <see cref="DemoClass"/>

@@ -7,7 +7,7 @@ namespace MdDoc.Model
     {
 
         public static bool IsExtensionMethod(this MethodDefinition method) =>
-            method.CustomAttributes.Any(x => x.AttributeType.FullName == "System.Runtime.CompilerServices.ExtensionAttribute");
+            method.CustomAttributes.Any(x => x.AttributeType.FullName == Constants.ExtensionAttributeFullName);
 
     }
 }

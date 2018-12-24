@@ -42,6 +42,12 @@ namespace MdDoc.Test.Model
                 typeof(TestInterface_Inheritance),
                 typeof(TestClass_CSharpDefinition),
                 typeof(TestClass_CSharpDefinition_ExtensionMethods),
+                typeof(CSharpDefinitionTest1Attribute),
+                typeof(CSharpDefinitionTest2Attribute),
+                typeof(CSharpDefinitionTest3Attribute),
+                typeof(CSharpDefinitionTest4Attribute),
+                typeof(CSharpDefinitionTestFlagsEnum),
+                typeof(CSharpDefinitionTestEnum),
                 typeof(TestClass_XmlDocs<,>),
                 typeof(TestClass_NoDocumentation)
             })

@@ -1,9 +1,56 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 
 namespace MdDoc.Test.TestData
 {
+    public class CSharpDefinitionTest1Attribute : Attribute
+    {
+        public string Property1 { get; set; }
+
+        public CSharpDefinitionTest1Attribute(int value)
+        {
+        }
+    }
+
+    [Flags]
+    public enum CSharpDefinitionTestFlagsEnum : short
+    {
+        Value1 = 0x01,
+        Value2 = 0x01 << 1,
+        Value3 = 0x01 << 2
+    }
+
+    public class CSharpDefinitionTest2Attribute : Attribute
+    {
+        public CSharpDefinitionTest2Attribute(CSharpDefinitionTestFlagsEnum value)
+        {
+        }
+    }
+
+    public class CSharpDefinitionTest3Attribute : Attribute
+    {
+        public CSharpDefinitionTest3Attribute(BindingFlags value)
+        {
+        }
+    }
+    
+    public class CSharpDefinitionTest4Attribute : Attribute
+    {
+        public CSharpDefinitionTest4Attribute(CSharpDefinitionTestEnum value)
+        {
+        }
+    }
+    
+    public enum CSharpDefinitionTestEnum 
+    {
+        Value1 = 1,
+        Value2 = 2,
+        Value3 = 3
+    }
+
+
     public class TestClass_CSharpDefinition
     {
         public string Field1;
@@ -14,10 +61,16 @@ namespace MdDoc.Test.TestData
 
         public static readonly int Field4;
 
+        [CSharpDefinitionTest1(1)]
+        public static readonly int Field5;
+
 
         public event EventHandler<EventArgs> Event1;
 
         public static event EventHandler Event2;
+
+        [CSharpDefinitionTest1(1)]
+        public static event EventHandler Event3;
 
 
         public int Property1 { get; set; }
@@ -35,6 +88,9 @@ namespace MdDoc.Test.TestData
         public IEnumerable<string> Property7 { get; }
 
         public static IEnumerable<string> Property8 { get; }
+
+        [CSharpDefinitionTest1(1)]
+        public static IEnumerable<string> Property9 { get; }
 
         public int this[object parameter] { get { throw new NotImplementedException(); } }
 
@@ -60,6 +116,24 @@ namespace MdDoc.Test.TestData
         public static string Method4(string param1, Stream param2) => throw new NotImplementedException();        
 
         public static string Method5<TParam>(TParam parameter) => throw new NotImplementedException();
+
+        [Obsolete]
+        public void Method6() => throw new NotImplementedException();
+
+        [Obsolete("Use another method")]
+        public void Method7() => throw new NotImplementedException();
+
+        [CSharpDefinitionTest1(1, Property1 = "Value")]
+        public void Method8() => throw new NotImplementedException();
+
+        [CSharpDefinitionTest2(CSharpDefinitionTestFlagsEnum.Value1 | CSharpDefinitionTestFlagsEnum.Value2)]
+        public void Method9() => throw new NotImplementedException();
+
+        [CSharpDefinitionTest3(BindingFlags.CreateInstance | BindingFlags.NonPublic)]
+        public void Method10() => throw new NotImplementedException();
+
+        [CSharpDefinitionTest4(CSharpDefinitionTestEnum.Value2)]
+        public void Method11() => throw new NotImplementedException();
 
 
         public static TestClass_CSharpDefinition operator +(TestClass_CSharpDefinition other) => throw new NotImplementedException();

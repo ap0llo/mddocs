@@ -52,12 +52,14 @@ The last section is the "See Also" section with links provided inline using the 
 | Name                                           | Description                                                      |
 | ---------------------------------------------- | ---------------------------------------------------------------- |
 | [Property1](properties/DemoClass.Property1.md) | Gets the value of [Property1](properties/DemoClass.Property1.md) |
+| [Property2](properties/DemoClass.Property2.md) | Gets the value of [Property2](properties/DemoClass.Property2.md) |
 
 ## Methods
 
-| Name                                                    | Description       |
-| ------------------------------------------------------- | ----------------- |
-| [DoSomething(string)](methods/DemoClass.DoSomething.md) | Does something ;) |
+| Name                                                      | Description         |
+| --------------------------------------------------------- | ------------------- |
+| [DoSomething(string)](methods/DemoClass.DoSomething.md)   | Does something ;)   |
+| [DoSomethingElse()](methods/DemoClass.DoSomethingElse.md) | Does something else |
 
 ## Operators
 

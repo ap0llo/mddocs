@@ -16,6 +16,10 @@ namespace MdDoc.Test.Model
         [InlineData(nameof(TestClass_CSharpDefinition.Property6), @"public Stream Property6 { get; }")]
         [InlineData(nameof(TestClass_CSharpDefinition.Property7), @"public IEnumerable<string> Property7 { get; }")]
         [InlineData(nameof(TestClass_CSharpDefinition.Property8), @"public static IEnumerable<string> Property8 { get; }")]
+        [InlineData(
+            nameof(TestClass_CSharpDefinition.Property9),
+            "[CSharpDefinitionTest1(1)]\r\n" +
+            "public static IEnumerable<string> Property9 { get; }")]
         public void GetDefinition_returns_the_expected_definition_for_properties(string propertyName, string expected)
         {
             // ARRANGE
@@ -52,6 +56,11 @@ namespace MdDoc.Test.Model
         [InlineData(nameof(TestClass_CSharpDefinition.Field2), @"public static string Field2;")]
         [InlineData(nameof(TestClass_CSharpDefinition.Field3), @"public const string Field3;")]
         [InlineData(nameof(TestClass_CSharpDefinition.Field4), @"public static readonly int Field4;")]
+        [InlineData(
+            nameof(TestClass_CSharpDefinition.Field5),
+            "[CSharpDefinitionTest1(1)]\r\n" +
+            "public static readonly int Field5;"
+        )]
         public void GetDefinition_returns_the_expected_definition_for_fields(string fieldName, string expected)
         {
             // ARRANGE
@@ -69,6 +78,11 @@ namespace MdDoc.Test.Model
         [Theory]
         [InlineData(nameof(TestClass_CSharpDefinition.Event1), @"public event EventHandler<EventArgs> Event1;")]
         [InlineData(nameof(TestClass_CSharpDefinition.Event2), @"public static event EventHandler Event2;")]
+        [InlineData(
+            nameof(TestClass_CSharpDefinition.Event3),
+            "[CSharpDefinitionTest1(1)]\r\n" +
+            "public static event EventHandler Event3;"
+        )]
         public void GetDefinition_returns_the_expected_definition_for_events(string fieldName, string expected)
         {
             // ARRANGE
@@ -89,6 +103,34 @@ namespace MdDoc.Test.Model
         [InlineData(nameof(TestClass_CSharpDefinition.Method3), @"public string Method3(string param1, Stream param2);")]
         [InlineData(nameof(TestClass_CSharpDefinition.Method4), @"public static string Method4(string param1, Stream param2);")]
         [InlineData(nameof(TestClass_CSharpDefinition.Method5), @"public static string Method5<TParam>(TParam parameter);")]
+        [InlineData(
+            nameof(TestClass_CSharpDefinition.Method6),
+            "[Obsolete]\r\n" +
+            "public void Method6();")]
+        [InlineData(
+            nameof(TestClass_CSharpDefinition.Method7),
+            "[Obsolete(\"Use another method\")]\r\n" +
+            "public void Method7();")]
+        [InlineData(
+            nameof(TestClass_CSharpDefinition.Method8),
+            "[CSharpDefinitionTest1(1, Property1 = \"Value\")]\r\n" +
+            "public void Method8();"
+        )]
+        [InlineData(
+            nameof(TestClass_CSharpDefinition.Method9),
+            "[CSharpDefinitionTest2(CSharpDefinitionTestFlagsEnum.Value1 | CSharpDefinitionTestFlagsEnum.Value2)]\r\n" +
+            "public void Method9();"
+        )]
+        [InlineData(
+            nameof(TestClass_CSharpDefinition.Method10),
+            "[CSharpDefinitionTest3(BindingFlags.NonPublic | BindingFlags.CreateInstance)]\r\n" +
+            "public void Method10();"
+        )]
+        [InlineData(
+            nameof(TestClass_CSharpDefinition.Method11),
+            "[CSharpDefinitionTest4(CSharpDefinitionTestEnum.Value2)]\r\n" +
+            "public void Method11();"
+        )]
         public void GetDefinition_returns_the_expected_definition_for_methods(string methodName, string expected)
         {
             // ARRANGE
