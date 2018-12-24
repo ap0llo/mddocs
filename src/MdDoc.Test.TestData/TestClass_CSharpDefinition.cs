@@ -15,6 +15,11 @@ namespace MdDoc.Test.TestData
         public static readonly int Field4;
 
 
+        public event EventHandler<EventArgs> Event1;
+
+        public static event EventHandler Event2;
+
+
         public int Property1 { get; set; }
 
         public byte Property2 { get; set; }

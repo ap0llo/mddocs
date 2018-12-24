@@ -211,9 +211,38 @@ namespace MdDoc.Model
             return definitionBuilder.ToString();
         }
 
-        //TODO: Classes, interfaces, enum, structs        
-        //TODO: Events
+        public static string GetDefinition(EventDefinition @event)
+        {
+            var definitionBuilder = new StringBuilder();
 
+            // "public"
+            if (@event.AddMethod?.IsPublic == true || @event.RemoveMethod?.IsPublic == true)
+            {
+                definitionBuilder.Append("public ");
+            }
+
+            // "static"
+            if (@event.AddMethod?.IsStatic == true || @event.RemoveMethod?.IsStatic == true)
+            {
+                definitionBuilder.Append("static ");
+            }
+
+            // "event"
+            definitionBuilder.Append("event ");
+
+            // event type
+            definitionBuilder.Append(@event.EventType.ToTypeId().DisplayName);
+            definitionBuilder.Append(" ");
+
+            // event name
+            definitionBuilder.Append(@event.Name);
+            definitionBuilder.Append(";");
+
+            return definitionBuilder.ToString();
+        }
+
+        //TODO: Classes, interfaces, enum, structs        
+        
         private static string GetOperatorString(OperatorKind kind)
         {
             switch (kind)

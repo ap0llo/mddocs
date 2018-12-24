@@ -12,6 +12,8 @@ namespace MdDoc.Model
 
         public TextBlock Summary { get; }
 
+        public string CSharpDefinition { get; }
+
         internal EventDefinition Definition { get; }
 
 
@@ -20,6 +22,7 @@ namespace MdDoc.Model
             Definition = definition ?? throw new ArgumentNullException(nameof(definition));
             MemberId = definition.ToMemberId();
             Summary = xmlDocsProvider.TryGetDocumentationComments(MemberId)?.Summary;
+            CSharpDefinition = CSharpDefinitionFormatter.GetDefinition(definition);
         }
 
         public override IDocumentation TryGetDocumentation(MemberId id) => 

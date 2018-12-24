@@ -67,6 +67,23 @@ namespace MdDoc.Test.Model
         }
 
         [Theory]
+        [InlineData(nameof(TestClass_CSharpDefinition.Event1), @"public event EventHandler<EventArgs> Event1;")]
+        [InlineData(nameof(TestClass_CSharpDefinition.Event2), @"public static event EventHandler Event2;")]
+        public void GetDefinition_returns_the_expected_definition_for_events(string fieldName, string expected)
+        {
+            // ARRANGE
+            var eventDefinition = GetTypeDefinition(typeof(TestClass_CSharpDefinition))
+                .Events
+                .Single(p => p.Name == fieldName);
+
+            // ACT
+            var actual = CSharpDefinitionFormatter.GetDefinition(eventDefinition);
+
+            // ASSERT
+            Assert.Equal(expected, actual);
+        }
+
+        [Theory]
         [InlineData(nameof(TestClass_CSharpDefinition.Method1), @"public void Method1();")]
         [InlineData(nameof(TestClass_CSharpDefinition.Method2), @"public string Method2();")]
         [InlineData(nameof(TestClass_CSharpDefinition.Method3), @"public string Method3(string param1, Stream param2);")]

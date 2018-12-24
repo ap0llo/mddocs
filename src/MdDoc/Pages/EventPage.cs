@@ -31,7 +31,10 @@ namespace MdDoc.Pages
 
             //TODO: Summary
 
-            //TODO: C# Definition           
+            document.Root.Add(
+                CodeBlock(Model.CSharpDefinition, "csharp")
+            );
+            
 
             //TODO: Remarks
 
