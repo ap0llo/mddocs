@@ -50,7 +50,7 @@
             </remarks>
             <seealso cref="T:DemoProject.IDemoInterface"/>
             <seealso cref="T:System.String">String might also be interesting</seealso>
-            <seealso cref="T:DemoProject.DemoStruct">DemoStruct has a similar purpose but is a value type</seealso>
+            <seealso cref="T:DemoProject.DemoStruct">DemoStruct has a similar purpose but is a value type</seealso>    
         </member>
         <member name="F:DemoProject.DemoClass.Field1">
             <summary>
@@ -70,6 +70,16 @@
         <member name="P:DemoProject.DemoClass.Property2">
             <summary>
             Gets the value of <see cref="P:DemoProject.DemoClass.Property2"/>
+            </summary>
+        </member>
+        <member name="P:DemoProject.DemoClass.Item(System.Int32)">
+            <summary>
+            An example of an indexer with a single parameter.
+            </summary>
+        </member>
+        <member name="P:DemoProject.DemoClass.Item(System.Int32,System.Int32)">
+            <summary>
+            An example of an indexer with two parameters.
             </summary>
         </member>
         <member name="M:DemoProject.DemoClass.#ctor">

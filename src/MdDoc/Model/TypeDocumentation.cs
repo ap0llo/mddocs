@@ -13,6 +13,7 @@ namespace MdDoc.Model
         private readonly IDictionary<MemberId, FieldDocumentation> m_Fields;
         private readonly IDictionary<MemberId, EventDocumentation> m_Events;
         private readonly IDictionary<MemberId, PropertyDocumentation> m_Properties;        
+        private readonly IDictionary<string, IndexerDocumentation> m_Indexers;        
         private readonly IDictionary<string, MethodDocumentation> m_Methods;
         private readonly IDictionary<OperatorKind, OperatorDocumentation> m_Operators;
 
@@ -36,6 +37,8 @@ namespace MdDoc.Model
         public IReadOnlyCollection<EventDocumentation> Events { get; }
 
         public IReadOnlyCollection<PropertyDocumentation> Properties { get; }
+
+        public IReadOnlyCollection<IndexerDocumentation> Indexers { get; }
 
         public ConstructorDocumentation Constructors { get; }
 
@@ -85,11 +88,19 @@ namespace MdDoc.Model
             Events = ReadOnlyCollectionAdapter.Create(m_Events.Values);
 
             m_Properties = definition.Properties
-                .Where(property => (property.GetMethod?.IsPublic == true || property.SetMethod?.IsPublic == true))
+                .Where(property => (property.GetMethod?.IsPublic == true || property.SetMethod?.IsPublic == true) && !property.HasParameters)
                 .Select(p => new PropertyDocumentation(this, p, xmlDocsProvider))
                 .ToDictionary(p => p.MemberId);
 
             Properties = ReadOnlyCollectionAdapter.Create(m_Properties.Values);
+
+            m_Indexers = definition.Properties
+                .Where(property => (property.GetMethod?.IsPublic == true || property.SetMethod?.IsPublic == true) && property.HasParameters)
+                .GroupBy(p => p.Name)
+                .Select(group => new IndexerDocumentation(this, group, xmlDocsProvider))
+                .ToDictionary(indexer => indexer.Name);
+
+            Indexers = ReadOnlyCollectionAdapter.Create(m_Indexers.Values);
 
             var ctors = definition.GetDocumentedConstrutors();
             if(ctors.Any())
@@ -137,8 +148,11 @@ namespace MdDoc.Model
                 case EventId eventId when eventId.DefiningType.Equals(TypeId):
                     return m_Events.GetValueOrDefault(eventId);
 
-                case PropertyId propertyId when propertyId.DefiningType.Equals(TypeId):
+                case PropertyId propertyId when propertyId.DefiningType.Equals(TypeId) && propertyId.Parameters.Count == 0:                    
                     return m_Properties.GetValueOrDefault(propertyId);
+
+                case PropertyId propertyId when propertyId.DefiningType.Equals(TypeId) && propertyId.Parameters.Count > 0:
+                    return m_Indexers.GetValueOrDefault(propertyId.Name);
 
                 case MethodId methodId when methodId.DefiningType.Equals(TypeId):                    
                     if (methodId.IsConstructor())

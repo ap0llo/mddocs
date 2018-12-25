@@ -4,7 +4,7 @@ using Mono.Cecil;
 
 namespace MdDoc.Model
 {
-    public sealed class OperatorOverloadDocumentation : OverloadDocumentation
+    public sealed class OperatorOverloadDocumentation : MethodLikeOverloadDocumentation
     {
         public OperatorKind OperatorKind { get; }
 

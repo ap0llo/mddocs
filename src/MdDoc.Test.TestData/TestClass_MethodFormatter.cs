@@ -23,6 +23,11 @@ namespace MdDoc.Test.TestData
         }
 
 
+        public int this[int parameter] => throw new NotImplementedException();
+
+        public int this[int x, int y] => throw new NotImplementedException();
+
+
         public void Method1() { }
 
         public string Method2() => throw new NotImplementedException();

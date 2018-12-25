@@ -72,5 +72,24 @@ namespace MdDoc.Test.Model
             Assert.Equal(expectedSignature, actualSignature);
         }
 
+
+        [Theory]
+        [InlineData(1, "Item[int]")]
+        [InlineData(2, "Item[int, int]")]
+        public void GetSignature_returns_the_expected_result_for_indexers(int paramterCount, string expectedSignature)
+        {
+            // ARRANGE
+            var method = GetTypeDefinition(typeof(TestClass_MethodFormatter))
+                   .Properties
+                   .Single(x => x.Parameters.Count == paramterCount);
+
+            var sut = MethodFormatter.Instance;
+
+            // ACT
+            var actualSignature = sut.GetSignature(method);
+
+            // ASSERT
+            Assert.Equal(expectedSignature, actualSignature);
+        }
     }
 }

@@ -60,11 +60,16 @@ namespace MdDoc.Pages
                     m_Pages.Add(property, new PropertyPage(this, m_RootOutputPath, property));
                 }
 
+                foreach(var indexer in type.Indexers)
+                {
+                    m_Pages.Add(indexer, new IndexerPage(this, m_RootOutputPath, indexer));
+                }
+
                 if (type.Constructors != null)
                 {
                     m_Pages.Add(type.Constructors, new ConstructorsPage(this, m_RootOutputPath, type.Constructors));
                 }
-
+            
                 foreach (var method in type.Methods)
                 {
                     m_Pages.Add(method, new MethodPage(this, m_RootOutputPath, method));

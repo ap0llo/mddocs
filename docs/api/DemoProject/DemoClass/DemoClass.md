@@ -12,6 +12,8 @@ public class DemoClass
 
 **Inheritance:** Object → DemoClass
 
+**Attributes:** DefaultMemberAttribute
+
 ## Remarks
 
 The main purpose of this class is to showcase the generated documentation.
@@ -57,6 +59,13 @@ The last section is the "See Also" section with links provided inline using the 
 | ---------------------------------------------- | ---------------------------------------------------------------- |
 | [Property1](properties/DemoClass.Property1.md) | Gets the value of [Property1](properties/DemoClass.Property1.md) |
 | [Property2](properties/DemoClass.Property2.md) | Gets the value of [Property2](properties/DemoClass.Property2.md) |
+
+## Indexers
+
+| Name                                           | Description                                       |
+| ---------------------------------------------- | ------------------------------------------------- |
+| [Item\[int, int\]](indexers/DemoClass.Item.md) | An example of an indexer with two parameters.     |
+| [Item\[int\]](indexers/DemoClass.Item.md)      | An example of an indexer with a single parameter. |
 
 ## Methods
 

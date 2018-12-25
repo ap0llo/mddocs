@@ -58,5 +58,26 @@ namespace MdDoc.Model
             return signatureBuilder.ToString();
         }
 
+
+        public string GetSignature(PropertyDefinition property)
+        {
+            var signatureBuilder = new StringBuilder();
+
+            signatureBuilder.Append(property.Name);
+
+
+            if(property.HasParameters)
+            {
+                signatureBuilder.Append("[");
+
+                signatureBuilder.AppendJoin(
+                    ", ",
+                    property.Parameters.Select(p => p.ParameterType.ToTypeId().DisplayName)
+                );
+                signatureBuilder.Append("]");
+            }
+
+            return signatureBuilder.ToString();
+        }
     }
 }

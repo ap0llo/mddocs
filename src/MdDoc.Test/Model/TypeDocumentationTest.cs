@@ -103,14 +103,14 @@ namespace MdDoc.Test.Model
             var properties = sut.Properties;
 
             // ASSERT
-            Assert.Equal(4, properties.Count);
+            Assert.Equal(2, properties.Count);
             Assert.Contains(properties, prop => prop.Name == "Property1");
             Assert.Contains(properties, prop => prop.Name == "Property2");
-            Assert.Contains(properties, prop => prop.Name == "Item");
+            Assert.DoesNotContain(properties, prop => prop.Name == "Item");
             Assert.DoesNotContain(properties, prop => prop.Name == "Property3");
             Assert.DoesNotContain(properties, prop => prop.Name == "Property4");
         }
-
+        
         [Fact]
         public void Properties_returns_expected_properties_02()
         {
@@ -119,10 +119,10 @@ namespace MdDoc.Test.Model
             var properties = sut.Properties;
 
             // ASSERT
-            Assert.Equal(4, properties.Count);
+            Assert.Equal(2, properties.Count);
             Assert.Contains(properties, prop => prop.Name == "Property1");
             Assert.Contains(properties, prop => prop.Name == "Property2");
-            Assert.Contains(properties, prop => prop.Name == "Item");
+            Assert.DoesNotContain(properties, prop => prop.Name == "Item");
         }    
 
         [Fact]
@@ -133,10 +133,47 @@ namespace MdDoc.Test.Model
             var properties = sut.Properties;
 
             // ASSERT
-            Assert.Equal(4, properties.Count);
+            Assert.Equal(2, properties.Count);
             Assert.Contains(properties, prop => prop.Name == "Property1");
             Assert.Contains(properties, prop => prop.Name == "Property2");
-            Assert.Contains(properties, prop => prop.Name == "Item");
+            Assert.DoesNotContain(properties, prop => prop.Name == "Item");
+        }
+
+
+        [Fact]
+        public void Indexers_returns_expected_properties_01()
+        {
+            // ARRANGE / ACT
+            var sut = GetTypeDocumentation(typeof(TestClass_Properties));
+            var indexers = sut.Indexers;
+
+            // ASSERT
+            Assert.Equal(1, indexers.Count);
+            Assert.Contains(indexers, indexer => indexer.Name == "Item" && indexer.Overloads.Count == 2);            
+        }
+
+        [Fact]
+        public void Indexers_returns_expected_properties_02()
+        {
+            // ARRANGE / ACT
+            var sut = GetTypeDocumentation(typeof(TestInterface_Properties));
+            var indexers = sut.Indexers;
+
+            // ASSERT
+            Assert.Equal(1, indexers.Count);
+            Assert.Contains(indexers, indexer => indexer.Name == "Item" && indexer.Overloads.Count == 2);
+        }
+
+        [Fact]
+        public void Indexers_returns_expected_properties_03()
+        {
+            // ARRANGE / ACT
+            var sut = GetTypeDocumentation(typeof(TestStruct_Properties));
+            var indexers = sut.Indexers;
+
+            // ASSERT
+            Assert.Equal(1, indexers.Count);
+            Assert.Contains(indexers, indexer => indexer.Name == "Item" && indexer.Overloads.Count == 2);
         }
 
         [Fact]

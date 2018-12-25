@@ -32,7 +32,7 @@
   <Class Name="MdDoc.Model.PropertyDocumentation">
     <Position X="10.25" Y="6.75" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAACAAAAAAAAAQgAAAAAAAAAAACAABAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAACAAAAAAAAAQgAAAAAAAAAQAAAABAAAA=</HashCode>
       <FileName>Model\PropertyDocumentation.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -52,14 +52,14 @@
   <Class Name="MdDoc.Model.FieldDocumentation">
     <Position X="5.5" Y="6.75" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAACAAAAAAAAAQAAAAAAAAAAAAAAABAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAACAAAAAAAAAQAAAAAAAAAAQAAAABAAAA=</HashCode>
       <FileName>Model\FieldDocumentation.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="MdDoc.Model.EventDocumentation">
     <Position X="7.5" Y="6.75" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAACAAAAAAAAAQAAAAAAAAAAAAAAABAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAACAAAAAAAAAQAAAAAAAAAAQAAAABAAAA=</HashCode>
       <FileName>Model\EventDocumentation.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -71,7 +71,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="MdDoc.Model.OperatorOverloadDocumentation">
-    <Position X="27.25" Y="4.75" Width="2.5" />
+    <Position X="29.5" Y="8.25" Width="2.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAEAAAAAAAAAAABAQAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Model\OperatorOverloadDocumentation.cs</FileName>
@@ -99,23 +99,12 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="MdDoc.Model.ConstructorOverloadDocumentation">
-    <Position X="21.5" Y="4.75" Width="2.75" />
+    <Position X="23.5" Y="8.25" Width="2.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAEAAAACAAAAAAAAAAAAAAAAACAAAAAAA=</HashCode>
       <FileName>Model\ConstructorOverloadDocumentation.cs</FileName>
       <NewMemberFileName>Model\MethodOverloadDocumentation.cs</NewMemberFileName>
     </TypeIdentifier>
-  </Class>
-  <Class Name="MdDoc.Model.OverloadDocumentation">
-    <Position X="24.5" Y="0.75" Width="2.5" />
-    <Compartments>
-      <Compartment Name="Methods" Collapsed="true" />
-    </Compartments>
-    <TypeIdentifier>
-      <HashCode>AACAAAAAAIAAGAAAAAAAAQAAAAAAAAAAAIAAAABAAAE=</HashCode>
-      <FileName>Model\OverloadDocumentation.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Position="0.2" />
   </Class>
   <Class Name="MdDoc.Model.OverloadableMemberDocumentation&lt;TOverload&gt;">
     <Position X="15" Y="3.5" Width="3.25" />
@@ -124,18 +113,41 @@
       <FileName>Model\OverloadableMemberDocumentation.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="MdDoc.Model.OverloadDocumentation">
+    <Position X="24.25" Y="0.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAAEAAAAAAAAQAAAAAAAAAAAIAAAABAAAE=</HashCode>
+      <FileName>Model\OverloadDocumentation.cs</FileName>
+      <NewMemberFileName>Model\MethodOverloadDocumentation.cs</NewMemberFileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MdDoc.Model.SimpleMemberDocumentation">
+    <Position X="7.5" Y="3.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAAEAAAAAAAAQQAAAAAAAAAAQAAAABAAAA=</HashCode>
+      <FileName>Model\SimpleMemberDocumentation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MdDoc.Model.MethodLikeOverloadDocumentation">
+    <Position X="26.5" Y="5.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAE=</HashCode>
+      <FileName>Model\MethodLikeOverloadDocumentation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
   <Class Name="MdDoc.Model.MethodOverloadDocumentation">
-    <Position X="24.5" Y="4.75" Width="2.5" />
+    <Position X="26.5" Y="8.25" Width="2.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAACAAAAIAA=</HashCode>
       <FileName>Model\MethodOverloadDocumentation.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="MdDoc.Model.SimpleMemberDocumentation">
-    <Position X="7.5" Y="3.5" Width="2.5" />
+  <Class Name="MdDoc.Model.IndexerOverloadDocumentation">
+    <Position X="22.5" Y="5.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AACAAAAAAAAAEAAAAAAAAQQAAAAAAAAAAAAAAABAAAA=</HashCode>
-      <FileName>Model\SimpleMemberDocumentation.cs</FileName>
+      <HashCode>AAAAAAAAAAAAEAAAAAAAAAIAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\IndexerOverloadDocumentation.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />

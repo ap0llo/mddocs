@@ -4,7 +4,7 @@ using Mono.Cecil;
 
 namespace MdDoc.Model
 {
-    public sealed class MethodOverloadDocumentation : OverloadDocumentation
+    public sealed class MethodOverloadDocumentation : MethodLikeOverloadDocumentation
     {
         public string MethodName => Definition.Name;
 
@@ -18,6 +18,7 @@ namespace MdDoc.Model
         }
 
 
+        //TODO: Consider moving implementation to OverloadDocumentation
         public override IDocumentation TryGetDocumentation(MemberId id) =>
             MemberId.Equals(id) ? this : MethodDocumentation.TryGetDocumentation(id);
     }

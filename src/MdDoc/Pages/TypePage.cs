@@ -48,6 +48,8 @@ namespace MdDoc.Pages
 
             AddSimpleMembersSection(document.Root, "Properties", Model.Properties);
 
+            AddOverloadableMembersSection(document.Root, "Indexers", Model.Indexers.SelectMany(m => m.Overloads));
+
             AddOverloadableMembersSection(document.Root, "Methods", Model.Methods.SelectMany(m => m.Overloads));
 
             AddOverloadableMembersSection(document.Root, "Operators", Model.Operators.SelectMany(x => x.Overloads));

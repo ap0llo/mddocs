@@ -42,7 +42,7 @@ namespace DemoProject
     /// </remarks>
     /// <seealso cref="IDemoInterface"/>
     /// <seealso cref="System.String">String might also be interesting</seealso>
-    /// <seealso cref="DemoStruct">DemoStruct has a similar purpose but is a value type</seealso>
+    /// <seealso cref="DemoStruct">DemoStruct has a similar purpose but is a value type</seealso>    
     public class DemoClass
     {
         /// <summary>
@@ -65,6 +65,16 @@ namespace DemoProject
         /// </summary>
         [DemoPropertyAnnotation(PropertyFlags.Flag2 | PropertyFlags.Flag3)]
         public string Property2 { get; }
+
+        /// <summary>
+        /// An example of an indexer with a single parameter.
+        /// </summary>
+        public string this[int index] => throw new NotImplementedException();
+
+        /// <summary>
+        /// An example of an indexer with two parameters.
+        /// </summary>
+        public string this[int x, int y] => throw new NotImplementedException();
 
         /// <summary>
         /// Initializes a new instance of <see cref="DemoClass"/>

@@ -4,7 +4,7 @@ using Mono.Cecil;
 
 namespace MdDoc.Model
 {
-    public sealed class ConstructorOverloadDocumentation : OverloadDocumentation
+    public sealed class ConstructorOverloadDocumentation : MethodLikeOverloadDocumentation
     {
         public string MethodName => Definition.Name;
 
