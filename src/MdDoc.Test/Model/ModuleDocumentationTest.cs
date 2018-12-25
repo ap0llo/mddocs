@@ -62,6 +62,8 @@ namespace MdDoc.Test.Model
                 typeof(CSharpDefinitionTest_Struct),
                 typeof(CSharpDefinitionTest_StructWithMultipleInterfaceImplementations),
                 typeof(CSharpDefinitionTest_ReadOnlyStruct),
+                typeof(CSharpDefinitionTest_GenericInterface_Contravariant<>),
+                typeof(CSharpDefinitionTest_GenericInterface_Covariant<>),
                 typeof(CSharpDefinitionTestEnum),
                 typeof(TestClass_XmlDocs<,>),
                 typeof(TestClass_NoDocumentation)

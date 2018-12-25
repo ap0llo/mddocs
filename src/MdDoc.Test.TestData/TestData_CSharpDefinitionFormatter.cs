@@ -68,6 +68,15 @@ namespace MdDoc.Test.TestData
     {
     }
 
+
+    public interface CSharpDefinitionTest_GenericInterface_Contravariant<in TParam>
+    {
+    }
+
+    public interface CSharpDefinitionTest_GenericInterface_Covariant<out TParam>
+    {
+    }
+
     // the C# compiler emits a "Extension" attribute for classes that contain extension methods
     // this attribute should not be included in the generated definition
     public static class CSharpDefinitionTest_ExtensionClass

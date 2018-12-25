@@ -346,10 +346,29 @@ namespace MdDoc.Model
             //TODO: parameter constraints
 
             definitionBuilder.Append("<");
-            definitionBuilder.AppendJoin(
-                ", ",
-                genericParameters.Select(p => p.Name)
-            );
+
+            var isFirst = true;
+            foreach(var parameter in genericParameters)
+            {
+                if (!isFirst)
+                {
+                    definitionBuilder.Append(", ");
+                    isFirst = false;
+                }
+
+                if(parameter.IsCovariant)
+                {
+                    definitionBuilder.Append("out ");
+                }
+
+                if(parameter.IsContravariant)
+                {
+                    definitionBuilder.Append("in ");
+                }
+
+                definitionBuilder.Append(parameter.Name);
+            }
+            
             definitionBuilder.Append(">");
         }
 
