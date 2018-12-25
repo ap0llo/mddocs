@@ -29,15 +29,15 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="MdDoc.Model.PropertyDocumentation" Collapsed="true">
-    <Position X="12.25" Y="2.25" Width="2" />
+  <Class Name="MdDoc.Model.PropertyDocumentation">
+    <Position X="10.25" Y="6.75" Width="2" />
     <TypeIdentifier>
-      <HashCode>AACAAAAAAAAAGAAAAAAAAQQgAAAAAAAAAAACAABAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAACAAAAAAAAAQgAAAAAAAAAAACAABAAAA=</HashCode>
       <FileName>Model\PropertyDocumentation.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="MdDoc.Model.OperatorDocumentation" Collapsed="true">
-    <Position X="18.25" Y="3.75" Width="2" />
+  <Class Name="MdDoc.Model.OperatorDocumentation">
+    <Position X="18.25" Y="6.75" Width="2" />
     <Members>
       <Property Name="Overloads" Hidden="true" />
     </Members>
@@ -49,22 +49,22 @@
       <Property Name="Overloads" />
     </ShowAsAssociation>
   </Class>
-  <Class Name="MdDoc.Model.FieldDocumentation" Collapsed="true">
-    <Position X="8" Y="2.25" Width="1.75" />
+  <Class Name="MdDoc.Model.FieldDocumentation">
+    <Position X="5.5" Y="6.75" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AACAAAAAAAAAGAAAAAAAAQQAAAAAAAAAAAAAAABAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAACAAAAAAAAAQAAAAAAAAAAAAAAABAAAA=</HashCode>
       <FileName>Model\FieldDocumentation.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="MdDoc.Model.EventDocumentation" Collapsed="true">
-    <Position X="10" Y="2.25" Width="1.75" />
+  <Class Name="MdDoc.Model.EventDocumentation">
+    <Position X="7.5" Y="6.75" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>AACAAAAAAAAAGAAAAAAAAQQAAAAAAAAAAAAAAABAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAACAAAAAAAAAQAAAAAAAAAAAAAAABAAAA=</HashCode>
       <FileName>Model\EventDocumentation.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="MdDoc.Model.ConstructorDocumentation" Collapsed="true">
-    <Position X="13" Y="3.75" Width="2.25" />
+  <Class Name="MdDoc.Model.ConstructorDocumentation">
+    <Position X="12.75" Y="6.75" Width="2.25" />
     <TypeIdentifier>
       <HashCode>IAAAAAAAAAAAEAAAAAAAAAQAAAAAAAAAAAAAAAEAAAA=</HashCode>
       <FileName>Model\ConstructorDocumentation.cs</FileName>
@@ -77,8 +77,8 @@
       <FileName>Model\OperatorOverloadDocumentation.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="MdDoc.Model.MethodDocumentation" Collapsed="true">
-    <Position X="15.5" Y="3.75" Width="2.25" />
+  <Class Name="MdDoc.Model.MethodDocumentation">
+    <Position X="15.5" Y="6.75" Width="2.25" />
     <Members>
       <Property Name="Overloads" Hidden="true" />
     </Members>
@@ -90,8 +90,8 @@
       <Property Name="Overloads" />
     </ShowAsAssociation>
   </Class>
-  <Class Name="MdDoc.Model.MemberDocumentation" Collapsed="true">
-    <Position X="13.5" Y="0.75" Width="1.75" />
+  <Class Name="MdDoc.Model.MemberDocumentation">
+    <Position X="11.75" Y="0.5" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAIAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Model\MemberDocumentation.cs</FileName>
@@ -101,7 +101,7 @@
   <Class Name="MdDoc.Model.ConstructorOverloadDocumentation">
     <Position X="21.5" Y="4.75" Width="2.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAACAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAEAAAACAAAAAAAAAAAAAAAAACAAAAAAA=</HashCode>
       <FileName>Model\ConstructorOverloadDocumentation.cs</FileName>
       <NewMemberFileName>Model\MethodOverloadDocumentation.cs</NewMemberFileName>
     </TypeIdentifier>
@@ -117,8 +117,8 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="MdDoc.Model.OverloadableMemberDocumentation&lt;TOverload&gt;" Collapsed="true">
-    <Position X="15" Y="2.25" Width="3.25" />
+  <Class Name="MdDoc.Model.OverloadableMemberDocumentation&lt;TOverload&gt;">
+    <Position X="15" Y="3.5" Width="3.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
       <FileName>Model\OverloadableMemberDocumentation.cs</FileName>
@@ -129,6 +129,13 @@
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAACAAAAIAA=</HashCode>
       <FileName>Model\MethodOverloadDocumentation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MdDoc.Model.SimpleMemberDocumentation">
+    <Position X="7.5" Y="3.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAAEAAAAAAAAQQAAAAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>Model\SimpleMemberDocumentation.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />

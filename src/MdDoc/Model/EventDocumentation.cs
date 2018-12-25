@@ -4,28 +4,22 @@ using Mono.Cecil;
 
 namespace MdDoc.Model
 {
-    public class EventDocumentation : MemberDocumentation
+    public class EventDocumentation : SimpleMemberDocumentation
     {
-        public string Name => Definition.Name;
-
-        public MemberId MemberId { get; }
-
-        public TextBlock Summary { get; }
-
-        public string CSharpDefinition { get; }
+        public override string Name => Definition.Name;
+        
+        public override string CSharpDefinition { get; }
 
         internal EventDefinition Definition { get; }
 
 
-        internal EventDocumentation(TypeDocumentation typeDocumentation, EventDefinition definition, IXmlDocsProvider xmlDocsProvider) : base(typeDocumentation)
+        internal EventDocumentation(
+            TypeDocumentation typeDocumentation,
+            EventDefinition definition,
+            IXmlDocsProvider xmlDocsProvider) : base(typeDocumentation, definition?.ToMemberId(), xmlDocsProvider)
         {
-            Definition = definition ?? throw new ArgumentNullException(nameof(definition));
-            MemberId = definition.ToMemberId();
-            Summary = xmlDocsProvider.TryGetDocumentationComments(MemberId)?.Summary;
+            Definition = definition ?? throw new ArgumentNullException(nameof(definition));            
             CSharpDefinition = CSharpDefinitionFormatter.GetDefinition(definition);
-        }
-
-        public override IDocumentation TryGetDocumentation(MemberId id) => 
-            MemberId.Equals(id) ? this : TypeDocumentation.TryGetDocumentation(id);
+        }     
     }
 }
