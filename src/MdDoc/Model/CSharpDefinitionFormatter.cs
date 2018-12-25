@@ -10,27 +10,24 @@ namespace MdDoc.Model
     {
         public static string GetDefinition(PropertyDefinition property)
         {
-            var hasGetter = property.GetMethod?.IsPublic == true;
-            var hasSetter = property.SetMethod?.IsPublic == true;
-
             var definitionBuilder = new StringBuilder();
+            
+            AppendCustomAttributes(definitionBuilder, property.CustomAttributes);
 
-            AppendAttributes(definitionBuilder, property.CustomAttributes);
-
-            // public
+            // "public"
             definitionBuilder.Append("public ");
 
-            // static
+            // "static"
             if(property.GetMethod?.IsStatic == true || property.SetMethod?.IsStatic == true)
             {
                 definitionBuilder.Append("static ");
             }
 
             // type
-            definitionBuilder.Append(property.PropertyType.ToTypeId().DisplayName);
+            definitionBuilder.Append(GetDisplayName(property.PropertyType));
             definitionBuilder.Append(" ");
 
-            // property name, "this" if the property is an indexer
+            // property name or "this" if the property is an indexer
             if (property.HasParameters)
             {
                 definitionBuilder.Append("this");
@@ -39,7 +36,7 @@ namespace MdDoc.Model
                 definitionBuilder.Append("[");
                 definitionBuilder.AppendJoin(
                     ", ",
-                    property.Parameters.Select(x => $"{x.ParameterType.ToTypeId().DisplayName} {x.Name}")
+                    property.Parameters.Select(x => $"{GetDisplayName(x.ParameterType)} {x.Name}")
                 );
                 definitionBuilder.Append("]");
             }
@@ -51,6 +48,9 @@ namespace MdDoc.Model
             definitionBuilder.Append(" ");
 
             // getter and setter
+            var hasGetter = property.GetMethod?.IsPublic == true;
+            var hasSetter = property.SetMethod?.IsPublic == true;
+
             definitionBuilder.Append("{ ");
             if (hasGetter)
             {
@@ -73,37 +73,37 @@ namespace MdDoc.Model
         {            
             var definitionBuilder = new StringBuilder();
 
-            AppendAttributes(definitionBuilder, field.CustomAttributes);
+            AppendCustomAttributes(definitionBuilder, field.CustomAttributes);
 
-            // public
+            // "public"
             if (field.IsPublic)
             {
                 definitionBuilder.Append("public ");
             }
 
-            // static
+            // "static"
             if(field.IsStatic && !field.HasConstant)
             {
                 definitionBuilder.Append("static ");
             }
 
-            // const
+            // "const"
             if(field.HasConstant)
             {
                 definitionBuilder.Append("const ");
             }
 
-            // readonly
-            if(field.Attributes.HasFlag(FieldAttributes.InitOnly))
+            // "readonly"
+            if(field.IsInitOnly)
             {
                 definitionBuilder.Append("readonly ");
             }
 
-            // type
-            definitionBuilder.Append(field.FieldType.ToTypeId().DisplayName);
+            // field type
+            definitionBuilder.Append(GetDisplayName(field.FieldType));
             definitionBuilder.Append(" ");
 
-            // name
+            // field name
             definitionBuilder.Append(field.Name);
 
             definitionBuilder.Append(";");
@@ -116,8 +116,8 @@ namespace MdDoc.Model
             var definitionBuilder = new StringBuilder();
 
             // attributes
-            var customAttributes = method.CustomAttributes.Where(a => a.AttributeType.FullName != Constants.ExtensionAttributeFullName);
-            AppendAttributes(definitionBuilder, customAttributes);
+            var customAttributes = GetCustomAttributes(method);
+            AppendCustomAttributes(definitionBuilder, customAttributes);
 
             // method is constructor
             if (method.IsConstructor)
@@ -153,7 +153,6 @@ namespace MdDoc.Model
                     definitionBuilder.Append("static ");
                 }
 
-
                 // check if method is operator
                 if (method.IsOperator(out var operatorKind))
                 {
@@ -163,17 +162,17 @@ namespace MdDoc.Model
                     if (operatorKind == OperatorKind.Implicit)
                     {
                         definitionBuilder.Append("implicit operator ");
-                        definitionBuilder.Append(method.ReturnType.ToTypeId().DisplayName);
+                        definitionBuilder.Append(GetDisplayName(method.ReturnType));
                     }
                     else if (operatorKind == OperatorKind.Explicit)
                     {
                         definitionBuilder.Append("explicit operator ");
-                        definitionBuilder.Append(method.ReturnType.ToTypeId().DisplayName);
+                        definitionBuilder.Append(GetDisplayName(method.ReturnType));
                     }
                     else
                     {
                         // return type
-                        definitionBuilder.Append(method.ReturnType.ToTypeId().DisplayName);
+                        definitionBuilder.Append(GetDisplayName(method.ReturnType));
                         definitionBuilder.Append(" ");
 
                         // operator
@@ -184,7 +183,7 @@ namespace MdDoc.Model
                 else
                 {
                     // return type
-                    definitionBuilder.Append(method.ReturnType.ToTypeId().DisplayName);
+                    definitionBuilder.Append(GetDisplayName(method.ReturnType));
                     definitionBuilder.Append(" ");
 
                     // method name
@@ -193,7 +192,7 @@ namespace MdDoc.Model
             }
 
             // type parameters
-            if(method.HasGenericParameters)
+            if (method.HasGenericParameters)
             {
                 AppendTypeParameters(definitionBuilder, method.GenericParameters);
             }
@@ -207,7 +206,7 @@ namespace MdDoc.Model
 
             definitionBuilder.AppendJoin(
                 ", ",
-                method.Parameters.Select(p => $"{p.ParameterType.ToTypeId().DisplayName} {p.Name}")
+                method.Parameters.Select(p => $"{GetDisplayName(p.ParameterType)} {p.Name}")
             );
             definitionBuilder.Append(");");
 
@@ -218,7 +217,7 @@ namespace MdDoc.Model
         {
             var definitionBuilder = new StringBuilder();
 
-            AppendAttributes(definitionBuilder, @event.CustomAttributes);
+            AppendCustomAttributes(definitionBuilder, @event.CustomAttributes);
 
             // "public"
             if (@event.AddMethod?.IsPublic == true || @event.RemoveMethod?.IsPublic == true)
@@ -236,7 +235,7 @@ namespace MdDoc.Model
             definitionBuilder.Append("event ");
 
             // event type
-            definitionBuilder.Append(@event.EventType.ToTypeId().DisplayName);
+            definitionBuilder.Append(GetDisplayName(@event.EventType));
             definitionBuilder.Append(" ");
 
             // event name
@@ -245,19 +244,49 @@ namespace MdDoc.Model
 
             return definitionBuilder.ToString();
         }
-
-        //TODO: This methods needs cleanup
+        
         public static string GetDefinition(TypeDefinition type)
         {
-            var typeKind = type.Kind();
-
             var definitionBuilder = new StringBuilder();
 
+            var typeKind = type.Kind();
+
+            AppendCustomAttributes(definitionBuilder, GetCustomAttributes(type, typeKind));
+            AppendTypeModifiers(definitionBuilder, type, typeKind);
+
+            // "class" / "interface" / "struct" / "enum"
+            definitionBuilder.Append(typeKind.ToString().ToLower());
+            definitionBuilder.Append(" ");
+
+            // class name and type parameters
+            if (type.HasGenericParameters)
+            {
+                // remove number of type parameters from type name
+                var name = type.Name.Substring(0, type.Name.LastIndexOf("`"));
+                definitionBuilder.Append(name);
+                AppendTypeParameters(definitionBuilder, type.GenericParameters);
+            }
+            else
+            {
+                definitionBuilder.Append(type.Name);
+            }
+
+            // base type and interface implementations
+            AppendBaseTypes(type, typeKind, definitionBuilder);
+
+            AppendDefinitionBody(definitionBuilder, type, typeKind);
+
+            return definitionBuilder.ToString();
+        }
+
+
+        private static IEnumerable<CustomAttribute> GetCustomAttributes(TypeDefinition type, TypeKind typeKind)
+        {
             // output type attributes but ignore some common attributes always emitted by the C# compiler
             // - DefaultMemberAttribute when the member name is the default "Item" (for classes)
             // - ExtensionAttributes (indicating that the class defines extension methods) (for classes)
             // - IsReadOnly attribute (for structs, instead add the "readonly" modifier)
-            var customAttributes = type.CustomAttributes
+            return type.CustomAttributes
                 .Where(attribute =>
                 {
                     if (typeKind == TypeKind.Class &&
@@ -276,16 +305,62 @@ namespace MdDoc.Model
 
                     return true;
                 });
+        }
 
-            AppendAttributes(definitionBuilder, customAttributes);
+        private static IEnumerable<CustomAttribute> GetCustomAttributes(MethodDefinition method) =>
+            method.CustomAttributes.Where(a => a.AttributeType.FullName != Constants.ExtensionAttributeFullName);
 
+        private static void AppendCustomAttributes(StringBuilder definitionBuilder, IEnumerable<CustomAttribute> customAttributes)
+        {
+            foreach (var attribute in customAttributes)
+            {
+                var attributeName = GetDisplayName(attribute.AttributeType);
+
+                // remove the "Attribute" suffix from the attribute type's name
+                if (attributeName.EndsWith("Attribute"))
+                    attributeName = attributeName.Substring(0, attributeName.Length - "Attribute".Length);
+
+                definitionBuilder.Append("[");
+                definitionBuilder.Append(attributeName);
+
+                // if there are any paramters or properties defined, append them as well)
+                if (attribute.HasConstructorArguments || attribute.HasProperties)
+                {
+                    definitionBuilder.Append("(");
+                    definitionBuilder.AppendJoin(", ",
+                        Enumerable.Union(
+                            attribute.ConstructorArguments.Select(GetLiteral),
+                            attribute.Properties.Select(p => $"{p.Name} = {GetLiteral(p.Argument)}")
+                        )
+                    );
+                    definitionBuilder.Append(")");
+                }
+
+                definitionBuilder.Append("]");
+                definitionBuilder.Append("\r\n");
+            }
+        }
+
+        private static void AppendTypeParameters(StringBuilder definitionBuilder, IEnumerable<GenericParameter> genericParameters)
+        {
+            //TODO: parameter constraints
+
+            definitionBuilder.Append("<");
+            definitionBuilder.AppendJoin(
+                ", ",
+                genericParameters.Select(p => p.Name)
+            );
+            definitionBuilder.Append(">");
+        }
+
+        private static void AppendTypeModifiers(StringBuilder definitionBuilder, TypeDefinition type, TypeKind typeKind)
+        {
             // "public"
             if (type.IsPublic)
             {
                 definitionBuilder.Append("public ");
             }
 
-            // "class" / "interface"
             switch (typeKind)
             {
                 case TypeKind.Class:
@@ -314,7 +389,6 @@ namespace MdDoc.Model
                             definitionBuilder.Append("sealed ");
                         }
                     }
-                    definitionBuilder.Append("class ");
                     break;
 
                 case TypeKind.Struct:
@@ -322,39 +396,17 @@ namespace MdDoc.Model
                     {
                         definitionBuilder.Append("readonly ");
                     }
-                    definitionBuilder.Append("struct ");
                     break;
 
-                case TypeKind.Interface:
-                    definitionBuilder.Append("interface ");
-                    break;
-
-                case TypeKind.Enum:
-                    definitionBuilder.Append("enum ");
-                    break;
-
-                default:
-                    throw new InvalidOperationException("Unknown type kind");
             }
+        }
 
-            // class name and type parameters
-            if (type.HasGenericParameters)
-            {
-                // remove number of type parameters from type name
-                var name = type.Name.Substring(0, type.Name.LastIndexOf("`"));
-                definitionBuilder.Append(name);
-                AppendTypeParameters(definitionBuilder, type.GenericParameters);
-            }
-            else
-            {
-                definitionBuilder.Append(type.Name);
-            }
-
-            // base type and interface implementations
+        private static void AppendBaseTypes(TypeDefinition type, TypeKind typeKind, StringBuilder definitionBuilder)
+        {
             if (typeKind == TypeKind.Enum)
             {
-                var underlyingType = GetUnderylingTypeForEnum(type);
-                if (!IsDefaultBaseType(underlyingType, typeKind))
+                var underlyingType = type.Fields.Single(f => f.Name == "value__").FieldType;
+                if (underlyingType?.FullName != Constants.Int32FullName)
                 {
                     definitionBuilder.Append(" : ");
                     definitionBuilder.Append(GetDisplayName(underlyingType));
@@ -362,10 +414,16 @@ namespace MdDoc.Model
             }
             else
             {
+                // get the default (implicit) base type: "object" for classes, "System.ValueType" for structs
+                // if the base type is the default type, the base type will not be explicitly included in the definition
+                var defaultBaseType = typeKind == TypeKind.Struct
+                    ? Constants.ValueTypeFullName
+                    : (typeKind == TypeKind.Class ? Constants.ObjectFullName : "");
+
                 if (type.HasInterfaces)
                 {
                     definitionBuilder.Append(" : ");
-                    if (type.BaseType != null && !IsDefaultBaseType(type.BaseType, typeKind))
+                    if (type.BaseType != null && type.BaseType.FullName != defaultBaseType)
                     {
                         definitionBuilder.Append(GetDisplayName(type.BaseType));
                         definitionBuilder.Append(", ");
@@ -375,75 +433,31 @@ namespace MdDoc.Model
                         type.Interfaces.Select(i => GetDisplayName(i.InterfaceType))
                     );
                 }
-                else if (type.BaseType != null && !IsDefaultBaseType(type.BaseType, typeKind))
+                else if (type.BaseType != null && type.BaseType.FullName != defaultBaseType)
                 {
                     definitionBuilder.Append(" : ");
                     definitionBuilder.Append(GetDisplayName(type.BaseType));
                 }
             }
-
-            if (typeKind == TypeKind.Enum)
-            {
-                var isFlagsEnum = IsFlagsEnum(type);
-
-                definitionBuilder.AppendLine();
-                definitionBuilder.AppendLine("{");
-                definitionBuilder.AppendJoin(
-                    ",\r\n",
-                    GetEnumValues(type).Select(x => $"    {x.name} = {(isFlagsEnum ? "0x" + x.value.ToString("X") : x.value.ToString())}")
-                );
-                definitionBuilder.AppendLine();
-                definitionBuilder.AppendLine("}");
-            }
-
-            return definitionBuilder.ToString();
-
         }
 
-
-        private static void AppendAttributes(StringBuilder definitionBuilder, IEnumerable<CustomAttribute> customAttributes)
+        private static void AppendDefinitionBody(StringBuilder definitionBuilder, TypeDefinition type, TypeKind typeKind)
         {
-            foreach (var attribute in customAttributes)
-            {
-                var attributeName = attribute.AttributeType.ToTypeId().DisplayName;
+            if (typeKind != TypeKind.Enum)
+                return;
 
-                // remove the "Attribute" suffix from the attribute type's name
-                if (attributeName.EndsWith("Attribute"))
-                    attributeName = attributeName.Substring(0, attributeName.Length - "Attribute".Length);
+            var isFlagsEnum = IsFlagsEnum(type);
 
-                definitionBuilder.Append("[");
-                definitionBuilder.Append(attributeName);
-
-                // if there are any paramters or properties defined, append them as well)
-                if (attribute.HasConstructorArguments || attribute.HasProperties)
-                {
-                    definitionBuilder.Append("(");
-                    definitionBuilder.AppendJoin(", ",
-                        Enumerable.Union(
-                            attribute.ConstructorArguments.Select(GetLiteral),
-                            attribute.Properties.Select(p => $"{p.Name} = {GetLiteral(p.Argument)}")
-                        )
-                    );
-                    definitionBuilder.Append(")");
-                }
-
-                definitionBuilder.Append("]");
-                definitionBuilder.Append("\r\n");
-            }
+            definitionBuilder.AppendLine();
+            definitionBuilder.AppendLine("{");
+            definitionBuilder.AppendJoin(
+                ",\r\n",
+                GetEnumValues(type).Select(x => $"    {x.name} = {(isFlagsEnum ? "0x" + x.value.ToString("X") : x.value.ToString())}")
+            );
+            definitionBuilder.AppendLine();
+            definitionBuilder.AppendLine("}");
         }
         
-        private static void AppendTypeParameters(StringBuilder definitionBuilder, IEnumerable<GenericParameter> genericParameters)
-        {
-            //TODO: parameter constaints
-
-            definitionBuilder.Append("<");
-            definitionBuilder.AppendJoin(
-                ", ",
-                genericParameters.Select(p => p.Name)
-            );
-            definitionBuilder.Append(">");
-        }
-
         private static string GetOperatorString(OperatorKind kind)
         {
             switch (kind)
@@ -504,13 +518,15 @@ namespace MdDoc.Model
 
         private static string GetLiteral(CustomAttributeArgument attributeArgument)
         {
+            var definition = attributeArgument.Type.Resolve();
+
             // string => put in quotation marks
             if (attributeArgument.Type.FullName == Constants.StringFullName)
             {
                 return $"\"{attributeArgument.Value}\"";
             }
             // special handling for enums
-            else if(IsEnum(attributeArgument.Type))
+            else if(definition != null && definition.Kind () == TypeKind.Enum)
             {
                 // get the definition of the enum
                 var typeDefinition = attributeArgument.Type.Resolve();
@@ -520,7 +536,7 @@ namespace MdDoc.Model
                 var values = GetEnumValues(typeDefinition);
 
                 // get the friendly name for the enum
-                var enumName = typeDefinition.ToTypeId().DisplayName;
+                var enumName = GetDisplayName(typeDefinition);
 
                 // for "Flags" enums, return all values
                 if (IsFlagsEnum(typeDefinition))
@@ -560,18 +576,7 @@ namespace MdDoc.Model
             }
         }
 
-        private static bool IsFlagsEnum(TypeDefinition type)
-        {
-            return type.HasCustomAttributes &&
-                   type.CustomAttributes.Any(a => a.AttributeType.FullName == Constants.FlagsAttributeFullName);
-        }
-
-        private static bool IsEnum(TypeReference type)
-        {
-            var definition = type.Resolve();
-            return definition != null &&
-                   definition.Kind() == TypeKind.Enum;
-        }
+        private static bool IsFlagsEnum(TypeDefinition type) => type.CustomAttributes.Any(a => a.AttributeType.FullName == Constants.FlagsAttributeFullName);
 
         private static (string name, long value)[] GetEnumValues(TypeDefinition definition)
         {
@@ -579,34 +584,7 @@ namespace MdDoc.Model
                 .Where(f => f.IsPublic && !f.IsSpecialName)               
                 .Select(f => (f.Name, Convert.ToInt64(f.Constant))).ToArray();
         }
-        
-        private static string GetDisplayName(TypeReference typeReference)
-        {
-            return typeReference.ToTypeId().DisplayName;
-        }
 
-        private static bool IsDefaultBaseType(TypeReference type, TypeKind kind)
-        {
-            switch (kind)
-            {
-                case TypeKind.Class:
-                    return type.FullName == Constants.ObjectFullName;
-                    
-                case TypeKind.Struct:
-                    return type.FullName == Constants.ValueTypeFullName;
-
-                case TypeKind.Enum:
-                    return type.FullName == Constants.Int32FullName;
-
-                case TypeKind.Interface:
-                default:
-                    return false;                    
-            }
-        }
-
-        private static TypeReference GetUnderylingTypeForEnum(TypeDefinition enumType)
-        {
-            return enumType.Fields.Single(f => f.Name == "value__").FieldType;
-        }
+        private static string GetDisplayName(TypeReference typeReference) => typeReference.ToTypeId().DisplayName;
     }
 }
