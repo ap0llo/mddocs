@@ -10,17 +10,11 @@ namespace MdDoc.Model
 
         public ConstructorDocumentation ConstructorDocumentation { get; }
 
-        public TextBlock Summary { get; }
 
-        public string CSharpDefinition { get; }
-
-
-        internal ConstructorOverloadDocumentation(ConstructorDocumentation methodDocumentation, MethodDefinition definition, IXmlDocsProvider xmlDocsProvider) : base(definition)
+        internal ConstructorOverloadDocumentation(ConstructorDocumentation methodDocumentation, MethodDefinition definition, IXmlDocsProvider xmlDocsProvider) : base(definition, xmlDocsProvider)
         {
             ConstructorDocumentation = methodDocumentation ?? throw new ArgumentNullException(nameof(methodDocumentation));            
-            xmlDocsProvider = xmlDocsProvider ?? throw new ArgumentNullException(nameof(xmlDocsProvider));
-            Summary = xmlDocsProvider.TryGetDocumentationComments(MemberId)?.Summary;
-            CSharpDefinition = CSharpDefinitionFormatter.GetDefinition(definition);
+            xmlDocsProvider = xmlDocsProvider ?? throw new ArgumentNullException(nameof(xmlDocsProvider));            
         }
 
 

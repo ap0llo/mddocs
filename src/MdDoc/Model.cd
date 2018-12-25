@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="MdDoc.Model.AssemblyDocumentation" Collapsed="true">
+    <Position X="0.75" Y="1.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAGAAAAAAgAAAAAAAAABAEAAAAAAAAAAA=</HashCode>
+      <FileName>Model\AssemblyDocumentation.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MdDoc.Model.ModuleDocumentation" Collapsed="true">
+    <Position X="3" Y="1.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAQAAAAGAAAAAAgAAAAAAAAAAAAEAAAAAAAAAA=</HashCode>
+      <FileName>Model\ModuleDocumentation.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MdDoc.Model.TypeDocumentation" Collapsed="true">
+    <Position X="5.25" Y="1.5" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Properties" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>ABCAEEEAAKBAGACAABAiIQASAgAAJAAgAAAAAABCoUQ=</HashCode>
+      <FileName>Model\TypeDocumentation.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MdDoc.Model.PropertyDocumentation" Collapsed="true">
+    <Position X="12.25" Y="2.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAAGAAAAAAAAQQgAAAAAAAAAAACAABAAAA=</HashCode>
+      <FileName>Model\PropertyDocumentation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MdDoc.Model.OperatorDocumentation" Collapsed="true">
+    <Position X="18.25" Y="3.75" Width="2" />
+    <Members>
+      <Property Name="Overloads" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAABAEAAAAAAAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Model\OperatorDocumentation.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Overloads" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="MdDoc.Model.FieldDocumentation" Collapsed="true">
+    <Position X="8" Y="2.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAAGAAAAAAAAQQAAAAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>Model\FieldDocumentation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MdDoc.Model.EventDocumentation" Collapsed="true">
+    <Position X="10" Y="2.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAAGAAAAAAAAQQAAAAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>Model\EventDocumentation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MdDoc.Model.ConstructorDocumentation" Collapsed="true">
+    <Position X="13" Y="3.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAEAAAAAAAAAQAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Model\ConstructorDocumentation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MdDoc.Model.OperatorOverloadDocumentation">
+    <Position X="27.25" Y="4.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAEAAAAAAAAAAABAQAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\OperatorOverloadDocumentation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MdDoc.Model.MethodDocumentation" Collapsed="true">
+    <Position X="15.5" Y="3.75" Width="2.25" />
+    <Members>
+      <Property Name="Overloads" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAEAAAAAAAAAQAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Model\MethodDocumentation.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Overloads" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="MdDoc.Model.MemberDocumentation" Collapsed="true">
+    <Position X="13.5" Y="0.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAIAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\MemberDocumentation.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MdDoc.Model.ConstructorOverloadDocumentation">
+    <Position X="21.5" Y="4.75" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAACAAAAAAA=</HashCode>
+      <FileName>Model\ConstructorOverloadDocumentation.cs</FileName>
+      <NewMemberFileName>Model\MethodOverloadDocumentation.cs</NewMemberFileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MdDoc.Model.OverloadDocumentation">
+    <Position X="24.5" Y="0.75" Width="2.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAIAAGAAAAAAAAQAAAAAAAAAAAIAAAABAAAE=</HashCode>
+      <FileName>Model\OverloadDocumentation.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MdDoc.Model.OverloadableMemberDocumentation&lt;TOverload&gt;" Collapsed="true">
+    <Position X="15" Y="2.25" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Model\OverloadableMemberDocumentation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MdDoc.Model.MethodOverloadDocumentation">
+    <Position X="24.5" Y="4.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAACAAAAIAA=</HashCode>
+      <FileName>Model\MethodOverloadDocumentation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

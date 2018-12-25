@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using MdDoc.Model.XmlDocs;
 using Mono.Cecil;
 
 namespace MdDoc.Model
@@ -16,10 +17,14 @@ namespace MdDoc.Model
 
         public IReadOnlyList<ParameterDocumentation> Parameters { get; }
 
+        public string CSharpDefinition { get; }
+
+        public TextBlock Summary { get; }
+
         internal MethodDefinition Definition { get; }
 
 
-        public OverloadDocumentation(MethodDefinition definition)
+        public OverloadDocumentation(MethodDefinition definition, IXmlDocsProvider xmlDocsProvider)
         {
             Definition = definition ?? throw new ArgumentNullException(nameof(definition));
             MemberId = definition.ToMemberId();
@@ -27,6 +32,10 @@ namespace MdDoc.Model
             Parameters = definition.HasParameters
                 ? Array.Empty<ParameterDocumentation>()
                 : definition.Parameters.Select(p => new ParameterDocumentation(this, p)).ToArray();
+
+            CSharpDefinition = CSharpDefinitionFormatter.GetDefinition(definition);
+
+            Summary = xmlDocsProvider.TryGetDocumentationComments(MemberId)?.Summary;
         }
 
 
