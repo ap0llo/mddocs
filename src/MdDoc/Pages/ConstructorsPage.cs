@@ -1,13 +1,13 @@
 ﻿using System;
 using System.IO;
+using Grynwald.MarkdownGenerator;
 using MdDoc.Model;
 
 using static Grynwald.MarkdownGenerator.FactoryMethods;
 
 namespace MdDoc.Pages
 {
-    //TODO: Add documentation from XML comments
-    class ConstructorsPage : MemberPage<ConstructorDocumentation>
+    class ConstructorsPage : OverloadableMemberPage<ConstructorDocumentation, ConstructorOverloadDocumentation>
     {                
         public override OutputPath OutputPath { get; }
         
@@ -21,26 +21,8 @@ namespace MdDoc.Pages
             OutputPath = new OutputPath(Path.Combine(GetTypeDir(Model.TypeDocumentation), $"{Model.TypeDocumentation.TypeId.Name}-constructors.md"));
         }
 
-
-        public override void Save()
-        {
-            var document = Document(
-                Heading($"{Model.TypeDocumentation.DisplayName} Constructors", 1)
-            );
-
-            AddDeclaringTypeSection(document.Root);
-
-            //TODO: Add Summary
-
-            AddOverloadsSection(document.Root, Model.Overloads);
-
-            //TODO: Add Remarks
-
-
-            AddDetailSections(document.Root, Model.Overloads);
-
-            Directory.CreateDirectory(Path.GetDirectoryName(OutputPath));
-            document.Save(OutputPath);
-        }
+        
+        protected override MdHeading GetHeading() =>
+            Heading($"{Model.TypeDocumentation.DisplayName} Constructors", 1);
     }
 }

@@ -38,6 +38,9 @@ namespace MdDoc.Pages
                 case MethodOverloadDocumentation methodOverload:
                     return TryGetPage(methodOverload.MethodDocumentation);
 
+                case ConstructorOverloadDocumentation construtorOverload:
+                    return TryGetPage(construtorOverload.ConstructorDocumentation);
+
                 case OperatorOverloadDocumentation operatorOverload:
                     return TryGetPage(operatorOverload.OperatorDocumentation);
                     

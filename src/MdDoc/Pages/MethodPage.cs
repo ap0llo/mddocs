@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using Grynwald.MarkdownGenerator;
 using MdDoc.Model;
 
 using static Grynwald.MarkdownGenerator.FactoryMethods;
@@ -7,7 +8,7 @@ using static Grynwald.MarkdownGenerator.FactoryMethods;
 namespace MdDoc.Pages
 {
     //TODO: Use a different layout if the method is not overloaded
-    class MethodPage : MemberPage<MethodDocumentation>
+    class MethodPage : OverloadableMemberPage<MethodDocumentation, MethodOverloadDocumentation>
     {
         public override OutputPath OutputPath { get; }
             
@@ -22,25 +23,7 @@ namespace MdDoc.Pages
         }
 
 
-        public override void Save()
-        {
-            var document = Document(
-                Heading($"{Model.TypeDocumentation.DisplayName}.{Model.Name} Method", 1)
-            );
-
-            AddDeclaringTypeSection(document.Root);            
-
-            //TODO: Attributes
-
-            //TODO: Summary
-
-            AddOverloadsSection(document.Root, Model.Overloads);
-
-            AddDetailSections(document.Root, Model.Overloads);
-
-            Directory.CreateDirectory(Path.GetDirectoryName(OutputPath));
-            document.Save(OutputPath);
-        }
-
+        protected override MdHeading GetHeading() =>
+            Heading($"{Model.TypeDocumentation.DisplayName}.{Model.Name} Method", 1);        
     }
 }

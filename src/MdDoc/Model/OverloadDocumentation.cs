@@ -24,7 +24,7 @@ namespace MdDoc.Model
         internal MethodDefinition Definition { get; }
 
 
-        public OverloadDocumentation(MethodDefinition definition, IXmlDocsProvider xmlDocsProvider)
+        internal OverloadDocumentation(MethodDefinition definition, IXmlDocsProvider xmlDocsProvider)
         {
             Definition = definition ?? throw new ArgumentNullException(nameof(definition));
             MemberId = definition.ToMemberId();
