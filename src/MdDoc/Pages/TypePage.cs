@@ -36,7 +36,6 @@ namespace MdDoc.Pages
             AddRemarksSection(document.Root);
 
             //TODO: Skip constructors when it is compiler-generated, i.e. only the implict default constructor
-            //TODO: Sort table entries
             AddOverloadableMemberSection(
                 document.Root,
                 "Constructors",
@@ -49,10 +48,8 @@ namespace MdDoc.Pages
 
             AddPropertiesSection(document.Root);
 
-            //TODO: Sort methods by name
             AddOverloadableMemberSection(document.Root, "Methods", Model.Methods.SelectMany(m => m.Overloads));
 
-            // TODO: Sort by operator
             AddOverloadableMemberSection(document.Root, "Operators", Model.Operators.SelectMany(x => x.Overloads));
 
             //TODO: Explicit interface implementations
@@ -134,7 +131,7 @@ namespace MdDoc.Pages
             {
                 var table = Table(Row("Name", "Description"));
 
-                foreach (var ctor in overloads)
+                foreach (var ctor in overloads.OrderBy(x => x.Signature))
                 {
                     table.Add(
                         Row(
@@ -153,13 +150,12 @@ namespace MdDoc.Pages
         private void AddFieldsSection(MdContainerBlock block)
         {
             if (Model.Fields.Count > 0)
-            {                
-                //TODO: Sort by name
+            {
                 block.Add(
                     Heading("Fields", 2),
                     Table(
                         Row("Name", "Description"),
-                        Model.Fields.Select(field => Row(CreateLink(field.MemberId, field.Name), ConvertToSpan(field.Summary)))
+                        Model.Fields.OrderBy(x => x.Name).Select(field => Row(CreateLink(field.MemberId, field.Name), ConvertToSpan(field.Summary)))
                     )
                 );
             }
@@ -175,7 +171,7 @@ namespace MdDoc.Pages
                     Heading("Events", 2),
                     Table(
                         Row("Name", "Description"),
-                        Model.Events.Select(ev => Row(CreateLink(ev.MemberId, ev.Name), ConvertToSpan(ev.Summary)))
+                        Model.Events.OrderBy(x => x.Name).Select(ev => Row(CreateLink(ev.MemberId, ev.Name), ConvertToSpan(ev.Summary)))
                 ));
             }
         }
@@ -185,9 +181,8 @@ namespace MdDoc.Pages
             if (Model.Properties.Count > 0)
             {
                 var table = Table(Row("Name", "Description"));
-
-                //TODO: Sort by name
-                foreach (var property in Model.Properties)
+                
+                foreach (var property in Model.Properties.OrderBy(x => x.Name))
                 {                    
                     table.Add(Row(CreateLink(property.MemberId, property.Name), ConvertToSpan(property.Summary)));
                 }

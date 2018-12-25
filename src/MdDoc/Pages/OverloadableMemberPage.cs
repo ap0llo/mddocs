@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Grynwald.MarkdownGenerator;
 using MdDoc.Model;
 
@@ -27,9 +28,11 @@ namespace MdDoc.Pages
 
             //TODO: Attributes
 
-            AddOverloadsTableSection(document.Root, Model.Overloads);
+            var orderedOverloads = Model.Overloads.OrderBy(x => x.Signature).ToArray();
 
-            AddOverloadDetailsSections(document.Root, Model.Overloads);
+            AddOverloadsTableSection(document.Root, orderedOverloads);
+
+            AddOverloadDetailsSections(document.Root, orderedOverloads);
 
             Directory.CreateDirectory(Path.GetDirectoryName(OutputPath));
             document.Save(OutputPath);
