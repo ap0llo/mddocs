@@ -7,14 +7,14 @@ using Mono.Cecil;
 
 namespace MdDoc.Model
 {
-    public class OperatorDocumentation : MemberDocumentation
+    public class OperatorDocumentation : OverloadableMemberDocumentation<OperatorOverloadDocumentation>
     {
         private readonly IDictionary<MemberId, OperatorOverloadDocumentation> m_Overloads;
 
 
         public OperatorKind Kind { get; }
 
-        public IReadOnlyCollection<OperatorOverloadDocumentation> Overloads { get; }       
+        public override IReadOnlyCollection<OperatorOverloadDocumentation> Overloads { get; }       
 
 
         internal OperatorDocumentation(TypeDocumentation typeDocumentation, IEnumerable<MethodDefinition> definitions, IXmlDocsProvider xmlDocsProvider) : base(typeDocumentation)

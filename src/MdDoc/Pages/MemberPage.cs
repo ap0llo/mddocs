@@ -36,6 +36,22 @@ namespace MdDoc.Pages
             );
         }
 
+        protected void AddOverloadsSection(MdContainerBlock block, IEnumerable<ConstructorOverloadDocumentation> methods)
+        {
+            var table = Table(Row("Signature", "Description"));
+            foreach (var method in methods)
+            {
+                table.Add(
+                    Row(method.Signature, ConvertToSpan(method.Summary))
+                );
+            }
+
+            block.Add(
+                Heading("Overloads", 2),
+                table
+            );
+        }
+
         protected void AddDetailSections(MdContainerBlock block, IEnumerable<MethodOverloadDocumentation> methods)
         {
             foreach (var method in methods)
@@ -47,6 +63,45 @@ namespace MdDoc.Pages
                 //TODO: Summary
 
                 block.Add(CodeBlock(method.CSharpDefinition, "csharp"));                
+
+                if (method.Parameters.Count > 0)
+                {
+                    var table = Table(Row("Name", "Type", "Description"));
+                    foreach (var parameter in method.Parameters)
+                    {
+                        table.Add(
+                            Row(
+                                CodeSpan(parameter.Name),
+                                GetTypeNameSpan(parameter.ParameterType),
+                                ""
+                        ));
+                    }
+
+                    block.Add(
+                        Heading("Parameters", 3),
+                        table
+                    );
+                }
+
+                //TODO: Returns
+                //TODO: Exceptions
+                //TODO: Remarks
+                //TODO: Examples
+
+            }
+        }
+
+        protected void AddDetailSections(MdContainerBlock block, IEnumerable<ConstructorOverloadDocumentation> methods)
+        {
+            foreach (var method in methods)
+            {
+                block.Add(
+                    Heading(method.Signature, 2)
+                );
+
+                //TODO: Summary
+
+                block.Add(CodeBlock(method.CSharpDefinition, "csharp"));
 
                 if (method.Parameters.Count > 0)
                 {

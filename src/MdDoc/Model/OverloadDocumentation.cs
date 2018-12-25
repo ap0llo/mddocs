@@ -11,8 +11,7 @@ namespace MdDoc.Model
 
 
         public MemberId MemberId { get; }
-
-        //TODO: generate signature for suited for operator overloads, e.g. the operator name not the underlying method name
+        
         public string Signature => m_MethodFormatter.GetSignature(Definition);
 
         public IReadOnlyList<ParameterDocumentation> Parameters { get; }
