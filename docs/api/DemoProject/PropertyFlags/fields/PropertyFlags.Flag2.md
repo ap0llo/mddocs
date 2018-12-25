@@ -5,3 +5,7 @@
 ```csharp
 public const PropertyFlags Flag2;
 ```
+
+## Field Value
+
+[PropertyFlags](../PropertyFlags.md)

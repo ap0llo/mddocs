@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using Grynwald.MarkdownGenerator;
 using MdDoc.Model;
 
@@ -7,66 +6,29 @@ using static Grynwald.MarkdownGenerator.FactoryMethods;
 
 namespace MdDoc.Pages
 {
-    //TODO: Add documentation from XML comments
-    class PropertyPage : MemberPage<PropertyDocumentation>
+    //TODO: Differentiate between properties and indexers, add parameters and overloads section for indexers
+    class PropertyPage : SimpleMemberPage<PropertyDocumentation>
     {        
         public override OutputPath OutputPath { get; }            
-
-        protected override PropertyDocumentation Model { get; }
-
+        
 
         public PropertyPage(PageFactory pageFactory, string rootOutputPath, PropertyDocumentation model)
-            : base(pageFactory, rootOutputPath)
-        {
-            Model = model ?? throw new ArgumentNullException(nameof(model));
+            : base(pageFactory, rootOutputPath, model)
+        {            
             OutputPath = new OutputPath(Path.Combine(GetTypeDir(Model.TypeDocumentation), "properties", $"{Model.TypeDocumentation.TypeId.Name}.{Model.Name}.md"));
         }
 
 
-        public override void Save()
+        protected override MdHeading GetHeading() =>
+            Heading($"{Model.TypeDocumentation.DisplayName}.{Model.Name} Property", 1);
+
+        protected override void AddValueSection(MdContainerBlock block)
         {
-            var document = Document(
-                Heading($"{Model.TypeDocumentation.DisplayName}.{Model.Name} Property", 1)
-            );
-
-            AddDeclaringTypeSection(document.Root);
-
-            //TODO: Summary
-
-            AddDefinitionSection(document.Root);
-
-            //TODO: Parameters (for indexers)
-
-            //TODO: Overloads for indexers??
-
-            //TODO: Property value
-
-            //TODO: Examples
-
-            //TODO: Remarks
-
-            //TODO: See Also
-
-            AddPropertyValueSection(document.Root);
-
-            Directory.CreateDirectory(Path.GetDirectoryName(OutputPath));
-            document.Save(OutputPath);
-        }
-
-
-        private void AddDefinitionSection(MdContainerBlock block)
-        {            
-            block.Add(
-                CodeBlock(Model.CSharpDefinition, "csharp")
-            );
-        }
-
-        private void AddPropertyValueSection(MdContainerBlock block)
-        {
+            //TODO: "Value" text from xml documentation
             block.Add(Heading("Property Value", 2));
             block.Add(
                 Paragraph(
-                    GetTypeNameSpan(Model.PropertyType)
+                    GetTypeNameSpan(Model.Type)
             ));
         }        
     }

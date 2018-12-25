@@ -10,6 +10,8 @@ namespace MdDoc.Model
         
         public override string CSharpDefinition { get; }
 
+        public override TypeId Type { get; }
+
         internal EventDefinition Definition { get; }
 
 
@@ -20,6 +22,7 @@ namespace MdDoc.Model
         {
             Definition = definition ?? throw new ArgumentNullException(nameof(definition));            
             CSharpDefinition = CSharpDefinitionFormatter.GetDefinition(definition);
+            Type = definition.EventType.ToTypeId();
         }     
     }
 }

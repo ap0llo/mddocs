@@ -12,6 +12,8 @@ namespace MdDoc.Model
 
         public abstract string CSharpDefinition { get; }
 
+        public abstract TypeId Type { get; }
+
 
         internal SimpleMemberDocumentation(TypeDocumentation typeDocumentation, MemberId memberId, IXmlDocsProvider xmlDocsProvider) : base(typeDocumentation)
         {

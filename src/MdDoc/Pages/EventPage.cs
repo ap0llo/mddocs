@@ -1,52 +1,29 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
+using Grynwald.MarkdownGenerator;
 using MdDoc.Model;
 
 using static Grynwald.MarkdownGenerator.FactoryMethods;
 
 namespace MdDoc.Pages
 {
-    class EventPage : MemberPage<EventDocumentation>
+    class EventPage : SimpleMemberPage<EventDocumentation>
     {        
         public override OutputPath OutputPath { get; }            
 
-        protected override EventDocumentation Model { get; }
-
-
+        
         public EventPage(PageFactory pageFactory, string rootOutputPath, EventDocumentation model)
-            : base(pageFactory, rootOutputPath)
+            : base(pageFactory, rootOutputPath, model)
         {
-            Model = model ?? throw new ArgumentNullException(nameof(model));
             OutputPath = new OutputPath(Path.Combine(GetTypeDir(Model.TypeDocumentation), "events", $"{Model.TypeDocumentation.TypeId.Name}.{Model.Name}.md"));
         }
 
 
-        public override void Save()
-        {
-            var document = Document(
-                Heading($"{Model.TypeDocumentation.DisplayName}.{Model.Name} Event", 1)
-            );
+        protected override MdHeading GetHeading() =>
+            Heading($"{Model.TypeDocumentation.DisplayName}.{Model.Name} Event", 1);
 
-            AddDeclaringTypeSection(document.Root);
-
-            //TODO: Summary
-
-            document.Root.Add(
-                CodeBlock(Model.CSharpDefinition, "csharp")
-            );
-            
-
-            //TODO: Remarks
-
-            //TODO: Examples
-
-            //TODO: SeeAlso
-
-            Directory.CreateDirectory(Path.GetDirectoryName(OutputPath));
-            document.Save(OutputPath);
+        protected override void AddValueSection(MdContainerBlock block)
+        {            
+            // omit value section for events
         }
-
-
-
     }
 }
