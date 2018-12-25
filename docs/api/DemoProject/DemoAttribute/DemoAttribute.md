@@ -6,14 +6,14 @@
 
 An example of an customa attribute class for methods
 
-**Inheritance:** Object → Attribute → DemoAttribute
-
-**Attributes:** AttributeUsageAttribute
-
 ```csharp
 [AttributeUsage(AttributeTargets.Method | AttributeTargets.All)]
 public class DemoAttribute : Attribute
 ```
+
+**Inheritance:** Object → Attribute → DemoAttribute
+
+**Attributes:** AttributeUsageAttribute
 
 ## Constructors
 

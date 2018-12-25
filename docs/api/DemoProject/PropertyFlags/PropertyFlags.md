@@ -4,10 +4,6 @@
 
 **Assembly:** DemoProject
 
-**Inheritance:** Object → ValueType → Enum → PropertyFlags
-
-**Attributes:** FlagsAttribute
-
 ```csharp
 [Flags]
 public enum PropertyFlags
@@ -17,6 +13,10 @@ public enum PropertyFlags
     Flag3 = 0x2
 }
 ```
+
+**Inheritance:** Object → ValueType → Enum → PropertyFlags
+
+**Attributes:** FlagsAttribute
 
 ## Fields
 

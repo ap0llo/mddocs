@@ -6,8 +6,6 @@
 
 An example of an user\-defined enum
 
-**Inheritance:** Object → ValueType → Enum → DemoEnum
-
 ```csharp
 public enum DemoEnum
 {
@@ -16,6 +14,8 @@ public enum DemoEnum
     AnotherItem = 2
 }
 ```
+
+**Inheritance:** Object → ValueType → Enum → DemoEnum
 
 ## Fields
 

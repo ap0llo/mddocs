@@ -31,10 +31,8 @@ namespace MdDoc.Pages
                 Heading($"{Model.DisplayName} {Model.Kind}", 1)
             );
 
-            AddTypeInfoSection(document.Root);
-
-            document.Root.Add(CodeBlock(Model.CSharpDefinition, "csharp"));
-            
+            AddDefinitionSection(document.Root);
+           
             AddRemarksSection(document.Root);
 
             //TODO: Skip constructors when it is compiler-generated, i.e. only the implict default constructor
@@ -68,7 +66,7 @@ namespace MdDoc.Pages
         }
 
 
-        private void AddTypeInfoSection(MdContainerBlock block)
+        private void AddDefinitionSection(MdContainerBlock block)
         {
             // Add Namespace 
             block.Add(
@@ -84,6 +82,8 @@ namespace MdDoc.Pages
             {
                 block.Add(TextBlockToMarkdownConverter.ConvertToBlock(Model.Summary, this));
             }
+
+            block.Add(CodeBlock(Model.CSharpDefinition, "csharp"));
 
             // Add list of base types            
             if (Model.InheritanceHierarchy.Count > 1)

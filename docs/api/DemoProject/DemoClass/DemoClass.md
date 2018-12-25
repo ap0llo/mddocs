@@ -6,11 +6,11 @@
 
 A class meant to demonstrate how the generated documentation looks like.
 
-**Inheritance:** Object → DemoClass
-
 ```csharp
 public class DemoClass
 ```
+
+**Inheritance:** Object → DemoClass
 
 ## Remarks
 

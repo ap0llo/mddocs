@@ -4,8 +4,8 @@
 
 **Assembly:** DemoProject
 
-**Inheritance:** Object → ValueType → DemoStruct
-
 ```csharp
 public struct DemoStruct
 ```
+
+**Inheritance:** Object → ValueType → DemoStruct
