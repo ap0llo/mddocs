@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Grynwald.MarkdownGenerator;
@@ -36,7 +37,13 @@ namespace MdDoc.Pages
             
             AddRemarksSection(document.Root);
 
-            AddConstructorsSection(document.Root);
+            //TODO: Skip constructors when it is compiler-generated, i.e. only the implict default constructor
+            //TODO: Sort table entries
+            AddOverloadableMemberSection(
+                document.Root,
+                "Constructors",
+                (IEnumerable<OverloadDocumentation>)Model.Constructors?.Overloads ?? Array.Empty<OverloadDocumentation>()
+            );
 
             AddFieldsSection(document.Root);
 
@@ -44,9 +51,11 @@ namespace MdDoc.Pages
 
             AddPropertiesSection(document.Root);
 
-            AddMethodsSection(document.Root);
+            //TODO: Sort methods by name
+            AddOverloadableMemberSection(document.Root, "Methods", Model.Methods.SelectMany(m => m.Overloads));
 
-            AddOperatorsSection(document.Root);
+            // TODO: Sort by operator
+            AddOverloadableMemberSection(document.Root, "Operators", Model.Operators.SelectMany(x => x.Overloads));
 
             //TODO: Explicit interface implementations
 
@@ -110,7 +119,6 @@ namespace MdDoc.Pages
             }
         }
    
-
         private void AddRemarksSection(MdContainerBlock block)
         {
             if (Model.Remarks != null)
@@ -120,26 +128,28 @@ namespace MdDoc.Pages
             }
         }
 
-        private void AddConstructorsSection(MdContainerBlock block)
-        {
-            //TODO: Skip constructors when it is compiler-generated, i.e. only the implict default constructor
-            if (Model.Constructors != null)
+        private void AddOverloadableMemberSection(MdContainerBlock block, string sectionHeading, IEnumerable<OverloadDocumentation> overloads)
+        {            
+            if (overloads.Any())
             {
                 var table = Table(Row("Name", "Description"));
-                
-                //TODO: Sort (unsure by what)
-                foreach (var ctor in Model.Constructors.Overloads)
+
+                foreach (var ctor in overloads)
                 {
-                    table.Add(Row(CreateLink(ctor.MemberId, ctor.Signature), ConvertToSpan(ctor.Summary)));
+                    table.Add(
+                        Row(
+                            CreateLink(ctor.MemberId, ctor.Signature),
+                            ConvertToSpan(ctor.Summary)
+                    ));
                 }
 
                 block.Add(
-                    Heading("Constructors", 2),
+                    Heading(sectionHeading, 2),
                     table
                 );
             }
         }
-
+        
         private void AddFieldsSection(MdContainerBlock block)
         {
             if (Model.Fields.Count > 0)
@@ -189,54 +199,6 @@ namespace MdDoc.Pages
             }
         }
         
-        private void AddMethodsSection(MdContainerBlock block)
-        {
-            if (Model.Methods.Count > 0)
-            {
-                var table = Table(Row("Name", "Description"));
-
-                //TODO: Sort methods by name
-                foreach(var method in Model.Methods)
-                {                    
-                    foreach(var overload in method.Overloads)
-                    {                                                
-                        table.Add(Row(CreateLink(overload.MemberId, overload.Signature), ConvertToSpan(overload.Summary)));
-                    }
-                }
-
-                block.Add(
-                    Heading("Methods", 2),
-                    table
-                );
-            }
-        }
-        
-        private void AddOperatorsSection(MdContainerBlock block)
-        {
-            if (Model.Operators.Count > 0)
-            {
-                var table = Table(Row("Name", "Description"));
-
-                // TODO: Sort by operator
-                foreach (var operatorOverload in Model.Operators)
-                {
-                    foreach (var overload in operatorOverload.Overloads)
-                    {                        
-                        table.Add(
-                            Row(
-                                CreateLink(overload.MemberId, overload.Signature),
-                                ConvertToSpan(overload.Summary)
-                        ));
-                    }
-                }
-
-                block.Add(
-                    Heading("Operators", 2),
-                    table
-                );
-            }
-        }
-
         private void AddSeeAlsoSection(MdContainerBlock block)
         {
             if(Model.SeeAlso.Count > 0)
@@ -248,7 +210,6 @@ namespace MdDoc.Pages
                 ));
             }
         }
-
         
         private MdSpan ConvertToSpan(SeeAlsoElement seeAlso)
         {
