@@ -36,21 +36,21 @@ namespace MdDoc.Pages
             AddRemarksSection(document.Root);
 
             //TODO: Skip constructors when it is compiler-generated, i.e. only the implict default constructor
-            AddOverloadableMemberSection(
+            AddOverloadableMembersSection(
                 document.Root,
                 "Constructors",
                 (IEnumerable<OverloadDocumentation>)Model.Constructors?.Overloads ?? Array.Empty<OverloadDocumentation>()
             );
 
-            AddFieldsSection(document.Root);
+            AddSimpleMembersSection(document.Root, "Fields", Model.Fields);
 
-            AddEventsSection(document.Root);
+            AddSimpleMembersSection(document.Root, "Events", Model.Events);
 
-            AddPropertiesSection(document.Root);
+            AddSimpleMembersSection(document.Root, "Properties", Model.Properties);
 
-            AddOverloadableMemberSection(document.Root, "Methods", Model.Methods.SelectMany(m => m.Overloads));
+            AddOverloadableMembersSection(document.Root, "Methods", Model.Methods.SelectMany(m => m.Overloads));
 
-            AddOverloadableMemberSection(document.Root, "Operators", Model.Operators.SelectMany(x => x.Overloads));
+            AddOverloadableMembersSection(document.Root, "Operators", Model.Operators.SelectMany(x => x.Overloads));
 
             //TODO: Explicit interface implementations
 
@@ -125,7 +125,7 @@ namespace MdDoc.Pages
             }
         }
 
-        private void AddOverloadableMemberSection(MdContainerBlock block, string sectionHeading, IEnumerable<OverloadDocumentation> overloads)
+        private void AddOverloadableMembersSection(MdContainerBlock block, string sectionHeading, IEnumerable<OverloadDocumentation> overloads)
         {            
             if (overloads.Any())
             {
@@ -146,51 +146,23 @@ namespace MdDoc.Pages
                 );
             }
         }
-        
-        private void AddFieldsSection(MdContainerBlock block)
+
+        private void AddSimpleMembersSection(MdContainerBlock block, string sectionHeading, IEnumerable<SimpleMemberDocumentation> members)
         {
-            if (Model.Fields.Count > 0)
+            if (members.Any())
             {
-                block.Add(
-                    Heading("Fields", 2),
-                    Table(
-                        Row("Name", "Description"),
-                        Model.Fields.OrderBy(x => x.Name).Select(field => Row(CreateLink(field.MemberId, field.Name), ConvertToSpan(field.Summary)))
-                    )
-                );
-            }
-
-        }
-
-        private void AddEventsSection(MdContainerBlock block)
-        {            
-            if (Model.Events.Count > 0)
-            {                
-                //TODO: Sort by name
-                block.Add(
-                    Heading("Events", 2),
-                    Table(
-                        Row("Name", "Description"),
-                        Model.Events.OrderBy(x => x.Name).Select(ev => Row(CreateLink(ev.MemberId, ev.Name), ConvertToSpan(ev.Summary)))
-                ));
-            }
-        }
-        
-        private void AddPropertiesSection(MdContainerBlock block)
-        {            
-            if (Model.Properties.Count > 0)
-            {
-                var table = Table(Row("Name", "Description"));
+                block.Add(Heading(sectionHeading, 2));
                 
-                foreach (var property in Model.Properties.OrderBy(x => x.Name))
-                {                    
-                    table.Add(Row(CreateLink(property.MemberId, property.Name), ConvertToSpan(property.Summary)));
+                var table = Table(Row("Name", "Description"));
+                foreach(var member in members.OrderBy(x => x.Name))
+                {
+                    table.Add(
+                        Row(
+                            CreateLink(member.MemberId, member.Name),
+                            ConvertToSpan(member.Summary)
+                    ));
                 }
-             
-                block.Add(
-                    Heading("Properties", 2),
-                    table
-                );
+                block.Add(table);
             }
         }
         
