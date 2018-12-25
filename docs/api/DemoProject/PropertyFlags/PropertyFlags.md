@@ -20,8 +20,8 @@ public enum PropertyFlags
 
 ## Fields
 
-| Name                                   | Description |
-| -------------------------------------- | ----------- |
-| [Flag1](fields/PropertyFlags.Flag1.md) |             |
-| [Flag2](fields/PropertyFlags.Flag2.md) |             |
-| [Flag3](fields/PropertyFlags.Flag3.md) |             |
+| Name  | Description |
+| ----- | ----------- |
+| Flag1 |             |
+| Flag2 |             |
+| Flag3 |             |

@@ -19,8 +19,8 @@ public enum DemoEnum
 
 ## Fields
 
-| Name                                          | Description            |
-| --------------------------------------------- | ---------------------- |
-| [AnotherItem](fields/DemoEnum.AnotherItem.md) | Yet another enum value |
-| [Item1](fields/DemoEnum.Item1.md)             | Enum value "Item1"     |
-| [Item2](fields/DemoEnum.Item2.md)             | Enum value "Item2"     |
+| Name        | Description            |
+| ----------- | ---------------------- |
+| AnotherItem | Yet another enum value |
+| Item1       | Enum value "Item1"     |
+| Item2       | Enum value "Item2"     |

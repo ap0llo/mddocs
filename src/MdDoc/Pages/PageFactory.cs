@@ -70,9 +70,12 @@ namespace MdDoc.Pages
                     m_Pages.Add(method, new MethodPage(this, m_RootOutputPath, method));
                 }
 
-                foreach(var field in type.Fields)
+                if(type.Kind != TypeKind.Enum)
                 {
-                    m_Pages.Add(field, new FieldPage(this, m_RootOutputPath, field));
+                    foreach(var field in type.Fields)
+                    {
+                        m_Pages.Add(field, new FieldPage(this, m_RootOutputPath, field));
+                    }
                 }
 
                 foreach(var ev in type.Events)
