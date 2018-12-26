@@ -123,7 +123,12 @@ namespace MdDoc.Model
             Operators = ReadOnlyCollectionAdapter.Create(m_Operators.Values);
             
             InheritanceHierarchy = LoadInheritanceHierarchy();
-            Attributes = Definition.CustomAttributes.Select(x => x.AttributeType.ToTypeId()).ToArray();
+
+            Attributes = Definition
+                .GetCustomAttributes()
+                .Select(x => x.AttributeType.ToTypeId())
+                .ToArray();
+
             ImplementedInterfaces = LoadImplementedInterfaces();
 
             var documentationComments = m_XmlDocsProvider.TryGetDocumentationComments(MemberId);

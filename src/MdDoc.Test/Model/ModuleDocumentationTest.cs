@@ -32,6 +32,7 @@ namespace MdDoc.Test.Model
                 typeof(TestClass_MultipleOperatorOverloads),
                 #pragma warning disable CS0618 // Type or member is obsolete
                 typeof(TestClass_Attributes),
+                typeof(TestClass_Attributes_ExtensionMethods),
                 typeof(TestStruct_Attributes),
                 typeof(TestInterface_Attributes),
                 typeof(TestEnum_Attributes),

@@ -251,7 +251,7 @@ namespace MdDoc.Model
 
             var typeKind = type.Kind();
 
-            AppendCustomAttributes(definitionBuilder, GetCustomAttributes(type, typeKind));
+            AppendCustomAttributes(definitionBuilder, type.GetCustomAttributes());
             AppendTypeModifiers(definitionBuilder, type, typeKind);
 
             // "class" / "interface" / "struct" / "enum"
@@ -280,33 +280,7 @@ namespace MdDoc.Model
         }
 
 
-        private static IEnumerable<CustomAttribute> GetCustomAttributes(TypeDefinition type, TypeKind typeKind)
-        {
-            // output type attributes but ignore some common attributes always emitted by the C# compiler
-            // - DefaultMemberAttribute when the member name is the default "Item" (for classes)
-            // - ExtensionAttributes (indicating that the class defines extension methods) (for classes)
-            // - IsReadOnly attribute (for structs, instead add the "readonly" modifier)
-            return type.CustomAttributes
-                .Where(attribute =>
-                {
-                    if (typeKind == TypeKind.Class &&
-                       attribute.AttributeType.FullName == Constants.DefaultMemberAttributeFullName &&
-                       attribute.ConstructorArguments[0].Value is string memberName &&
-                       memberName == "Item")
-                    {
-                        return false;
-                    }
-
-                    if (typeKind == TypeKind.Class && attribute.AttributeType.FullName == Constants.ExtensionAttributeFullName)
-                        return false;
-
-                    if (typeKind == TypeKind.Struct && attribute.AttributeType.FullName == Constants.IsReadOnlyAttributeFullName)
-                        return false;
-
-                    return true;
-                });
-        }
-
+      
         private static IEnumerable<CustomAttribute> GetCustomAttributes(MethodDefinition method) =>
             method.CustomAttributes.Where(a => a.AttributeType.FullName != Constants.ExtensionAttributeFullName);
 

@@ -55,6 +55,38 @@ namespace MdDoc.Model
             }
         }
 
+        /// <summary>
+        /// Gets a type's custom attributes excluding attributes emitted by the C# compiler not relevant for the user
+        /// </summary>
+        /// <returns>
+        /// Returns all attributes except
+        /// <list type="bullet">
+        ///     <item><c>DefaultMemberAttribute</c> for classes</item>
+        ///     <item><c>ExtensionAttribute</c> (indicating that the class defines extension methods) for classes</item>
+        ///     <item><c>IsReadOnlyAttribute</c> for structs indicating that it is a <c>readonly struct</c></item>
+        /// </list>
+        /// </returns>
+        public static IEnumerable<CustomAttribute> GetCustomAttributes(this TypeDefinition type)
+        {
+            var typeKind = type.Kind();
+            
+            return type.CustomAttributes
+                .Where(attribute =>
+                {
+                    if (typeKind == TypeKind.Class && attribute.AttributeType.FullName == Constants.DefaultMemberAttributeFullName)
+                        return false;
+
+                    if (typeKind == TypeKind.Class && attribute.AttributeType.FullName == Constants.ExtensionAttributeFullName)
+                        return false;
+
+                    if (typeKind == TypeKind.Struct && attribute.AttributeType.FullName == Constants.IsReadOnlyAttributeFullName)
+                        return false;
+
+                    return true;
+                });
+        }
+
+
 
         private static bool IsPropertyAccessor(MethodDefinition method)
         {

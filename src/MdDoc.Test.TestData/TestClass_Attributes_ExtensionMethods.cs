@@ -7,9 +7,11 @@ namespace MdDoc.Test.TestData
     /// </summary>
     [Obsolete("Marked as obsolete for testing purposes")]
     [Test]
-    public readonly struct TestStruct_Attributes
+    public static class TestClass_Attributes_ExtensionMethods
     {
-        // the readonly modified makes the C# compiler emit a IsReadOnly attribute
+
+        // defining an indexer makes the c# compiler emit a Extension attribute
         // this should be ignored when reading the type's attribute
+        public static void Foo(this string str) => throw new NotImplementedException();
     }
 }

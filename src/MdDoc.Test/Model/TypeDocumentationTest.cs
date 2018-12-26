@@ -443,12 +443,13 @@ namespace MdDoc.Test.Model
 
         [Theory]
 #pragma warning disable CS0618 // Type or member is obsolete
-        [InlineData(typeof(TestClass_Attributes))]
-        [InlineData(typeof(TestStruct_Attributes))]
-        [InlineData(typeof(TestInterface_Attributes))]
-        [InlineData(typeof(TestEnum_Attributes))]
+        [InlineData(nameof(TestClass_Attributes))]
+        [InlineData(nameof(TestClass_Attributes_ExtensionMethods))]
+        [InlineData(nameof(TestStruct_Attributes))]
+        [InlineData(nameof(TestInterface_Attributes))]
+        [InlineData(nameof(TestEnum_Attributes))]
 #pragma warning restore CS0618 // Type or member is obsolete
-        public void Attributes_returns_the_expected_types(Type testType)
+        public void Attributes_returns_the_expected_types(string typeName)
         {
             // ARRANGE
             var expectedAttributes = new[]
@@ -458,7 +459,7 @@ namespace MdDoc.Test.Model
             };
 
             // ACT
-            var sut = GetTypeDocumentation(testType);
+            var sut = GetTypeDocumentation(typeName);
 
             // ASSERT
             Assert.NotNull(sut.Attributes);

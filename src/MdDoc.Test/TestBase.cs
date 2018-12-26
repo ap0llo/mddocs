@@ -50,5 +50,19 @@ namespace MdDoc.Test
 
             return sut;
         }
+
+        protected TypeDocumentation GetTypeDocumentation(string typeName)
+        {
+            var typeDefinition = GetTypeDefinition(typeName);
+
+            var sut = new TypeDocumentation(
+                m_AssemblyDocumentation.Value.MainModuleDocumentation,
+                typeDefinition,
+                NullXmlDocsProvider.Instance
+            );
+
+            return sut;
+        }
+
     }
 }

@@ -12,8 +12,6 @@ public class DemoClass
 
 **Inheritance:** Object → DemoClass
 
-**Attributes:** DefaultMemberAttribute
-
 ## Remarks
 
 The main purpose of this class is to showcase the generated documentation.
