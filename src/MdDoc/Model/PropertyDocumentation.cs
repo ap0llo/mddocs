@@ -10,10 +10,9 @@ namespace MdDoc.Model
 
         public override TypeId Type { get; }
 
-        public override string CSharpDefinition { get; }
+        public TextBlock Value { get; }
 
-        // Indexeres are modeled as properties with parameters
-        public bool IsIndexer => Definition.HasParameters;
+        public override string CSharpDefinition { get; }
         
         internal PropertyDefinition Definition { get; }
 
@@ -24,8 +23,12 @@ namespace MdDoc.Model
             IXmlDocsProvider xmlDocsProvider) : base(typeDocumentation, definition?.ToMemberId(), xmlDocsProvider)
         {
             Definition = definition ?? throw new ArgumentNullException(nameof(definition));
+            xmlDocsProvider = xmlDocsProvider ?? throw new ArgumentNullException(nameof(xmlDocsProvider));
+
             Type = definition.PropertyType.ToTypeId();
             CSharpDefinition = CSharpDefinitionFormatter.GetDefinition(definition);
+
+            Value = xmlDocsProvider?.TryGetDocumentationComments(MemberId)?.Value;
         }        
     }
 }

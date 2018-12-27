@@ -5,8 +5,7 @@ using MdDoc.Model;
 using static Grynwald.MarkdownGenerator.FactoryMethods;
 
 namespace MdDoc.Pages
-{
-    //TODO: Differentiate between properties and indexers, add parameters and overloads section for indexers
+{    
     class PropertyPage : SimpleMemberPage<PropertyDocumentation>
     {        
         public override OutputPath OutputPath { get; }            
@@ -24,12 +23,15 @@ namespace MdDoc.Pages
 
         protected override void AddValueSection(MdContainerBlock block)
         {
-            //TODO: "Value" text from xml documentation
             block.Add(Heading("Property Value", 2));
             block.Add(
-                Paragraph(
-                    GetTypeNameSpan(Model.Type)
+                Paragraph(GetTypeNameSpan(Model.Type)
             ));
+
+            if (Model.Value != null)
+            {
+                block.Add(TextBlockToMarkdownConverter.ConvertToBlock(Model.Value, this));
+            }
         }        
     }
 }

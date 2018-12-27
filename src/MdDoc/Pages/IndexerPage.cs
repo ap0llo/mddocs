@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using Grynwald.MarkdownGenerator;
 using MdDoc.Model;
 
@@ -22,5 +21,24 @@ namespace MdDoc.Pages
 
         protected override MdHeading GetHeading() =>
             Heading($"{Model.TypeDocumentation.DisplayName}.{Model.Name} Indexer", 1);
+
+        protected override void AddParametersSubSection(MdContainerBlock block, IndexerOverloadDocumentation overload)
+        {
+            base.AddParametersSubSection(block, overload);
+            AddValueSubSection(block, overload);
+        }
+
+        protected virtual void AddValueSubSection(MdContainerBlock block, IndexerOverloadDocumentation overload)
+        {
+            block.Add(Heading("Indexer Value", 3));
+            block.Add(
+                Paragraph(GetTypeNameSpan(overload.Type)
+            ));
+
+            if (overload.Value != null)
+            {
+                block.Add(TextBlockToMarkdownConverter.ConvertToBlock(overload.Value, this));
+            }
+        }
     }
 }

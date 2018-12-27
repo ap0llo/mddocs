@@ -86,7 +86,7 @@ namespace MdDoc.Pages
             AddSeeAlsoSubSection(block, overload);
         }
 
-        private void AddDefinitionSubSection(MdContainerBlock block, TOverload overload)
+        protected virtual void AddDefinitionSubSection(MdContainerBlock block, TOverload overload)
         {
             if(overload.Summary != null)
             {
@@ -96,7 +96,7 @@ namespace MdDoc.Pages
             block.Add(CodeBlock(overload.CSharpDefinition, "csharp"));
         }
 
-        private void AddParametersSubSection(MdContainerBlock block, TOverload overload)
+        protected virtual void AddParametersSubSection(MdContainerBlock block, TOverload overload)
         {
             if (overload.Parameters.Count == 0)
                 return;
@@ -119,7 +119,7 @@ namespace MdDoc.Pages
             );
         }
 
-        private void AddRemarksSubSection(MdContainerBlock block, TOverload overload)
+        protected virtual void AddRemarksSubSection(MdContainerBlock block, TOverload overload)
         {
             if (overload.Remarks == null)
                 return;
@@ -128,7 +128,7 @@ namespace MdDoc.Pages
             block.Add(TextBlockToMarkdownConverter.ConvertToBlock(overload.Remarks, this));
         }
 
-        private void AddSeeAlsoSubSection(MdContainerBlock block, TOverload overload)
+        protected virtual void AddSeeAlsoSubSection(MdContainerBlock block, TOverload overload)
         {
             if (overload.SeeAlso.Count == 0)
                 return;

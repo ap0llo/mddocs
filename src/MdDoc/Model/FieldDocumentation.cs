@@ -12,6 +12,8 @@ namespace MdDoc.Model
 
         public override TypeId Type { get; }
 
+        public TextBlock Value { get; }
+
         internal FieldDefinition Definition { get; }
         
 
@@ -21,8 +23,12 @@ namespace MdDoc.Model
             IXmlDocsProvider xmlDocsProvider) : base(typeDocumentation, definition?.ToMemberId(), xmlDocsProvider)
         {
             Definition = definition ?? throw new ArgumentNullException(nameof(definition));
+            xmlDocsProvider = xmlDocsProvider ?? throw new ArgumentNullException(nameof(xmlDocsProvider));
+
             CSharpDefinition = CSharpDefinitionFormatter.GetDefinition(definition);
             Type = definition.FieldType.ToTypeId();
+
+            Value = xmlDocsProvider.TryGetDocumentationComments(MemberId)?.Value;
         }
     }
 }

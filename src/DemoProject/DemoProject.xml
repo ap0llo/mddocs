@@ -62,6 +62,7 @@
             Remarks allow specification of more detailed information about a member, in this case a field
             supplementing the information specified in the summary
             </remarks>
+            <value>The tag <c>value</c> allows specifying the value a field represents</value>
             <seealso cref="F:DemoProject.DemoClass.Field2"/>
         </member>
         <member name="F:DemoProject.DemoClass.Field2">
@@ -72,6 +73,7 @@
             Remarks allow specification of more detailed information about a member, in this case a field
             supplementing the information specified in the summary
             </remarks>
+            <value>The tag <c>value</c> allows specifying the value a field represents</value>
             <seealso cref="F:DemoProject.DemoClass.Field1"/>
         </member>
         <member name="E:DemoProject.DemoClass.Event1">
@@ -102,6 +104,7 @@
             Remarks allow specification of more detailed information about a member, in this case a property
             supplementing the information specified in the summary
             </remarks>
+            <value>The tag <c>value</c> allows specifying the value a property represents</value>
             <seealso cref="P:DemoProject.DemoClass.Property2"/>
         </member>
         <member name="P:DemoProject.DemoClass.Property2">
@@ -112,6 +115,7 @@
             Remarks allow specification of more detailed information about a member, in this case, a property
             supplementing the information specified in the summary
             </remarks>
+            <value>The tag <c>value</c> allows specifying the value a property represents</value>
             <seealso cref="P:DemoProject.DemoClass.Property1"/>
         </member>
         <member name="P:DemoProject.DemoClass.Item(System.Int32)">
@@ -125,6 +129,7 @@
             For overloaded members, there is a separate "Remarks" section for every overload.
             </para>
             </remarks>
+            <value>The tag <c>value</c> allows specifying the value a indexer represents</value>
             <seealso cref="P:DemoProject.DemoClass.Item(System.Int32,System.Int32)"/>
         </member>
         <member name="P:DemoProject.DemoClass.Item(System.Int32,System.Int32)">
@@ -138,6 +143,7 @@
             For overloaded members, there is a separate "Remarks" section for every overload.
             </para>
             </remarks>
+            <value>The tag <c>value</c> allows specifying the value a indexer represents</value>
             <seeaslo cref="P:DemoProject.DemoClass.Item(System.Int32)"/>
         </member>
         <member name="M:DemoProject.DemoClass.#ctor">

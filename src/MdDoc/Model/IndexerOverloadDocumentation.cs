@@ -17,14 +17,21 @@ namespace MdDoc.Model
         public override IReadOnlyList<ParameterDocumentation> Parameters { get; }
 
         public override string CSharpDefinition { get; }
+    
+        public TextBlock Value { get; }
 
+        public TypeId Type { get; }
 
         internal PropertyDefinition Definition { get; }
 
 
-        internal IndexerOverloadDocumentation(IndexerDocumentation indexerDocumentation, PropertyDefinition definition, IXmlDocsProvider xmlDocsProvider) : base(definition?.ToMemberId(), xmlDocsProvider)
+        internal IndexerOverloadDocumentation(
+            IndexerDocumentation indexerDocumentation,
+            PropertyDefinition definition,
+            IXmlDocsProvider xmlDocsProvider) : base(definition?.ToMemberId(), xmlDocsProvider)
         {
             Definition = definition ?? throw new ArgumentNullException(nameof(definition));
+            xmlDocsProvider = xmlDocsProvider ?? throw new ArgumentNullException(nameof(xmlDocsProvider));
 
             Parameters = definition.HasParameters
                 ? Array.Empty<ParameterDocumentation>()
@@ -32,6 +39,8 @@ namespace MdDoc.Model
 
             Signature = MethodFormatter.Instance.GetSignature(definition);
             CSharpDefinition = CSharpDefinitionFormatter.GetDefinition(definition);
+            Value = xmlDocsProvider.TryGetDocumentationComments(MemberId)?.Value;
+            Type = definition.PropertyType.ToTypeId();
         }
 
 

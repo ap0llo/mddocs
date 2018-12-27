@@ -58,6 +58,7 @@ namespace DemoProject
         /// Remarks allow specification of more detailed information about a member, in this case a field
         /// supplementing the information specified in the summary
         /// </remarks>
+        /// <value>The tag <c>value</c> allows specifying the value a field represents</value>
         /// <seealso cref="Field2"/>
         public readonly int Field1;
 
@@ -68,6 +69,7 @@ namespace DemoProject
         /// Remarks allow specification of more detailed information about a member, in this case a field
         /// supplementing the information specified in the summary
         /// </remarks>
+        /// <value>The tag <c>value</c> allows specifying the value a field represents</value>
         /// <seealso cref="Field1"/>
         public readonly string Field2;
 
@@ -98,6 +100,7 @@ namespace DemoProject
         /// Remarks allow specification of more detailed information about a member, in this case a property
         /// supplementing the information specified in the summary
         /// </remarks>
+        /// <value>The tag <c>value</c> allows specifying the value a property represents</value>
         /// <seealso cref="Property2"/>
         public string Property1 { get; }
 
@@ -108,6 +111,7 @@ namespace DemoProject
         /// Remarks allow specification of more detailed information about a member, in this case, a property
         /// supplementing the information specified in the summary
         /// </remarks>
+        /// <value>The tag <c>value</c> allows specifying the value a property represents</value>
         /// <seealso cref="Property1"/>
         [DemoPropertyAnnotation(DemoPropertyFlags.Flag2 | DemoPropertyFlags.Flag3)]
         public string Property2 { get; set; }
@@ -122,6 +126,7 @@ namespace DemoProject
         /// For overloaded members, there is a separate "Remarks" section for every overload.
         /// </para>
         /// </remarks>
+        /// <value>The tag <c>value</c> allows specifying the value a indexer represents</value>
         /// <seealso cref="this[Int32, Int32]"/>
         public string this[int index] => throw new NotImplementedException();
 
@@ -135,6 +140,7 @@ namespace DemoProject
         /// For overloaded members, there is a separate "Remarks" section for every overload.
         /// </para>
         /// </remarks>
+        /// <value>The tag <c>value</c> allows specifying the value a indexer represents</value>
         /// <seeaslo cref="this[Int32]"/>
         public string this[int x, int y] => throw new NotImplementedException();
 

@@ -13,7 +13,7 @@ namespace MdDoc.Model.XmlDocs
         /// <remarks>
         /// Text specified using the <c>summary</c> tag.
         /// <para>
-        /// Supported for types, fields, events, properties and methods
+        /// Supported for types, fields, events, properties, indexers and methods
         /// </para>       
         /// </remarks>
         /// <value>The specified summary or <c>null</c> if no summary was specified</value>
@@ -26,7 +26,7 @@ namespace MdDoc.Model.XmlDocs
         /// Text specified using the <c>remarks</c> tag provides more detailed information about
         /// a member supplementing information from <c>summary</c>
         /// <para>
-        /// Supported for types, fields, events, properties and methods
+        /// Supported for types, fields, events, properties, indexers and methods
         /// </para>
         /// </remarks>
         /// <value>The specified remarks or <c>null</c> if no remarks are available</value>
@@ -40,6 +40,16 @@ namespace MdDoc.Model.XmlDocs
 
         public IReadOnlyList<ParamElement> Parameters { get; }
 
+        /// <summary>
+        /// Gets the <c>value</c> documentation for the member
+        /// </summary>
+        /// <remarks>
+        /// <c>value</c> describes the value a property, indexer or field represents
+        /// <para>
+        /// Supported for fields, properties and indexers
+        /// </para>
+        /// </remarks>
+        /// <value>The specified text or <c>null</c> if no text is available</value>
         public TextBlock Value { get; }
 
         public TextBlock Returns { get; }

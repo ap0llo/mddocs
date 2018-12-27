@@ -17,6 +17,12 @@ An example of an indexer with two parameters.
 public string this[int x, int y] { get; }
 ```
 
+### Indexer Value
+
+String
+
+The tag `value` allows specifying the value a indexer represents
+
 ### Remarks
 
 Remarks allow specification of more detailed information about a member, in this case the indexer. supplementing the information specified in the summary.
@@ -30,6 +36,12 @@ An example of an indexer with a single parameter.
 ```csharp
 public string this[int index] { get; }
 ```
+
+### Indexer Value
+
+String
+
+The tag `value` allows specifying the value a indexer represents
 
 ### Remarks
 
