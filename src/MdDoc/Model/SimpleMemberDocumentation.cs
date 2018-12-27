@@ -10,6 +10,8 @@ namespace MdDoc.Model
 
         public TextBlock Summary { get; }
 
+        public TextBlock Remarks { get; }
+
         public IReadOnlyList<SeeAlsoElement> SeeAlso { get; }
 
         public abstract string Name { get; }
@@ -21,9 +23,11 @@ namespace MdDoc.Model
 
         internal SimpleMemberDocumentation(TypeDocumentation typeDocumentation, MemberId memberId, IXmlDocsProvider xmlDocsProvider) : base(typeDocumentation)
         {
-            MemberId = memberId ?? throw new System.ArgumentNullException(nameof(memberId));
+            MemberId = memberId ?? throw new ArgumentNullException(nameof(memberId));
+
             var documentationComments = xmlDocsProvider.TryGetDocumentationComments(memberId);
             Summary = documentationComments?.Summary;
+            Remarks = documentationComments?.Remarks;
             SeeAlso = documentationComments?.SeeAlso ?? Array.Empty<SeeAlsoElement>();
         }
 

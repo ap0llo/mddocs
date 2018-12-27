@@ -58,64 +58,117 @@
             <summary>
             An example of a public field.
             </summary>
+            <remarks>
+            Remarks allow specification of more detailed information about a member, in this case a field
+            supplementing the information specified in the summary
+            </remarks>
             <seealso cref="F:DemoProject.DemoClass.Field2"/>
         </member>
         <member name="F:DemoProject.DemoClass.Field2">
             <summary>
             An example of a public field.
             </summary>
+            <remarks>
+            Remarks allow specification of more detailed information about a member, in this case a field
+            supplementing the information specified in the summary
+            </remarks>
             <seealso cref="F:DemoProject.DemoClass.Field1"/>
         </member>
         <member name="E:DemoProject.DemoClass.Event1">
             <summary>
             An example of a public event.
             </summary>
+            <remarks>
+            Remarks allow specification of more detailed information about a member, in this case an event
+            supplementing the information specified in the summary
+            </remarks>
             <seealso cref="E:DemoProject.DemoClass.Event2"/>
         </member>
         <member name="E:DemoProject.DemoClass.Event2">
             <summary>
             An example of a public event
             </summary>
+            <remarks>
+            Remarks allow specification of more detailed information about a member, in this case an event
+            supplementing the information specified in the summary
+            </remarks>
             <seealso cref="E:DemoProject.DemoClass.Event1"/>
         </member>
         <member name="P:DemoProject.DemoClass.Property1">
             <summary>
             An example of a read-only property.
             </summary>
+            <remarks>
+            Remarks allow specification of more detailed information about a member, in this case a property
+            supplementing the information specified in the summary
+            </remarks>
             <seealso cref="P:DemoProject.DemoClass.Property2"/>
         </member>
         <member name="P:DemoProject.DemoClass.Property2">
             <summary>
             An example of a read/write property annotated with a custom attribute
             </summary>
+            <remarks>
+            Remarks allow specification of more detailed information about a member, in this case, a property
+            supplementing the information specified in the summary
+            </remarks>
             <seealso cref="P:DemoProject.DemoClass.Property1"/>
         </member>
         <member name="P:DemoProject.DemoClass.Item(System.Int32)">
             <summary>
             An example of an indexer with a single parameter.
             </summary>
+            <remarks>
+            Remarks allow specification of more detailed information about a member, in this case the indexer.
+            supplementing the information specified in the summary.
+            <para>
+            For overloaded members, there is a separate "Remarks" section for every overload.
+            </para>
+            </remarks>
             <seealso cref="P:DemoProject.DemoClass.Item(System.Int32,System.Int32)"/>
         </member>
         <member name="P:DemoProject.DemoClass.Item(System.Int32,System.Int32)">
             <summary>
             An example of an indexer with two parameters.
             </summary>
+            <remarks>
+            Remarks allow specification of more detailed information about a member, in this case the indexer.
+            supplementing the information specified in the summary.
+            <para>
+            For overloaded members, there is a separate "Remarks" section for every overload.
+            </para>
+            </remarks>
             <seeaslo cref="P:DemoProject.DemoClass.Item(System.Int32)"/>
         </member>
         <member name="M:DemoProject.DemoClass.#ctor">
             <summary>
             Initializes a new instance of <see cref="T:DemoProject.DemoClass"/>
             </summary>
+            <remarks>
+            Remarks allow specification of more detailed information about a member, in this case the constructor.
+            supplementing the information specified in the summary
+            </remarks>
         </member>
         <member name="M:DemoProject.DemoClass.#ctor(System.Int32)">
             <summary>
             Initializes a new instance of <see cref="T:DemoProject.DemoClass"/> with the specified parameters
             </summary>
+            <remarks>
+            Remarks allow specification of more detailed information about a member, in this case the constructor.
+            supplementing the information specified in the summary
+            </remarks>
         </member>
         <member name="M:DemoProject.DemoClass.Method1">
             <summary>
             Example of an overloaded method without parameters
             </summary>
+            <remarks>
+            Remarks allow specification of more detailed information about a member, in this case a method.
+            supplementing the information specified in the summary.
+            <para>
+            For overloaded members, there is a separate "Remarks" section for every overload.
+            </para>
+            </remarks>
             <seealso cref="M:DemoProject.DemoClass.Method1(System.String)" />
             <seealso cref="M:DemoProject.DemoClass.Method2" />
         </member>
@@ -123,6 +176,13 @@
             <summary>
             Example of an overloaded method accepting one parameter.
             </summary>
+            <remarks>
+            Remarks allow specification of more detailed information about a member, in this case a method.
+            supplementing the information specified in the summary.
+            <para>
+            For overloaded members, there is a separate "Remarks" section for every overload.
+            </para>
+            </remarks>
             <seealso cref="M:DemoProject.DemoClass.Method1" />
             <seealso cref="M:DemoProject.DemoClass.Method2" />
         </member>
@@ -130,6 +190,10 @@
             <summary>
             Example of an non-overloaded methods with a custom attribute-
             </summary>
+            <remarks>
+            Remarks allow specification of more detailed information about a member, in this case a method.
+            supplementing the information specified in the summary.
+            </remarks>
             <seealso cref="M:DemoProject.DemoClass.Method1"/>
             <seealso cref="M:DemoProject.DemoClass.Method1(System.String)"/>
         </member>
@@ -137,12 +201,26 @@
             <summary>
             Example of an overload of the binary + operator.
             </summary>
+            <remarks>
+            Remarks allow specification of more detailed information about a member, in this case a method.
+            supplementing the information specified in the summary.
+            <para>
+            For overloaded members, there is a separate "Remarks" section for every overload.
+            </para>
+            </remarks>
             <seealso cref="M:DemoProject.DemoClass.op_Subtraction(DemoProject.DemoClass,DemoProject.DemoClass)"/>
         </member>
         <member name="M:DemoProject.DemoClass.op_Subtraction(DemoProject.DemoClass,DemoProject.DemoClass)">
             <summary>
             Example of an overload of the binary - operator.
             </summary>
+            <remarks>
+            Remarks allow specification of more detailed information about a member, in this case a method.
+            supplementing the information specified in the summary.
+            <para>
+            For overloaded members, there is a separate "Remarks" section for every overload.
+            </para>
+            </remarks>
             <seealso cref="M:DemoProject.DemoClass.op_Addition(DemoProject.DemoClass,DemoProject.DemoClass)"/>
         </member>
         <member name="T:DemoProject.DemoEnum">
@@ -172,32 +250,50 @@
             <summary>
             Enum value "Item1"
             </summary>
+            <remarks>
+            More detailed information can be provided in the Remarks section
+            </remarks>
         </member>
         <member name="F:DemoProject.DemoEnum.Item2">
             <summary>
             Enum value "Item2"
             </summary>
+            <remarks>
+            More detailed information can be provided in the Remarks section
+            </remarks>
         </member>
         <member name="F:DemoProject.DemoEnum.AnotherItem">
             <summary>
             Yet another enum value
             </summary>
+            <remarks>
+            More detailed information can be provided in the Remarks section
+            </remarks>
         </member>
         <!-- Badly formed XML comment ignored for member "T:DemoProject.DemoPropertyFlags" -->
         <member name="F:DemoProject.DemoPropertyFlags.Flag1">
             <summary>
             Example of an enum value
             </summary>
+            <remarks>
+            More detailed information can be provided in the Remarks section
+            </remarks>
         </member>
         <member name="F:DemoProject.DemoPropertyFlags.Flag2">
             <summary>
             Example of an enum value
             </summary>
+            <remarks>
+            More detailed information can be provided in the Remarks section
+            </remarks>
         </member>
         <member name="F:DemoProject.DemoPropertyFlags.Flag3">
             <summary>
             Example of an enum value
             </summary>
+            <remarks>
+            More detailed information can be provided in the Remarks section
+            </remarks>
         </member>
         <member name="T:DemoProject.DemoPropertyAnnotationAttribute">
             <summary>
@@ -214,6 +310,9 @@
             <summary>
             Initializes a new instance of <see cref="T:DemoProject.DemoPropertyAnnotationAttribute"/>
             </summary>
+            <remarks>
+            More detailed information can be provided in the Remarks section
+            </remarks>
             <param name="flags">The flags to annotate the property with</param>
         </member>
         <member name="T:DemoProject.DemoStruct">

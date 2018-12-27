@@ -13,6 +13,10 @@ public string Property2 { get; set; }
 
 String
 
+## Remarks
+
+Remarks allow specification of more detailed information about a member, in this case, a property supplementing the information specified in the summary
+
 ## See Also
 
 - [Property1](Property1.md)

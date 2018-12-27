@@ -13,12 +13,23 @@ namespace MdDoc.Model.XmlDocs
         /// <remarks>
         /// Text specified using the <c>summary</c> tag.
         /// <para>
-        /// Supported for types, fields, events, properties, and methods
+        /// Supported for types, fields, events, properties and methods
         /// </para>       
         /// </remarks>
         /// <value>The specified summary or <c>null</c> if no summary was specified</value>
         public TextBlock Summary { get; }
 
+        /// <summary>
+        /// Gets the remarks for a member
+        /// </summary>
+        /// <remarks>
+        /// Text specified using the <c>remarks</c> tag provides more detailed information about
+        /// a member supplementing information from <c>summary</c>
+        /// <para>
+        /// Supported for types, fields, events, properties and methods
+        /// </para>
+        /// </remarks>
+        /// <value>The specified remarks or <c>null</c> if no remarks are available</value>
         public TextBlock Remarks { get; }
 
         public TextBlock Example { get; }

@@ -12,6 +12,10 @@ public readonly int Field1;
 
 Int32
 
+## Remarks
+
+Remarks allow specification of more detailed information about a member, in this case a field supplementing the information specified in the summary
+
 ## See Also
 
 - [Field2](Field2.md)

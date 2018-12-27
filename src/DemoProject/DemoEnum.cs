@@ -26,16 +26,25 @@
         /// <summary>
         /// Enum value "Item1"
         /// </summary>
+        /// <remarks>
+        /// More detailed information can be provided in the Remarks section
+        /// </remarks>
         Item1,
 
         /// <summary>
         /// Enum value "Item2"
         /// </summary>
+        /// <remarks>
+        /// More detailed information can be provided in the Remarks section
+        /// </remarks>
         Item2,
 
         /// <summary>
         /// Yet another enum value
         /// </summary>
+        /// <remarks>
+        /// More detailed information can be provided in the Remarks section
+        /// </remarks>
         AnotherItem
     }
 }

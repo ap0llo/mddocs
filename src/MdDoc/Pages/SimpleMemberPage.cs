@@ -29,7 +29,7 @@ namespace MdDoc.Pages
 
             AddValueSection(document.Root);
 
-            //TODO: Remarks
+            AddRemarksSection(document.Root);
 
             //TODO: Examples
 
@@ -50,6 +50,15 @@ namespace MdDoc.Pages
             block.Add(
                 CodeBlock(Model.CSharpDefinition, "csharp")
             );
+        }
+
+        protected virtual void AddRemarksSection(MdContainerBlock block)
+        {
+            if (Model.Remarks == null)
+                return;
+
+            block.Add(Heading(2, "Remarks"));
+            block.Add(TextBlockToMarkdownConverter.ConvertToBlock(Model.Remarks, this));
         }
 
         protected virtual void AddSeeAlsoSection(MdContainerBlock block)

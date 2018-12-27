@@ -12,6 +12,8 @@ namespace MdDoc.Model
 
         public TextBlock Summary { get; }
 
+        public TextBlock Remarks { get; }
+
         public IReadOnlyList<SeeAlsoElement> SeeAlso { get; }
 
         public abstract string Signature { get; }
@@ -27,6 +29,7 @@ namespace MdDoc.Model
 
             var documentationComments = xmlDocsProvider.TryGetDocumentationComments(memberId);
             Summary = documentationComments?.Summary;
+            Remarks = documentationComments?.Remarks;    
             SeeAlso = documentationComments?.SeeAlso ?? Array.Empty<SeeAlsoElement>();
         }
 

@@ -25,16 +25,25 @@ namespace DemoProject
         /// <summary>
         /// Example of an enum value
         /// </summary>
+        /// <remarks>
+        /// More detailed information can be provided in the Remarks section
+        /// </remarks>
         Flag1 = 0x01,
 
         /// <summary>
         /// Example of an enum value
         /// </summary>
+        /// <remarks>
+        /// More detailed information can be provided in the Remarks section
+        /// </remarks>
         Flag2 = 0x02,
 
         /// <summary>
         /// Example of an enum value
         /// </summary>
+        /// <remarks>
+        /// More detailed information can be provided in the Remarks section
+        /// </remarks>
         Flag3 = 0x04
     }
 
@@ -53,6 +62,9 @@ namespace DemoProject
         /// <summary>
         /// Initializes a new instance of <see cref="DemoPropertyAnnotationAttribute"/>
         /// </summary>
+        /// <remarks>
+        /// More detailed information can be provided in the Remarks section
+        /// </remarks>
         /// <param name="flags">The flags to annotate the property with</param>
         public DemoPropertyAnnotationAttribute(DemoPropertyFlags flags)
         {

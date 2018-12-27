@@ -12,6 +12,10 @@ public readonly string Field2;
 
 String
 
+## Remarks
+
+Remarks allow specification of more detailed information about a member, in this case a field supplementing the information specified in the summary
+
 ## See Also
 
 - [Field1](Field1.md)

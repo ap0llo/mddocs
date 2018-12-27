@@ -54,36 +54,60 @@ namespace DemoProject
         /// <summary>
         /// An example of a public field.
         /// </summary>
+        /// <remarks>
+        /// Remarks allow specification of more detailed information about a member, in this case a field
+        /// supplementing the information specified in the summary
+        /// </remarks>
         /// <seealso cref="Field2"/>
         public readonly int Field1;
 
         /// <summary>
         /// An example of a public field.
         /// </summary>
+        /// <remarks>
+        /// Remarks allow specification of more detailed information about a member, in this case a field
+        /// supplementing the information specified in the summary
+        /// </remarks>
         /// <seealso cref="Field1"/>
         public readonly string Field2;
 
         /// <summary>
         /// An example of a public event.
         /// </summary>
+        /// <remarks>
+        /// Remarks allow specification of more detailed information about a member, in this case an event
+        /// supplementing the information specified in the summary
+        /// </remarks>
         /// <seealso cref="Event2"/>
         public event EventHandler<EventArgs> Event1;
 
         /// <summary>
         /// An example of a public event
         /// </summary>
+        /// <remarks>
+        /// Remarks allow specification of more detailed information about a member, in this case an event
+        /// supplementing the information specified in the summary
+        /// </remarks>
         /// <seealso cref="Event1"/>
         public event EventHandler<EventArgs> Event2;
 
         /// <summary>
         /// An example of a read-only property.
         /// </summary>
+        /// <remarks>
+        /// Remarks allow specification of more detailed information about a member, in this case a property
+        /// supplementing the information specified in the summary
+        /// </remarks>
         /// <seealso cref="Property2"/>
         public string Property1 { get; }
 
         /// <summary>
         /// An example of a read/write property annotated with a custom attribute
         /// </summary>
+        /// <remarks>
+        /// Remarks allow specification of more detailed information about a member, in this case, a property
+        /// supplementing the information specified in the summary
+        /// </remarks>
         /// <seealso cref="Property1"/>
         [DemoPropertyAnnotation(DemoPropertyFlags.Flag2 | DemoPropertyFlags.Flag3)]
         public string Property2 { get; set; }
@@ -91,18 +115,36 @@ namespace DemoProject
         /// <summary>
         /// An example of an indexer with a single parameter.
         /// </summary>
+        /// <remarks>
+        /// Remarks allow specification of more detailed information about a member, in this case the indexer.
+        /// supplementing the information specified in the summary.
+        /// <para>
+        /// For overloaded members, there is a separate "Remarks" section for every overload.
+        /// </para>
+        /// </remarks>
         /// <seealso cref="this[Int32, Int32]"/>
         public string this[int index] => throw new NotImplementedException();
 
         /// <summary>
         /// An example of an indexer with two parameters.
         /// </summary>
+        /// <remarks>
+        /// Remarks allow specification of more detailed information about a member, in this case the indexer.
+        /// supplementing the information specified in the summary.
+        /// <para>
+        /// For overloaded members, there is a separate "Remarks" section for every overload.
+        /// </para>
+        /// </remarks>
         /// <seeaslo cref="this[Int32]"/>
         public string this[int x, int y] => throw new NotImplementedException();
 
         /// <summary>
         /// Initializes a new instance of <see cref="DemoClass"/>
         /// </summary>
+        /// <remarks>
+        /// Remarks allow specification of more detailed information about a member, in this case the constructor.
+        /// supplementing the information specified in the summary
+        /// </remarks>
         public DemoClass()
         {
         }
@@ -110,6 +152,10 @@ namespace DemoProject
         /// <summary>
         /// Initializes a new instance of <see cref="DemoClass"/> with the specified parameters
         /// </summary>
+        /// <remarks>
+        /// Remarks allow specification of more detailed information about a member, in this case the constructor.
+        /// supplementing the information specified in the summary
+        /// </remarks>
         public DemoClass(int parameter)
         {
         }
@@ -118,6 +164,13 @@ namespace DemoProject
         /// <summary>
         /// Example of an overloaded method without parameters
         /// </summary>
+        /// <remarks>
+        /// Remarks allow specification of more detailed information about a member, in this case a method.
+        /// supplementing the information specified in the summary.
+        /// <para>
+        /// For overloaded members, there is a separate "Remarks" section for every overload.
+        /// </para>
+        /// </remarks>
         /// <seealso cref="Method1(String)" />
         /// <seealso cref="Method2" />
         public void Method1() => throw new NotImplementedException();
@@ -125,6 +178,13 @@ namespace DemoProject
         /// <summary>
         /// Example of an overloaded method accepting one parameter.
         /// </summary>
+        /// <remarks>
+        /// Remarks allow specification of more detailed information about a member, in this case a method.
+        /// supplementing the information specified in the summary.
+        /// <para>
+        /// For overloaded members, there is a separate "Remarks" section for every overload.
+        /// </para>
+        /// </remarks>
         /// <seealso cref="Method1()" />
         /// <seealso cref="Method2" />
         public void Method1(string parameter) => throw new NotImplementedException();
@@ -132,6 +192,10 @@ namespace DemoProject
         /// <summary>
         /// Example of an non-overloaded methods with a custom attribute-
         /// </summary>
+        /// <remarks>
+        /// Remarks allow specification of more detailed information about a member, in this case a method.
+        /// supplementing the information specified in the summary.
+        /// </remarks>
         /// <seealso cref="DemoClass.Method1()"/>
         /// <seealso cref="DemoClass.Method1(String)"/>
         [Demo]
@@ -140,12 +204,26 @@ namespace DemoProject
         /// <summary>
         /// Example of an overload of the binary + operator.
         /// </summary>
+        /// <remarks>
+        /// Remarks allow specification of more detailed information about a member, in this case a method.
+        /// supplementing the information specified in the summary.
+        /// <para>
+        /// For overloaded members, there is a separate "Remarks" section for every overload.
+        /// </para>
+        /// </remarks>
         /// <seealso cref="DemoClass.op_Subtraction"/>
         public static DemoClass operator +(DemoClass left, DemoClass right) => throw new NotImplementedException();
 
         /// <summary>
         /// Example of an overload of the binary - operator.
         /// </summary>
+        /// <remarks>
+        /// Remarks allow specification of more detailed information about a member, in this case a method.
+        /// supplementing the information specified in the summary.
+        /// <para>
+        /// For overloaded members, there is a separate "Remarks" section for every overload.
+        /// </para>
+        /// </remarks>
         /// <seealso cref="DemoClass.op_Addition"/>
         public static DemoClass operator -(DemoClass left, DemoClass right) => throw new NotImplementedException();
 

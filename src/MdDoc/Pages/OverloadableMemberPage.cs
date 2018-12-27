@@ -76,6 +76,8 @@ namespace MdDoc.Pages
 
             AddParametersSubSection(block, overload);
 
+            AddRemarksSubSection(block, overload);
+
             //TODO: Returns (methods) / value (indexers)
             //TODO: Exceptions
             //TODO: Remarks
@@ -115,6 +117,15 @@ namespace MdDoc.Pages
                 Heading("Parameters", 3),
                 table
             );
+        }
+
+        private void AddRemarksSubSection(MdContainerBlock block, TOverload overload)
+        {
+            if (overload.Remarks == null)
+                return;
+
+            block.Add(Heading(3, "Remarks"));
+            block.Add(TextBlockToMarkdownConverter.ConvertToBlock(overload.Remarks, this));
         }
 
         private void AddSeeAlsoSubSection(MdContainerBlock block, TOverload overload)
