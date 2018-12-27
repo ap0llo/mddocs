@@ -1,13 +1,13 @@
-# DemoClass.Field1 Field
+# DemoClass.Field2 Field
 
 **Declaring Type:** [DemoClass](../DemoClass.md)
 
 An example of a public field.
 
 ```csharp
-public readonly int Field1;
+public readonly string Field2;
 ```
 
 ## Field Value
 
-Int32
+String

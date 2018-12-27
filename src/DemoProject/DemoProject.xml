@@ -4,11 +4,7 @@
         <name>DemoProject</name>
     </assembly>
     <members>
-        <member name="T:DemoProject.DemoAttribute">
-            <summary>
-            An example of an customa attribute class for methods
-            </summary>
-        </member>
+        <!-- Badly formed XML comment ignored for member "T:DemoProject.DemoAttribute" -->
         <member name="T:DemoProject.DemoClass">
             <summary>
             A class meant to demonstrate how the generated documentation looks like.
@@ -20,24 +16,25 @@
             for the generated documentation as possible.
             </para>    
             <para>   
-            For every type, MdDoc will create a seprate markdown page split into multiple sections.
+            For every type, MdDoc will create a separate markdown page split into multiple sections.
             </para>
             <para>
-            The type page starts with basic info about the type. This includes the type's namespace and assembly
-            as well as the inheritance hierarchy, implemented interfaces and applied attribues.
+            The type page starts with the "definition" section that provides basic info about the type.
+            This includes the type's namespace and assembly as well as the inheritance hierarchy,
+            implemented interfaces and applied attributes.
             The type info will be followed by the summary provided in the xml documentation comments.
             </para>
             <para>
-            If there are any remarks for the type, a "Remarks" section is added (the sections you are currently reading)
+            If there are any remarks for the type, a "Remarks" section is added (the section you are currently reading)
             </para>
             <para>
             All of a types constructors will be listed in a table in the "Constructors" section.
-            The table contains a line for every constructor displaying the constructors signature
-            and summary. As there is a separate page generated that provides more detailed infor about the
+            The table contains a row for every constructor displaying the constructors signature
+            and summary. As there is a separate page generated that provides more detailed info about the
             constructor, a link to that page is inserted.
             </para>
             <para>
-            Similar tables are generated for a type's public fields, events, properties, methods and operator overloads
+            Similar tables are generated for a type's public fields, events, properties, indexers, methods and operator overloads
             </para>
             <para>
             Links to other members are supported (using the xml tag <c>see</c>), for example a link to 
@@ -45,42 +42,65 @@
             but cannot be linked to, e.g. a reference to <see cref="T:System.String"/>
             </para>
             <para>
-            The last section is the "See Also" section with links provided inline using the <c>seealso</c> tag
+            The last section is the "See Also" section with links provided in the xml documentation using the <c>seealso</c> tag
+            </para>
+            <para>
+            Similar pages are also generated for interfaces (see <see cref="T:DemoProject.IDemoInterface"/>), structs (see <see cref="T:DemoProject.DemoStruct"/>)
+            and enums (see  <see cref="T:DemoProject.DemoEnum"/>)
             </para>
             </remarks>
             <seealso cref="T:DemoProject.IDemoInterface"/>
-            <seealso cref="T:System.String">String might also be interesting</seealso>
-            <seealso cref="T:DemoProject.DemoStruct">DemoStruct has a similar purpose but is a value type</seealso>    
+            <seealso cref="T:DemoProject.IDemoInterface"/>
+            <seealso cref="T:DemoProject.DemoStruct">By providing text in the <c>seealso</c> element, the link text can be changed</seealso>   
+            <seealso cref="T:System.String">No link can be generated if the referenced type is defined in another assembly (<c>System.String</c> in this case)</seealso>
         </member>
         <member name="F:DemoProject.DemoClass.Field1">
             <summary>
-            A public field
+            An example of a public field.
             </summary>
+            <seealso cref="F:DemoProject.DemoClass.Field2"/>
         </member>
-        <member name="E:DemoProject.DemoClass.OperationCompleted">
+        <member name="F:DemoProject.DemoClass.Field2">
             <summary>
-            Raised when the operation is finished
+            An example of a public field.
             </summary>
+            <seealso cref="F:DemoProject.DemoClass.Field1"/>
+        </member>
+        <member name="E:DemoProject.DemoClass.Event1">
+            <summary>
+            An example of a public event.
+            </summary>
+            <seealso cref="E:DemoProject.DemoClass.Event2"/>
+        </member>
+        <member name="E:DemoProject.DemoClass.Event2">
+            <summary>
+            An example of a public event
+            </summary>
+            <seealso cref="E:DemoProject.DemoClass.Event1"/>
         </member>
         <member name="P:DemoProject.DemoClass.Property1">
             <summary>
-            Gets the value of <see cref="P:DemoProject.DemoClass.Property1"/>
+            An example of a read-only property.
             </summary>
+            <seealso cref="P:DemoProject.DemoClass.Property2"/>
         </member>
         <member name="P:DemoProject.DemoClass.Property2">
             <summary>
-            Gets the value of <see cref="P:DemoProject.DemoClass.Property2"/>
+            An example of a read/write property annotated with a custom attribute
             </summary>
+            <seealso cref="P:DemoProject.DemoClass.Property1"/>
         </member>
         <member name="P:DemoProject.DemoClass.Item(System.Int32)">
             <summary>
             An example of an indexer with a single parameter.
             </summary>
+            <seealso cref="P:DemoProject.DemoClass.Item(System.Int32,System.Int32)"/>
         </member>
         <member name="P:DemoProject.DemoClass.Item(System.Int32,System.Int32)">
             <summary>
             An example of an indexer with two parameters.
             </summary>
+            <seeaslo cref="P:DemoProject.DemoClass.Item(System.Int32)"/>
         </member>
         <member name="M:DemoProject.DemoClass.#ctor">
             <summary>
@@ -92,25 +112,61 @@
             Initializes a new instance of <see cref="T:DemoProject.DemoClass"/> with the specified parameters
             </summary>
         </member>
-        <member name="M:DemoProject.DemoClass.DoSomething(System.String)">
+        <member name="M:DemoProject.DemoClass.Method1">
             <summary>
-            Does something ;)
-            </summary>        
+            Example of an overloaded method without parameters
+            </summary>
+            <seealso cref="M:DemoProject.DemoClass.Method1(System.String)" />
+            <seealso cref="M:DemoProject.DemoClass.Method2" />
         </member>
-        <member name="M:DemoProject.DemoClass.DoSomethingElse">
+        <member name="M:DemoProject.DemoClass.Method1(System.String)">
             <summary>
-            Does something else
-            </summary>        
+            Example of an overloaded method accepting one parameter.
+            </summary>
+            <seealso cref="M:DemoProject.DemoClass.Method1" />
+            <seealso cref="M:DemoProject.DemoClass.Method2" />
+        </member>
+        <member name="M:DemoProject.DemoClass.Method2">
+            <summary>
+            Example of an non-overloaded methods with a custom attribute-
+            </summary>
+            <seealso cref="M:DemoProject.DemoClass.Method1"/>
+            <seealso cref="M:DemoProject.DemoClass.Method1(System.String)"/>
         </member>
         <member name="M:DemoProject.DemoClass.op_Addition(DemoProject.DemoClass,DemoProject.DemoClass)">
             <summary>
-            Combines two instances of <see cref="T:DemoProject.DemoClass"/>
+            Example of an overload of the binary + operator.
             </summary>
+            <seealso cref="M:DemoProject.DemoClass.op_Subtraction(DemoProject.DemoClass,DemoProject.DemoClass)"/>
+        </member>
+        <member name="M:DemoProject.DemoClass.op_Subtraction(DemoProject.DemoClass,DemoProject.DemoClass)">
+            <summary>
+            Example of an overload of the binary - operator.
+            </summary>
+            <seealso cref="M:DemoProject.DemoClass.op_Addition(DemoProject.DemoClass,DemoProject.DemoClass)"/>
         </member>
         <member name="T:DemoProject.DemoEnum">
             <summary>
-            An example of an user-defined enum
+            An example of an user-defined enum meant
             </summary>
+            <remarks>
+            This page demonstrates how the generated documentation for structs looks like.
+            The same layout is used for classes, structs, interfaces, and enums.
+            <para>
+            A more detailed description of type documentation can be seen in the documentation of <see cref="T:DemoProject.DemoClass"/>
+            </para>
+            <para>
+            In contrast to other kinds of types, the definition section for enum does include the list
+            of possible values of the enum including the numeric value.
+            </para>
+            <para>
+            Another difference to other types is that for enum values, there won't be generated a separate
+            page for every field
+            </para>
+            </remarks>
+            <seealso cref="T:DemoProject.IDemoInterface"/>
+            <seealso cref="T:DemoProject.IDemoInterface"/>
+            <seealso cref="T:DemoProject.DemoStruct" />
         </member>
         <member name="F:DemoProject.DemoEnum.Item1">
             <summary>
@@ -127,10 +183,68 @@
             Yet another enum value
             </summary>
         </member>
+        <!-- Badly formed XML comment ignored for member "T:DemoProject.DemoPropertyFlags" -->
+        <member name="F:DemoProject.DemoPropertyFlags.Flag1">
+            <summary>
+            Example of an enum value
+            </summary>
+        </member>
+        <member name="F:DemoProject.DemoPropertyFlags.Flag2">
+            <summary>
+            Example of an enum value
+            </summary>
+        </member>
+        <member name="F:DemoProject.DemoPropertyFlags.Flag3">
+            <summary>
+            Example of an enum value
+            </summary>
+        </member>
         <member name="T:DemoProject.DemoPropertyAnnotationAttribute">
             <summary>
-            An example of a custom attribute that is used to annotate a property with custom flags
+            An example of a custom attribute that is used to annotate a property with custom flags.
             </summary>
+            <remarks>
+            <see cref="T:DemoProject.DemoPropertyAnnotationAttribute"/> showcases the generated documentation for a custom attribute class
+            (in this case a attribute applicable to properties).
+            The same layout is used for all classes, see <see cref="T:DemoProject.DemoClass"/> for a more detailed description.
+            </remarks>
+            <seealso cref="P:DemoProject.DemoClass.Property2" />
+        </member>
+        <member name="M:DemoProject.DemoPropertyAnnotationAttribute.#ctor(DemoProject.DemoPropertyFlags)">
+            <summary>
+            Initializes a new instance of <see cref="T:DemoProject.DemoPropertyAnnotationAttribute"/>
+            </summary>
+            <param name="flags">The flags to annotate the property with</param>
+        </member>
+        <member name="T:DemoProject.DemoStruct">
+            <summary>
+            A struct meant to demonstrate how the generated documentation for structs looks like.
+            </summary>
+            <remarks>
+            This page demonstrates how the generated documentation for structs looks like.
+            The same layout is used for classes, structs, interfaces, and enums.
+            <para>
+            A more detailed description of type documentation can be seen in the documentation of <see cref="T:DemoProject.DemoClass"/>
+            </para>
+            </remarks>
+            <seealso cref="T:DemoProject.IDemoInterface"/>
+            <seealso cref="T:DemoProject.IDemoInterface"/>
+            <seealso cref="T:DemoProject.DemoStruct" />
+        </member>
+        <member name="T:DemoProject.IDemoInterface">
+            <summary>
+            A interface meant to demonstrate how the generated documentation for interfaces looks like.
+            </summary>
+            <remarks>
+            This page demonstrates how the generated documentation for interfaces looks like.
+            The same layout is used for classes, structs, interfaces, and enums.
+            <para>
+            A more detailed description of type documentation can be seen in the documentation of <see cref="T:DemoProject.DemoClass"/>
+            </para>
+            </remarks>
+            <seealso cref="T:DemoProject.IDemoInterface"/>
+            <seealso cref="T:DemoProject.IDemoInterface"/>
+            <seealso cref="T:DemoProject.DemoStruct" />
         </member>
     </members>
 </doc>

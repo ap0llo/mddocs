@@ -4,12 +4,12 @@
 
 ## Overloads
 
-| Signature                                      | Description |
-| ---------------------------------------------- | ----------- |
-| DemoPropertyAnnotationAttribute(PropertyFlags) |             |
+| Signature                                          | Description                                                                                         |
+| -------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| DemoPropertyAnnotationAttribute(DemoPropertyFlags) | Initializes a new instance of [DemoPropertyAnnotationAttribute](DemoPropertyAnnotationAttribute.md) |
 
-## DemoPropertyAnnotationAttribute(PropertyFlags)
+## DemoPropertyAnnotationAttribute(DemoPropertyFlags)
 
 ```csharp
-public DemoPropertyAnnotationAttribute(PropertyFlags flags);
+public DemoPropertyAnnotationAttribute(DemoPropertyFlags flags);
 ```

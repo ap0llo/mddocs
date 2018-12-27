@@ -4,8 +4,6 @@
 
 **Assembly:** DemoProject
 
-An example of an customa attribute class for methods
-
 ```csharp
 [AttributeUsage(AttributeTargets.Method | AttributeTargets.All)]
 public class DemoAttribute : Attribute

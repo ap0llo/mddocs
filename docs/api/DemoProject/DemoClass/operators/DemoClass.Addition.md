@@ -4,9 +4,9 @@
 
 ## Overloads
 
-| Signature                      | Description                                            |
-| ------------------------------ | ------------------------------------------------------ |
-| Addition(DemoClass, DemoClass) | Combines two instances of [DemoClass](../DemoClass.md) |
+| Signature                      | Description                                      |
+| ------------------------------ | ------------------------------------------------ |
+| Addition(DemoClass, DemoClass) | Example of an overload of the binary + operator. |
 
 ## Addition(DemoClass, DemoClass)
 

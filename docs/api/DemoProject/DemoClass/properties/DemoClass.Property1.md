@@ -2,7 +2,7 @@
 
 **Declaring Type:** [DemoClass](../DemoClass.md)
 
-Gets the value of Property1
+An example of a read\-only property.
 
 ```csharp
 public string Property1 { get; }

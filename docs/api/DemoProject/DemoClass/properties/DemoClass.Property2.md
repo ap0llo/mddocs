@@ -2,11 +2,11 @@
 
 **Declaring Type:** [DemoClass](../DemoClass.md)
 
-Gets the value of Property2
+An example of a read\/write property annotated with a custom attribute
 
 ```csharp
-[DemoPropertyAnnotation(PropertyFlags.Flag2 | PropertyFlags.Flag3)]
-public string Property2 { get; }
+[DemoPropertyAnnotation(DemoPropertyFlags.Flag2 | DemoPropertyFlags.Flag3)]
+public string Property2 { get; set; }
 ```
 
 ## Property Value
