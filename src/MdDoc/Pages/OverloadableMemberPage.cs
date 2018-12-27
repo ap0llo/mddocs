@@ -76,7 +76,7 @@ namespace MdDoc.Pages
 
             AddParametersSubSection(block, overload);
 
-            //TODO: Returns
+            //TODO: Returns (methods) / value (indexers)
             //TODO: Exceptions
             //TODO: Remarks
             //TODO: Examples
@@ -84,9 +84,12 @@ namespace MdDoc.Pages
             AddSeeAlsoSubSection(block, overload);
         }
 
-        private static void AddDefinitionSubSection(MdContainerBlock block, TOverload overload)
+        private void AddDefinitionSubSection(MdContainerBlock block, TOverload overload)
         {
-            //TODO: Summary
+            if(overload.Summary != null)
+            {
+                block.Add(TextBlockToMarkdownConverter.ConvertToBlock(overload.Summary, this));
+            }
 
             block.Add(CodeBlock(overload.CSharpDefinition, "csharp"));
         }

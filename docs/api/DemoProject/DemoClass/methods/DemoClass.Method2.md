@@ -10,6 +10,8 @@
 
 ## Method2()
 
+Example of an non\-overloaded methods with a custom attribute\-
+
 ```csharp
 [Demo]
 public void Method2();

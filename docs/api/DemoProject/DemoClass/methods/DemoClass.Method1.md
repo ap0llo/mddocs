@@ -11,6 +11,8 @@
 
 ## Method1()
 
+Example of an overloaded method without parameters
+
 ```csharp
 public void Method1();
 ```
@@ -21,6 +23,8 @@ public void Method1();
 - [Method2()](DemoClass.Method2.md)
 
 ## Method1(string)
+
+Example of an overloaded method accepting one parameter.
 
 ```csharp
 public void Method1(string parameter);

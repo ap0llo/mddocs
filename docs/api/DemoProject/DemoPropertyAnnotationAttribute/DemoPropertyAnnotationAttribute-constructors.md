@@ -10,6 +10,8 @@
 
 ## DemoPropertyAnnotationAttribute(DemoPropertyFlags)
 
+Initializes a new instance of [DemoPropertyAnnotationAttribute](DemoPropertyAnnotationAttribute.md)
+
 ```csharp
 public DemoPropertyAnnotationAttribute(DemoPropertyFlags flags);
 ```

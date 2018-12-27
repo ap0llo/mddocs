@@ -10,6 +10,8 @@
 
 ## Addition(DemoClass, DemoClass)
 
+Example of an overload of the binary + operator.
+
 ```csharp
 public static DemoClass operator +(DemoClass left, DemoClass right);
 ```

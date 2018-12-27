@@ -7,6 +7,16 @@ namespace MdDoc.Model.XmlDocs
     {
         public MemberId MemberId { get; }
 
+        /// <summary>
+        /// Gets the summary for a member
+        /// </summary>
+        /// <remarks>
+        /// Text specified using the <c>summary</c> tag.
+        /// <para>
+        /// Supported for types, fields, events, properties, and methods
+        /// </para>       
+        /// </remarks>
+        /// <value>The specified summary or <c>null</c> if no summary was specified</value>
         public TextBlock Summary { get; }
 
         public TextBlock Remarks { get; }
@@ -23,6 +33,13 @@ namespace MdDoc.Model.XmlDocs
 
         public TextBlock Returns { get; }
 
+        /// <summary>
+        /// Gets the items specified for the member using the <c>seealso</c> tag.
+        /// </summary>
+        /// <value>
+        /// The list of <c>seealso</c> elements specified for the member.
+        /// Empty list when no <c>seealso</c> items were specified
+        /// </value>
         public IReadOnlyList<SeeAlsoElement> SeeAlso { get; }
 
 

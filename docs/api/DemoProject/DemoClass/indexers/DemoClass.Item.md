@@ -11,11 +11,15 @@
 
 ## Item\[int, int\]
 
+An example of an indexer with two parameters.
+
 ```csharp
 public string this[int x, int y] { get; }
 ```
 
 ## Item\[int\]
+
+An example of an indexer with a single parameter.
 
 ```csharp
 public string this[int index] { get; }
