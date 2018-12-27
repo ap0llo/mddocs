@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using MdDoc.Model.XmlDocs;
 
 namespace MdDoc.Model
@@ -23,7 +24,7 @@ namespace MdDoc.Model
             MemberId = memberId ?? throw new System.ArgumentNullException(nameof(memberId));
             var documentationComments = xmlDocsProvider.TryGetDocumentationComments(memberId);
             Summary = documentationComments?.Summary;
-            SeeAlso = documentationComments?.SeeAlso;
+            SeeAlso = documentationComments?.SeeAlso ?? Array.Empty<SeeAlsoElement>();
         }
 
 

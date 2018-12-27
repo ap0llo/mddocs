@@ -6,7 +6,9 @@ namespace MdDoc.Model
 {
     public static class PropertyReferenceExtensions
     {
-        public static MemberId ToMemberId(this PropertyReference property)
+        public static MemberId ToMemberId(this PropertyReference property) => property.ToPropertyId();
+
+        public static PropertyId ToPropertyId(this PropertyReference property)
         {
             var parameters = property.Parameters.Count > 0
                 ? property.Parameters.Select(p => p.ParameterType.ToTypeId()).ToArray()

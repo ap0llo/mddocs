@@ -12,6 +12,8 @@ namespace MdDoc.Model
 
         public TextBlock Summary { get; }
 
+        public IReadOnlyList<SeeAlsoElement> SeeAlso { get; }
+
         public abstract string Signature { get; }
 
         public abstract IReadOnlyList<ParameterDocumentation> Parameters { get; }
@@ -22,7 +24,10 @@ namespace MdDoc.Model
         internal OverloadDocumentation(MemberId memberId, IXmlDocsProvider xmlDocsProvider)
         {
             MemberId = memberId ?? throw new ArgumentNullException(nameof(memberId));
-            Summary = xmlDocsProvider.TryGetDocumentationComments(memberId)?.Summary;
+
+            var documentationComments = xmlDocsProvider.TryGetDocumentationComments(memberId);
+            Summary = documentationComments?.Summary;
+            SeeAlso = documentationComments?.SeeAlso ?? Array.Empty<SeeAlsoElement>();
         }
 
 

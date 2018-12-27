@@ -26,8 +26,10 @@ namespace MdDoc.Model
         
         public static OperatorKind? GetOperatorKind(this MethodReference methodReference) =>
             OperatorMethodNames.GetOperatorKind(methodReference.Name);
-               
-        public static MemberId ToMemberId(this MethodReference method)
+
+        public static MemberId ToMemberId(this MethodReference method) => method.ToMethodId();
+
+        public static MethodId ToMethodId(this MethodReference method)
         {
             var parameters = method.Parameters.Count > 0
                 ? method.Parameters.Select(p => p.ParameterType.ToTypeId()).ToArray()

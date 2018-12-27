@@ -20,3 +20,7 @@ public string this[int x, int y] { get; }
 ```csharp
 public string this[int index] { get; }
 ```
+
+## See Also
+
+- Item\[int, int\]

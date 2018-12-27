@@ -14,3 +14,8 @@
 [Demo]
 public void Method2();
 ```
+
+## See Also
+
+- [Method1()](DemoClass.Method1.md)
+- [Method1(string)](DemoClass.Method1.md)

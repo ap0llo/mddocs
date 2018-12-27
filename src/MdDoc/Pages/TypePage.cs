@@ -180,8 +180,6 @@ namespace MdDoc.Pages
                         Model.SeeAlso.Select(seeAlso => ListItem(ConvertToSpan(seeAlso)))
                 ));
             }
-        }
-        
-        
+        }              
     }
 }

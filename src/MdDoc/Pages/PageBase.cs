@@ -85,15 +85,31 @@ namespace MdDoc.Pages
             switch (id)
             {
                 case TypeId typeId:
-                    return GetTypeNameSpan(typeId);
+                    return GetTypeNameSpan(typeId, noLink);
+
+                case MethodId methodId:
+                    if (noLink)
+                        return MethodFormatter.Instance.GetSignature(methodId);
+                    else
+                        return CreateLink(methodId, MethodFormatter.Instance.GetSignature(methodId));
+
+                case PropertyId propertyId:
+                    if (noLink)
+                        return MethodFormatter.Instance.GetSignature(propertyId);
+                    else
+                        return CreateLink(propertyId, MethodFormatter.Instance.GetSignature(propertyId));
 
                 case TypeMemberId typeMemberId:
-                    return CreateLink(typeMemberId, typeMemberId.Name);
+                    if (noLink)
+                        return typeMemberId.Name;
+                    else 
+                        return CreateLink(typeMemberId, typeMemberId.Name);
                     
                 default:
                     return MdEmptySpan.Instance;
             }
         }
+
 
         public MdSpan CreateLink(MemberId target, MdSpan text)
         {
