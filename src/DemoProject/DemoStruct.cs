@@ -10,9 +10,9 @@
     /// A more detailed description of type documentation can be seen in the documentation of <see cref="DemoClass"/>
     /// </para>
     /// </remarks>
+    /// <seealso cref="DemoClass"/>
     /// <seealso cref="IDemoInterface"/>
-    /// <seealso cref="IDemoInterface"/>
-    /// <seealso cref="DemoStruct" />
+    /// <seealso cref="DemoEnum" />
     public struct DemoStruct
     {
     }

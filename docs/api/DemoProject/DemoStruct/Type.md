@@ -20,6 +20,6 @@ A more detailed description of type documentation can be seen in the documentati
 
 ## See Also
 
+- [DemoClass](../DemoClass/Type.md)
 - [IDemoInterface](../IDemoInterface/Type.md)
-- [IDemoInterface](../IDemoInterface/Type.md)
-- DemoStruct
+- [DemoEnum](../DemoEnum/Type.md)

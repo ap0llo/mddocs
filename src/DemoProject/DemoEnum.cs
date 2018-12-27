@@ -18,7 +18,7 @@
     /// page for every field
     /// </para>
     /// </remarks>
-    /// <seealso cref="IDemoInterface"/>
+    /// <seealso cref="DemoClass"/>
     /// <seealso cref="IDemoInterface"/>
     /// <seealso cref="DemoStruct" />
     public enum DemoEnum

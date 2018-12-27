@@ -87,6 +87,6 @@ Similar pages are also generated for interfaces (see [IDemoInterface](../IDemoIn
 ## See Also
 
 - [IDemoInterface](../IDemoInterface/Type.md)
-- [IDemoInterface](../IDemoInterface/Type.md)
 - [By providing text in the `seealso` element, the link text can be changed](../DemoStruct/Type.md)
+- [DemoEnum](../DemoEnum/Type.md)
 - No link can be generated if the referenced type is defined in another assembly (`System.String` in this case)

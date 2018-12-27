@@ -37,6 +37,6 @@ Another difference to other types is that for enum values, there won't be genera
 
 ## See Also
 
-- [IDemoInterface](../IDemoInterface/Type.md)
+- [DemoClass](../DemoClass/Type.md)
 - [IDemoInterface](../IDemoInterface/Type.md)
 - [DemoStruct](../DemoStruct/Type.md)

@@ -49,9 +49,9 @@
             and enums (see  <see cref="T:DemoProject.DemoEnum"/>)
             </para>
             </remarks>
-            <seealso cref="T:DemoProject.IDemoInterface"/>
-            <seealso cref="T:DemoProject.IDemoInterface"/>
-            <seealso cref="T:DemoProject.DemoStruct">By providing text in the <c>seealso</c> element, the link text can be changed</seealso>   
+            <seealso cref="T:DemoProject.IDemoInterface"/>    
+            <seealso cref="T:DemoProject.DemoStruct">By providing text in the <c>seealso</c> element, the link text can be changed</seealso>
+            <seealso cref="T:DemoProject.DemoEnum" />
             <seealso cref="T:System.String">No link can be generated if the referenced type is defined in another assembly (<c>System.String</c> in this case)</seealso>
         </member>
         <member name="F:DemoProject.DemoClass.Field1">
@@ -242,7 +242,7 @@
             page for every field
             </para>
             </remarks>
-            <seealso cref="T:DemoProject.IDemoInterface"/>
+            <seealso cref="T:DemoProject.DemoClass"/>
             <seealso cref="T:DemoProject.IDemoInterface"/>
             <seealso cref="T:DemoProject.DemoStruct" />
         </member>
@@ -326,9 +326,9 @@
             A more detailed description of type documentation can be seen in the documentation of <see cref="T:DemoProject.DemoClass"/>
             </para>
             </remarks>
+            <seealso cref="T:DemoProject.DemoClass"/>
             <seealso cref="T:DemoProject.IDemoInterface"/>
-            <seealso cref="T:DemoProject.IDemoInterface"/>
-            <seealso cref="T:DemoProject.DemoStruct" />
+            <seealso cref="T:DemoProject.DemoEnum" />
         </member>
         <member name="T:DemoProject.IDemoInterface">
             <summary>
@@ -341,8 +341,8 @@
             A more detailed description of type documentation can be seen in the documentation of <see cref="T:DemoProject.DemoClass"/>
             </para>
             </remarks>
-            <seealso cref="T:DemoProject.IDemoInterface"/>
-            <seealso cref="T:DemoProject.IDemoInterface"/>
+            <seealso cref="T:DemoProject.DemoClass"/>
+            <seealso cref="T:DemoProject.DemoEnum"/>
             <seealso cref="T:DemoProject.DemoStruct" />
         </member>
     </members>

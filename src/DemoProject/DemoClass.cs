@@ -45,9 +45,9 @@ namespace DemoProject
     /// and enums (see  <see cref="DemoEnum"/>)
     /// </para>
     /// </remarks>
-    /// <seealso cref="IDemoInterface"/>
-    /// <seealso cref="IDemoInterface"/>
-    /// <seealso cref="DemoStruct">By providing text in the <c>seealso</c> element, the link text can be changed</seealso>   
+    /// <seealso cref="IDemoInterface"/>    
+    /// <seealso cref="DemoStruct">By providing text in the <c>seealso</c> element, the link text can be changed</seealso>
+    /// <seealso cref="DemoEnum" />
     /// <seealso cref="System.String">No link can be generated if the referenced type is defined in another assembly (<c>System.String</c> in this case)</seealso>
     public class DemoClass
     {
