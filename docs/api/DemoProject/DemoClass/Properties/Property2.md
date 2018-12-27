@@ -1,6 +1,6 @@
 # DemoClass.Property2 Property
 
-**Declaring Type:** [DemoClass](../DemoClass.md)
+**Declaring Type:** [DemoClass](../Type.md)
 
 An example of a read\/write property annotated with a custom attribute
 
@@ -15,4 +15,4 @@ String
 
 ## See Also
 
-- [Property1](DemoClass.Property1.md)
+- [Property1](Property1.md)

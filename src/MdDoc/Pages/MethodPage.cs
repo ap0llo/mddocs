@@ -19,7 +19,7 @@ namespace MdDoc.Pages
             : base(pageFactory, rootOutputPath)
         {
             Model = model ?? throw new ArgumentNullException(nameof(model));   
-            OutputPath = new OutputPath(Path.Combine(GetTypeDir(Model.TypeDocumentation), "methods", $"{Model.TypeDocumentation.TypeId.Name}.{Model.Name}.md"));
+            OutputPath = new OutputPath(GetTypeDir(Model.TypeDocumentation), "Methods", $"{Model.Name}.md");
         }
 
 

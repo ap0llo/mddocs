@@ -14,7 +14,7 @@ namespace MdDoc.Pages
         public FieldPage(PageFactory pageFactory, string rootOutputPath, FieldDocumentation model)
             : base(pageFactory, rootOutputPath, model)
         {
-            OutputPath = new OutputPath(Path.Combine(GetTypeDir(Model.TypeDocumentation), "fields", $"{Model.TypeDocumentation.TypeId.Name}.{Model.Name}.md"));
+            OutputPath = new OutputPath(GetTypeDir(Model.TypeDocumentation), "Fields", $"{Model.Name}.md");
         }
 
 

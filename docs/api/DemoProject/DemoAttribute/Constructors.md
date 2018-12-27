@@ -1,6 +1,6 @@
 # DemoAttribute Constructors
 
-**Declaring Type:** [DemoAttribute](DemoAttribute.md)
+**Declaring Type:** [DemoAttribute](Type.md)
 
 ## Overloads
 

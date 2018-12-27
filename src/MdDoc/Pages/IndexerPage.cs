@@ -17,7 +17,7 @@ namespace MdDoc.Pages
         public IndexerPage(PageFactory pageFactory, string rootOutputPath, IndexerDocumentation model) : base(pageFactory, rootOutputPath)
         {
             Model = model ?? throw new ArgumentNullException(nameof(model));
-            OutputPath = new OutputPath(Path.Combine(GetTypeDir(Model.TypeDocumentation), "indexers", $"{Model.TypeDocumentation.TypeId.Name}.{Model.Name}.md"));
+            OutputPath = new OutputPath(GetTypeDir(Model.TypeDocumentation), "Indexers", $"{Model.Name}.md");
         }
 
         protected override MdHeading GetHeading() =>

@@ -17,8 +17,8 @@ namespace MdDoc.Pages
         public OperatorPage(PageFactory pageFactory, string rootOutputPath, OperatorDocumentation model) 
             : base(pageFactory, rootOutputPath)
         {
-            Model = model ?? throw new ArgumentNullException(nameof(model));   
-            OutputPath = new OutputPath(Path.Combine(GetTypeDir(Model.TypeDocumentation), "operators", $"{Model.TypeDocumentation.TypeId.Name}.{Model.Kind}.md"));
+            Model = model ?? throw new ArgumentNullException(nameof(model));
+            OutputPath = new OutputPath(GetTypeDir(Model.TypeDocumentation), "Operators", $"{Model.Kind}.md");
         }
 
         

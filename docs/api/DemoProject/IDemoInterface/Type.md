@@ -14,10 +14,10 @@ public interface IDemoInterface
 
 This page demonstrates how the generated documentation for interfaces looks like. The same layout is used for classes, structs, interfaces, and enums.
 
-A more detailed description of type documentation can be seen in the documentation of [DemoClass](../DemoClass/DemoClass.md)
+A more detailed description of type documentation can be seen in the documentation of [DemoClass](../DemoClass/Type.md)
 
 ## See Also
 
 - IDemoInterface
 - IDemoInterface
-- [DemoStruct](../DemoStruct/DemoStruct.md)
+- [DemoStruct](../DemoStruct/Type.md)

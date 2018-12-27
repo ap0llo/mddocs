@@ -20,8 +20,8 @@ namespace MdDoc.Pages
         public TypePage(PageFactory pageFactory, string rootOutputPath, TypeDocumentation model)
             : base(pageFactory, rootOutputPath)
         {
-            Model = model ?? throw new ArgumentNullException(nameof(model));    
-            OutputPath = new OutputPath(Path.Combine(GetTypeDir(Model), $"{Model.TypeId.Name}.md"));
+            Model = model ?? throw new ArgumentNullException(nameof(model));
+            OutputPath = new OutputPath(GetTypeDir(Model), "Type.md");
         }
 
 

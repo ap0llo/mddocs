@@ -21,7 +21,7 @@ public enum DemoEnum
 
 This page demonstrates how the generated documentation for structs looks like. The same layout is used for classes, structs, interfaces, and enums.
 
-A more detailed description of type documentation can be seen in the documentation of [DemoClass](../DemoClass/DemoClass.md)
+A more detailed description of type documentation can be seen in the documentation of [DemoClass](../DemoClass/Type.md)
 
 In contrast to other kinds of types, the definition section for enum does include the list of possible values of the enum including the numeric value.
 
@@ -37,6 +37,6 @@ Another difference to other types is that for enum values, there won't be genera
 
 ## See Also
 
-- [IDemoInterface](../IDemoInterface/IDemoInterface.md)
-- [IDemoInterface](../IDemoInterface/IDemoInterface.md)
-- [DemoStruct](../DemoStruct/DemoStruct.md)
+- [IDemoInterface](../IDemoInterface/Type.md)
+- [IDemoInterface](../IDemoInterface/Type.md)
+- [DemoStruct](../DemoStruct/Type.md)

@@ -1,6 +1,6 @@
 # DemoClass.Method1 Method
 
-**Declaring Type:** [DemoClass](../DemoClass.md)
+**Declaring Type:** [DemoClass](../Type.md)
 
 ## Overloads
 
@@ -20,7 +20,7 @@ public void Method1();
 ## See Also
 
 - Method1(string)
-- [Method2()](DemoClass.Method2.md)
+- [Method2()](Method2.md)
 
 ## Method1(string)
 
@@ -33,4 +33,4 @@ public void Method1(string parameter);
 ## See Also
 
 - Method1()
-- [Method2()](DemoClass.Method2.md)
+- [Method2()](Method2.md)

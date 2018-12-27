@@ -15,6 +15,6 @@ public class DemoAttribute : Attribute
 
 ## Constructors
 
-| Name                                             | Description |
-| ------------------------------------------------ | ----------- |
-| [DemoAttribute()](DemoAttribute-constructors.md) |             |
+| Name                               | Description |
+| ---------------------------------- | ----------- |
+| [DemoAttribute()](Constructors.md) |             |

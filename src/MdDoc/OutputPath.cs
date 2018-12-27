@@ -7,6 +7,10 @@ namespace MdDoc
     {        
         public string Value { get; }
 
+
+        public OutputPath(params string[] paths) : this(Path.Combine(paths))
+        { }
+
         /// <summary>
         /// Initializes a new instance of <see cref="OutputPath"/>
         /// </summary>

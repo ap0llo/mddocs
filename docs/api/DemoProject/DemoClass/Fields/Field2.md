@@ -1,6 +1,6 @@
 # DemoClass.Field2 Field
 
-**Declaring Type:** [DemoClass](../DemoClass.md)
+**Declaring Type:** [DemoClass](../Type.md)
 
 An example of a public field.
 
@@ -14,4 +14,4 @@ String
 
 ## See Also
 
-- [Field1](DemoClass.Field1.md)
+- [Field1](Field1.md)

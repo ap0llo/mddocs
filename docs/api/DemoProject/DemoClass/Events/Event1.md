@@ -1,6 +1,6 @@
 # DemoClass.Event1 Event
 
-**Declaring Type:** [DemoClass](../DemoClass.md)
+**Declaring Type:** [DemoClass](../Type.md)
 
 An example of a public event.
 
@@ -10,4 +10,4 @@ public event EventHandler<EventArgs> Event1;
 
 ## See Also
 
-- [Event2](DemoClass.Event2.md)
+- [Event2](Event2.md)

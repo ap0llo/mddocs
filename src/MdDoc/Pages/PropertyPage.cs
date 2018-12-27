@@ -15,7 +15,7 @@ namespace MdDoc.Pages
         public PropertyPage(PageFactory pageFactory, string rootOutputPath, PropertyDocumentation model)
             : base(pageFactory, rootOutputPath, model)
         {            
-            OutputPath = new OutputPath(Path.Combine(GetTypeDir(Model.TypeDocumentation), "properties", $"{Model.TypeDocumentation.TypeId.Name}.{Model.Name}.md"));
+            OutputPath = new OutputPath(Path.Combine(GetTypeDir(Model.TypeDocumentation), "Properties", $"{Model.Name}.md"));
         }
 
 

@@ -14,7 +14,7 @@ namespace MdDoc.Pages
         public EventPage(PageFactory pageFactory, string rootOutputPath, EventDocumentation model)
             : base(pageFactory, rootOutputPath, model)
         {
-            OutputPath = new OutputPath(Path.Combine(GetTypeDir(Model.TypeDocumentation), "events", $"{Model.TypeDocumentation.TypeId.Name}.{Model.Name}.md"));
+            OutputPath = new OutputPath(GetTypeDir(Model.TypeDocumentation), "Events", $"{Model.Name}.md");
         }
 
 

@@ -1,6 +1,6 @@
 # DemoClass.Addition Operator
 
-**Declaring Type:** [DemoClass](../DemoClass.md)
+**Declaring Type:** [DemoClass](../Type.md)
 
 ## Overloads
 
@@ -18,4 +18,4 @@ public static DemoClass operator +(DemoClass left, DemoClass right);
 
 ## See Also
 
-- [Subtraction(DemoClass, DemoClass)](DemoClass.Subtraction.md)
+- [Subtraction(DemoClass, DemoClass)](Subtraction.md)
