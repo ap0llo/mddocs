@@ -116,7 +116,18 @@ namespace MdDoc.Pages
             return textBlock == null ? MdEmptySpan.Instance : TextBlockToMarkdownConverter.ConvertToSpan(textBlock, this);
         }
 
-    }
+        protected MdSpan ConvertToSpan(SeeAlsoElement seeAlso)
+        {
+            if (seeAlso.Text.Elements.Count > 0)
+            {
+                var text = TextBlockToMarkdownConverter.ConvertToSpan(seeAlso.Text, this);
+                return CreateLink(seeAlso.MemberId, text);
+            }
+            else
+            {
+                return GetMdSpan(seeAlso.MemberId);
+            }
+        }
 
-
+    }    
 }

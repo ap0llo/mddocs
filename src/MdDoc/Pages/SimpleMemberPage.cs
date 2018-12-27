@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Linq;
 using Grynwald.MarkdownGenerator;
 using MdDoc.Model;
 
@@ -32,14 +33,14 @@ namespace MdDoc.Pages
 
             //TODO: Examples
 
-            //TODO: SeeAlso
+            AddSeeAlsoSection(document.Root);
 
             Directory.CreateDirectory(Path.GetDirectoryName(OutputPath));
             document.Save(OutputPath);
         }
 
 
-        protected void AddDefinitionSection(MdContainerBlock block)
+        protected virtual void AddDefinitionSection(MdContainerBlock block)
         {
             if(Model.Summary != null)
             {
@@ -49,6 +50,18 @@ namespace MdDoc.Pages
             block.Add(
                 CodeBlock(Model.CSharpDefinition, "csharp")
             );
+        }
+
+        protected virtual void AddSeeAlsoSection(MdContainerBlock block)
+        {
+            if (Model.SeeAlso.Count > 0)
+            {
+                block.Add(Heading(2, "See Also"));
+                block.Add(
+                    BulletList(
+                        Model.SeeAlso.Select(seeAlso => ListItem(ConvertToSpan(seeAlso)))
+                ));
+            }
         }
 
 

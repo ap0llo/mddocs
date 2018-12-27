@@ -7,3 +7,7 @@ An example of a public event.
 ```csharp
 public event EventHandler<EventArgs> Event1;
 ```
+
+## See Also
+
+- [Event2](DemoClass.Event2.md)

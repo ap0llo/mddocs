@@ -11,3 +11,7 @@ public string Property1 { get; }
 ## Property Value
 
 String
+
+## See Also
+
+- [Property2](DemoClass.Property2.md)

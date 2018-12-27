@@ -1,4 +1,5 @@
-﻿using MdDoc.Model.XmlDocs;
+﻿using System.Collections.Generic;
+using MdDoc.Model.XmlDocs;
 
 namespace MdDoc.Model
 {
@@ -7,6 +8,8 @@ namespace MdDoc.Model
         public MemberId MemberId { get; }
 
         public TextBlock Summary { get; }
+
+        public IReadOnlyList<SeeAlsoElement> SeeAlso { get; }
 
         public abstract string Name { get; }
 
@@ -18,7 +21,9 @@ namespace MdDoc.Model
         internal SimpleMemberDocumentation(TypeDocumentation typeDocumentation, MemberId memberId, IXmlDocsProvider xmlDocsProvider) : base(typeDocumentation)
         {
             MemberId = memberId ?? throw new System.ArgumentNullException(nameof(memberId));
-            Summary = xmlDocsProvider.TryGetDocumentationComments(memberId)?.Summary;
+            var documentationComments = xmlDocsProvider.TryGetDocumentationComments(memberId);
+            Summary = documentationComments?.Summary;
+            SeeAlso = documentationComments?.SeeAlso;
         }
 
 
