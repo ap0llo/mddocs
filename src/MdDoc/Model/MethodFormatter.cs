@@ -76,10 +76,16 @@ namespace MdDoc.Model
                 signatureBuilder.Append(method.Name);
             }
 
-            if (method.Arity > 0)
+            // Method does not have info about generic parameter names, so the parameter will just be called "T"
+            if (method.Arity == 1)
+            {
+                signatureBuilder.Append("<T>");                
+            }
+            // Method does not have info about generic parameter names, so they will just be named T1..Tn
+            else if (method.Arity > 1)
             {
                 signatureBuilder.Append("<");
-                signatureBuilder.AppendJoin(", ", Enumerable.Range(1, method.Arity).Select(i => "T{i}"));
+                signatureBuilder.AppendJoin(", ", Enumerable.Range(1, method.Arity).Select(i => $"T{i}"));
                 signatureBuilder.Append(">");
             }
 
