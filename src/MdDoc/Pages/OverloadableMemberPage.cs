@@ -101,22 +101,27 @@ namespace MdDoc.Pages
             if (overload.Parameters.Count == 0)
                 return;
 
-            var table = Table(Row("Name", "Type", "Description"));
+            var parametersBlock = new MdContainerBlock();
+            block.Add(parametersBlock);
+
+
+            parametersBlock.Add(Heading("Parameters", 3));
+
             foreach (var parameter in overload.Parameters)
             {
-                //TODO: Description
-                table.Add(
-                    Row(
+                parametersBlock.Add(
+                    Paragraph(
                         CodeSpan(parameter.Name),
-                        GetTypeNameSpan(parameter.ParameterType),
-                        ""
+                        "  ",
+                        GetTypeNameSpan(parameter.ParameterType)
                 ));
-            }
 
-            block.Add(
-                Heading("Parameters", 3),
-                table
-            );
+                if (parameter.Description != null)
+                {
+                    //TODO: Add ConvertToBlock method to PageBase to make these calls a little more readable
+                    parametersBlock.Add(TextBlockToMarkdownConverter.ConvertToBlock(parameter.Description, this));
+                }                
+            }            
         }
 
         protected virtual void AddRemarksSubSection(MdContainerBlock block, TOverload overload)

@@ -13,8 +13,7 @@ namespace MdDoc.Model
         
         internal MethodOverloadDocumentation(MethodDocumentation methodDocumentation, MethodDefinition definition, IXmlDocsProvider xmlDocsProvider) : base(definition, xmlDocsProvider)
         {
-            MethodDocumentation = methodDocumentation ?? throw new ArgumentNullException(nameof(methodDocumentation));            
-            xmlDocsProvider = xmlDocsProvider ?? throw new ArgumentNullException(nameof(xmlDocsProvider));
+            MethodDocumentation = methodDocumentation ?? throw new ArgumentNullException(nameof(methodDocumentation));                        
         }
 
 

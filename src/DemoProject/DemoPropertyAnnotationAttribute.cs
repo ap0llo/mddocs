@@ -16,7 +16,7 @@ namespace DemoProject
     /// Furthermore, this enum is used in <see cref="DemoPropertyAnnotationAttribute"/> and demonstrates
     /// how custom attributes are included in the documentation for properties (see <see cref="DemoClass.Property2"/>)
     /// </para>
-    /// </remarks>
+    /// </remarks>    
     /// <seealso cref="DemoPropertyAnnotationAttribute"/>
     /// <seealso cref="DemoClass.Property2"/>
     [Flags]

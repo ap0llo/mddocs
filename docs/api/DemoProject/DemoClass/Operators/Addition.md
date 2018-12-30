@@ -18,10 +18,13 @@ public static DemoClass operator +(DemoClass left, DemoClass right);
 
 ### Parameters
 
-| Name    | Type                    | Description |
-| ------- | ----------------------- | ----------- |
-| `left`  | [DemoClass](../Type.md) |             |
-| `right` | [DemoClass](../Type.md) |             |
+`left`  [DemoClass](../Type.md)
+
+Description of parameter `left` provided using the `param` element.
+
+`right`  [DemoClass](../Type.md)
+
+Description of parameter `right` provided using the `param` element.
 
 ### Remarks
 

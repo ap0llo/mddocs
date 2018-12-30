@@ -25,7 +25,7 @@ namespace MdDoc.Model
             Definition = definition ?? throw new ArgumentNullException(nameof(definition));            
             
             Parameters = definition.HasParameters
-                ? definition.Parameters.Select(p => new ParameterDocumentation(this, p)).ToArray()
+                ? definition.Parameters.Select(p => new ParameterDocumentation(this, p, xmlDocsProvider)).ToArray()
                 : Array.Empty<ParameterDocumentation>();
 
             Signature = MethodFormatter.Instance.GetSignature(Definition);

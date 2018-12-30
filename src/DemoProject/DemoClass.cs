@@ -126,6 +126,7 @@ namespace DemoProject
         /// For overloaded members, there is a separate "Remarks" section for every overload.
         /// </para>
         /// </remarks>
+        /// <param name="index">Description of parameter <paramref name="index"/> provided using the <c>param</c> element.</param>
         /// <value>The tag <c>value</c> allows specifying the value a indexer represents</value>
         /// <seealso cref="this[Int32, Int32]"/>
         public string this[int index] => throw new NotImplementedException();
@@ -140,6 +141,8 @@ namespace DemoProject
         /// For overloaded members, there is a separate "Remarks" section for every overload.
         /// </para>
         /// </remarks>
+        /// <param name="x">Description of parameter <paramref name="x"/> provided using the <c>param</c> element.</param>
+        /// <param name="y">Description of parameter <paramref name="y"/> provided using the <c>param</c> element.</param>
         /// <value>The tag <c>value</c> allows specifying the value a indexer represents</value>
         /// <seeaslo cref="this[Int32]"/>
         public string this[int x, int y] => throw new NotImplementedException();
@@ -161,7 +164,8 @@ namespace DemoProject
         /// <remarks>
         /// Remarks allow specification of more detailed information about a member, in this case the constructor.
         /// supplementing the information specified in the summary
-        /// </remarks>
+        /// </remarks>      
+        /// <param name="parameter">Description of parameter <paramref name="parameter"/> provided using the <c>param</c> element.</param>
         public DemoClass(int parameter)
         {
         }
@@ -191,6 +195,7 @@ namespace DemoProject
         /// For overloaded members, there is a separate "Remarks" section for every overload.
         /// </para>
         /// </remarks>
+        /// <param name="parameter">Description of parameter <paramref name="parameter"/> provided using the <c>param</c> element.</param>
         /// <seealso cref="Method1()" />
         /// <seealso cref="Method2" />
         public void Method1(string parameter) => throw new NotImplementedException();
@@ -217,6 +222,8 @@ namespace DemoProject
         /// For overloaded members, there is a separate "Remarks" section for every overload.
         /// </para>
         /// </remarks>
+        /// <param name="left">Description of parameter <paramref name="left"/> provided using the <c>param</c> element.</param>
+        /// <param name="right">Description of parameter <paramref name="right"/> provided using the <c>param</c> element.</param>
         /// <seealso cref="DemoClass.op_Subtraction"/>
         public static DemoClass operator +(DemoClass left, DemoClass right) => throw new NotImplementedException();
 
@@ -230,6 +237,8 @@ namespace DemoProject
         /// For overloaded members, there is a separate "Remarks" section for every overload.
         /// </para>
         /// </remarks>
+        /// <param name="left">Description of parameter <paramref name="left"/> provided using the <c>param</c> element.</param>
+        /// <param name="right">Description of parameter <paramref name="right"/> provided using the <c>param</c> element.</param>
         /// <seealso cref="DemoClass.op_Addition"/>
         public static DemoClass operator -(DemoClass left, DemoClass right) => throw new NotImplementedException();
 

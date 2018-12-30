@@ -34,7 +34,7 @@ namespace MdDoc.Model
             xmlDocsProvider = xmlDocsProvider ?? throw new ArgumentNullException(nameof(xmlDocsProvider));
 
             Parameters = definition.HasParameters
-                ? definition.Parameters.Select(p => new ParameterDocumentation(this, p)).ToArray()
+                ? definition.Parameters.Select(p => new ParameterDocumentation(this, p, xmlDocsProvider)).ToArray()
                 : Array.Empty<ParameterDocumentation>();
                 
 

@@ -18,9 +18,9 @@ public DemoPropertyAnnotationAttribute(DemoPropertyFlags flags);
 
 ### Parameters
 
-| Name    | Type                                              | Description |
-| ------- | ------------------------------------------------- | ----------- |
-| `flags` | [DemoPropertyFlags](../DemoPropertyFlags/Type.md) |             |
+`flags`  [DemoPropertyFlags](../DemoPropertyFlags/Type.md)
+
+The flags to annotate the property with
 
 ### Remarks
 

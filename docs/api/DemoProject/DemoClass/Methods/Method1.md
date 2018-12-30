@@ -38,9 +38,9 @@ public void Method1(string parameter);
 
 ### Parameters
 
-| Name        | Type   | Description |
-| ----------- | ------ | ----------- |
-| `parameter` | String |             |
+`parameter`  String
+
+Description of parameter `parameter` provided using the `param` element.
 
 ### Remarks
 

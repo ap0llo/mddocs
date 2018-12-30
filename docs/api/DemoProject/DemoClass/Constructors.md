@@ -31,9 +31,9 @@ public DemoClass(int parameter);
 
 ### Parameters
 
-| Name        | Type  | Description |
-| ----------- | ----- | ----------- |
-| `parameter` | Int32 |             |
+`parameter`  Int32
+
+Description of parameter `parameter` provided using the `param` element.
 
 ### Remarks
 

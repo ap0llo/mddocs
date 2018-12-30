@@ -141,6 +141,7 @@
             For overloaded members, there is a separate "Remarks" section for every overload.
             </para>
             </remarks>
+            <param name="index">Description of parameter <paramref name="index"/> provided using the <c>param</c> element.</param>
             <value>The tag <c>value</c> allows specifying the value a indexer represents</value>
             <seealso cref="P:DemoProject.DemoClass.Item(System.Int32,System.Int32)"/>
         </member>
@@ -155,6 +156,8 @@
             For overloaded members, there is a separate "Remarks" section for every overload.
             </para>
             </remarks>
+            <param name="x">Description of parameter <paramref name="x"/> provided using the <c>param</c> element.</param>
+            <param name="y">Description of parameter <paramref name="y"/> provided using the <c>param</c> element.</param>
             <value>The tag <c>value</c> allows specifying the value a indexer represents</value>
             <seeaslo cref="P:DemoProject.DemoClass.Item(System.Int32)"/>
         </member>
@@ -174,7 +177,8 @@
             <remarks>
             Remarks allow specification of more detailed information about a member, in this case the constructor.
             supplementing the information specified in the summary
-            </remarks>
+            </remarks>      
+            <param name="parameter">Description of parameter <paramref name="parameter"/> provided using the <c>param</c> element.</param>
         </member>
         <member name="M:DemoProject.DemoClass.Method1">
             <summary>
@@ -201,6 +205,7 @@
             For overloaded members, there is a separate "Remarks" section for every overload.
             </para>
             </remarks>
+            <param name="parameter">Description of parameter <paramref name="parameter"/> provided using the <c>param</c> element.</param>
             <seealso cref="M:DemoProject.DemoClass.Method1" />
             <seealso cref="M:DemoProject.DemoClass.Method2" />
         </member>
@@ -226,6 +231,8 @@
             For overloaded members, there is a separate "Remarks" section for every overload.
             </para>
             </remarks>
+            <param name="left">Description of parameter <paramref name="left"/> provided using the <c>param</c> element.</param>
+            <param name="right">Description of parameter <paramref name="right"/> provided using the <c>param</c> element.</param>
             <seealso cref="M:DemoProject.DemoClass.op_Subtraction(DemoProject.DemoClass,DemoProject.DemoClass)"/>
         </member>
         <member name="M:DemoProject.DemoClass.op_Subtraction(DemoProject.DemoClass,DemoProject.DemoClass)">
@@ -239,6 +246,8 @@
             For overloaded members, there is a separate "Remarks" section for every overload.
             </para>
             </remarks>
+            <param name="left">Description of parameter <paramref name="left"/> provided using the <c>param</c> element.</param>
+            <param name="right">Description of parameter <paramref name="right"/> provided using the <c>param</c> element.</param>
             <seealso cref="M:DemoProject.DemoClass.op_Addition(DemoProject.DemoClass,DemoProject.DemoClass)"/>
         </member>
         <member name="T:DemoProject.DemoEnum">
@@ -303,7 +312,7 @@
             Furthermore, this enum is used in <see cref="T:DemoProject.DemoPropertyAnnotationAttribute"/> and demonstrates
             how custom attributes are included in the documentation for properties (see <see cref="P:DemoProject.DemoClass.Property2"/>)
             </para>
-            </remarks>
+            </remarks>    
             <seealso cref="T:DemoProject.DemoPropertyAnnotationAttribute"/>
             <seealso cref="P:DemoProject.DemoClass.Property2"/>
         </member>

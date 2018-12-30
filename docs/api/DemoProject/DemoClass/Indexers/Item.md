@@ -19,10 +19,13 @@ public string this[int x, int y] { get; }
 
 ### Parameters
 
-| Name | Type  | Description |
-| ---- | ----- | ----------- |
-| `x`  | Int32 |             |
-| `y`  | Int32 |             |
+`x`  Int32
+
+Description of parameter `x` provided using the `param` element.
+
+`y`  Int32
+
+Description of parameter `y` provided using the `param` element.
 
 ### Indexer Value
 
@@ -46,9 +49,9 @@ public string this[int index] { get; }
 
 ### Parameters
 
-| Name    | Type  | Description |
-| ------- | ----- | ----------- |
-| `index` | Int32 |             |
+`index`  Int32
+
+Description of parameter `index` provided using the `param` element.
 
 ### Indexer Value
 
