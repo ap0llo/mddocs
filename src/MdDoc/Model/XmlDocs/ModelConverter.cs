@@ -45,7 +45,7 @@ namespace MdDoc.Model.XmlDocs
 
         public List<ExceptionElement> Exceptions { get; } = new List<ExceptionElement>();
 
-        public List<TypeParamElement> TypeParameters { get; } = new List<TypeParamElement>();
+        public Dictionary<string, TextBlock> TypeParameters { get; } = new Dictionary<string, TextBlock>();
 
         public Dictionary<string, TextBlock> Parameters { get; } = new Dictionary<string, TextBlock>();
 
@@ -78,7 +78,7 @@ namespace MdDoc.Model.XmlDocs
 
         public override void VisitTypeParam(TypeParam typeParam)
         {
-            TypeParameters.Add(new TypeParamElement(typeParam, GetTextBlock(typeParam)));
+            TypeParameters[typeParam.Name] = GetTextBlock(typeParam);
         }
 
         public override void VisitParam(Param param)

@@ -140,8 +140,8 @@ namespace MdDoc.Test.Model.XmlDocs
 
             Assert.NotNull(docs.TypeParameters);
             Assert.Equal(2, docs.TypeParameters.Count);
-            Assert.Contains(docs.TypeParameters, x => x.Name == "T1");
-            Assert.Contains(docs.TypeParameters, x => x.Name == "T2");
+            Assert.Contains(docs.TypeParameters, x => x.Key == "T1");
+            Assert.Contains(docs.TypeParameters, x => x.Key == "T2");
 
             Assert.Equal(2, docs.SeeAlso.Count);
             Assert.Single(
