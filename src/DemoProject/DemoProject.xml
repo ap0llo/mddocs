@@ -4,7 +4,19 @@
         <name>DemoProject</name>
     </assembly>
     <members>
-        <!-- Badly formed XML comment ignored for member "T:DemoProject.DemoAttribute" -->
+        <member name="T:DemoProject.DemoAttribute">
+            <summary>
+            An example of an custom attribute class for methods
+            </summary>
+            <remarks>
+            This page demonstrates how the generated documentation for attribute classes looks like.
+            The same layout is used for all classes, see <see cref="T:DemoProject.DemoClass"/> for a more detailed description
+            <para>
+            What can be seen on this page is that the definition section includes a type's custom attribute
+            including the attribute's constructor parameters, in this case <c>[AttributeUsage(AttributeTargets.Method)]</c>
+            </para>
+            </remarks>
+        </member>
         <member name="T:DemoProject.DemoClass">
             <summary>
             A class meant to demonstrate how the generated documentation looks like.
@@ -276,7 +288,25 @@
             More detailed information can be provided in the Remarks section
             </remarks>
         </member>
-        <!-- Badly formed XML comment ignored for member "T:DemoProject.DemoPropertyFlags" -->
+        <member name="T:DemoProject.DemoPropertyFlags">
+            <summary>
+            An example of a "flag" enum
+            </summary>
+            <remarks>
+            <see cref="T:DemoProject.DemoPropertyFlags"/> serves two purposes:
+            <para>
+            On the one hand it showcases the generated documentation for "flag" enums.
+            For flag enums, the numeric values for the possible enum values are represented
+            as hexadecimal numbers in contrast to decimal numbers for other enum types.
+            </para>
+            <para>
+            Furthermore, this enum is used in <see cref="T:DemoProject.DemoPropertyAnnotationAttribute"/> and demonstrates
+            how custom attributes are included in the documentation for properties (see <see cref="P:DemoProject.DemoClass.Property2"/>)
+            </para>
+            </remarks>
+            <seealso cref="T:DemoProject.DemoPropertyAnnotationAttribute"/>
+            <seealso cref="P:DemoProject.DemoClass.Property2"/>
+        </member>
         <member name="F:DemoProject.DemoPropertyFlags.Flag1">
             <summary>
             Example of an enum value
