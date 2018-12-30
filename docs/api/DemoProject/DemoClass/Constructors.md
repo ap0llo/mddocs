@@ -29,6 +29,12 @@ Initializes a new instance of [DemoClass](Type.md) with the specified parameters
 public DemoClass(int parameter);
 ```
 
+### Parameters
+
+| Name        | Type  | Description |
+| ----------- | ----- | ----------- |
+| `parameter` | Int32 |             |
+
 ### Remarks
 
 Remarks allow specification of more detailed information about a member, in this case the constructor. supplementing the information specified in the summary

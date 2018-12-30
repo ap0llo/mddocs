@@ -16,6 +16,13 @@ Example of an overload of the binary \- operator.
 public static DemoClass operator -(DemoClass left, DemoClass right);
 ```
 
+### Parameters
+
+| Name    | Type                    | Description |
+| ------- | ----------------------- | ----------- |
+| `left`  | [DemoClass](../Type.md) |             |
+| `right` | [DemoClass](../Type.md) |             |
+
 ### Remarks
 
 Remarks allow specification of more detailed information about a member, in this case a method. supplementing the information specified in the summary.

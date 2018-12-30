@@ -16,6 +16,12 @@ Initializes a new instance of [DemoPropertyAnnotationAttribute](Type.md)
 public DemoPropertyAnnotationAttribute(DemoPropertyFlags flags);
 ```
 
+### Parameters
+
+| Name    | Type                                              | Description |
+| ------- | ------------------------------------------------- | ----------- |
+| `flags` | [DemoPropertyFlags](../DemoPropertyFlags/Type.md) |             |
+
 ### Remarks
 
 More detailed information can be provided in the Remarks section

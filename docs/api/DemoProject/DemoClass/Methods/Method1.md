@@ -36,6 +36,12 @@ Example of an overloaded method accepting one parameter.
 public void Method1(string parameter);
 ```
 
+### Parameters
+
+| Name        | Type   | Description |
+| ----------- | ------ | ----------- |
+| `parameter` | String |             |
+
 ### Remarks
 
 Remarks allow specification of more detailed information about a member, in this case a method. supplementing the information specified in the summary.

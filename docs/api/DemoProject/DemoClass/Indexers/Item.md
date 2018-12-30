@@ -17,6 +17,13 @@ An example of an indexer with two parameters.
 public string this[int x, int y] { get; }
 ```
 
+### Parameters
+
+| Name | Type  | Description |
+| ---- | ----- | ----------- |
+| `x`  | Int32 |             |
+| `y`  | Int32 |             |
+
 ### Indexer Value
 
 String
@@ -36,6 +43,12 @@ An example of an indexer with a single parameter.
 ```csharp
 public string this[int index] { get; }
 ```
+
+### Parameters
+
+| Name    | Type  | Description |
+| ------- | ----- | ----------- |
+| `index` | Int32 |             |
 
 ### Indexer Value
 
