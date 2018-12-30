@@ -30,6 +30,6 @@ What can be seen on this page is that the documentation also includes a list of 
 
 ## Constructors
 
-| Name                              | Description |
-| --------------------------------- | ----------- |
-| [DemoClass\`2()](Constructors.md) |             |
+| Name                           | Description |
+| ------------------------------ | ----------- |
+| [DemoClass()](Constructors.md) |             |

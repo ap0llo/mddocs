@@ -18,9 +18,18 @@ namespace MdDoc.Model
             var signatureBuilder = new StringBuilder();
 
             var operatorKind = method.GetOperatorKind();
+
             if(method.IsConstructor)
             {
-                signatureBuilder.Append(method.DeclaringType.Name);
+                var name = method.DeclaringType.Name;
+
+                // remove numer of type parameters from name
+                if(method.DeclaringType.HasGenericParameters)
+                {
+                    name = name.Substring(0, name.LastIndexOf('`'));
+                }
+
+                signatureBuilder.Append(name);
             }
             else if(operatorKind.HasValue)
             {
@@ -65,7 +74,7 @@ namespace MdDoc.Model
             var operatorKind = method.GetOperatorKind();
             if (method.IsConstructor())
             {
-                signatureBuilder.Append(method.DefiningType.DisplayName);
+                signatureBuilder.Append(method.DefiningType.Name);
             }
             else if (operatorKind.HasValue)
             {

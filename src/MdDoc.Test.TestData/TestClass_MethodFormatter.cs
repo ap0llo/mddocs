@@ -47,4 +47,17 @@ namespace MdDoc.Test.TestData
 
         public static implicit operator string(TestClass_MethodFormatter instance) => throw new NotImplementedException();
     }
+
+    class TestClass_MethodFormatter<T>
+    {
+        public TestClass_MethodFormatter()
+        {
+
+        }
+
+        public TestClass_MethodFormatter(string param)
+        {
+
+        }
+    }
 }

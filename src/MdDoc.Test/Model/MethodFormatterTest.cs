@@ -77,6 +77,25 @@ namespace MdDoc.Test.Model
             Assert.Equal(expectedSignature, actualSignature);
         }
 
+        [Theory]
+        [InlineData(0, "TestClass_MethodFormatter()")]
+        [InlineData(1, "TestClass_MethodFormatter(string)")]        
+        public void GetSignature_returns_the_expected_result_for_constructors_of_generic_types(int parameterCount, string expectedSignature)
+        {
+            // ARRANGE
+            var method = GetTypeDefinition(typeof(TestClass_MethodFormatter<>))
+                   .Methods
+                   .Single(x => x.IsConstructor && x.Parameters.Count == parameterCount);
+
+            var sut = MethodFormatter.Instance;
+
+            // ACT
+            var actualSignature = sut.GetSignature(method);
+
+            // ASSERT
+            Assert.Equal(expectedSignature, actualSignature);
+        }
+
 
         [Theory]
         [InlineData(0, "TestClass_MethodFormatter()")]
@@ -87,6 +106,27 @@ namespace MdDoc.Test.Model
         {
             // ARRANGE
             var methodId = GetTypeDefinition(typeof(TestClass_MethodFormatter))
+                   .Methods
+                   .Single(x => x.IsConstructor && x.Parameters.Count == parameterCount)
+                   .ToMethodId();
+
+            var sut = MethodFormatter.Instance;
+
+            // ACT
+            var actualSignature = sut.GetSignature(methodId);
+
+            // ASSERT
+            Assert.Equal(expectedSignature, actualSignature);
+        }
+
+
+        [Theory]
+        [InlineData(0, "TestClass_MethodFormatter()")]
+        [InlineData(1, "TestClass_MethodFormatter(string)")]
+        public void GetSignature_returns_the_expected_result_for_constructors_of_generic_types_as_method_ids(int parameterCount, string expectedSignature)
+        {
+            // ARRANGE
+            var methodId = GetTypeDefinition(typeof(TestClass_MethodFormatter<>))
                    .Methods
                    .Single(x => x.IsConstructor && x.Parameters.Count == parameterCount)
                    .ToMethodId();

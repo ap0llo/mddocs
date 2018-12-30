@@ -4,11 +4,11 @@
 
 ## Overloads
 
-| Signature      | Description |
-| -------------- | ----------- |
-| DemoClass\`2() |             |
+| Signature   | Description |
+| ----------- | ----------- |
+| DemoClass() |             |
 
-## DemoClass\`2()
+## DemoClass()
 
 ```csharp
 public DemoClass`2();
