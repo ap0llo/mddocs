@@ -23,7 +23,7 @@ Remarks allow specification of more detailed information about a member, in this
 
 For overloaded members, there is a separate "Remarks" section for every overload.
 
-## See Also
+### See Also
 
 - Method1(string)
 - [Method2()](Method2.md)
@@ -48,7 +48,7 @@ Remarks allow specification of more detailed information about a member, in this
 
 For overloaded members, there is a separate "Remarks" section for every overload.
 
-## See Also
+### See Also
 
 - Method1()
 - [Method2()](Method2.md)

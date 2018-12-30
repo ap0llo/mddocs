@@ -138,7 +138,7 @@ namespace MdDoc.Pages
             if (overload.SeeAlso.Count == 0)
                 return;
 
-            block.Add(Heading(2, "See Also"));
+            block.Add(Heading(3, "See Also"));
             block.Add(
                 BulletList(
                     overload.SeeAlso.Select(seeAlso => ListItem(ConvertToSpan(seeAlso)))
