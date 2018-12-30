@@ -38,7 +38,7 @@ namespace MdDoc.Model.XmlDocs
 
         public IReadOnlyList<TypeParamElement> TypeParameters { get; }
 
-        public IReadOnlyList<ParamElement> Parameters { get; }
+        public IReadOnlyDictionary<string, TextBlock> Parameters { get; }
 
         /// <summary>
         /// Gets the <c>value</c> documentation for the member
@@ -71,7 +71,7 @@ namespace MdDoc.Model.XmlDocs
             TextBlock example,
             IReadOnlyList<ExceptionElement> exceptions, 
             IReadOnlyList<TypeParamElement> typeParameters,
-            IReadOnlyList<ParamElement> parameters,
+            IReadOnlyDictionary<string, TextBlock> parameters,
             TextBlock value,
             TextBlock returns,
             IReadOnlyList<SeeAlsoElement> seeAlso)
@@ -82,7 +82,7 @@ namespace MdDoc.Model.XmlDocs
             Example = example;
             Exceptions = exceptions ?? Array.Empty<ExceptionElement>();
             TypeParameters = typeParameters ?? Array.Empty<TypeParamElement>();
-            Parameters = parameters ?? Array.Empty<ParamElement>();
+            Parameters = parameters ?? ReadOnlyDictionary<string, TextBlock>.Empty;
             Value = value;
             Returns = returns;
             SeeAlso = seeAlso ?? Array.Empty<SeeAlsoElement>();

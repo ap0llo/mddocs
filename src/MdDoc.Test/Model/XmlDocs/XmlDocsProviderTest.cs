@@ -185,7 +185,7 @@ namespace MdDoc.Test.Model.XmlDocs
 
             Assert.NotNull(docs.Parameters);
             Assert.Single(docs.Parameters);
-            Assert.Contains(docs.Parameters, x => x.Name == "parameter1");
+            Assert.Contains(docs.Parameters, x => x.Key == "parameter1");
 
             Assert.NotNull(docs.Returns);
 

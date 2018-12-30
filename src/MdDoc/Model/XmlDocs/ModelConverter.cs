@@ -47,7 +47,7 @@ namespace MdDoc.Model.XmlDocs
 
         public List<TypeParamElement> TypeParameters { get; } = new List<TypeParamElement>();
 
-        public List<ParamElement> Parameters { get; } = new List<ParamElement>();
+        public Dictionary<string, TextBlock> Parameters { get; } = new Dictionary<string, TextBlock>();
 
         public TextBlock Value { get; private set; }
 
@@ -83,7 +83,7 @@ namespace MdDoc.Model.XmlDocs
 
         public override void VisitParam(Param param)
         {
-            Parameters.Add(new ParamElement(param, GetTextBlock(param)));
+            Parameters[param.Name] = GetTextBlock(param);
         }
 
         public override void VisitValue(Value value)
