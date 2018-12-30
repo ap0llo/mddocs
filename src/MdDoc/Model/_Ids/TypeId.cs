@@ -33,7 +33,7 @@ namespace MdDoc.Model
         }
 
 
-        public bool Equals(TypeId other)
+        public virtual bool Equals(TypeId other)
         {
             if (ReferenceEquals(this, other))
                 return true;
@@ -43,6 +43,8 @@ namespace MdDoc.Model
 
             return StringComparer.Ordinal.Equals(NamespaceName, other.NamespaceName) &&
                 StringComparer.Ordinal.Equals(Name, other.Name);
-        }        
+        }
+
+
     }
 }

@@ -39,9 +39,11 @@ namespace MdDoc.Model
         { }
 
 
-        public override bool Equals(object obj) => Equals(obj as SimpleTypeId);     
+        public override bool Equals(object obj) => Equals(obj as SimpleTypeId);
+        
+        public bool Equals(SimpleTypeId other) => other != null && Equals((TypeId)other);
 
-        public bool Equals(SimpleTypeId other) => Equals((TypeId)other);
+        public override bool Equals(TypeId other) => other is SimpleTypeId && base.Equals(other);
 
         public override int GetHashCode() => base.GetHashCode();
     }

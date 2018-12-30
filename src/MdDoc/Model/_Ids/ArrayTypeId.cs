@@ -22,13 +22,15 @@ namespace MdDoc.Model
                 : throw new ArgumentOutOfRangeException(nameof(dimensions), "Value needs to be equal or greater than 1");
         }
 
-                
+
+        public override bool Equals(TypeId other) => Equals(other as ArrayTypeId);
+
+        public override bool Equals(object obj) => Equals(obj as ArrayTypeId);
+
         public bool Equals(ArrayTypeId other)
         {
             return other != null && ElementType.Equals(other.ElementType) && Dimensions == other.Dimensions;
         }
-
-        public override bool Equals(object obj) => Equals(obj as ArrayTypeId);
 
         public override int GetHashCode()
         {

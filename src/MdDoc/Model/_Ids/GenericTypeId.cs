@@ -32,7 +32,10 @@ namespace MdDoc.Model
             m_TypeParameterDisplayNames = Enumerable.Range(1, arity).Select(x => "T" + x).ToArray();
         }
 
+
         public override bool Equals(object obj) => Equals(obj as GenericTypeId);
+
+        public override bool Equals(TypeId other) => Equals(other as GenericTypeId);
 
         public override int GetHashCode()
         {
@@ -52,7 +55,7 @@ namespace MdDoc.Model
             if (other == null)
                 return false;
 
-            return Equals((TypeId) other) && Arity == other.Arity;
+            return base.Equals(other) && Arity == other.Arity;
         }
     }
 }

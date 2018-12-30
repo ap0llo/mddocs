@@ -21,7 +21,20 @@ namespace MdDoc.Model
         }
 
 
+        public override bool Equals(TypeId other) => Equals(other as GenericTypeInstanceId);
+
         public override bool Equals(object obj) => Equals(obj as GenericTypeInstanceId);
+
+        public bool Equals(GenericTypeInstanceId other)
+        {
+            if (ReferenceEquals(this, other))
+                return true;
+
+            if (other == null)
+                return false;
+
+            return base.Equals(other) && TypeArguments.SequenceEqual(other.TypeArguments);
+        }
 
         public override int GetHashCode()
         {
@@ -36,17 +49,6 @@ namespace MdDoc.Model
 
                 return hash;
             }
-        }
-
-        public bool Equals(GenericTypeInstanceId other)
-        {
-            if (ReferenceEquals(this, other))
-                return true;
-
-            if (other == null)
-                return false;
-
-            return Equals((TypeId) other) && TypeArguments.SequenceEqual(other.TypeArguments);
         }
     }
 }

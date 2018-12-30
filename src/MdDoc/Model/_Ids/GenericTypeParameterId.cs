@@ -40,6 +40,8 @@ namespace MdDoc.Model
         public bool Equals(GenericTypeParameterId other) => 
             other != null && DefiningMemberKind == other.DefiningMemberKind && Index == other.Index;
 
+        public override bool Equals(TypeId other) => Equals(other as GenericTypeParameterId);
+
         public override bool Equals(object obj) => Equals(obj as GenericTypeParameterId);        
     }
 }
