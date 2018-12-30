@@ -201,7 +201,7 @@ namespace DemoProject
         public void Method1(string parameter) => throw new NotImplementedException();
 
         /// <summary>
-        /// Example of an non-overloaded methods with a custom attribute-
+        /// Example of an non-overloaded methods with a custom attribute.
         /// </summary>
         /// <remarks>
         /// Remarks allow specification of more detailed information about a member, in this case a method.
@@ -211,6 +211,21 @@ namespace DemoProject
         /// <seealso cref="DemoClass.Method1(String)"/>
         [Demo]
         public void Method2() => throw new NotImplementedException();
+
+        /// <summary>
+        /// Example of a generic method.
+        /// </summary>
+        /// <remarks>
+        /// Remarks allow specification of more detailed information about a member, in this case a method.
+        /// supplementing the information specified in the summary.
+        /// <para>
+        /// For generic methods, the method documentation also includes the type parameters and their description.
+        /// </para>
+        /// </remarks>
+        /// <typeparam name="T">Description of type parameter <typeparamref name="T"/> (specified using the <c>typeparam</c> element)</typeparam>
+        /// <param name="parameter">Description of parameters <paramref name="parameter"/></param>
+        public void Method3<T>(T parameter) => throw new NotImplementedException();
+
 
         /// <summary>
         /// Example of an overload of the binary + operator.

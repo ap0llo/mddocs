@@ -16,6 +16,9 @@ namespace MdDoc.Model
 
         public override IReadOnlyList<ParameterDocumentation> Parameters { get; }
 
+        //indexers cannot have type parameters
+        public override IReadOnlyList<TypeParameterDocumentation> TypeParameters { get; } = Array.Empty<TypeParameterDocumentation>();
+
         public override string CSharpDefinition { get; }
     
         public TextBlock Value { get; }

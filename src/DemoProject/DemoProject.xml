@@ -211,7 +211,7 @@
         </member>
         <member name="M:DemoProject.DemoClass.Method2">
             <summary>
-            Example of an non-overloaded methods with a custom attribute-
+            Example of an non-overloaded methods with a custom attribute.
             </summary>
             <remarks>
             Remarks allow specification of more detailed information about a member, in this case a method.
@@ -219,6 +219,20 @@
             </remarks>
             <seealso cref="M:DemoProject.DemoClass.Method1"/>
             <seealso cref="M:DemoProject.DemoClass.Method1(System.String)"/>
+        </member>
+        <member name="M:DemoProject.DemoClass.Method3``1(``0)">
+            <summary>
+            Example of a generic method.
+            </summary>
+            <remarks>
+            Remarks allow specification of more detailed information about a member, in this case a method.
+            supplementing the information specified in the summary.
+            <para>
+            For generic methods, the method documentation also includes the type parameters and their description.
+            </para>
+            </remarks>
+            <typeparam name="T">Description of type parameter <typeparamref name="T"/> (specified using the <c>typeparam</c> element)</typeparam>
+            <param name="parameter">Description of parameters <paramref name="parameter"/></param>
         </member>
         <member name="M:DemoProject.DemoClass.op_Addition(DemoProject.DemoClass,DemoProject.DemoClass)">
             <summary>
@@ -249,6 +263,21 @@
             <param name="left">Description of parameter <paramref name="left"/> provided using the <c>param</c> element.</param>
             <param name="right">Description of parameter <paramref name="right"/> provided using the <c>param</c> element.</param>
             <seealso cref="M:DemoProject.DemoClass.op_Addition(DemoProject.DemoClass,DemoProject.DemoClass)"/>
+        </member>
+        <member name="T:DemoProject.DemoClass`2">
+            <summary>
+            An example of an generic class.
+            </summary>
+            <remarks>
+            This page demonstrates how the generated documentation for generic types classes looks like.
+            The same layout is used for all classes, see <see cref="T:DemoProject.DemoClass"/> for a more detailed description
+            <para>
+            What can be seen on this page is that the documentation also includes a list of type parameters including
+            their documentation.    
+            </para>
+            </remarks>
+            <typeparam name="T1">Description of type parameter <typeparamref name="T1"/> (specified using the <c>typeparam</c> element)</typeparam>
+            <typeparam name="T2">Description of type parameter <typeparamref name="T2"/> (specified using the <c>typeparam</c> element)</typeparam>
         </member>
         <member name="T:DemoProject.DemoEnum">
             <summary>

@@ -18,8 +18,10 @@ namespace MdDoc.Model
 
         public abstract IReadOnlyList<ParameterDocumentation> Parameters { get; }
 
-        public abstract string CSharpDefinition { get; }     
+        public abstract IReadOnlyList<TypeParameterDocumentation> TypeParameters { get; }
 
+        public abstract string CSharpDefinition { get; }     
+        
 
         internal OverloadDocumentation(MemberId memberId, IXmlDocsProvider xmlDocsProvider)
         {

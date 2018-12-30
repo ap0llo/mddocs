@@ -36,8 +36,34 @@ namespace MdDoc.Model.XmlDocs
 
         public IReadOnlyList<ExceptionElement> Exceptions { get; }
 
+        /// <summary>
+        /// Gets the documentation for the member's type parameters
+        /// </summary>
+        /// <remarks>
+        /// Text specified using the <c>typeparam</c> element.
+        /// <para>
+        /// Supported for types and methods
+        /// </para>
+        /// </remarks>
+        /// <value>
+        /// A dictionary containing all availble type parameter documentation. The name of the type parameter serves as key into the dictionary.
+        /// Value is never null and is empty if no type parameter documentation was specified.
+        /// </value>
         public IReadOnlyDictionary<string, TextBlock> TypeParameters { get; }
 
+        /// <summary>
+        /// Gets the documentation for the member's parameters
+        /// </summary>
+        /// <remarks>
+        /// Text specified using the <c>param</c> element.
+        /// <para>
+        /// Supported for indexers and methods
+        /// </para>
+        /// </remarks>
+        /// <value>
+        /// A dictionary containing all availble parameter documentation. The name of the parameter serves as key into the dictionary.
+        /// Value is never null and is empty if no parameter documentation was specified.
+        /// </value>
         public IReadOnlyDictionary<string, TextBlock> Parameters { get; }
 
         /// <summary>

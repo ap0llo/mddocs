@@ -58,6 +58,8 @@ namespace MdDoc.Model
 
         public IReadOnlyCollection<SeeAlsoElement> SeeAlso { get; }
 
+        public IReadOnlyCollection<TypeParameterDocumentation> TypeParameters { get; }
+
         public string CSharpDefinition { get; }
 
         internal TypeDefinition Definition { get; }
@@ -130,6 +132,8 @@ namespace MdDoc.Model
                 .ToArray();
 
             ImplementedInterfaces = LoadImplementedInterfaces();
+
+            TypeParameters = LoadTypeParameters();
 
             var documentationComments = m_XmlDocsProvider.TryGetDocumentationComments(MemberId);
             Summary = documentationComments?.Summary;
@@ -208,6 +212,17 @@ namespace MdDoc.Model
                 return Array.Empty<TypeId>();
             else
                 return Definition.Interfaces.Select(x => x.InterfaceType.ToTypeId()).ToArray();
+        }
+
+        private IReadOnlyCollection<TypeParameterDocumentation> LoadTypeParameters()
+        {
+            if (!Definition.HasGenericParameters)
+                return Array.Empty<TypeParameterDocumentation>();
+            else
+                return Definition.GenericParameters
+                    .Select(p => new TypeParameterDocumentation(this, MemberId, p, m_XmlDocsProvider))
+                    .ToArray();
+
         }
     }
 }

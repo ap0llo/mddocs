@@ -4,13 +4,13 @@
 
 ## Overloads
 
-| Signature | Description                                                     |
-| --------- | --------------------------------------------------------------- |
-| Method2() | Example of an non\-overloaded methods with a custom attribute\- |
+| Signature | Description                                                    |
+| --------- | -------------------------------------------------------------- |
+| Method2() | Example of an non\-overloaded methods with a custom attribute. |
 
 ## Method2()
 
-Example of an non\-overloaded methods with a custom attribute\-
+Example of an non\-overloaded methods with a custom attribute.
 
 ```csharp
 [Demo]

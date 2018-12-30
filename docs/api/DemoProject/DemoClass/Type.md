@@ -71,11 +71,12 @@ Similar pages are also generated for interfaces (see [IDemoInterface](../IDemoIn
 
 ## Methods
 
-| Name                                  | Description                                                     |
-| ------------------------------------- | --------------------------------------------------------------- |
-| [Method1()](Methods/Method1.md)       | Example of an overloaded method without parameters              |
-| [Method1(string)](Methods/Method1.md) | Example of an overloaded method accepting one parameter.        |
-| [Method2()](Methods/Method2.md)       | Example of an non\-overloaded methods with a custom attribute\- |
+| Name                                  | Description                                                    |
+| ------------------------------------- | -------------------------------------------------------------- |
+| [Method1()](Methods/Method1.md)       | Example of an overloaded method without parameters             |
+| [Method1(string)](Methods/Method1.md) | Example of an overloaded method accepting one parameter.       |
+| [Method2()](Methods/Method2.md)       | Example of an non\-overloaded methods with a custom attribute. |
+| [Method3\<T\>(T)](Methods/Method3.md) | Example of a generic method.                                   |
 
 ## Operators
 

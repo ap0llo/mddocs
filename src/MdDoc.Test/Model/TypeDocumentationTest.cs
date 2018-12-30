@@ -578,5 +578,28 @@ namespace MdDoc.Test.Model
             Assert.NotNull(sut.ImplementedInterfaces);
             Assert.Empty(sut.ImplementedInterfaces);
         }
+
+        [Fact]
+        public void TypeParameters_is_empty_for_non_generic_type()
+        {
+            // ARRANGE´/ ACT
+            var sut = GetTypeDocumentation(typeof(TestClass_Type));
+
+            // ASSERT
+            Assert.NotNull(sut.TypeParameters);
+            Assert.Empty(sut.TypeParameters);
+        }
+
+        [Fact]
+        public void TypeParameters_returns_expected_parameters()
+        {
+            // ARRANGE´/ ACT
+            var sut = GetTypeDocumentation(typeof(TestClass_GenericType<>));
+
+            // ASSERT
+            Assert.NotNull(sut.TypeParameters);
+            Assert.Single(sut.TypeParameters);
+            Assert.Contains(sut.TypeParameters, typeParam => typeParam.Name == "T1");
+        }
     }
 }

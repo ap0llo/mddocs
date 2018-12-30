@@ -74,13 +74,14 @@ namespace MdDoc.Pages
 
             AddDefinitionSubSection(block, overload);
 
+            AddTypeParametersSubSection(block, overload);
+
             AddParametersSubSection(block, overload);
 
             AddRemarksSubSection(block, overload);
 
             //TODO: Returns (methods) / value (indexers)
-            //TODO: Exceptions
-            //TODO: Remarks
+            //TODO: Exceptions            
             //TODO: Examples
 
             AddSeeAlsoSubSection(block, overload);
@@ -123,6 +124,28 @@ namespace MdDoc.Pages
                 }                
             }            
         }
+
+        protected virtual void AddTypeParametersSubSection(MdContainerBlock block, TOverload overload)
+        {
+            if (overload.TypeParameters.Count == 0)
+                return;
+
+
+            block.Add(Heading("Type Parameters", 3));
+
+            foreach (var typeParameter in overload.TypeParameters)
+            {
+                block.Add(
+                    Paragraph(CodeSpan(typeParameter.Name)
+                ));
+
+                if (typeParameter.Description != null)
+                {
+                    block.Add(TextBlockToMarkdownConverter.ConvertToBlock(typeParameter.Description, this));
+                }
+            }
+        }
+
 
         protected virtual void AddRemarksSubSection(MdContainerBlock block, TOverload overload)
         {

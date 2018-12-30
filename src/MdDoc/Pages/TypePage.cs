@@ -32,7 +32,9 @@ namespace MdDoc.Pages
             );
 
             AddDefinitionSection(document.Root);
-           
+
+            AddTypeParametersSection(document.Root);
+
             AddRemarksSection(document.Root);
 
             //TODO: Skip constructors when it is compiler-generated, i.e. only the implict default constructor
@@ -84,6 +86,7 @@ namespace MdDoc.Pages
                 block.Add(TextBlockToMarkdownConverter.ConvertToBlock(Model.Summary, this));
             }
 
+            // Definition as code
             block.Add(CodeBlock(Model.CSharpDefinition, "csharp"));
 
             // Add list of base types            
@@ -180,6 +183,27 @@ namespace MdDoc.Pages
                         Model.SeeAlso.Select(seeAlso => ListItem(ConvertToSpan(seeAlso)))
                 ));
             }
-        }              
+        }
+        
+        private void AddTypeParametersSection(MdContainerBlock block)
+        {
+            if (Model.TypeParameters.Count == 0)
+                return;
+
+
+            block.Add(Heading("Type Parameters", 2));
+
+            foreach (var typeParameter in Model.TypeParameters)
+            {
+                block.Add(
+                    Paragraph(CodeSpan(typeParameter.Name)
+                ));
+
+                if (typeParameter.Description != null)
+                {                    
+                    block.Add(TextBlockToMarkdownConverter.ConvertToBlock(typeParameter.Description, this));
+                }
+            }
+        }
     }
 }
