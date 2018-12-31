@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Mono.Cecil;
-using NuDoq;
 
 namespace MdDoc.Model.XmlDocs
 {
@@ -11,10 +10,8 @@ namespace MdDoc.Model.XmlDocs
 
 
         public XmlDocsProvider(string xmlDocsPath, AssemblyDefinition assembly)
-        {
-            var nuDoqModel = DocReader.Read(xmlDocsPath);
-
-            var model = ModelConverter.ConvertModel(nuDoqModel);
+        {            
+            var model = XmlDocsReader.Read(xmlDocsPath);
 
             m_Members = model.ToDictionary(m => m.MemberId);
         }

@@ -138,7 +138,7 @@ namespace MdDoc.Model
             var documentationComments = m_XmlDocsProvider.TryGetDocumentationComments(MemberId);
             Summary = documentationComments?.Summary;
             Remarks = documentationComments?.Remarks;
-            SeeAlso = documentationComments?.SeeAlso ?? Array.Empty<SeeAlsoElement>();
+            SeeAlso = documentationComments?.SeeAlso?.ToReadOnly() ?? Array.Empty<SeeAlsoElement>();
 
             CSharpDefinition = CSharpDefinitionFormatter.GetDefinition(definition);
         }

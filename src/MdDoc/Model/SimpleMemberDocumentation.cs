@@ -28,7 +28,7 @@ namespace MdDoc.Model
             var documentationComments = xmlDocsProvider.TryGetDocumentationComments(memberId);
             Summary = documentationComments?.Summary;
             Remarks = documentationComments?.Remarks;
-            SeeAlso = documentationComments?.SeeAlso ?? Array.Empty<SeeAlsoElement>();
+            SeeAlso = documentationComments?.SeeAlso?.ToReadOnly() ?? Array.Empty<SeeAlsoElement>();
         }
 
 

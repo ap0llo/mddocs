@@ -4,17 +4,14 @@ namespace MdDoc.Model.XmlDocs
 {
     public sealed class TypeParamRefElement : Element
     {
-        private readonly NuDoq.TypeParamRef m_NuDoqModel;
+        public string Name { get; }
 
 
-        public string Name => m_NuDoqModel.Name;
-
-
-        public TypeParamRefElement(NuDoq.TypeParamRef nuDoqModel)
+        public TypeParamRefElement(string name)
         {
-            m_NuDoqModel = nuDoqModel ?? throw new ArgumentNullException(nameof(nuDoqModel));
+            Name = name ?? throw new ArgumentNullException(nameof(name));
         }
-
+      
 
         public override void Accept(IVisitor visitor) => visitor.Visit(this);
     }

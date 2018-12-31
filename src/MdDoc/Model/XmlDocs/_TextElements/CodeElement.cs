@@ -1,21 +1,18 @@
 ﻿using System;
-using NuDoq;
 
 namespace MdDoc.Model.XmlDocs
 {
     public sealed class CodeElement : Element
     {
-        private readonly Code m_Code;
+        public string Content { get; }
 
 
-        public string Content => m_Code.Content;
-
-
-        internal CodeElement(Code code)
+        public CodeElement(string content)
         {
-            m_Code = code ?? throw new ArgumentNullException(nameof(code));
+            Content = content ?? throw new ArgumentNullException(nameof(content));
         }
 
+     
         public override void Accept(IVisitor visitor) => visitor.Visit(this);
     }
 }

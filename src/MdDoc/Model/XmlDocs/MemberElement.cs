@@ -17,7 +17,7 @@ namespace MdDoc.Model.XmlDocs
         /// </para>       
         /// </remarks>
         /// <value>The specified summary or <c>null</c> if no summary was specified</value>
-        public TextBlock Summary { get; }
+        public TextBlock Summary { get; set; }
 
         /// <summary>
         /// Gets the remarks for a member
@@ -30,11 +30,11 @@ namespace MdDoc.Model.XmlDocs
         /// </para>
         /// </remarks>
         /// <value>The specified remarks or <c>null</c> if no remarks are available</value>
-        public TextBlock Remarks { get; }
+        public TextBlock Remarks { get; set; }
 
-        public TextBlock Example { get; }
+        public TextBlock Example { get; set; }
 
-        public IReadOnlyList<ExceptionElement> Exceptions { get; }
+        public List<ExceptionElement> Exceptions { get; } = new List<ExceptionElement>();
 
         /// <summary>
         /// Gets the documentation for the member's type parameters
@@ -49,7 +49,7 @@ namespace MdDoc.Model.XmlDocs
         /// A dictionary containing all availble type parameter documentation. The name of the type parameter serves as key into the dictionary.
         /// Value is never null and is empty if no type parameter documentation was specified.
         /// </value>
-        public IReadOnlyDictionary<string, TextBlock> TypeParameters { get; }
+        public Dictionary<string, TextBlock> TypeParameters { get; } = new Dictionary<string, TextBlock>();
 
         /// <summary>
         /// Gets the documentation for the member's parameters
@@ -64,7 +64,7 @@ namespace MdDoc.Model.XmlDocs
         /// A dictionary containing all availble parameter documentation. The name of the parameter serves as key into the dictionary.
         /// Value is never null and is empty if no parameter documentation was specified.
         /// </value>
-        public IReadOnlyDictionary<string, TextBlock> Parameters { get; }
+        public Dictionary<string, TextBlock> Parameters { get; } = new Dictionary<string, TextBlock>();
 
         /// <summary>
         /// Gets the <c>value</c> documentation for the member
@@ -76,9 +76,9 @@ namespace MdDoc.Model.XmlDocs
         /// </para>
         /// </remarks>
         /// <value>The specified text or <c>null</c> if no text is available</value>
-        public TextBlock Value { get; }
+        public TextBlock Value { get; set; }
 
-        public TextBlock Returns { get; }
+        public TextBlock Returns { get; set; }
 
         /// <summary>
         /// Gets the items specified for the member using the <c>seealso</c> tag.
@@ -87,32 +87,12 @@ namespace MdDoc.Model.XmlDocs
         /// The list of <c>seealso</c> elements specified for the member.
         /// Empty list when no <c>seealso</c> items were specified
         /// </value>
-        public IReadOnlyList<SeeAlsoElement> SeeAlso { get; }
+        public List<SeeAlsoElement> SeeAlso { get; } = new List<SeeAlsoElement>();
 
 
-        public MemberElement(
-            MemberId memberId,
-            TextBlock summary,
-            TextBlock remarks,
-            TextBlock example,
-            IReadOnlyList<ExceptionElement> exceptions, 
-            IReadOnlyDictionary<string, TextBlock> typeParameters,
-            IReadOnlyDictionary<string, TextBlock> parameters,
-            TextBlock value,
-            TextBlock returns,
-            IReadOnlyList<SeeAlsoElement> seeAlso)
+        public MemberElement(MemberId memberId)
         {
             MemberId = memberId ?? throw new ArgumentNullException(nameof(memberId));
-            Summary = summary;
-            Remarks = remarks;
-            Example = example;
-            Exceptions = exceptions ?? Array.Empty<ExceptionElement>();
-            TypeParameters = typeParameters ?? ReadOnlyDictionary<string, TextBlock>.Empty;
-            Parameters = parameters ?? ReadOnlyDictionary<string, TextBlock>.Empty;
-            Value = value;
-            Returns = returns;
-            SeeAlso = seeAlso ?? Array.Empty<SeeAlsoElement>();
-        }
-        
+        }        
     }
 }

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -10,9 +10,5 @@
     <PackageReference Include="Grynwald.Utilities" Version="1.1.11" />
     <PackageReference Include="Mono.Cecil" Version="0.10.1" />
   </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\deps\nudoq\src\NuDoq\NuDoq.csproj" />
-  </ItemGroup>
-
+  
 </Project>

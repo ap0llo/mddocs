@@ -1,4 +1,6 @@
-﻿namespace MdDoc.Model
+﻿using MdDoc.Model.XmlDocs;
+
+namespace MdDoc.Model
 {
     public abstract class MemberId
     {
@@ -9,5 +11,11 @@
 
         public abstract override int GetHashCode();
 
+
+        public static MemberId Parse(string value)
+        {
+            var parser = new MemberIdParser(value);
+            return parser.Parse();
+        }
     }
 }

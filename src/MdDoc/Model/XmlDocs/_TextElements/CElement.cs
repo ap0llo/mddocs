@@ -1,20 +1,17 @@
 ﻿using System;
-using NuDoq;
 
 namespace MdDoc.Model.XmlDocs
 {
     public sealed class CElement : Element
     {
-        private readonly C m_NuDoqModel;
-
-        
-        public string Content => m_NuDoqModel.Content;
+        public string Content { get; }
 
 
-        internal CElement(C nuDoqModel)
+        public CElement(string content)
         {
-            m_NuDoqModel = nuDoqModel ?? throw new ArgumentNullException(nameof(nuDoqModel));            
+            Content = content ?? throw new ArgumentNullException(nameof(content));
         }
+
 
         public override void Accept(IVisitor visitor) => visitor.Visit(this);
     }
