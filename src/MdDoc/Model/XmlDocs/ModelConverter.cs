@@ -119,8 +119,6 @@ namespace MdDoc.Model.XmlDocs
         public List<Element> Elements { get; } = new List<Element>();
 
 
-        //public override void VisitMember(Member member) => Result.Add(new MemberElement(member, GetElements(member)));
-
         public override void VisitCode(Code code) => Elements.Add(new CodeElement(code));
 
         public override void VisitC(C code) => Elements.Add(new CElement(code));
@@ -133,7 +131,6 @@ namespace MdDoc.Model.XmlDocs
         
         public override void VisitSee(See see) => Elements.Add(new SeeElement(see));
 
-
         public override void VisitPara(Para para)
         {
             var visitor = new ContainerVisitor();
@@ -145,5 +142,35 @@ namespace MdDoc.Model.XmlDocs
             
             Elements.Add(new ParaElement(new TextBlock(visitor.Elements)));
         }
+
+        // ContainerVisitor should only be used for visiting elements inside containers.
+        // To avoid accidentally supporting nested containters, we need to override the visit method
+        // for all supported containers (the elements supported by MemberVisitor)
+        // and not visit their child elements
+        public override void VisitParam(Param param)
+        { }
+
+        public override void VisitSummary(Summary summary)
+        { }
+
+        public override void VisitExample(Example example)
+        { }
+
+        public override void VisitRemarks(Remarks remarks)
+        { }
+
+        public override void VisitException(NuDoq.Exception exception)
+        { }
+
+        public override void VisitTypeParam(TypeParam typeParam)
+        { }
+        public override void VisitValue(Value value)
+        { }
+
+        public override void VisitReturns(Returns returns)
+        { }
+
+        public override void VisitSeeAlso(SeeAlso seeAlso)
+        { }
     }
 }
