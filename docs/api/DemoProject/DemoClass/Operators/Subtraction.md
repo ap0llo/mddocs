@@ -32,6 +32,12 @@ Remarks allow specification of more detailed information about a member, in this
 
 For overloaded members, there is a separate "Remarks" section for every overload.
 
+### Returns
+
+[DemoClass](../Type.md)
+
+The return value of an operator can be documented using the `returns` tag
+
 ### See Also
 
 - [Addition(DemoClass, DemoClass)](Addition.md)

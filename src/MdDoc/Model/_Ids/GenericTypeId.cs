@@ -16,7 +16,9 @@ namespace MdDoc.Model
 
         public override string DisplayName => $"{Name}<{String.Join(", ", m_TypeParameterDisplayNames)}>";
 
-        
+        public override bool IsVoid => false;
+
+
         public GenericTypeId(string namespaceName, string name, int arity, IReadOnlyList<string> typeParameterDisplayNames) : base(namespaceName, name)
         {
             m_TypeParameterDisplayNames = typeParameterDisplayNames ?? throw new ArgumentNullException(nameof(typeParameterDisplayNames));

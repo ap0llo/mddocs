@@ -80,7 +80,8 @@ namespace MdDoc.Pages
 
             AddRemarksSubSection(block, overload);
 
-            //TODO: Returns (methods) / value (indexers)
+            AddReturnsSubSection(block, overload);
+            
             //TODO: Exceptions            
             //TODO: Examples
 
@@ -123,6 +124,26 @@ namespace MdDoc.Pages
                     parametersBlock.Add(TextBlockToMarkdownConverter.ConvertToBlock(parameter.Description, this));
                 }                
             }            
+        }
+
+        protected virtual void AddReturnsSubSection(MdContainerBlock block, TOverload overload)
+        {
+            // skip "Returns" section for void methods
+            if (overload.Type.IsVoid)
+                return;
+
+            block.Add(Heading("Returns", 3));
+
+            // add return type
+            block.Add(
+                Paragraph(GetTypeNameSpan(overload.Type)
+            ));
+
+            // add returns documentation
+            if (overload.Returns != null)
+            {
+                block.Add(TextBlockToMarkdownConverter.ConvertToBlock(overload.Returns, this));
+            }
         }
 
         protected virtual void AddTypeParametersSubSection(MdContainerBlock block, TOverload overload)

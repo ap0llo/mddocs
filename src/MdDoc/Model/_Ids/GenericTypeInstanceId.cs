@@ -14,6 +14,8 @@ namespace MdDoc.Model
         public override string DisplayName =>
             $"{Name}<{String.Join(", ", TypeArguments.Select(a => a.DisplayName))}>";
 
+        public override bool IsVoid => false;
+
 
         public GenericTypeInstanceId(string namespaceName, string name, IReadOnlyList<TypeId> typeArguments) : base(namespaceName, name)
         {

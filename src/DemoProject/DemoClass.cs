@@ -185,9 +185,10 @@ namespace DemoProject
         /// For overloaded members, there is a separate "Remarks" section for every overload.
         /// </para>
         /// </remarks>
+        /// <returns>The return value of a method can be documented using the <c>returns</c> tag</returns>
         /// <seealso cref="Method1(String)" />
         /// <seealso cref="Method2" />
-        public void Method1() => throw new NotImplementedException();
+        public string Method1() => throw new NotImplementedException();
 
         /// <summary>
         /// Example of an overloaded method accepting one parameter.
@@ -243,6 +244,7 @@ namespace DemoProject
         /// </remarks>
         /// <param name="left">Description of parameter <paramref name="left"/> provided using the <c>param</c> element.</param>
         /// <param name="right">Description of parameter <paramref name="right"/> provided using the <c>param</c> element.</param>
+        /// <returns>The return value of an operator can be documented using the <c>returns</c> tag</returns>
         /// <seealso cref="DemoClass.op_Subtraction"/>
         public static DemoClass operator +(DemoClass left, DemoClass right) => throw new NotImplementedException();
 
@@ -258,6 +260,7 @@ namespace DemoProject
         /// </remarks>
         /// <param name="left">Description of parameter <paramref name="left"/> provided using the <c>param</c> element.</param>
         /// <param name="right">Description of parameter <paramref name="right"/> provided using the <c>param</c> element.</param>
+        /// <returns>The return value of an operator can be documented using the <c>returns</c> tag</returns>
         /// <seealso cref="DemoClass.op_Addition"/>
         public static DemoClass operator -(DemoClass left, DemoClass right) => throw new NotImplementedException();
 

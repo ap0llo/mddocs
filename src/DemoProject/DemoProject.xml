@@ -191,6 +191,7 @@
             For overloaded members, there is a separate "Remarks" section for every overload.
             </para>
             </remarks>
+            <returns>The return value of a method can be documented using the <c>returns</c> tag</returns>
             <seealso cref="M:DemoProject.DemoClass.Method1(System.String)" />
             <seealso cref="M:DemoProject.DemoClass.Method2" />
         </member>
@@ -247,6 +248,7 @@
             </remarks>
             <param name="left">Description of parameter <paramref name="left"/> provided using the <c>param</c> element.</param>
             <param name="right">Description of parameter <paramref name="right"/> provided using the <c>param</c> element.</param>
+            <returns>The return value of an operator can be documented using the <c>returns</c> tag</returns>
             <seealso cref="M:DemoProject.DemoClass.op_Subtraction(DemoProject.DemoClass,DemoProject.DemoClass)"/>
         </member>
         <member name="M:DemoProject.DemoClass.op_Subtraction(DemoProject.DemoClass,DemoProject.DemoClass)">
@@ -262,6 +264,7 @@
             </remarks>
             <param name="left">Description of parameter <paramref name="left"/> provided using the <c>param</c> element.</param>
             <param name="right">Description of parameter <paramref name="right"/> provided using the <c>param</c> element.</param>
+            <returns>The return value of an operator can be documented using the <c>returns</c> tag</returns>
             <seealso cref="M:DemoProject.DemoClass.op_Addition(DemoProject.DemoClass,DemoProject.DemoClass)"/>
         </member>
         <member name="T:DemoProject.DemoClass`2">

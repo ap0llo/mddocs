@@ -40,5 +40,9 @@ namespace MdDoc.Pages
                 block.Add(TextBlockToMarkdownConverter.ConvertToBlock(overload.Value, this));
             }
         }
+
+        //No "Returns" subsection for indexers (there is a "Value" section instead)
+        protected override void AddReturnsSubSection(MdContainerBlock block, IndexerOverloadDocumentation overload)
+        { }
     }
 }

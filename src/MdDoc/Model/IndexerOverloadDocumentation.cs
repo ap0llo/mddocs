@@ -23,7 +23,7 @@ namespace MdDoc.Model
     
         public TextBlock Value { get; }
 
-        public TypeId Type { get; }
+        public override TypeId Type { get; }
 
         internal PropertyDefinition Definition { get; }
 

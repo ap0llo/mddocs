@@ -7,8 +7,10 @@ namespace MdDoc.Model
         public TypeId ElementType { get; }
 
         public int Dimensions { get; }
-        
+
         public override string DisplayName => $"{ElementType.DisplayName}[{new String(',', Dimensions - 1)}]";
+
+        public override bool IsVoid => false;
 
 
         public ArrayTypeId(TypeId elementType) : this(elementType, 1)

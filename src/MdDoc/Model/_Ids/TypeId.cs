@@ -10,6 +10,8 @@ namespace MdDoc.Model
 
         public abstract string DisplayName { get; }
 
+        public abstract bool IsVoid { get; }
+
         protected string NamespaceAndName => String.IsNullOrEmpty(NamespaceName) ? Name : $"{NamespaceName}.{Name}";
 
 

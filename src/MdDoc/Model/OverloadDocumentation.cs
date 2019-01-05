@@ -21,7 +21,11 @@ namespace MdDoc.Model
         public abstract IReadOnlyList<TypeParameterDocumentation> TypeParameters { get; }
 
         public abstract string CSharpDefinition { get; }     
-        
+
+        public abstract TypeId Type { get; }
+
+        public TextBlock Returns { get; }
+
 
         internal OverloadDocumentation(MemberId memberId, IXmlDocsProvider xmlDocsProvider)
         {
@@ -31,6 +35,7 @@ namespace MdDoc.Model
             Summary = documentationComments?.Summary;
             Remarks = documentationComments?.Remarks;
             SeeAlso = documentationComments?.SeeAlso?.ToReadOnly() ?? Array.Empty<SeeAlsoElement>();
+            Returns = documentationComments?.Returns;
         }
 
 

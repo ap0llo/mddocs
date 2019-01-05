@@ -19,8 +19,10 @@ namespace MdDoc.Model
 
         public override IReadOnlyList<TypeParameterDocumentation> TypeParameters { get; }
 
-        internal MethodDefinition Definition { get; }
+        public override TypeId Type { get; }
 
+        internal MethodDefinition Definition { get; }
+        
 
         internal MethodLikeOverloadDocumentation(
             MethodDefinition definition,
@@ -38,6 +40,8 @@ namespace MdDoc.Model
             CSharpDefinition = CSharpDefinitionFormatter.GetDefinition(definition);
 
             TypeParameters = LoadTypeParameters();
+
+            Type = definition.ReturnType.ToTypeId();
         }
 
 

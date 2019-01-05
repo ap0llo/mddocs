@@ -14,7 +14,7 @@
 Example of an overloaded method without parameters
 
 ```csharp
-public void Method1();
+public string Method1();
 ```
 
 ### Remarks
@@ -22,6 +22,12 @@ public void Method1();
 Remarks allow specification of more detailed information about a member, in this case a method. supplementing the information specified in the summary.
 
 For overloaded members, there is a separate "Remarks" section for every overload.
+
+### Returns
+
+String
+
+The return value of a method can be documented using the `returns` tag
 
 ### See Also
 

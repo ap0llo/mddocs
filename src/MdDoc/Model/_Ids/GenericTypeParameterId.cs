@@ -16,6 +16,8 @@ namespace MdDoc.Model
 
         public override string DisplayName => Name;
 
+        public override bool IsVoid => false;
+
 
         public GenericTypeParameterId(MemberKind definingMemberKind, int index) : this(definingMemberKind, index, $"T{index + 1}")
         { }

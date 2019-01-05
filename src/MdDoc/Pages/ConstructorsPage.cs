@@ -24,5 +24,10 @@ namespace MdDoc.Pages
         
         protected override MdHeading GetHeading() =>
             Heading($"{Model.TypeDocumentation.DisplayName} Constructors", 1);
+
+
+        //No "Returns" subsection for constructors
+        protected override void AddReturnsSubSection(MdContainerBlock block, ConstructorOverloadDocumentation overload)
+        { }
     }
 }

@@ -35,6 +35,8 @@ namespace MdDoc.Model
                 : Name;
 
 
+        public override bool IsVoid => NamespaceName == "System" && Name == "Void";
+
         public SimpleTypeId(string namespaceName, string name) : base(namespaceName, name)
         { }
 
