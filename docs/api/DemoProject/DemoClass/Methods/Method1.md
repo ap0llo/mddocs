@@ -29,6 +29,14 @@ String
 
 The return value of a method can be documented using the `returns` tag
 
+### Exceptions
+
+ArgumentException
+
+Exceptions can be documented using the `exception` tag.
+
+InvalidOperationException
+
 ### See Also
 
 - Method1(string)

@@ -38,6 +38,14 @@ For overloaded members, there is a separate "Remarks" section for every overload
 
 The return value of an operator can be documented using the `returns` tag
 
+### Exceptions
+
+ArgumentException
+
+Exceptions can be documented using the `exception` tag.
+
+InvalidOperationException
+
 ### See Also
 
 - [Addition(DemoClass, DemoClass)](Addition.md)

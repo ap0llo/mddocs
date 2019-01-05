@@ -81,8 +81,9 @@ namespace MdDoc.Pages
             AddRemarksSubSection(block, overload);
 
             AddReturnsSubSection(block, overload);
-            
-            //TODO: Exceptions            
+
+            AddExceptionsSubSection(block, overload);
+
             //TODO: Examples
 
             AddSeeAlsoSubSection(block, overload);
@@ -96,6 +97,27 @@ namespace MdDoc.Pages
             }
 
             block.Add(CodeBlock(overload.CSharpDefinition, "csharp"));
+        }
+
+        protected virtual void AddTypeParametersSubSection(MdContainerBlock block, TOverload overload)
+        {
+            if (overload.TypeParameters.Count == 0)
+                return;
+
+
+            block.Add(Heading("Type Parameters", 3));
+
+            foreach (var typeParameter in overload.TypeParameters)
+            {
+                block.Add(
+                    Paragraph(CodeSpan(typeParameter.Name)
+                ));
+
+                if (typeParameter.Description != null)
+                {
+                    block.Add(ConvertToBlock(typeParameter.Description));
+                }
+            }
         }
 
         protected virtual void AddParametersSubSection(MdContainerBlock block, TOverload overload)
@@ -135,8 +157,8 @@ namespace MdDoc.Pages
 
             // add return type
             block.Add(
-                Paragraph(GetMdSpan(overload.Type)
-            ));
+                GetMdParagraph(overload.Type)
+            );
 
             // add returns documentation
             if (overload.Returns != null)
@@ -145,27 +167,21 @@ namespace MdDoc.Pages
             }
         }
 
-        protected virtual void AddTypeParametersSubSection(MdContainerBlock block, TOverload overload)
+        protected virtual void AddExceptionsSubSection(MdContainerBlock block, TOverload overload)
         {
-            if (overload.TypeParameters.Count == 0)
+            if (overload.Exceptions.Count == 0)
                 return;
 
+            block.Add(Heading("Exceptions", 3));
 
-            block.Add(Heading("Type Parameters", 3));
-
-            foreach (var typeParameter in overload.TypeParameters)
+            foreach(var exception in overload.Exceptions)
             {
                 block.Add(
-                    Paragraph(CodeSpan(typeParameter.Name)
-                ));
-
-                if (typeParameter.Description != null)
-                {
-                    block.Add(ConvertToBlock(typeParameter.Description));
-                }
+                    GetMdParagraph(exception.Type),
+                    ConvertToBlock(exception.Text)
+                );                
             }
         }
-
 
         protected virtual void AddRemarksSubSection(MdContainerBlock block, TOverload overload)
         {

@@ -25,8 +25,8 @@ namespace MdDoc.Pages
         {            
             block.Add(Heading("Field Value", 2));
             block.Add(
-                Paragraph(GetMdSpan(Model.Type)
-            ));
+                GetMdParagraph(Model.Type)
+            );
 
             if (Model.Value != null)
             {

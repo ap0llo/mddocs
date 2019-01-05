@@ -30,6 +30,8 @@ namespace MdDoc.Pages
 
         public abstract void Save();
 
+        public MdParagraph GetMdParagraph(MemberId id) => new MdParagraph(GetMdSpan(id, false));
+
         public MdSpan GetMdSpan(MemberId id) => GetMdSpan(id, false);
 
         public MdSpan GetMdSpan(MemberId id, bool noLink = false)
@@ -102,14 +104,14 @@ namespace MdDoc.Pages
 
         protected MdSpan ConvertToSpan(SeeAlsoElement seeAlso)
         {
-            if (seeAlso.Text.Elements.Count > 0)
+            if (seeAlso.Text.IsEmpty)
             {
-                var text = TextBlockToMarkdownConverter.ConvertToSpan(seeAlso.Text, this);
-                return CreateLink(seeAlso.MemberId, text);
+                return GetMdSpan(seeAlso.MemberId);                
             }
             else
             {
-                return GetMdSpan(seeAlso.MemberId);
+                var text = ConvertToSpan(seeAlso.Text);
+                return CreateLink(seeAlso.MemberId, text);
             }
         }
 

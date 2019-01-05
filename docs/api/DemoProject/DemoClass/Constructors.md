@@ -38,3 +38,11 @@ Description of parameter `parameter` provided using the `param` element.
 ### Remarks
 
 Remarks allow specification of more detailed information about a member, in this case the constructor. supplementing the information specified in the summary
+
+### Exceptions
+
+ArgumentException
+
+Exceptions can be documented using the `exception` tag.
+
+InvalidOperationException

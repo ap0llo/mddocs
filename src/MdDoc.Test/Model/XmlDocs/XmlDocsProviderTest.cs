@@ -180,8 +180,8 @@ namespace MdDoc.Test.Model.XmlDocs
 
             Assert.NotNull(docs.Exceptions);
             Assert.Equal(2, docs.Exceptions.Count);
-            Assert.Contains(docs.Exceptions, x => x.MemberId.Equals(MemberId.Parse("T:System.InvalidOperationException")));
-            Assert.Contains(docs.Exceptions, x => x.MemberId.Equals(MemberId.Parse("T:System.ArgumentException")));
+            Assert.Contains(docs.Exceptions, x => x.Type.Equals(MemberId.Parse("T:System.InvalidOperationException")));
+            Assert.Contains(docs.Exceptions, x => x.Type.Equals(MemberId.Parse("T:System.ArgumentException")));
 
             Assert.NotNull(docs.Parameters);
             Assert.Single(docs.Parameters);
@@ -269,7 +269,7 @@ namespace MdDoc.Test.Model.XmlDocs
 
             Assert.NotNull(docs.Exceptions);
             Assert.Single(docs.Exceptions);
-            Assert.Contains(docs.Exceptions, x => x.MemberId.Equals(MemberId.Parse("T:System.ArgumentException")));
+            Assert.Contains(docs.Exceptions, x => x.Type.Equals(MemberId.Parse("T:System.ArgumentException")));
 
             Assert.Equal(2, docs.SeeAlso.Count);
             Assert.Single(

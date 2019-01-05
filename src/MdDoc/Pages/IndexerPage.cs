@@ -32,8 +32,8 @@ namespace MdDoc.Pages
         {
             block.Add(Heading("Indexer Value", 3));
             block.Add(
-                Paragraph(GetMdSpan(overload.Type)
-            ));
+                GetMdParagraph(overload.Type)
+            );
 
             if (overload.Value != null)
             {

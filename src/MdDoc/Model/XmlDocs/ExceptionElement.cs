@@ -4,16 +4,15 @@ namespace MdDoc.Model.XmlDocs
 {
     public sealed class ExceptionElement
     {
-        public MemberId MemberId { get; }
+        public TypeId Type { get; }
 
         public TextBlock Text { get; }
 
 
-        public ExceptionElement(MemberId memberId, TextBlock text)
+        public ExceptionElement(TypeId type, TextBlock text)
         {
-            MemberId = memberId ?? throw new ArgumentNullException(nameof(memberId));
+            Type = type ?? throw new ArgumentNullException(nameof(type));
             Text = text ?? throw new ArgumentNullException(nameof(text));
-        }
-                
+        }                
     }
 }

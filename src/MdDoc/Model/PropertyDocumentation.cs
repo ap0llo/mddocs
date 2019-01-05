@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using MdDoc.Model.XmlDocs;
 using Mono.Cecil;
 
@@ -13,7 +14,10 @@ namespace MdDoc.Model
         public TextBlock Value { get; }
 
         public override string CSharpDefinition { get; }
-        
+
+        public IReadOnlyList<ExceptionElement> Exceptions { get; }
+
+
         internal PropertyDefinition Definition { get; }
 
 
@@ -28,7 +32,9 @@ namespace MdDoc.Model
             Type = definition.PropertyType.ToTypeId();
             CSharpDefinition = CSharpDefinitionFormatter.GetDefinition(definition);
 
-            Value = xmlDocsProvider?.TryGetDocumentationComments(MemberId)?.Value;
+            var documentationComments = xmlDocsProvider?.TryGetDocumentationComments(MemberId);
+            Value = documentationComments?.Value;
+            Exceptions = documentationComments?.Exceptions?.ToReadOnly() ?? Array.Empty<ExceptionElement>();
         }        
     }
 }

@@ -118,7 +118,15 @@ namespace MdDoc.Model.XmlDocs
                             if(cref != null)
                             {
                                 var memberId = MemberId.Parse(cref);
-                                member.Exceptions.Add(new ExceptionElement(memberId, ReadTextBlock(elementNode)));
+
+                                //TODO: Emit warning for unexpected member id
+
+                                if(memberId is TypeId typeId)
+                                {
+                                    member.Exceptions.Add(
+                                        new ExceptionElement(typeId, ReadTextBlock(elementNode))
+                                    );
+                                }
                             }
                         }
                         break;

@@ -158,6 +158,11 @@ namespace MdDoc.Pages
 
         public static MdBlock ConvertToBlock(TextBlock text, IMdSpanFactory spanFactory)
         {
+            if(text.IsEmpty)
+            {
+                return MdEmptyBlock.Instance;
+            }
+
             var visitor = new ConvertToBlockVisitor(spanFactory);
             text.Accept(visitor);
 

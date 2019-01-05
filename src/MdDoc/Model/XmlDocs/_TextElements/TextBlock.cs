@@ -5,7 +5,9 @@ using System.Linq;
 namespace MdDoc.Model.XmlDocs
 {
     public sealed class TextBlock : Element
-    {       
+    {
+        public bool IsEmpty => Elements.Count == 0;
+
         public IReadOnlyList<Element> Elements { get; }
 
 

@@ -26,6 +26,8 @@ namespace MdDoc.Model
 
         public TextBlock Returns { get; }
 
+        public IReadOnlyList<ExceptionElement> Exceptions { get; }
+
 
         internal OverloadDocumentation(MemberId memberId, IXmlDocsProvider xmlDocsProvider)
         {
@@ -36,6 +38,7 @@ namespace MdDoc.Model
             Remarks = documentationComments?.Remarks;
             SeeAlso = documentationComments?.SeeAlso?.ToReadOnly() ?? Array.Empty<SeeAlsoElement>();
             Returns = documentationComments?.Returns;
+            Exceptions = documentationComments?.Exceptions?.ToReadOnly() ?? Array.Empty<ExceptionElement>();
         }
 
 

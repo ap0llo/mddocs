@@ -65,6 +65,14 @@ Remarks allow specification of more detailed information about a member, in this
 
 For overloaded members, there is a separate "Remarks" section for every overload.
 
+### Exceptions
+
+ArgumentException
+
+Exceptions can be documented using the `exception` tag.
+
+InvalidOperationException
+
 ### See Also
 
 - Item\[int, int\]

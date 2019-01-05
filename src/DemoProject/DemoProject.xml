@@ -117,6 +117,8 @@
             supplementing the information specified in the summary
             </remarks>
             <value>The tag <c>value</c> allows specifying the value a property represents</value>
+            <exception cref="T:System.ArgumentException">Exceptions can be documented using the <c>exception</c> tag.</exception>
+            <exception cref="T:System.InvalidOperationException" />
             <seealso cref="P:DemoProject.DemoClass.Property2"/>
         </member>
         <member name="P:DemoProject.DemoClass.Property2">
@@ -143,6 +145,8 @@
             </remarks>
             <param name="index">Description of parameter <paramref name="index"/> provided using the <c>param</c> element.</param>
             <value>The tag <c>value</c> allows specifying the value a indexer represents</value>
+            <exception cref="T:System.ArgumentException">Exceptions can be documented using the <c>exception</c> tag.</exception>
+            <exception cref="T:System.InvalidOperationException" />
             <seealso cref="P:DemoProject.DemoClass.Item(System.Int32,System.Int32)"/>
         </member>
         <member name="P:DemoProject.DemoClass.Item(System.Int32,System.Int32)">
@@ -179,6 +183,8 @@
             supplementing the information specified in the summary
             </remarks>      
             <param name="parameter">Description of parameter <paramref name="parameter"/> provided using the <c>param</c> element.</param>
+            <exception cref="T:System.ArgumentException">Exceptions can be documented using the <c>exception</c> tag.</exception>
+            <exception cref="T:System.InvalidOperationException" />
         </member>
         <member name="M:DemoProject.DemoClass.Method1">
             <summary>
@@ -192,6 +198,8 @@
             </para>
             </remarks>
             <returns>The return value of a method can be documented using the <c>returns</c> tag</returns>
+            <exception cref="T:System.ArgumentException">Exceptions can be documented using the <c>exception</c> tag.</exception>
+            <exception cref="T:System.InvalidOperationException" />
             <seealso cref="M:DemoProject.DemoClass.Method1(System.String)" />
             <seealso cref="M:DemoProject.DemoClass.Method2" />
         </member>
@@ -265,6 +273,8 @@
             <param name="left">Description of parameter <paramref name="left"/> provided using the <c>param</c> element.</param>
             <param name="right">Description of parameter <paramref name="right"/> provided using the <c>param</c> element.</param>
             <returns>The return value of an operator can be documented using the <c>returns</c> tag</returns>
+            <exception cref="T:System.ArgumentException">Exceptions can be documented using the <c>exception</c> tag.</exception>
+            <exception cref="T:System.InvalidOperationException" />
             <seealso cref="M:DemoProject.DemoClass.op_Addition(DemoProject.DemoClass,DemoProject.DemoClass)"/>
         </member>
         <member name="T:DemoProject.DemoClass`2">

@@ -25,13 +25,33 @@ namespace MdDoc.Pages
         {
             block.Add(Heading("Property Value", 2));
             block.Add(
-                Paragraph(GetMdSpan(Model.Type)
-            ));
+                GetMdParagraph(Model.Type)
+            );
 
             if (Model.Value != null)
             {
                 block.Add(ConvertToBlock(Model.Value));
             }
-        }        
+
+            // After the value section, add the Exceptions section
+            AddExceptionsSection(block);
+        }
+
+
+        protected void AddExceptionsSection(MdContainerBlock block)
+        {
+            if (Model.Exceptions.Count == 0)
+                return;
+
+            block.Add(Heading("Exceptions", 2));
+
+            foreach (var exception in Model.Exceptions)
+            {
+                block.Add(
+                    GetMdParagraph(exception.Type),
+                    ConvertToBlock(exception.Text)
+                );
+            }
+        }
     }
 }

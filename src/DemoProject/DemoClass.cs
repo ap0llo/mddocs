@@ -105,6 +105,8 @@ namespace DemoProject
         /// supplementing the information specified in the summary
         /// </remarks>
         /// <value>The tag <c>value</c> allows specifying the value a property represents</value>
+        /// <exception cref="ArgumentException">Exceptions can be documented using the <c>exception</c> tag.</exception>
+        /// <exception cref="InvalidOperationException" />
         /// <seealso cref="Property2"/>
         public string Property1 { get; }
 
@@ -132,6 +134,8 @@ namespace DemoProject
         /// </remarks>
         /// <param name="index">Description of parameter <paramref name="index"/> provided using the <c>param</c> element.</param>
         /// <value>The tag <c>value</c> allows specifying the value a indexer represents</value>
+        /// <exception cref="ArgumentException">Exceptions can be documented using the <c>exception</c> tag.</exception>
+        /// <exception cref="InvalidOperationException" />
         /// <seealso cref="this[Int32, Int32]"/>
         public string this[int index] => throw new NotImplementedException();
 
@@ -170,6 +174,8 @@ namespace DemoProject
         /// supplementing the information specified in the summary
         /// </remarks>      
         /// <param name="parameter">Description of parameter <paramref name="parameter"/> provided using the <c>param</c> element.</param>
+        /// <exception cref="ArgumentException">Exceptions can be documented using the <c>exception</c> tag.</exception>
+        /// <exception cref="InvalidOperationException" />
         public DemoClass(int parameter)
         {
         }
@@ -186,6 +192,8 @@ namespace DemoProject
         /// </para>
         /// </remarks>
         /// <returns>The return value of a method can be documented using the <c>returns</c> tag</returns>
+        /// <exception cref="ArgumentException">Exceptions can be documented using the <c>exception</c> tag.</exception>
+        /// <exception cref="InvalidOperationException" />
         /// <seealso cref="Method1(String)" />
         /// <seealso cref="Method2" />
         public string Method1() => throw new NotImplementedException();
@@ -261,6 +269,8 @@ namespace DemoProject
         /// <param name="left">Description of parameter <paramref name="left"/> provided using the <c>param</c> element.</param>
         /// <param name="right">Description of parameter <paramref name="right"/> provided using the <c>param</c> element.</param>
         /// <returns>The return value of an operator can be documented using the <c>returns</c> tag</returns>
+        /// <exception cref="ArgumentException">Exceptions can be documented using the <c>exception</c> tag.</exception>
+        /// <exception cref="InvalidOperationException" />
         /// <seealso cref="DemoClass.op_Addition"/>
         public static DemoClass operator -(DemoClass left, DemoClass right) => throw new NotImplementedException();
 
