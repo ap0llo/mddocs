@@ -81,7 +81,9 @@ namespace DemoProject
         /// supplementing the information specified in the summary
         /// </remarks>
         /// <seealso cref="Event2"/>
+#pragma warning disable CS0067
         public event EventHandler<EventArgs> Event1;
+#pragma warning restore CS0067
 
         /// <summary>
         /// An example of a public event
@@ -91,7 +93,9 @@ namespace DemoProject
         /// supplementing the information specified in the summary
         /// </remarks>
         /// <seealso cref="Event1"/>
+#pragma warning disable CS0067
         public event EventHandler<EventArgs> Event2;
+#pragma warning restore CS0067
 
         /// <summary>
         /// An example of a read-only property.
