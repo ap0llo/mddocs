@@ -8,23 +8,25 @@ using static Grynwald.MarkdownGenerator.FactoryMethods;
 
 namespace MdDoc.Pages
 {
-    abstract class PageBase<TModel> : IMdSpanFactory, IPage where TModel : IDocumentation
+    abstract class PageBase<TModel> : IMdSpanFactory, IPage where TModel : class, IDocumentation
     {
         private static readonly char[] s_SplitChars = ".".ToCharArray();
         private readonly string m_RootOutputPath;
-
+        private ILinkProvider m_LinkProvider;
 
         public abstract OutputPath OutputPath { get; }
 
         protected PageFactory PageFactory { get; }
 
-        protected abstract TModel Model { get; }
+        protected TModel Model { get; }
 
 
-        public PageBase(PageFactory pageFactory, string rootOutputPath)
+        public PageBase(PageFactory pageFactory, string rootOutputPath, TModel model)
         {
             PageFactory = pageFactory ?? throw new ArgumentNullException(nameof(pageFactory));
             m_RootOutputPath = rootOutputPath ?? throw new ArgumentNullException(nameof(rootOutputPath));
+            Model = model ?? throw new ArgumentNullException(nameof(model));
+            m_LinkProvider = new InternalLinkProvider(model, pageFactory);
         }
 
 
@@ -66,17 +68,15 @@ namespace MdDoc.Pages
 
         public MdSpan CreateLink(MemberId target, MdSpan text)
         {
-            var modelItem = Model.TryGetDocumentation(target);
-            var page = modelItem != null ? PageFactory.TryGetPage(modelItem) : null;
-
-            if (page == null)
+            // try to generate a link to the target but avoid self-links
+            if(m_LinkProvider.TryGetLink(target, out var link) && !OutputPath.Equals(link))
+            {
+                return new MdLinkSpan(text, OutputPath.GetRelativePathTo(link));
+            }
+            else
+            {
                 return text;
-
-            // do not create self-links
-            if (OutputPath.Equals(page.OutputPath))
-                return text;
-
-            return new MdLinkSpan(text, OutputPath.GetRelativePathTo(page.OutputPath));
+            }           
         }
 
 

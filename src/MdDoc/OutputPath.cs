@@ -3,7 +3,7 @@ using System.IO;
 
 namespace MdDoc
 {
-    public sealed class OutputPath : IEquatable<OutputPath>
+    public sealed class OutputPath : IEquatable<OutputPath>, IEquatable<string>
     {        
         public string Value { get; }
 
@@ -40,10 +40,26 @@ namespace MdDoc
 
         public override int GetHashCode() => StringComparer.OrdinalIgnoreCase.GetHashCode(Value);
 
-        public override bool Equals(object obj) => Equals(obj as OutputPath);
+        public override bool Equals(object obj)
+        {
+            switch (obj)
+            {
+                case OutputPath outputPath:
+                    return Equals(outputPath);
+
+                case string str:
+                    return Equals(str);
+
+                default:
+                    return false;
+            }
+        }
 
         public bool Equals(OutputPath other) => 
             other != null && StringComparer.OrdinalIgnoreCase.Equals(Value, other.Value);
+
+        public bool Equals(string other) =>
+            other != null && StringComparer.OrdinalIgnoreCase.Equals(Value, other);
 
         public static implicit operator string(OutputPath instance) => instance?.Value;
     }

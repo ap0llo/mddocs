@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using Grynwald.MarkdownGenerator;
+﻿using Grynwald.MarkdownGenerator;
 using MdDoc.Model;
 
 using static Grynwald.MarkdownGenerator.FactoryMethods;
@@ -11,13 +9,10 @@ namespace MdDoc.Pages
     {                
         public override OutputPath OutputPath { get; }
         
-        protected override ConstructorDocumentation Model { get; }
-
         
         public ConstructorsPage(PageFactory pageFactory, string rootOutputPath, ConstructorDocumentation model)
-            : base(pageFactory, rootOutputPath)
+            : base(pageFactory, rootOutputPath, model)
         {
-            Model = model ?? throw new ArgumentNullException(nameof(model));
             OutputPath = new OutputPath(GetTypeDir(Model.TypeDocumentation), "Constructors.md");
         }
 

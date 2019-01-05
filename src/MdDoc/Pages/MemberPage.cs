@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Grynwald.MarkdownGenerator;
+﻿using Grynwald.MarkdownGenerator;
 using MdDoc.Model;
 
 using static Grynwald.MarkdownGenerator.FactoryMethods;
@@ -8,7 +7,8 @@ namespace MdDoc.Pages
 {
     abstract class MemberPage<TModel> : PageBase<TModel> where TModel : MemberDocumentation
     {        
-        public MemberPage(PageFactory pageFactory, string rootOutputPath) : base(pageFactory, rootOutputPath)
+        public MemberPage(PageFactory pageFactory, string rootOutputPath, TModel model)
+            : base(pageFactory, rootOutputPath, model)
         { }
 
 

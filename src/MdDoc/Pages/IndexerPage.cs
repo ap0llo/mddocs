@@ -1,5 +1,4 @@
-﻿using System;
-using Grynwald.MarkdownGenerator;
+﻿using Grynwald.MarkdownGenerator;
 using MdDoc.Model;
 
 using static Grynwald.MarkdownGenerator.FactoryMethods;
@@ -9,13 +8,11 @@ namespace MdDoc.Pages
     class IndexerPage : OverloadableMemberPage<IndexerDocumentation, IndexerOverloadDocumentation>
     {
         public override OutputPath OutputPath { get; }
+        
 
-        protected override IndexerDocumentation Model { get; }
-
-
-        public IndexerPage(PageFactory pageFactory, string rootOutputPath, IndexerDocumentation model) : base(pageFactory, rootOutputPath)
+        public IndexerPage(PageFactory pageFactory, string rootOutputPath, IndexerDocumentation model)
+            : base(pageFactory, rootOutputPath, model)
         {
-            Model = model ?? throw new ArgumentNullException(nameof(model));
             OutputPath = new OutputPath(GetTypeDir(Model.TypeDocumentation), "Indexers", $"{Model.Name}.md");
         }
 

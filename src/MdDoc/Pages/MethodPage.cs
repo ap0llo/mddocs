@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using Grynwald.MarkdownGenerator;
+﻿using Grynwald.MarkdownGenerator;
 using MdDoc.Model;
 
 using static Grynwald.MarkdownGenerator.FactoryMethods;
@@ -11,14 +9,11 @@ namespace MdDoc.Pages
     class MethodPage : OverloadableMemberPage<MethodDocumentation, MethodOverloadDocumentation>
     {
         public override OutputPath OutputPath { get; }
-            
-        protected override MethodDocumentation Model { get; }
-
+        
 
         public MethodPage(PageFactory pageFactory, string rootOutputPath, MethodDocumentation model) 
-            : base(pageFactory, rootOutputPath)
+            : base(pageFactory, rootOutputPath, model)
         {
-            Model = model ?? throw new ArgumentNullException(nameof(model));   
             OutputPath = new OutputPath(GetTypeDir(Model.TypeDocumentation), "Methods", $"{Model.Name}.md");
         }
 

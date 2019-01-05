@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using Grynwald.MarkdownGenerator;
 using MdDoc.Model;
-using MdDoc.Model.XmlDocs;
 
 using static Grynwald.MarkdownGenerator.FactoryMethods;
 
@@ -13,14 +12,11 @@ namespace MdDoc.Pages
     class TypePage : PageBase<TypeDocumentation>
     {
         public override OutputPath OutputPath { get; }
-        
-        protected override TypeDocumentation Model { get; }
 
 
         public TypePage(PageFactory pageFactory, string rootOutputPath, TypeDocumentation model)
-            : base(pageFactory, rootOutputPath)
+            : base(pageFactory, rootOutputPath, model)
         {
-            Model = model ?? throw new ArgumentNullException(nameof(model));
             OutputPath = new OutputPath(GetTypeDir(Model), "Type.md");
         }
 

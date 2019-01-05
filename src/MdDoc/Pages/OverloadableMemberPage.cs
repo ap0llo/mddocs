@@ -13,7 +13,8 @@ namespace MdDoc.Pages
         where TModel : OverloadableMemberDocumentation<TOverload>
         where TOverload : OverloadDocumentation
     {
-        public OverloadableMemberPage(PageFactory pageFactory, string rootOutputPath) : base(pageFactory, rootOutputPath)
+        public OverloadableMemberPage(PageFactory pageFactory, string rootOutputPath, TModel model)
+            : base(pageFactory, rootOutputPath, model)
         {
         }
 

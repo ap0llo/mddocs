@@ -9,12 +9,10 @@ namespace MdDoc.Pages
 {
     abstract class SimpleMemberPage<TModel> : MemberPage<TModel> where TModel : SimpleMemberDocumentation
     {
-        protected override TModel Model { get; }
 
-        public SimpleMemberPage(PageFactory pageFactory, string rootOutputPath, TModel model) : base(pageFactory, rootOutputPath)
-        {
-            Model = model ?? throw new System.ArgumentNullException(nameof(model));
-        }
+        public SimpleMemberPage(PageFactory pageFactory, string rootOutputPath, TModel model)
+            : base(pageFactory, rootOutputPath, model)
+        { }
 
 
         public override void Save()
