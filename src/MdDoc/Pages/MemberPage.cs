@@ -16,7 +16,7 @@ namespace MdDoc.Pages
         {
             block.Add(
                 Paragraph(
-                    Bold("Declaring Type:"), " ", GetTypeNameSpan(Model.TypeDocumentation.TypeId)
+                    Bold("Declaring Type:"), " ", GetMdSpan(Model.TypeDocumentation.TypeId)
             ));
         } 
     }

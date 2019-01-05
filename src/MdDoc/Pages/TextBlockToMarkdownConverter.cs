@@ -147,8 +147,8 @@ namespace MdDoc.Pages
 
             public void Visit(ParaElement element)
             {
-                // a single span cannot contain multplie paragraphs, but we can at least add a line break
-                Result.Add(new MdTextSpan("\r\n"));
+                // a single span cannot contain multiple paragraphs, but we can at least add a line break
+                Result.Add("\r\n");
 
                 // visit text block in paragraph
                 element.Text.Accept(this);

@@ -32,12 +32,12 @@ namespace MdDoc.Pages
         {
             block.Add(Heading("Indexer Value", 3));
             block.Add(
-                Paragraph(GetTypeNameSpan(overload.Type)
+                Paragraph(GetMdSpan(overload.Type)
             ));
 
             if (overload.Value != null)
             {
-                block.Add(TextBlockToMarkdownConverter.ConvertToBlock(overload.Value, this));
+                block.Add(ConvertToBlock(overload.Value));
             }
         }
 

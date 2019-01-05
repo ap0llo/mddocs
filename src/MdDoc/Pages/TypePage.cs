@@ -83,7 +83,7 @@ namespace MdDoc.Pages
 
             if (Model.Summary != null)
             {
-                block.Add(TextBlockToMarkdownConverter.ConvertToBlock(Model.Summary, this));
+                block.Add(ConvertToBlock(Model.Summary));
             }
 
             // Definition as code
@@ -96,7 +96,7 @@ namespace MdDoc.Pages
                     Paragraph(
                         Bold("Inheritance:"),
                         " ",
-                        Model.InheritanceHierarchy.Select(GetTypeNameSpan).Join(" → ")
+                        Model.InheritanceHierarchy.Select(GetMdSpan).Join(" → ")
                 ));
             }
 
@@ -107,7 +107,7 @@ namespace MdDoc.Pages
                     Paragraph(
                         Bold("Attributes:"),
                         " ",
-                        Model.Attributes.Select(GetTypeNameSpan).Join(",")
+                        Model.Attributes.Select(GetMdSpan).Join(",")
                 ));
             }
 
@@ -118,7 +118,7 @@ namespace MdDoc.Pages
                     Paragraph(
                         Bold("Implements:"),
                         " ",
-                        Model.ImplementedInterfaces.Select(GetTypeNameSpan).Join(","))
+                        Model.ImplementedInterfaces.Select(GetMdSpan).Join(","))
                 );
             }
         }
@@ -128,7 +128,7 @@ namespace MdDoc.Pages
             if (Model.Remarks != null)
             {
                 block.Add(Heading(2, "Remarks"));
-                block.Add(TextBlockToMarkdownConverter.ConvertToBlock(Model.Remarks, this));
+                block.Add(ConvertToBlock(Model.Remarks));
             }
         }
 
@@ -201,7 +201,7 @@ namespace MdDoc.Pages
 
                 if (typeParameter.Description != null)
                 {                    
-                    block.Add(TextBlockToMarkdownConverter.ConvertToBlock(typeParameter.Description, this));
+                    block.Add(ConvertToBlock(typeParameter.Description));
                 }
             }
         }

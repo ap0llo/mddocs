@@ -30,62 +30,14 @@ namespace MdDoc.Pages
 
         public abstract void Save();
 
-
-        protected virtual MdSpan GetTypeNameSpan(TypeId type) => GetTypeNameSpan(type, false);
-
-        protected MdSpan GetTypeNameSpan(TypeId type, bool noLink)
-        {
-            if (type is ArrayTypeId arrayType)
-            {
-                var elementTypeSpan = GetTypeNameSpan(arrayType.ElementType, noLink);
-                return new MdCompositeSpan(elementTypeSpan, $"[]");
-            }
-
-            if (type is GenericTypeInstanceId genericType)
-            {
-                return CompositeSpan(
-                    genericType.Name,
-                    "<",
-                    genericType.TypeArguments.Select(t => GetTypeNameSpan(t, noLink)).Join(", "),
-                    ">"
-                );
-            }
-
-            if (noLink)
-            {
-                return new MdTextSpan(type.Name);
-            }
-            else
-            {
-                return CreateLink(type, type.Name);
-            }
-        }
-
-        protected string GetTypeDir(TypeDocumentation type)
-        {
-            var namespaceDir = Path.Combine(m_RootOutputPath, String.Join('/', type.Namespace.Split(s_SplitChars)));
-
-            var dirName = type.TypeId.Name;
-            if (type.TypeId is GenericTypeInstanceId genericTypeInstance)
-            {
-                dirName += "-" + genericTypeInstance.TypeArguments.Count;
-            }
-            else if (type.TypeId is GenericTypeId genericType)
-            {
-                dirName += "-" + genericType.Arity;
-            }
-
-            return Path.Combine(namespaceDir, dirName);
-        }
-
         public MdSpan GetMdSpan(MemberId id) => GetMdSpan(id, false);
 
-        public MdSpan GetMdSpan(MemberId id, bool noLink)
+        public MdSpan GetMdSpan(MemberId id, bool noLink = false)
         {
             switch (id)
             {
                 case TypeId typeId:
-                    return GetTypeNameSpan(typeId, noLink);
+                    return GetMdSpan(typeId, noLink);
 
                 case MethodId methodId:
                     if (noLink)
@@ -102,14 +54,13 @@ namespace MdDoc.Pages
                 case TypeMemberId typeMemberId:
                     if (noLink)
                         return typeMemberId.Name;
-                    else 
+                    else
                         return CreateLink(typeMemberId, typeMemberId.Name);
-                    
+
                 default:
                     return MdEmptySpan.Instance;
             }
         }
-
 
         public MdSpan CreateLink(MemberId target, MdSpan text)
         {
@@ -127,6 +78,23 @@ namespace MdDoc.Pages
         }
 
 
+        protected string GetTypeDir(TypeDocumentation type)
+        {
+            var namespaceDir = Path.Combine(m_RootOutputPath, String.Join('/', type.Namespace.Split(s_SplitChars)));
+
+            var dirName = type.TypeId.Name;
+            if (type.TypeId is GenericTypeInstanceId genericTypeInstance)
+            {
+                dirName += "-" + genericTypeInstance.TypeArguments.Count;
+            }
+            else if (type.TypeId is GenericTypeId genericType)
+            {
+                dirName += "-" + genericType.Arity;
+            }
+
+            return Path.Combine(namespaceDir, dirName);
+        }        
+        
         protected MdSpan ConvertToSpan(TextBlock textBlock)
         {
             return textBlock == null ? MdEmptySpan.Instance : TextBlockToMarkdownConverter.ConvertToSpan(textBlock, this);
@@ -145,5 +113,36 @@ namespace MdDoc.Pages
             }
         }
 
-    }    
+        protected MdBlock ConvertToBlock(TextBlock text) => TextBlockToMarkdownConverter.ConvertToBlock(text, this);
+
+
+        private MdSpan GetMdSpan(TypeId type, bool noLink)
+        {
+            if (type is ArrayTypeId arrayType)
+            {
+                var elementTypeSpan = GetMdSpan(arrayType.ElementType, noLink);
+                return new MdCompositeSpan(elementTypeSpan, $"[]");
+            }
+
+            if (type is GenericTypeInstanceId genericType)
+            {
+                return CompositeSpan(
+                    genericType.Name,
+                    "<",
+                    genericType.TypeArguments.Select(t => GetMdSpan(t, noLink)).Join(", "),
+                    ">"
+                );
+            }
+
+            if (noLink)
+            {
+                return new MdTextSpan(type.Name);
+            }
+            else
+            {
+                return CreateLink(type, type.Name);
+            }
+        }
+
+    }
 }

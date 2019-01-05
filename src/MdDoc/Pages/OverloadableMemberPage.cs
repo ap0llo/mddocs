@@ -92,7 +92,7 @@ namespace MdDoc.Pages
         {
             if(overload.Summary != null)
             {
-                block.Add(TextBlockToMarkdownConverter.ConvertToBlock(overload.Summary, this));
+                block.Add(ConvertToBlock(overload.Summary));
             }
 
             block.Add(CodeBlock(overload.CSharpDefinition, "csharp"));
@@ -115,13 +115,12 @@ namespace MdDoc.Pages
                     Paragraph(
                         CodeSpan(parameter.Name),
                         "  ",
-                        GetTypeNameSpan(parameter.ParameterType)
+                        GetMdSpan(parameter.ParameterType)
                 ));
 
                 if (parameter.Description != null)
-                {
-                    //TODO: Add ConvertToBlock method to PageBase to make these calls a little more readable
-                    parametersBlock.Add(TextBlockToMarkdownConverter.ConvertToBlock(parameter.Description, this));
+                {                    
+                    parametersBlock.Add(ConvertToBlock(parameter.Description));
                 }                
             }            
         }
@@ -136,13 +135,13 @@ namespace MdDoc.Pages
 
             // add return type
             block.Add(
-                Paragraph(GetTypeNameSpan(overload.Type)
+                Paragraph(GetMdSpan(overload.Type)
             ));
 
             // add returns documentation
             if (overload.Returns != null)
             {
-                block.Add(TextBlockToMarkdownConverter.ConvertToBlock(overload.Returns, this));
+                block.Add(ConvertToBlock(overload.Returns));
             }
         }
 
@@ -162,7 +161,7 @@ namespace MdDoc.Pages
 
                 if (typeParameter.Description != null)
                 {
-                    block.Add(TextBlockToMarkdownConverter.ConvertToBlock(typeParameter.Description, this));
+                    block.Add(ConvertToBlock(typeParameter.Description));
                 }
             }
         }
@@ -174,7 +173,7 @@ namespace MdDoc.Pages
                 return;
 
             block.Add(Heading(3, "Remarks"));
-            block.Add(TextBlockToMarkdownConverter.ConvertToBlock(overload.Remarks, this));
+            block.Add(ConvertToBlock(overload.Remarks));
         }
 
         protected virtual void AddSeeAlsoSubSection(MdContainerBlock block, TOverload overload)

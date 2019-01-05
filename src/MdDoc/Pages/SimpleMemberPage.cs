@@ -44,7 +44,7 @@ namespace MdDoc.Pages
         {
             if(Model.Summary != null)
             {
-                block.Add(TextBlockToMarkdownConverter.ConvertToBlock(Model.Summary, this));
+                block.Add(ConvertToBlock(Model.Summary));
             }
 
             block.Add(
@@ -58,7 +58,7 @@ namespace MdDoc.Pages
                 return;
 
             block.Add(Heading(2, "Remarks"));
-            block.Add(TextBlockToMarkdownConverter.ConvertToBlock(Model.Remarks, this));
+            block.Add(ConvertToBlock(Model.Remarks));
         }
 
         protected virtual void AddSeeAlsoSection(MdContainerBlock block)
