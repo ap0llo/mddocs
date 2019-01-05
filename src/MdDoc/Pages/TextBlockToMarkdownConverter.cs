@@ -8,7 +8,7 @@ namespace MdDoc.Pages
     {
         class ConvertToBlockVisitor : IVisitor
         {
-            private MdCompositeSpan m_CurrentParagraph = new MdCompositeSpan();
+            private MdParagraph m_CurrentParagraph = new MdParagraph();
             private IMdSpanFactory m_SpanFactory;
 
 
@@ -80,13 +80,10 @@ namespace MdDoc.Pages
 
                       
             private void PushParagraph()
-            {
-                // begin a new paragraph if the current one has any content
-                if (m_CurrentParagraph.Spans.Count > 0)
-                {
-                    Result.Add(new MdParagraph(m_CurrentParagraph));
-                    m_CurrentParagraph = new MdCompositeSpan();
-                }
+            {                
+                Result.Add(m_CurrentParagraph);
+                m_CurrentParagraph = new MdParagraph();
+                
             }            
         }
 
