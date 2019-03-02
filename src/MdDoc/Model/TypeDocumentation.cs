@@ -64,6 +64,8 @@ namespace MdDoc.Model
 
         internal TypeDefinition Definition { get; }
 
+        public TextBlock Example { get; }
+
 
         internal TypeDocumentation(ModuleDocumentation moduleDocumentation, TypeDefinition definition, IXmlDocsProvider xmlDocsProvider)
         {
@@ -139,6 +141,7 @@ namespace MdDoc.Model
             Summary = documentationComments?.Summary;
             Remarks = documentationComments?.Remarks;
             SeeAlso = documentationComments?.SeeAlso?.ToReadOnly() ?? Array.Empty<SeeAlsoElement>();
+            Example = documentationComments?.Example;
 
             CSharpDefinition = CSharpDefinitionFormatter.GetDefinition(definition);
         }

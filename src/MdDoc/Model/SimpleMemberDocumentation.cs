@@ -20,6 +20,8 @@ namespace MdDoc.Model
 
         public abstract TypeId Type { get; }
 
+        public TextBlock Example { get; }
+
 
         internal SimpleMemberDocumentation(TypeDocumentation typeDocumentation, MemberId memberId, IXmlDocsProvider xmlDocsProvider) : base(typeDocumentation)
         {
@@ -29,6 +31,7 @@ namespace MdDoc.Model
             Summary = documentationComments?.Summary;
             Remarks = documentationComments?.Remarks;
             SeeAlso = documentationComments?.SeeAlso?.ToReadOnly() ?? Array.Empty<SeeAlsoElement>();
+            Example = documentationComments?.Example;
         }
 
 

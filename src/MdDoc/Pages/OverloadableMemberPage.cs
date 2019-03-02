@@ -85,7 +85,7 @@ namespace MdDoc.Pages
 
             AddExceptionsSubSection(block, overload);
 
-            //TODO: Examples
+            AddExampleSubSection(block, overload);
 
             AddSeeAlsoSubSection(block, overload);
         }
@@ -182,6 +182,15 @@ namespace MdDoc.Pages
                     ConvertToBlock(exception.Text)
                 );                
             }
+        }
+
+        protected virtual void AddExampleSubSection(MdContainerBlock block, TOverload overload)
+        {
+            if (overload.Example == null)
+                return;
+
+            block.Add(Heading("Example", 3));
+            block.Add(ConvertToBlock(overload.Example));
         }
 
         protected virtual void AddRemarksSubSection(MdContainerBlock block, TOverload overload)

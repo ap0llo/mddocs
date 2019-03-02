@@ -38,9 +38,7 @@ namespace MdDoc.Pages
                 document.Root,
                 "Constructors",
                 (IEnumerable<OverloadDocumentation>)Model.Constructors?.Overloads ?? Array.Empty<OverloadDocumentation>()
-            );
-
-            //TODO: Example
+            );            
 
             AddSimpleMembersSection(document.Root, "Fields", Model.Fields);
 
@@ -57,6 +55,8 @@ namespace MdDoc.Pages
             //TODO: Explicit interface implementations
 
             //TODO: Extension methods
+
+            AddExampleSection(document.Root);
 
             AddSeeAlsoSection(document.Root);
 
@@ -168,7 +168,16 @@ namespace MdDoc.Pages
                 block.Add(table);
             }
         }
-        
+
+        private void AddExampleSection(MdContainerBlock block)
+        {
+            if (Model.Example == null)
+                return;
+
+            block.Add(Heading("Example", 2));
+            block.Add(ConvertToBlock(Model.Example));
+        }
+
         private void AddSeeAlsoSection(MdContainerBlock block)
         {
             if(Model.SeeAlso.Count > 0)

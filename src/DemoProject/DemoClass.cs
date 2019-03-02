@@ -45,6 +45,13 @@ namespace DemoProject
     /// and enums (see  <see cref="DemoEnum"/>)
     /// </para>
     /// </remarks>
+    /// <example>
+    /// Using the <c>example</c> tag, examples on how to use a type can be included in the documentation:
+    /// <code>
+    /// // create a new instance of DemoClass
+    /// var instance = new DemoClass();
+    /// </code>
+    /// </example>
     /// <seealso cref="IDemoInterface"/>    
     /// <seealso cref="DemoStruct">By providing text in the <c>seealso</c> element, the link text can be changed</seealso>
     /// <seealso cref="DemoEnum" />
@@ -86,12 +93,19 @@ namespace DemoProject
 #pragma warning restore CS0067
 
         /// <summary>
-        /// An example of a public event
+        /// An example of a public event.
         /// </summary>
         /// <remarks>
         /// Remarks allow specification of more detailed information about a member, in this case an event
         /// supplementing the information specified in the summary
         /// </remarks>
+        /// <example>
+        /// Using the <c>example</c> tag, examples on how to use a member can be included in the documentation:
+        /// <code>
+        /// var instance = new DemoClass();
+        /// instance.Event2 += MyEventHandler;
+        /// </code>
+        /// </example>
         /// <seealso cref="Event1"/>
 #pragma warning disable CS0067
         public event EventHandler<EventArgs> Event2;
@@ -132,6 +146,13 @@ namespace DemoProject
         /// For overloaded members, there is a separate "Remarks" section for every overload.
         /// </para>
         /// </remarks>
+        /// <example>
+        /// Using the <c>example</c> tag, examples on how to call a member can be included in the documentation:
+        /// <code>
+        /// var instance = new DemoClass();
+        /// var value = instance[42];
+        /// </code>
+        /// </example>
         /// <param name="index">Description of parameter <paramref name="index"/> provided using the <c>param</c> element.</param>
         /// <value>The tag <c>value</c> allows specifying the value a indexer represents</value>
         /// <exception cref="ArgumentException">Exceptions can be documented using the <c>exception</c> tag.</exception>

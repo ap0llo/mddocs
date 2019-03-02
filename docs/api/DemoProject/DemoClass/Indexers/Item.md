@@ -73,6 +73,15 @@ Exceptions can be documented using the `exception` tag.
 
 InvalidOperationException
 
+### Example
+
+Using the `example` tag, examples on how to call a member can be included in the documentation:
+
+```
+var instance = new DemoClass();
+var value = instance[42];
+```
+
 ### See Also
 
 - Item\[int, int\]

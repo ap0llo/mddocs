@@ -2,7 +2,7 @@
 
 **Declaring Type:** [DemoClass](../Type.md)
 
-An example of a public event
+An example of a public event.
 
 ```csharp
 public event EventHandler<EventArgs> Event2;
@@ -11,6 +11,15 @@ public event EventHandler<EventArgs> Event2;
 ## Remarks
 
 Remarks allow specification of more detailed information about a member, in this case an event supplementing the information specified in the summary
+
+## Example
+
+Using the `example` tag, examples on how to use a member can be included in the documentation:
+
+```
+var instance = new DemoClass();
+instance.Event2 += MyEventHandler;
+```
 
 ## See Also
 

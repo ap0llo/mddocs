@@ -53,7 +53,7 @@ Similar pages are also generated for interfaces (see [IDemoInterface](../IDemoIn
 | Name                       | Description                   |
 | -------------------------- | ----------------------------- |
 | [Event1](Events/Event1.md) | An example of a public event. |
-| [Event2](Events/Event2.md) | An example of a public event  |
+| [Event2](Events/Event2.md) | An example of a public event. |
 
 ## Properties
 
@@ -84,6 +84,15 @@ Similar pages are also generated for interfaces (see [IDemoInterface](../IDemoIn
 | ------------------------------------------------------------- | ------------------------------------------------- |
 | [Addition(DemoClass, DemoClass)](Operators/Addition.md)       | Example of an overload of the binary + operator.  |
 | [Subtraction(DemoClass, DemoClass)](Operators/Subtraction.md) | Example of an overload of the binary \- operator. |
+
+## Example
+
+Using the `example` tag, examples on how to use a type can be included in the documentation:
+
+```
+// create a new instance of DemoClass
+var instance = new DemoClass();
+```
 
 ## See Also
 

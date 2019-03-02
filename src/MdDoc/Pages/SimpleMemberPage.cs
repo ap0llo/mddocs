@@ -29,7 +29,7 @@ namespace MdDoc.Pages
 
             AddRemarksSection(document.Root);
 
-            //TODO: Examples
+            AddExampleSection(document.Root);
 
             AddSeeAlsoSection(document.Root);
 
@@ -57,6 +57,15 @@ namespace MdDoc.Pages
 
             block.Add(Heading(2, "Remarks"));
             block.Add(ConvertToBlock(Model.Remarks));
+        }
+
+        protected virtual void AddExampleSection(MdContainerBlock block)
+        {
+            if (Model.Example == null)
+                return;
+
+            block.Add(Heading(2, "Example"));
+            block.Add(ConvertToBlock(Model.Example));
         }
 
         protected virtual void AddSeeAlsoSection(MdContainerBlock block)
