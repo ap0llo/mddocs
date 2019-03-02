@@ -22,7 +22,7 @@ namespace MdDoc.Pages
 
             if (modelItem == null)
             {
-                link = null;
+                link = default;
                 return false;
             }
 
@@ -30,7 +30,7 @@ namespace MdDoc.Pages
 
             if (page == null)
             {
-                link = null;
+                link = default;
                 return false;
             }
 

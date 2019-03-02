@@ -4,6 +4,7 @@ using System.Linq;
 using Grynwald.MarkdownGenerator;
 using MdDoc.Model;
 using MdDoc.Model.XmlDocs;
+
 using static Grynwald.MarkdownGenerator.FactoryMethods;
 
 namespace MdDoc.Pages
@@ -26,7 +27,10 @@ namespace MdDoc.Pages
             PageFactory = pageFactory ?? throw new ArgumentNullException(nameof(pageFactory));
             m_RootOutputPath = rootOutputPath ?? throw new ArgumentNullException(nameof(rootOutputPath));
             Model = model ?? throw new ArgumentNullException(nameof(model));
-            m_LinkProvider = new InternalLinkProvider(model, pageFactory);
+
+            m_LinkProvider = new CompositeLinkProvider(
+                new InternalLinkProvider(model, pageFactory)
+            );
         }
 
 
