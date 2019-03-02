@@ -17,11 +17,10 @@ steps:
   inputs:
     version: 2.2.101
 
-- task: DotNetCoreCLI@2
+- task: CmdLine@2
   displayName: Restore
   inputs:
-    command: restore
-    projects: 'src/*.sln'
+    script: dotnet restore src/MdDoc.sln
 
 - task: DotNetCoreCLI@2
   displayName: build
