@@ -294,6 +294,21 @@ namespace MdDoc.Test.Model.XmlDocs
             }
         }
 
+        public class NamespaceIdTestCasesAttribute : DataAttribute
+        {
+            public override IEnumerable<object[]> GetData(MethodInfo testMethod)
+            {
+                foreach (var testCase in GetTestCases())
+                    yield return new object[] { testCase };
+            }
+
+            public IEnumerable<MemberIdParserTestCase> GetTestCases()
+            {
+                yield return new MemberIdParserTestCase("N:System", new NamespaceId("System"));                
+                yield return new MemberIdParserTestCase("N:System.Collections", new NamespaceId("System.Collections"));                
+            }
+        }
+
         public class FieldIdTestCasesAttribute : DataAttribute
         {
             public override IEnumerable<object[]> GetData(MethodInfo testMethod)
@@ -328,6 +343,7 @@ namespace MdDoc.Test.Model.XmlDocs
 
 
         [Theory]
+        [NamespaceIdTestCases]
         [TypeIdTestCases]
         [MethodIdTestCases]
         [PropertyIdTestCases]
@@ -360,6 +376,7 @@ namespace MdDoc.Test.Model.XmlDocs
         [InlineData("M:MdDoc.Test.TestData.TestClass_GenericType`1``2")]
         [InlineData("F:Name")]
         [InlineData("F:.Name")]
+        [InlineData("N:")]
         public void Parse_throws_Exception_for_invalid_input_data(string input)
         {
             Assert.Throws<MemberIdParserException>(() => new MemberIdParser(input).Parse());

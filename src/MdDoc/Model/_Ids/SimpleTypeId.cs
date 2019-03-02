@@ -35,14 +35,17 @@ namespace MdDoc.Model
                 : Name;
 
 
-        public override bool IsVoid => NamespaceName == "System" && Name == "Void";
+        public override bool IsVoid => Namespace.IsSystem && Name == "Void";
 
-        public SimpleTypeId(string namespaceName, string name) : base(namespaceName, name)
+        public SimpleTypeId(string namespaceName, string name) : this(new NamespaceId(namespaceName), name)
+        { }
+
+        public SimpleTypeId(NamespaceId @namespace, string name) : base(@namespace, name)
         { }
 
 
         public override bool Equals(object obj) => Equals(obj as SimpleTypeId);
-        
+
         public bool Equals(SimpleTypeId other) => other != null && Equals((TypeId)other);
 
         public override bool Equals(TypeId other) => other is SimpleTypeId && base.Equals(other);

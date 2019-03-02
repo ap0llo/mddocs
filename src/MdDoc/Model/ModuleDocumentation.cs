@@ -10,7 +10,7 @@ namespace MdDoc.Model
     public class ModuleDocumentation : IDocumentation
     {
         private readonly IDictionary<TypeId, TypeDocumentation> m_Types;
-        private readonly IDictionary<string, NamespaceDocumentation> m_Namespaces;
+        private readonly IDictionary<NamespaceId, NamespaceDocumentation> m_Namespaces;
         private readonly IXmlDocsProvider m_XmlDocsProvider;
 
 
@@ -33,13 +33,14 @@ namespace MdDoc.Model
 
 
             m_Types = new Dictionary<TypeId, TypeDocumentation>();
-            m_Namespaces = new Dictionary<string, NamespaceDocumentation>();
+            m_Namespaces = new Dictionary<NamespaceId, NamespaceDocumentation>();
 
             foreach (var typeDefinition in Definition.Types.Where(t => t.IsPublic))
             {
+                var namespaceId = new NamespaceId(typeDefinition.Namespace);
                 var namespaceDocumentation = m_Namespaces.GetOrAdd(
-                    typeDefinition.Namespace,
-                    () => new NamespaceDocumentation(this, typeDefinition.Namespace)
+                    namespaceId,
+                    () => new NamespaceDocumentation(this, namespaceId)
                 );
 
                 var typeDocumentation = new TypeDocumentation(this, namespaceDocumentation, typeDefinition, m_XmlDocsProvider);
@@ -62,6 +63,9 @@ namespace MdDoc.Model
 
                 case TypeMemberId typeMemberId:
                     return m_Types.GetValueOrDefault(typeMemberId.DefiningType)?.TryGetDocumentation(member);
+
+                case NamespaceId namespaceId:
+                    return m_Namespaces.GetValueOrDefault(namespaceId);
 
                 default:
                     return null;

@@ -22,7 +22,7 @@ namespace MdDoc.Model
         public GenericTypeParameterId(MemberKind definingMemberKind, int index) : this(definingMemberKind, index, $"T{index + 1}")
         { }
 
-        public GenericTypeParameterId(MemberKind definingMemberKind, int index, string displayName) : base("", displayName)
+        public GenericTypeParameterId(MemberKind definingMemberKind, int index, string displayName) : base(new NamespaceId(""), displayName)
         {
             DefiningMemberKind = definingMemberKind;
             Index = index;

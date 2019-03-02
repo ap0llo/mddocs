@@ -10,7 +10,7 @@ namespace MdDoc.Model
         public static TypeId ToTypeId(this TypeReference typeReference)
         {             
             // generic instance type: a generic type with type arguments
-            // does not necessarily mean the type arguemtns are real types
+            // does not necessarily mean the type arguments are real types
             // they can still be type parameters
             if(typeReference is GenericInstanceType genericInstanceType)
             {
@@ -39,7 +39,7 @@ namespace MdDoc.Model
                         .GenericArguments
                         .Select(x => x.Name).ToArray();
 
-                    return new GenericTypeId(typeReference.Namespace, name, typeArity, typeParameterNames);
+                    return new GenericTypeId(new NamespaceId(typeReference.Namespace), name, typeArity, typeParameterNames);
                 }
                 // Type arguments are bound to real types
                 else
@@ -49,7 +49,7 @@ namespace MdDoc.Model
                         .ToArray();
 
                     return new GenericTypeInstanceId(
-                        typeReference.Namespace,
+                        new NamespaceId(typeReference.Namespace),
                         name,
                         typeArguments);
                 }
@@ -67,7 +67,7 @@ namespace MdDoc.Model
                 // the definition
                 var typeParameterNames = typeReference.GenericParameters.Select(x => x.Name).ToArray();
 
-                return new GenericTypeId(typeReference.Namespace, name, typeReference.GenericParameters.Count, typeParameterNames);
+                return new GenericTypeId(new NamespaceId(typeReference.Namespace), name, typeReference.GenericParameters.Count, typeParameterNames);
             }
             // type is an generic parameter, e.g. the "T" in 
             // class Foo<T> 
@@ -95,7 +95,7 @@ namespace MdDoc.Model
             // type is a "normal", non-generic type
             else
             {
-                return new SimpleTypeId(typeReference.Namespace, typeReference.Name);
+                return new SimpleTypeId(new NamespaceId(typeReference.Namespace), typeReference.Name);
             }
         }
     }

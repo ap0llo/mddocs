@@ -16,7 +16,7 @@ namespace MdDoc.Model
         public ArrayTypeId(TypeId elementType) : this(elementType, 1)
         { }
 
-        public ArrayTypeId(TypeId elementType, int dimensions) : base("System", "Array")
+        public ArrayTypeId(TypeId elementType, int dimensions) : base(new NamespaceId("System"), "Array")
         {
             ElementType = elementType ?? throw new ArgumentNullException(nameof(elementType));
             Dimensions = dimensions >= 1 

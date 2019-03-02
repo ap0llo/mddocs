@@ -17,7 +17,11 @@ namespace MdDoc.Model
         public override bool IsVoid => false;
 
 
-        public GenericTypeInstanceId(string namespaceName, string name, IReadOnlyList<TypeId> typeArguments) : base(namespaceName, name)
+        public GenericTypeInstanceId(string namespaceName, string name, IReadOnlyList<TypeId> typeArguments)
+            : this(new NamespaceId(namespaceName), name, typeArguments)
+        { }
+
+        public GenericTypeInstanceId(NamespaceId @namespace, string name, IReadOnlyList<TypeId> typeArguments) : base(@namespace, name)
         {
             TypeArguments = typeArguments ?? throw new ArgumentNullException(nameof(typeArguments));
         }

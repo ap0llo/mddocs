@@ -18,8 +18,11 @@ namespace MdDoc.Model
 
         public override bool IsVoid => false;
 
+        public GenericTypeId(string namespaceName, string name, int arity, IReadOnlyList<string> typeParameterDisplayNames)
+            : this(new NamespaceId(namespaceName), name, arity, typeParameterDisplayNames)
+        { }
 
-        public GenericTypeId(string namespaceName, string name, int arity, IReadOnlyList<string> typeParameterDisplayNames) : base(namespaceName, name)
+        public GenericTypeId(NamespaceId @namespace, string name, int arity, IReadOnlyList<string> typeParameterDisplayNames) : base(@namespace, name)
         {
             m_TypeParameterDisplayNames = typeParameterDisplayNames ?? throw new ArgumentNullException(nameof(typeParameterDisplayNames));
             Arity = arity;
@@ -28,7 +31,10 @@ namespace MdDoc.Model
                 throw new ArgumentException("The number of type parameter display names must match the type's arity", nameof(typeParameterDisplayNames));
         }
 
-        public GenericTypeId(string namespaceName, string name, int arity) : base(namespaceName, name)
+        public GenericTypeId(string namespaceName, string name, int arity) : this(new NamespaceId(namespaceName), name, arity)
+        { }
+
+        public GenericTypeId(NamespaceId @namespace, string name, int arity) : base(@namespace, name)
         {
             Arity = arity;
             m_TypeParameterDisplayNames = Enumerable.Range(1, arity).Select(x => "T" + x).ToArray();

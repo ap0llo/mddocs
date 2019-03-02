@@ -64,12 +64,26 @@ namespace MdDoc.Model.XmlDocs
                 case "P":
                     return ParsePropertyId();
 
+                case "N":
+                    return ParseNamespaceId();
+
                 default:
                     // should not happen as for unknown tokens, MatchToken should already throw
                     throw new NotImplementedException();
             }
         }
 
+
+        private NamespaceId ParseNamespaceId()
+        {
+            var nameSegments = ParseNameSegments();
+            var namespaceId = new NamespaceId(String.Join(".", nameSegments));
+
+            // all token should be parsed now
+            MatchToken(TokenKind.Eof);
+
+            return namespaceId;
+        }
 
         private TypeId ParseTypeId()
         {
@@ -332,11 +346,11 @@ namespace MdDoc.Model.XmlDocs
                 
                 if (typeArguments != null)
                 {
-                    type = new GenericTypeInstanceId(namespaceName, typeName, typeArguments);
+                    type = new GenericTypeInstanceId(new NamespaceId(namespaceName), typeName, typeArguments);
                 }
                 else
                 {
-                    type = new SimpleTypeId(namespaceName, typeName);
+                    type = new SimpleTypeId(new NamespaceId(namespaceName), typeName);
                 }
             }
 
@@ -390,11 +404,11 @@ namespace MdDoc.Model.XmlDocs
         {
             if (arity > 0)
             {
-                return new GenericTypeId(namespaceName, typeName, arity);
+                return new GenericTypeId(new NamespaceId(namespaceName), typeName, arity);
             }
             else
             {
-                return new SimpleTypeId(namespaceName, typeName);
+                return new SimpleTypeId(new NamespaceId(namespaceName), typeName);
             }
         }
         

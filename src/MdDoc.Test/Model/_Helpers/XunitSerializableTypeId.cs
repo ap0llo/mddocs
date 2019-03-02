@@ -25,7 +25,7 @@ namespace MdDoc.Test.Model
 
         public void Deserialize(IXunitSerializationInfo info)
         {
-            var namespaceName = info.GetValue<string>(nameof(TypeId.NamespaceName));
+            var namespaceName = info.GetValue<string>(nameof(TypeId.Namespace));
             var name = info.GetValue<string>(nameof(TypeId.Name));
 
             var type = info.GetValue<string>("type");
@@ -64,7 +64,7 @@ namespace MdDoc.Test.Model
 
         public void Serialize(IXunitSerializationInfo info)
         {
-            info.AddValue(nameof(TypeId.NamespaceName), TypeId.NamespaceName);
+            info.AddValue(nameof(TypeId.Namespace), TypeId.Namespace.Name);
             info.AddValue(nameof(TypeId.Name), TypeId.Name);
 
             switch (TypeId)

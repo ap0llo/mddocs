@@ -9,20 +9,19 @@ namespace MdDoc.Model
         private readonly IDictionary<TypeId, TypeDocumentation> m_Types = new Dictionary<TypeId, TypeDocumentation>();
 
 
-        public string Name { get; }
+        public string Name => NamespaceId.Name;
+
+        public NamespaceId NamespaceId { get; }
 
         public IReadOnlyCollection<TypeDocumentation> Types { get; }
 
 
-        internal NamespaceDocumentation(ModuleDocumentation moduleDocumentation, string name)
-        {
-            if (String.IsNullOrEmpty(name))
-                throw new ArgumentException("Value must not be null", nameof(name));
-
+        internal NamespaceDocumentation(ModuleDocumentation moduleDocumentation, NamespaceId namespaceId)
+        {            
             m_ModuleDocumentation = moduleDocumentation ?? throw new ArgumentNullException(nameof(moduleDocumentation));
-            Name = name;
-            Types = ReadOnlyCollectionAdapter.Create(m_Types.Values);
+            NamespaceId = namespaceId ?? throw new ArgumentNullException(nameof(namespaceId));
 
+            Types = ReadOnlyCollectionAdapter.Create(m_Types.Values);
             //TODO: Namespace XML docs
         }
 

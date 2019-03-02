@@ -15,11 +15,11 @@ namespace MdDoc.Model.XmlDocs
     internal enum TokenKind
     {
         /// <summary>
-        /// A token that indicates the type of identifier (T, M, P, F, E)
+        /// A token that indicates the type of identifier (N, T, M, P, F, E)
         /// </summary>
         IdentifierType,
         /// <summary>
-        /// Acolon (':') token
+        /// A colon (':') token
         /// </summary>
         Colon,
         /// <summary>
@@ -55,7 +55,7 @@ namespace MdDoc.Model.XmlDocs
         /// </summary>
         Comma,
         /// <summary>
-        /// A opening brache ('{') token
+        /// A opening brace ('{') token
         /// </summary>
         OpenBrace,
         /// <summary>
@@ -151,11 +151,12 @@ namespace MdDoc.Model.XmlDocs
                         yield return ReadNumberToken();
                         break;
 
-                    case 'T' when m_Position  == 0:
-                    case 'F' when m_Position  == 0:
-                    case 'E' when m_Position  == 0:
-                    case 'P' when m_Position  == 0:
-                    case 'M' when m_Position  == 0:
+                    case 'N' when m_Position == 0:
+                    case 'T' when m_Position == 0:
+                    case 'F' when m_Position == 0:
+                    case 'E' when m_Position == 0:
+                    case 'P' when m_Position == 0:
+                    case 'M' when m_Position == 0:
                         yield return new Token(TokenKind.IdentifierType, Current);
                         m_Position++;
                         break;

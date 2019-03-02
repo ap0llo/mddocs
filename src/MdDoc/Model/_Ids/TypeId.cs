@@ -4,7 +4,7 @@ namespace MdDoc.Model
 {
     public abstract class TypeId : MemberId, IEquatable<TypeId>
     {
-        public string NamespaceName { get; }
+        public NamespaceId Namespace { get; }
 
         public string Name { get; }        
 
@@ -12,15 +12,15 @@ namespace MdDoc.Model
 
         public abstract bool IsVoid { get; }
 
-        protected string NamespaceAndName => String.IsNullOrEmpty(NamespaceName) ? Name : $"{NamespaceName}.{Name}";
+        protected string NamespaceAndName => String.IsNullOrEmpty(Namespace.Name) ? Name : $"{Namespace.Name}.{Name}";
 
 
-        public TypeId(string namespaceName, string name)
+        public TypeId(NamespaceId @namespace, string name)
         {
             if (String.IsNullOrEmpty(name))
                 throw new ArgumentException("Value must not be null or empty", nameof(name));
 
-            NamespaceName = namespaceName ?? throw new ArgumentNullException(nameof(namespaceName));
+            Namespace = @namespace ?? throw new ArgumentNullException(nameof(@namespace));
             Name = name;
         }
 
@@ -28,7 +28,7 @@ namespace MdDoc.Model
         {
             unchecked
             {
-                var hash = StringComparer.Ordinal.GetHashCode(NamespaceName) * 397;
+                var hash = Namespace.GetHashCode() * 397;
                 hash ^= StringComparer.Ordinal.GetHashCode(Name);             
                 return hash;
             }
@@ -43,10 +43,8 @@ namespace MdDoc.Model
             if (other == null)
                 return false;
 
-            return StringComparer.Ordinal.Equals(NamespaceName, other.NamespaceName) &&
+            return Namespace.Equals(other.Namespace) &&
                 StringComparer.Ordinal.Equals(Name, other.Name);
         }
-
-
     }
 }

@@ -48,6 +48,10 @@ namespace MdDoc.Test.Model
                     MemberId = info.GetValue<XunitSerializableEventId>(nameof(MemberId));
                     break;
 
+                case nameof(NamespaceId):
+                    MemberId = info.GetValue<XunitSerializableNamespaceId>(nameof(MemberId));
+                    break;
+
                 default:
                     throw new NotImplementedException();
             }
@@ -80,6 +84,11 @@ namespace MdDoc.Test.Model
                 case EventId eventId:
                     info.AddValue("type", nameof(EventId));
                     info.AddValue(nameof(MemberId), new XunitSerializableEventId(eventId));
+                    break;
+
+                case NamespaceId namespaceId:
+                    info.AddValue("type", nameof(NamespaceId));
+                    info.AddValue(nameof(MemberId), new XunitSerializableNamespaceId(namespaceId));
                     break;
                     
                 default:

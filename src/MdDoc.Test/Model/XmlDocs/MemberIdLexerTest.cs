@@ -70,11 +70,30 @@ namespace MdDoc.Test.Model.XmlDocs
             public IEnumerable<MemberIdLexerTestCase> GetTestCases()
             {
                 yield return new MemberIdLexerTestCase("", new Token(TokenKind.Eof, ""));
+                yield return new MemberIdLexerTestCase("N:", new Token(TokenKind.IdentifierType, "N"), new Token(TokenKind.Colon, ":"), new Token(TokenKind.Eof, ""));                
                 yield return new MemberIdLexerTestCase("T:", new Token(TokenKind.IdentifierType, "T"), new Token(TokenKind.Colon, ":"), new Token(TokenKind.Eof, ""));
                 yield return new MemberIdLexerTestCase("F:", new Token(TokenKind.IdentifierType, "F"), new Token(TokenKind.Colon, ":"), new Token(TokenKind.Eof, ""));
                 yield return new MemberIdLexerTestCase("P:", new Token(TokenKind.IdentifierType, "P"), new Token(TokenKind.Colon, ":"), new Token(TokenKind.Eof, ""));
                 yield return new MemberIdLexerTestCase("M:", new Token(TokenKind.IdentifierType, "M"), new Token(TokenKind.Colon, ":"), new Token(TokenKind.Eof, ""));
                 yield return new MemberIdLexerTestCase("E:", new Token(TokenKind.IdentifierType, "E"), new Token(TokenKind.Colon, ":"), new Token(TokenKind.Eof, ""));
+
+                yield return new MemberIdLexerTestCase(
+                    "N:System",
+                    new Token(TokenKind.IdentifierType, "N"),
+                    new Token(TokenKind.Colon, ":"),
+                    new Token(TokenKind.Name, "System"),
+                    new Token(TokenKind.Eof, "")
+                );
+
+                yield return new MemberIdLexerTestCase(
+                    "N:System.Collections",
+                    new Token(TokenKind.IdentifierType, "N"),
+                    new Token(TokenKind.Colon, ":"),
+                    new Token(TokenKind.Name, "System"),
+                    new Token(TokenKind.Dot, "."),
+                    new Token(TokenKind.Name, "Collections"),
+                    new Token(TokenKind.Eof, "")
+                );
 
                 yield return new MemberIdLexerTestCase(
                     "T:Namespace",
