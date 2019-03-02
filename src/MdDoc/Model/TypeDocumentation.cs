@@ -24,7 +24,7 @@ namespace MdDoc.Model
 
         public ModuleDocumentation ModuleDocumentation { get; }
 
-        public string Namespace => TypeId.NamespaceName;
+        public NamespaceDocumentation NamespaceDocumentation { get; }
 
         public string DisplayName => TypeId.DisplayName;
 
@@ -67,11 +67,16 @@ namespace MdDoc.Model
         public TextBlock Example { get; }
 
 
-        internal TypeDocumentation(ModuleDocumentation moduleDocumentation, TypeDefinition definition, IXmlDocsProvider xmlDocsProvider)
+        internal TypeDocumentation(
+            ModuleDocumentation moduleDocumentation,
+            NamespaceDocumentation namespaceDocumentation,
+            TypeDefinition definition,
+            IXmlDocsProvider xmlDocsProvider)
         {
             TypeId = definition.ToTypeId();
 
             ModuleDocumentation = moduleDocumentation ?? throw new ArgumentNullException(nameof(moduleDocumentation));
+            NamespaceDocumentation = namespaceDocumentation ?? throw new ArgumentNullException(nameof(namespaceDocumentation));
             Definition = definition ?? throw new ArgumentNullException(nameof(definition));
             m_XmlDocsProvider = xmlDocsProvider ?? throw new ArgumentNullException(nameof(xmlDocsProvider));
             

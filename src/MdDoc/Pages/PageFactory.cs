@@ -51,6 +51,11 @@ namespace MdDoc.Pages
 
         private void LoadPages()
         {
+            foreach(var @namespace in m_Model.MainModuleDocumentation.Namespaces)
+            {
+                m_Pages.Add(@namespace, new NamespacePage(this, m_RootOutputPath, @namespace));
+            }
+
             foreach (var type in m_Model.MainModuleDocumentation.Types)
             {
                 m_Pages.Add(type, new TypePage(this, m_RootOutputPath, type));

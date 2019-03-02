@@ -10,12 +10,16 @@ namespace MdDoc.Model
     public class ModuleDocumentation : IDocumentation
     {
         private readonly IDictionary<TypeId, TypeDocumentation> m_Types;
+        private readonly IDictionary<string, NamespaceDocumentation> m_Namespaces;
         private readonly IXmlDocsProvider m_XmlDocsProvider;
 
 
         public AssemblyDocumentation AssemblyDocumentation { get; }
 
         public IReadOnlyCollection<TypeDocumentation> Types { get; }
+
+        public IReadOnlyCollection<NamespaceDocumentation> Namespaces { get; }
+
 
         internal ModuleDefinition Definition { get; }
 
@@ -27,12 +31,25 @@ namespace MdDoc.Model
 
             AssemblyDocumentation = assemblyDocumentation ?? throw new ArgumentNullException(nameof(assemblyDocumentation));
 
-            m_Types = Definition.Types
-                .Where(t => t.IsPublic)
-                .Select(typeDefinition => new TypeDocumentation(this, typeDefinition, m_XmlDocsProvider))
-                .ToDictionary(typeDocumentation => typeDocumentation.TypeId);
 
+            m_Types = new Dictionary<TypeId, TypeDocumentation>();
+            m_Namespaces = new Dictionary<string, NamespaceDocumentation>();
+
+            foreach (var typeDefinition in Definition.Types.Where(t => t.IsPublic))
+            {
+                var namespaceDocumentation = m_Namespaces.GetOrAdd(
+                    typeDefinition.Namespace,
+                    () => new NamespaceDocumentation(this, typeDefinition.Namespace)
+                );
+
+                var typeDocumentation = new TypeDocumentation(this, namespaceDocumentation, typeDefinition, m_XmlDocsProvider);
+
+                m_Types.Add(typeDocumentation.TypeId, typeDocumentation);
+                namespaceDocumentation.AddType(typeDocumentation);
+            }
+            
             Types = ReadOnlyCollectionAdapter.Create(m_Types.Values);
+            Namespaces = ReadOnlyCollectionAdapter.Create(m_Namespaces.Values);
         }
 
 

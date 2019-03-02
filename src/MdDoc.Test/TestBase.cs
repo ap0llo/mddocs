@@ -44,6 +44,7 @@ namespace MdDoc.Test
 
             var sut = new TypeDocumentation(
                 m_AssemblyDocumentation.Value.MainModuleDocumentation,
+                new NamespaceDocumentation(m_AssemblyDocumentation.Value.MainModuleDocumentation, type.Namespace),
                 typeDefinition,
                 NullXmlDocsProvider.Instance
             );
@@ -57,12 +58,12 @@ namespace MdDoc.Test
 
             var sut = new TypeDocumentation(
                 m_AssemblyDocumentation.Value.MainModuleDocumentation,
+                new NamespaceDocumentation(m_AssemblyDocumentation.Value.MainModuleDocumentation, typeDefinition.Namespace),
                 typeDefinition,
                 NullXmlDocsProvider.Instance
             );
 
             return sut;
         }
-
     }
 }

@@ -85,9 +85,7 @@ namespace MdDoc.Pages
 
 
         protected string GetTypeDir(TypeDocumentation type)
-        {
-            var namespaceDir = Path.Combine(m_RootOutputPath, String.Join('/', type.Namespace.Split(s_SplitChars)));
-
+        {            
             var dirName = type.TypeId.Name;
             if (type.TypeId is GenericTypeInstanceId genericTypeInstance)
             {
@@ -98,9 +96,12 @@ namespace MdDoc.Pages
                 dirName += "-" + genericType.Arity;
             }
 
-            return Path.Combine(namespaceDir, dirName);
-        }        
-        
+            return Path.Combine(GetNamespaceDir(type.NamespaceDocumentation), dirName);
+        }
+
+        protected string GetNamespaceDir(NamespaceDocumentation namespaceDocumentation) =>
+            Path.Combine(m_RootOutputPath, String.Join('/', namespaceDocumentation.Name.Split(s_SplitChars)));
+
         protected MdSpan ConvertToSpan(TextBlock textBlock)
         {
             return textBlock == null ? MdEmptySpan.Instance : TextBlockToMarkdownConverter.ConvertToSpan(textBlock, this);

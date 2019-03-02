@@ -33,7 +33,7 @@ namespace MdDoc.Pages
 
             AddRemarksSection(document.Root);
 
-            //TODO: Skip constructors when it is compiler-generated, i.e. only the implict default constructor
+            //TODO: Skip constructors when it is compiler-generated, i.e. only the implicit default constructor
             AddOverloadableMembersSection(
                 document.Root,
                 "Constructors",
@@ -67,9 +67,10 @@ namespace MdDoc.Pages
 
         private void AddDefinitionSection(MdContainerBlock block)
         {
-            // Add Namespace 
+            // Add Namespace
+            //TODO: Link to namespace page
             block.Add(
-                Paragraph(Bold("Namespace:"), " " + Model.Namespace)
+                Paragraph(Bold("Namespace:"), " " + Model.NamespaceDocumentation.Name)
             );
 
             // Add Assembly
