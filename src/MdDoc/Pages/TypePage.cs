@@ -67,10 +67,9 @@ namespace MdDoc.Pages
 
         private void AddDefinitionSection(MdContainerBlock block)
         {
-            // Add Namespace
-            //TODO: Link to namespace page
+            // Add Namespace            
             block.Add(
-                Paragraph(Bold("Namespace:"), " " + Model.NamespaceDocumentation.Name)
+                Paragraph(Bold("Namespace:"), " ", GetMdSpan(Model.NamespaceDocumentation.NamespaceId))
             );
 
             // Add Assembly

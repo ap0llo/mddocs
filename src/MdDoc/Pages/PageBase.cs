@@ -65,6 +65,12 @@ namespace MdDoc.Pages
                     else
                         return CreateLink(typeMemberId, typeMemberId.Name);
 
+                case NamespaceId namespaceId:
+                    if (noLink)
+                        return namespaceId.Name;
+                    else
+                        return CreateLink(namespaceId, namespaceId.Name);
+
                 default:
                     return MdEmptySpan.Instance;
             }

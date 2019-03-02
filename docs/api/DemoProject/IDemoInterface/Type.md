@@ -1,6 +1,6 @@
 # IDemoInterface Interface
 
-**Namespace:** DemoProject
+**Namespace:** [DemoProject](../Namespace.md)
 
 **Assembly:** DemoProject
 

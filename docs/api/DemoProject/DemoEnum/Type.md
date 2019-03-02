@@ -1,6 +1,6 @@
 # DemoEnum Enum
 
-**Namespace:** DemoProject
+**Namespace:** [DemoProject](../Namespace.md)
 
 **Assembly:** DemoProject
 

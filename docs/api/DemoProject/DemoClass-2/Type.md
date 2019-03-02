@@ -1,6 +1,6 @@
 # DemoClass\<T1, T2\> Class
 
-**Namespace:** DemoProject
+**Namespace:** [DemoProject](../Namespace.md)
 
 **Assembly:** DemoProject
 
