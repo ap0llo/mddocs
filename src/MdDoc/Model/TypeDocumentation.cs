@@ -7,13 +7,13 @@ using Mono.Cecil;
 
 namespace MdDoc.Model
 {
-    public class TypeDocumentation : IDocumentation
+    public class TypeDocumentation : IDocumentation, IObsoleteableDocumentation
     {
         private readonly IXmlDocsProvider m_XmlDocsProvider;
         private readonly IDictionary<MemberId, FieldDocumentation> m_Fields;
         private readonly IDictionary<MemberId, EventDocumentation> m_Events;
-        private readonly IDictionary<MemberId, PropertyDocumentation> m_Properties;        
-        private readonly IDictionary<string, IndexerDocumentation> m_Indexers;        
+        private readonly IDictionary<MemberId, PropertyDocumentation> m_Properties;
+        private readonly IDictionary<string, IndexerDocumentation> m_Indexers;
         private readonly IDictionary<string, MethodDocumentation> m_Methods;
         private readonly IDictionary<OperatorKind, OperatorDocumentation> m_Operators;
 
@@ -29,9 +29,9 @@ namespace MdDoc.Model
         public string DisplayName => TypeId.DisplayName;
 
         public string AssemblyName => Definition.Module.Assembly.Name.Name;
-        
+
         public TypeKind Kind { get; }
-        
+
         public IReadOnlyCollection<FieldDocumentation> Fields { get; }
 
         public IReadOnlyCollection<EventDocumentation> Events { get; }
@@ -45,7 +45,7 @@ namespace MdDoc.Model
         public IReadOnlyCollection<MethodDocumentation> Methods { get; }
 
         public IReadOnlyCollection<OperatorDocumentation> Operators { get; }
-        
+
         public IReadOnlyCollection<TypeId> InheritanceHierarchy { get; }
 
         public IReadOnlyCollection<TypeId> ImplementedInterfaces { get; }
@@ -66,6 +66,10 @@ namespace MdDoc.Model
 
         public TextBlock Example { get; }
 
+        public bool IsObsolete { get; }
+
+        public string ObsoleteMessage { get; }
+
 
         internal TypeDocumentation(
             ModuleDocumentation moduleDocumentation,
@@ -79,11 +83,11 @@ namespace MdDoc.Model
             NamespaceDocumentation = namespaceDocumentation ?? throw new ArgumentNullException(nameof(namespaceDocumentation));
             Definition = definition ?? throw new ArgumentNullException(nameof(definition));
             m_XmlDocsProvider = xmlDocsProvider ?? throw new ArgumentNullException(nameof(xmlDocsProvider));
-            
-            Kind = definition.Kind();            
+
+            Kind = definition.Kind();
 
             m_Fields = definition.Fields
-                .Where(field => field.IsPublic && !field.Attributes.HasFlag(FieldAttributes.SpecialName))                
+                .Where(field => field.IsPublic && !field.Attributes.HasFlag(FieldAttributes.SpecialName))
                 .Select(field => new FieldDocumentation(this, field, xmlDocsProvider))
                 .ToDictionary(f => f.MemberId);
 
@@ -112,7 +116,7 @@ namespace MdDoc.Model
             Indexers = ReadOnlyCollectionAdapter.Create(m_Indexers.Values);
 
             var ctors = definition.GetDocumentedConstrutors();
-            if(ctors.Any())
+            if (ctors.Any())
                 Constructors = new ConstructorDocumentation(this, ctors, xmlDocsProvider);
 
             m_Methods = definition.GetDocumentedMethods()
@@ -123,14 +127,14 @@ namespace MdDoc.Model
 
             Methods = ReadOnlyCollectionAdapter.Create(m_Methods.Values);
 
-            m_Operators = definition.GetDocumentedMethods()               
+            m_Operators = definition.GetDocumentedMethods()
                .GroupBy(x => x.GetOperatorKind())
                .Where(group => group.Key.HasValue)
                .Select(group => new OperatorDocumentation(this, group, xmlDocsProvider))
                .ToDictionary(x => x.Kind);
 
             Operators = ReadOnlyCollectionAdapter.Create(m_Operators.Values);
-            
+
             InheritanceHierarchy = LoadInheritanceHierarchy();
 
             Attributes = Definition
@@ -149,6 +153,9 @@ namespace MdDoc.Model
             Example = documentationComments?.Example;
 
             CSharpDefinition = CSharpDefinitionFormatter.GetDefinition(definition);
+
+            IsObsolete = definition.IsObsolete(out var obsoleteMessage);
+            ObsoleteMessage = obsoleteMessage;
         }
 
 
@@ -165,13 +172,13 @@ namespace MdDoc.Model
                 case EventId eventId when eventId.DefiningType.Equals(TypeId):
                     return m_Events.GetValueOrDefault(eventId);
 
-                case PropertyId propertyId when propertyId.DefiningType.Equals(TypeId) && propertyId.Parameters.Count == 0:                    
+                case PropertyId propertyId when propertyId.DefiningType.Equals(TypeId) && propertyId.Parameters.Count == 0:
                     return m_Properties.GetValueOrDefault(propertyId);
 
                 case PropertyId propertyId when propertyId.DefiningType.Equals(TypeId) && propertyId.Parameters.Count > 0:
                     return m_Indexers.GetValueOrDefault(propertyId.Name);
 
-                case MethodId methodId when methodId.DefiningType.Equals(TypeId):                    
+                case MethodId methodId when methodId.DefiningType.Equals(TypeId):
                     if (methodId.IsConstructor())
                     {
                         return Constructors.TryGetDocumentation(methodId);
@@ -192,7 +199,7 @@ namespace MdDoc.Model
 
                 default:
                     return ModuleDocumentation.TryGetDocumentation(id);
-            }            
+            }
         }
 
 
@@ -203,7 +210,7 @@ namespace MdDoc.Model
 
             var inheritance = new LinkedList<TypeId>();
             inheritance.AddFirst(TypeId);
-            
+
             var currentBaseType = Definition.BaseType.Resolve();
             while (currentBaseType != null)
             {

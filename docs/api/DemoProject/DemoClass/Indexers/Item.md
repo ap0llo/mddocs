@@ -8,6 +8,7 @@
 | ---------------- | ------------------------------------------------- |
 | Item\[int, int\] | An example of an indexer with two parameters.     |
 | Item\[int\]      | An example of an indexer with a single parameter. |
+| Item\[object\]   | An example of an obsolete indexer.                |
 
 ## Item\[int, int\]
 
@@ -85,3 +86,26 @@ var value = instance[42];
 ### See Also
 
 - Item\[int, int\]
+
+## Item\[object\]
+
+⚠️ **Warning:** This indexer is obsolete. Use this\[int,int\] instead.
+
+An example of an obsolete indexer.
+
+```csharp
+[Obsolete("This indexer is obsolete. Use this[int,int] instead.")]
+public string this[object arg] { get; }
+```
+
+### Parameters
+
+`arg`  Object
+
+### Indexer Value
+
+String
+
+### Remarks
+
+If a member is marked as obsolete using ObsoleteAttribute a warning is included in the generated documentation.              The documentation also includes the message specified for the obsolete attribute.

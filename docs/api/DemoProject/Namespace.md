@@ -2,12 +2,13 @@
 
 ## Classes
 
-| Name                                                                       | Description                                                                             |
-| -------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
-| [DemoAttribute](DemoAttribute/Type.md)                                     | An example of an custom attribute class for methods                                     |
-| [DemoClass](DemoClass/Type.md)                                             | A class meant to demonstrate how the generated documentation looks like.                |
-| [DemoClass\<T1, T2\>](DemoClass-2/Type.md)                                 | An example of an generic class.                                                         |
-| [DemoPropertyAnnotationAttribute](DemoPropertyAnnotationAttribute/Type.md) | An example of a custom attribute that is used to annotate a property with custom flags. |
+| Name                                                                       | Description                                                                                     |
+| -------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| [DemoAttribute](DemoAttribute/Type.md)                                     | An example of an custom attribute class for methods                                             |
+| [DemoClass](DemoClass/Type.md)                                             | A class meant to demonstrate how the generated documentation looks like.                        |
+| [DemoClass\<T1, T2\>](DemoClass-2/Type.md)                                 | An example of an generic class.                                                                 |
+| [DemoPropertyAnnotationAttribute](DemoPropertyAnnotationAttribute/Type.md) | An example of a custom attribute that is used to annotate a property with custom flags.         |
+| [ObsoleteDemoClass](ObsoleteDemoClass/Type.md)                             | A class meant to demonstrate how the generated documentation for a deprecated class looks like. |
 
 ## Structs
 

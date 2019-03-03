@@ -7,7 +7,7 @@ namespace MdDoc.Model
     public class FieldDocumentation : SimpleMemberDocumentation
     {
         public override string Name => Definition.Name;
-        
+
         public override string CSharpDefinition { get; }
 
         public override TypeId Type { get; }
@@ -15,12 +15,10 @@ namespace MdDoc.Model
         public TextBlock Value { get; }
 
         internal FieldDefinition Definition { get; }
-        
 
-        internal FieldDocumentation(
-            TypeDocumentation typeDocumentation,
-            FieldDefinition definition,
-            IXmlDocsProvider xmlDocsProvider) : base(typeDocumentation, definition?.ToMemberId(), xmlDocsProvider)
+
+        internal FieldDocumentation(TypeDocumentation typeDocumentation, FieldDefinition definition, IXmlDocsProvider xmlDocsProvider)
+            : base(typeDocumentation, definition?.ToMemberId(), xmlDocsProvider, definition)
         {
             Definition = definition ?? throw new ArgumentNullException(nameof(definition));
             xmlDocsProvider = xmlDocsProvider ?? throw new ArgumentNullException(nameof(xmlDocsProvider));

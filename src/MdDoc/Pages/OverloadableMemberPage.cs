@@ -9,7 +9,7 @@ using static Grynwald.MarkdownGenerator.FactoryMethods;
 namespace MdDoc.Pages
 {
     //TODO: Use a different layout if there is only a single overloads for this operator
-    abstract class OverloadableMemberPage<TModel, TOverload> : MemberPage<TModel>
+    internal abstract class OverloadableMemberPage<TModel, TOverload> : MemberPage<TModel>
         where TModel : OverloadableMemberDocumentation<TOverload>
         where TOverload : OverloadDocumentation
     {
@@ -73,6 +73,8 @@ namespace MdDoc.Pages
                 Heading(overload.Signature, 2)
             );
 
+            AddObsoleteWarning(block, overload);
+
             AddDefinitionSubSection(block, overload);
 
             AddTypeParametersSubSection(block, overload);
@@ -90,9 +92,10 @@ namespace MdDoc.Pages
             AddSeeAlsoSubSection(block, overload);
         }
 
+
         protected virtual void AddDefinitionSubSection(MdContainerBlock block, TOverload overload)
         {
-            if(overload.Summary != null)
+            if (overload.Summary != null)
             {
                 block.Add(ConvertToBlock(overload.Summary));
             }
@@ -142,10 +145,10 @@ namespace MdDoc.Pages
                 ));
 
                 if (parameter.Description != null)
-                {                    
+                {
                     parametersBlock.Add(ConvertToBlock(parameter.Description));
-                }                
-            }            
+                }
+            }
         }
 
         protected virtual void AddReturnsSubSection(MdContainerBlock block, TOverload overload)
@@ -175,12 +178,12 @@ namespace MdDoc.Pages
 
             block.Add(Heading("Exceptions", 3));
 
-            foreach(var exception in overload.Exceptions)
+            foreach (var exception in overload.Exceptions)
             {
                 block.Add(
                     GetMdParagraph(exception.Type),
                     ConvertToBlock(exception.Text)
-                );                
+                );
             }
         }
 

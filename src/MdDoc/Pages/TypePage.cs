@@ -9,7 +9,7 @@ using static Grynwald.MarkdownGenerator.FactoryMethods;
 
 namespace MdDoc.Pages
 {
-    class TypePage : PageBase<TypeDocumentation>
+    internal class TypePage : PageBase<TypeDocumentation>
     {
         public override OutputPath OutputPath { get; }
 
@@ -27,6 +27,8 @@ namespace MdDoc.Pages
                 Heading($"{Model.DisplayName} {Model.Kind}", 1)
             );
 
+            AddObsoleteWarning(document.Root, Model);
+
             AddDefinitionSection(document.Root);
 
             AddTypeParametersSection(document.Root);
@@ -38,7 +40,7 @@ namespace MdDoc.Pages
                 document.Root,
                 "Constructors",
                 (IEnumerable<OverloadDocumentation>)Model.Constructors?.Overloads ?? Array.Empty<OverloadDocumentation>()
-            );            
+            );
 
             AddSimpleMembersSection(document.Root, "Fields", Model.Fields);
 
@@ -118,7 +120,7 @@ namespace MdDoc.Pages
                 );
             }
         }
-   
+
         private void AddRemarksSection(MdContainerBlock block)
         {
             if (Model.Remarks != null)
@@ -129,7 +131,7 @@ namespace MdDoc.Pages
         }
 
         private void AddOverloadableMembersSection(MdContainerBlock block, string sectionHeading, IEnumerable<OverloadDocumentation> overloads)
-        {            
+        {
             if (overloads.Any())
             {
                 var table = Table(Row("Name", "Description"));
@@ -155,9 +157,9 @@ namespace MdDoc.Pages
             if (members.Any())
             {
                 block.Add(Heading(sectionHeading, 2));
-                
+
                 var table = Table(Row("Name", "Description"));
-                foreach(var member in members.OrderBy(x => x.Name))
+                foreach (var member in members.OrderBy(x => x.Name))
                 {
                     table.Add(
                         Row(
@@ -180,7 +182,7 @@ namespace MdDoc.Pages
 
         private void AddSeeAlsoSection(MdContainerBlock block)
         {
-            if(Model.SeeAlso.Count > 0)
+            if (Model.SeeAlso.Count > 0)
             {
                 block.Add(Heading(2, "See Also"));
                 block.Add(
@@ -189,7 +191,7 @@ namespace MdDoc.Pages
                 ));
             }
         }
-        
+
         private void AddTypeParametersSection(MdContainerBlock block)
         {
             if (Model.TypeParameters.Count == 0)
@@ -205,7 +207,7 @@ namespace MdDoc.Pages
                 ));
 
                 if (typeParameter.Description != null)
-                {                    
+                {
                     block.Add(ConvertToBlock(typeParameter.Description));
                 }
             }

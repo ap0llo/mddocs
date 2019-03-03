@@ -146,6 +146,14 @@
             <value>The tag <c>value</c> allows specifying the value a property represents</value>
             <seealso cref="P:DemoProject.DemoClass.Property1"/>
         </member>
+        <member name="P:DemoProject.DemoClass.Property3">
+            <summary>
+            An example of an obsolete property.
+            </summary>
+            <remarks>
+            If a member is marked as obsolete using <see cref="T:System.ObsoleteAttribute"/> a warning is included in the generated documentation.
+            </remarks>
+        </member>
         <member name="P:DemoProject.DemoClass.Item(System.Int32)">
             <summary>
             An example of an indexer with a single parameter.
@@ -185,6 +193,15 @@
             <param name="y">Description of parameter <paramref name="y"/> provided using the <c>param</c> element.</param>
             <value>The tag <c>value</c> allows specifying the value a indexer represents</value>
             <seeaslo cref="P:DemoProject.DemoClass.Item(System.Int32)"/>
+        </member>
+        <member name="P:DemoProject.DemoClass.Item(System.Object)">
+            <summary>
+            An example of an obsolete indexer.
+            </summary>
+            <remarks>
+            If a member is marked as obsolete using <see cref="T:System.ObsoleteAttribute"/> a warning is included in the generated documentation. 
+            The documentation also includes the message specified for the obsolete attribute.
+            </remarks>
         </member>
         <member name="M:DemoProject.DemoClass.#ctor">
             <summary>
@@ -263,6 +280,15 @@
             </remarks>
             <typeparam name="T">Description of type parameter <typeparamref name="T"/> (specified using the <c>typeparam</c> element)</typeparam>
             <param name="parameter">Description of parameters <paramref name="parameter"/></param>
+        </member>
+        <member name="M:DemoProject.DemoClass.Method4">
+            <summary>
+            Example of an obsolete method.
+            </summary>
+            <remarks>
+            If a member is marked as obsolete using <see cref="T:System.ObsoleteAttribute"/> 
+            a warning is included in the generated documentation.
+            </remarks>
         </member>
         <member name="M:DemoProject.DemoClass.op_Addition(DemoProject.DemoClass,DemoProject.DemoClass)">
             <summary>
@@ -452,6 +478,15 @@
             <seealso cref="T:DemoProject.DemoClass"/>
             <seealso cref="T:DemoProject.DemoEnum"/>
             <seealso cref="T:DemoProject.DemoStruct" />
+        </member>
+        <member name="T:DemoProject.ObsoleteDemoClass">
+            <summary>
+            A class meant to demonstrate how the generated documentation for a deprecated class looks like.
+            </summary>
+            <remarks>
+            If a member is marked as obsolete using <see cref="T:System.ObsoleteAttribute"/> a warning is included in the generated documentation. 
+            The documentation also includes the message specified for the obsolete attribute.
+            </remarks>
         </member>
     </members>
 </doc>

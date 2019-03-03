@@ -4,7 +4,7 @@ namespace MdDoc.Model
 {
     public abstract class MemberDocumentation : IDocumentation
     {
-        public TypeDocumentation TypeDocumentation { get; }        
+        public TypeDocumentation TypeDocumentation { get; }
 
 
         public MemberDocumentation(TypeDocumentation typeDocumentation)

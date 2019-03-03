@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using MdDoc.Model.XmlDocs;
+using Mono.Cecil;
 
 namespace MdDoc.Model
 {
-    public abstract class SimpleMemberDocumentation : MemberDocumentation
+    public abstract class SimpleMemberDocumentation : MemberDocumentation, IObsoleteableDocumentation
     {
         public MemberId MemberId { get; }
 
@@ -22,16 +23,25 @@ namespace MdDoc.Model
 
         public TextBlock Example { get; }
 
+        public bool IsObsolete { get; }
 
-        internal SimpleMemberDocumentation(TypeDocumentation typeDocumentation, MemberId memberId, IXmlDocsProvider xmlDocsProvider) : base(typeDocumentation)
+        public string ObsoleteMessage { get; }
+
+
+        internal SimpleMemberDocumentation(TypeDocumentation typeDocumentation, MemberId memberId, IXmlDocsProvider xmlDocsProvider, ICustomAttributeProvider definitionAttributes)
+            : base(typeDocumentation)
         {
             MemberId = memberId ?? throw new ArgumentNullException(nameof(memberId));
+            definitionAttributes = definitionAttributes ?? throw new ArgumentNullException(nameof(definitionAttributes));
 
             var documentationComments = xmlDocsProvider.TryGetDocumentationComments(memberId);
             Summary = documentationComments?.Summary;
             Remarks = documentationComments?.Remarks;
             SeeAlso = documentationComments?.SeeAlso?.ToReadOnly() ?? Array.Empty<SeeAlsoElement>();
             Example = documentationComments?.Example;
+
+            IsObsolete = definitionAttributes.IsObsolete(out var obsoleteMessage);
+            ObsoleteMessage = obsoleteMessage;
         }
 
 

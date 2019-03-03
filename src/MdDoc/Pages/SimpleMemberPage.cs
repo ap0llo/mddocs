@@ -7,7 +7,7 @@ using static Grynwald.MarkdownGenerator.FactoryMethods;
 
 namespace MdDoc.Pages
 {
-    abstract class SimpleMemberPage<TModel> : MemberPage<TModel> where TModel : SimpleMemberDocumentation
+    internal abstract class SimpleMemberPage<TModel> : MemberPage<TModel> where TModel : SimpleMemberDocumentation
     {
 
         public SimpleMemberPage(PageFactory pageFactory, string rootOutputPath, TModel model)
@@ -20,6 +20,8 @@ namespace MdDoc.Pages
             var document = Document(
                 GetHeading()
             );
+
+            AddObsoleteWarning(document.Root, Model);
 
             AddDeclaringTypeSection(document.Root);
 
@@ -40,7 +42,7 @@ namespace MdDoc.Pages
 
         protected virtual void AddDefinitionSection(MdContainerBlock block)
         {
-            if(Model.Summary != null)
+            if (Model.Summary != null)
             {
                 block.Add(ConvertToBlock(Model.Summary));
             }
@@ -82,7 +84,7 @@ namespace MdDoc.Pages
 
 
         protected abstract MdHeading GetHeading();
-        
+
         protected abstract void AddValueSection(MdContainerBlock block);
     }
 }

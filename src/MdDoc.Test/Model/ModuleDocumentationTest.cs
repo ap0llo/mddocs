@@ -7,7 +7,7 @@ namespace MdDoc.Test.Model
 {
     public class ModuleDocumentationTest : TestBase
     {
-        [Fact]        
+        [Fact]
         public void Types_includes_expected_types()
         {
             //ARRANGE
@@ -30,13 +30,17 @@ namespace MdDoc.Test.Model
                 typeof(TestClass_MethodOverloads),
                 typeof(TestInterface_Events),
                 typeof(TestClass_MultipleOperatorOverloads),
+                #pragma warning disable CS0612 // Type or member is obsolete
                 #pragma warning disable CS0618 // Type or member is obsolete
                 typeof(TestClass_Attributes),
                 typeof(TestClass_Attributes_ExtensionMethods),
                 typeof(TestStruct_Attributes),
                 typeof(TestInterface_Attributes),
                 typeof(TestEnum_Attributes),
+                typeof(TestClass_Obsolete),
+                typeof(TestClass_Obsolete2),
                 #pragma warning restore CS0618 // Type or member is obsolete
+                #pragma warning restore CS0612 // Type or member is obsolete
                 typeof(TestAttribute),
                 typeof(TestClass_InterfaceImplementation),
                 typeof(TestStruct_InterfaceImplementation),
@@ -67,7 +71,7 @@ namespace MdDoc.Test.Model
                 typeof(CSharpDefinitionTest_GenericInterface_Covariant<>),
                 typeof(CSharpDefinitionTestEnum),
                 typeof(TestClass_XmlDocs<,>),
-                typeof(TestClass_NoDocumentation)
+                typeof(TestClass_NoDocumentation),
             })
             .Distinct()
             .Select(GetTypeDefinition)
@@ -84,7 +88,7 @@ namespace MdDoc.Test.Model
                 expectedType => Assert.Contains(actualTypes, x => x.Definition.Equals(expectedType))
             );
         }
-        
+
         [Fact]
         public void Types_does_not_include_internal_types()
         {

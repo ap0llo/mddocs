@@ -9,11 +9,11 @@ using static Grynwald.MarkdownGenerator.FactoryMethods;
 
 namespace MdDoc.Pages
 {
-    abstract class PageBase<TModel> : IMdSpanFactory, IPage where TModel : class, IDocumentation
+    internal abstract class PageBase<TModel> : IMdSpanFactory, IPage where TModel : class, IDocumentation
     {
         private static readonly char[] s_SplitChars = ".".ToCharArray();
         private readonly string m_RootOutputPath;
-        private ILinkProvider m_LinkProvider;
+        private readonly ILinkProvider m_LinkProvider;
 
         public abstract OutputPath OutputPath { get; }
 
@@ -79,19 +79,19 @@ namespace MdDoc.Pages
         public MdSpan CreateLink(MemberId target, MdSpan text)
         {
             // try to generate a link to the target but avoid self-links
-            if(m_LinkProvider.TryGetLink(target, out var link) && !OutputPath.Equals(link))
+            if (m_LinkProvider.TryGetLink(target, out var link) && !OutputPath.Equals(link))
             {
                 return new MdLinkSpan(text, OutputPath.GetRelativePathTo(link));
             }
             else
             {
                 return text;
-            }           
+            }
         }
 
 
         protected string GetTypeDir(TypeDocumentation type)
-        {            
+        {
             var dirName = type.TypeId.Name;
             if (type.TypeId is GenericTypeInstanceId genericTypeInstance)
             {
@@ -117,7 +117,7 @@ namespace MdDoc.Pages
         {
             if (seeAlso.Text.IsEmpty)
             {
-                return GetMdSpan(seeAlso.MemberId);                
+                return GetMdSpan(seeAlso.MemberId);
             }
             else
             {
@@ -128,7 +128,22 @@ namespace MdDoc.Pages
 
         protected MdBlock ConvertToBlock(TextBlock text) => TextBlockToMarkdownConverter.ConvertToBlock(text, this);
 
+        protected virtual void AddObsoleteWarning(MdContainerBlock block, IObsoleteableDocumentation memberDocumentation)
+        {
+            if (!memberDocumentation.IsObsolete)
+                return;
 
+            var message = memberDocumentation.ObsoleteMessage;
+            if (String.IsNullOrEmpty(message))
+                message = "This API is obsolete.";
+
+            block.Add(Paragraph(
+                "⚠️ ",
+                Bold("Warning:"),
+                " ",
+                message
+            ));
+        }
         private MdSpan GetMdSpan(TypeId type, bool noLink)
         {
             if (type is ArrayTypeId arrayType)

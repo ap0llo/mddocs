@@ -21,8 +21,12 @@ namespace MdDoc.Model
 
         public override TypeId Type { get; }
 
+        public override bool IsObsolete { get; }
+
+        public override string ObsoleteMessage { get; }
+
         internal MethodDefinition Definition { get; }
-        
+
 
         internal MethodLikeOverloadDocumentation(
             MethodDefinition definition,
@@ -42,6 +46,9 @@ namespace MdDoc.Model
             TypeParameters = LoadTypeParameters();
 
             Type = definition.ReturnType.ToTypeId();
+
+            IsObsolete = Definition.IsObsolete(out var obsoleteMessage);
+            ObsoleteMessage = obsoleteMessage;
         }
 
 
@@ -53,7 +60,6 @@ namespace MdDoc.Model
                 return Definition.GenericParameters
                     .Select(p => new TypeParameterDocumentation(this, MemberId, p, m_XmlDocsProvider))
                     .ToArray();
-
         }
     }
 }

@@ -4,7 +4,7 @@ using MdDoc.Model.XmlDocs;
 
 namespace MdDoc.Model
 {
-    public abstract class OverloadDocumentation : IDocumentation
+    public abstract class OverloadDocumentation : IDocumentation, IObsoleteableDocumentation
     {
         public MemberId MemberId { get; }
 
@@ -20,7 +20,7 @@ namespace MdDoc.Model
 
         public abstract IReadOnlyList<TypeParameterDocumentation> TypeParameters { get; }
 
-        public abstract string CSharpDefinition { get; }     
+        public abstract string CSharpDefinition { get; }
 
         public abstract TypeId Type { get; }
 
@@ -29,6 +29,10 @@ namespace MdDoc.Model
         public IReadOnlyList<ExceptionElement> Exceptions { get; }
 
         public TextBlock Example { get; }
+
+        public abstract bool IsObsolete { get; }
+
+        public abstract string ObsoleteMessage { get; }
 
 
         internal OverloadDocumentation(MemberId memberId, IXmlDocsProvider xmlDocsProvider)

@@ -20,10 +20,14 @@ namespace MdDoc.Model
         public override IReadOnlyList<TypeParameterDocumentation> TypeParameters { get; } = Array.Empty<TypeParameterDocumentation>();
 
         public override string CSharpDefinition { get; }
-    
+
         public TextBlock Value { get; }
 
         public override TypeId Type { get; }
+
+        public override bool IsObsolete { get; }
+
+        public override string ObsoleteMessage { get; }
 
         internal PropertyDefinition Definition { get; }
 
@@ -39,12 +43,15 @@ namespace MdDoc.Model
             Parameters = definition.HasParameters
                 ? definition.Parameters.Select(p => new ParameterDocumentation(this, p, xmlDocsProvider)).ToArray()
                 : Array.Empty<ParameterDocumentation>();
-                
+
 
             Signature = MethodFormatter.Instance.GetSignature(definition);
             CSharpDefinition = CSharpDefinitionFormatter.GetDefinition(definition);
             Value = xmlDocsProvider.TryGetDocumentationComments(MemberId)?.Value;
             Type = definition.PropertyType.ToTypeId();
+
+            IsObsolete = definition.IsObsolete(out var obsoleteMessage);
+            ObsoleteMessage = obsoleteMessage;
         }
 
 

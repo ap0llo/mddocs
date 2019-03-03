@@ -61,6 +61,7 @@ Similar pages are also generated for interfaces (see [IDemoInterface](../IDemoIn
 | ------------------------------------ | ---------------------------------------------------------------------- |
 | [Property1](Properties/Property1.md) | An example of a read\-only property.                                   |
 | [Property2](Properties/Property2.md) | An example of a read\/write property annotated with a custom attribute |
+| [Property3](Properties/Property3.md) | An example of an obsolete property.                                    |
 
 ## Indexers
 
@@ -68,6 +69,7 @@ Similar pages are also generated for interfaces (see [IDemoInterface](../IDemoIn
 | ------------------------------------ | ------------------------------------------------- |
 | [Item\[int, int\]](Indexers/Item.md) | An example of an indexer with two parameters.     |
 | [Item\[int\]](Indexers/Item.md)      | An example of an indexer with a single parameter. |
+| [Item\[object\]](Indexers/Item.md)   | An example of an obsolete indexer.                |
 
 ## Methods
 
@@ -77,6 +79,7 @@ Similar pages are also generated for interfaces (see [IDemoInterface](../IDemoIn
 | [Method1(string)](Methods/Method1.md) | Example of an overloaded method accepting one parameter.       |
 | [Method2()](Methods/Method2.md)       | Example of an non\-overloaded methods with a custom attribute. |
 | [Method3\<T\>(T)](Methods/Method3.md) | Example of a generic method.                                   |
+| [Method4()](Methods/Method4.md)       | Example of an obsolete method.                                 |
 
 ## Operators
 

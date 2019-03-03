@@ -6,7 +6,7 @@ using Mono.Cecil;
 namespace MdDoc.Model
 {
     public class PropertyDocumentation : SimpleMemberDocumentation
-    {        
+    {
         public override string Name => Definition.Name;
 
         public override TypeId Type { get; }
@@ -21,10 +21,8 @@ namespace MdDoc.Model
         internal PropertyDefinition Definition { get; }
 
 
-        internal PropertyDocumentation(
-            TypeDocumentation typeDocumentation,
-            PropertyDefinition definition,
-            IXmlDocsProvider xmlDocsProvider) : base(typeDocumentation, definition?.ToMemberId(), xmlDocsProvider)
+        internal PropertyDocumentation(TypeDocumentation typeDocumentation, PropertyDefinition definition, IXmlDocsProvider xmlDocsProvider)
+            : base(typeDocumentation, definition?.ToMemberId(), xmlDocsProvider, definition)
         {
             Definition = definition ?? throw new ArgumentNullException(nameof(definition));
             xmlDocsProvider = xmlDocsProvider ?? throw new ArgumentNullException(nameof(xmlDocsProvider));
@@ -35,6 +33,6 @@ namespace MdDoc.Model
             var documentationComments = xmlDocsProvider?.TryGetDocumentationComments(MemberId);
             Value = documentationComments?.Value;
             Exceptions = documentationComments?.Exceptions?.ToReadOnly() ?? Array.Empty<ExceptionElement>();
-        }        
+        }
     }
 }

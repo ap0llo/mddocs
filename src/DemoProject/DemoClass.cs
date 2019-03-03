@@ -137,6 +137,15 @@ namespace DemoProject
         public string Property2 { get; set; }
 
         /// <summary>
+        /// An example of an obsolete property.
+        /// </summary>
+        /// <remarks>
+        /// If a member is marked as obsolete using <see cref="ObsoleteAttribute"/> a warning is included in the generated documentation.
+        /// </remarks>
+        [Obsolete]
+        public string Property3 => throw new NotImplementedException();
+
+        /// <summary>
         /// An example of an indexer with a single parameter.
         /// </summary>
         /// <remarks>
@@ -175,6 +184,17 @@ namespace DemoProject
         /// <value>The tag <c>value</c> allows specifying the value a indexer represents</value>
         /// <seeaslo cref="this[Int32]"/>
         public string this[int x, int y] => throw new NotImplementedException();
+
+
+        /// <summary>
+        /// An example of an obsolete indexer.
+        /// </summary>
+        /// <remarks>
+        /// If a member is marked as obsolete using <see cref="ObsoleteAttribute"/> a warning is included in the generated documentation. 
+        /// The documentation also includes the message specified for the obsolete attribute.
+        /// </remarks>
+        [Obsolete("This indexer is obsolete. Use this[int,int] instead.")]
+        public string this[object arg] => throw new NotImplementedException();
 
         /// <summary>
         /// Initializes a new instance of <see cref="DemoClass"/>
@@ -260,6 +280,16 @@ namespace DemoProject
         /// <param name="parameter">Description of parameters <paramref name="parameter"/></param>
         public void Method3<T>(T parameter) => throw new NotImplementedException();
 
+
+        /// <summary>
+        /// Example of an obsolete method.
+        /// </summary>
+        /// <remarks>
+        /// If a member is marked as obsolete using <see cref="ObsoleteAttribute"/> 
+        /// a warning is included in the generated documentation.
+        /// </remarks>
+        [Obsolete]
+        public void Method4() => throw new NotImplementedException();
 
         /// <summary>
         /// Example of an overload of the binary + operator.
