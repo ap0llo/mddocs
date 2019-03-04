@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Grynwald.Utilities.Collections;
 
 namespace Grynwald.MdDocs.ApiReference.Model
 {
