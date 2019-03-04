@@ -20,7 +20,7 @@ steps:
 - task: CmdLine@2
   displayName: Restore
   inputs:
-    script: dotnet restore src/MdDoc.sln
+    script: dotnet restore src/MdDocs.sln
 
 - task: DotNetCoreCLI@2
   displayName: build
