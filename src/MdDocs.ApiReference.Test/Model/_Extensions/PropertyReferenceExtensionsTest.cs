@@ -8,7 +8,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
 {
     public class PropertyReferenceExtensionsTest : TestBase
     {
-        private static readonly TypeId s_TestClass_Properties = new SimpleTypeId("MdDoc.Test.TestData", "TestClass_Properties");
+        private static readonly TypeId s_TestClass_Properties = new SimpleTypeId("Grynwald.MdDocs.ApiReference.Test.TestData", "TestClass_Properties");
         private static readonly TypeId s_System_Int32 = new SimpleTypeId("System", "Int32");
 
         private PropertyReference GetPropertyReference(string typeName, string propertyName)

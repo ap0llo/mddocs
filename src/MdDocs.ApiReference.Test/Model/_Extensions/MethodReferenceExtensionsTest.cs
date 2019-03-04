@@ -9,8 +9,8 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
 {
     public class MethodReferenceExtensionsTest : TestBase
     {
-        private static readonly TypeId s_TestClass_Methods = new SimpleTypeId("MdDoc.Test.TestData", "TestClass_Methods");
-        private static readonly TypeId s_TestClass_Operators = new SimpleTypeId("MdDoc.Test.TestData", "TestClass_Operators");
+        private static readonly TypeId s_TestClass_Methods = new SimpleTypeId("Grynwald.MdDocs.ApiReference.Test.TestData", "TestClass_Methods");
+        private static readonly TypeId s_TestClass_Operators = new SimpleTypeId("Grynwald.MdDocs.ApiReference.Test.TestData", "TestClass_Operators");
         private static readonly TypeId s_System_String = new SimpleTypeId("System", "String");
         private static readonly TypeId s_System_Int32 = new SimpleTypeId("System", "Int32");
 

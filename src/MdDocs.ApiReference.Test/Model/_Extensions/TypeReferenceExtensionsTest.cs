@@ -12,7 +12,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         {            
             // ARRANGE
             var typeReference = GetTypeDefinition(typeof(TestClass_Type));
-            var expectedMemberId = new SimpleTypeId("MdDoc.Test.TestData", "TestClass_Type");
+            var expectedMemberId = new SimpleTypeId("Grynwald.MdDocs.ApiReference.Test.TestData", "TestClass_Type");
 
             // ACT
             var actualMemberId = typeReference.ToMemberId();
@@ -27,7 +27,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         {
             // ARRANGE
             var typeReference = GetTypeDefinition(typeof(TestClass_GenericType<>));
-            var expectedMemberId = new GenericTypeId("MdDoc.Test.TestData", "TestClass_GenericType", 1);
+            var expectedMemberId = new GenericTypeId("Grynwald.MdDocs.ApiReference.Test.TestData", "TestClass_GenericType", 1);
 
             // ACT
             var actualMemberId = typeReference.ToMemberId();

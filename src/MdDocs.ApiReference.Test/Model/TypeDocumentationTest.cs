@@ -365,7 +365,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             var expectedSequence = new[]
             {
                 new SimpleTypeId("System", "Object"),
-                new SimpleTypeId("MdDoc.Test.TestData", "TestClass_Type")
+                new SimpleTypeId("Grynwald.MdDocs.ApiReference.Test.TestData", "TestClass_Type")
             };
 
             // ACT
@@ -385,7 +385,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             {
                 new SimpleTypeId("System", "Object"),
                 new SimpleTypeId("System", "ValueType"),
-                new SimpleTypeId("MdDoc.Test.TestData", "TestStruct_Type")
+                new SimpleTypeId("Grynwald.MdDocs.ApiReference.Test.TestData", "TestStruct_Type")
             };
 
             // ACT
@@ -407,7 +407,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
                 new SimpleTypeId("System", "Object"),
                 new SimpleTypeId("System", "ValueType"),
                 new SimpleTypeId("System", "Enum"),
-                new SimpleTypeId("MdDoc.Test.TestData", "TestEnum_Type")
+                new SimpleTypeId("Grynwald.MdDocs.ApiReference.Test.TestData", "TestEnum_Type")
             };
 
             // ACT
@@ -455,7 +455,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             var expectedAttributes = new[]
             {
                 new SimpleTypeId("System", "ObsoleteAttribute"),
-                new SimpleTypeId("MdDoc.Test.TestData", "TestAttribute")
+                new SimpleTypeId("Grynwald.MdDocs.ApiReference.Test.TestData", "TestAttribute")
             };
 
             // ACT
@@ -540,7 +540,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             // ASSERT
             Assert.NotNull(sut.ImplementedInterfaces);
             Assert.Equal(2, sut.ImplementedInterfaces.Count);
-            Assert.Contains(sut.ImplementedInterfaces, i => i.Equals(new SimpleTypeId("MdDoc.Test.TestData", "TestInterface_Type"))); 
+            Assert.Contains(sut.ImplementedInterfaces, i => i.Equals(new SimpleTypeId("Grynwald.MdDocs.ApiReference.Test.TestData", "TestInterface_Type"))); 
             Assert.Contains(sut.ImplementedInterfaces, i => i.Equals(new SimpleTypeId("System", "IDisposable")));
         }
 
@@ -564,7 +564,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             // ASSERT
             Assert.NotNull(sut.ImplementedInterfaces);
             Assert.Equal(2, sut.ImplementedInterfaces.Count);
-            Assert.Contains(sut.ImplementedInterfaces, i => i.Equals(new SimpleTypeId("MdDoc.Test.TestData", "TestInterface_Type")));
+            Assert.Contains(sut.ImplementedInterfaces, i => i.Equals(new SimpleTypeId("Grynwald.MdDocs.ApiReference.Test.TestData", "TestInterface_Type")));
             Assert.Contains(sut.ImplementedInterfaces, i => i.Equals(new SimpleTypeId("System", "IDisposable")));
         }
 

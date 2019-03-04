@@ -15,7 +15,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
 
         public XmlDocsProviderTest()
         {
-            // This will load the XML Documentation files for the MdDoc.Test.TestData assembly
+            // This will load the XML Documentation files for the Grynwald.MdDocs.ApiReference.Test.TestData assembly
             // By default - this does not work with Visual Studio's Live Unit Testing
             // because it does not generate XML docs 
             // To enable this, go to "Tools" -> "Options" -> "Live Unit Testing" and
@@ -146,11 +146,11 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
             Assert.Equal(2, docs.SeeAlso.Count);
             Assert.Single(
                 docs.SeeAlso,
-                seeAlso => seeAlso.Text.Elements.Count == 1 && seeAlso.MemberId.Equals(new SimpleTypeId("MdDoc.Test.TestData", "TestClass_Type"))
+                seeAlso => seeAlso.Text.Elements.Count == 1 && seeAlso.MemberId.Equals(new SimpleTypeId("Grynwald.MdDocs.ApiReference.Test.TestData", "TestClass_Type"))
             );
             Assert.Single(
                 docs.SeeAlso,
-                seeAlso => seeAlso.Text.Elements.Count == 0 && seeAlso.MemberId.Equals(new SimpleTypeId("MdDoc.Test.TestData", "TestInterface_Type"))
+                seeAlso => seeAlso.Text.Elements.Count == 0 && seeAlso.MemberId.Equals(new SimpleTypeId("Grynwald.MdDocs.ApiReference.Test.TestData", "TestInterface_Type"))
             );
         }
 
@@ -192,11 +192,11 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
             Assert.Equal(2, docs.SeeAlso.Count);
             Assert.Single(
                 docs.SeeAlso,
-                seeAlso => seeAlso.Text.Elements.Count == 1 && seeAlso.MemberId.Equals(new SimpleTypeId("MdDoc.Test.TestData", "TestClass_Type"))
+                seeAlso => seeAlso.Text.Elements.Count == 1 && seeAlso.MemberId.Equals(new SimpleTypeId("Grynwald.MdDocs.ApiReference.Test.TestData", "TestClass_Type"))
             );
             Assert.Single(
                 docs.SeeAlso,
-                seeAlso => seeAlso.Text.Elements.Count == 0 && seeAlso.MemberId.Equals(new SimpleTypeId("MdDoc.Test.TestData", "TestInterface_Type"))
+                seeAlso => seeAlso.Text.Elements.Count == 0 && seeAlso.MemberId.Equals(new SimpleTypeId("Grynwald.MdDocs.ApiReference.Test.TestData", "TestInterface_Type"))
             );
         }
 
@@ -231,11 +231,11 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
             Assert.Equal(2, docs.SeeAlso.Count);
             Assert.Single(
                 docs.SeeAlso,
-                seeAlso => seeAlso.Text.Elements.Count == 1 && seeAlso.MemberId.Equals(new SimpleTypeId("MdDoc.Test.TestData", "TestClass_Type"))
+                seeAlso => seeAlso.Text.Elements.Count == 1 && seeAlso.MemberId.Equals(new SimpleTypeId("Grynwald.MdDocs.ApiReference.Test.TestData", "TestClass_Type"))
             );
             Assert.Single(
                 docs.SeeAlso,
-                seeAlso => seeAlso.Text.Elements.Count == 0 && seeAlso.MemberId.Equals(new SimpleTypeId("MdDoc.Test.TestData", "TestInterface_Type"))
+                seeAlso => seeAlso.Text.Elements.Count == 0 && seeAlso.MemberId.Equals(new SimpleTypeId("Grynwald.MdDocs.ApiReference.Test.TestData", "TestInterface_Type"))
             );
         }
 
@@ -274,11 +274,11 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
             Assert.Equal(2, docs.SeeAlso.Count);
             Assert.Single(
                 docs.SeeAlso,
-                seeAlso => seeAlso.Text.Elements.Count == 1 && seeAlso.MemberId.Equals(new SimpleTypeId("MdDoc.Test.TestData", "TestClass_Type"))
+                seeAlso => seeAlso.Text.Elements.Count == 1 && seeAlso.MemberId.Equals(new SimpleTypeId("Grynwald.MdDocs.ApiReference.Test.TestData", "TestClass_Type"))
             );
             Assert.Single(
                 docs.SeeAlso,
-                seeAlso => seeAlso.Text.Elements.Count == 0 && seeAlso.MemberId.Equals(new SimpleTypeId("MdDoc.Test.TestData", "TestInterface_Type"))
+                seeAlso => seeAlso.Text.Elements.Count == 0 && seeAlso.MemberId.Equals(new SimpleTypeId("Grynwald.MdDocs.ApiReference.Test.TestData", "TestInterface_Type"))
             );
         }
 
@@ -311,11 +311,11 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
             Assert.Equal(2, docs.SeeAlso.Count);
             Assert.Single(
                 docs.SeeAlso,
-                seeAlso => seeAlso.Text.Elements.Count == 1 && seeAlso.MemberId.Equals(new SimpleTypeId("MdDoc.Test.TestData", "TestClass_Type"))
+                seeAlso => seeAlso.Text.Elements.Count == 1 && seeAlso.MemberId.Equals(new SimpleTypeId("Grynwald.MdDocs.ApiReference.Test.TestData", "TestClass_Type"))
             );
             Assert.Single(
                 docs.SeeAlso,
-                seeAlso => seeAlso.Text.Elements.Count == 0 && seeAlso.MemberId.Equals(new SimpleTypeId("MdDoc.Test.TestData", "TestInterface_Type"))
+                seeAlso => seeAlso.Text.Elements.Count == 0 && seeAlso.MemberId.Equals(new SimpleTypeId("Grynwald.MdDocs.ApiReference.Test.TestData", "TestInterface_Type"))
             );
         }
     }
