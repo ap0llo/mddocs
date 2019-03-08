@@ -12,7 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MdDocs.ApiReference.Model\Grynwald.MdDocs.ApiReference.Model.csproj" />
-    <ProjectReference Include="..\MdDocs.ApiReference\Grynwald.MdDocs.ApiReference.csproj" />
+    <ProjectReference Include="..\MdDocs.ApiReference.Pages\Grynwald.MdDocs.ApiReference.Pages.csproj" />
   </ItemGroup>
 
 </Project>
