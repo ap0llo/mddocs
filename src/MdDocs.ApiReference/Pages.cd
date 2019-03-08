@@ -1,81 +1,88 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="MdDoc.Pages.OverloadableMemberPage&lt;TModel, TOverload&gt;" Collapsed="true">
-    <Position X="10.25" Y="4" Width="3" />
+  <Class Name="Grynwald.MdDocs.ApiReference.Pages.OverloadableMemberPage&lt;TModel, TOverload&gt;" Collapsed="true">
+    <Position X="13" Y="4" Width="3" />
     <TypeIdentifier>
-      <HashCode>AAAAAIAAAAAgAAAAAAAgAAAAAAAAAACAACAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAIAAABAgAAAAAADgAEAAAAQAAAKAQCAAAAAAAAQ=</HashCode>
       <FileName>Pages\OverloadableMemberPage.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="MdDoc.Pages.ConstructorsPage" Collapsed="true">
-    <Position X="7.75" Y="6" Width="2.5" />
+  <Class Name="Grynwald.MdDocs.ApiReference.Pages.ConstructorsPage" Collapsed="true">
+    <Position X="10.5" Y="6" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAgAAAAAAAAAAAAQAAAAAAAAAgAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAgAAAAAAAAAAAAQAQAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Pages\ConstructorsPage.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="MdDoc.Pages.MethodPage" Collapsed="true">
-    <Position X="10.5" Y="6" Width="2.5" />
+  <Class Name="Grynwald.MdDocs.ApiReference.Pages.MethodPage" Collapsed="true">
+    <Position X="13.25" Y="6" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAgAAAAAAAAAAAAQAAAAAAAAAgAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAgAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Pages\MethodPage.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="MdDoc.Pages.OperatorPage" Collapsed="true">
-    <Position X="13.25" Y="6" Width="2.5" />
+  <Class Name="Grynwald.MdDocs.ApiReference.Pages.OperatorPage" Collapsed="true">
+    <Position X="16" Y="6" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAgAAAAAAAAAAAAQAAAAAAAAAgAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAgAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Pages\OperatorPage.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="MdDoc.Pages.EventPage">
-    <Position X="3.25" Y="6" Width="2" />
+  <Class Name="Grynwald.MdDocs.ApiReference.Pages.EventPage">
+    <Position X="6" Y="6" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAAAAIAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAEAAAAAAAAgAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Pages\EventPage.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="MdDoc.Pages.FieldPage">
-    <Position X="1.5" Y="6" Width="1.5" />
+  <Class Name="Grynwald.MdDocs.ApiReference.Pages.FieldPage">
+    <Position X="4.25" Y="6" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAIAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAEAAAAAAAAgAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Pages\FieldPage.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="MdDoc.Pages.MemberPage&lt;TModel&gt;" Collapsed="true">
-    <Position X="7.25" Y="2.5" Width="1.5" />
+  <Class Name="Grynwald.MdDocs.ApiReference.Pages.MemberPage&lt;TModel&gt;" Collapsed="true">
+    <Position X="10" Y="2.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Pages\MemberPage.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="MdDoc.Pages.PageBase&lt;TModel&gt;" Collapsed="true">
-    <Position X="3" Y="1" Width="1.5" />
+  <Class Name="Grynwald.MdDocs.ApiReference.Pages.PageBase&lt;TModel&gt;" Collapsed="true">
+    <Position X="5.75" Y="1" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>ACAQAIAAAAAAAAAAAAABAAABQAAAQEQAEAgAAAAAAAA=</HashCode>
+      <HashCode>AAAwAIAAAAAAIAAAAAABAAABQAAAQEQAEAgCAEAAAAA=</HashCode>
       <FileName>Pages\PageBase.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="MdDoc.Pages.PropertyPage">
-    <Position X="5.5" Y="6" Width="1.5" />
+  <Class Name="Grynwald.MdDocs.ApiReference.Pages.PropertyPage">
+    <Position X="8.25" Y="6" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAIAAAAAAAAAAAAAAAAAAQAAABAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAEAAAAAAAAgAAAAAAAAAAAAQCAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Pages\PropertyPage.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="MdDoc.Pages.TypePage" Collapsed="true">
-    <Position X="1.75" Y="2.5" Width="1.5" />
+  <Class Name="Grynwald.MdDocs.ApiReference.Pages.TypePage" Collapsed="true">
+    <Position X="4.5" Y="2.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAMCAAAAIAAAAAIABAAAAQAAAAAACAAgAAAgAgAA=</HashCode>
+      <HashCode>AAAQAMABAAAoAAAEAIAAAAAAQAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Pages\TypePage.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="MdDoc.Pages.SimpleMemberPage&lt;TModel&gt;" Collapsed="true">
-    <Position X="3.25" Y="4" Width="2" />
+  <Class Name="Grynwald.MdDocs.ApiReference.Pages.SimpleMemberPage&lt;TModel&gt;" Collapsed="true">
+    <Position X="6" Y="4" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAgAAAAAAAA=</HashCode>
+      <HashCode>AAEAAMAAAAAoAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Pages\SimpleMemberPage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Grynwald.MdDocs.ApiReference.Pages.NamespacePage" Collapsed="true">
+    <Position X="1.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAgAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Pages\NamespacePage.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />
