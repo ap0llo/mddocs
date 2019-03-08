@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Grynwald.Utilities.Text;
 using Mono.Cecil;
 
 namespace Grynwald.MdDocs.ApiReference.Model
@@ -122,7 +123,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
             // method is constructor
             if (method.IsConstructor)
             {
-                // omit the "public" moifier for static class initializers
+                // omit the "public" modifier for static class initializers
                 if (method.IsStatic)
                 {
                     definitionBuilder.Append("static ");
@@ -156,7 +157,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
                 // check if method is operator
                 if (method.IsOperator(out var operatorKind))
                 {
-                    // implict and explict conversion operators do not have a return type in the signature
+                    // implicit and explicit conversion operators do not have a return type in the signature
                     // instead, the return type is the operator
                     // e.g. public static explicit operator int(myType x);
                     if (operatorKind == OperatorKind.Implicit)
@@ -297,7 +298,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
                 definitionBuilder.Append("[");
                 definitionBuilder.Append(attributeName);
 
-                // if there are any paramters or properties defined, append them as well)
+                // if there are any parameters or properties defined, append them as well)
                 if (attribute.HasConstructorArguments || attribute.HasProperties)
                 {
                     definitionBuilder.Append("(");
@@ -361,7 +362,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
                     // "static"
                     //
                     // Check if class is static, however there are no static classes on IL level
-                    // staic classes are both abstract and sealed which cannot be declared in C#,
+                    // static classes are both abstract and sealed which cannot be declared in C#,
                     // so a abstract sealed class is assumed to be static
                     var isStatic = type.IsSealed && type.IsAbstract;
                     if (isStatic)

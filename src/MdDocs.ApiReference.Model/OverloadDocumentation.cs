@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Grynwald.MdDocs.ApiReference.Model.XmlDocs;
+using Grynwald.Utilities.Collections;
 
 namespace Grynwald.MdDocs.ApiReference.Model
 {
@@ -42,9 +43,9 @@ namespace Grynwald.MdDocs.ApiReference.Model
             var documentationComments = xmlDocsProvider.TryGetDocumentationComments(memberId);
             Summary = documentationComments?.Summary;
             Remarks = documentationComments?.Remarks;
-            SeeAlso = documentationComments?.SeeAlso?.ToReadOnly() ?? Array.Empty<SeeAlsoElement>();
+            SeeAlso = documentationComments?.SeeAlso?.AsReadOnlyList() ?? Array.Empty<SeeAlsoElement>();
             Returns = documentationComments?.Returns;
-            Exceptions = documentationComments?.Exceptions?.ToReadOnly() ?? Array.Empty<ExceptionElement>();
+            Exceptions = documentationComments?.Exceptions?.AsReadOnlyList() ?? Array.Empty<ExceptionElement>();
             Example = documentationComments?.Example;
         }
 

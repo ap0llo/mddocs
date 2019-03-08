@@ -149,7 +149,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
             var documentationComments = m_XmlDocsProvider.TryGetDocumentationComments(MemberId);
             Summary = documentationComments?.Summary;
             Remarks = documentationComments?.Remarks;
-            SeeAlso = documentationComments?.SeeAlso?.ToReadOnly() ?? Array.Empty<SeeAlsoElement>();
+            SeeAlso = documentationComments?.SeeAlso?.AsReadOnlyList() ?? Array.Empty<SeeAlsoElement>();
             Example = documentationComments?.Example;
 
             CSharpDefinition = CSharpDefinitionFormatter.GetDefinition(definition);

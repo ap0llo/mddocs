@@ -46,10 +46,10 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
         /// </para>
         /// </remarks>
         /// <value>
-        /// A dictionary containing all availble type parameter documentation. The name of the type parameter serves as key into the dictionary.
+        /// A dictionary containing all available type parameter documentation. The name of the type parameter serves as key into the dictionary.
         /// Value is never null and is empty if no type parameter documentation was specified.
         /// </value>
-        public Dictionary<string, TextBlock> TypeParameters { get; } = new Dictionary<string, TextBlock>();
+        public IDictionary<string, TextBlock> TypeParameters { get; } = new Dictionary<string, TextBlock>();
 
         /// <summary>
         /// Gets the documentation for the member's parameters
@@ -61,10 +61,10 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
         /// </para>
         /// </remarks>
         /// <value>
-        /// A dictionary containing all availble parameter documentation. The name of the parameter serves as key into the dictionary.
+        /// A dictionary containing all available parameter documentation. The name of the parameter serves as key into the dictionary.
         /// Value is never null and is empty if no parameter documentation was specified.
         /// </value>
-        public Dictionary<string, TextBlock> Parameters { get; } = new Dictionary<string, TextBlock>();
+        public IDictionary<string, TextBlock> Parameters { get; } = new Dictionary<string, TextBlock>();
 
         /// <summary>
         /// Gets the <c>value</c> documentation for the member

@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "Grynwald.MdDocs.ApiReference": {
-      "commandName": "Project",
-      "commandLineArgs": "\"C:\\Users\\Andreas\\Projects\\MdDoc\\Build\\Debug\\Grynwald.MdDocs.ApiReference.DemoProject\\netstandard2.0\\DemoProject.dll\" C:\\Users\\Andreas\\Projects\\MdDoc\\docs\\api"
-    }
-  }
-}

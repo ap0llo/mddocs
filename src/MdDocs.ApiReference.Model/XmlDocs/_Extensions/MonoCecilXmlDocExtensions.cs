@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Text;
+using Grynwald.Utilities.Text;
 using Mono.Cecil;
 
 namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
@@ -12,7 +13,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
 
         public static string GetXmlDocId(this TypeReference type) => $"T:{type.FullName}";
 
-        //MethodReference cannot be used here, becuase it does not define the IsConstructor property
+        //MethodReference cannot be used here, because it does not define the IsConstructor property
         public static string GetXmlDocId(this MethodDefinition method)
         {
             var stringBuilder = new StringBuilder();

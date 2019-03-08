@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Grynwald.Utilities.Collections;
 using Mono.Cecil;
 
 namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs

@@ -1,10 +1,11 @@
 ﻿using System.Linq;
 using System.Text;
+using Grynwald.Utilities.Text;
 using Mono.Cecil;
 
 namespace Grynwald.MdDocs.ApiReference.Model
 {
-    sealed class MethodFormatter
+    public sealed class MethodFormatter
     {
         public static readonly MethodFormatter Instance = new MethodFormatter();
 
@@ -23,7 +24,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
             {
                 var name = method.DeclaringType.Name;
 
-                // remove numer of type parameters from name
+                // remove number of type parameters from name
                 if(method.DeclaringType.HasGenericParameters)
                 {
                     name = name.Substring(0, name.LastIndexOf('`'));

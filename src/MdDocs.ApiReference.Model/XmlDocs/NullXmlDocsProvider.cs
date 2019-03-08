@@ -1,6 +1,6 @@
 ﻿namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
 {
-    class NullXmlDocsProvider : IXmlDocsProvider
+    sealed class NullXmlDocsProvider : IXmlDocsProvider
     {
         public static readonly NullXmlDocsProvider Instance = new NullXmlDocsProvider();
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Grynwald.MdDocs.ApiReference.Model.XmlDocs;
+using Grynwald.Utilities.Collections;
 using Mono.Cecil;
 
 namespace Grynwald.MdDocs.ApiReference.Model
@@ -32,7 +33,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
             var documentationComments = xmlDocsProvider?.TryGetDocumentationComments(MemberId);
             Value = documentationComments?.Value;
-            Exceptions = documentationComments?.Exceptions?.ToReadOnly() ?? Array.Empty<ExceptionElement>();
+            Exceptions = documentationComments?.Exceptions?.AsReadOnlyList() ?? Array.Empty<ExceptionElement>();
         }
     }
 }

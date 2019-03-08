@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Grynwald.MdDocs.ApiReference.Model.XmlDocs;
+using Grynwald.Utilities.Collections;
 using Mono.Cecil;
 
 namespace Grynwald.MdDocs.ApiReference.Model
@@ -37,7 +38,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
             var documentationComments = xmlDocsProvider.TryGetDocumentationComments(memberId);
             Summary = documentationComments?.Summary;
             Remarks = documentationComments?.Remarks;
-            SeeAlso = documentationComments?.SeeAlso?.ToReadOnly() ?? Array.Empty<SeeAlsoElement>();
+            SeeAlso = documentationComments?.SeeAlso?.AsReadOnlyList() ?? Array.Empty<SeeAlsoElement>();
             Example = documentationComments?.Example;
 
             IsObsolete = definitionAttributes.IsObsolete(out var obsoleteMessage);
