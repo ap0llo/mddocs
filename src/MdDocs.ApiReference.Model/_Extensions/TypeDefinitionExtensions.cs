@@ -9,8 +9,8 @@ namespace Grynwald.MdDocs.ApiReference.Model
     static class TypeDefinitionExtensions
     {
         private static readonly object s_Lock = new object();
-        private static IDictionary<TypeReference, HashSet<MethodReference>> s_PropertyAccessors = new Dictionary<TypeReference, HashSet<MethodReference>>();
-        private static IDictionary<TypeReference, HashSet<MethodReference>> s_EventAccessors = new Dictionary<TypeReference, HashSet<MethodReference>>();
+        private static readonly IDictionary<TypeReference, HashSet<MethodReference>> s_PropertyAccessors = new Dictionary<TypeReference, HashSet<MethodReference>>();
+        private static readonly IDictionary<TypeReference, HashSet<MethodReference>> s_EventAccessors = new Dictionary<TypeReference, HashSet<MethodReference>>();
 
 
         public static TypeKind Kind(this TypeDefinition type)

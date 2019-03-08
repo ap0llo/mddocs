@@ -5,15 +5,15 @@ using Grynwald.MdDocs.ApiReference.Model;
 using static Grynwald.MarkdownGenerator.FactoryMethods;
 
 namespace Grynwald.MdDocs.ApiReference.Pages
-{    
+{
     class PropertyPage : SimpleMemberPage<PropertyDocumentation>
-    {        
-        public override OutputPath OutputPath { get; }            
-        
+    {
+        public override OutputPath OutputPath { get; }
+
 
         public PropertyPage(PageFactory pageFactory, string rootOutputPath, PropertyDocumentation model)
             : base(pageFactory, rootOutputPath, model)
-        {            
+        {
             OutputPath = new OutputPath(Path.Combine(GetTypeDir(Model.TypeDocumentation), "Properties", $"{Model.Name}.md"));
         }
 

@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using Grynwald.Utilities.Collections;
 using Grynwald.MdDocs.ApiReference.Model;
+using Grynwald.Utilities.Collections;
 
 namespace Grynwald.MdDocs.ApiReference.Pages
 {
     public class PageFactory
     {
-        private readonly string m_RootOutputPath;        
+        private readonly string m_RootOutputPath;
         private readonly AssemblyDocumentation m_Model;
         private readonly IDictionary<IDocumentation, IPage> m_Pages = new Dictionary<IDocumentation, IPage>();
 
@@ -33,7 +33,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             switch (item)
             {
                 // all overloads of an method / operator are combined to a single page
-                // so when the page of an overlaod is requested, return the combined page                
+                // so when the page of an overload is requested, return the combined page                
 
                 case MethodOverloadDocumentation methodOverload:
                     return TryGetPage(methodOverload.MethodDocumentation);
@@ -43,7 +43,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 
                 case OperatorOverloadDocumentation operatorOverload:
                     return TryGetPage(operatorOverload.OperatorDocumentation);
-                    
+
                 default:
                     return m_Pages.GetValueOrDefault(item);
             }
@@ -51,7 +51,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 
         private void LoadPages()
         {
-            foreach(var @namespace in m_Model.MainModuleDocumentation.Namespaces)
+            foreach (var @namespace in m_Model.MainModuleDocumentation.Namespaces)
             {
                 m_Pages.Add(@namespace, new NamespacePage(this, m_RootOutputPath, @namespace));
             }
@@ -59,13 +59,13 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             foreach (var type in m_Model.MainModuleDocumentation.Types)
             {
                 m_Pages.Add(type, new TypePage(this, m_RootOutputPath, type));
-                
+
                 foreach (var property in type.Properties)
                 {
                     m_Pages.Add(property, new PropertyPage(this, m_RootOutputPath, property));
                 }
 
-                foreach(var indexer in type.Indexers)
+                foreach (var indexer in type.Indexers)
                 {
                     m_Pages.Add(indexer, new IndexerPage(this, m_RootOutputPath, indexer));
                 }
@@ -74,29 +74,29 @@ namespace Grynwald.MdDocs.ApiReference.Pages
                 {
                     m_Pages.Add(type.Constructors, new ConstructorsPage(this, m_RootOutputPath, type.Constructors));
                 }
-            
+
                 foreach (var method in type.Methods)
                 {
                     m_Pages.Add(method, new MethodPage(this, m_RootOutputPath, method));
                 }
 
-                if(type.Kind != TypeKind.Enum)
+                if (type.Kind != TypeKind.Enum)
                 {
-                    foreach(var field in type.Fields)
+                    foreach (var field in type.Fields)
                     {
                         m_Pages.Add(field, new FieldPage(this, m_RootOutputPath, field));
                     }
                 }
 
-                foreach(var ev in type.Events)
+                foreach (var ev in type.Events)
                 {
                     m_Pages.Add(ev, new EventPage(this, m_RootOutputPath, ev));
                 }
 
-                foreach(var op in type.Operators)
+                foreach (var op in type.Operators)
                 {
                     m_Pages.Add(op, new OperatorPage(this, m_RootOutputPath, op));
-                }                
+                }
             }
         }
     }

@@ -4,7 +4,7 @@ using System.IO;
 namespace Grynwald.MdDocs.ApiReference
 {
     public sealed class OutputPath : IEquatable<OutputPath>, IEquatable<string>
-    {        
+    {
         public string Value { get; }
 
 
@@ -55,7 +55,7 @@ namespace Grynwald.MdDocs.ApiReference
             }
         }
 
-        public bool Equals(OutputPath other) => 
+        public bool Equals(OutputPath other) =>
             other != null && StringComparer.OrdinalIgnoreCase.Equals(Value, other.Value);
 
         public bool Equals(string other) =>

@@ -14,7 +14,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 
         public bool TryGetLink(MemberId id, out string link)
         {
-            foreach(var provider in m_InnerProviders)
+            foreach (var provider in m_InnerProviders)
             {
                 if (provider.TryGetLink(id, out link))
                     return true;

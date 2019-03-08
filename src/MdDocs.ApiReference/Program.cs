@@ -25,7 +25,7 @@ namespace Grynwald.MdDocs.ApiReference
                     page.Save();
                 }
             }
-            
+
             if (Debugger.IsAttached)
             {
                 Console.WriteLine();

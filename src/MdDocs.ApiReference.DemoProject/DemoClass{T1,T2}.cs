@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace DemoProject
+﻿namespace DemoProject
 {
     /// <summary>
     /// An example of an generic class.

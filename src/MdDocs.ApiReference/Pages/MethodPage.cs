@@ -9,9 +9,9 @@ namespace Grynwald.MdDocs.ApiReference.Pages
     class MethodPage : OverloadableMemberPage<MethodDocumentation, MethodOverloadDocumentation>
     {
         public override OutputPath OutputPath { get; }
-        
 
-        public MethodPage(PageFactory pageFactory, string rootOutputPath, MethodDocumentation model) 
+
+        public MethodPage(PageFactory pageFactory, string rootOutputPath, MethodDocumentation model)
             : base(pageFactory, rootOutputPath, model)
         {
             OutputPath = new OutputPath(GetTypeDir(Model.TypeDocumentation), "Methods", $"{Model.Name}.md");
@@ -19,6 +19,6 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 
 
         protected override MdHeading GetHeading() =>
-            Heading($"{Model.TypeDocumentation.DisplayName}.{Model.Name} Method", 1);        
+            Heading($"{Model.TypeDocumentation.DisplayName}.{Model.Name} Method", 1);
     }
 }

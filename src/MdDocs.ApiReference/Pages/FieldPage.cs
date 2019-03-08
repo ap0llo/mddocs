@@ -6,9 +6,9 @@ using static Grynwald.MarkdownGenerator.FactoryMethods;
 namespace Grynwald.MdDocs.ApiReference.Pages
 {
     class FieldPage : SimpleMemberPage<FieldDocumentation>
-    {        
-        public override OutputPath OutputPath { get; }            
-        
+    {
+        public override OutputPath OutputPath { get; }
+
 
         public FieldPage(PageFactory pageFactory, string rootOutputPath, FieldDocumentation model)
             : base(pageFactory, rootOutputPath, model)
@@ -22,7 +22,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             Heading($"{Model.TypeDocumentation.DisplayName}.{Model.Name} Field", 1);
 
         protected override void AddValueSection(MdContainerBlock block)
-        {            
+        {
             block.Add(Heading("Field Value", 2));
             block.Add(
                 GetMdParagraph(Model.Type)
@@ -32,6 +32,6 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             {
                 block.Add(ConvertToBlock(Model.Value));
             }
-        }        
+        }
     }
 }

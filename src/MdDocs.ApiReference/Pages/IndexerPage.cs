@@ -8,7 +8,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
     class IndexerPage : OverloadableMemberPage<IndexerDocumentation, IndexerOverloadDocumentation>
     {
         public override OutputPath OutputPath { get; }
-        
+
 
         public IndexerPage(PageFactory pageFactory, string rootOutputPath, IndexerDocumentation model)
             : base(pageFactory, rootOutputPath, model)
@@ -37,6 +37,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
                 block.Add(ConvertToBlock(overload.Value));
             }
         }
+
 
         //No "Returns" subsection for indexers (there is a "Value" section instead)
         protected override void AddReturnsSubSection(MdContainerBlock block, IndexerOverloadDocumentation overload)

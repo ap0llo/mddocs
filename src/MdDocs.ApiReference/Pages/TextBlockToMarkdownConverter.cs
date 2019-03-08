@@ -9,7 +9,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
         class ConvertToBlockVisitor : IVisitor
         {
             private MdParagraph m_CurrentParagraph = new MdParagraph();
-            private IMdSpanFactory m_SpanFactory;
+            private readonly IMdSpanFactory m_SpanFactory;
 
 
             public MdContainerBlock Result { get; } = new MdContainerBlock();
@@ -23,7 +23,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 
             public void Visit(ParamRefElement element)
             {
-                m_CurrentParagraph.Add(new MdCodeSpan(element.Name));                
+                m_CurrentParagraph.Add(new MdCodeSpan(element.Name));
             }
 
             public void Visit(TypeParamRefElement element)
@@ -76,20 +76,20 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 
                 // end the paragraph to make sure all content gets added to Result
                 PushParagraph();
-            }            
+            }
 
-                      
+
             private void PushParagraph()
-            {                
+            {
                 Result.Add(m_CurrentParagraph);
                 m_CurrentParagraph = new MdParagraph();
-                
-            }            
+
+            }
         }
 
         class ConvertToSpanVisitor : IVisitor
         {
-            private IMdSpanFactory m_SpanFactory;
+            private readonly IMdSpanFactory m_SpanFactory;
 
 
             public MdCompositeSpan Result { get; } = new MdCompositeSpan();
@@ -136,7 +136,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 
             public void Visit(TextBlock text)
             {
-                foreach(var element in text.Elements)
+                foreach (var element in text.Elements)
                 {
                     element.Accept(this);
                 }
@@ -155,7 +155,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 
         public static MdBlock ConvertToBlock(TextBlock text, IMdSpanFactory spanFactory)
         {
-            if(text.IsEmpty)
+            if (text.IsEmpty)
             {
                 return MdEmptyBlock.Instance;
             }
@@ -165,7 +165,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 
             return visitor.Result;
         }
-        
+
         public static MdSpan ConvertToSpan(TextBlock text, IMdSpanFactory spanFactory)
         {
             var visitor = new ConvertToSpanVisitor(spanFactory);
@@ -173,5 +173,5 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 
             return visitor.Result;
         }
-    }    
+    }
 }

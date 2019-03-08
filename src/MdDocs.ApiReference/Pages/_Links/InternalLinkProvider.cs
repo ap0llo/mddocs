@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Grynwald.MdDocs.ApiReference.Model;
+﻿using Grynwald.MdDocs.ApiReference.Model;
 
 namespace Grynwald.MdDocs.ApiReference.Pages
 {
@@ -26,7 +23,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
                 return false;
             }
 
-            var page = m_PageFactory.TryGetPage(modelItem) ;
+            var page = m_PageFactory.TryGetPage(modelItem);
 
             if (page == null)
             {
@@ -35,7 +32,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             }
 
             link = page.OutputPath;
-            return true;           
+            return true;
         }
     }
 }
