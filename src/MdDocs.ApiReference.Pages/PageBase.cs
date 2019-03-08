@@ -106,7 +106,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
         }
 
         protected string GetNamespaceDir(NamespaceDocumentation namespaceDocumentation) =>
-            Path.Combine(m_RootOutputPath, String.Join('/', namespaceDocumentation.Name.Split(s_SplitChars)));
+            Path.Combine(m_RootOutputPath, String.Join("/", namespaceDocumentation.Name.Split(s_SplitChars)));
 
         protected MdSpan ConvertToSpan(TextBlock textBlock)
         {
