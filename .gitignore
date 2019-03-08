@@ -342,3 +342,4 @@ ASALocalRun/
 # End of https://www.gitignore.io/api/visualstudio
 /src/MdDoc/Properties/launchSettings.json
 /src/MdDoc.Test.TestData/MdDoc.Test.TestData.xml
+/src/MdDocs/Properties/launchSettings.json

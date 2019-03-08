@@ -17,12 +17,11 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 
         public PageFactory(AssemblyDocumentation assemblyDocumentation, string outDir)
         {
-            if (string.IsNullOrEmpty(outDir))
+            if (String.IsNullOrEmpty(outDir))
                 throw new ArgumentException("Value must not be null or empty", nameof(outDir));
 
             m_RootOutputPath = outDir;
             m_Model = assemblyDocumentation ?? throw new ArgumentNullException(nameof(assemblyDocumentation));
-
 
             LoadPages();
         }
@@ -46,6 +45,14 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 
                 default:
                     return m_Pages.GetValueOrDefault(item);
+            }
+        }
+
+        public void SaveAll()
+        {
+            foreach (var page in AllPages)
+            {
+                page.Save();
             }
         }
 
