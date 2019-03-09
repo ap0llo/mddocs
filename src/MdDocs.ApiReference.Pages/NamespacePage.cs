@@ -40,6 +40,8 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 
             //TODO: Sub-namespaces
 
+            AddFooter(document.Root);
+
             Directory.CreateDirectory(Path.GetDirectoryName(OutputPath));
             document.Save(OutputPath);
         }

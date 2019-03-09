@@ -57,6 +57,8 @@ namespace Grynwald.MdDocs.ApiReference.Pages
                 }
             }
 
+            AddFooter(document.Root);
+
             Directory.CreateDirectory(Path.GetDirectoryName(OutputPath));
             document.Save(OutputPath);
         }

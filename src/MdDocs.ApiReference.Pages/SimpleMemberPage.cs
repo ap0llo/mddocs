@@ -42,6 +42,8 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 
             AddSeeAlsoSection(document.Root);
 
+            AddFooter(document.Root);
+
             Directory.CreateDirectory(Path.GetDirectoryName(OutputPath));
             document.Save(OutputPath);
         }
