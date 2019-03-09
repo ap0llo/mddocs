@@ -4,10 +4,10 @@
 
 ## Overloads
 
-| Signature       | Description                                              |
-| --------------- | -------------------------------------------------------- |
-| Method1()       | Example of an overloaded method without parameters       |
-| Method1(string) | Example of an overloaded method accepting one parameter. |
+| Signature                         | Description                                              |
+| --------------------------------- | -------------------------------------------------------- |
+| [Method1()](#method1)             | Example of an overloaded method without parameters       |
+| [Method1(string)](#method1string) | Example of an overloaded method accepting one parameter. |
 
 ## Method1()
 
@@ -39,7 +39,7 @@ InvalidOperationException
 
 ### See Also
 
-- Method1(string)
+- [Method1(string)](#method1string)
 - [Method2()](Method2.md)
 
 ## Method1(string)
@@ -64,5 +64,5 @@ For overloaded members, there is a separate "Remarks" section for every overload
 
 ### See Also
 
-- Method1()
+- [Method1()](#method1)
 - [Method2()](Method2.md)

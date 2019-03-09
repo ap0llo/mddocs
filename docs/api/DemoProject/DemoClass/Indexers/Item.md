@@ -4,11 +4,11 @@
 
 ## Overloads
 
-| Signature        | Description                                       |
-| ---------------- | ------------------------------------------------- |
-| Item\[int, int\] | An example of an indexer with two parameters.     |
-| Item\[int\]      | An example of an indexer with a single parameter. |
-| Item\[object\]   | An example of an obsolete indexer.                |
+| Signature                        | Description                                       |
+| -------------------------------- | ------------------------------------------------- |
+| [Item\[int, int\]](#itemint-int) | An example of an indexer with two parameters.     |
+| [Item\[int\]](#itemint)          | An example of an indexer with a single parameter. |
+| [Item\[object\]](#itemobject)    | An example of an obsolete indexer.                |
 
 ## Item\[int, int\]
 

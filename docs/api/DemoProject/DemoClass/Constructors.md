@@ -4,10 +4,10 @@
 
 ## Overloads
 
-| Signature      | Description                                                                      |
-| -------------- | -------------------------------------------------------------------------------- |
-| DemoClass()    | Initializes a new instance of [DemoClass](Type.md)                               |
-| DemoClass(int) | Initializes a new instance of [DemoClass](Type.md) with the specified parameters |
+| Signature                       | Description                                                                      |
+| ------------------------------- | -------------------------------------------------------------------------------- |
+| [DemoClass()](#democlass)       | Initializes a new instance of [DemoClass](Type.md)                               |
+| [DemoClass(int)](#democlassint) | Initializes a new instance of [DemoClass](Type.md) with the specified parameters |
 
 ## DemoClass()
 

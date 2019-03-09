@@ -15,5 +15,5 @@ Remarks allow specification of more detailed information about a member, in this
 
 ## See Also
 
-- [Method1()](Method1.md)
-- [Method1(string)](Method1.md)
+- [Method1()](Method1.md#method1)
+- [Method1(string)](Method1.md#method1string)

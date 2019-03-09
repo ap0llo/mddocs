@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Grynwald.MarkdownGenerator;
 using Grynwald.MdDocs.ApiReference.Model;
+using Grynwald.Utilities.Collections;
 using Microsoft.Extensions.Logging;
 
 using static Grynwald.MarkdownGenerator.FactoryMethods;
@@ -13,12 +15,16 @@ namespace Grynwald.MdDocs.ApiReference.Pages
         where TModel : OverloadableMemberDocumentation<TOverload>
         where TOverload : OverloadDocumentation
     {
+
         private readonly ILogger m_Logger;
+        private readonly Lazy<IReadOnlyDictionary<MemberId, MdHeading>> m_Headings;
+
 
         internal OverloadableMemberPage(PageFactory pageFactory, string rootOutputPath, TModel model, ILogger logger)
             : base(pageFactory, rootOutputPath, model)
         {
             m_Logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
+            m_Headings = new Lazy<IReadOnlyDictionary<MemberId, MdHeading>>(LoadHeadings);
         }
 
 
@@ -46,7 +52,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 
                 foreach (var overload in orderedOverloads)
                 {
-                    document.Root.Add(Heading(overload.Signature, 2));
+                    document.Root.Add(m_Headings.Value[overload.MemberId]);
                     AddOverloadSection(document.Root, overload, 2);
                 }
             }
@@ -56,16 +62,32 @@ namespace Grynwald.MdDocs.ApiReference.Pages
         }
 
 
+        public override bool TryGetAnchor(MemberId id, out string anchor)
+        {
+            if (m_Headings.Value.ContainsKey(id))
+            {
+                anchor = m_Headings.Value[id].Anchor;
+                return true;
+            }
+            else
+            {
+                anchor = default;
+                return false;
+            }
+        }
+
         protected abstract MdHeading GetPageHeading();
 
-
-        protected void AddOverloadsTableSection(MdContainerBlock block, IEnumerable<TOverload> methods, int headingLevel)
+        protected void AddOverloadsTableSection(MdContainerBlock block, IEnumerable<TOverload> overloads, int headingLevel)
         {
             var table = Table(Row("Signature", "Description"));
-            foreach (var method in methods)
+            foreach (var overload in overloads)
             {
+                // optimization: we know the section we're linking to is on the same page
+                // so we can create the link to the anchor without going through PageBase.CreateLink()
+                var link = Link(overload.Signature, "#" + m_Headings.Value[overload.MemberId].Anchor);
                 table.Add(
-                    Row(method.Signature, ConvertToSpan(method.Summary))
+                    Row(link, ConvertToSpan(overload.Summary))
                 );
             }
 
@@ -218,6 +240,24 @@ namespace Grynwald.MdDocs.ApiReference.Pages
                 BulletList(
                     overload.SeeAlso.Select(seeAlso => ListItem(ConvertToSpan(seeAlso)))
             ));
+        }
+
+
+        private IReadOnlyDictionary<MemberId, MdHeading> LoadHeadings()
+        {
+            if (Model.Overloads.Count == 1)
+            {
+                return ReadOnlyDictionary<MemberId, MdHeading>.Empty;
+            }
+            else
+            {
+                var headings = new Dictionary<MemberId, MdHeading>();
+                foreach (var overload in Model.Overloads)
+                {
+                    headings.Add(overload.MemberId, Heading(overload.Signature, 2));
+                }
+                return headings;
+            }
         }
     }
 }

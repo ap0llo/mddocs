@@ -2,7 +2,7 @@
 
 namespace Grynwald.MdDocs.ApiReference.Pages
 {
-    class InternalLinkProvider : ILinkProvider
+    internal class InternalLinkProvider : ILinkProvider
     {
         private readonly IDocumentation m_Model;
         private readonly PageFactory m_PageFactory;
@@ -13,7 +13,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             m_PageFactory = pageFactory;
         }
 
-        public bool TryGetLink(MemberId id, out string link)
+        public bool TryGetLink(MemberId id, out Link link)
         {
             var modelItem = m_Model.TryGetDocumentation(id);
 
@@ -31,7 +31,15 @@ namespace Grynwald.MdDocs.ApiReference.Pages
                 return false;
             }
 
-            link = page.OutputPath;
+            if (page.TryGetAnchor(id, out var anchor))
+            {
+                link = new Link(page.OutputPath, anchor);
+            }
+            else
+            {
+                link = new Link(page.OutputPath);
+            }
+
             return true;
         }
     }

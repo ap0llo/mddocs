@@ -2,8 +2,8 @@
 
 namespace Grynwald.MdDocs.ApiReference.Pages
 {
-    interface ILinkProvider
+    internal interface ILinkProvider
     {
-        bool TryGetLink(MemberId id, out string link);
+        bool TryGetLink(MemberId id, out Link link);
     }
 }

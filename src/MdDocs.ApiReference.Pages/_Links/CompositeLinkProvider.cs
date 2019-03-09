@@ -3,7 +3,7 @@ using Grynwald.MdDocs.ApiReference.Model;
 
 namespace Grynwald.MdDocs.ApiReference.Pages
 {
-    class CompositeLinkProvider : ILinkProvider
+    internal class CompositeLinkProvider : ILinkProvider
     {
         private readonly ILinkProvider[] m_InnerProviders;
 
@@ -12,7 +12,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             m_InnerProviders = innerProviders ?? throw new ArgumentNullException(nameof(innerProviders));
         }
 
-        public bool TryGetLink(MemberId id, out string link)
+        public bool TryGetLink(MemberId id, out Link link)
         {
             foreach (var provider in m_InnerProviders)
             {

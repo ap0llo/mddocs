@@ -79,14 +79,34 @@ namespace Grynwald.MdDocs.ApiReference.Pages
         public MdSpan CreateLink(MemberId target, MdSpan text)
         {
             // try to generate a link to the target but avoid self-links
-            if (m_LinkProvider.TryGetLink(target, out var link) && !OutputPath.Equals(link))
+
+            if (m_LinkProvider.TryGetLink(target, out var link))
             {
-                return new MdLinkSpan(text, OutputPath.GetRelativePathTo(link));
+                if (OutputPath.Equals(link.Path))
+                {
+                    // link in same file, but there is an anchor => link to anchor
+                    if (link.HasAnchor)
+                        return new MdLinkSpan(text, "#" + link.Anchor);
+                }
+                // link to different file and link has an anchor
+                else
+                {
+                    var relativePath = OutputPath.GetRelativePathTo(link.Path);
+
+                    return link.HasAnchor
+                        ? new MdLinkSpan(text, relativePath + "#" + link.Anchor)
+                        : new MdLinkSpan(text, relativePath);
+                }
             }
-            else
-            {
-                return text;
-            }
+
+            // no link could be created => return text without link
+            return text;
+        }
+
+        public virtual bool TryGetAnchor(MemberId id, out string anchor)
+        {
+            anchor = default;
+            return false;
         }
 
 
