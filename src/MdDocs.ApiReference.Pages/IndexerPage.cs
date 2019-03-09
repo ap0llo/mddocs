@@ -5,7 +5,7 @@ using static Grynwald.MarkdownGenerator.FactoryMethods;
 
 namespace Grynwald.MdDocs.ApiReference.Pages
 {
-    class IndexerPage : OverloadableMemberPage<IndexerDocumentation, IndexerOverloadDocumentation>
+    internal class IndexerPage : OverloadableMemberPage<IndexerDocumentation, IndexerOverloadDocumentation>
     {
         public override OutputPath OutputPath { get; }
 
@@ -16,18 +16,19 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             OutputPath = new OutputPath(GetTypeDir(Model.TypeDocumentation), "Indexers", $"{Model.Name}.md");
         }
 
-        protected override MdHeading GetHeading() =>
+
+        protected override MdHeading GetPageHeading() =>
             Heading($"{Model.TypeDocumentation.DisplayName}.{Model.Name} Indexer", 1);
 
-        protected override void AddParametersSubSection(MdContainerBlock block, IndexerOverloadDocumentation overload)
+        protected override void AddParametersSubSection(MdContainerBlock block, IndexerOverloadDocumentation overload, int headingLevel)
         {
-            base.AddParametersSubSection(block, overload);
-            AddValueSubSection(block, overload);
+            base.AddParametersSubSection(block, overload, headingLevel);
+            AddValueSubSection(block, overload, headingLevel);
         }
 
-        protected virtual void AddValueSubSection(MdContainerBlock block, IndexerOverloadDocumentation overload)
+        protected virtual void AddValueSubSection(MdContainerBlock block, IndexerOverloadDocumentation overload, int headingLevel)
         {
-            block.Add(Heading("Indexer Value", 3));
+            block.Add(Heading("Indexer Value", headingLevel));
             block.Add(
                 GetMdParagraph(overload.Type)
             );
@@ -40,7 +41,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 
 
         //No "Returns" subsection for indexers (there is a "Value" section instead)
-        protected override void AddReturnsSubSection(MdContainerBlock block, IndexerOverloadDocumentation overload)
+        protected override void AddReturnsSubSection(MdContainerBlock block, IndexerOverloadDocumentation overload, int headingLevel)
         { }
     }
 }

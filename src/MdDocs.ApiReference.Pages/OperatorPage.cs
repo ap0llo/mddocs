@@ -5,7 +5,7 @@ using static Grynwald.MarkdownGenerator.FactoryMethods;
 
 namespace Grynwald.MdDocs.ApiReference.Pages
 {
-    class OperatorPage : OverloadableMemberPage<OperatorDocumentation, OperatorOverloadDocumentation>
+    internal class OperatorPage : OverloadableMemberPage<OperatorDocumentation, OperatorOverloadDocumentation>
     {
         public override OutputPath OutputPath { get; }
 
@@ -17,7 +17,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
         }
 
 
-        protected override MdHeading GetHeading() =>
+        protected override MdHeading GetPageHeading() =>
             Heading($"{Model.TypeDocumentation.DisplayName}.{Model.Kind} Operator", 1);
     }
 }

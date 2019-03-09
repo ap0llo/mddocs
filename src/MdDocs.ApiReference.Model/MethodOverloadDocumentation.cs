@@ -17,7 +17,6 @@ namespace Grynwald.MdDocs.ApiReference.Model
         }
 
 
-        //TODO: Consider moving implementation to OverloadDocumentation
         public override IDocumentation TryGetDocumentation(MemberId id) =>
             MemberId.Equals(id) ? this : MethodDocumentation.TryGetDocumentation(id);
     }

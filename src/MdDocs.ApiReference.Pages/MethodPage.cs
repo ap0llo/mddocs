@@ -5,8 +5,7 @@ using static Grynwald.MarkdownGenerator.FactoryMethods;
 
 namespace Grynwald.MdDocs.ApiReference.Pages
 {
-    //TODO: Use a different layout if the method is not overloaded
-    class MethodPage : OverloadableMemberPage<MethodDocumentation, MethodOverloadDocumentation>
+    internal class MethodPage : OverloadableMemberPage<MethodDocumentation, MethodOverloadDocumentation>
     {
         public override OutputPath OutputPath { get; }
 
@@ -18,7 +17,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
         }
 
 
-        protected override MdHeading GetHeading() =>
-            Heading($"{Model.TypeDocumentation.DisplayName}.{Model.Name} Method", 1);
+        protected override MdHeading GetPageHeading() =>
+           Heading($"{Model.TypeDocumentation.DisplayName}.{Model.Name} Method", 1);
     }
 }

@@ -23,7 +23,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
             NamespaceId = namespaceId ?? throw new ArgumentNullException(nameof(namespaceId));
 
             Types = ReadOnlyCollectionAdapter.Create(m_Types.Values);
-            //TODO: Namespace XML docs
+            //TODO: Support XML docs for namespaces
         }
 
 

@@ -8,7 +8,6 @@ using static Grynwald.MarkdownGenerator.FactoryMethods;
 
 namespace Grynwald.MdDocs.ApiReference.Pages
 {
-    //TODO: Use a different layout if there is only a single overloads for this operator
     internal abstract class OverloadableMemberPage<TModel, TOverload> : MemberPage<TModel>
         where TModel : OverloadableMemberDocumentation<TOverload>
         where TOverload : OverloadDocumentation
@@ -22,28 +21,39 @@ namespace Grynwald.MdDocs.ApiReference.Pages
         public override void Save()
         {
             var document = Document(
-                GetHeading()
+                GetPageHeading()
             );
 
             AddDeclaringTypeSection(document.Root);
 
-            //TODO: Attributes
+            //TODO: List method Attributes
 
-            var orderedOverloads = Model.Overloads.OrderBy(x => x.Signature).ToArray();
+            if (Model.Overloads.Count == 1)
+            {
+                AddOverloadSection(document.Root, Model.Overloads.Single(), 1);
+            }
+            else
+            {
+                var orderedOverloads = Model.Overloads.OrderBy(x => x.Signature).ToArray();
 
-            AddOverloadsTableSection(document.Root, orderedOverloads);
+                AddOverloadsTableSection(document.Root, orderedOverloads, headingLevel: 2);
 
-            AddOverloadDetailsSections(document.Root, orderedOverloads);
+                foreach (var overload in orderedOverloads)
+                {
+                    document.Root.Add(Heading(overload.Signature, 2));
+                    AddOverloadSection(document.Root, overload, 2);
+                }
+            }
 
             Directory.CreateDirectory(Path.GetDirectoryName(OutputPath));
             document.Save(OutputPath);
         }
 
 
-        protected abstract MdHeading GetHeading();
+        protected abstract MdHeading GetPageHeading();
 
 
-        protected void AddOverloadsTableSection(MdContainerBlock block, IEnumerable<TOverload> methods)
+        protected void AddOverloadsTableSection(MdContainerBlock block, IEnumerable<TOverload> methods, int headingLevel)
         {
             var table = Table(Row("Signature", "Description"));
             foreach (var method in methods)
@@ -54,46 +64,33 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             }
 
             block.Add(
-                Heading("Overloads", 2),
+                Heading("Overloads", headingLevel),
                 table
             );
         }
 
-        protected void AddOverloadDetailsSections(MdContainerBlock block, IEnumerable<TOverload> methods)
+        protected virtual void AddOverloadSection(MdContainerBlock block, TOverload overload, int headingLevel)
         {
-            foreach (var method in methods)
-            {
-                AddOverloadSection(block, method);
-            }
-        }
-
-        protected virtual void AddOverloadSection(MdContainerBlock block, TOverload overload)
-        {
-            block.Add(
-                Heading(overload.Signature, 2)
-            );
-
             AddObsoleteWarning(block, overload);
 
-            AddDefinitionSubSection(block, overload);
+            AddDefinitionSubSection(block, overload, headingLevel + 1);
 
-            AddTypeParametersSubSection(block, overload);
+            AddTypeParametersSubSection(block, overload, headingLevel + 1);
 
-            AddParametersSubSection(block, overload);
+            AddParametersSubSection(block, overload, headingLevel + 1);
 
-            AddRemarksSubSection(block, overload);
+            AddRemarksSubSection(block, overload, headingLevel + 1);
 
-            AddReturnsSubSection(block, overload);
+            AddReturnsSubSection(block, overload, headingLevel + 1);
 
-            AddExceptionsSubSection(block, overload);
+            AddExceptionsSubSection(block, overload, headingLevel + 1);
 
-            AddExampleSubSection(block, overload);
+            AddExampleSubSection(block, overload, headingLevel + 1);
 
-            AddSeeAlsoSubSection(block, overload);
+            AddSeeAlsoSubSection(block, overload, headingLevel + 1);
         }
 
-
-        protected virtual void AddDefinitionSubSection(MdContainerBlock block, TOverload overload)
+        protected virtual void AddDefinitionSubSection(MdContainerBlock block, TOverload overload, int headingLevel)
         {
             if (overload.Summary != null)
             {
@@ -103,13 +100,13 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             block.Add(CodeBlock(overload.CSharpDefinition, "csharp"));
         }
 
-        protected virtual void AddTypeParametersSubSection(MdContainerBlock block, TOverload overload)
+        protected virtual void AddTypeParametersSubSection(MdContainerBlock block, TOverload overload, int headingLevel)
         {
             if (overload.TypeParameters.Count == 0)
                 return;
 
 
-            block.Add(Heading("Type Parameters", 3));
+            block.Add(Heading("Type Parameters", headingLevel));
 
             foreach (var typeParameter in overload.TypeParameters)
             {
@@ -124,7 +121,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             }
         }
 
-        protected virtual void AddParametersSubSection(MdContainerBlock block, TOverload overload)
+        protected virtual void AddParametersSubSection(MdContainerBlock block, TOverload overload, int headingLevel)
         {
             if (overload.Parameters.Count == 0)
                 return;
@@ -133,7 +130,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             block.Add(parametersBlock);
 
 
-            parametersBlock.Add(Heading("Parameters", 3));
+            parametersBlock.Add(Heading("Parameters", headingLevel));
 
             foreach (var parameter in overload.Parameters)
             {
@@ -151,13 +148,13 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             }
         }
 
-        protected virtual void AddReturnsSubSection(MdContainerBlock block, TOverload overload)
+        protected virtual void AddReturnsSubSection(MdContainerBlock block, TOverload overload, int headingLevel)
         {
             // skip "Returns" section for void methods
             if (overload.Type.IsVoid)
                 return;
 
-            block.Add(Heading("Returns", 3));
+            block.Add(Heading("Returns", headingLevel));
 
             // add return type
             block.Add(
@@ -171,12 +168,12 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             }
         }
 
-        protected virtual void AddExceptionsSubSection(MdContainerBlock block, TOverload overload)
+        protected virtual void AddExceptionsSubSection(MdContainerBlock block, TOverload overload, int headingLevel)
         {
             if (overload.Exceptions.Count == 0)
                 return;
 
-            block.Add(Heading("Exceptions", 3));
+            block.Add(Heading("Exceptions", headingLevel));
 
             foreach (var exception in overload.Exceptions)
             {
@@ -187,30 +184,30 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             }
         }
 
-        protected virtual void AddExampleSubSection(MdContainerBlock block, TOverload overload)
+        protected virtual void AddExampleSubSection(MdContainerBlock block, TOverload overload, int headingLevel)
         {
             if (overload.Example == null)
                 return;
 
-            block.Add(Heading("Example", 3));
+            block.Add(Heading("Example", headingLevel));
             block.Add(ConvertToBlock(overload.Example));
         }
 
-        protected virtual void AddRemarksSubSection(MdContainerBlock block, TOverload overload)
+        protected virtual void AddRemarksSubSection(MdContainerBlock block, TOverload overload, int headingLevel)
         {
             if (overload.Remarks == null)
                 return;
 
-            block.Add(Heading(3, "Remarks"));
+            block.Add(Heading("Remarks", headingLevel));
             block.Add(ConvertToBlock(overload.Remarks));
         }
 
-        protected virtual void AddSeeAlsoSubSection(MdContainerBlock block, TOverload overload)
+        protected virtual void AddSeeAlsoSubSection(MdContainerBlock block, TOverload overload, int headingLevel)
         {
             if (overload.SeeAlso.Count == 0)
                 return;
 
-            block.Add(Heading(3, "See Also"));
+            block.Add(Heading("See Also", headingLevel));
             block.Add(
                 BulletList(
                     overload.SeeAlso.Select(seeAlso => ListItem(ConvertToSpan(seeAlso)))

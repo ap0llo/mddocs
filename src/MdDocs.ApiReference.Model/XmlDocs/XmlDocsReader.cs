@@ -1,4 +1,4 @@
-﻿// The code in this file is dervide from the "DocReader" class from the NuDoq project.
+﻿// The code in this file is derived from the "DocReader" class from the NuDoq project.
 // The original version of this file was downloaded from
 // https://github.com/kzu/NuDoq/blob/56ad8c508003490d859214753591440b123616f5/src/NuDoq/DocReader.cs
 //
@@ -21,6 +21,8 @@
    limitations under the License.
 */
 #endregion
+
+#pragma warning disable IDE0049 // Use framework type
 
 namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
 {
@@ -178,7 +180,6 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
                                 element = new CElement(elementNode.Value);
                                 break;
                             case "see":
-
                                 element = new SeeElement(new MemberIdParser(FindAttribute(elementNode, "cref")).Parse());
                                 break;
                             //case "list":
@@ -199,7 +200,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
 
                             // ignore unknown elements
                             default:
-                                //TODO: Emit warnign for unknown elements
+                                //TODO: Emit warning for unknown elements
                                 break;
                         }
                         break;
@@ -289,3 +290,5 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
         }
     }
 }
+
+#pragma warning restore IDE0049 // Use framework type
