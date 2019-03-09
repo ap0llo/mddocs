@@ -1,7 +1,9 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using Grynwald.MarkdownGenerator;
 using Grynwald.MdDocs.ApiReference.Model;
+using Microsoft.Extensions.Logging;
 
 using static Grynwald.MarkdownGenerator.FactoryMethods;
 
@@ -9,14 +11,19 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 {
     internal abstract class SimpleMemberPage<TModel> : MemberPage<TModel> where TModel : SimpleMemberDocumentation
     {
+        private readonly ILogger m_Logger;
 
-        public SimpleMemberPage(PageFactory pageFactory, string rootOutputPath, TModel model)
+        public SimpleMemberPage(PageFactory pageFactory, string rootOutputPath, TModel model, ILogger logger)
             : base(pageFactory, rootOutputPath, model)
-        { }
+        {
+            m_Logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        }
 
 
         public override void Save()
         {
+            m_Logger.LogInformation($"Saving page '{OutputPath}'");
+
             var document = Document(
                 GetHeading()
             );

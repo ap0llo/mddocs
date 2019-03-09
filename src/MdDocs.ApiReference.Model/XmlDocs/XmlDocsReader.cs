@@ -32,11 +32,12 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
     using System.Linq;
     using System.Xml;
     using System.Xml.Linq;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>
     /// Reads .NET XML API documentation files.
     /// </summary>
-    public static class XmlDocsReader
+    internal static class XmlDocsReader
     {
         /// <summary>
         /// Reads the specified documentation file and returns list of members.
@@ -44,16 +45,21 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
         /// <param name="fileName">Path to the documentation file.</param>
         /// <returns>All documented members found in the given file.</returns>
         /// <exception cref="FileNotFoundException">Could not find documentation file to load.</exception>
-        public static IReadOnlyList<MemberElement> Read(string fileName)
+        public static IReadOnlyList<MemberElement> Read(string fileName, ILogger logger)
         {
             if (!File.Exists(fileName))
                 throw new FileNotFoundException("Could not find documentation file to load.", fileName);
+
+            if (logger == null)
+                throw new ArgumentNullException(nameof(logger));
+
+            logger.LogInformation($"Reading XML documentation comments from '{fileName}'");
 
             var doc = XDocument.Load(fileName, LoadOptions.SetBaseUri | LoadOptions.SetLineInfo);
 
             return doc.Root.Element("members").Elements("member")
                 .Where(element => element.Attribute("name") != null)
-                .Select(element => ReadMember(element.Attribute("name").Value, element))
+                .Select(element => ReadMember(element.Attribute("name").Value, element, logger))
                 .ToList();
         }
 
@@ -61,12 +67,22 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
         /// <summary>
         /// Reads all documentation for a single member
         /// </summary>
-        private static MemberElement ReadMember(string memberId, XElement element)
+        private static MemberElement ReadMember(string memberId, XElement element, ILogger logger)
         {
-            var id = MemberId.Parse(memberId);
+            MemberId id;
+            try
+            {
+                id = MemberId.Parse(memberId);
+            }
+            catch (MemberIdParserException ex)
+            {
+                logger.LogCritical(ex, $"Failed to parse member id '{memberId}'");
+                throw;
+            }
+
             var memberElement = new MemberElement(id);
 
-            ReadMemberContent(element, memberElement);
+            ReadMemberContent(element, memberElement, logger);
 
             return memberElement;
         }
@@ -75,33 +91,37 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
         /// <summary>
         /// Reads all supported documentation elements and adds it to the specified member.
         /// </summary>
-        private static void ReadMemberContent(XElement xml, MemberElement member)
+        private static void ReadMemberContent(XElement xml, MemberElement member, ILogger logger)
         {
             foreach (var elementNode in xml.Elements())
             {
-                switch (elementNode.Name.LocalName)
+                var elementName = elementNode.Name.LocalName;
+
+                logger.LogDebug($"Reading XML documentation element '{elementName}'");
+
+                switch (elementName)
                 {
                     case "summary":
-                        member.Summary = ReadTextBlock(elementNode);
+                        member.Summary = ReadTextBlock(elementNode, logger);
                         break;
                     case "remarks":
-                        member.Remarks = ReadTextBlock(elementNode);
+                        member.Remarks = ReadTextBlock(elementNode, logger);
                         break;
                     case "example":
-                        member.Example = ReadTextBlock(elementNode);
+                        member.Example = ReadTextBlock(elementNode, logger);
                         break;
                     case "param":
                         {
                             var name = FindAttribute(elementNode, "name");
                             if (name != null)
-                                member.Parameters.Add(name, ReadTextBlock(elementNode));
+                                member.Parameters.Add(name, ReadTextBlock(elementNode, logger));
                         }
                         break;
                     case "typeparam":
                         {
                             var name = FindAttribute(elementNode, "name");
                             if (name != null)
-                                member.TypeParameters.Add(name, ReadTextBlock(elementNode));
+                                member.TypeParameters.Add(name, ReadTextBlock(elementNode, logger));
                         }
                         break;
                     case "seealso":
@@ -110,7 +130,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
                             if (cref != null)
                             {
                                 var memberId = MemberId.Parse(cref);
-                                member.SeeAlso.Add(new SeeAlsoElement(memberId, ReadTextBlock(elementNode)));
+                                member.SeeAlso.Add(new SeeAlsoElement(memberId, ReadTextBlock(elementNode, logger)));
                             }
                         }
                         break;
@@ -119,29 +139,42 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
                             var cref = FindAttribute(elementNode, "cref");
                             if (cref != null)
                             {
-                                var memberId = MemberId.Parse(cref);
-
-                                //TODO: Emit warning for unexpected member id
+                                MemberId memberId;
+                                try
+                                {
+                                    memberId = MemberId.Parse(cref);
+                                }
+                                catch (MemberIdParserException ex)
+                                {
+                                    logger.LogError(ex, $"Failed to parse member id '{cref}' in element 'exception'. Ignoring exception element.");
+                                    break;
+                                }
 
                                 if (memberId is TypeId typeId)
                                 {
                                     member.Exceptions.Add(
-                                        new ExceptionElement(typeId, ReadTextBlock(elementNode))
+                                        new ExceptionElement(typeId, ReadTextBlock(elementNode, logger))
                                     );
+                                }
+                                else
+                                {
+                                    logger.LogWarning($"Unexpected member id '{cref}' in 'exception' element. " +
+                                                      $"Expected id of type {nameof(TypeId)} but was {memberId.GetType().Name}. " +
+                                                      $"Ignoring exception element.");
                                 }
                             }
                         }
                         break;
                     case "value":
-                        member.Value = ReadTextBlock(elementNode);
+                        member.Value = ReadTextBlock(elementNode, logger);
                         break;
                     case "returns":
-                        member.Returns = ReadTextBlock(elementNode);
+                        member.Returns = ReadTextBlock(elementNode, logger);
                         break;
 
                     // ignore unknown elements
                     default:
-                        //TODO: Emit warning about unknown element
+                        logger.LogWarning($"Encountered unknown element '{elementName}'. Element will be ignored.");
                         break;
                 }
             }
@@ -150,7 +183,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
         /// <summary>
         /// Reads all supported text elements.
         /// </summary>
-        private static TextBlock ReadTextBlock(XElement xml)
+        private static TextBlock ReadTextBlock(XElement xml, ILogger logger)
         {
             var textElements = new List<Element>();
 
@@ -161,10 +194,11 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
                 {
                     case XmlNodeType.Element:
                         var elementNode = (XElement)node;
-                        switch (elementNode.Name.LocalName)
+                        var elementName = elementNode.Name.LocalName;
+                        switch (elementName)
                         {
                             case "para":
-                                element = new ParaElement(ReadTextBlock(elementNode));
+                                element = new ParaElement(ReadTextBlock(elementNode, logger));
                                 break;
                             case "paramref":
                                 element = new ParamRefElement(FindAttribute(elementNode, "name"));
@@ -200,7 +234,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
 
                             // ignore unknown elements
                             default:
-                                //TODO: Emit warning for unknown elements
+                                logger.LogWarning($"Encountered unknown element '{elementName}'. Element will be ignored.");
                                 break;
                         }
                         break;

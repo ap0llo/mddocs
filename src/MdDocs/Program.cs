@@ -5,12 +5,13 @@ using System.Linq;
 using CommandLine;
 using Grynwald.MdDocs.ApiReference.Model;
 using Grynwald.MdDocs.ApiReference.Pages;
+using Microsoft.Extensions.Logging;
 
 namespace Grynwald.MdDocs
 {
-    class Program
+    internal class Program
     {
-        static int Main(string[] args)
+        private static int Main(string[] args)
         {
 
             var parser = new Parser(opts =>
@@ -45,14 +46,19 @@ namespace Grynwald.MdDocs
                     });
         }
 
-        static int ApiReference(ApiReferenceOptions opts)
+        private static int ApiReference(ApiReferenceOptions opts)
         {
-            if (Directory.Exists(opts.OutputDirectory))
-                Directory.Delete(opts.OutputDirectory, true);
+            var logger = new ColoredConsoleLogger(opts.Verbose ? LogLevel.Debug : LogLevel.Information);
 
-            using (var assemblyDocumentation = AssemblyDocumentation.FromFile(opts.AssemblyPath))
+            if (Directory.Exists(opts.OutputDirectory))
             {
-                var factory = new PageFactory(assemblyDocumentation, opts.OutputDirectory);
+                logger.LogInformation($"Cleaning output directory '{opts.OutputDirectory}'");
+                Directory.Delete(opts.OutputDirectory, true);
+            }
+
+            using (var assemblyDocumentation = AssemblyDocumentation.FromFile(opts.AssemblyPath, logger))
+            {
+                var factory = new PageFactory(assemblyDocumentation, opts.OutputDirectory, logger);
                 factory.SaveAll();
             }
 

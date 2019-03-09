@@ -40,6 +40,10 @@ Remarks allow specification of more detailed information about a member, in this
 
 For overloaded members, there is a separate "Remarks" section for every overload.
 
+### See Also
+
+- Item\[int\]
+
 ## Item\[int\]
 
 An example of an indexer with a single parameter.

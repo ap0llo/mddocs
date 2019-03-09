@@ -4,6 +4,7 @@ using System.Reflection;
 using Grynwald.MdDocs.ApiReference.Model;
 using Grynwald.MdDocs.ApiReference.Model.XmlDocs;
 using Grynwald.MdDocs.ApiReference.Test.TestData;
+using Microsoft.Extensions.Logging.Abstractions;
 using Mono.Cecil;
 
 namespace Grynwald.MdDocs.ApiReference.Test
@@ -18,7 +19,9 @@ namespace Grynwald.MdDocs.ApiReference.Test
             var assemblyPath = Assembly.GetAssembly(typeof(TestClass_Type)).Location;
 
             m_AssemblyDefinition = new Lazy<AssemblyDefinition>(() => AssemblyDefinition.ReadAssembly(assemblyPath));
-            m_AssemblyDocumentation = new Lazy<AssemblyDocumentation>(() => new AssemblyDocumentation(m_AssemblyDefinition.Value, NullXmlDocsProvider.Instance));
+            m_AssemblyDocumentation = new Lazy<AssemblyDocumentation>(
+                () => new AssemblyDocumentation(m_AssemblyDefinition.Value, NullXmlDocsProvider.Instance, NullLogger.Instance)
+            );
         }
 
         public void Dispose()
@@ -44,9 +47,10 @@ namespace Grynwald.MdDocs.ApiReference.Test
 
             var sut = new TypeDocumentation(
                 m_AssemblyDocumentation.Value.MainModuleDocumentation,
-                new NamespaceDocumentation(m_AssemblyDocumentation.Value.MainModuleDocumentation, new NamespaceId(type.Namespace)),
+                new NamespaceDocumentation(m_AssemblyDocumentation.Value.MainModuleDocumentation, new NamespaceId(type.Namespace), NullLogger.Instance),
                 typeDefinition,
-                NullXmlDocsProvider.Instance
+                NullXmlDocsProvider.Instance,
+                NullLogger.Instance
             );
 
             return sut;
@@ -58,9 +62,10 @@ namespace Grynwald.MdDocs.ApiReference.Test
 
             var sut = new TypeDocumentation(
                 m_AssemblyDocumentation.Value.MainModuleDocumentation,
-                new NamespaceDocumentation(m_AssemblyDocumentation.Value.MainModuleDocumentation, new NamespaceId(typeDefinition.Namespace)),
+                new NamespaceDocumentation(m_AssemblyDocumentation.Value.MainModuleDocumentation, new NamespaceId(typeDefinition.Namespace), NullLogger.Instance),
                 typeDefinition,
-                NullXmlDocsProvider.Instance
+                NullXmlDocsProvider.Instance,
+                NullLogger.Instance
             );
 
             return sut;

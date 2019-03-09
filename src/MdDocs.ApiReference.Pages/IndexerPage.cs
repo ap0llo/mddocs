@@ -1,5 +1,6 @@
 ﻿using Grynwald.MarkdownGenerator;
 using Grynwald.MdDocs.ApiReference.Model;
+using Microsoft.Extensions.Logging;
 
 using static Grynwald.MarkdownGenerator.FactoryMethods;
 
@@ -10,8 +11,8 @@ namespace Grynwald.MdDocs.ApiReference.Pages
         public override OutputPath OutputPath { get; }
 
 
-        public IndexerPage(PageFactory pageFactory, string rootOutputPath, IndexerDocumentation model)
-            : base(pageFactory, rootOutputPath, model)
+        public IndexerPage(PageFactory pageFactory, string rootOutputPath, IndexerDocumentation model, ILogger logger)
+            : base(pageFactory, rootOutputPath, model, logger)
         {
             OutputPath = new OutputPath(GetTypeDir(Model.TypeDocumentation), "Indexers", $"{Model.Name}.md");
         }

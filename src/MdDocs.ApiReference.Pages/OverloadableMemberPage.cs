@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using Grynwald.MarkdownGenerator;
 using Grynwald.MdDocs.ApiReference.Model;
+using Microsoft.Extensions.Logging;
 
 using static Grynwald.MarkdownGenerator.FactoryMethods;
 
@@ -12,14 +13,19 @@ namespace Grynwald.MdDocs.ApiReference.Pages
         where TModel : OverloadableMemberDocumentation<TOverload>
         where TOverload : OverloadDocumentation
     {
-        public OverloadableMemberPage(PageFactory pageFactory, string rootOutputPath, TModel model)
+        private readonly ILogger m_Logger;
+
+        internal OverloadableMemberPage(PageFactory pageFactory, string rootOutputPath, TModel model, ILogger logger)
             : base(pageFactory, rootOutputPath, model)
         {
+            m_Logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
         }
 
 
         public override void Save()
         {
+            m_Logger.LogInformation($"Saving page '{OutputPath}'");
+
             var document = Document(
                 GetPageHeading()
             );

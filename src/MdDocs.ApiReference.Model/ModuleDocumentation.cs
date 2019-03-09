@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Grynwald.Utilities.Collections;
 using Grynwald.MdDocs.ApiReference.Model.XmlDocs;
+using Grynwald.Utilities.Collections;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Mono.Cecil;
 
 namespace Grynwald.MdDocs.ApiReference.Model
@@ -12,7 +14,6 @@ namespace Grynwald.MdDocs.ApiReference.Model
         private readonly IDictionary<TypeId, TypeDocumentation> m_Types;
         private readonly IDictionary<NamespaceId, NamespaceDocumentation> m_Namespaces;
         private readonly IXmlDocsProvider m_XmlDocsProvider;
-
 
         public AssemblyDocumentation AssemblyDocumentation { get; }
 
@@ -24,13 +25,12 @@ namespace Grynwald.MdDocs.ApiReference.Model
         internal ModuleDefinition Definition { get; }
 
 
-        internal ModuleDocumentation(AssemblyDocumentation assemblyDocumentation, ModuleDefinition definition, IXmlDocsProvider xmlDocsProvider)
+        internal ModuleDocumentation(AssemblyDocumentation assemblyDocumentation, ModuleDefinition definition, IXmlDocsProvider xmlDocsProvider, ILogger logger)
         {
             Definition = definition ?? throw new ArgumentNullException(nameof(definition));
             m_XmlDocsProvider = xmlDocsProvider ?? throw new ArgumentNullException(nameof(xmlDocsProvider));
-
+            logger = logger ?? throw new ArgumentNullException(nameof(logger));
             AssemblyDocumentation = assemblyDocumentation ?? throw new ArgumentNullException(nameof(assemblyDocumentation));
-
 
             m_Types = new Dictionary<TypeId, TypeDocumentation>();
             m_Namespaces = new Dictionary<NamespaceId, NamespaceDocumentation>();
@@ -40,10 +40,10 @@ namespace Grynwald.MdDocs.ApiReference.Model
                 var namespaceId = new NamespaceId(typeDefinition.Namespace);
                 var namespaceDocumentation = m_Namespaces.GetOrAdd(
                     namespaceId,
-                    () => new NamespaceDocumentation(this, namespaceId)
+                    () => new NamespaceDocumentation(this, namespaceId, logger)
                 );
 
-                var typeDocumentation = new TypeDocumentation(this, namespaceDocumentation, typeDefinition, m_XmlDocsProvider);
+                var typeDocumentation = new TypeDocumentation(this, namespaceDocumentation, typeDefinition, m_XmlDocsProvider, logger);
 
                 m_Types.Add(typeDocumentation.TypeId, typeDocumentation);
                 namespaceDocumentation.AddType(typeDocumentation);

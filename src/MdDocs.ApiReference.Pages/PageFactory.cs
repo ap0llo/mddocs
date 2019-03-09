@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using Grynwald.MdDocs.ApiReference.Model;
 using Grynwald.Utilities.Collections;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Grynwald.MdDocs.ApiReference.Pages
 {
     public class PageFactory
     {
         private readonly string m_RootOutputPath;
+        private readonly ILogger m_Logger;
         private readonly AssemblyDocumentation m_Model;
         private readonly IDictionary<IDocumentation, IPage> m_Pages = new Dictionary<IDocumentation, IPage>();
 
@@ -16,11 +19,17 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 
 
         public PageFactory(AssemblyDocumentation assemblyDocumentation, string outDir)
+            : this(assemblyDocumentation, outDir, NullLogger.Instance)
+        { }
+
+        public PageFactory(AssemblyDocumentation assemblyDocumentation, string outDir, ILogger logger)
         {
             if (String.IsNullOrEmpty(outDir))
                 throw new ArgumentException("Value must not be null or empty", nameof(outDir));
 
             m_RootOutputPath = outDir;
+            m_Logger = logger ?? throw new ArgumentNullException(nameof(logger));
+
             m_Model = assemblyDocumentation ?? throw new ArgumentNullException(nameof(assemblyDocumentation));
 
             LoadPages();
@@ -50,6 +59,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 
         public void SaveAll()
         {
+            m_Logger.LogInformation($"Saving pages to output directory '{m_RootOutputPath}'");
             foreach (var page in AllPages)
             {
                 page.Save();
@@ -58,51 +68,53 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 
         private void LoadPages()
         {
+            m_Logger.LogInformation("Loading pages");
+
             foreach (var @namespace in m_Model.MainModuleDocumentation.Namespaces)
             {
-                m_Pages.Add(@namespace, new NamespacePage(this, m_RootOutputPath, @namespace));
+                m_Pages.Add(@namespace, new NamespacePage(this, m_RootOutputPath, @namespace, m_Logger));
             }
 
             foreach (var type in m_Model.MainModuleDocumentation.Types)
             {
-                m_Pages.Add(type, new TypePage(this, m_RootOutputPath, type));
+                m_Pages.Add(type, new TypePage(this, m_RootOutputPath, type, m_Logger));
 
                 foreach (var property in type.Properties)
                 {
-                    m_Pages.Add(property, new PropertyPage(this, m_RootOutputPath, property));
+                    m_Pages.Add(property, new PropertyPage(this, m_RootOutputPath, property, m_Logger));
                 }
 
                 foreach (var indexer in type.Indexers)
                 {
-                    m_Pages.Add(indexer, new IndexerPage(this, m_RootOutputPath, indexer));
+                    m_Pages.Add(indexer, new IndexerPage(this, m_RootOutputPath, indexer, m_Logger));
                 }
 
                 if (type.Constructors != null)
                 {
-                    m_Pages.Add(type.Constructors, new ConstructorsPage(this, m_RootOutputPath, type.Constructors));
+                    m_Pages.Add(type.Constructors, new ConstructorsPage(this, m_RootOutputPath, type.Constructors, m_Logger));
                 }
 
                 foreach (var method in type.Methods)
                 {
-                    m_Pages.Add(method, new MethodPage(this, m_RootOutputPath, method));
+                    m_Pages.Add(method, new MethodPage(this, m_RootOutputPath, method, m_Logger));
                 }
 
                 if (type.Kind != TypeKind.Enum)
                 {
                     foreach (var field in type.Fields)
                     {
-                        m_Pages.Add(field, new FieldPage(this, m_RootOutputPath, field));
+                        m_Pages.Add(field, new FieldPage(this, m_RootOutputPath, field, m_Logger));
                     }
                 }
 
                 foreach (var ev in type.Events)
                 {
-                    m_Pages.Add(ev, new EventPage(this, m_RootOutputPath, ev));
+                    m_Pages.Add(ev, new EventPage(this, m_RootOutputPath, ev, m_Logger));
                 }
 
                 foreach (var op in type.Operators)
                 {
-                    m_Pages.Add(op, new OperatorPage(this, m_RootOutputPath, op));
+                    m_Pages.Add(op, new OperatorPage(this, m_RootOutputPath, op, m_Logger));
                 }
             }
         }

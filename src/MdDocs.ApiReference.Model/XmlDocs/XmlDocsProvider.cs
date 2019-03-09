@@ -1,19 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Grynwald.Utilities.Collections;
-using Mono.Cecil;
+using Microsoft.Extensions.Logging;
 
 namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
 {
-    class XmlDocsProvider : IXmlDocsProvider
+    internal class XmlDocsProvider : IXmlDocsProvider
     {
         private readonly IReadOnlyDictionary<MemberId, MemberElement> m_Members;
 
-
-        public XmlDocsProvider(string xmlDocsPath, AssemblyDefinition assembly)
+        internal XmlDocsProvider(string xmlDocsPath, ILogger logger)
         {
-            var model = XmlDocsReader.Read(xmlDocsPath);
-
+            var model = XmlDocsReader.Read(xmlDocsPath, logger);
             m_Members = model.ToDictionary(m => m.MemberId);
         }
 

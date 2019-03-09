@@ -182,7 +182,7 @@ namespace DemoProject
         /// <param name="x">Description of parameter <paramref name="x"/> provided using the <c>param</c> element.</param>
         /// <param name="y">Description of parameter <paramref name="y"/> provided using the <c>param</c> element.</param>
         /// <value>The tag <c>value</c> allows specifying the value a indexer represents</value>
-        /// <seeaslo cref="this[Int32]"/>
+        /// <seealso cref="this[Int32]"/>
         public string this[int x, int y] => throw new NotImplementedException();
 
 

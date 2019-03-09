@@ -3,26 +3,32 @@ using System.IO;
 using System.Linq;
 using Grynwald.MarkdownGenerator;
 using Grynwald.MdDocs.ApiReference.Model;
+using Microsoft.Extensions.Logging;
 
 using static Grynwald.MarkdownGenerator.FactoryMethods;
 
 namespace Grynwald.MdDocs.ApiReference.Pages
 {
-    class NamespacePage : PageBase<NamespaceDocumentation>
+    internal class NamespacePage : PageBase<NamespaceDocumentation>
     {
+        private readonly ILogger m_Logger;
+
         public override OutputPath OutputPath { get; }
 
 
-        public NamespacePage(PageFactory pageFactory, string rootOutputPath, NamespaceDocumentation model)
+        public NamespacePage(PageFactory pageFactory, string rootOutputPath, NamespaceDocumentation model, ILogger logger)
             : base(pageFactory, rootOutputPath, model)
         {
             OutputPath = new OutputPath(GetNamespaceDir(Model), "Namespace.md");
+            m_Logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
         }
 
 
 
         public override void Save()
         {
+            m_Logger.LogInformation($"Saving page '{OutputPath}'");
+
             var document = new MdDocument(
                Heading($"{Model.Name} Namespace", 1)
             );

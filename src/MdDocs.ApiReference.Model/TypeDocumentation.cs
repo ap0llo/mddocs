@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Grynwald.Utilities.Collections;
 using Grynwald.MdDocs.ApiReference.Model.XmlDocs;
+using Grynwald.Utilities.Collections;
+using Microsoft.Extensions.Logging;
 using Mono.Cecil;
 
 namespace Grynwald.MdDocs.ApiReference.Model
@@ -10,6 +11,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
     public class TypeDocumentation : IDocumentation, IObsoleteableDocumentation
     {
         private readonly IXmlDocsProvider m_XmlDocsProvider;
+        private readonly ILogger m_Logger;
         private readonly IDictionary<MemberId, FieldDocumentation> m_Fields;
         private readonly IDictionary<MemberId, EventDocumentation> m_Events;
         private readonly IDictionary<MemberId, PropertyDocumentation> m_Properties;
@@ -70,12 +72,12 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
         public string ObsoleteMessage { get; }
 
-
         internal TypeDocumentation(
             ModuleDocumentation moduleDocumentation,
             NamespaceDocumentation namespaceDocumentation,
             TypeDefinition definition,
-            IXmlDocsProvider xmlDocsProvider)
+            IXmlDocsProvider xmlDocsProvider,
+            ILogger logger)
         {
             TypeId = definition.ToTypeId();
 
@@ -83,9 +85,13 @@ namespace Grynwald.MdDocs.ApiReference.Model
             NamespaceDocumentation = namespaceDocumentation ?? throw new ArgumentNullException(nameof(namespaceDocumentation));
             Definition = definition ?? throw new ArgumentNullException(nameof(definition));
             m_XmlDocsProvider = xmlDocsProvider ?? throw new ArgumentNullException(nameof(xmlDocsProvider));
+            m_Logger = logger ?? throw new ArgumentNullException(nameof(logger));
+
+            m_Logger.LogDebug($"Loading documentation for type '{definition.FullName}'");
 
             Kind = definition.Kind();
 
+            m_Logger.LogDebug("Loading fields");
             m_Fields = definition.Fields
                 .Where(field => field.IsPublic && !field.Attributes.HasFlag(FieldAttributes.SpecialName))
                 .Select(field => new FieldDocumentation(this, field, xmlDocsProvider))
@@ -93,6 +99,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
             Fields = ReadOnlyCollectionAdapter.Create(m_Fields.Values);
 
+            m_Logger.LogDebug("Loading events");
             m_Events = definition.Events
                 .Where(ev => (ev.AddMethod?.IsPublic == true || ev.RemoveMethod?.IsPublic == true))
                 .Select(e => new EventDocumentation(this, e, xmlDocsProvider))
@@ -100,6 +107,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
             Events = ReadOnlyCollectionAdapter.Create(m_Events.Values);
 
+            m_Logger.LogDebug("Loading properties");
             m_Properties = definition.Properties
                 .Where(property => (property.GetMethod?.IsPublic == true || property.SetMethod?.IsPublic == true) && !property.HasParameters)
                 .Select(p => new PropertyDocumentation(this, p, xmlDocsProvider))
@@ -107,6 +115,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
             Properties = ReadOnlyCollectionAdapter.Create(m_Properties.Values);
 
+            m_Logger.LogDebug("Loading indexers");
             m_Indexers = definition.Properties
                 .Where(property => (property.GetMethod?.IsPublic == true || property.SetMethod?.IsPublic == true) && property.HasParameters)
                 .GroupBy(p => p.Name)
@@ -115,10 +124,12 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
             Indexers = ReadOnlyCollectionAdapter.Create(m_Indexers.Values);
 
+            m_Logger.LogDebug("Loading constructors");
             var ctors = definition.GetDocumentedConstrutors();
             if (ctors.Any())
                 Constructors = new ConstructorDocumentation(this, ctors, xmlDocsProvider);
 
+            m_Logger.LogDebug("Loading methods");
             m_Methods = definition.GetDocumentedMethods()
                 .Where(m => !m.IsOperator())
                 .GroupBy(x => x.Name)
@@ -127,21 +138,26 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
             Methods = ReadOnlyCollectionAdapter.Create(m_Methods.Values);
 
+            m_Logger.LogDebug("Loading operator overloads");
             m_Operators = definition.GetDocumentedMethods()
                .GroupBy(x => x.GetOperatorKind())
                .Where(group => group.Key.HasValue)
                .Select(group => new OperatorDocumentation(this, group, xmlDocsProvider))
                .ToDictionary(x => x.Kind);
 
+
             Operators = ReadOnlyCollectionAdapter.Create(m_Operators.Values);
 
+            m_Logger.LogDebug("Loading inheritance hierarchy.");
             InheritanceHierarchy = LoadInheritanceHierarchy();
 
+            m_Logger.LogDebug("Loading custom attributes");
             Attributes = Definition
                 .GetCustomAttributes()
                 .Select(x => x.AttributeType.ToTypeId())
                 .ToArray();
 
+            m_Logger.LogDebug("Loading implemented interfaces");
             ImplementedInterfaces = LoadImplementedInterfaces();
 
             TypeParameters = LoadTypeParameters();

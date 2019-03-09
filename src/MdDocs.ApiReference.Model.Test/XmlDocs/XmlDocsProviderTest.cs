@@ -4,6 +4,7 @@ using System.Linq;
 using Grynwald.MdDocs.ApiReference.Model;
 using Grynwald.MdDocs.ApiReference.Model.XmlDocs;
 using Grynwald.MdDocs.ApiReference.Test.TestData;
+using Microsoft.Extensions.Logging.Abstractions;
 using Xunit;
 
 namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
@@ -35,7 +36,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
             var id = GetTypeDefinition(type).ToMemberId();
 
             // ACT
-            var sut = new XmlDocsProvider(m_XmlDocsPath, m_AssemblyDefinition.Value);
+            var sut = new XmlDocsProvider(m_XmlDocsPath, NullLogger.Instance);
             var docs = sut.TryGetDocumentationComments(id);
 
             // ASSERT
@@ -53,7 +54,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
                 .ToMemberId();
 
             // ACT
-            var sut = new XmlDocsProvider(m_XmlDocsPath, m_AssemblyDefinition.Value);
+            var sut = new XmlDocsProvider(m_XmlDocsPath, NullLogger.Instance);
             var docs = sut.TryGetDocumentationComments(id);
 
             // ASSERT
@@ -71,7 +72,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
                 .ToMemberId();
 
             // ACT
-            var sut = new XmlDocsProvider(m_XmlDocsPath, m_AssemblyDefinition.Value);
+            var sut = new XmlDocsProvider(m_XmlDocsPath, NullLogger.Instance);
             var docs = sut.TryGetDocumentationComments(id);
 
             // ASSERT
@@ -89,7 +90,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
                 .ToMemberId();
 
             // ACT
-            var sut = new XmlDocsProvider(m_XmlDocsPath, m_AssemblyDefinition.Value);
+            var sut = new XmlDocsProvider(m_XmlDocsPath, NullLogger.Instance);
             var docs = sut.TryGetDocumentationComments(id);
 
             // ASSERT
@@ -107,7 +108,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
                 .ToMemberId();
 
             // ACT
-            var sut = new XmlDocsProvider(m_XmlDocsPath, m_AssemblyDefinition.Value);
+            var sut = new XmlDocsProvider(m_XmlDocsPath, NullLogger.Instance);
             var summary = sut.TryGetDocumentationComments(id);
 
             // ASSERT
@@ -123,7 +124,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
             var id = GetTypeDefinition(type).ToMemberId();
 
             // ACT
-            var sut = new XmlDocsProvider(m_XmlDocsPath, m_AssemblyDefinition.Value);
+            var sut = new XmlDocsProvider(m_XmlDocsPath, NullLogger.Instance);
             var docs = sut.TryGetDocumentationComments(id);
 
             // ASSERT
@@ -165,7 +166,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
                 .ToMemberId();
 
             // ACT
-            var sut = new XmlDocsProvider(m_XmlDocsPath, m_AssemblyDefinition.Value);
+            var sut = new XmlDocsProvider(m_XmlDocsPath, NullLogger.Instance);
             var docs = sut.TryGetDocumentationComments(id);
 
             // ASSERT
@@ -211,7 +212,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
                 .ToMemberId();
 
             // ACT
-            var sut = new XmlDocsProvider(m_XmlDocsPath, m_AssemblyDefinition.Value);
+            var sut = new XmlDocsProvider(m_XmlDocsPath, NullLogger.Instance);
             var docs = sut.TryGetDocumentationComments(id);
 
             // ASSERT
@@ -250,7 +251,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
                 .ToMemberId();
 
             // ACT
-            var sut = new XmlDocsProvider(m_XmlDocsPath, m_AssemblyDefinition.Value);
+            var sut = new XmlDocsProvider(m_XmlDocsPath, NullLogger.Instance);
             var docs = sut.TryGetDocumentationComments(id);
 
             // ASSERT
@@ -293,7 +294,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
                 .ToMemberId();
 
             // ACT
-            var sut = new XmlDocsProvider(m_XmlDocsPath, m_AssemblyDefinition.Value);
+            var sut = new XmlDocsProvider(m_XmlDocsPath, NullLogger.Instance);
             var docs = sut.TryGetDocumentationComments(id);
 
             // ASSERT

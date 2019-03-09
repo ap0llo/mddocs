@@ -192,7 +192,7 @@
             <param name="x">Description of parameter <paramref name="x"/> provided using the <c>param</c> element.</param>
             <param name="y">Description of parameter <paramref name="y"/> provided using the <c>param</c> element.</param>
             <value>The tag <c>value</c> allows specifying the value a indexer represents</value>
-            <seeaslo cref="P:DemoProject.DemoClass.Item(System.Int32)"/>
+            <seealso cref="P:DemoProject.DemoClass.Item(System.Int32)"/>
         </member>
         <member name="P:DemoProject.DemoClass.Item(System.Object)">
             <summary>

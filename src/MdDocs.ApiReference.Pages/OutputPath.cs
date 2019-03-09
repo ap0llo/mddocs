@@ -61,6 +61,8 @@ namespace Grynwald.MdDocs.ApiReference
         public bool Equals(string other) =>
             other != null && StringComparer.OrdinalIgnoreCase.Equals(Value, other);
 
+        public override string ToString() => Value;
+
         public static implicit operator string(OutputPath instance) => instance?.Value;
     }
 }
