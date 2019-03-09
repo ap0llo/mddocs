@@ -263,6 +263,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         )]
         [InlineData("CSharpDefinitionTest_GenericInterface_Contravariant`1", "public interface CSharpDefinitionTest_GenericInterface_Contravariant<in TParam>")]
         [InlineData("CSharpDefinitionTest_GenericInterface_Covariant`1", "public interface CSharpDefinitionTest_GenericInterface_Covariant<out TParam>")]
+        [InlineData("CSharpDefinitionTest_GenericClass2`2", "public class CSharpDefinitionTest_GenericClass2<TParam1, TParam2>")]
         public void GetDefinition_returns_the_expected_definition_for_types(string typeName, string expected)
         {
             // ARRANGE

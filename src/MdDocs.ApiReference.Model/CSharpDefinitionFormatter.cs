@@ -7,7 +7,7 @@ using Mono.Cecil;
 
 namespace Grynwald.MdDocs.ApiReference.Model
 {
-    static class CSharpDefinitionFormatter
+    internal static class CSharpDefinitionFormatter
     {
         public static string GetDefinition(PropertyDefinition property)
         {
@@ -328,8 +328,10 @@ namespace Grynwald.MdDocs.ApiReference.Model
                 if (!isFirst)
                 {
                     definitionBuilder.Append(", ");
-                    isFirst = false;
                 }
+
+                isFirst = false;
+
 
                 if (parameter.IsCovariant)
                 {

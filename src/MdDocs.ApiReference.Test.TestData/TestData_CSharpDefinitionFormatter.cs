@@ -69,6 +69,11 @@ namespace Grynwald.MdDocs.ApiReference.Test.TestData
     }
 
 
+    public class CSharpDefinitionTest_GenericClass2<TParam1, TParam2>
+    {
+    }
+
+
     public interface CSharpDefinitionTest_GenericInterface_Contravariant<in TParam>
     {
     }

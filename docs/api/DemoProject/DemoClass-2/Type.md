@@ -7,7 +7,7 @@
 An example of an generic class.
 
 ```csharp
-public class DemoClass<T1T2>
+public class DemoClass<T1, T2>
 ```
 
 **Inheritance:** Object → DemoClass
