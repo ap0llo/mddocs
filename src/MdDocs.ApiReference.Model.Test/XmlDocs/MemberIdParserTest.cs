@@ -98,7 +98,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
                         new GenericTypeId("MdDoc.Test.TestData", "TestClass_GenericType", 1),
                         "TestMethod1",
                         2,
-                        new[] 
+                        new[]
                         {
                             new GenericTypeParameterId(GenericTypeParameterId.MemberKind.Method, 0),
                             new GenericTypeParameterId(GenericTypeParameterId.MemberKind.Method, 1)
@@ -234,8 +234,8 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
                 yield return new MemberIdParserTestCase(
                     "P:Class`1.Item(`0)",
                     new PropertyId(
-                        new GenericTypeId("", "Class", 1), 
-                        "Item", 
+                        new GenericTypeId("", "Class", 1),
+                        "Item",
                         new[] { new GenericTypeParameterId(GenericTypeParameterId.MemberKind.Type, 0) })
                 );
 
@@ -304,8 +304,8 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
 
             public IEnumerable<MemberIdParserTestCase> GetTestCases()
             {
-                yield return new MemberIdParserTestCase("N:System", new NamespaceId("System"));                
-                yield return new MemberIdParserTestCase("N:System.Collections", new NamespaceId("System.Collections"));                
+                yield return new MemberIdParserTestCase("N:System", new NamespaceId("System"));
+                yield return new MemberIdParserTestCase("N:System.Collections", new NamespaceId("System.Collections"));
             }
         }
 
@@ -352,7 +352,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
         public void Member_ids_are_parsed_as_expected(MemberIdParserTestCase testCase)
         {
             // ARRANGE
-            var parser = new MemberIdParser(testCase.Input);            
+            var parser = new MemberIdParser(testCase.Input);
 
             // ACT
             var memberId = parser.Parse();

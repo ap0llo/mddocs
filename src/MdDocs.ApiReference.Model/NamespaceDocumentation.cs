@@ -18,7 +18,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
 
         internal NamespaceDocumentation(ModuleDocumentation moduleDocumentation, NamespaceId namespaceId)
-        {            
+        {
             m_ModuleDocumentation = moduleDocumentation ?? throw new ArgumentNullException(nameof(moduleDocumentation));
             NamespaceId = namespaceId ?? throw new ArgumentNullException(nameof(namespaceId));
 

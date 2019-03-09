@@ -50,7 +50,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
             unchecked
             {
                 var hash = base.GetHashCode();
-                hash ^= Arity.GetHashCode();                
+                hash ^= Arity.GetHashCode();
                 return hash;
             }
         }

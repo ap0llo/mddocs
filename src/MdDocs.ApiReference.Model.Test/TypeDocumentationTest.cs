@@ -92,7 +92,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
 
             // ASSERT
             Assert.NotNull(sut.Events);
-            Assert.Empty(sut.Events);            
+            Assert.Empty(sut.Events);
         }
 
         [Fact]
@@ -110,7 +110,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             Assert.DoesNotContain(properties, prop => prop.Name == "Property3");
             Assert.DoesNotContain(properties, prop => prop.Name == "Property4");
         }
-        
+
         [Fact]
         public void Properties_returns_expected_properties_02()
         {
@@ -123,7 +123,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             Assert.Contains(properties, prop => prop.Name == "Property1");
             Assert.Contains(properties, prop => prop.Name == "Property2");
             Assert.DoesNotContain(properties, prop => prop.Name == "Item");
-        }    
+        }
 
         [Fact]
         public void Properties_returns_expected_properties_03()
@@ -149,7 +149,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
 
             // ASSERT
             Assert.Equal(1, indexers.Count);
-            Assert.Contains(indexers, indexer => indexer.Name == "Item" && indexer.Overloads.Count == 2);            
+            Assert.Contains(indexers, indexer => indexer.Name == "Item" && indexer.Overloads.Count == 2);
         }
 
         [Fact]
@@ -192,7 +192,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         {
             // ARRANGE / ACT
             var sut = GetTypeDocumentation(typeof(TestClass_Methods));
-            
+
             // ASSERT
             Assert.Equal(12, sut.Methods.Count);
             Assert.All(sut.Methods, method => Assert.Single(method.Overloads));
@@ -217,10 +217,10 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             var sut = GetTypeDocumentation(typeof(TestClass_Constructors));
 
             // ASSERT
-            Assert.NotNull(sut.Methods);            
-            Assert.Empty(sut.Methods);            
+            Assert.NotNull(sut.Methods);
+            Assert.Empty(sut.Methods);
         }
-            
+
         [Fact]
         public void Methods_include_overloads_with_generic_parameters()
         {
@@ -300,7 +300,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             var sut = GetTypeDocumentation(typeof(TestStruct_Type));
 
             // ASSERT
-            Assert.Null(sut.Constructors);            
+            Assert.Null(sut.Constructors);
         }
 
         [Fact]
@@ -322,7 +322,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             var sut = GetTypeDocumentation(typeof(TestInterface_Type));
 
             // ASSERT
-            Assert.Null(sut.Constructors);            
+            Assert.Null(sut.Constructors);
         }
 
         [Fact]
@@ -374,7 +374,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             // ASSERT
             Assert.NotNull(sut.InheritanceHierarchy);
             Assert.Equal(expectedSequence.Length, sut.InheritanceHierarchy.Count);
-            Assert.True(expectedSequence.SequenceEqual(sut.InheritanceHierarchy));            
+            Assert.True(expectedSequence.SequenceEqual(sut.InheritanceHierarchy));
         }
 
         [Fact]
@@ -415,7 +415,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
 
             // ASSERT
             Assert.NotNull(sut.InheritanceHierarchy);
-            Assert.Equal(expectedSequence.Length, sut.InheritanceHierarchy.Count);       
+            Assert.Equal(expectedSequence.Length, sut.InheritanceHierarchy.Count);
             Assert.True(expectedSequence.SequenceEqual(sut.InheritanceHierarchy));
         }
 
@@ -429,7 +429,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             Assert.NotNull(sut.InheritanceHierarchy);
             Assert.Empty(sut.InheritanceHierarchy);
         }
-        
+
         [Fact]
         public void InheritanceHierarchy_Is_empty_for_interfaces_02()
         {
@@ -473,7 +473,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             // ARRANGE
             var typeId = GetTypeId(typeof(TestClass_InternalType));
             var sut = GetTypeDocumentation(typeof(TestClass_Type));
-            
+
             // ACT
             var documentation = sut.TryGetDocumentation(typeId);
 
@@ -505,7 +505,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
 
             // ASSERT
             Assert.NotNull(sut.ImplementedInterfaces);
-            Assert.Empty(sut.ImplementedInterfaces);            
+            Assert.Empty(sut.ImplementedInterfaces);
         }
 
         [Fact]
@@ -540,7 +540,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             // ASSERT
             Assert.NotNull(sut.ImplementedInterfaces);
             Assert.Equal(2, sut.ImplementedInterfaces.Count);
-            Assert.Contains(sut.ImplementedInterfaces, i => i.Equals(new SimpleTypeId("Grynwald.MdDocs.ApiReference.Test.TestData", "TestInterface_Type"))); 
+            Assert.Contains(sut.ImplementedInterfaces, i => i.Equals(new SimpleTypeId("Grynwald.MdDocs.ApiReference.Test.TestData", "TestInterface_Type")));
             Assert.Contains(sut.ImplementedInterfaces, i => i.Equals(new SimpleTypeId("System", "IDisposable")));
         }
 
@@ -552,7 +552,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
 
             // ASSERT
             Assert.NotNull(sut.ImplementedInterfaces);
-            Assert.Empty(sut.ImplementedInterfaces);           
+            Assert.Empty(sut.ImplementedInterfaces);
         }
 
         [Fact]

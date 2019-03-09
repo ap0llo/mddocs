@@ -36,15 +36,15 @@ namespace Grynwald.MdDocs.ApiReference.Test.TestData
         {
         }
     }
-    
+
     public class CSharpDefinitionTest4Attribute : Attribute
     {
         public CSharpDefinitionTest4Attribute(CSharpDefinitionTestEnum value)
         {
         }
     }
-    
-    public enum CSharpDefinitionTestEnum 
+
+    public enum CSharpDefinitionTestEnum
     {
         Value1 = 1,
         Value2 = 2,
@@ -139,7 +139,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.TestData
 
         public static string Field2;
 
-        public const string Field3 ="";
+        public const string Field3 = "";
 
         public static readonly int Field4;
 
@@ -195,7 +195,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.TestData
 
         public string Method3(string param1, Stream param2) => throw new NotImplementedException();
 
-        public static string Method4(string param1, Stream param2) => throw new NotImplementedException();        
+        public static string Method4(string param1, Stream param2) => throw new NotImplementedException();
 
         public static string Method5<TParam>(TParam parameter) => throw new NotImplementedException();
 

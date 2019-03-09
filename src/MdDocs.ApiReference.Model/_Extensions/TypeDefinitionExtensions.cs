@@ -24,7 +24,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
             if (type.IsInterface)
                 return TypeKind.Interface;
 
-            
+
             throw new InvalidOperationException();
         }
 
@@ -69,7 +69,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         public static IEnumerable<CustomAttribute> GetCustomAttributes(this TypeDefinition type)
         {
             var typeKind = type.Kind();
-            
+
             return type.CustomAttributes
                 .Where(attribute =>
                 {

@@ -14,11 +14,11 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
         public OperatorKind Kind { get; }
 
-        public override IReadOnlyCollection<OperatorOverloadDocumentation> Overloads { get; }       
+        public override IReadOnlyCollection<OperatorOverloadDocumentation> Overloads { get; }
 
 
         internal OperatorDocumentation(TypeDocumentation typeDocumentation, IEnumerable<MethodDefinition> definitions, IXmlDocsProvider xmlDocsProvider) : base(typeDocumentation)
-        {        
+        {
             if (definitions == null)
                 throw new ArgumentNullException(nameof(definitions));
 
@@ -38,7 +38,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
         public override IDocumentation TryGetDocumentation(MemberId id)
         {
-            if(id is MethodId methodId && 
+            if (id is MethodId methodId &&
                methodId.DefiningType.Equals(TypeDocumentation.TypeId) &&
                methodId.GetOperatorKind() == Kind)
             {
@@ -47,7 +47,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
             else
             {
                 return TypeDocumentation.TryGetDocumentation(id);
-            }            
+            }
         }
     }
 }

@@ -21,7 +21,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
 
 
         private Token Current => m_Position >= m_Tokens.Count ? m_Tokens[m_Tokens.Count - 1] : m_Tokens[m_Position];
-        
+
 
         public MemberIdParser(string text)
         {
@@ -29,7 +29,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
             m_Lexer = new MemberIdLexer(text);
         }
 
-        
+
         public MemberId Parse()
         {
             try
@@ -89,10 +89,10 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
         {
             // id always starts with a name            
             var nameSegments = ParseNameSegments();
-   
+
             // optional part: number of type arguments for generic types
             var arity = ParseTypeArity();
-            
+
             var namespaceName = String.Join(".", nameSegments.Take(nameSegments.Count - 1));
             var typeName = nameSegments[nameSegments.Count - 1];
             var type = CreateTypeId(namespaceName, typeName, arity);
@@ -123,17 +123,17 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
         {
             // id always starts with a name                        
             var nameSegments = ParseNameSegments();
-            
+
             // optional part: type arity
             var typeArity = ParseTypeArity();
 
             // for generic types, the name of the field or event follows after the arity
-            if(typeArity != 0)
+            if (typeArity != 0)
             {
                 MatchToken(TokenKind.Dot);
                 nameSegments.Add(MatchToken(TokenKind.Name));
             }
-            
+
             // there shouldn't be anything left after that
             MatchToken(TokenKind.Eof);
 
@@ -153,7 +153,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
             {
                 MatchToken(TokenKind.Dot);
                 nameSegments.Add(MatchToken(TokenKind.Name));
-            }                        
+            }
 
             // optional part: method arity
             var methodArity = ParseMethodArity();
@@ -167,20 +167,20 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
             {
                 methodReturnType = ParseTypeName();
             }
-            
+
             // ensure we parsed all tokens
             MatchToken(TokenKind.Eof);
 
             var (definingType, methodName) = CreateTypeIdFromMemberNameSegments(nameSegments, typeArity);
-            
+
             return new MethodId(definingType, methodName, methodArity, methodParameters, methodReturnType);
         }
-        
+
         private PropertyId ParsePropertyId()
         {
             // id always starts with a name            
             var nameSegments = ParseNameSegments();
-            
+
             // optional part: back-tick + number => arity of generic type
             var typeArity = ParseTypeArity();
 
@@ -198,7 +198,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
             MatchToken(TokenKind.Eof);
 
             var (definingType, propertyName) = CreateTypeIdFromMemberNameSegments(nameSegments, typeArity);
-        
+
             return new PropertyId(definingType, propertyName, parameters ?? Array.Empty<TypeId>());
         }
 
@@ -288,7 +288,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
         }
 
         private IReadOnlyList<TypeId> ParseParameterList()
-        {            
+        {
             if (TestAndMatchToken(TokenKind.OpenParenthesis))
             {
                 var parameters = ParseTypeNameList();
@@ -302,16 +302,16 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
         }
 
         private IReadOnlyList<TypeId> ParseTypeNameList()
-        {        
+        {
             var parameters = new List<TypeId>();
-            
+
             // there needs to be at least one type name in the list
             do
             {
                 parameters.Add(ParseTypeName());
             }
             while (TestAndMatchToken(TokenKind.Comma));
-            
+
             return parameters;
         }
 
@@ -331,11 +331,11 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
             else
             {
                 var nameSegments = ParseNameSegments();
-            
+
                 // optional part: type arguments (enclosed by '{' and '}')
                 var typeArguments = default(IReadOnlyList<TypeId>);
-                if(TestAndMatchToken(TokenKind.OpenBrace))
-                {                
+                if (TestAndMatchToken(TokenKind.OpenBrace))
+                {
                     typeArguments = ParseTypeNameList();
                     MatchToken(TokenKind.CloseBrace);
                 }
@@ -343,7 +343,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
                 var namespaceName = String.Join(".", nameSegments.Take(nameSegments.Count - 1));
                 var typeName = nameSegments[nameSegments.Count - 1];
 
-                
+
                 if (typeArguments != null)
                 {
                     type = new GenericTypeInstanceId(new NamespaceId(namespaceName), typeName, typeArguments);
@@ -358,19 +358,19 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
             // if the type if followed by square brackets, the id refers to an array type
             // arrays of arrays are allowed, too
             type = ParseArraySuffix(type);
-                        
+
             return type;
         }
 
         private int ParseTypeArity() =>
             TestAndMatchToken(TokenKind.Backtick) ? int.Parse(MatchToken(TokenKind.Number)) : 0;
 
-        private int ParseMethodArity() => 
+        private int ParseMethodArity() =>
             TestAndMatchToken(TokenKind.DoubleBacktick) ? int.Parse(MatchToken(TokenKind.Number)) : 0;
 
         private string MatchToken(TokenKind kind)
         {
-            if(Current.Kind == kind)
+            if (Current.Kind == kind)
             {
                 var value = Current.Value;
                 m_Position++;
@@ -385,7 +385,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
         private bool TestAndMatchToken(TokenKind kind)
         {
             if (Current.Kind == kind)
-            {                
+            {
                 m_Position++;
                 return true;
             }
@@ -394,7 +394,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
                 return false;
             }
         }
-        
+
         private MemberIdParserException UnexpectedToken(params TokenKind[] expected)
         {
             return new MemberIdParserException($"Unexpected token. Expected {String.Join(",", expected)} but was {Current.Kind}");
@@ -411,7 +411,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
                 return new SimpleTypeId(new NamespaceId(namespaceName), typeName);
             }
         }
-        
+
         private (TypeId definingType, string memberName) CreateTypeIdFromMemberNameSegments(IReadOnlyList<string> nameSegments, int typeArity)
         {
             // type member name needs at least two name segments (type name + field/event/property/method name)

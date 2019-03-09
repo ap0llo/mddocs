@@ -12,7 +12,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         public void Name_returns_the_expected_value_for_generic_overloads()
         {
             var methodName = "TestMethod1";
-            
+
             // get methods, use StartsWith() as generic overloads are suffixed with the numer
             // of type parameters
             var methodOverloads = GetTypeDefinition(typeof(TestClass_MethodOverloads))

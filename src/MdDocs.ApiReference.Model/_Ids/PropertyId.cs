@@ -13,10 +13,10 @@ namespace Grynwald.MdDocs.ApiReference.Model
         { }
 
         public PropertyId(TypeId definingType, string name, IReadOnlyList<TypeId> parameters) : base(definingType, name)
-        {            
+        {
             if (parameters == null)
                 throw new ArgumentNullException(nameof(parameters));
-            
+
             Parameters = parameters;
         }
 
@@ -29,7 +29,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
             {
                 var hash = DefiningType.GetHashCode() * 397;
                 hash ^= StringComparer.Ordinal.GetHashCode(Name);
-                
+
                 foreach (var parameter in Parameters)
                 {
                     hash ^= parameter.GetHashCode();

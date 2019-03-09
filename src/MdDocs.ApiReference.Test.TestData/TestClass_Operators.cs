@@ -6,11 +6,11 @@ namespace Grynwald.MdDocs.ApiReference.Test.TestData
     /// Test class for operators
     /// </summary>
     public class TestClass_Operators
-    {        
+    {
         /// <summary>
         /// Unary plus operator
         /// </summary>
-        public static TestClass_Operators operator +(TestClass_Operators other){ throw new NotImplementedException(); }
+        public static TestClass_Operators operator +(TestClass_Operators other) { throw new NotImplementedException(); }
 
         /// <summary>
         /// Binary plus operator
@@ -31,7 +31,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.TestData
         /// Binary multiplication operator
         /// </summary>
         public static TestClass_Operators operator *(TestClass_Operators left, TestClass_Operators right) { throw new NotImplementedException(); }
-        
+
         /// <summary>
         /// Binary division operator
         /// </summary>
@@ -106,7 +106,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.TestData
         /// Inequality operator
         /// </summary>
         public static TestClass_Operators operator !=(TestClass_Operators left, TestClass_Operators right) { throw new NotImplementedException(); }
-        
+
         /// <summary>
         /// Less than operator
         /// </summary>

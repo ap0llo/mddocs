@@ -6,7 +6,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.TestData
     /// Test class for operators
     /// </summary>
     public class TestClass_MultipleOperatorOverloads
-    {                
+    {
         /// <summary>
         /// Binary plus operator
         /// </summary>

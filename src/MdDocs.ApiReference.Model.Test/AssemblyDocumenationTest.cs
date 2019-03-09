@@ -17,7 +17,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             var documentation = sut.TryGetDocumentation(typeId);
 
             // ASSERT
-            Assert.Null(documentation);            
+            Assert.Null(documentation);
         }
 
         [Fact]

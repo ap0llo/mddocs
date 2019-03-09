@@ -33,7 +33,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         public void Serialize(IXunitSerializationInfo info)
         {
             info.AddValue(nameof(FieldId.DefiningType), new XunitSerializableTypeId(FieldId.DefiningType));
-            info.AddValue(nameof(FieldId.Name), FieldId.Name);            
+            info.AddValue(nameof(FieldId.Name), FieldId.Name);
         }
 
         public static implicit operator FieldId(XunitSerializableFieldId serializable) => serializable?.FieldId;

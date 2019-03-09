@@ -6,7 +6,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.TestData
     /// Test class 4
     /// </summary>
     public struct TestStruct_Properties
-    {        
+    {
         /// <summary>
         /// Property 1
         /// </summary>
@@ -30,7 +30,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.TestData
         /// <summary>
         /// Indexer 1
         /// </summary>
-        public int this[int foo] { get { throw new NotImplementedException(); }  }
+        public int this[int foo] { get { throw new NotImplementedException(); } }
 
         /// <summary>
         /// Indexer 2

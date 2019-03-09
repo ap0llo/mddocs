@@ -9,7 +9,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
 {
     public class MethodDocumentation : OverloadableMemberDocumentation<MethodOverloadDocumentation>
     {
-        private readonly IDictionary<MemberId, MethodOverloadDocumentation> m_Overloads;        
+        private readonly IDictionary<MemberId, MethodOverloadDocumentation> m_Overloads;
 
 
         public string Name { get; }
@@ -28,7 +28,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
             Overloads = ReadOnlyCollectionAdapter.Create(m_Overloads.Values);
 
-            Name = Overloads.Select(x => x.MethodName).Distinct().Single();            
+            Name = Overloads.Select(x => x.MethodName).Distinct().Single();
         }
 
 

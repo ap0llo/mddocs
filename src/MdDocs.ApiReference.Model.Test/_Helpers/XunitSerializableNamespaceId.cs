@@ -24,16 +24,16 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
 
         public void Deserialize(IXunitSerializationInfo info)
         {
-            NamespaceId = new NamespaceId(                
+            NamespaceId = new NamespaceId(
                 name: info.GetValue<string>(nameof(NamespaceId.Name))
             );
         }
 
         public void Serialize(IXunitSerializationInfo info)
-        {            
-            info.AddValue(nameof(NamespaceId.Name), NamespaceId.Name);            
+        {
+            info.AddValue(nameof(NamespaceId.Name), NamespaceId.Name);
         }
 
-        public static implicit operator NamespaceId(XunitSerializableNamespaceId serializable) => serializable?.NamespaceId;        
+        public static implicit operator NamespaceId(XunitSerializableNamespaceId serializable) => serializable?.NamespaceId;
     }
 }

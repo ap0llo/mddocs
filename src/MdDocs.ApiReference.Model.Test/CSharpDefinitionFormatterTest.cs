@@ -184,8 +184,8 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         [InlineData("op_UnaryPlus", @"public static TestClass_CSharpDefinition operator +(TestClass_CSharpDefinition other);")]
         [InlineData("op_Addition", @"public static TestClass_CSharpDefinition operator +(TestClass_CSharpDefinition left, TestClass_CSharpDefinition right);")]
         [InlineData("op_UnaryNegation", @"public static TestClass_CSharpDefinition operator -(TestClass_CSharpDefinition other);")]
-        [InlineData("op_Subtraction", @"public static TestClass_CSharpDefinition operator -(TestClass_CSharpDefinition left, TestClass_CSharpDefinition right);")]        
-        [InlineData("op_Multiply", @"public static TestClass_CSharpDefinition operator *(TestClass_CSharpDefinition left, TestClass_CSharpDefinition right);")]        
+        [InlineData("op_Subtraction", @"public static TestClass_CSharpDefinition operator -(TestClass_CSharpDefinition left, TestClass_CSharpDefinition right);")]
+        [InlineData("op_Multiply", @"public static TestClass_CSharpDefinition operator *(TestClass_CSharpDefinition left, TestClass_CSharpDefinition right);")]
         [InlineData("op_Division", @"public static TestClass_CSharpDefinition operator /(TestClass_CSharpDefinition left, TestClass_CSharpDefinition right);")]
         [InlineData("op_Modulus", @"public static TestClass_CSharpDefinition operator %(TestClass_CSharpDefinition left, TestClass_CSharpDefinition right);")]
         [InlineData("op_BitwiseAnd", @"public static TestClass_CSharpDefinition operator &(TestClass_CSharpDefinition left, TestClass_CSharpDefinition right);")]
@@ -193,10 +193,10 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         [InlineData("op_LogicalNot", @"public static TestClass_CSharpDefinition operator !(TestClass_CSharpDefinition left);")]
         [InlineData("op_OnesComplement", @"public static TestClass_CSharpDefinition operator ~(TestClass_CSharpDefinition left);")]
         [InlineData("op_Increment", @"public static TestClass_CSharpDefinition operator ++(TestClass_CSharpDefinition left);")]
-        [InlineData("op_Decrement", @"public static TestClass_CSharpDefinition operator --(TestClass_CSharpDefinition left);")]       
-        [InlineData("op_True", @"public static bool operator true(TestClass_CSharpDefinition left);")]       
-        [InlineData("op_False", @"public static bool operator false(TestClass_CSharpDefinition left);")]       
-        [InlineData("op_LeftShift", @"public static TestClass_CSharpDefinition operator <<(TestClass_CSharpDefinition left, int right);")]       
+        [InlineData("op_Decrement", @"public static TestClass_CSharpDefinition operator --(TestClass_CSharpDefinition left);")]
+        [InlineData("op_True", @"public static bool operator true(TestClass_CSharpDefinition left);")]
+        [InlineData("op_False", @"public static bool operator false(TestClass_CSharpDefinition left);")]
+        [InlineData("op_LeftShift", @"public static TestClass_CSharpDefinition operator <<(TestClass_CSharpDefinition left, int right);")]
         [InlineData("op_RightShift", @"public static TestClass_CSharpDefinition operator >>(TestClass_CSharpDefinition left, int right);")]
         [InlineData("op_ExclusiveOr", @"public static TestClass_CSharpDefinition operator ^(TestClass_CSharpDefinition left, TestClass_CSharpDefinition right);")]
         [InlineData("op_Equality", @"public static bool operator ==(TestClass_CSharpDefinition left, TestClass_CSharpDefinition right);")]
@@ -219,7 +219,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
 
             // ASSERT
             Assert.Equal(expected, actual);
-        }       
+        }
 
         [Theory]
         [InlineData(nameof(TestClass_CSharpDefinition), "public class TestClass_CSharpDefinition")]
@@ -250,7 +250,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             "    Value1 = 0x1,\r\n" +
             "    Value2 = 0x2,\r\n" +
             "    Value3 = 0x4\r\n" +
-            "}\r\n"    
+            "}\r\n"
         )]
         [InlineData(
             nameof(CSharpDefinitionTestEnum),

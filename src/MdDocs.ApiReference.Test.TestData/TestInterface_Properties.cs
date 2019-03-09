@@ -4,7 +4,7 @@
     /// Test class 4
     /// </summary>
     public interface TestInterface_Properties
-    {        
+    {
         /// <summary>
         /// Property 1
         /// </summary>
@@ -15,11 +15,11 @@
         /// </summary>
         int Property2 { get; }
 
-        
+
         /// <summary>
         /// Indexer 1
         /// </summary>
-        int this[int foo] { get;  }
+        int this[int foo] { get; }
 
         /// <summary>
         /// Indexer 2

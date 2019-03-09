@@ -5,7 +5,7 @@ using System.Linq;
 namespace Grynwald.MdDocs.ApiReference.Model
 {
     public sealed class MethodId : TypeMemberId, IEquatable<MethodId>
-    {   
+    {
         public int Arity { get; }
 
         public IReadOnlyList<TypeId> Parameters { get; }
@@ -40,12 +40,12 @@ namespace Grynwald.MdDocs.ApiReference.Model
                 hash ^= StringComparer.Ordinal.GetHashCode(Name);
                 hash ^= Arity.GetHashCode();
 
-                foreach(var parameter in Parameters)
+                foreach (var parameter in Parameters)
                 {
                     hash ^= parameter.GetHashCode();
                 }
 
-                if(ReturnType != null)
+                if (ReturnType != null)
                     hash ^= ReturnType.GetHashCode();
 
                 return hash;
@@ -65,7 +65,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
                 Arity == other.Arity &&
                 Parameters.SequenceEqual(other.Parameters) &&
                 (
-                    (ReturnType == null && other.ReturnType == null) || 
+                    (ReturnType == null && other.ReturnType == null) ||
                     (ReturnType != null && ReturnType.Equals(other.ReturnType))
                 );
         }

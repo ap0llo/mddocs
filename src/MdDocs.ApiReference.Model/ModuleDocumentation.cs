@@ -48,7 +48,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
                 m_Types.Add(typeDocumentation.TypeId, typeDocumentation);
                 namespaceDocumentation.AddType(typeDocumentation);
             }
-            
+
             Types = ReadOnlyCollectionAdapter.Create(m_Types.Values);
             Namespaces = ReadOnlyCollectionAdapter.Create(m_Namespaces.Values);
         }

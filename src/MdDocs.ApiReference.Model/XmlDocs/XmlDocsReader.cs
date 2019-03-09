@@ -27,10 +27,10 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Linq;    
+    using System.Linq;
     using System.Xml;
     using System.Xml.Linq;
-    
+
     /// <summary>
     /// Reads .NET XML API documentation files.
     /// </summary>
@@ -55,7 +55,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
                 .ToList();
         }
 
-        
+
         /// <summary>
         /// Reads all documentation for a single member
         /// </summary>
@@ -76,7 +76,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
         private static void ReadMemberContent(XElement xml, MemberElement member)
         {
             foreach (var elementNode in xml.Elements())
-            {                
+            {
                 switch (elementNode.Name.LocalName)
                 {
                     case "summary":
@@ -91,21 +91,21 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
                     case "param":
                         {
                             var name = FindAttribute(elementNode, "name");
-                            if(name != null)
+                            if (name != null)
                                 member.Parameters.Add(name, ReadTextBlock(elementNode));
                         }
                         break;
                     case "typeparam":
                         {
                             var name = FindAttribute(elementNode, "name");
-                            if(name != null)
+                            if (name != null)
                                 member.TypeParameters.Add(name, ReadTextBlock(elementNode));
                         }
-                        break;                    
+                        break;
                     case "seealso":
                         {
                             var cref = FindAttribute(elementNode, "cref");
-                            if(cref != null)
+                            if (cref != null)
                             {
                                 var memberId = MemberId.Parse(cref);
                                 member.SeeAlso.Add(new SeeAlsoElement(memberId, ReadTextBlock(elementNode)));
@@ -115,13 +115,13 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
                     case "exception":
                         {
                             var cref = FindAttribute(elementNode, "cref");
-                            if(cref != null)
+                            if (cref != null)
                             {
                                 var memberId = MemberId.Parse(cref);
 
                                 //TODO: Emit warning for unexpected member id
 
-                                if(memberId is TypeId typeId)
+                                if (memberId is TypeId typeId)
                                 {
                                     member.Exceptions.Add(
                                         new ExceptionElement(typeId, ReadTextBlock(elementNode))
@@ -141,7 +141,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
                     default:
                         //TODO: Emit warning about unknown element
                         break;
-                }                
+                }
             }
         }
 
@@ -178,7 +178,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
                                 element = new CElement(elementNode.Value);
                                 break;
                             case "see":
-                                
+
                                 element = new SeeElement(new MemberIdParser(FindAttribute(elementNode, "cref")).Parse());
                                 break;
                             //case "list":

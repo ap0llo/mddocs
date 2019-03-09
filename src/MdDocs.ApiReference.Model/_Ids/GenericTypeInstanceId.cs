@@ -10,7 +10,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
     public sealed class GenericTypeInstanceId : TypeId, IEquatable<GenericTypeInstanceId>
     {
         public IReadOnlyList<TypeId> TypeArguments { get; }
-        
+
         public override string DisplayName =>
             $"{Name}<{String.Join(", ", TypeArguments.Select(a => a.DisplayName))}>";
 

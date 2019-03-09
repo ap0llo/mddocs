@@ -9,7 +9,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
     {
         public static readonly MethodFormatter Instance = new MethodFormatter();
 
-        
+
         private MethodFormatter()
         { }
 
@@ -20,19 +20,19 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
             var operatorKind = method.GetOperatorKind();
 
-            if(method.IsConstructor)
+            if (method.IsConstructor)
             {
                 var name = method.DeclaringType.Name;
 
                 // remove number of type parameters from name
-                if(method.DeclaringType.HasGenericParameters)
+                if (method.DeclaringType.HasGenericParameters)
                 {
                     name = name.Substring(0, name.LastIndexOf('`'));
                 }
 
                 signatureBuilder.Append(name);
             }
-            else if(operatorKind.HasValue)
+            else if (operatorKind.HasValue)
             {
                 signatureBuilder.Append(operatorKind.Value);
             }
@@ -41,16 +41,16 @@ namespace Grynwald.MdDocs.ApiReference.Model
                 signatureBuilder.Append(method.Name);
             }
 
-            if(method.HasGenericParameters)
+            if (method.HasGenericParameters)
             {
                 signatureBuilder.Append("<");
                 signatureBuilder.AppendJoin(", ", method.GenericParameters.Select(x => x.Name));
                 signatureBuilder.Append(">");
             }
 
-            
+
             signatureBuilder.Append("(");
-            if(operatorKind == OperatorKind.Implicit || operatorKind == OperatorKind.Explicit)
+            if (operatorKind == OperatorKind.Implicit || operatorKind == OperatorKind.Explicit)
             {
                 signatureBuilder.Append(method.Parameters[0].ParameterType.ToTypeId().DisplayName);
                 signatureBuilder.Append(" to ");
@@ -89,7 +89,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
             // Method does not have info about generic parameter names, so the parameter will just be called "T"
             if (method.Arity == 1)
             {
-                signatureBuilder.Append("<T>");                
+                signatureBuilder.Append("<T>");
             }
             // Method does not have info about generic parameter names, so they will just be named T1..Tn
             else if (method.Arity > 1)
@@ -117,7 +117,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
             return signatureBuilder.ToString();
         }
-        
+
         public string GetSignature(PropertyDefinition property)
         {
             var signatureBuilder = new StringBuilder();
@@ -125,7 +125,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
             signatureBuilder.Append(property.Name);
 
 
-            if(property.HasParameters)
+            if (property.HasParameters)
             {
                 signatureBuilder.Append("[");
 

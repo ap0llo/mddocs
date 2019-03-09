@@ -25,13 +25,13 @@ namespace Grynwald.MdDocs.ApiReference.Test
         {
             // disposing m_AssemblyDocumentation will implicitly dispose m_AssemblyDefinition
 
-            if (m_AssemblyDocumentation.IsValueCreated) 
-                m_AssemblyDocumentation.Value.Dispose();           
+            if (m_AssemblyDocumentation.IsValueCreated)
+                m_AssemblyDocumentation.Value.Dispose();
             else if (m_AssemblyDefinition.IsValueCreated)
                 m_AssemblyDefinition.Value.Dispose();
         }
 
-        
+
         protected TypeId GetTypeId(Type t) => GetTypeDefinition(t).ToTypeId();
 
         protected TypeDefinition GetTypeDefinition(Type t) => GetTypeDefinition(t.Name);

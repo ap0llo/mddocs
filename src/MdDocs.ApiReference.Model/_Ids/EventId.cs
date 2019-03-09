@@ -17,7 +17,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
                 var hash = DefiningType.GetHashCode() * 397;
                 hash ^= StringComparer.Ordinal.GetHashCode(Name);
                 return hash;
-            }            
+            }
         }
 
         public bool Equals(EventId other)

@@ -12,18 +12,18 @@ namespace Grynwald.MdDocs.ApiReference.Model
         public static bool IsOperator(this MethodReference methodReference, out OperatorKind operatorKind)
         {
             var kind = methodReference.GetOperatorKind();
-            if(kind.HasValue)
+            if (kind.HasValue)
             {
                 operatorKind = kind.Value;
                 return true;
             }
             else
             {
-                operatorKind = (OperatorKind) (-1);
+                operatorKind = (OperatorKind)(-1);
                 return false;
             }
         }
-        
+
         public static OperatorKind? GetOperatorKind(this MethodReference methodReference) =>
             OperatorMethodNames.GetOperatorKind(methodReference.Name);
 
@@ -37,19 +37,19 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
             TypeId returnType = default;
             var operatorKind = method.GetOperatorKind();
-            if(operatorKind == OperatorKind.Implicit || operatorKind == OperatorKind.Explicit)
+            if (operatorKind == OperatorKind.Implicit || operatorKind == OperatorKind.Explicit)
             {
                 returnType = method.ReturnType.ToTypeId();
             }
-            
+
             return new MethodId(
                 method.DeclaringType.ToTypeId(),
-                method.Name,                
+                method.Name,
                 method.GenericParameters.Count,
                 parameters,
                 returnType
             );
-        }        
+        }
 
     }
 }

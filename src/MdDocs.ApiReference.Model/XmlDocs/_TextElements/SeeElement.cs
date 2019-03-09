@@ -12,7 +12,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
             MemberId = memberId ?? throw new ArgumentNullException(nameof(memberId));
         }
 
-     
+
         public override void Accept(IVisitor visitor) => visitor.Visit(this);
     }
 }

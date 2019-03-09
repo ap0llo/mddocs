@@ -34,16 +34,16 @@ namespace Grynwald.MdDocs.ApiReference.Model
             unchecked
             {
                 var hash = DefiningMemberKind.GetHashCode() * 397;
-                hash ^= Index.GetHashCode(); 
+                hash ^= Index.GetHashCode();
                 return hash;
             }
         }
 
-        public bool Equals(GenericTypeParameterId other) => 
+        public bool Equals(GenericTypeParameterId other) =>
             other != null && DefiningMemberKind == other.DefiningMemberKind && Index == other.Index;
 
         public override bool Equals(TypeId other) => Equals(other as GenericTypeParameterId);
 
-        public override bool Equals(object obj) => Equals(obj as GenericTypeParameterId);        
+        public override bool Equals(object obj) => Equals(obj as GenericTypeParameterId);
     }
 }

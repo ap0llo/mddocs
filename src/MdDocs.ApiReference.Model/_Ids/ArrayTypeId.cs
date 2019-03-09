@@ -19,8 +19,8 @@ namespace Grynwald.MdDocs.ApiReference.Model
         public ArrayTypeId(TypeId elementType, int dimensions) : base(new NamespaceId("System"), "Array")
         {
             ElementType = elementType ?? throw new ArgumentNullException(nameof(elementType));
-            Dimensions = dimensions >= 1 
-                ? dimensions 
+            Dimensions = dimensions >= 1
+                ? dimensions
                 : throw new ArgumentOutOfRangeException(nameof(dimensions), "Value needs to be equal or greater than 1");
         }
 
@@ -42,6 +42,6 @@ namespace Grynwald.MdDocs.ApiReference.Model
                 hash ^= Dimensions.GetHashCode();
                 return hash;
             }
-        }      
+        }
     }
 }

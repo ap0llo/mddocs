@@ -7,7 +7,7 @@ using Xunit;
 namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
 {
     public class MonoCecilXmlDocExtensionsTest : TestBase
-    {        
+    {
         [Theory]
         [InlineData("TestClass_Type", "T:Grynwald.MdDocs.ApiReference.Test.TestData.TestClass_Type")]
         [InlineData("TestClass_GenericType`1", "T:Grynwald.MdDocs.ApiReference.Test.TestData.TestClass_GenericType`1")]
@@ -16,7 +16,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
             // ARRANGE
             var types = m_AssemblyDefinition.Value.MainModule.Types.ToArray();
             var typeDefinition = m_AssemblyDefinition.Value.MainModule.GetTypes().Single(t => t.Name == typeName);
-            
+
             // ACT
             var actualId = typeDefinition.GetXmlDocId();
 

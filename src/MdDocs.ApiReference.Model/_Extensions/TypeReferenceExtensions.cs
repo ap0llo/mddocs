@@ -4,15 +4,15 @@ using Mono.Cecil;
 namespace Grynwald.MdDocs.ApiReference.Model
 {
     public static class TypeReferenceExtensions
-    {      
+    {
         public static MemberId ToMemberId(this TypeReference typeReference) => typeReference.ToTypeId();
 
         public static TypeId ToTypeId(this TypeReference typeReference)
-        {             
+        {
             // generic instance type: a generic type with type arguments
             // does not necessarily mean the type arguments are real types
             // they can still be type parameters
-            if(typeReference is GenericInstanceType genericInstanceType)
+            if (typeReference is GenericInstanceType genericInstanceType)
             {
                 // remove the number of type parameters from the name
                 var name = typeReference.Name.Substring(0, typeReference.Name.LastIndexOf('`'));
@@ -29,7 +29,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
                 //
                 if (typeReference.ContainsGenericParameter)
                 {
-                    
+
                     var typeArity = genericInstanceType.GenericArguments.Count;
 
                     // get the names of the type parameters
@@ -57,7 +57,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
             // Unbound generic type, e.g. 
             // class Foo<T> 
             // { }        
-            else if(typeReference.HasGenericParameters)
+            else if (typeReference.HasGenericParameters)
             {
                 // remove the number of type parameters from the name
                 var name = typeReference.Name.Substring(0, typeReference.Name.LastIndexOf('`'));
@@ -75,10 +75,10 @@ namespace Grynwald.MdDocs.ApiReference.Model
             else if (typeReference is GenericParameter genericParameter)
             {
                 // parameter is declared at the method level
-                if(genericParameter.DeclaringMethod != null)
+                if (genericParameter.DeclaringMethod != null)
                 {
                     var index = genericParameter.DeclaringMethod.GenericParameters.IndexOf(genericParameter);
-                    return new GenericTypeParameterId(GenericTypeParameterId.MemberKind.Method, index, genericParameter.Name);                
+                    return new GenericTypeParameterId(GenericTypeParameterId.MemberKind.Method, index, genericParameter.Name);
                 }
                 // parameter is declared at the type-level
                 else

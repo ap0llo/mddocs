@@ -17,13 +17,13 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         { }
 
         public XunitSerializableMemberId(MemberId memberId)
-        {            
+        {
             MemberId = memberId;
         }
 
 
         public void Deserialize(IXunitSerializationInfo info)
-        { 
+        {
             var type = info.GetValue<string>("type");
 
             switch (type)
@@ -90,10 +90,10 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
                     info.AddValue("type", nameof(NamespaceId));
                     info.AddValue(nameof(MemberId), new XunitSerializableNamespaceId(namespaceId));
                     break;
-                    
+
                 default:
                     throw new NotImplementedException();
-            }            
+            }
         }
 
         public static implicit operator MemberId(XunitSerializableMemberId serializable) => serializable?.MemberId;

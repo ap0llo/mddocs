@@ -22,7 +22,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             PropertyId = propertyId ?? throw new ArgumentNullException(nameof(propertyId));
         }
 
-        
+
         public void Deserialize(IXunitSerializationInfo info)
         {
             var definingType = info.GetValue<XunitSerializableTypeId>(nameof(PropertyId.DefiningType));
@@ -44,12 +44,12 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             info.AddValue(nameof(PropertyId.DefiningType), new XunitSerializableTypeId(PropertyId.DefiningType));
 
             info.AddValue(nameof(PropertyId.Name), PropertyId.Name);
-            
+
             info.AddValue("parameterCount", PropertyId.Parameters.Count);
-            for(int i = 0; i < PropertyId.Parameters.Count; i++)
+            for (int i = 0; i < PropertyId.Parameters.Count; i++)
             {
                 info.AddValue($"parameter{i}", new XunitSerializableTypeId(PropertyId.Parameters[i]));
-            }            
+            }
         }
 
         public static implicit operator PropertyId(XunitSerializablePropertyId serializable) => serializable?.PropertyId;

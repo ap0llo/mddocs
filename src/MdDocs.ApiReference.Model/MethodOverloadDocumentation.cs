@@ -10,10 +10,10 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
         public MethodDocumentation MethodDocumentation { get; }
 
-        
+
         internal MethodOverloadDocumentation(MethodDocumentation methodDocumentation, MethodDefinition definition, IXmlDocsProvider xmlDocsProvider) : base(definition, xmlDocsProvider)
         {
-            MethodDocumentation = methodDocumentation ?? throw new ArgumentNullException(nameof(methodDocumentation));                        
+            MethodDocumentation = methodDocumentation ?? throw new ArgumentNullException(nameof(methodDocumentation));
         }
 
 

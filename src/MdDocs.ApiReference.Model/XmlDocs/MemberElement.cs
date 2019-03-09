@@ -93,6 +93,6 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
         public MemberElement(MemberId memberId)
         {
             MemberId = memberId ?? throw new ArgumentNullException(nameof(memberId));
-        }        
+        }
     }
 }

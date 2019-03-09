@@ -43,7 +43,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             var expectedMemberId = new PropertyId(
                 s_TestClass_Properties,
                 "Item",
-                new [] { s_System_Int32 }
+                new[] { s_System_Int32 }
             );
             var propertyReference = GetPropertyReference(expectedMemberId.DefiningType.Name, expectedMemberId.Name);
 
@@ -52,6 +52,6 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
 
             // ASSERT
             Assert.Equal(expectedMemberId, actualMemberId);
-        }        
+        }
     }
 }

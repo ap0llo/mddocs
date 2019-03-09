@@ -5,7 +5,7 @@ using System.IO;
 namespace Grynwald.MdDocs.ApiReference.Test.TestData
 {
     class TestClass_TypeIdDisplayName
-    {                
+    {
         public int Property1 { get; set; }
 
         public byte Property2 { get; set; }
@@ -41,7 +41,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.TestData
         public string[] Property17 { get; set; }
 
         public Stream[] Property18 { get; set; }
-        
+
         public IEnumerable<string> Property19 { get; set; }
 
         public IEnumerable<Stream> Property20 { get; set; }

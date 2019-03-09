@@ -12,14 +12,14 @@ namespace Grynwald.MdDocs.ApiReference.Model
         public static string GetDefinition(PropertyDefinition property)
         {
             var definitionBuilder = new StringBuilder();
-            
+
             AppendCustomAttributes(definitionBuilder, property.CustomAttributes);
 
             // "public"
             definitionBuilder.Append("public ");
 
             // "static"
-            if(property.GetMethod?.IsStatic == true || property.SetMethod?.IsStatic == true)
+            if (property.GetMethod?.IsStatic == true || property.SetMethod?.IsStatic == true)
             {
                 definitionBuilder.Append("static ");
             }
@@ -71,7 +71,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         }
 
         public static string GetDefinition(FieldDefinition field)
-        {            
+        {
             var definitionBuilder = new StringBuilder();
 
             AppendCustomAttributes(definitionBuilder, field.CustomAttributes);
@@ -83,19 +83,19 @@ namespace Grynwald.MdDocs.ApiReference.Model
             }
 
             // "static"
-            if(field.IsStatic && !field.HasConstant)
+            if (field.IsStatic && !field.HasConstant)
             {
                 definitionBuilder.Append("static ");
             }
 
             // "const"
-            if(field.HasConstant)
+            if (field.HasConstant)
             {
                 definitionBuilder.Append("const ");
             }
 
             // "readonly"
-            if(field.IsInitOnly)
+            if (field.IsInitOnly)
             {
                 definitionBuilder.Append("readonly ");
             }
@@ -111,7 +111,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
             return definitionBuilder.ToString();
         }
-        
+
         public static string GetDefinition(MethodDefinition method)
         {
             var definitionBuilder = new StringBuilder();
@@ -213,7 +213,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
             return definitionBuilder.ToString();
         }
-        
+
         public static string GetDefinition(EventDefinition @event)
         {
             var definitionBuilder = new StringBuilder();
@@ -245,7 +245,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
             return definitionBuilder.ToString();
         }
-        
+
         public static string GetDefinition(TypeDefinition type)
         {
             var definitionBuilder = new StringBuilder();
@@ -281,7 +281,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         }
 
 
-      
+
         private static IEnumerable<CustomAttribute> GetCustomAttributes(MethodDefinition method) =>
             method.CustomAttributes.Where(a => a.AttributeType.FullName != Constants.ExtensionAttributeFullName);
 
@@ -323,7 +323,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
             definitionBuilder.Append("<");
 
             var isFirst = true;
-            foreach(var parameter in genericParameters)
+            foreach (var parameter in genericParameters)
             {
                 if (!isFirst)
                 {
@@ -331,19 +331,19 @@ namespace Grynwald.MdDocs.ApiReference.Model
                     isFirst = false;
                 }
 
-                if(parameter.IsCovariant)
+                if (parameter.IsCovariant)
                 {
                     definitionBuilder.Append("out ");
                 }
 
-                if(parameter.IsContravariant)
+                if (parameter.IsContravariant)
                 {
                     definitionBuilder.Append("in ");
                 }
 
                 definitionBuilder.Append(parameter.Name);
             }
-            
+
             definitionBuilder.Append(">");
         }
 
@@ -451,7 +451,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
             definitionBuilder.AppendLine();
             definitionBuilder.AppendLine("}");
         }
-        
+
         private static string GetOperatorString(OperatorKind kind)
         {
             switch (kind)
@@ -485,9 +485,9 @@ namespace Grynwald.MdDocs.ApiReference.Model
                 case OperatorKind.BitwiseOr:
                     return "|";
                 case OperatorKind.LeftShift:
-                    return "<<";                    
+                    return "<<";
                 case OperatorKind.RightShift:
-                    return ">>";                    
+                    return ">>";
                 case OperatorKind.ExclusiveOr:
                     return "^";
                 case OperatorKind.Equality:
@@ -520,7 +520,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
                 return $"\"{attributeArgument.Value}\"";
             }
             // special handling for enums
-            else if(definition != null && definition.Kind () == TypeKind.Enum)
+            else if (definition != null && definition.Kind() == TypeKind.Enum)
             {
                 // get the definition of the enum
                 var typeDefinition = attributeArgument.Type.Resolve();
@@ -553,7 +553,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
                     return builder.ToString();
                 }
                 // for "normal" enums, return the name of the value
-                else if(values.Any(x => x.value == intValue))
+                else if (values.Any(x => x.value == intValue))
                 {
                     return $"{enumName}.{values.First(x => x.value == intValue).name}";
                 }
@@ -575,7 +575,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         private static (string name, long value)[] GetEnumValues(TypeDefinition definition)
         {
             return definition.Fields
-                .Where(f => f.IsPublic && !f.IsSpecialName)               
+                .Where(f => f.IsPublic && !f.IsSpecialName)
                 .Select(f => (f.Name, Convert.ToInt64(f.Constant))).ToArray();
         }
 

@@ -23,7 +23,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
             // (see https://docs.microsoft.com/en-us/visualstudio/test/live-unit-testing?view=vs-2017#configure-live-unit-testing)
 
             var assemblyPath = new Uri(typeof(TestClass_Type).Assembly.CodeBase).LocalPath;
-            m_XmlDocsPath = Path.ChangeExtension(assemblyPath, ".xml");            
+            m_XmlDocsPath = Path.ChangeExtension(assemblyPath, ".xml");
         }
 
 
@@ -116,7 +116,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
 
 
         [Theory]
-        [InlineData(typeof(TestClass_XmlDocs<object,object>))]
+        [InlineData(typeof(TestClass_XmlDocs<object, object>))]
         public void TryGetDocumentationComments_gets_expected_docs_for_type(Type type)
         {
             // ARRANGE
@@ -201,7 +201,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
         }
 
         [Theory]
-        [InlineData(typeof(TestClass_XmlDocs<,>), nameof(TestClass_XmlDocs<object,object>.Field1))]
+        [InlineData(typeof(TestClass_XmlDocs<,>), nameof(TestClass_XmlDocs<object, object>.Field1))]
         public void TryGetDocumentationComments_gets_expected_docs_for_a_field(Type type, string fieldName)
         {
             // ARRANGE

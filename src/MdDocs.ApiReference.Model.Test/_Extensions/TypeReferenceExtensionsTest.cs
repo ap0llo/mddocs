@@ -9,14 +9,14 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
     {
         [Fact]
         public void ToMemberId_returns_expected_value_for_type_definitions_01()
-        {            
+        {
             // ARRANGE
             var typeReference = GetTypeDefinition(typeof(TestClass_Type));
             var expectedMemberId = new SimpleTypeId("Grynwald.MdDocs.ApiReference.Test.TestData", "TestClass_Type");
 
             // ACT
             var actualMemberId = typeReference.ToMemberId();
-            
+
             // ASSERT
             Assert.NotNull(actualMemberId);
             Assert.Equal(expectedMemberId, actualMemberId);
@@ -47,7 +47,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
                 .Parameters
                 .Single()
                 .ParameterType;
-                    
+
             var expectedMemberId = new GenericTypeInstanceId(
                 "System.Collections.Generic",
                 "IEnumerable",

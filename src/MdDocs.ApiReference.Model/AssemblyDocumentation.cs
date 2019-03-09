@@ -40,10 +40,10 @@ namespace Grynwald.MdDocs.ApiReference.Model
             var docsFilePath = Path.ChangeExtension(filePath, ".xml");
 
             var xmlDocsProvider = File.Exists(docsFilePath)
-                ? (IXmlDocsProvider) new XmlDocsProvider(docsFilePath, assemblyDefinition)
-                : (IXmlDocsProvider) NullXmlDocsProvider.Instance;
+                ? (IXmlDocsProvider)new XmlDocsProvider(docsFilePath, assemblyDefinition)
+                : (IXmlDocsProvider)NullXmlDocsProvider.Instance;
 
             return new AssemblyDocumentation(assemblyDefinition, xmlDocsProvider);
-        }        
+        }
     }
 }

@@ -70,7 +70,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
             public IEnumerable<MemberIdLexerTestCase> GetTestCases()
             {
                 yield return new MemberIdLexerTestCase("", new Token(TokenKind.Eof, ""));
-                yield return new MemberIdLexerTestCase("N:", new Token(TokenKind.IdentifierType, "N"), new Token(TokenKind.Colon, ":"), new Token(TokenKind.Eof, ""));                
+                yield return new MemberIdLexerTestCase("N:", new Token(TokenKind.IdentifierType, "N"), new Token(TokenKind.Colon, ":"), new Token(TokenKind.Eof, ""));
                 yield return new MemberIdLexerTestCase("T:", new Token(TokenKind.IdentifierType, "T"), new Token(TokenKind.Colon, ":"), new Token(TokenKind.Eof, ""));
                 yield return new MemberIdLexerTestCase("F:", new Token(TokenKind.IdentifierType, "F"), new Token(TokenKind.Colon, ":"), new Token(TokenKind.Eof, ""));
                 yield return new MemberIdLexerTestCase("P:", new Token(TokenKind.IdentifierType, "P"), new Token(TokenKind.Colon, ":"), new Token(TokenKind.Eof, ""));
@@ -207,7 +207,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
                     new Token(TokenKind.Dot, "."),
                     new Token(TokenKind.Name, "Method"),
                     new Token(TokenKind.DoubleBacktick, "``"),
-                    new Token(TokenKind.Number, "1"),                    
+                    new Token(TokenKind.Number, "1"),
                     new Token(TokenKind.OpenParenthesis, "("),
                     new Token(TokenKind.DoubleBacktick, "``"),
                     new Token(TokenKind.Number, "0"),
@@ -351,6 +351,6 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
                 Assert.Equal(testCase.ExpectedTokens[i].Kind, actualTokens[i].Kind);
                 Assert.Equal(testCase.ExpectedTokens[i].Value, actualTokens[i].Value);
             }
-        }        
+        }
     }
 }

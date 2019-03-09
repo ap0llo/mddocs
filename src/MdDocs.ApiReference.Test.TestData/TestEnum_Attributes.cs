@@ -9,7 +9,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.TestData
     [Test]
     public enum TestEnum_Attributes
     {
-        Value1, 
+        Value1,
         Value2
     }
 }

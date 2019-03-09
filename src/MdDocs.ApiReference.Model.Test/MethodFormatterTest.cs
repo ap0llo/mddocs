@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Grynwald.MdDocs.ApiReference.Test.Model
 {
-    public class MethodFormatterTest: TestBase
+    public class MethodFormatterTest : TestBase
     {
         [Theory]
         [InlineData(nameof(TestClass_MethodFormatter.Method1), "Method1()")]
@@ -79,7 +79,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
 
         [Theory]
         [InlineData(0, "TestClass_MethodFormatter()")]
-        [InlineData(1, "TestClass_MethodFormatter(string)")]        
+        [InlineData(1, "TestClass_MethodFormatter(string)")]
         public void GetSignature_returns_the_expected_result_for_constructors_of_generic_types(int parameterCount, string expectedSignature)
         {
             // ARRANGE

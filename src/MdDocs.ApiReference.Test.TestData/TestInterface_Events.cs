@@ -11,7 +11,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.TestData
         /// Event 1
         /// </summary>
         event EventHandler Event1;
-        
+
         /// <summary>
         /// Event 2
         /// </summary>
@@ -20,6 +20,6 @@ namespace Grynwald.MdDocs.ApiReference.Test.TestData
         /// <summary>
         /// Event 3
         /// </summary>
-        event EventHandler Event3;        
+        event EventHandler Event3;
     }
 }

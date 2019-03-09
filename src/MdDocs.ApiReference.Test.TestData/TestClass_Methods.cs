@@ -17,7 +17,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.TestData
         /// Test Method 2
         /// </summary>
         public void TestMethod2(string foo) { }
-       
+
         /// <summary>
         /// Test Method 3
         /// </summary>

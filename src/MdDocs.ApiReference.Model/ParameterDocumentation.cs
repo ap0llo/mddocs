@@ -34,7 +34,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         }
 
 
-        public IDocumentation TryGetDocumentation(MemberId id) => 
+        public IDocumentation TryGetDocumentation(MemberId id) =>
             OverloadDocumentation.TryGetDocumentation(id);
     }
 }

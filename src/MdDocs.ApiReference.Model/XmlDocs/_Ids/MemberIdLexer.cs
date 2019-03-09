@@ -80,7 +80,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
         Eof
     }
 
-    internal struct Token 
+    internal struct Token
     {
         public string Value { get; set; }
 
@@ -109,7 +109,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
     /// </remarks>
     internal class MemberIdLexer
     {
-        private readonly string m_Text;        
+        private readonly string m_Text;
         private int m_Position;
 
 
@@ -134,7 +134,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
         {
             //iterate over the input text
             while (Current != '\0')
-            {                
+            {
                 switch (Current)
                 {
                     // number => read as number token, names can contain digits but never start with a digit
@@ -168,7 +168,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
 
                     // for backtick, look ahead one character to detect a double-backtick token
                     case '`':
-                        if(Next == '`')
+                        if (Next == '`')
                         {
                             yield return new Token(TokenKind.DoubleBacktick, "``");
                             m_Position += 2;
@@ -250,7 +250,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
                     Current == '}' ||
                     Current == '[' ||
                     Current == ']' ||
-                    Current == ','||
+                    Current == ',' ||
                     Current == '~')
                 {
                     break;
@@ -274,19 +274,19 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
 
             return new Token(TokenKind.Name, resultBuilder.ToString());
         }
-        
+
         private Token ReadNumberToken()
         {
-            var startPosition = m_Position;            
+            var startPosition = m_Position;
             while (Current != '\0' && char.IsDigit(Current))
             {
                 m_Position++;
             }
-            
+
             // numbers must contain at least one digit
             if (startPosition == m_Position)
                 throw new MemberIdLexerException($"Failed to read number at position {startPosition}");
-            
+
             return new Token(TokenKind.Number, m_Text.Substring(startPosition, m_Position - startPosition));
         }
     }

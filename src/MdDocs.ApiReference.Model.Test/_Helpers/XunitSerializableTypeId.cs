@@ -54,12 +54,12 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
                 case nameof(GenericTypeParameterId):
                     var index = info.GetValue<int>(nameof(GenericTypeParameterId.Index));
                     var definingMemberKind = info.GetValue<string>(nameof(GenericTypeParameterId.DefiningMemberKind));
-                    TypeId = new GenericTypeParameterId(Enum.Parse<GenericTypeParameterId.MemberKind>(definingMemberKind), index);                    
+                    TypeId = new GenericTypeParameterId(Enum.Parse<GenericTypeParameterId.MemberKind>(definingMemberKind), index);
                     break;
 
                 default:
                     throw new NotImplementedException();
-            }            
+            }
         }
 
         public void Serialize(IXunitSerializationInfo info)
@@ -97,9 +97,9 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
 
                 default:
                     throw new NotImplementedException();
-            }            
+            }
         }
 
-        public static implicit operator TypeId(XunitSerializableTypeId serializable) => serializable?.TypeId; 
+        public static implicit operator TypeId(XunitSerializableTypeId serializable) => serializable?.TypeId;
     }
 }

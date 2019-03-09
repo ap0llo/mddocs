@@ -6,7 +6,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
     {
         public NamespaceId Namespace { get; }
 
-        public string Name { get; }        
+        public string Name { get; }
 
         public abstract string DisplayName { get; }
 
@@ -29,7 +29,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
             unchecked
             {
                 var hash = Namespace.GetHashCode() * 397;
-                hash ^= StringComparer.Ordinal.GetHashCode(Name);             
+                hash ^= StringComparer.Ordinal.GetHashCode(Name);
                 return hash;
             }
         }

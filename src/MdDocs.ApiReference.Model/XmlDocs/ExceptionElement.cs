@@ -13,6 +13,6 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
         {
             Type = type ?? throw new ArgumentNullException(nameof(type));
             Text = text ?? throw new ArgumentNullException(nameof(text));
-        }                
+        }
     }
 }

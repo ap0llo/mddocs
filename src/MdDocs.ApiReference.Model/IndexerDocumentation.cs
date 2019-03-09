@@ -8,7 +8,7 @@ using Mono.Cecil;
 namespace Grynwald.MdDocs.ApiReference.Model
 {
     public class IndexerDocumentation : OverloadableMemberDocumentation<IndexerOverloadDocumentation>
-    {       
+    {
         private readonly IDictionary<MemberId, IndexerOverloadDocumentation> m_Overloads;
 
 
@@ -31,7 +31,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
             Name = Overloads.Select(x => x.Name).Distinct().Single();
         }
 
-        
+
 
         public override IDocumentation TryGetDocumentation(MemberId id)
         {
