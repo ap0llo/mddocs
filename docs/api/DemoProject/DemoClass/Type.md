@@ -90,9 +90,9 @@ Similar pages are also generated for interfaces (see [IDemoInterface](../IDemoIn
 
 ## Example
 
-Using the `example` tag, examples on how to use a type can be included in the documentation:
+Using the `example` tag, examples on how to use a type can be included in the documentation.             To specify the language inside of a `code` element, use the `language` attribute.
 
-```
+```csharp
 // create a new instance of DemoClass
 var instance = new DemoClass();
 ```

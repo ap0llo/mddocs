@@ -39,6 +39,56 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
     /// </summary>
     internal static class XmlDocsReader
     {
+        // SandCastle language ids, see http://ewsoftware.github.io/XMLCommentsGuide/html/1abd1992-e3d0-45b4-b43d-91fcfc5e5574.htm
+        private static readonly IDictionary<string, CodeLanguage> s_SandCastleLanguageIds = new Dictionary<string, CodeLanguage>(StringComparer.OrdinalIgnoreCase)
+        {
+            { "cs", CodeLanguage.CSharp },
+            { "c#", CodeLanguage.CSharp },
+            { "csharp", CodeLanguage.CSharp },
+            { "cpp", CodeLanguage.CPlusPlus },
+            { "cpp#", CodeLanguage.CPlusPlus },
+            { "C++", CodeLanguage.CPlusPlus },
+            { "CPlusPlus", CodeLanguage.CPlusPlus },
+            { "c", CodeLanguage.C },
+            { "fs", CodeLanguage.FSharp },
+            { "f#", CodeLanguage.FSharp },
+            { "FSharp", CodeLanguage.FSharp },
+            { "fscript", CodeLanguage.FSharp },
+            { "EcmaScript", CodeLanguage.Javascript },
+            { "js", CodeLanguage.Javascript },
+            { "JavaScript", CodeLanguage.Javascript },
+            { "jscript", CodeLanguage.JScriptDotNet },
+            { "jscript#", CodeLanguage.JScriptDotNet },
+            { "jscriptnet", CodeLanguage.JScriptDotNet },
+            { "JScript.NET", CodeLanguage.JScriptDotNet },
+            { "VB", CodeLanguage.VisualBasic },
+            { "VB#", CodeLanguage.VisualBasic },
+            { "vbnet", CodeLanguage.VisualBasic },
+            { "VB.NET", CodeLanguage.VisualBasic },
+            { "vbs", CodeLanguage.VisualBasicScript },
+            { "vbscript", CodeLanguage.VisualBasicScript },
+            { "htm", CodeLanguage.HTML },
+            { "html", CodeLanguage.HTML },
+            { "xml", CodeLanguage.XML },
+            { "xsl", CodeLanguage.XML },
+            { "xaml", CodeLanguage.XAML },
+            { "jsharp", CodeLanguage.JSharp },
+            { "J#", CodeLanguage.JSharp },
+            { "sql", CodeLanguage.SQL },
+            { "sql server", CodeLanguage.SQL },
+            { "sqlserver", CodeLanguage.SQL },
+            { "py", CodeLanguage.Python },
+            { "python", CodeLanguage.Python },
+            { "pshell", CodeLanguage.Powershell },
+            { "powershell", CodeLanguage.Powershell },
+            { "ps1", CodeLanguage.Powershell },
+            { "bat", CodeLanguage.Batch },
+            { "batch", CodeLanguage.Batch },
+
+        };
+
+
+
         /// <summary>
         /// Reads the specified documentation file and returns list of members.
         /// </summary>
@@ -207,9 +257,20 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
                                 element = new TypeParamRefElement(FindAttribute(elementNode, "name"));
                                 break;
                             case "code":
-                                //TODO: Support lang attribute
-                                element = new CodeElement(TrimCode(elementNode.Value));
+
+                                // get the "language" attribute. If there is no "language" attribute, use the "lang"
+                                // attribute. "lang" is legacy syntax according to SandCastle documentation
+                                // http://ewsoftware.github.io/XMLCommentsGuide/html/1abd1992-e3d0-45b4-b43d-91fcfc5e5574.htm
+
+                                var languageAttribute = elementNode.Attribute("language") ?? elementNode.Attribute("lang");
+
+                                var codeLanguage = languageAttribute != null
+                                    ? GetCodeLanguage(languageAttribute.Value, logger)
+                                    : CodeLanguage.None;
+
+                                element = new CodeElement(TrimCode(elementNode.Value), codeLanguage);
                                 break;
+
                             case "c":
                                 element = new CElement(elementNode.Value);
                                 break;
@@ -254,6 +315,22 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
             return new TextBlock(textElements);
         }
 
+   
+        internal static CodeLanguage GetCodeLanguage(string languageName, ILogger logger)
+        {
+            if (Enum.TryParse<CodeLanguage>(languageName, ignoreCase: true, out var codeLanguage))
+            {
+                return codeLanguage;
+            }
+
+            if(s_SandCastleLanguageIds.TryGetValue(languageName, out codeLanguage))
+            {
+                return codeLanguage;
+            }
+
+            logger.LogWarning($"Unrecognized language '{languageName}' in code element.");
+            return CodeLanguage.None;
+        }
 
 
         /// <summary>

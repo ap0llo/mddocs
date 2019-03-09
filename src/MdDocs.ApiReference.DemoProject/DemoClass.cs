@@ -46,8 +46,9 @@ namespace DemoProject
     /// </para>
     /// </remarks>
     /// <example>
-    /// Using the <c>example</c> tag, examples on how to use a type can be included in the documentation:
-    /// <code>
+    /// Using the <c>example</c> tag, examples on how to use a type can be included in the documentation.
+    /// To specify the language inside of a <c>code</c> element, use the <c>language</c> attribute.
+    /// <code language="cs">
     /// // create a new instance of DemoClass
     /// var instance = new DemoClass();
     /// </code>
@@ -101,7 +102,7 @@ namespace DemoProject
         /// </remarks>
         /// <example>
         /// Using the <c>example</c> tag, examples on how to use a member can be included in the documentation:
-        /// <code>
+        /// <code language="cs">
         /// var instance = new DemoClass();
         /// instance.Event2 += MyEventHandler;
         /// </code>
@@ -157,7 +158,7 @@ namespace DemoProject
         /// </remarks>
         /// <example>
         /// Using the <c>example</c> tag, examples on how to call a member can be included in the documentation:
-        /// <code>
+        /// <code language="cs">
         /// var instance = new DemoClass();
         /// var value = instance[42];
         /// </code>

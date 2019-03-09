@@ -16,7 +16,7 @@ Remarks allow specification of more detailed information about a member, in this
 
 Using the `example` tag, examples on how to use a member can be included in the documentation:
 
-```
+```csharp
 var instance = new DemoClass();
 instance.Event2 += MyEventHandler;
 ```

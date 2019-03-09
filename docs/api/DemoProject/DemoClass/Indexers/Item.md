@@ -82,7 +82,7 @@ InvalidOperationException
 
 Using the `example` tag, examples on how to call a member can be included in the documentation:
 
-```
+```csharp
 var instance = new DemoClass();
 var value = instance[42];
 ```
