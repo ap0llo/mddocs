@@ -3,7 +3,7 @@
 **Declaring Type:** [DemoClass](Type.md)
 
 ```csharp
-public DemoClass`2();
+public DemoClass();
 ```
 ___
 

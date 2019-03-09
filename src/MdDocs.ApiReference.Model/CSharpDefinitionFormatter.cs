@@ -137,7 +137,15 @@ namespace Grynwald.MdDocs.ApiReference.Model
                 // no return type
 
                 // method name is the name of the type
-                definitionBuilder.Append(method.DeclaringType.Name);
+                var methodName = method.DeclaringType.Name;
+
+                if(method.DeclaringType.HasGenericParameters)
+                {
+                    // remove number of type parameters from type name
+                    methodName = methodName.Substring(0, methodName.LastIndexOf("`"));
+                }
+
+                definitionBuilder.Append(methodName);
             }
             // non-constructor method
             else

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Grynwald.MdDocs.ApiReference.Model;
 using Grynwald.MdDocs.ApiReference.Test.TestData;
 using Xunit;
@@ -162,13 +163,14 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         }
 
         [Theory]
-        [InlineData(0, false, @"public TestClass_CSharpDefinition();")]
-        [InlineData(1, false, @"public TestClass_CSharpDefinition(string parameter);")]
-        [InlineData(0, true, @"static TestClass_CSharpDefinition();")]
-        public void GetDefinition_returns_the_expected_definition_for_constructrs(int paramterCount, bool isStatic, string expected)
+        [InlineData(typeof(TestClass_CSharpDefinition), 0, false, @"public TestClass_CSharpDefinition();")]
+        [InlineData(typeof(TestClass_CSharpDefinition), 1, false, @"public TestClass_CSharpDefinition(string parameter);")]
+        [InlineData(typeof(TestClass_CSharpDefinition), 0, true, @"static TestClass_CSharpDefinition();")]
+        [InlineData(typeof(CSharpDefinitionTest_GenericClass<>), 0, false, @"public CSharpDefinitionTest_GenericClass();")]
+        public void GetDefinition_returns_the_expected_definition_for_constructrs(Type type, int paramterCount, bool isStatic, string expected)
         {
             // ARRANGE
-            var fieldDefinition = GetTypeDefinition(typeof(TestClass_CSharpDefinition))
+            var fieldDefinition = GetTypeDefinition(type)
                 .Methods
                 .Single(p => p.IsStatic == isStatic && p.IsConstructor && p.Parameters.Count == paramterCount);
 
