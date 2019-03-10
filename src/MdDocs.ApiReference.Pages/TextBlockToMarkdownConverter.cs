@@ -45,7 +45,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
                 PushParagraph();
 
                 // add a new code block (can be added directory to Result as CodeElement has no child-elements)
-                Result.Add(new MdCodeBlock(element.Content, GetInfoString(element.Language)));
+                Result.Add(new MdCodeBlock(element.Content, element.Language));
             }
 
             public void Visit(TextElement element)
@@ -83,50 +83,6 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             {
                 Result.Add(m_CurrentParagraph);
                 m_CurrentParagraph = new MdParagraph();
-
-            }
-
-            /// <summary>
-            /// Gets the Markdown info string for the specified language if available.
-            /// </summary>
-            /// <remarks>
-            /// Uses the language names as supported by GitHub, see
-            /// https://github.com/github/linguist/blob/master/lib/linguist/languages.yml
-            /// </remarks>
-            private string GetInfoString(CodeLanguage language)
-            {
-                // Uses
-                switch (language)
-                {
-                    case CodeLanguage.CSharp:
-                        return "csharp";
-                    case CodeLanguage.CPlusPlus:
-                        return "cpp";
-                    case CodeLanguage.C:
-                        return "c";
-                    case CodeLanguage.FSharp:
-                        return "fsharp";
-                    case CodeLanguage.Javascript:
-                        return "js";
-                    case CodeLanguage.VisualBasic:
-                        return "vbnet";
-                    case CodeLanguage.XML:
-                        return "xml";
-                    case CodeLanguage.HTML:
-                        return "html";
-                    case CodeLanguage.XAML:
-                        return "xaml";
-                    case CodeLanguage.SQL:
-                        return "sql";
-                    case CodeLanguage.Python:
-                        return "python";
-                    case CodeLanguage.Powershell:
-                        return "powershell";
-                    case CodeLanguage.Batch:
-                        return "batch";                   
-                    default:
-                        return null;                        
-                }
 
             }
         }

@@ -6,10 +6,10 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
     {
         public string Content { get; }
 
-        public CodeLanguage Language { get; }
+        public string Language { get; }
 
 
-        public CodeElement(string content, CodeLanguage language)
+        public CodeElement(string content, string language)
         {
             Content = content ?? throw new ArgumentNullException(nameof(content));
             Language = language;
