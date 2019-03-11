@@ -32,7 +32,7 @@ Links to other members are supported (using the xml tag `see`), for example a li
 
 The last section is the "See Also" section with links provided in the xml documentation using the `seealso` tag
 
-Similar pages are also generated for interfaces (see [IDemoInterface](../IDemoInterface/Type.md)), structs (see [DemoStruct](../DemoStruct/Type.md))             and enums (see  [DemoEnum](../DemoEnum/Type.md))
+Similar pages are also generated for interfaces (see [IDemoInterface](../IDemoInterface/Type.md)), structs (see [DemoStruct](../DemoStruct/Type.md))             and enums (see  [DemoEnum](../DemoEnum/Type.md))Documentation can also contains list and tables. See [ListExample](../ListExample/Type.md) for a showcase of the different supported list formats.
 
 ## Constructors
 
@@ -103,6 +103,7 @@ var instance = new DemoClass();
 - [By providing text in the `seealso` element, the link text can be changed](../DemoStruct/Type.md)
 - [DemoEnum](../DemoEnum/Type.md)
 - No link can be generated if the referenced type is defined in another assembly (`System.String` in this case)
+- [ListExample](../ListExample/Type.md)
 
 ___
 

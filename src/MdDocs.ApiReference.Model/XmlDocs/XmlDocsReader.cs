@@ -38,26 +38,49 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
     /// Reads .NET XML API documentation files.
     /// </summary>
     internal static class XmlDocsReader
-    {       
+    {
         /// <summary>
         /// Reads the specified documentation file and returns list of members.
         /// </summary>
         /// <param name="fileName">Path to the documentation file.</param>
+        /// /// <param name="logger">The logger to use for the operation.</param>
         /// <returns>All documented members found in the given file.</returns>
-        /// <exception cref="FileNotFoundException">Could not find documentation file to load.</exception>
+        /// <exception cref="FileNotFoundException">Thrown when the specified file does not exist.</exception>
+        /// <exception cref="ArgumentNullException">Thrown when any of the specified parameters is <c>null</c></exception>
         public static IReadOnlyList<MemberElement> Read(string fileName, ILogger logger)
         {
-            if (!File.Exists(fileName))
-                throw new FileNotFoundException("Could not find documentation file to load.", fileName);
+            if (fileName == null)
+                throw new ArgumentNullException(nameof(fileName));
 
             if (logger == null)
                 throw new ArgumentNullException(nameof(logger));
 
+            if (!File.Exists(fileName))
+                throw new FileNotFoundException("Could not find documentation file to load.", fileName);
+
             logger.LogInformation($"Reading XML documentation comments from '{fileName}'");
 
-            var doc = XDocument.Load(fileName, LoadOptions.SetBaseUri | LoadOptions.SetLineInfo);
+            var document = XDocument.Load(fileName, LoadOptions.SetBaseUri | LoadOptions.SetLineInfo);
 
-            return doc.Root.Element("members").Elements("member")
+            return Read(document, logger);            
+        }
+
+        /// <summary>
+        /// Reads the specified documentation document and returns list of members.
+        /// </summary>
+        /// <param name="document">The XML documentation file to read.</param>
+        /// <param name="logger">The logger to use for the operation.</param>
+        /// <returns>All documented members found in the given file.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when any of the specified parameters is <c>null</c></exception>
+        public static IReadOnlyList<MemberElement> Read(XDocument document, ILogger logger)
+        {
+            if (document == null)
+                throw new ArgumentNullException(nameof(document));
+
+            if (logger == null)
+                throw new ArgumentNullException(nameof(logger));
+
+            return document.Root.Element("members").Elements("member")
                 .Where(element => element.Attribute("name") != null)
                 .Select(element => ReadMember(element.Attribute("name").Value, element, logger))
                 .ToList();
@@ -223,22 +246,10 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
                             case "see":
                                 element = new SeeElement(new MemberIdParser(FindAttribute(elementNode, "cref")).Parse());
                                 break;
-                            //case "list":
-                            //    element = new List(FindAttribute(elementNode, "type"), ReadContent(elementNode));
-                            //    break;
-                            //case "listheader":
-                            //    element = new ListHeader(ReadContent(elementNode));
-                            //    break;
-                            //case "term":
-                            //    element = new Term(ReadContent(elementNode));
-                            //    break;
-                            //case "description":
-                            //    element = new Description(ReadContent(elementNode));
-                            //    break;
-                            //case "item":
-                            //    element = new Item(ReadContent(elementNode));
-                            //    break;
-
+                            case "list":                                                                
+                                element = ReadList(elementNode, logger);                                
+                                break;
+                            
                             // ignore unknown elements
                             default:
                                 logger.LogWarning($"Encountered unknown element '{elementName}'. Element will be ignored.");
@@ -259,6 +270,82 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
             }
 
             return new TextBlock(textElements);
+        }
+
+        private static ListElement ReadList(XElement xml, ILogger logger)
+        {
+            // parse list type
+            if (!Enum.TryParse<ListType>(FindAttribute(xml, "type"), ignoreCase: true, out var listType))
+            {
+                listType = ListType.None;
+            }
+
+            var listHeader = (ListItemElement)null;
+            var listItems = new List<ListItemElement>();
+
+            // get list header and list items
+            foreach (var node in xml.Nodes())
+            {
+                if(node is XElement element)
+                {
+                    if(element.Name.LocalName == "item")
+                    {
+                        var listItem = ReadListItem(element, logger);
+
+                        if(listItem != default)
+                            listItems.Add(listItem);
+
+                        continue;
+                    }
+                    else if(element.Name.LocalName == "listheader" && listHeader == null)
+                    {
+                        listHeader = ReadListItem(element, logger);
+                        continue;
+                    }
+                }
+
+                logger.LogWarning($"Encountered unexpected node '{node}' while reading list. Node will be ignored.");
+            }
+
+            return new ListElement(listType, listHeader, listItems);
+        }
+
+        private static ListItemElement ReadListItem(XElement xml, ILogger logger)
+        {
+            TextBlock term = null;
+            TextBlock description = null;
+
+            foreach(var node in xml.Nodes())
+            {
+                // Read term and description from first term/description elements.
+                // Ignore subsequent term/description elements
+                if(node is XElement element)
+                {
+                    if (element.Name.LocalName == "term" && term == null)
+                    {
+                        term = ReadTextBlock(element, logger);
+                        continue;
+                    }
+                    else if(element.Name.LocalName == "description" && description == null)
+                    {
+                        description = ReadTextBlock(element, logger);
+                        continue;
+                    }
+                }
+
+                logger.LogWarning($"Encountered unexpected node '{node}' while reading list. Node will be ignored.");
+            }
+
+            // item without term or description => return null
+            if(description == null)
+            {
+                logger.LogWarning($"Ignoring list item {xml} because no 'description' element was found.");
+                return null;
+            }
+            else
+            {
+                return new ListItemElement(term, description);
+            }
         }
 
         /// <summary>

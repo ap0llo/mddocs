@@ -8,6 +8,7 @@
 | [DemoClass](DemoClass/Type.md)                                             | A class meant to demonstrate how the generated documentation looks like.                        |
 | [DemoClass\<T1, T2\>](DemoClass-2/Type.md)                                 | An example of an generic class.                                                                 |
 | [DemoPropertyAnnotationAttribute](DemoPropertyAnnotationAttribute/Type.md) | An example of a custom attribute that is used to annotate a property with custom flags.         |
+| [ListExample](ListExample/Type.md)                                         | Example class to showcase the different supported list formats.                                 |
 | [ObsoleteDemoClass](ObsoleteDemoClass/Type.md)                             | A class meant to demonstrate how the generated documentation for a deprecated class looks like. |
 
 ## Structs

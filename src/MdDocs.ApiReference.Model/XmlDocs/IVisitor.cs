@@ -17,5 +17,9 @@
         void Visit(TextBlock textBlock);
 
         void Visit(ParaElement element);
+
+        void Visit(ListElement element);
+
+        void Visit(ListItemElement element);
     }
 }

@@ -44,6 +44,7 @@ namespace DemoProject
     /// Similar pages are also generated for interfaces (see <see cref="IDemoInterface"/>), structs (see <see cref="DemoStruct"/>)
     /// and enums (see  <see cref="DemoEnum"/>)
     /// </para>
+    /// Documentation can also contains list and tables. See <see cref="ListExample"/> for a showcase of the different supported list formats.
     /// </remarks>
     /// <example>
     /// Using the <c>example</c> tag, examples on how to use a type can be included in the documentation.
@@ -57,6 +58,7 @@ namespace DemoProject
     /// <seealso cref="DemoStruct">By providing text in the <c>seealso</c> element, the link text can be changed</seealso>
     /// <seealso cref="DemoEnum" />
     /// <seealso cref="System.String">No link can be generated if the referenced type is defined in another assembly (<c>System.String</c> in this case)</seealso>
+    /// <seealso cref="ListExample"/>
     public class DemoClass
     {
         /// <summary>
