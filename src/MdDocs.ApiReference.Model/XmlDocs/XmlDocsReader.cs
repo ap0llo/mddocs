@@ -37,6 +37,14 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
     /// <summary>
     /// Reads .NET XML API documentation files.
     /// </summary>
+    /// <remarks>
+    /// This implementation is largely based on the <c>DocReader</c> class from the NuDoq project,
+    /// Copyright 2013 Daniel Cazzulino, licensed under the Apache License.
+    /// <para>
+    /// The original version of this file is available at
+    /// https://github.com/kzu/NuDoq/blob/56ad8c508003490d859214753591440b123616f5/src/NuDoq/DocReader.cs
+    /// </para>
+    /// </remarks>
     internal static class XmlDocsReader
     {
         /// <summary>

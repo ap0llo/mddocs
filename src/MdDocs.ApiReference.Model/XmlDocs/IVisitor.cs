@@ -1,5 +1,9 @@
 ﻿namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
 {
+    /// <summary>
+    /// Visitor interface for traversing text elements
+    /// </summary>
+    /// <seealso cref="TextElement"/>
     public interface IVisitor
     {
         void Visit(ParamRefElement element);
