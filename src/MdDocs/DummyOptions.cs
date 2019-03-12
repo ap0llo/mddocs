@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using CommandLine;
+﻿using CommandLine;
 
 namespace Grynwald.MdDocs
 {
     [Verb("Placeholder", Hidden = true)]
-    class DummyOptions
+    internal class DummyOptions
     {
     }
 }

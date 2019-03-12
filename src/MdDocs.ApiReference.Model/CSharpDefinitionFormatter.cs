@@ -208,7 +208,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
             // method parameters
             definitionBuilder.Append("(");
-            if (method.IsExtensionMethod())
+            if (method.IsExtension())
             {
                 definitionBuilder.Append("this ");
             }

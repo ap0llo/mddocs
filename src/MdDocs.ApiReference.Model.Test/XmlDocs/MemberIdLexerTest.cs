@@ -14,14 +14,14 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
         {
             public string Input { get; private set; }
 
-            internal IReadOnlyList<Token> ExpectedTokens { get; private set; }
+            internal IReadOnlyList<MemberIdToken> ExpectedTokens { get; private set; }
 
 
             // parameterless constructor required by xunit
             public MemberIdLexerTestCase()
             { }
 
-            internal MemberIdLexerTestCase(string input, params Token[] expectedTokens)
+            internal MemberIdLexerTestCase(string input, params MemberIdToken[] expectedTokens)
             {
                 Input = input;
                 ExpectedTokens = expectedTokens;
@@ -33,13 +33,13 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
                 Input = info.GetValue<string>(nameof(Input));
 
                 var tokenCount = info.GetValue<int>("tokenCount");
-                var tokens = new List<Token>(tokenCount);
+                var tokens = new List<MemberIdToken>(tokenCount);
                 for (int i = 0; i < tokenCount; i++)
                 {
 
-                    var kind = Enum.Parse<TokenKind>(info.GetValue<string>($"tokenKind{i}"));
+                    var kind = Enum.Parse<MemberIdTokenKind>(info.GetValue<string>($"tokenKind{i}"));
                     var value = info.GetValue<string>($"tokenValue{i}");
-                    tokens.Add(new Token(kind, value));
+                    tokens.Add(new MemberIdToken(kind, value));
                 }
 
                 ExpectedTokens = tokens;
@@ -69,265 +69,265 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
 
             public IEnumerable<MemberIdLexerTestCase> GetTestCases()
             {
-                yield return new MemberIdLexerTestCase("", new Token(TokenKind.Eof, ""));
-                yield return new MemberIdLexerTestCase("N:", new Token(TokenKind.IdentifierType, "N"), new Token(TokenKind.Colon, ":"), new Token(TokenKind.Eof, ""));
-                yield return new MemberIdLexerTestCase("T:", new Token(TokenKind.IdentifierType, "T"), new Token(TokenKind.Colon, ":"), new Token(TokenKind.Eof, ""));
-                yield return new MemberIdLexerTestCase("F:", new Token(TokenKind.IdentifierType, "F"), new Token(TokenKind.Colon, ":"), new Token(TokenKind.Eof, ""));
-                yield return new MemberIdLexerTestCase("P:", new Token(TokenKind.IdentifierType, "P"), new Token(TokenKind.Colon, ":"), new Token(TokenKind.Eof, ""));
-                yield return new MemberIdLexerTestCase("M:", new Token(TokenKind.IdentifierType, "M"), new Token(TokenKind.Colon, ":"), new Token(TokenKind.Eof, ""));
-                yield return new MemberIdLexerTestCase("E:", new Token(TokenKind.IdentifierType, "E"), new Token(TokenKind.Colon, ":"), new Token(TokenKind.Eof, ""));
+                yield return new MemberIdLexerTestCase("", new MemberIdToken(MemberIdTokenKind.Eof, ""));
+                yield return new MemberIdLexerTestCase("N:", new MemberIdToken(MemberIdTokenKind.IdentifierType, "N"), new MemberIdToken(MemberIdTokenKind.Colon, ":"), new MemberIdToken(MemberIdTokenKind.Eof, ""));
+                yield return new MemberIdLexerTestCase("T:", new MemberIdToken(MemberIdTokenKind.IdentifierType, "T"), new MemberIdToken(MemberIdTokenKind.Colon, ":"), new MemberIdToken(MemberIdTokenKind.Eof, ""));
+                yield return new MemberIdLexerTestCase("F:", new MemberIdToken(MemberIdTokenKind.IdentifierType, "F"), new MemberIdToken(MemberIdTokenKind.Colon, ":"), new MemberIdToken(MemberIdTokenKind.Eof, ""));
+                yield return new MemberIdLexerTestCase("P:", new MemberIdToken(MemberIdTokenKind.IdentifierType, "P"), new MemberIdToken(MemberIdTokenKind.Colon, ":"), new MemberIdToken(MemberIdTokenKind.Eof, ""));
+                yield return new MemberIdLexerTestCase("M:", new MemberIdToken(MemberIdTokenKind.IdentifierType, "M"), new MemberIdToken(MemberIdTokenKind.Colon, ":"), new MemberIdToken(MemberIdTokenKind.Eof, ""));
+                yield return new MemberIdLexerTestCase("E:", new MemberIdToken(MemberIdTokenKind.IdentifierType, "E"), new MemberIdToken(MemberIdTokenKind.Colon, ":"), new MemberIdToken(MemberIdTokenKind.Eof, ""));
 
                 yield return new MemberIdLexerTestCase(
                     "N:System",
-                    new Token(TokenKind.IdentifierType, "N"),
-                    new Token(TokenKind.Colon, ":"),
-                    new Token(TokenKind.Name, "System"),
-                    new Token(TokenKind.Eof, "")
+                    new MemberIdToken(MemberIdTokenKind.IdentifierType, "N"),
+                    new MemberIdToken(MemberIdTokenKind.Colon, ":"),
+                    new MemberIdToken(MemberIdTokenKind.Name, "System"),
+                    new MemberIdToken(MemberIdTokenKind.Eof, "")
                 );
 
                 yield return new MemberIdLexerTestCase(
                     "N:System.Collections",
-                    new Token(TokenKind.IdentifierType, "N"),
-                    new Token(TokenKind.Colon, ":"),
-                    new Token(TokenKind.Name, "System"),
-                    new Token(TokenKind.Dot, "."),
-                    new Token(TokenKind.Name, "Collections"),
-                    new Token(TokenKind.Eof, "")
+                    new MemberIdToken(MemberIdTokenKind.IdentifierType, "N"),
+                    new MemberIdToken(MemberIdTokenKind.Colon, ":"),
+                    new MemberIdToken(MemberIdTokenKind.Name, "System"),
+                    new MemberIdToken(MemberIdTokenKind.Dot, "."),
+                    new MemberIdToken(MemberIdTokenKind.Name, "Collections"),
+                    new MemberIdToken(MemberIdTokenKind.Eof, "")
                 );
 
                 yield return new MemberIdLexerTestCase(
                     "T:Namespace",
-                    new Token(TokenKind.IdentifierType, "T"),
-                    new Token(TokenKind.Colon, ":"),
-                    new Token(TokenKind.Name, "Namespace"),
-                    new Token(TokenKind.Eof, "")
+                    new MemberIdToken(MemberIdTokenKind.IdentifierType, "T"),
+                    new MemberIdToken(MemberIdTokenKind.Colon, ":"),
+                    new MemberIdToken(MemberIdTokenKind.Name, "Namespace"),
+                    new MemberIdToken(MemberIdTokenKind.Eof, "")
                 );
 
                 yield return new MemberIdLexerTestCase(
                     "T:Namespace1.Namespace2",
-                    new Token(TokenKind.IdentifierType, "T"),
-                    new Token(TokenKind.Colon, ":"),
-                    new Token(TokenKind.Name, "Namespace1"),
-                    new Token(TokenKind.Dot, "."),
-                    new Token(TokenKind.Name, "Namespace2"),
-                    new Token(TokenKind.Eof, "")
+                    new MemberIdToken(MemberIdTokenKind.IdentifierType, "T"),
+                    new MemberIdToken(MemberIdTokenKind.Colon, ":"),
+                    new MemberIdToken(MemberIdTokenKind.Name, "Namespace1"),
+                    new MemberIdToken(MemberIdTokenKind.Dot, "."),
+                    new MemberIdToken(MemberIdTokenKind.Name, "Namespace2"),
+                    new MemberIdToken(MemberIdTokenKind.Eof, "")
                 );
 
                 yield return new MemberIdLexerTestCase(
                     "F:System.String.Length",
-                    new Token(TokenKind.IdentifierType, "F"),
-                    new Token(TokenKind.Colon, ":"),
-                    new Token(TokenKind.Name, "System"),
-                    new Token(TokenKind.Dot, "."),
-                    new Token(TokenKind.Name, "String"),
-                    new Token(TokenKind.Dot, "."),
-                    new Token(TokenKind.Name, "Length"),
-                    new Token(TokenKind.Eof, "")
+                    new MemberIdToken(MemberIdTokenKind.IdentifierType, "F"),
+                    new MemberIdToken(MemberIdTokenKind.Colon, ":"),
+                    new MemberIdToken(MemberIdTokenKind.Name, "System"),
+                    new MemberIdToken(MemberIdTokenKind.Dot, "."),
+                    new MemberIdToken(MemberIdTokenKind.Name, "String"),
+                    new MemberIdToken(MemberIdTokenKind.Dot, "."),
+                    new MemberIdToken(MemberIdTokenKind.Name, "Length"),
+                    new MemberIdToken(MemberIdTokenKind.Eof, "")
                 );
 
                 yield return new MemberIdLexerTestCase(
                     "F:System.String`2.Length",
-                    new Token(TokenKind.IdentifierType, "F"),
-                    new Token(TokenKind.Colon, ":"),
-                    new Token(TokenKind.Name, "System"),
-                    new Token(TokenKind.Dot, "."),
-                    new Token(TokenKind.Name, "String"),
-                    new Token(TokenKind.Backtick, "`"),
-                    new Token(TokenKind.Number, "2"),
-                    new Token(TokenKind.Dot, "."),
-                    new Token(TokenKind.Name, "Length"),
-                    new Token(TokenKind.Eof, "")
+                    new MemberIdToken(MemberIdTokenKind.IdentifierType, "F"),
+                    new MemberIdToken(MemberIdTokenKind.Colon, ":"),
+                    new MemberIdToken(MemberIdTokenKind.Name, "System"),
+                    new MemberIdToken(MemberIdTokenKind.Dot, "."),
+                    new MemberIdToken(MemberIdTokenKind.Name, "String"),
+                    new MemberIdToken(MemberIdTokenKind.Backtick, "`"),
+                    new MemberIdToken(MemberIdTokenKind.Number, "2"),
+                    new MemberIdToken(MemberIdTokenKind.Dot, "."),
+                    new MemberIdToken(MemberIdTokenKind.Name, "Length"),
+                    new MemberIdToken(MemberIdTokenKind.Eof, "")
                 );
 
                 yield return new MemberIdLexerTestCase(
                     "M:String.#ctor",
-                    new Token(TokenKind.IdentifierType, "M"),
-                    new Token(TokenKind.Colon, ":"),
-                    new Token(TokenKind.Name, "String"),
-                    new Token(TokenKind.Dot, "."),
-                    new Token(TokenKind.Name, ".ctor"),
-                    new Token(TokenKind.Eof, "")
+                    new MemberIdToken(MemberIdTokenKind.IdentifierType, "M"),
+                    new MemberIdToken(MemberIdTokenKind.Colon, ":"),
+                    new MemberIdToken(MemberIdTokenKind.Name, "String"),
+                    new MemberIdToken(MemberIdTokenKind.Dot, "."),
+                    new MemberIdToken(MemberIdTokenKind.Name, ".ctor"),
+                    new MemberIdToken(MemberIdTokenKind.Eof, "")
                 );
 
                 yield return new MemberIdLexerTestCase(
                     "T:GenericType`2",
-                    new Token(TokenKind.IdentifierType, "T"),
-                    new Token(TokenKind.Colon, ":"),
-                    new Token(TokenKind.Name, "GenericType"),
-                    new Token(TokenKind.Backtick, "`"),
-                    new Token(TokenKind.Number, "2"),
-                    new Token(TokenKind.Eof, "")
+                    new MemberIdToken(MemberIdTokenKind.IdentifierType, "T"),
+                    new MemberIdToken(MemberIdTokenKind.Colon, ":"),
+                    new MemberIdToken(MemberIdTokenKind.Name, "GenericType"),
+                    new MemberIdToken(MemberIdTokenKind.Backtick, "`"),
+                    new MemberIdToken(MemberIdTokenKind.Number, "2"),
+                    new MemberIdToken(MemberIdTokenKind.Eof, "")
                 );
 
                 yield return new MemberIdLexerTestCase(
                     "M:Namespace.Type.Method(System.String)",
-                    new Token(TokenKind.IdentifierType, "M"),
-                    new Token(TokenKind.Colon, ":"),
-                    new Token(TokenKind.Name, "Namespace"),
-                    new Token(TokenKind.Dot, "."),
-                    new Token(TokenKind.Name, "Type"),
-                    new Token(TokenKind.Dot, "."),
-                    new Token(TokenKind.Name, "Method"),
-                    new Token(TokenKind.OpenParenthesis, "("),
-                    new Token(TokenKind.Name, "System"),
-                    new Token(TokenKind.Dot, "."),
-                    new Token(TokenKind.Name, "String"),
-                    new Token(TokenKind.CloseParenthesis, ")"),
-                    new Token(TokenKind.Eof, "")
+                    new MemberIdToken(MemberIdTokenKind.IdentifierType, "M"),
+                    new MemberIdToken(MemberIdTokenKind.Colon, ":"),
+                    new MemberIdToken(MemberIdTokenKind.Name, "Namespace"),
+                    new MemberIdToken(MemberIdTokenKind.Dot, "."),
+                    new MemberIdToken(MemberIdTokenKind.Name, "Type"),
+                    new MemberIdToken(MemberIdTokenKind.Dot, "."),
+                    new MemberIdToken(MemberIdTokenKind.Name, "Method"),
+                    new MemberIdToken(MemberIdTokenKind.OpenParenthesis, "("),
+                    new MemberIdToken(MemberIdTokenKind.Name, "System"),
+                    new MemberIdToken(MemberIdTokenKind.Dot, "."),
+                    new MemberIdToken(MemberIdTokenKind.Name, "String"),
+                    new MemberIdToken(MemberIdTokenKind.CloseParenthesis, ")"),
+                    new MemberIdToken(MemberIdTokenKind.Eof, "")
                 );
 
                 yield return new MemberIdLexerTestCase(
                     "M:Namespace.Type.Method(System.String,System.Int32)",
-                    new Token(TokenKind.IdentifierType, "M"),
-                    new Token(TokenKind.Colon, ":"),
-                    new Token(TokenKind.Name, "Namespace"),
-                    new Token(TokenKind.Dot, "."),
-                    new Token(TokenKind.Name, "Type"),
-                    new Token(TokenKind.Dot, "."),
-                    new Token(TokenKind.Name, "Method"),
-                    new Token(TokenKind.OpenParenthesis, "("),
-                    new Token(TokenKind.Name, "System"),
-                    new Token(TokenKind.Dot, "."),
-                    new Token(TokenKind.Name, "String"),
-                    new Token(TokenKind.Comma, ","),
-                    new Token(TokenKind.Name, "System"),
-                    new Token(TokenKind.Dot, "."),
-                    new Token(TokenKind.Name, "Int32"),
-                    new Token(TokenKind.CloseParenthesis, ")"),
-                    new Token(TokenKind.Eof, "")
+                    new MemberIdToken(MemberIdTokenKind.IdentifierType, "M"),
+                    new MemberIdToken(MemberIdTokenKind.Colon, ":"),
+                    new MemberIdToken(MemberIdTokenKind.Name, "Namespace"),
+                    new MemberIdToken(MemberIdTokenKind.Dot, "."),
+                    new MemberIdToken(MemberIdTokenKind.Name, "Type"),
+                    new MemberIdToken(MemberIdTokenKind.Dot, "."),
+                    new MemberIdToken(MemberIdTokenKind.Name, "Method"),
+                    new MemberIdToken(MemberIdTokenKind.OpenParenthesis, "("),
+                    new MemberIdToken(MemberIdTokenKind.Name, "System"),
+                    new MemberIdToken(MemberIdTokenKind.Dot, "."),
+                    new MemberIdToken(MemberIdTokenKind.Name, "String"),
+                    new MemberIdToken(MemberIdTokenKind.Comma, ","),
+                    new MemberIdToken(MemberIdTokenKind.Name, "System"),
+                    new MemberIdToken(MemberIdTokenKind.Dot, "."),
+                    new MemberIdToken(MemberIdTokenKind.Name, "Int32"),
+                    new MemberIdToken(MemberIdTokenKind.CloseParenthesis, ")"),
+                    new MemberIdToken(MemberIdTokenKind.Eof, "")
                 );
 
                 yield return new MemberIdLexerTestCase(
                     "M:Namespace.Type.Method``1(``0,System.Int32)",
-                    new Token(TokenKind.IdentifierType, "M"),
-                    new Token(TokenKind.Colon, ":"),
-                    new Token(TokenKind.Name, "Namespace"),
-                    new Token(TokenKind.Dot, "."),
-                    new Token(TokenKind.Name, "Type"),
-                    new Token(TokenKind.Dot, "."),
-                    new Token(TokenKind.Name, "Method"),
-                    new Token(TokenKind.DoubleBacktick, "``"),
-                    new Token(TokenKind.Number, "1"),
-                    new Token(TokenKind.OpenParenthesis, "("),
-                    new Token(TokenKind.DoubleBacktick, "``"),
-                    new Token(TokenKind.Number, "0"),
-                    new Token(TokenKind.Comma, ","),
-                    new Token(TokenKind.Name, "System"),
-                    new Token(TokenKind.Dot, "."),
-                    new Token(TokenKind.Name, "Int32"),
-                    new Token(TokenKind.CloseParenthesis, ")"),
-                    new Token(TokenKind.Eof, "")
+                    new MemberIdToken(MemberIdTokenKind.IdentifierType, "M"),
+                    new MemberIdToken(MemberIdTokenKind.Colon, ":"),
+                    new MemberIdToken(MemberIdTokenKind.Name, "Namespace"),
+                    new MemberIdToken(MemberIdTokenKind.Dot, "."),
+                    new MemberIdToken(MemberIdTokenKind.Name, "Type"),
+                    new MemberIdToken(MemberIdTokenKind.Dot, "."),
+                    new MemberIdToken(MemberIdTokenKind.Name, "Method"),
+                    new MemberIdToken(MemberIdTokenKind.DoubleBacktick, "``"),
+                    new MemberIdToken(MemberIdTokenKind.Number, "1"),
+                    new MemberIdToken(MemberIdTokenKind.OpenParenthesis, "("),
+                    new MemberIdToken(MemberIdTokenKind.DoubleBacktick, "``"),
+                    new MemberIdToken(MemberIdTokenKind.Number, "0"),
+                    new MemberIdToken(MemberIdTokenKind.Comma, ","),
+                    new MemberIdToken(MemberIdTokenKind.Name, "System"),
+                    new MemberIdToken(MemberIdTokenKind.Dot, "."),
+                    new MemberIdToken(MemberIdTokenKind.Name, "Int32"),
+                    new MemberIdToken(MemberIdTokenKind.CloseParenthesis, ")"),
+                    new MemberIdToken(MemberIdTokenKind.Eof, "")
                 );
 
                 yield return new MemberIdLexerTestCase(
                     "M:Namespace.Type.Method(Type2{System.String})",
-                    new Token(TokenKind.IdentifierType, "M"),
-                    new Token(TokenKind.Colon, ":"),
-                    new Token(TokenKind.Name, "Namespace"),
-                    new Token(TokenKind.Dot, "."),
-                    new Token(TokenKind.Name, "Type"),
-                    new Token(TokenKind.Dot, "."),
-                    new Token(TokenKind.Name, "Method"),
-                    new Token(TokenKind.OpenParenthesis, "("),
-                    new Token(TokenKind.Name, "Type2"),
-                    new Token(TokenKind.OpenBrace, "{"),
-                    new Token(TokenKind.Name, "System"),
-                    new Token(TokenKind.Dot, "."),
-                    new Token(TokenKind.Name, "String"),
-                    new Token(TokenKind.CloseBrace, "}"),
-                    new Token(TokenKind.CloseParenthesis, ")"),
-                    new Token(TokenKind.Eof, "")
+                    new MemberIdToken(MemberIdTokenKind.IdentifierType, "M"),
+                    new MemberIdToken(MemberIdTokenKind.Colon, ":"),
+                    new MemberIdToken(MemberIdTokenKind.Name, "Namespace"),
+                    new MemberIdToken(MemberIdTokenKind.Dot, "."),
+                    new MemberIdToken(MemberIdTokenKind.Name, "Type"),
+                    new MemberIdToken(MemberIdTokenKind.Dot, "."),
+                    new MemberIdToken(MemberIdTokenKind.Name, "Method"),
+                    new MemberIdToken(MemberIdTokenKind.OpenParenthesis, "("),
+                    new MemberIdToken(MemberIdTokenKind.Name, "Type2"),
+                    new MemberIdToken(MemberIdTokenKind.OpenBrace, "{"),
+                    new MemberIdToken(MemberIdTokenKind.Name, "System"),
+                    new MemberIdToken(MemberIdTokenKind.Dot, "."),
+                    new MemberIdToken(MemberIdTokenKind.Name, "String"),
+                    new MemberIdToken(MemberIdTokenKind.CloseBrace, "}"),
+                    new MemberIdToken(MemberIdTokenKind.CloseParenthesis, ")"),
+                    new MemberIdToken(MemberIdTokenKind.Eof, "")
                 );
 
                 yield return new MemberIdLexerTestCase(
                     "M:Namespace.Type.op_Implicit(Type)~System.String",
-                    new Token(TokenKind.IdentifierType, "M"),
-                    new Token(TokenKind.Colon, ":"),
-                    new Token(TokenKind.Name, "Namespace"),
-                    new Token(TokenKind.Dot, "."),
-                    new Token(TokenKind.Name, "Type"),
-                    new Token(TokenKind.Dot, "."),
-                    new Token(TokenKind.Name, "op_Implicit"),
-                    new Token(TokenKind.OpenParenthesis, "("),
-                    new Token(TokenKind.Name, "Type"),
-                    new Token(TokenKind.CloseParenthesis, ")"),
-                    new Token(TokenKind.Tilde, "~"),
-                    new Token(TokenKind.Name, "System"),
-                    new Token(TokenKind.Dot, "."),
-                    new Token(TokenKind.Name, "String"),
-                    new Token(TokenKind.Eof, "")
+                    new MemberIdToken(MemberIdTokenKind.IdentifierType, "M"),
+                    new MemberIdToken(MemberIdTokenKind.Colon, ":"),
+                    new MemberIdToken(MemberIdTokenKind.Name, "Namespace"),
+                    new MemberIdToken(MemberIdTokenKind.Dot, "."),
+                    new MemberIdToken(MemberIdTokenKind.Name, "Type"),
+                    new MemberIdToken(MemberIdTokenKind.Dot, "."),
+                    new MemberIdToken(MemberIdTokenKind.Name, "op_Implicit"),
+                    new MemberIdToken(MemberIdTokenKind.OpenParenthesis, "("),
+                    new MemberIdToken(MemberIdTokenKind.Name, "Type"),
+                    new MemberIdToken(MemberIdTokenKind.CloseParenthesis, ")"),
+                    new MemberIdToken(MemberIdTokenKind.Tilde, "~"),
+                    new MemberIdToken(MemberIdTokenKind.Name, "System"),
+                    new MemberIdToken(MemberIdTokenKind.Dot, "."),
+                    new MemberIdToken(MemberIdTokenKind.Name, "String"),
+                    new MemberIdToken(MemberIdTokenKind.Eof, "")
                 );
 
                 yield return new MemberIdLexerTestCase(
                     "M:Namespace.Type.Method(System.Int32[])",
-                    new Token(TokenKind.IdentifierType, "M"),
-                    new Token(TokenKind.Colon, ":"),
-                    new Token(TokenKind.Name, "Namespace"),
-                    new Token(TokenKind.Dot, "."),
-                    new Token(TokenKind.Name, "Type"),
-                    new Token(TokenKind.Dot, "."),
-                    new Token(TokenKind.Name, "Method"),
-                    new Token(TokenKind.OpenParenthesis, "("),
-                    new Token(TokenKind.Name, "System"),
-                    new Token(TokenKind.Dot, "."),
-                    new Token(TokenKind.Name, "Int32"),
-                    new Token(TokenKind.OpenSquareBracket, "["),
-                    new Token(TokenKind.CloseSquareBracket, "]"),
-                    new Token(TokenKind.CloseParenthesis, ")"),
-                    new Token(TokenKind.Eof, "")
+                    new MemberIdToken(MemberIdTokenKind.IdentifierType, "M"),
+                    new MemberIdToken(MemberIdTokenKind.Colon, ":"),
+                    new MemberIdToken(MemberIdTokenKind.Name, "Namespace"),
+                    new MemberIdToken(MemberIdTokenKind.Dot, "."),
+                    new MemberIdToken(MemberIdTokenKind.Name, "Type"),
+                    new MemberIdToken(MemberIdTokenKind.Dot, "."),
+                    new MemberIdToken(MemberIdTokenKind.Name, "Method"),
+                    new MemberIdToken(MemberIdTokenKind.OpenParenthesis, "("),
+                    new MemberIdToken(MemberIdTokenKind.Name, "System"),
+                    new MemberIdToken(MemberIdTokenKind.Dot, "."),
+                    new MemberIdToken(MemberIdTokenKind.Name, "Int32"),
+                    new MemberIdToken(MemberIdTokenKind.OpenSquareBracket, "["),
+                    new MemberIdToken(MemberIdTokenKind.CloseSquareBracket, "]"),
+                    new MemberIdToken(MemberIdTokenKind.CloseParenthesis, ")"),
+                    new MemberIdToken(MemberIdTokenKind.Eof, "")
                 );
 
                 yield return new MemberIdLexerTestCase(
                     "M:Type.Method(object[,])",
-                    new Token(TokenKind.IdentifierType, "M"),
-                    new Token(TokenKind.Colon, ":"),
-                    new Token(TokenKind.Name, "Type"),
-                    new Token(TokenKind.Dot, "."),
-                    new Token(TokenKind.Name, "Method"),
-                    new Token(TokenKind.OpenParenthesis, "("),
-                    new Token(TokenKind.Name, "object"),
-                    new Token(TokenKind.OpenSquareBracket, "["),
-                    new Token(TokenKind.Comma, ","),
-                    new Token(TokenKind.CloseSquareBracket, "]"),
-                    new Token(TokenKind.CloseParenthesis, ")"),
-                    new Token(TokenKind.Eof, "")
+                    new MemberIdToken(MemberIdTokenKind.IdentifierType, "M"),
+                    new MemberIdToken(MemberIdTokenKind.Colon, ":"),
+                    new MemberIdToken(MemberIdTokenKind.Name, "Type"),
+                    new MemberIdToken(MemberIdTokenKind.Dot, "."),
+                    new MemberIdToken(MemberIdTokenKind.Name, "Method"),
+                    new MemberIdToken(MemberIdTokenKind.OpenParenthesis, "("),
+                    new MemberIdToken(MemberIdTokenKind.Name, "object"),
+                    new MemberIdToken(MemberIdTokenKind.OpenSquareBracket, "["),
+                    new MemberIdToken(MemberIdTokenKind.Comma, ","),
+                    new MemberIdToken(MemberIdTokenKind.CloseSquareBracket, "]"),
+                    new MemberIdToken(MemberIdTokenKind.CloseParenthesis, ")"),
+                    new MemberIdToken(MemberIdTokenKind.Eof, "")
                 );
 
                 yield return new MemberIdLexerTestCase(
                     "M:Type.Method(object[1:,])",
-                    new Token(TokenKind.IdentifierType, "M"),
-                    new Token(TokenKind.Colon, ":"),
-                    new Token(TokenKind.Name, "Type"),
-                    new Token(TokenKind.Dot, "."),
-                    new Token(TokenKind.Name, "Method"),
-                    new Token(TokenKind.OpenParenthesis, "("),
-                    new Token(TokenKind.Name, "object"),
-                    new Token(TokenKind.OpenSquareBracket, "["),
-                    new Token(TokenKind.Number, "1"),
-                    new Token(TokenKind.Colon, ":"),
-                    new Token(TokenKind.Comma, ","),
-                    new Token(TokenKind.CloseSquareBracket, "]"),
-                    new Token(TokenKind.CloseParenthesis, ")"),
-                    new Token(TokenKind.Eof, "")
+                    new MemberIdToken(MemberIdTokenKind.IdentifierType, "M"),
+                    new MemberIdToken(MemberIdTokenKind.Colon, ":"),
+                    new MemberIdToken(MemberIdTokenKind.Name, "Type"),
+                    new MemberIdToken(MemberIdTokenKind.Dot, "."),
+                    new MemberIdToken(MemberIdTokenKind.Name, "Method"),
+                    new MemberIdToken(MemberIdTokenKind.OpenParenthesis, "("),
+                    new MemberIdToken(MemberIdTokenKind.Name, "object"),
+                    new MemberIdToken(MemberIdTokenKind.OpenSquareBracket, "["),
+                    new MemberIdToken(MemberIdTokenKind.Number, "1"),
+                    new MemberIdToken(MemberIdTokenKind.Colon, ":"),
+                    new MemberIdToken(MemberIdTokenKind.Comma, ","),
+                    new MemberIdToken(MemberIdTokenKind.CloseSquareBracket, "]"),
+                    new MemberIdToken(MemberIdTokenKind.CloseParenthesis, ")"),
+                    new MemberIdToken(MemberIdTokenKind.Eof, "")
                 );
 
                 yield return new MemberIdLexerTestCase(
                     "M:Type.Method(object[1:2,])",
-                    new Token(TokenKind.IdentifierType, "M"),
-                    new Token(TokenKind.Colon, ":"),
-                    new Token(TokenKind.Name, "Type"),
-                    new Token(TokenKind.Dot, "."),
-                    new Token(TokenKind.Name, "Method"),
-                    new Token(TokenKind.OpenParenthesis, "("),
-                    new Token(TokenKind.Name, "object"),
-                    new Token(TokenKind.OpenSquareBracket, "["),
-                    new Token(TokenKind.Number, "1"),
-                    new Token(TokenKind.Colon, ":"),
-                    new Token(TokenKind.Number, "2"),
-                    new Token(TokenKind.Comma, ","),
-                    new Token(TokenKind.CloseSquareBracket, "]"),
-                    new Token(TokenKind.CloseParenthesis, ")"),
-                    new Token(TokenKind.Eof, "")
+                    new MemberIdToken(MemberIdTokenKind.IdentifierType, "M"),
+                    new MemberIdToken(MemberIdTokenKind.Colon, ":"),
+                    new MemberIdToken(MemberIdTokenKind.Name, "Type"),
+                    new MemberIdToken(MemberIdTokenKind.Dot, "."),
+                    new MemberIdToken(MemberIdTokenKind.Name, "Method"),
+                    new MemberIdToken(MemberIdTokenKind.OpenParenthesis, "("),
+                    new MemberIdToken(MemberIdTokenKind.Name, "object"),
+                    new MemberIdToken(MemberIdTokenKind.OpenSquareBracket, "["),
+                    new MemberIdToken(MemberIdTokenKind.Number, "1"),
+                    new MemberIdToken(MemberIdTokenKind.Colon, ":"),
+                    new MemberIdToken(MemberIdTokenKind.Number, "2"),
+                    new MemberIdToken(MemberIdTokenKind.Comma, ","),
+                    new MemberIdToken(MemberIdTokenKind.CloseSquareBracket, "]"),
+                    new MemberIdToken(MemberIdTokenKind.CloseParenthesis, ")"),
+                    new MemberIdToken(MemberIdTokenKind.Eof, "")
                 );
             }
         }

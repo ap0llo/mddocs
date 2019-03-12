@@ -3,10 +3,19 @@ using Mono.Cecil;
 
 namespace Grynwald.MdDocs.ApiReference.Model
 {
-    public static class TypeReferenceExtensions
+    /// <summary>
+    /// Extension methods for <see cref="TypeReference"/>.
+    /// </summary>
+    internal static class TypeReferenceExtensions
     {
+        /// <summary>
+        /// Gets the <see cref="MemberId"/> for the specified type.
+        /// </summary>
         public static MemberId ToMemberId(this TypeReference typeReference) => typeReference.ToTypeId();
 
+        /// <summary>
+        /// Gets the <see cref="TypeId"/> for the specified type.
+        /// </summary>
         public static TypeId ToTypeId(this TypeReference typeReference)
         {
             // generic instance type: a generic type with type arguments

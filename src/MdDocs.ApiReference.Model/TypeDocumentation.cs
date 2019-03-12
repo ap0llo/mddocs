@@ -125,12 +125,12 @@ namespace Grynwald.MdDocs.ApiReference.Model
             Indexers = ReadOnlyCollectionAdapter.Create(m_Indexers.Values);
 
             m_Logger.LogDebug("Loading constructors");
-            var ctors = definition.GetDocumentedConstrutors();
+            var ctors = definition.GetPublicConstrutors();
             if (ctors.Any())
                 Constructors = new ConstructorDocumentation(this, ctors, xmlDocsProvider);
 
             m_Logger.LogDebug("Loading methods");
-            m_Methods = definition.GetDocumentedMethods()
+            m_Methods = definition.GetPublicMethods()
                 .Where(m => !m.IsOperator())
                 .GroupBy(x => x.Name)
                 .Select(group => new MethodDocumentation(this, group, xmlDocsProvider))
@@ -139,7 +139,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
             Methods = ReadOnlyCollectionAdapter.Create(m_Methods.Values);
 
             m_Logger.LogDebug("Loading operator overloads");
-            m_Operators = definition.GetDocumentedMethods()
+            m_Operators = definition.GetPublicMethods()
                .GroupBy(x => x.GetOperatorKind())
                .Where(group => group.Key.HasValue)
                .Select(group => new OperatorDocumentation(this, group, xmlDocsProvider))

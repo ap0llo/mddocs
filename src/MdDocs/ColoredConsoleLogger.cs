@@ -3,6 +3,9 @@ using Microsoft.Extensions.Logging;
 
 namespace Grynwald.MdDocs
 {
+    /// <summary>
+    /// Console logger that writes colored log message to the output.
+    /// </summary>
     internal class ColoredConsoleLogger : ILogger
     {
         private readonly LogLevel m_MinLogLevel;
@@ -18,7 +21,10 @@ namespace Grynwald.MdDocs
             { }
         }
 
-
+        /// <summary>
+        /// Initializes a new instance of <see cref="ColoredConsoleLogger"/>.
+        /// </summary>
+        /// <param name="minLogLevel">The minimum log level. Log messages if a lower log level will be ignored.</param>
         public ColoredConsoleLogger(LogLevel minLogLevel)
         {
             m_MinLogLevel = minLogLevel;
@@ -38,25 +44,10 @@ namespace Grynwald.MdDocs
 
             var message = formatter(state, exception);
 
-            ConsoleColor color;
-            switch (logLevel)
-            {
-                case LogLevel.Warning:
-                    color = ConsoleColor.Yellow;
-                    break;
+            var messageColor = GetConsoleColor(logLevel);
 
-                case LogLevel.Error:
-                case LogLevel.Critical:
-                    color = ConsoleColor.Red;
-                    break;
-
-                default:
-                    color = Console.ForegroundColor;
-                    break;
-            }
-            var savedColor = Console.ForegroundColor;
-            Console.ForegroundColor = color;
-
+            var previousColor = Console.ForegroundColor;
+            Console.ForegroundColor = messageColor;
             try
             {
                 Console.Write(logLevel.ToString().ToUpper());
@@ -74,8 +65,31 @@ namespace Grynwald.MdDocs
             }
             finally
             {
-                Console.ForegroundColor = savedColor;
+                Console.ForegroundColor = previousColor;
             }
+        }
+
+
+        private static ConsoleColor GetConsoleColor(LogLevel logLevel)
+        {
+            ConsoleColor color;
+            switch (logLevel)
+            {
+                case LogLevel.Warning:
+                    color = ConsoleColor.Yellow;
+                    break;
+
+                case LogLevel.Error:
+                case LogLevel.Critical:
+                    color = ConsoleColor.Red;
+                    break;
+
+                default:
+                    color = Console.ForegroundColor;
+                    break;
+            }
+
+            return color;
         }
     }
 }

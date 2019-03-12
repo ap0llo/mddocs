@@ -2,8 +2,14 @@
 
 namespace Grynwald.MdDocs.ApiReference.Model
 {
-    public static class FieldReferenceExtensions
+    /// <summary>
+    /// Extension methods for <see cref="FieldReference"/>.
+    /// </summary>
+    internal static class FieldReferenceExtensions
     {
+        /// <summary>
+        /// Gets the <see cref="MemberId"/> for the field.
+        /// </summary>
         public static MemberId ToMemberId(this FieldReference fieldReference)
         {
             return new FieldId(

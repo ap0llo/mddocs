@@ -13,7 +13,6 @@ namespace Grynwald.MdDocs
     {
         private static int Main(string[] args)
         {
-
             var parser = new Parser(opts =>
             {
                 opts.CaseInsensitiveEnumValues = true;
@@ -21,32 +20,40 @@ namespace Grynwald.MdDocs
                 opts.HelpWriter = Console.Out;
             });
 
+            // Parser needs at least two option classes, otherwise it
+            // will not include the verb for the commands in the help output.
+            // After adding a real second command, DummyOptions can be removed
             return parser
-                // Add at least 2 option classes, otherwise the command line parser
-                // will not include the verb for the commands in the help output
                 .ParseArguments<ApiReferenceOptions, DummyOptions>(args)
                 .MapResult(
-                    (ApiReferenceOptions opts) => ApiReference(opts),
-                    (DummyOptions opts) =>
-                    {
-                        Console.Error.WriteLine("Invalid arguments.");
-                        return -1;
-                    },
-                    (IEnumerable<Error> errors) =>
-                    {
-                        if (errors.All(e => e is HelpRequestedError || e is HelpVerbRequestedError || e is VersionRequestedError))
-                        {
-                            return 0;
-                        }
-                        else
-                        {
-                            Console.Error.WriteLine("Invalid arguments.");
-                            return -1;
-                        }
-                    });
+                    (ApiReferenceOptions opts) => OnApiReferenceCommand(opts),
+                    (DummyOptions opts) => OnDummyCommand(),
+                    (IEnumerable<Error> errors) => OnError(errors));
         }
 
-        private static int ApiReference(ApiReferenceOptions opts)
+        private static int OnDummyCommand()
+        {
+            Console.Error.WriteLine("Invalid arguments.");
+            return -1;
+        }
+
+        private static int OnError(IEnumerable<Error> errors)
+        {
+            // if help or version was requests, the help/version was already
+            // written to the output by the parser.
+            // There errors can be ignored.
+            if (errors.All(e => e is HelpRequestedError || e is HelpVerbRequestedError || e is VersionRequestedError))
+            {
+                return 0;
+            }
+            else
+            {
+                Console.Error.WriteLine("Invalid arguments.");
+                return -1;
+            }
+        }
+
+        private static int OnApiReferenceCommand(ApiReferenceOptions opts)
         {
             var logger = new ColoredConsoleLogger(opts.Verbose ? LogLevel.Debug : LogLevel.Information);
 

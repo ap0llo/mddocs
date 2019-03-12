@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Text;
 using Grynwald.Utilities.Text;
 using Mono.Cecil;
@@ -6,10 +7,12 @@ using Mono.Cecil;
 namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
 {
     /// <summary>
-    /// Extensions for Mono.Cecil types that make it easier to work with XML docs
+    /// Extensions for Mono.Cecil types that make it easier to work with XML docs.
     /// </summary>
+    [Obsolete]
     internal static class MonoCecilXmlDocExtensions
     {
+        //TODO: Move this into the ToString() implementation of MemberId
 
         public static string GetXmlDocId(this TypeReference type) => $"T:{type.FullName}";
 

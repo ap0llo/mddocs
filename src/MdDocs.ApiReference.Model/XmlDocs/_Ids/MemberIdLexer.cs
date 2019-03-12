@@ -5,100 +5,6 @@ using System.Text;
 
 namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
 {
-    internal class MemberIdLexerException : Exception
-    {
-        public MemberIdLexerException(string message) : base(message)
-        {
-        }
-    }
-
-    internal enum TokenKind
-    {
-        /// <summary>
-        /// A token that indicates the type of identifier (N, T, M, P, F, E)
-        /// </summary>
-        IdentifierType,
-        /// <summary>
-        /// A colon (':') token
-        /// </summary>
-        Colon,
-        /// <summary>
-        /// A dot ('.') token
-        /// </summary>
-        Dot,
-        /// <summary>
-        /// A name token (either a namespace, type or method name)
-        /// </summary>
-        Name,
-        /// <summary>
-        /// A backtick ('`') token
-        /// </summary>
-        Backtick,
-        /// <summary>
-        /// A double-backtick ('``') token
-        /// </summary>
-        DoubleBacktick,
-        /// <summary>
-        /// A number token
-        /// </summary>
-        Number,
-        /// <summary>
-        /// A opening parenthesis ('(') token
-        /// </summary>
-        OpenParenthesis,
-        /// <summary>
-        /// A closing parenthesis (')') token
-        /// </summary>
-        CloseParenthesis,
-        /// <summary>
-        /// A comma (',') token
-        /// </summary>
-        Comma,
-        /// <summary>
-        /// A opening brace ('{') token
-        /// </summary>
-        OpenBrace,
-        /// <summary>
-        /// A closing brace ('}') token
-        /// </summary>
-        CloseBrace,
-        /// <summary>
-        /// A tile ('~') token
-        /// </summary>
-        Tilde,
-        /// <summary>
-        /// A open square bracket ('[') token
-        /// </summary>
-        OpenSquareBracket,
-        /// <summary>
-        /// A close square bracket (']') token
-        /// </summary>
-        CloseSquareBracket,
-        /// <summary>
-        /// A token indicating the end of the text to parse
-        /// </summary>
-        Eof
-    }
-
-    internal struct Token
-    {
-        public string Value { get; set; }
-
-        public TokenKind Kind { get; set; }
-
-        public Token(TokenKind kind, char value)
-        {
-            Kind = kind;
-            Value = value.ToString();
-        }
-
-        public Token(TokenKind kind, string value)
-        {
-            Kind = kind;
-            Value = value;
-        }
-    }
-
     /// <summary>
     /// Lexer for XML docs member ids
     /// </summary>
@@ -124,13 +30,13 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
         }
 
 
-        public IReadOnlyList<Token> GetTokens()
+        public IReadOnlyList<MemberIdToken> GetTokens()
         {
             m_Position = 0;
             return EnumerateTokens().ToArray();
         }
 
-        private IEnumerable<Token> EnumerateTokens()
+        private IEnumerable<MemberIdToken> EnumerateTokens()
         {
             //iterate over the input text
             while (Current != '\0')
@@ -157,12 +63,12 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
                     case 'E' when m_Position == 0:
                     case 'P' when m_Position == 0:
                     case 'M' when m_Position == 0:
-                        yield return new Token(TokenKind.IdentifierType, Current);
+                        yield return new MemberIdToken(MemberIdTokenKind.IdentifierType, Current);
                         m_Position++;
                         break;
 
                     case '.':
-                        yield return new Token(TokenKind.Dot, ".");
+                        yield return new MemberIdToken(MemberIdTokenKind.Dot, ".");
                         m_Position++;
                         break;
 
@@ -170,58 +76,58 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
                     case '`':
                         if (Next == '`')
                         {
-                            yield return new Token(TokenKind.DoubleBacktick, "``");
+                            yield return new MemberIdToken(MemberIdTokenKind.DoubleBacktick, "``");
                             m_Position += 2;
                         }
                         else
                         {
-                            yield return new Token(TokenKind.Backtick, "`");
+                            yield return new MemberIdToken(MemberIdTokenKind.Backtick, "`");
                             m_Position++;
                         }
                         break;
 
                     case '(':
-                        yield return new Token(TokenKind.OpenParenthesis, "(");
+                        yield return new MemberIdToken(MemberIdTokenKind.OpenParenthesis, "(");
                         m_Position++;
                         break;
 
                     case ')':
-                        yield return new Token(TokenKind.CloseParenthesis, ")");
+                        yield return new MemberIdToken(MemberIdTokenKind.CloseParenthesis, ")");
                         m_Position++;
                         break;
 
                     case '{':
-                        yield return new Token(TokenKind.OpenBrace, "{");
+                        yield return new MemberIdToken(MemberIdTokenKind.OpenBrace, "{");
                         m_Position++;
                         break;
 
                     case '}':
-                        yield return new Token(TokenKind.CloseBrace, "}");
+                        yield return new MemberIdToken(MemberIdTokenKind.CloseBrace, "}");
                         m_Position++;
                         break;
 
                     case ',':
-                        yield return new Token(TokenKind.Comma, ",");
+                        yield return new MemberIdToken(MemberIdTokenKind.Comma, ",");
                         m_Position++;
                         break;
 
                     case '[':
-                        yield return new Token(TokenKind.OpenSquareBracket, "[");
+                        yield return new MemberIdToken(MemberIdTokenKind.OpenSquareBracket, "[");
                         m_Position++;
                         break;
 
                     case ']':
-                        yield return new Token(TokenKind.CloseSquareBracket, "]");
+                        yield return new MemberIdToken(MemberIdTokenKind.CloseSquareBracket, "]");
                         m_Position++;
                         break;
 
                     case '~':
-                        yield return new Token(TokenKind.Tilde, "~");
+                        yield return new MemberIdToken(MemberIdTokenKind.Tilde, "~");
                         m_Position++;
                         break;
 
                     case ':':
-                        yield return new Token(TokenKind.Colon, ":");
+                        yield return new MemberIdToken(MemberIdTokenKind.Colon, ":");
                         m_Position++;
                         break;
 
@@ -232,10 +138,10 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
             }
 
             // return EOF token to signal the end of the text
-            yield return new Token(TokenKind.Eof, "");
+            yield return new MemberIdToken(MemberIdTokenKind.Eof, "");
         }
 
-        private Token ReadNameToken()
+        private MemberIdToken ReadNameToken()
         {
             var resultBuilder = new StringBuilder();
 
@@ -272,13 +178,13 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
             if (resultBuilder.Length == 0)
                 throw new MemberIdLexerException($"Failed to read name at position '{startPosition}'");
 
-            return new Token(TokenKind.Name, resultBuilder.ToString());
+            return new MemberIdToken(MemberIdTokenKind.Name, resultBuilder.ToString());
         }
 
-        private Token ReadNumberToken()
+        private MemberIdToken ReadNumberToken()
         {
             var startPosition = m_Position;
-            while (Current != '\0' && char.IsDigit(Current))
+            while (Current != '\0' && Char.IsDigit(Current))
             {
                 m_Position++;
             }
@@ -287,7 +193,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
             if (startPosition == m_Position)
                 throw new MemberIdLexerException($"Failed to read number at position {startPosition}");
 
-            return new Token(TokenKind.Number, m_Text.Substring(startPosition, m_Position - startPosition));
+            return new MemberIdToken(MemberIdTokenKind.Number, m_Text.Substring(startPosition, m_Position - startPosition));
         }
     }
 }

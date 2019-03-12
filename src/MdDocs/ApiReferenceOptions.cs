@@ -2,6 +2,9 @@
 
 namespace Grynwald.MdDocs
 {
+    /// <summary>
+    /// Options for the "apiReference" command.
+    /// </summary>
     [Verb("apireference", HelpText = "Generate API reference documentation for a .NET assembly.")]
     internal class ApiReferenceOptions
     {

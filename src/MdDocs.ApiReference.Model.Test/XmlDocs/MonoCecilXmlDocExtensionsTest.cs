@@ -6,6 +6,7 @@ using Xunit;
 
 namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
 {
+    [Obsolete]
     public class MonoCecilXmlDocExtensionsTest : TestBase
     {
         [Theory]

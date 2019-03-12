@@ -4,10 +4,19 @@ using Mono.Cecil;
 
 namespace Grynwald.MdDocs.ApiReference.Model
 {
-    public static class PropertyReferenceExtensions
+    /// <summary>
+    /// Extension methods for <see cref="PropertyReference"/>.
+    /// </summary>
+    internal static class PropertyReferenceExtensions
     {
+        /// <summary>
+        /// Gets the <see cref="MemberId"/> for the specified property.
+        /// </summary>
         public static MemberId ToMemberId(this PropertyReference property) => property.ToPropertyId();
 
+        /// <summary>
+        /// Gets the <see cref="PropertyId"/> for the specified property.
+        /// </summary>
         public static PropertyId ToPropertyId(this PropertyReference property)
         {
             var parameters = property.Parameters.Count > 0
