@@ -7,8 +7,20 @@ using Mono.Cecil;
 
 namespace Grynwald.MdDocs.ApiReference.Model
 {
+    /// <summary>
+    /// Helper class to create C# from Mono.Cecil definitions.
+    /// </summary>
+    /// <example>
+    /// For a get-only string property called "MyProperty", <see cref="GetDefinition(PropertyDefinition)" /> would return
+    /// <code language="csharp">
+    /// public string MyProperty { get; }
+    /// </code>
+    /// </example>
     internal static class CSharpDefinitionFormatter
     {
+        /// <summary>
+        /// Gets the C# code defining the specified property.
+        /// </summary>
         public static string GetDefinition(PropertyDefinition property)
         {
             var definitionBuilder = new StringBuilder();
@@ -70,6 +82,9 @@ namespace Grynwald.MdDocs.ApiReference.Model
             return definitionBuilder.ToString();
         }
 
+        /// <summary>
+        /// Gets the C# code defining the specified field.
+        /// </summary>
         public static string GetDefinition(FieldDefinition field)
         {
             var definitionBuilder = new StringBuilder();
@@ -112,6 +127,9 @@ namespace Grynwald.MdDocs.ApiReference.Model
             return definitionBuilder.ToString();
         }
 
+        /// <summary>
+        /// Gets the C# code defining the specified method.
+        /// </summary>
         public static string GetDefinition(MethodDefinition method)
         {
             var definitionBuilder = new StringBuilder();
@@ -139,7 +157,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
                 // method name is the name of the type
                 var methodName = method.DeclaringType.Name;
 
-                if(method.DeclaringType.HasGenericParameters)
+                if (method.DeclaringType.HasGenericParameters)
                 {
                     // remove number of type parameters from type name
                     methodName = methodName.Substring(0, methodName.LastIndexOf("`"));
@@ -222,6 +240,9 @@ namespace Grynwald.MdDocs.ApiReference.Model
             return definitionBuilder.ToString();
         }
 
+        /// <summary>
+        /// Gets the C# code defining the specified event.
+        /// </summary>
         public static string GetDefinition(EventDefinition @event)
         {
             var definitionBuilder = new StringBuilder();
@@ -254,6 +275,9 @@ namespace Grynwald.MdDocs.ApiReference.Model
             return definitionBuilder.ToString();
         }
 
+        /// <summary>
+        /// Gets the C# code defining the specified type.
+        /// </summary>
         public static string GetDefinition(TypeDefinition type)
         {
             var definitionBuilder = new StringBuilder();
@@ -287,7 +311,6 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
             return definitionBuilder.ToString();
         }
-
 
 
         private static IEnumerable<CustomAttribute> GetCustomAttributes(MethodDefinition method) =>

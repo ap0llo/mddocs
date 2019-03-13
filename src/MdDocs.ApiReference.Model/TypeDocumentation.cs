@@ -8,7 +8,10 @@ using Mono.Cecil;
 
 namespace Grynwald.MdDocs.ApiReference.Model
 {
-    public class TypeDocumentation : IDocumentation, IObsoleteableDocumentation
+    /// <summary>
+    /// Documentation model of a type.
+    /// </summary>
+    public sealed class TypeDocumentation : IDocumentation, IObsoleteableDocumentation
     {
         private readonly IXmlDocsProvider m_XmlDocsProvider;
         private readonly ILogger m_Logger;
@@ -20,64 +23,144 @@ namespace Grynwald.MdDocs.ApiReference.Model
         private readonly IDictionary<OperatorKind, OperatorDocumentation> m_Operators;
 
 
+        /// <summary>
+        /// Gets the id of the type.
+        /// </summary>
         public MemberId MemberId => TypeId;
 
+        /// <summary>
+        /// Gets the id of the type.
+        /// </summary>
         public TypeId TypeId { get; }
 
+        /// <summary>
+        /// Gets the documentation model of the module that defines this type.
+        /// </summary>
         public ModuleDocumentation ModuleDocumentation { get; }
 
+        /// <summary>
+        /// Gets the documentation model of this type's namespace.
+        /// </summary>
         public NamespaceDocumentation NamespaceDocumentation { get; }
 
+        /// <summary>
+        /// Gets the type's display name
+        /// </summary>
         public string DisplayName => TypeId.DisplayName;
 
+        /// <summary>
+        /// Gets the name of the assembly this type is defined in.
+        /// </summary>
         public string AssemblyName => Definition.Module.Assembly.Name.Name;
 
+        /// <summary>
+        /// Gets the kind of the type (class, struct, interface ...)
+        /// </summary>
         public TypeKind Kind { get; }
 
+        /// <summary>
+        /// Gets the type's fields.
+        /// </summary>
         public IReadOnlyCollection<FieldDocumentation> Fields { get; }
 
+        /// <summary>
+        /// Gets the type's events.
+        /// </summary>
         public IReadOnlyCollection<EventDocumentation> Events { get; }
 
+        /// <summary>
+        /// Gets the type's properties.
+        /// </summary>
         public IReadOnlyCollection<PropertyDocumentation> Properties { get; }
 
+        /// <summary>
+        /// Gets the type's indexers.
+        /// </summary>
         public IReadOnlyCollection<IndexerDocumentation> Indexers { get; }
 
+        /// <summary>
+        /// Gets the type's constructors.
+        /// </summary>
         public ConstructorDocumentation Constructors { get; }
 
+        /// <summary>
+        /// Gets the type's methods.
+        /// </summary>
         public IReadOnlyCollection<MethodDocumentation> Methods { get; }
 
+        /// <summary>
+        /// Gets the type's operator overloads.
+        /// </summary>
         public IReadOnlyCollection<OperatorDocumentation> Operators { get; }
 
+        /// <summary>
+        /// Gets the type's base types.
+        /// </summary>
         public IReadOnlyCollection<TypeId> InheritanceHierarchy { get; }
 
+        /// <summary>
+        /// Gets the interfaces this type implements.
+        /// </summary>
         public IReadOnlyCollection<TypeId> ImplementedInterfaces { get; }
 
+        /// <summary>
+        /// Gets the type's custom attributes.
+        /// </summary>
         public IReadOnlyCollection<TypeId> Attributes { get; }
 
+        /// <summary>
+        /// Gets the type's <c>summary</c> documentation.
+        /// </summary>
         public TextBlock Summary { get; }
 
+        /// <summary>
+        /// Gets the type's <c>remarks</c> documentation.
+        /// </summary>
         public TextBlock Remarks { get; }
 
+        /// <summary>
+        /// Gets the type's <c>seealso</c> documentation items.
+        /// </summary>
         public IReadOnlyCollection<SeeAlsoElement> SeeAlso { get; }
 
+        /// <summary>
+        /// Gets the type's generic type parameters.
+        /// </summary>
         public IReadOnlyCollection<TypeParameterDocumentation> TypeParameters { get; }
 
+        /// <summary>
+        /// Gets the definition of the type as C# code.
+        /// </summary>
         public string CSharpDefinition { get; }
 
-        internal TypeDefinition Definition { get; }
-
+        /// <summary>
+        /// Gets the type's <c>example</c> documentation items.
+        /// </summary>
         public TextBlock Example { get; }
 
+        /// <inheritdoc />
         public bool IsObsolete { get; }
 
+        /// <inheritdoc />
         public string ObsoleteMessage { get; }
 
-        internal TypeDocumentation(
-            ModuleDocumentation moduleDocumentation,
-            NamespaceDocumentation namespaceDocumentation,
-            TypeDefinition definition,
-            IXmlDocsProvider xmlDocsProvider,
-            ILogger logger)
+        /// <summary>
+        /// Gets the type's underlying Mono.Cecil definition.
+        /// </summary>
+        internal TypeDefinition Definition { get; }
+
+
+        /// <summary>
+        /// Initializes a new instance of <see cref="TypeDocumentation"/>.
+        /// </summary>
+        /// <param name="moduleDocumentation">The documentation model of the module that defines the type.</param>
+        /// <param name="namespaceDocumentation">The documentation model of the type's namespace.</param>
+        /// <param name="definition">The type's underlying Mono.Cecil definition.</param>
+        /// <param name="xmlDocsProvider">The XML documentation provider to use for loading XML documentation comments.</param>
+        /// <param name="logger">The logger to use.</param>
+        internal TypeDocumentation(ModuleDocumentation moduleDocumentation,
+                                   NamespaceDocumentation namespaceDocumentation, TypeDefinition definition,
+                                   IXmlDocsProvider xmlDocsProvider, ILogger logger)
         {
             TypeId = definition.ToTypeId();
 
@@ -175,6 +258,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         }
 
 
+        /// <inheritdoc />
         public IDocumentation TryGetDocumentation(MemberId id)
         {
             switch (id)

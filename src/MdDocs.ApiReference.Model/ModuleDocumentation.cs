@@ -4,27 +4,47 @@ using System.Linq;
 using Grynwald.MdDocs.ApiReference.Model.XmlDocs;
 using Grynwald.Utilities.Collections;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions;
 using Mono.Cecil;
 
 namespace Grynwald.MdDocs.ApiReference.Model
 {
-    public class ModuleDocumentation : IDocumentation
+    /// <summary>
+    /// Documentation model of a module.
+    /// </summary>
+    public sealed class ModuleDocumentation : IDocumentation
     {
         private readonly IDictionary<TypeId, TypeDocumentation> m_Types;
         private readonly IDictionary<NamespaceId, NamespaceDocumentation> m_Namespaces;
         private readonly IXmlDocsProvider m_XmlDocsProvider;
 
+        /// <summary>
+        /// Gets the documentation model of the assembly this module is part of.
+        /// </summary>
         public AssemblyDocumentation AssemblyDocumentation { get; }
 
+        /// <summary>
+        /// Gets the types defined in this module.
+        /// </summary>
         public IReadOnlyCollection<TypeDocumentation> Types { get; }
 
+        /// <summary>
+        /// Gets the namespaces defined in this module.
+        /// </summary>
         public IReadOnlyCollection<NamespaceDocumentation> Namespaces { get; }
 
-
+        /// <summary>
+        /// Gets the underlying Mono.Cecil definition of the module.
+        /// </summary>
         internal ModuleDefinition Definition { get; }
 
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="ModuleDocumentation"/>.
+        /// </summary>
+        /// <param name="assemblyDocumentation">The documentation model of the assembly this module is part of.</param>
+        /// <param name="definition">The underlying Mono.Cecil definition of the module.</param>
+        /// <param name="xmlDocsProvider">The XML documentation provider to use for loading XML documentation comments.</param>
+        /// <param name="logger">The logger to use.</param>
         internal ModuleDocumentation(AssemblyDocumentation assemblyDocumentation, ModuleDefinition definition, IXmlDocsProvider xmlDocsProvider, ILogger logger)
         {
             Definition = definition ?? throw new ArgumentNullException(nameof(definition));
@@ -54,6 +74,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         }
 
 
+        /// <inheritdoc />
         public IDocumentation TryGetDocumentation(MemberId member)
         {
             switch (member)

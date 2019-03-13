@@ -1,5 +1,8 @@
 ﻿namespace Grynwald.MdDocs.ApiReference.Model
 {
+    /// <summary>
+    /// Enumerates the different kinds of types in the .NET type system.
+    /// </summary>
     public enum TypeKind
     {
         Class = 1,

@@ -49,15 +49,15 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 
                 case MethodId methodId:
                     if (noLink)
-                        return MethodFormatter.Instance.GetSignature(methodId);
+                        return SignatureFormatter.GetSignature(methodId);
                     else
-                        return CreateLink(methodId, MethodFormatter.Instance.GetSignature(methodId));
+                        return CreateLink(methodId, SignatureFormatter.GetSignature(methodId));
 
                 case PropertyId propertyId:
                     if (noLink)
-                        return MethodFormatter.Instance.GetSignature(propertyId);
+                        return SignatureFormatter.GetSignature(propertyId);
                     else
-                        return CreateLink(propertyId, MethodFormatter.Instance.GetSignature(propertyId));
+                        return CreateLink(propertyId, SignatureFormatter.GetSignature(propertyId));
 
                 case TypeMemberId typeMemberId:
                     if (noLink)

@@ -277,8 +277,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
 
             // ASSERT
             Assert.NotNull(sut.Constructors);
-            Assert.Single(sut.Constructors.Overloads);
-            Assert.Equal(".ctor", sut.Constructors.Name);
+            Assert.Single(sut.Constructors.Overloads);            
         }
 
         [Fact]
@@ -289,8 +288,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
 
             // ASSERT
             Assert.NotNull(sut.Constructors);
-            Assert.Equal(2, sut.Constructors.Overloads.Count);
-            Assert.Equal(".ctor", sut.Constructors.Name);
+            Assert.Equal(2, sut.Constructors.Overloads.Count);            
         }
 
         [Fact]
@@ -312,7 +310,6 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             // ASSERT
             Assert.NotNull(sut.Constructors);
             Assert.Equal(2, sut.Constructors.Overloads.Count);
-            Assert.Equal(".ctor", sut.Constructors.Name);
         }
 
         [Fact]

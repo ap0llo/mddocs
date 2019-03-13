@@ -5,16 +5,19 @@ using Mono.Cecil;
 
 namespace Grynwald.MdDocs.ApiReference.Model
 {
-    public sealed class MethodFormatter
+    /// <summary>
+    /// Helper class to the signature of members from Mono.Cecil definitions.
+    /// </summary>
+    /// <example>
+    /// For a method named "MyMethod" with a single string parameter,
+    /// <see cref="GetSignature(MethodDefinition)" /> would return <c>MyMethod(string)</c>.
+    /// </example>
+    public static class SignatureFormatter
     {
-        public static readonly MethodFormatter Instance = new MethodFormatter();
-
-
-        private MethodFormatter()
-        { }
-
-
-        public string GetSignature(MethodDefinition method)
+        /// <summary>
+        /// Gets the signature of the specified method.
+        /// </summary>
+        public static string GetSignature(MethodDefinition method)
         {
             var signatureBuilder = new StringBuilder();
 
@@ -68,7 +71,10 @@ namespace Grynwald.MdDocs.ApiReference.Model
             return signatureBuilder.ToString();
         }
 
-        public string GetSignature(MethodId method)
+        /// <summary>
+        /// Gets the signature of the specified method.
+        /// </summary>
+        public static string GetSignature(MethodId method)
         {
             var signatureBuilder = new StringBuilder();
 
@@ -118,7 +124,10 @@ namespace Grynwald.MdDocs.ApiReference.Model
             return signatureBuilder.ToString();
         }
 
-        public string GetSignature(PropertyDefinition property)
+        /// <summary>
+        /// Gets the signature of the specified property.
+        /// </summary>
+        public static string GetSignature(PropertyDefinition property)
         {
             var signatureBuilder = new StringBuilder();
 
@@ -139,7 +148,10 @@ namespace Grynwald.MdDocs.ApiReference.Model
             return signatureBuilder.ToString();
         }
 
-        public string GetSignature(PropertyId property)
+        /// <summary>
+        /// Gets the signature of the specified property.
+        /// </summary>
+        public static string GetSignature(PropertyId property)
         {
             var signatureBuilder = new StringBuilder();
 

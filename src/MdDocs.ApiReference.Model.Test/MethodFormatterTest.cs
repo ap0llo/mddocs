@@ -21,11 +21,9 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             var method = GetTypeDefinition(typeof(TestClass_MethodFormatter))
                    .Methods
                    .Single(x => x.Name == methodName);
-
-            var sut = MethodFormatter.Instance;
-
+            
             // ACT
-            var actualSignature = sut.GetSignature(method);
+            var actualSignature = SignatureFormatter.GetSignature(method);
 
             // ASSERT
             Assert.Equal(expectedSignature, actualSignature);
@@ -47,10 +45,8 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
                    .Single(x => x.Name == methodName)
                    .ToMethodId();
 
-            var sut = MethodFormatter.Instance;
-
             // ACT
-            var actualSignature = sut.GetSignature(methodId);
+            var actualSignature = SignatureFormatter.GetSignature(methodId);
 
             // ASSERT
             Assert.Equal(expectedSignature, actualSignature);
@@ -68,10 +64,8 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
                    .Methods
                    .Single(x => x.IsConstructor && x.Parameters.Count == parameterCount);
 
-            var sut = MethodFormatter.Instance;
-
             // ACT
-            var actualSignature = sut.GetSignature(method);
+            var actualSignature = SignatureFormatter.GetSignature(method);
 
             // ASSERT
             Assert.Equal(expectedSignature, actualSignature);
@@ -87,10 +81,8 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
                    .Methods
                    .Single(x => x.IsConstructor && x.Parameters.Count == parameterCount);
 
-            var sut = MethodFormatter.Instance;
-
             // ACT
-            var actualSignature = sut.GetSignature(method);
+            var actualSignature = SignatureFormatter.GetSignature(method);
 
             // ASSERT
             Assert.Equal(expectedSignature, actualSignature);
@@ -109,11 +101,9 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
                    .Methods
                    .Single(x => x.IsConstructor && x.Parameters.Count == parameterCount)
                    .ToMethodId();
-
-            var sut = MethodFormatter.Instance;
-
+            
             // ACT
-            var actualSignature = sut.GetSignature(methodId);
+            var actualSignature = SignatureFormatter.GetSignature(methodId);
 
             // ASSERT
             Assert.Equal(expectedSignature, actualSignature);
@@ -131,10 +121,8 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
                    .Single(x => x.IsConstructor && x.Parameters.Count == parameterCount)
                    .ToMethodId();
 
-            var sut = MethodFormatter.Instance;
-
             // ACT
-            var actualSignature = sut.GetSignature(methodId);
+            var actualSignature = SignatureFormatter.GetSignature(methodId);
 
             // ASSERT
             Assert.Equal(expectedSignature, actualSignature);
@@ -150,10 +138,8 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
                    .Methods
                    .Single(x => x.Name == methodName);
 
-            var sut = MethodFormatter.Instance;
-
             // ACT
-            var actualSignature = sut.GetSignature(method);
+            var actualSignature = SignatureFormatter.GetSignature(method);
 
             // ASSERT
             Assert.Equal(expectedSignature, actualSignature);
@@ -171,10 +157,8 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
                    .Single(x => x.Name == methodName)
                    .ToMethodId();
 
-            var sut = MethodFormatter.Instance;
-
             // ACT
-            var actualSignature = sut.GetSignature(methodId);
+            var actualSignature = SignatureFormatter.GetSignature(methodId);
 
             // ASSERT
             Assert.Equal(expectedSignature, actualSignature);
@@ -187,14 +171,12 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         public void GetSignature_returns_the_expected_result_for_indexers(int paramterCount, string expectedSignature)
         {
             // ARRANGE
-            var method = GetTypeDefinition(typeof(TestClass_MethodFormatter))
+            var property = GetTypeDefinition(typeof(TestClass_MethodFormatter))
                    .Properties
                    .Single(x => x.Parameters.Count == paramterCount);
 
-            var sut = MethodFormatter.Instance;
-
             // ACT
-            var actualSignature = sut.GetSignature(method);
+            var actualSignature = SignatureFormatter.GetSignature(property);
 
             // ASSERT
             Assert.Equal(expectedSignature, actualSignature);
@@ -212,10 +194,8 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
                    .Single(x => x.Parameters.Count == paramterCount)
                    .ToPropertyId();
 
-            var sut = MethodFormatter.Instance;
-
             // ACT
-            var actualSignature = sut.GetSignature(propertyId);
+            var actualSignature = SignatureFormatter.GetSignature(propertyId);
 
             // ASSERT
             Assert.Equal(expectedSignature, actualSignature);

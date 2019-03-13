@@ -1,7 +1,15 @@
 ﻿namespace Grynwald.MdDocs.ApiReference.Model
 {
-    public static class OperatorMethodNames
+    /// <summary>
+    /// Helper class to get the <see cref="OperatorKind"/> from a method name.
+    /// </summary>
+    internal static class OperatorMethodNames
     {
+        /// <summary>
+        /// Gets the operator being overloaded by a method with the specified name.
+        /// </summary>
+        /// <param name="methodName">The name of the method.</param>
+        /// <returns>Returns the operator being overloaded or <c>null</c> if the method does not overload an operator.</returns>
         public static OperatorKind? GetOperatorKind(string methodName)
         {
             switch (methodName)

@@ -7,17 +7,32 @@ using Mono.Cecil;
 
 namespace Grynwald.MdDocs.ApiReference.Model
 {
-    public class AssemblyDocumentation : IDisposable, IDocumentation
+    /// <summary>
+    /// Documentation model of an assembly.
+    /// </summary>
+    public sealed class AssemblyDocumentation : IDisposable, IDocumentation
     {
         private readonly IXmlDocsProvider m_XmlDocsProvider;
         private readonly ILogger m_Logger;
 
+
+        /// <summary>
+        /// Gets the assembly's definition.
+        /// </summary>
         internal AssemblyDefinition Definition { get; }
 
+        /// <summary>
+        /// Gets the documentation model for the assembly's main module
+        /// </summary>
         public ModuleDocumentation MainModuleDocumentation { get; }
 
 
-
+        /// <summary>
+        /// Initializes a new instance of <see cref="AssemblyDocumentation"/>.
+        /// </summary>
+        /// <param name="definition">The definition of the assembly.</param>
+        /// <param name="xmlDocsProvider">The XML documentation provider to use for loading XML documentation comments.</param>
+        /// <param name="logger">The logger to use.</param>
         internal AssemblyDocumentation(AssemblyDefinition definition, IXmlDocsProvider xmlDocsProvider, ILogger logger)
         {
             Definition = definition ?? throw new ArgumentNullException(nameof(definition));
@@ -28,24 +43,34 @@ namespace Grynwald.MdDocs.ApiReference.Model
         }
 
 
-        public void Dispose()
-        {
-            Definition.Dispose();
-        }
+        public void Dispose() => Definition.Dispose();
 
+        /// <inheritdoc />
         public IDocumentation TryGetDocumentation(MemberId member) =>
             MainModuleDocumentation.TryGetDocumentation(member);
 
+        /// <summary>
+        /// Loads the documentation model from an assembly file.
+        /// </summary>
+        /// <param name="filePath">The file of the assembly to load.</param>
+        /// <returns>Returns a new instance of <see cref="AssemblyDocumentation"/> that provides documentation for the specified assembly.</returns>
         public static AssemblyDocumentation FromFile(string filePath) => FromFile(filePath, NullLogger.Instance);
 
+        /// <summary>
+        /// Loads the documentation model from an assembly file.
+        /// </summary>
+        /// <param name="filePath">The file of the assembly to load.</param>
+        /// <param name="logger">The logger to use.</param>
+        /// <returns>Returns a new instance of <see cref="AssemblyDocumentation"/> that provides documentation for the specified assembly.</returns>
         public static AssemblyDocumentation FromFile(string filePath, ILogger logger)
         {
+            // load assembly
             logger.LogInformation($"Loading assembly from '{filePath}'");
             var assemblyDefinition = AssemblyDefinition.ReadAssembly(filePath);
 
-            var docsFilePath = Path.ChangeExtension(filePath, ".xml");
-
+            // loads XML documentation comments if the documentation file exists
             IXmlDocsProvider xmlDocsProvider;
+            var docsFilePath = Path.ChangeExtension(filePath, ".xml");
             if (File.Exists(docsFilePath))
             {
                 xmlDocsProvider = new XmlDocsProvider(docsFilePath, logger);

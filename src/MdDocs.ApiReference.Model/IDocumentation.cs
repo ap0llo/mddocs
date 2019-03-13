@@ -1,5 +1,8 @@
 ﻿namespace Grynwald.MdDocs.ApiReference.Model
 {
+    /// <summary>
+    /// Base interface for all documentation model types.
+    /// </summary>
     public interface IDocumentation
     {
         /// <summary>
