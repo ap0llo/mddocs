@@ -2,6 +2,9 @@
 
 namespace Grynwald.MdDocs.ApiReference.Pages
 {
+    /// <summary>
+    /// Link provider that provides links to documentation pages within the current set of pages.
+    /// </summary>
     internal class InternalLinkProvider : ILinkProvider
     {
         private readonly IDocumentation m_Model;
@@ -13,6 +16,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             m_PageFactory = pageFactory;
         }
 
+        ///<inheritdoc />
         public bool TryGetLink(MemberId id, out Link link)
         {
             var modelItem = m_Model.TryGetDocumentation(id);

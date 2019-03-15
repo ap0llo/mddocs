@@ -7,10 +7,12 @@ namespace Grynwald.MdDocs.ApiReference.Pages
     {
         private readonly ILinkProvider[] m_InnerProviders;
 
+
         public CompositeLinkProvider(params ILinkProvider[] innerProviders)
         {
             m_InnerProviders = innerProviders ?? throw new ArgumentNullException(nameof(innerProviders));
         }
+
 
         public bool TryGetLink(MemberId id, out Link link)
         {
