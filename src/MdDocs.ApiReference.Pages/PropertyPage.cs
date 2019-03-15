@@ -38,7 +38,6 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             AddExceptionsSection(block);
         }
 
-
         protected void AddExceptionsSection(MdContainerBlock block)
         {
             if (Model.Exceptions.Count == 0)

@@ -15,7 +15,6 @@ namespace Grynwald.MdDocs.ApiReference.Pages
         where TModel : OverloadableMemberDocumentation<TOverload>
         where TOverload : OverloadDocumentation
     {
-
         private readonly ILogger m_Logger;
         private readonly Lazy<IReadOnlyDictionary<MemberId, MdHeading>> m_Headings;
 

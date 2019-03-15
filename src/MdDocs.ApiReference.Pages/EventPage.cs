@@ -21,9 +21,8 @@ namespace Grynwald.MdDocs.ApiReference.Pages
         protected override MdHeading GetHeading() =>
             Heading($"{Model.TypeDocumentation.DisplayName}.{Model.Name} Event", 1);
 
+        // No "Value"section for events
         protected override void AddValueSection(MdContainerBlock block)
-        {
-            // omit value section for events
-        }
+        { }
     }
 }

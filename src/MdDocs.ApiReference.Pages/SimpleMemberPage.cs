@@ -13,6 +13,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
     {
         private readonly ILogger m_Logger;
 
+
         public SimpleMemberPage(PageFactory pageFactory, string rootOutputPath, TModel model, ILogger logger)
             : base(pageFactory, rootOutputPath, model)
         {

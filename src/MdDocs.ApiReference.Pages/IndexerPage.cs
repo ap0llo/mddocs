@@ -40,7 +40,6 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             }
         }
 
-
         //No "Returns" subsection for indexers (there is a "Value" section instead)
         protected override void AddReturnsSubSection(MdContainerBlock block, IndexerOverloadDocumentation overload, int headingLevel)
         { }

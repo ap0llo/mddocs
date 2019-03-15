@@ -5,7 +5,7 @@ using static Grynwald.MarkdownGenerator.FactoryMethods;
 
 namespace Grynwald.MdDocs.ApiReference.Pages
 {
-    abstract class MemberPage<TModel> : PageBase<TModel> where TModel : MemberDocumentation
+    internal abstract class MemberPage<TModel> : PageBase<TModel> where TModel : MemberDocumentation
     {
         public MemberPage(PageFactory pageFactory, string rootOutputPath, TModel model)
             : base(pageFactory, rootOutputPath, model)

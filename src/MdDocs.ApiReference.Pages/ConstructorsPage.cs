@@ -21,7 +21,6 @@ namespace Grynwald.MdDocs.ApiReference.Pages
         protected override MdHeading GetPageHeading() =>
             Heading($"{Model.TypeDocumentation.DisplayName} Constructors", 1);
 
-
         //No "Returns" subsection for constructors
         protected override void AddReturnsSubSection(MdContainerBlock block, ConstructorOverloadDocumentation overload, int headingLevel)
         { }

@@ -13,6 +13,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
     {
         private readonly ILogger m_Logger;
 
+
         public override OutputPath OutputPath { get; }
 
 
@@ -22,7 +23,6 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             OutputPath = new OutputPath(GetNamespaceDir(Model), "Namespace.md");
             m_Logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
         }
-
 
 
         public override void Save()
@@ -45,6 +45,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             Directory.CreateDirectory(Path.GetDirectoryName(OutputPath));
             document.Save(OutputPath);
         }
+
 
         private void AddTypeTable(MdContainerBlock block, string heading, IEnumerable<TypeDocumentation> types)
         {

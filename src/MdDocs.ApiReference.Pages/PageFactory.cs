@@ -66,6 +66,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             }
         }
 
+
         private void LoadPages()
         {
             m_Logger.LogInformation("Loading pages");

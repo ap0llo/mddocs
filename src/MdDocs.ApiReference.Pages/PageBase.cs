@@ -15,6 +15,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
         private readonly string m_RootOutputPath;
         private readonly ILinkProvider m_LinkProvider;
 
+
         public abstract OutputPath OutputPath { get; }
 
         protected PageFactory PageFactory { get; }
@@ -28,13 +29,12 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             m_RootOutputPath = rootOutputPath ?? throw new ArgumentNullException(nameof(rootOutputPath));
             Model = model ?? throw new ArgumentNullException(nameof(model));
 
-            m_LinkProvider = new CompositeLinkProvider(
-                new InternalLinkProvider(model, pageFactory)
-            );
+            m_LinkProvider = new CompositeLinkProvider(new InternalLinkProvider(model, pageFactory));
         }
 
 
         public abstract void Save();
+
 
         public MdParagraph GetMdParagraph(MemberId id) => new MdParagraph(GetMdSpan(id, false));
 
