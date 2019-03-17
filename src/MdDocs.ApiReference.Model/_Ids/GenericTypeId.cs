@@ -57,7 +57,9 @@ namespace Grynwald.MdDocs.ApiReference.Model
         public GenericTypeId(NamespaceId @namespace, string name, int arity) : base(@namespace, name)
         {
             Arity = arity;
-            m_TypeParameterDisplayNames = Enumerable.Range(1, arity).Select(x => "T" + x).ToArray();
+            m_TypeParameterDisplayNames = arity == 1
+                ? new [] { "T" }
+                : Enumerable.Range(1, arity).Select(x => "T" + x).ToArray();
         }
 
 
