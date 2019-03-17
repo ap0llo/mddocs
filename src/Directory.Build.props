@@ -13,7 +13,19 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <PackageReference Include="Nerdbank.GitVersioning" Version="2.1.65" />
+    <PackageReference Include="Nerdbank.GitVersioning" Version="2.3.125" />
+    <PackageReference Include="Microsoft.DotNet.Analyzers.Compatibility" Version="0.2.12-alpha" PrivateAssets="all" />
   </ItemGroup>
+
+  <!--NuGet package properties -->
+	<PropertyGroup>
+		<Authors>Andreas Gruenwald</Authors>
+		<PackageProjectUrl>https://github.com/ap0llo/mddocs</PackageProjectUrl>
+		<PackageLicenseUrl>https://github.com/ap0llo/mddocs/blob/master/LICENSE</PackageLicenseUrl>
+		<Description>A tool to generate documentaton as Markdown</Description>        
+    <Copyright>Copyright (c) 2018-2019, Andreas Gruenwald</Copyright>
+    <PackageTags>markdown dotnet api documentation</PackageTags>
+	</PropertyGroup>
+
 
 </Project>
