@@ -126,15 +126,16 @@ jobs:
     and
     (
       succeeded('Build_and_Test'), 
+      not(eq(variables['Settings.PublishToNuGetOrg'], 'false')),
       or(
-        eq($(Settings.PublishToNuGetOrg), 'true'),
+        eq(variables['Settings.PublishToNuGetOrg'], 'true'),
         and
         (
           startsWith(variables['Build.SourceBranch'], 'refs/heads/release/'),
           or
           (
-            eq($(Settings.PublishToNuGetOrg), ''),
-            eq($(Settings.PublishToNuGetOrg), 'auto')
+            eq(variables['Settings.PublishToNuGetOrg'], ''),
+            eq(variables['Settings.PublishToNuGetOrg'], 'auto')
           )
         )
     )
