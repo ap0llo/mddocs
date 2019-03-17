@@ -8,6 +8,7 @@ variables:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE : true    # do not populate NuGet caches on build agents (VM will be deleted afterwards anyways)
   configuration: Release                      # the configuration (Debug/Release) to build
   dotNetSdk_Version: 2.1.505                  # the version of the .NET SDK to use
+  solutionPath : src/MdDocs.sln               # The path of the solution to be buildt
   artifactsName: drop
   # MyGet.org settings   
   myget_publish: true                                       # enable publishing of master and release branches to MyGet.org
@@ -45,22 +46,21 @@ jobs:
     displayName: Set Version
 
   # Restore, Build, Test
-  - task: DotNetCoreCLI@2
-    displayName: Restore NuGet dependencies
+  - task: CmdLine@2
+    displayName: Restore NuGet packages
     inputs:
-      command: restore
-      projects: 'src/**/*.csproj'  
+      script: dotnet restore $(solutionPath)
   - task: DotNetCoreCLI@2
     displayName: Build
     inputs:
       command: build
-      projects: 'src/**/*.csproj'
+      projects: $(solutionPath)
       arguments: '--configuration $(configuration) --no-restore'  
   - task: DotNetCoreCLI@2
     displayName: Test
     inputs:
       command: test
-      projects: 'src/**/*Test.csproj'
+      projects: $(solutionPath)
       arguments: '--configuration $(configuration) --no-build'
   
   # Create NuGet Package and  publish as build artifact
@@ -68,7 +68,7 @@ jobs:
     displayName: Pack NuGet package
     inputs:
       command: pack
-      projects: 'src/**/*.csproj'
+      projects: $(solutionPath)
       arguments: '--configuration $(configuration) --output $(Build.ArtifactStagingDirectory) --no-build'  
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifacts'
