@@ -78,7 +78,10 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
                 "IEnumerable",
                 new[]
                 {
-                    new GenericTypeId(new NamespaceId("System"), "ArraySegment", 1, new[] { "T" })
+                    new GenericTypeInstanceId(
+                        new NamespaceId("System"),
+                        "ArraySegment",
+                        new []{ new GenericTypeParameterId(GenericTypeParameterId.MemberKind.Method, 0) })
                 }
             );
 

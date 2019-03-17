@@ -106,6 +106,22 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
                 );
 
                 yield return new MemberIdParserTestCase(
+                    "M:TestClass.TestMethod``1(System.Collections.Generic.IEqualityComparer{``0})",
+                    new MethodId(
+                        new SimpleTypeId("", "TestClass"),
+                        "TestMethod",
+                        1,
+                        new[]
+                        {
+                            new GenericTypeInstanceId("System.Collections.Generic", "IEqualityComparer",
+                            new []
+                            {
+                                new GenericTypeParameterId(GenericTypeParameterId.MemberKind.Method, 0)
+                            })
+                        })
+                );
+
+                yield return new MemberIdParserTestCase(
                     "M:Class.Method(System.Collections.Generic.IEnumerable{System.String})",
                     new MethodId(
                         new SimpleTypeId("", "Class"),

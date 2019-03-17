@@ -26,31 +26,15 @@ namespace Grynwald.MdDocs.ApiReference.Model
                 // remove the number of type parameters from the name
                 var name = typeReference.Name.Substring(0, typeReference.Name.LastIndexOf('`'));
 
-                // Type arguments are bound to real types
-                if (genericInstanceType.HasGenericArguments && genericInstanceType.GenericArguments.All(x => !x.IsGenericParameter ))
-                {
-                    var typeArguments = genericInstanceType.GenericArguments
-                        .Select(x => x.ToTypeId())
-                        .ToArray();
+                var typeArguments = genericInstanceType.GenericArguments
+                    .Select(x => x.ToTypeId())
+                    .ToArray();
 
-                    return new GenericTypeInstanceId(
-                        new NamespaceId(typeReference.Namespace),
-                        name,
-                        typeArguments);
-                }
-                else
-                {
-                    var typeArity = genericInstanceType.GenericArguments.Count;
-
-                    // get the names of the type parameters
-                    // so the GenericTypeId's DisplayName matches
-                    // the definition
-                    var typeParameterNames = genericInstanceType
-                        .GenericArguments
-                        .Select(x => x.Name).ToArray();
-
-                    return new GenericTypeId(new NamespaceId(typeReference.Namespace), name, typeArity, typeParameterNames);
-                }                
+                return new GenericTypeInstanceId(
+                    new NamespaceId(typeReference.Namespace),
+                    name,
+                    typeArguments);
+                
             }
             // Unbound generic type, e.g. 
             // class Foo<T> 

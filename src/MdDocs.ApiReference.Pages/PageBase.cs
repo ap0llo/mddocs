@@ -196,11 +196,11 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 
             if (noLink)
             {
-                return new MdTextSpan(type.Name);
+                return new MdTextSpan(type.DisplayName);
             }
             else
             {
-                return CreateLink(type, type.Name);
+                return CreateLink(type, type.DisplayName);
             }
         }
 
