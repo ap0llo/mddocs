@@ -1,3 +1,25 @@
+# Pipeline consists of 4 jobs
+# - Build_an_Test: 
+#   - Builds the project
+#   - Runs all the tests
+#   - creates a NuGet package
+# - Publish_to_MyGet: 
+#   - Pushes the NuGet package to MyGet 
+#   - Assumes a Service Connection for MyGet was set up in the Team project running the pipeline
+#   - The name of the service connection is stored in the variable myget_ServiceConnectionName (defined below)
+#   - Only runs when building a release branch or the master branch
+# -Publish_to_NuGet_org
+#   - Pushes the NuGet package to NuGet.org 
+#   - Assumes a Service Connection for NuGet was set up in the Team project running the pipeline
+#   - The name of the service connection is stored in the variable nuget_org_ServiceConnectionName (defined below)
+#   - The variable nuget_org_PackageName defines which package is produced by the pipeline
+#   - Whether this step runs can be controlled by the variable 'Settings.PublishToNuGetOrg' (modify at queue time when necessary):
+#     - 'auto' or empty: Publish to NuGet.org when building a release branch
+#     - 'false': Do not publish to NuGet.org
+#     - 'true': Publish to NuGet.org
+# - Create_GitHub_Release
+#   - Creates a GitHub release for the build
+
 trigger:
 - master
 - features/*
@@ -11,14 +33,11 @@ variables:
   solutionPath : src/MdDocs.sln               # The path of the solution to be buildt
   artifactsName: drop
   # MyGet.org settings   
-  myget_publish: true                                       # enable publishing of master and release branches to MyGet.org
-  myget_ServiceConnectionName: 'MyGet - ap0llo-mddocs'   # the name of the Azure DevOps service connection to use for MyGet.org
+  myget_ServiceConnectionName: 'MyGet - ap0llo-mddocs'      # the name of the Azure DevOps service connection to use for MyGet.org
   # NuGet.org settings
-  nuget_org_publish: true                                   # enable publishing of release branches to NuGet.org
   nuget_org_ServiceConnectionName: 'NuGet.org - mddocs'     # the name of the Azure DevOps service connection to use for NuGet.org
   nuget_org_PackageName: 'Grynwald.MdDocs'                  # the name of the package being published
   # GitHub settings
-  github_createRelease: true                          # enable creation of GitHub releases when a package was uploaded to NuGet.org
   github_ServiceConnectionName: 'GitHub: ap0llo'      # the name of the Azure DevOps service connection to use for creating GitHub releases
   github_repositoryName: 'ap0llo/mddocs'              # the name of the github repo to create the release in  
 
@@ -80,7 +99,7 @@ jobs:
   pool: Hosted VS2017
   # Only run after main build job and only if the current branch is master or a release branch
   dependsOn: Build_and_Test
-  condition: and('$(myget_publish)', succeeded('Build_and_Test'), or(eq(variables['build.sourceBranch'], 'refs/heads/master'), startsWith(variables['Build.SourceBranch'], 'refs/heads/release/') ))
+  condition: and(succeeded('Build_and_Test'), or(eq(variables['build.sourceBranch'], 'refs/heads/master'), startsWith(variables['Build.SourceBranch'], 'refs/heads/release/') ))
   steps:
   # Get artifacts
   - task: DownloadBuildArtifacts@0
@@ -103,7 +122,22 @@ jobs:
   pool: Hosted VS2017
   # Only run after main build job and only if the current branch is a release branch
   dependsOn: Build_and_Test
-  condition: and('$(nuget_org_publish)', succeeded('Build_and_Test'), startsWith(variables['Build.SourceBranch'], 'refs/heads/release/'))
+  condition: |
+    and
+    (
+      succeeded('Build_and_Test'), 
+      or(
+        eq($(Settings.PublishToNuGetOrg), 'true'),
+        and
+        (
+          startsWith(variables['Build.SourceBranch'], 'refs/heads/release/'),
+          or
+          (
+            eq($(Settings.PublishToNuGetOrg), ''),
+            eq($(Settings.PublishToNuGetOrg), 'auto')
+          )
+        )
+    )
   steps:
   # Get artifacts
   - task: DownloadBuildArtifacts@0
@@ -128,7 +162,7 @@ jobs:
   dependsOn: 
   - Build_and_Test
   - Publish_to_NuGet_org
-  condition: and('$(github_createRelease)', succeeded('Build_and_Test'), succeeded('Publish_to_NuGet_org'))
+  condition: and(succeeded('Build_and_Test'), succeeded('Publish_to_NuGet_org'))
   steps:
 
   # Install .NET Core SDK (version specified in the variables section)
