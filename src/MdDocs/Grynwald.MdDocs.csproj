@@ -4,7 +4,9 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <AssemblyName>mddocs</AssemblyName>
-    <PackAsTool>true</PackAsTool>    
+    <PackageId>$(MSBuildProjectName)</PackageId>
+    <RootNamespace>$(MSBuildProjectName)</RootNamespace>
+    <PackAsTool>true</PackAsTool>
   </PropertyGroup>
 
   <ItemGroup>
