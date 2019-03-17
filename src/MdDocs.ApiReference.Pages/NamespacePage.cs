@@ -33,12 +33,20 @@ namespace Grynwald.MdDocs.ApiReference.Pages
                Heading($"{Model.Name} Namespace", 1)
             );
 
+            // Add parent Namespace
+            if(Model.ParentNamespaceDocumentation != null)
+            {
+                document.Root.Add(
+                    Paragraph(Bold("Namespace:"), " ", GetMdSpan(Model.ParentNamespaceDocumentation.NamespaceId))
+                );
+            }
+
+            AddNamespacesList(document.Root);
+
             AddTypeTable(document.Root, "Classes", Model.Types.Where(x => x.Kind == TypeKind.Class));
             AddTypeTable(document.Root, "Structs", Model.Types.Where(x => x.Kind == TypeKind.Struct));
             AddTypeTable(document.Root, "Interfaces", Model.Types.Where(x => x.Kind == TypeKind.Interface));
-            AddTypeTable(document.Root, "Enums", Model.Types.Where(x => x.Kind == TypeKind.Enum));
-
-            //TODO: Sub-namespaces
+            AddTypeTable(document.Root, "Enums", Model.Types.Where(x => x.Kind == TypeKind.Enum));            
 
             AddFooter(document.Root);
 
@@ -47,6 +55,21 @@ namespace Grynwald.MdDocs.ApiReference.Pages
         }
 
 
+        private void AddNamespacesList(MdContainerBlock block)
+        {
+            if (!Model.Namespaces.Any())
+                return;
+
+            block.Add(Heading(2, "Namespaces"));
+
+            block.Add(
+                BulletList(
+                    Model.Namespaces
+                        .OrderBy(x => x.Name)
+                        .Select(@namespace => ListItem(GetMdSpan(@namespace.NamespaceId))
+            )));            
+            
+        }
         private void AddTypeTable(MdContainerBlock block, string heading, IEnumerable<TypeDocumentation> types)
         {
             if (!types.Any())
@@ -65,5 +88,6 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             }
             block.Add(table);
         }
+
     }
 }

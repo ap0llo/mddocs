@@ -47,7 +47,7 @@ namespace Grynwald.MdDocs.ApiReference.Test
 
             var sut = new TypeDocumentation(
                 m_AssemblyDocumentation.Value.MainModuleDocumentation,
-                new NamespaceDocumentation(m_AssemblyDocumentation.Value.MainModuleDocumentation, new NamespaceId(type.Namespace), NullLogger.Instance),
+                new NamespaceDocumentation(m_AssemblyDocumentation.Value.MainModuleDocumentation, null, new NamespaceId(type.Namespace), NullLogger.Instance),
                 typeDefinition,
                 NullXmlDocsProvider.Instance,
                 NullLogger.Instance
@@ -62,7 +62,7 @@ namespace Grynwald.MdDocs.ApiReference.Test
 
             var sut = new TypeDocumentation(
                 m_AssemblyDocumentation.Value.MainModuleDocumentation,
-                new NamespaceDocumentation(m_AssemblyDocumentation.Value.MainModuleDocumentation, new NamespaceId(typeDefinition.Namespace), NullLogger.Instance),
+                new NamespaceDocumentation(m_AssemblyDocumentation.Value.MainModuleDocumentation, null, new NamespaceId(typeDefinition.Namespace), NullLogger.Instance),
                 typeDefinition,
                 NullXmlDocsProvider.Instance,
                 NullLogger.Instance
