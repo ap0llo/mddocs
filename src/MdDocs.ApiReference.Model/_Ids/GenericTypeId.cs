@@ -17,7 +17,17 @@ namespace Grynwald.MdDocs.ApiReference.Model
         public int Arity { get; }
 
         /// <inheritdoc />
-        public override string DisplayName => $"{Name}<{String.Join(", ", m_TypeParameterDisplayNames)}>";
+        public override string DisplayName
+        {
+            get
+            {
+                if(Arity == 1 && Namespace.IsSystem && Name.Equals("Nullable"))
+                {
+                    return $"{m_TypeParameterDisplayNames.Single()}?";
+                }
+                return $"{Name}<{String.Join(", ", m_TypeParameterDisplayNames)}>";
+            }
+        }
 
         /// <inheritdoc />
         public override bool IsVoid => false;

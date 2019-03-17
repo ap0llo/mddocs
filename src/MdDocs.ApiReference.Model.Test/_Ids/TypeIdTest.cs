@@ -94,5 +94,23 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             // ASSERT
             Assert.Equal(expectedTypeName, typeId.DisplayName);
         }
+
+
+        [Theory]
+        [InlineData(nameof(TestClass_TypeIdDisplayName.Property22), "bool?")]        
+        public void DisplayName_returns_the_expected_type_name_for_nullable_types(string propertyName, string expectedTypeName)
+        {
+            // ARRANGE
+            var typeReference = GetTypeDefinition(typeof(TestClass_TypeIdDisplayName))
+                .Properties
+                .Single(p => p.Name == propertyName)
+                .PropertyType;
+
+            // ACT
+            var typeId = typeReference.ToTypeId();
+
+            // ASSERT
+            Assert.Equal(expectedTypeName, typeId.DisplayName);
+        }
     }
 }

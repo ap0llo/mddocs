@@ -42,6 +42,9 @@ namespace Grynwald.MdDocs.ApiReference.Test.TestData
 
         public object Method7<T1, T2>(T1 foo, T2 bar) => throw new NotImplementedException();
 
+        public int? Method8(ConsoleColor? parameter) => throw new NotImplementedException();
+
+
 
         public static TestClass_MethodFormatter operator +(TestClass_MethodFormatter left, TestClass_MethodFormatter right) => throw new NotImplementedException();
 

@@ -15,8 +15,17 @@ namespace Grynwald.MdDocs.ApiReference.Model
         public IReadOnlyList<TypeId> TypeArguments { get; }
 
         /// <inheritdoc />
-        public override string DisplayName =>
-            $"{Name}<{String.Join(", ", TypeArguments.Select(a => a.DisplayName))}>";
+        public override string DisplayName
+        {
+            get
+            {
+                if (TypeArguments.Count == 1 && Namespace.IsSystem && Name.Equals("Nullable"))
+                {
+                    return $"{TypeArguments.Single().DisplayName}?";
+                }
+                return $"{Name}<{String.Join(", ", TypeArguments.Select(a => a.DisplayName))}>";
+            }
+        }
 
         /// <inheritdoc />
         public override bool IsVoid => false;

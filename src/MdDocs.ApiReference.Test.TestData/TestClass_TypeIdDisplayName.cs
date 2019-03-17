@@ -48,6 +48,8 @@ namespace Grynwald.MdDocs.ApiReference.Test.TestData
 
         public Dictionary<string, Stream> Property21 { get; set; }
 
+        public bool? Property22 { get; set; }
+
     }
 
     class TestClass_TypeIdDisplayName<T1, T2>

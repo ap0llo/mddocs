@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Grynwald.MdDocs.ApiReference.Test.Model
 {
-    public class MethodFormatterTest : TestBase
+    public class SignatureFormatterTest : TestBase
     {
         [Theory]
         [InlineData(nameof(TestClass_MethodFormatter.Method1), "Method1()")]
@@ -15,6 +15,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         [InlineData(nameof(TestClass_MethodFormatter.Method5), "Method5<T>(string)")]
         [InlineData(nameof(TestClass_MethodFormatter.Method6), "Method6<T>(T)")]
         [InlineData(nameof(TestClass_MethodFormatter.Method7), "Method7<T1, T2>(T1, T2)")]
+        [InlineData(nameof(TestClass_MethodFormatter.Method8), "Method8(ConsoleColor?)")]
         public void GetSignature_returns_the_expected_result(string methodName, string expectedSignature)
         {
             // ARRANGE
