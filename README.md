@@ -2,6 +2,10 @@
 
 ## Overview
 
+[![NuGet](https://img.shields.io/nuget/v/Grynwald.MdDocs.svg)](https://www.nuget.org/packages/Grynwald.MdDocs)
+[![MyGet](https://img.shields.io/myget/ap0llo-mddocs/vpre/Grynwald.MdDocs.svg?label=myget)](https://www.myget.org/feed/ap0llo-mddocs/package/nuget/Grynwald.MdDocs)
+[![Build Status](https://dev.azure.com/ap0llo/OSS/_apis/build/status/mddocs?branchName=master)](https://dev.azure.com/ap0llo/OSS/_build/latest?definitionId=11&branchName=master)
+
 *MdDocs* is a tool to generate documentation in the form of Markdown documents.
 It currently supports generating API reference from a .NET assembly and the corresponding XML documentation file.
 
