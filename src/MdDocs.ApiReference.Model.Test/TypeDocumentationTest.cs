@@ -194,7 +194,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             var sut = GetTypeDocumentation(typeof(TestClass_Methods));
 
             // ASSERT
-            Assert.Equal(12, sut.Methods.Count);
+            Assert.Equal(13, sut.Methods.Count);
             Assert.All(sut.Methods, method => Assert.Single(method.Overloads));
             Assert.Contains(sut.Methods, m => m.Name == "TestMethod1");
             Assert.Contains(sut.Methods, m => m.Name == "TestMethod2");
@@ -208,6 +208,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             Assert.Contains(sut.Methods, m => m.Name == "TestMethod10");
             Assert.Contains(sut.Methods, m => m.Name == "TestMethod11");
             Assert.Contains(sut.Methods, m => m.Name == "TestMethod12");
+            Assert.Contains(sut.Methods, m => m.Name == "TestMethod13");
         }
 
         [Fact]

@@ -144,6 +144,11 @@
             Test Method 7
             </summary>
         </member>
+        <member name="M:Grynwald.MdDocs.ApiReference.Test.TestData.TestClass_Methods.TestMethod13``1(System.Collections.Generic.IEnumerable{System.ArraySegment{``0}})">
+            <summary>
+            Test Method 7
+            </summary>
+        </member>
         <member name="M:Grynwald.MdDocs.ApiReference.Test.TestData.TestClass_Methods.TestMethod8``2(``0,``1)">
             <summary>
             Test Method 8

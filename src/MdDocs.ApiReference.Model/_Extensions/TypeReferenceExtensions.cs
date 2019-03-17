@@ -26,32 +26,8 @@ namespace Grynwald.MdDocs.ApiReference.Model
                 // remove the number of type parameters from the name
                 var name = typeReference.Name.Substring(0, typeReference.Name.LastIndexOf('`'));
 
-                // type arguments are parameters
-                // e.g. in
-                //  class Foo<T>
-                //  {
-                //      public List<T> Bar() => null;
-                //  }
-                //
-                //  The return type of Bar is a GenericInstanceType, but bound to 
-                //  the classes parameter
-                //
-                if (typeReference.ContainsGenericParameter)
-                {
-
-                    var typeArity = genericInstanceType.GenericArguments.Count;
-
-                    // get the names of the type parameters
-                    // so the GenericTypeId's DisplayName matches
-                    // the definition
-                    var typeParameterNames = genericInstanceType
-                        .GenericArguments
-                        .Select(x => x.Name).ToArray();
-
-                    return new GenericTypeId(new NamespaceId(typeReference.Namespace), name, typeArity, typeParameterNames);
-                }
                 // Type arguments are bound to real types
-                else
+                if (genericInstanceType.HasGenericArguments && genericInstanceType.GenericArguments.All(x => !x.IsGenericParameter ))
                 {
                     var typeArguments = genericInstanceType.GenericArguments
                         .Select(x => x.ToTypeId())
@@ -62,6 +38,19 @@ namespace Grynwald.MdDocs.ApiReference.Model
                         name,
                         typeArguments);
                 }
+                else
+                {
+                    var typeArity = genericInstanceType.GenericArguments.Count;
+
+                    // get the names of the type parameters
+                    // so the GenericTypeId's DisplayName matches
+                    // the definition
+                    var typeParameterNames = genericInstanceType
+                        .GenericArguments
+                        .Select(x => x.Name).ToArray();
+
+                    return new GenericTypeId(new NamespaceId(typeReference.Namespace), name, typeArity, typeParameterNames);
+                }                
             }
             // Unbound generic type, e.g. 
             // class Foo<T> 

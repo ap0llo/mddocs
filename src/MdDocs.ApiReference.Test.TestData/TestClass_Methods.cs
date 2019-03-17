@@ -43,6 +43,13 @@ namespace Grynwald.MdDocs.ApiReference.Test.TestData
         /// </summary>
         public string TestMethod7<T1, T2>(T1 foo, T2 bar) { throw new NotImplementedException(); }
 
+
+        /// <summary>
+        /// Test Method 7
+        /// </summary>
+        public string TestMethod13<T>(IEnumerable<ArraySegment<T>> bar) { throw new NotImplementedException(); }
+
+
         /// <summary>
         /// Test Method 8
         /// </summary>

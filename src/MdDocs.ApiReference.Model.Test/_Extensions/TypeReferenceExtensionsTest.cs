@@ -38,7 +38,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         }
 
         [Fact]
-        public void ToMemberId_returns_expected_value_for_constructued_types()
+        public void ToMemberId_returns_expected_value_for_constructued_types_01()
         {
             // ARRANGE
             var typeReference = GetTypeDefinition(typeof(TestClass_Methods))
@@ -61,6 +61,35 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             Assert.NotNull(actualMemberId);
             Assert.Equal(expectedMemberId, actualMemberId);
         }
+
+        [Fact]
+        public void ToMemberId_returns_expected_value_for_constructued_types_02()
+        {
+            // ARRANGE
+            var typeReference = GetTypeDefinition(typeof(TestClass_Methods))
+                .Methods
+                .Single(x => x.Name == nameof(TestClass_Methods.TestMethod13))
+                .Parameters
+                .Single()
+                .ParameterType;
+
+            var expectedMemberId = new GenericTypeInstanceId(
+                "System.Collections.Generic",
+                "IEnumerable",
+                new[]
+                {
+                    new GenericTypeId(new NamespaceId("System"), "ArraySegment", 1, new[] { "T" })
+                }
+            );
+
+            // ACT
+            var actualMemberId = typeReference.ToMemberId();
+
+            // ASSERT
+            Assert.NotNull(actualMemberId);
+            Assert.Equal(expectedMemberId, actualMemberId);
+        }
+
 
         [Fact]
         public void ToMemberId_returns_expected_value_for_array_types_01()
