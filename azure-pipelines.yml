@@ -14,11 +14,12 @@
 #   - The name of the service connection is stored in the variable nuget_org_ServiceConnectionName (defined below)
 #   - The variable nuget_org_PackageName defines which package is produced by the pipeline
 #   - Whether this step runs can be controlled by the variable 'Settings.PublishToNuGetOrg' (modify at queue time when necessary):
-#     - 'auto' or empty: Publish to NuGet.org when building a release branch
-#     - 'false': Do not publish to NuGet.org
-#     - 'true': Publish to NuGet.org
+#     - 'auto' or empty: Run when building a release branch
+#     - 'false': Do not run
+#     - 'true': Rn regardless of the current branch
 # - Create_GitHub_Release
 #   - Creates a GitHub release for the build
+#   - Only runs if the build was published to NuGet.org
 
 trigger:
 - master
@@ -164,7 +165,7 @@ jobs:
   dependsOn: 
   - Build_and_Test
   - Publish_to_NuGet_org
-  condition: and(succeeded('Build_and_Test'), succeeded('Publish_to_NuGet_org'))
+  condition: succeeded('Publish_to_NuGet_org')
   steps:
 
   # Install .NET Core SDK (version specified in the variables section)
