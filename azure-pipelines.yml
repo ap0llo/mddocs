@@ -138,6 +138,7 @@ jobs:
             eq(variables['Settings.PublishToNuGetOrg'], 'auto')
           )
         )
+      )
     )
   steps:
   # Get artifacts
