@@ -15,7 +15,6 @@ namespace Grynwald.MdDocs.ApiReference.Model
         private readonly IXmlDocsProvider m_XmlDocsProvider;
         private readonly ILogger m_Logger;
 
-
         /// <summary>
         /// Gets the assembly's definition.
         /// </summary>
@@ -64,9 +63,14 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// <returns>Returns a new instance of <see cref="AssemblyDocumentation"/> that provides documentation for the specified assembly.</returns>
         public static AssemblyDocumentation FromFile(string filePath, ILogger logger)
         {
+            var dir = Path.GetDirectoryName(filePath);
+
+            var assemblyResolver = new DefaultAssemblyResolver();
+            assemblyResolver.AddSearchDirectory(dir);
+
             // load assembly
             logger.LogInformation($"Loading assembly from '{filePath}'");
-            var assemblyDefinition = AssemblyDefinition.ReadAssembly(filePath);
+            var assemblyDefinition = AssemblyDefinition.ReadAssembly(filePath, new ReaderParameters() { AssemblyResolver = assemblyResolver });
 
             // loads XML documentation comments if the documentation file exists
             IXmlDocsProvider xmlDocsProvider;
