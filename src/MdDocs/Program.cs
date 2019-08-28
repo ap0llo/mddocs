@@ -5,6 +5,8 @@ using System.Linq;
 using CommandLine;
 using Grynwald.MdDocs.ApiReference.Model;
 using Grynwald.MdDocs.ApiReference.Pages;
+using Grynwald.MdDocs.CommandLineHelp.Model;
+using Grynwald.MdDocs.CommandLineHelp.Pages;
 using Microsoft.Extensions.Logging;
 
 namespace Grynwald.MdDocs
@@ -22,20 +24,13 @@ namespace Grynwald.MdDocs
 
             // Parser needs at least two option classes, otherwise it
             // will not include the verb for the commands in the help output.
-            // After adding a real second command, DummyOptions can be removed
             return parser
-                .ParseArguments<ApiReferenceOptions, DummyOptions>(args)
+                .ParseArguments<ApiReferenceOptions, CommandLineHelpOptions>(args)
                 .MapResult(
                     (ApiReferenceOptions opts) => OnApiReferenceCommand(opts),
-                    (DummyOptions opts) => OnDummyCommand(),
+                    (CommandLineHelpOptions opts) => OnCommandLineHelpCommand(opts),
                     (IEnumerable<Error> errors) => OnError(errors));
-        }
-
-        private static int OnDummyCommand()
-        {
-            Console.Error.WriteLine("Invalid arguments.");
-            return -1;
-        }
+        }      
 
         private static int OnError(IEnumerable<Error> errors)
         {
@@ -70,6 +65,22 @@ namespace Grynwald.MdDocs
             }
 
             return 0;
+        }
+
+
+        private static int OnCommandLineHelpCommand(CommandLineHelpOptions opts)
+        {
+            var logger = new ColoredConsoleLogger(opts.Verbose ? LogLevel.Debug : LogLevel.Information);
+
+            using (var model = ApplicationDocumentation.FromAssemblyFile(opts.AssemblyPath, logger))
+            {
+                var factory = new CommandLinePageFactory(model, logger);
+                var documentSet = factory.GetPages();
+
+                documentSet.Save(opts.OutputDirectory, cleanOutputDirectory: true);
+            }
+
+            return 0;            
         }
     }
 }
