@@ -27,7 +27,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
 
             document.Root.Add(new MdHeading(1, $"{m_Model.Name} Command Line Reference"));
 
-            if(!String.IsNullOrEmpty(m_Model.Version))
+            if (!String.IsNullOrEmpty(m_Model.Version))
             {
                 document.Root.Add(
                     new MdParagraph(
@@ -44,6 +44,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
 
             return document;
         }
+
 
         private MdTable GetCommandsTable()
         {

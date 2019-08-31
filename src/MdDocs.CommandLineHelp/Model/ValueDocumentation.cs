@@ -10,7 +10,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
 
         public string Name { get; }
 
-        
+
         public ValueDocumentation(int index, string name = null, string helpText = null, bool hidden = false, object @default = null)
             : base(helpText: helpText, hidden: hidden, @default: @default)
         {

@@ -29,7 +29,6 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
             {
                 RegisterCommandPage(command);
             }
-
             return m_DocumentSet;
         }
 

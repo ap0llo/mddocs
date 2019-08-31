@@ -63,7 +63,6 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
                 .GetAttributeOrDefault(Constants.AssemblyInformationalVersionAttribute)                
                 ?.ConstructorArguments.Single().Value as string;
 
-
             if(String.IsNullOrEmpty(version))
             {
                 version = definition.Name.Version.ToString();
@@ -76,14 +75,10 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
 
         private static IReadOnlyList<CommandDocumentation> LoadCommands(AssemblyDefinition definition, ILogger logger)
         {
-            var commands = new List<CommandDocumentation>();
-
-            foreach (var type in definition.MainModule.Types.WithAttribute(Constants.VerbAttributeFullName))
-            {
-                commands.Add(CommandDocumentation.FromTypeDefinition(type, logger));
-            }
-
-            return commands;
+            return definition.MainModule.Types
+                .WithAttribute(Constants.VerbAttributeFullName)
+                .Select(type => CommandDocumentation.FromTypeDefinition(type, logger))
+                .ToArray();
         }
     }
 }

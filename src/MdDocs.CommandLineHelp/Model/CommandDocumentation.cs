@@ -63,26 +63,18 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
 
         private static IReadOnlyList<OptionDocumentation> LoadOptions(TypeDefinition definition, ILogger logger)
         {
-            var options = new List<OptionDocumentation>();
-
-            foreach (var property in definition.Properties.WithAttribute(Constants.OptionAttributeFullName))
-            {
-                options.Add(OptionDocumentation.FromPropertyDefinition(property, logger));
-            }
-
-            return options;
+            return definition.Properties
+                .WithAttribute(Constants.OptionAttributeFullName)
+                .Select(property => OptionDocumentation.FromPropertyDefinition(property, logger))
+                .ToArray();
         }
 
         private static IReadOnlyList<ValueDocumentation> LoadValues(TypeDefinition definition, ILogger logger)
         {
-            var values = new List<ValueDocumentation>();
-
-            foreach (var property in definition.Properties.WithAttribute(Constants.ValueAttributeFullName))
-            {
-                values.Add(ValueDocumentation.FromPropertyDefinition(property, logger));
-            }
-
-            return values;
+            return definition.Properties
+                .WithAttribute(Constants.ValueAttributeFullName)
+                .Select(property => ValueDocumentation.FromPropertyDefinition(property, logger))
+                .ToArray();
         }
     }
 }

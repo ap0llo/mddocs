@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Mono.Cecil;
+﻿using Mono.Cecil;
 
 namespace Grynwald.MdDocs.CommandLineHelp.Model
 {
+    //TODO: MetaValue, Min, Max
     public abstract class ParameterDocumentation
     {
         public string HelpText { get; }
@@ -21,7 +18,6 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
             Hidden = hidden;
             Default = @default;
         }
-
 
         protected ParameterDocumentation(CustomAttribute attribute)
         {

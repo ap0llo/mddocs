@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Mono.Cecil;
 
 namespace Grynwald.MdDocs.CommandLineHelp.Model
@@ -18,38 +17,27 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
             ShortName = shortName;
         }
 
-        private OptionDocumentation(PropertyDefinition definition) : base(definition.GetAttribute(Constants.OptionAttributeFullName))
+        private OptionDocumentation(PropertyDefinition definition, ILogger logger) : base(definition.GetAttribute(Constants.OptionAttributeFullName))
         {
-            var optionAttribute = definition.GetAttribute(Constants.OptionAttributeFullName);
-
-            string name;
-            char? shortName;
-            if (optionAttribute.ConstructorArguments.Count == 1)
+            foreach (var arg in definition.GetAttribute(Constants.OptionAttributeFullName).ConstructorArguments)
             {
-                var arg = optionAttribute.ConstructorArguments.Single();
-                if (arg.Type.FullName == "System.String")
+                if (arg.Type.FullName == typeof(string).FullName)
                 {
-                    name = (string)arg.Value;
-                    shortName = null;
+                    Name = (string)arg.Value;
+                }
+                else if (arg.Type.FullName == typeof(char).FullName)
+                {
+                    ShortName = (char)arg.Value;
                 }
                 else
                 {
-                    name = null;
-                    shortName = (char)arg.Value;
+                    logger.LogWarning($"{definition.FullName}: Unexpected constructor argument of type '{arg.Type.FullName}' in OptionAttribute.");
                 }
             }
-            else
-            {
-                name = (string)optionAttribute.ConstructorArguments.Skip(1).First().Value;
-                shortName = (char)optionAttribute.ConstructorArguments.First().Value;
-            }
-
-            Name = name;
-            ShortName = shortName;
         }
 
 
         public static OptionDocumentation FromPropertyDefinition(PropertyDefinition definition, ILogger logger) =>
-            new OptionDocumentation(definition);
+            new OptionDocumentation(definition, logger);
     }
 }
