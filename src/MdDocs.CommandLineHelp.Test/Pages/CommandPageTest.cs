@@ -98,6 +98,60 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
             Approve(model);
         }
 
+        [Fact]
+        public void GetDocument_returns_expected_document_07()
+        {
+            var model = new CommandDocumentation(
+                name: "CommandName",
+                options: new[]
+                {
+                    new OptionDocumentation(
+                        name: "parameter1",
+                        helpText: "Description of parameter 1",
+                        @default: "some String"),
+                    new OptionDocumentation(
+                        name: "parameter2",
+                        helpText: "Description of parameter 2",
+                        @default: 23)                   
+                },
+                values: new[]{
+                    new ValueDocumentation(0),
+                    new ValueDocumentation(1, "Value2")
+                });
+
+            Approve(model);
+        }
+
+        [Fact]
+        public void GetDocument_returns_expected_document_08()
+        {
+            var model = new CommandDocumentation(
+                name: "CommandName",
+                options: new[]
+                {
+                    new OptionDocumentation(
+                        shortName: 'a',
+                        helpText: "Description of parameter 1",
+                        @default: "some String"),
+                    new OptionDocumentation(
+                        shortName: 'b',
+                        helpText: "Description of parameter 2",
+                        @default: 23)
+                },
+                values: new[]{
+                    new ValueDocumentation(0),
+                    new ValueDocumentation(1, "Value2"),
+                    new ValueDocumentation(2, name: "Value3", helpText: "Help text for value 3"),
+                    new ValueDocumentation(3, name: "Value4", hidden: true),
+                });
+
+            Approve(model);
+        }
+
+
+
+        //TODO: values + only short name options
+
         private void Approve(CommandDocumentation model)
         {
             var commandPage = new CommandPage(model);

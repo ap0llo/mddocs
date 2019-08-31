@@ -16,8 +16,17 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
 
         public IReadOnlyList<OptionDocumentation> Options { get; } = Array.Empty<OptionDocumentation>();
 
+        public IReadOnlyList<ValueDocumentation> Values { get; } = Array.Empty<ValueDocumentation>();
 
-        public CommandDocumentation(string name, string helpText = null, bool hidden = false, IEnumerable<OptionDocumentation> options = null)
+        public IReadOnlyList<ParameterDocumentation> Parameters { get; } = Array.Empty<ParameterDocumentation>();
+
+
+        public CommandDocumentation(
+            string name,
+            string helpText = null,
+            bool hidden = false,
+            IEnumerable<OptionDocumentation> options = null,
+            IEnumerable<ValueDocumentation> values = null)
         {
             if (String.IsNullOrEmpty(name))
                 throw new ArgumentException("Value must not be null or empty", nameof(name));
@@ -26,6 +35,8 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
             HelpText = helpText;
             Hidden = hidden;
             Options = options?.ToArray() ?? Array.Empty<OptionDocumentation>();
+            Values = values?.ToArray() ?? Array.Empty<ValueDocumentation>();
+            Parameters = Values.Cast<ParameterDocumentation>().Concat(Options).ToArray();
         }
 
 
@@ -34,33 +45,44 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
             if (definition is null)
                 throw new ArgumentNullException(nameof(definition));
 
-            var verbAttribute = definition.CustomAttributes.Single(x => x.AttributeType.FullName == Constants.VerbAttributeFullName);
+            var verbAttribute = definition.GetAttribute(Constants.VerbAttributeFullName);
 
             var name = (string)verbAttribute.ConstructorArguments.Single().Value;
-            var helpText = (string)verbAttribute.Properties.SingleOrDefault(x => x.Name == "HelpText").Argument.Value;
-            var hidden = (verbAttribute.Properties.SingleOrDefault(x => x.Name == "Hidden").Argument.Value as bool?) ?? false;
+
+            var helpText = verbAttribute.GetPropertyValueOrDefault<string>("HelpText");
+            var hidden = verbAttribute.GetPropertyValueOrDefault<bool>("Hidden");
 
             return new CommandDocumentation(
                 name: name,
                 helpText: helpText,
                 hidden: hidden,
-                options: LoadOptions(definition, logger));
+                options: LoadOptions(definition, logger),
+                values: LoadValues(definition, logger));
         }
 
 
         private static IReadOnlyList<OptionDocumentation> LoadOptions(TypeDefinition definition, ILogger logger)
         {
-            var commands = new List<OptionDocumentation>();
+            var options = new List<OptionDocumentation>();
 
-            foreach (var property in definition.Properties)
+            foreach (var property in definition.Properties.WithAttribute(Constants.OptionAttributeFullName))
             {
-                if (property.CustomAttributes.Any(x => x.AttributeType.FullName == Constants.OptionAttributeFullName))
-                {
-                    commands.Add(OptionDocumentation.FromPropertyDefinition(property, logger));
-                }
+                options.Add(OptionDocumentation.FromPropertyDefinition(property, logger));
             }
 
-            return commands;
+            return options;
+        }
+
+        private static IReadOnlyList<ValueDocumentation> LoadValues(TypeDefinition definition, ILogger logger)
+        {
+            var values = new List<ValueDocumentation>();
+
+            foreach (var property in definition.Properties.WithAttribute(Constants.ValueAttributeFullName))
+            {
+                values.Add(ValueDocumentation.FromPropertyDefinition(property, logger));
+            }
+
+            return values;
         }
     }
 }

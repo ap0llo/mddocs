@@ -1,3 +1,0 @@
-﻿# ApplicationName Command Line Reference
-
-**Version:** 1.2.3\-beta

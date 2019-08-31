@@ -33,7 +33,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
             }
 
             // Parameters
-            if(m_Model.Options.Any(x => !x.Hidden))
+            if(m_Model.Parameters.Any(x => !x.Hidden))
             {
                 document.Root.Add(GetParametersSection());
             }
@@ -50,15 +50,21 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
                 GetParametersTable()
             };
 
+            var sections = Enumerable.Concat(
+                m_Model.Values.Where(x => !x.Hidden).Select(GetParameterSection),
+                m_Model.Options.Where(x => !x.Hidden).Select(GetParameterSection)
+            ).ToArray() ;
+
+
             var first = true;
-            foreach (var option in m_Model.Options.Where(x => !x.Hidden))
+            foreach(var section in sections)
             {
-                if (m_Model.Options.Count > 1 && !first)
+                if (sections.Length > 1 && !first)
                 {
                     block.Add(new MdThematicBreak());
                 }
 
-                block.Add(GetParameterSection(option));
+                block.Add(section);
                 first = false;
             }
 
@@ -69,15 +75,25 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
         {
             var addNameColumn = m_Model.Options.Any(x => !x.Hidden && !String.IsNullOrEmpty(x.Name));
             var addShortNameColumn = m_Model.Options.Any(x => !x.Hidden && x.ShortName != null);
-
+            var addPositionColumn = m_Model.Values.Count > 0;
+            
             var headerRow = new MdTableRow();
+
+            if(addPositionColumn)
+            {
+                headerRow.Add("Position");
+            }
 
             if (addNameColumn)
             {
                 headerRow.Add("Name");
             }
 
-            if (addShortNameColumn)
+            if (addShortNameColumn && !addNameColumn)
+            {
+                headerRow.Add("Name");
+            }
+            else if (addShortNameColumn)
             {
                 headerRow.Add("Short Name");
             }
@@ -86,9 +102,56 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
 
             var table = new MdTable(headerRow);
 
+
+            foreach(var value in m_Model.Values.Where(x => !x.Hidden).OrderBy(x => x.Index))
+            {
+                var row = new MdTableRow();
+
+                row.Add(value.Index.ToString());
+
+                var anchor = "#" + GetHeading(value).Anchor;
+                if (addNameColumn)
+                {
+                    if (String.IsNullOrWhiteSpace(value.Name))
+                    {
+                        row.Add("");
+                    }
+                    else
+                    {
+                        row.Add(new MdLinkSpan(value.Name ?? "", anchor));
+                    }
+                }
+
+                if (addShortNameColumn)
+                {
+                    if(String.IsNullOrEmpty(value.Name))
+                    {
+                        row.Add("");
+                    }
+                    else if(!addNameColumn)
+                    {
+                        row.Add(new MdLinkSpan(value.Name ?? "", anchor));
+                    }
+                    else
+                    {
+                        row.Add("");
+                    }
+                }
+
+                row.Add(value.HelpText ?? "");
+
+                table.Add(row);
+            }
+
+
             foreach(var option in m_Model.Options.Where(x => !x.Hidden))
             {
                 var row = new MdTableRow();
+
+                if(addPositionColumn)
+                {
+                    row.Add("");
+                }
 
                 var anchor = "#" + GetHeading(option).Anchor;
                 if (addNameColumn)
@@ -146,11 +209,48 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
 
             return block;
         }
+      
+        private MdContainerBlock GetParameterSection(ValueDocumentation value)
+        {
+            var block = new MdContainerBlock
+            {
+                GetHeading(value)
+            };
+
+            if (!String.IsNullOrEmpty(value.HelpText))
+            {
+                block.Add(new MdParagraph(value.HelpText));
+            }
+
+            if (value.Default != null)
+            {
+                block.Add(new MdParagraph(
+                    new MdStrongEmphasisSpan("Default value:"),
+                    " ",
+                    new MdCodeSpan(Convert.ToString(value.Default))
+                ));
+            }
+
+            return block;
+        }
 
         private static MdHeading GetHeading(OptionDocumentation option)
         {
             var name = option.Name ?? option.ShortName.ToString();
             return new MdHeading(3, new MdCompositeSpan(new MdCodeSpan(name), " Parameter"));
+        }
+
+        private static MdHeading GetHeading(ValueDocumentation value)
+        {
+            if(!String.IsNullOrEmpty(value.Name))
+            {
+                return new MdHeading(3, new MdCompositeSpan(new MdCodeSpan(value.Name), $" Parameter (Position {value.Index})"));
+            }
+            else
+            {
+                //TODO: Find a better heading
+                return new MdHeading(3, new MdCompositeSpan($"Parameter (Position {value.Index})"));
+            }            
         }
     }
 }

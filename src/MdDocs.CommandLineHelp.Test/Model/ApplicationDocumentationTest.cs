@@ -19,7 +19,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Model
         public void Commands_returns_expected_number_of_commands()
         {
             var sut = LoadDocumentation();
-            Assert.Equal(3, sut.Commands.Count);
+            Assert.Equal(4, sut.Commands.Count);
         }
 
         [Theory]

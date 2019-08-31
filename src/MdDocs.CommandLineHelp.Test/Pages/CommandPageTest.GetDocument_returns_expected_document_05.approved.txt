@@ -2,7 +2,7 @@
 
 ## Parameters
 
-| Short Name        | Description |
+| Name              | Description |
 | ----------------- | ----------- |
 | [x](#x-parameter) |             |
 | [y](#y-parameter) |             |

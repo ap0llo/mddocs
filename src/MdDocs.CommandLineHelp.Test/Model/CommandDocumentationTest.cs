@@ -62,5 +62,14 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Model
             var command = LoadDocumentation(optionsType);
             Assert.Contains(command.Options, o => o.ShortName == shortName);
         }
+
+        [Theory]
+        [InlineData(typeof(Command4Options), 0)]
+        [InlineData(typeof(Command4Options), 1)]        
+        public void Expected_value_exists (Type optionsType, int index)
+        {
+            var command = LoadDocumentation(optionsType);
+            Assert.Contains(command.Values, o => o.Index== index);
+        }
     }
 }

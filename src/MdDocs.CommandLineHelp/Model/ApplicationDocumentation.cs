@@ -50,8 +50,8 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
             if (logger is null)
                 throw new ArgumentNullException(nameof(logger));
 
-            var name = definition.CustomAttributes
-                .SingleOrDefault(a => a.AttributeType.FullName == Constants.AssemblyTitleAttributeFullName)
+            var name = definition
+                .GetAttributeOrDefault(Constants.AssemblyTitleAttributeFullName)                
                 ?.ConstructorArguments?.Single().Value as string;
 
             if(String.IsNullOrEmpty(name))
@@ -59,8 +59,8 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
                 name = definition.Name.Name;
             }
 
-            var version = definition.CustomAttributes
-                .SingleOrDefault(a => a.AttributeType.FullName == Constants.AssemblyInformationalVersionAttribute)
+            var version = definition
+                .GetAttributeOrDefault(Constants.AssemblyInformationalVersionAttribute)                
                 ?.ConstructorArguments.Single().Value as string;
 
 
@@ -78,12 +78,9 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
         {
             var commands = new List<CommandDocumentation>();
 
-            foreach (var type in definition.MainModule.Types)
+            foreach (var type in definition.MainModule.Types.WithAttribute(Constants.VerbAttributeFullName))
             {
-                if (type.CustomAttributes.Any(x => x.AttributeType.FullName == Constants.VerbAttributeFullName))
-                {
-                    commands.Add(CommandDocumentation.FromTypeDefinition(type, logger));
-                }
+                commands.Add(CommandDocumentation.FromTypeDefinition(type, logger));
             }
 
             return commands;
