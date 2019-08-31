@@ -15,15 +15,21 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
         [Fact]
         public void GetDocument_returns_expected_document_01()
         {
-            var model = new ApplicationDocumentation();
-
+            var model = new ApplicationDocumentation(name: "ApplicationName");
             Approve(model);
         }
 
         [Fact]
         public void GetDocument_returns_expected_document_02()
         {
-            var model = new ApplicationDocumentation(new[]
+            var model = new ApplicationDocumentation(name: "ApplicationName", version: "1.2.3-beta");
+            Approve(model);
+        }
+
+        [Fact]
+        public void GetDocument_returns_expected_document_03()
+        {
+            var model = new ApplicationDocumentation(name: "ApplicationName", commands: new[]
             {
                 new CommandDocumentation(name: "command1", helpText: "Documentation for command 1"),
                 new CommandDocumentation(name: "command2")

@@ -9,11 +9,20 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
 {
     public sealed class ApplicationDocumentation
     {
+        public string Name { get; }
+
+        public string Version { get; }
+
         public IReadOnlyList<CommandDocumentation> Commands { get; }
 
 
-        public ApplicationDocumentation(IEnumerable<CommandDocumentation> commands = null)
+        public ApplicationDocumentation(string name, string version = null, IEnumerable<CommandDocumentation> commands = null)
         {
+            if (String.IsNullOrWhiteSpace(name))
+                throw new ArgumentException("Value must not be null or whitespace", nameof(name));
+
+            Name = name;
+            Version = version;
             Commands = commands?.ToArray() ?? Array.Empty<CommandDocumentation>();
         }
         
@@ -41,8 +50,27 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
             if (logger is null)
                 throw new ArgumentNullException(nameof(logger));
 
+            var name = definition.CustomAttributes
+                .SingleOrDefault(a => a.AttributeType.FullName == Constants.AssemblyTitleAttributeFullName)
+                ?.ConstructorArguments?.Single().Value as string;
+
+            if(String.IsNullOrEmpty(name))
+            {
+                name = definition.Name.Name;
+            }
+
+            var version = definition.CustomAttributes
+                .SingleOrDefault(a => a.AttributeType.FullName == Constants.AssemblyInformationalVersionAttribute)
+                ?.ConstructorArguments.Single().Value as string;
+
+
+            if(String.IsNullOrEmpty(version))
+            {
+                version = definition.Name.Version.ToString();
+            }
+
             var commands = LoadCommands(definition, logger);
-            return new ApplicationDocumentation(commands);
+            return new ApplicationDocumentation(name: name, version: version, commands: commands);
         }
 
 

@@ -25,6 +25,17 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
         {
             var document = new MdDocument();
 
+            document.Root.Add(new MdHeading(1, $"{m_Model.Name} Command Line Reference"));
+
+            if(!String.IsNullOrEmpty(m_Model.Version))
+            {
+                document.Root.Add(
+                    new MdParagraph(
+                        new MdStrongEmphasisSpan("Version:"),
+                        " ",
+                        m_Model.Version));
+            }
+
             if (m_Model.Commands.Count > 0)
             {
                 document.Root.Add(new MdHeading(2, "Commands"));

@@ -1,0 +1,8 @@
+﻿# ApplicationName Command Line Reference
+
+## Commands
+
+| Name                             | Description                 |
+| -------------------------------- | --------------------------- |
+| [command1](commands/command1.md) | Documentation for command 1 |
+| [command2](commands/command2.md) |                             |
