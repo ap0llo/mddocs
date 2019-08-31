@@ -5,9 +5,10 @@ using Grynwald.MdDocs.CommandLineHelp.Model;
 
 namespace Grynwald.MdDocs.CommandLineHelp.Pages
 {
-    internal class CommandPage
+    public class CommandPage : IDocument
     {
         private readonly CommandDocumentation m_Model;
+
 
         public CommandPage(CommandDocumentation model)
         {
@@ -15,7 +16,10 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
         }
 
 
-        public MdDocument GetDocument()
+        public void Save(string path) => GetDocument().Save(path);
+
+
+        internal MdDocument GetDocument()
         {
             var document = new MdDocument();
 

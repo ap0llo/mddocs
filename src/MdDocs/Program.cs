@@ -74,7 +74,7 @@ namespace Grynwald.MdDocs
 
             var model = ApplicationDocumentation.FromAssemblyFile(opts.AssemblyPath, logger);
 
-            var pageFactory = new CommandLinePageFactory(model, logger);
+            var pageFactory = new CommandLinePageFactory(model, new DefaultPathProvider(), logger);
             var documentSet = pageFactory.GetPages();
 
             documentSet.Save(opts.OutputDirectory, cleanOutputDirectory: true);
