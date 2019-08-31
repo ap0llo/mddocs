@@ -1,0 +1,24 @@
+﻿# `Command2` Command
+
+## Parameters
+
+| Name                                | Short Name                 | Description |
+| ----------------------------------- | -------------------------- | ----------- |
+| [parameter1](#parameter1-parameter) |                            |             |
+| [parameter2](#parameter2-parameter) |                            |             |
+| [parameter3](#parameter3-parameter) | [x](#parameter3-parameter) |             |
+|                                     | [y](#y-parameter)          |             |
+
+### `parameter1` Parameter
+
+___
+
+### `parameter2` Parameter
+
+___
+
+### `parameter3` Parameter
+
+___
+
+### `y` Parameter

@@ -7,27 +7,16 @@ using Mono.Cecil;
 
 namespace Grynwald.MdDocs.CommandLineHelp.Model
 {
-    public sealed class ApplicationDocumentation : IDisposable
+    public sealed class ApplicationDocumentation
     {
-        private readonly AssemblyDefinition m_AssemblyDefinition;
-        private readonly ILogger m_Logger;
-
-
         public IReadOnlyList<CommandDocumentation> Commands { get; }
 
 
-        private ApplicationDocumentation(AssemblyDefinition assemblyDefinition, ILogger logger)
+        public ApplicationDocumentation(IEnumerable<CommandDocumentation> commands = null)
         {
-            m_AssemblyDefinition = assemblyDefinition ?? throw new ArgumentNullException(nameof(assemblyDefinition));
-            m_Logger = logger ?? throw new ArgumentNullException(nameof(logger));
-
-
-            Commands = LoadCommands();
+            Commands = commands?.ToArray() ?? Array.Empty<CommandDocumentation>();
         }
-
-
-        public void Dispose() => m_AssemblyDefinition.Dispose();
-
+        
 
         public static ApplicationDocumentation FromAssemblyFile(string filePath, ILogger logger)
         {
@@ -41,20 +30,31 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
             logger.LogInformation($"Loading assembly from '{filePath}'");
             var assemblyDefinition = AssemblyDefinition.ReadAssembly(filePath, new ReaderParameters() { AssemblyResolver = assemblyResolver });
 
-            return new ApplicationDocumentation(assemblyDefinition, logger);
+            using(assemblyDefinition)
+            {
+                return FromAssemblyDefinition(assemblyDefinition, logger);
+            }
+        }
 
+        public static ApplicationDocumentation FromAssemblyDefinition(AssemblyDefinition definition, ILogger logger)
+        {
+            if (logger is null)
+                throw new ArgumentNullException(nameof(logger));
+
+            var commands = LoadCommands(definition, logger);
+            return new ApplicationDocumentation(commands);
         }
 
 
-        private IReadOnlyList<CommandDocumentation> LoadCommands()
+        private static IReadOnlyList<CommandDocumentation> LoadCommands(AssemblyDefinition definition, ILogger logger)
         {
             var commands = new List<CommandDocumentation>();
 
-            foreach (var type in m_AssemblyDefinition.MainModule.Types)
+            foreach (var type in definition.MainModule.Types)
             {
                 if (type.CustomAttributes.Any(x => x.AttributeType.FullName == Constants.VerbAttributeFullName))
                 {
-                    commands.Add(new CommandDocumentation(type));
+                    commands.Add(CommandDocumentation.FromTypeDefinition(type, logger));
                 }
             }
 

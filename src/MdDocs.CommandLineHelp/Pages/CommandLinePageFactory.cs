@@ -24,8 +24,8 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
 
             foreach (var command in m_Model.Commands)
             {
-                var doc = CommandPage.GetDocument(command);
-                documentSet.Add($"commands/{command.Name}.md", doc);
+                var page = new CommandPage(command);
+                documentSet.Add($"commands/{command.Name}.md", page.GetDocument());
             }
 
             return documentSet;

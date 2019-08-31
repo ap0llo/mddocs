@@ -1,0 +1,14 @@
+﻿# `Command2` Command
+
+## Parameters
+
+| Short Name        | Description |
+| ----------------- | ----------- |
+| [x](#x-parameter) |             |
+| [y](#y-parameter) |             |
+
+### `x` Parameter
+
+___
+
+### `y` Parameter

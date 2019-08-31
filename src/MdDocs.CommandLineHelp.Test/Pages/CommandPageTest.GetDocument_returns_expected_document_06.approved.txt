@@ -1,0 +1,22 @@
+﻿# `Command2` Command
+
+## Parameters
+
+| Name                                | Description                |
+| ----------------------------------- | -------------------------- |
+| [parameter1](#parameter1-parameter) | Description of parameter 1 |
+| [parameter2](#parameter2-parameter) | Description of parameter 2 |
+
+### `parameter1` Parameter
+
+Description of parameter 1
+
+**Default value:** `some String`
+
+___
+
+### `parameter2` Parameter
+
+Description of parameter 2
+
+**Default value:** `23`
