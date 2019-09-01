@@ -15,3 +15,10 @@ test Command2 [--parameter1 <VALUE>]
 ### `parameter1` Parameter
 
 Help text for parameter 1
+
+|                |                   |
+| -------------- | ----------------- |
+| Name:          | parameter1        |
+| Position:      | *Named parameter* |
+| Required:      | No                |
+| Default value: | *None*            |

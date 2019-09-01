@@ -20,14 +20,40 @@ test Command2 --parameter1 <VALUE>
 
 ### `parameter1` Parameter
 
+|                |                   |
+| -------------- | ----------------- |
+| Name:          | parameter1        |
+| Position:      | *Named parameter* |
+| Required:      | Yes               |
+| Default value: | *None*            |
 ___
 
 ### `parameter2` Parameter
 
+|                |                   |
+| -------------- | ----------------- |
+| Name:          | parameter2        |
+| Position:      | *Named parameter* |
+| Required:      | No                |
+| Default value: | *None*            |
 ___
 
 ### `parameter3` Parameter
 
+|                |                   |
+| -------------- | ----------------- |
+| Name:          | parameter3        |
+| Short name:    | x                 |
+| Position:      | *Named parameter* |
+| Required:      | No                |
+| Default value: | *None*            |
 ___
 
 ### `y` Parameter
+
+|                |                   |
+| -------------- | ----------------- |
+| Name:          | y                 |
+| Position:      | *Named parameter* |
+| Required:      | No                |
+| Default value: | *None*            |

@@ -16,6 +16,19 @@ test Command2 [-x <VALUE>]
 
 ### `x` Parameter
 
+|                |                   |
+| -------------- | ----------------- |
+| Name:          | x                 |
+| Position:      | *Named parameter* |
+| Required:      | No                |
+| Default value: | *None*            |
 ___
 
 ### `y` Parameter
+
+|                |                   |
+| -------------- | ----------------- |
+| Name:          | y                 |
+| Position:      | *Named parameter* |
+| Required:      | No                |
+| Default value: | *None*            |

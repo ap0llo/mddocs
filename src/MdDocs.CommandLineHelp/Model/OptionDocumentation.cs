@@ -1,13 +1,19 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using System;
+using Microsoft.Extensions.Logging;
 using Mono.Cecil;
 
 namespace Grynwald.MdDocs.CommandLineHelp.Model
 {
     public sealed class OptionDocumentation : ParameterDocumentation
     {
-        public string Name { get; }
+        public override string Name { get; }
 
         public char? ShortName { get; }
+
+
+        public override bool HasName => !String.IsNullOrEmpty(Name);
+
+        public override bool HasShortName => ShortName != null;
 
 
         public OptionDocumentation(string name = null, char? shortName = null, bool required = false, string helpText = null, bool hidden = false, object @default = null, string metaValue = null)

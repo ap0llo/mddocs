@@ -1,4 +1,5 @@
-﻿using Mono.Cecil;
+﻿using System;
+using Mono.Cecil;
 
 namespace Grynwald.MdDocs.CommandLineHelp.Model
 {
@@ -14,6 +15,17 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
         public object Default { get; }
 
         public string MetaValue { get; }
+
+        public bool HasDefault => Default != null;
+
+        public bool HasMetaValue => !String.IsNullOrEmpty(MetaValue);
+
+        public abstract string Name { get; }
+
+        public abstract bool HasName  { get; }
+
+        public abstract bool HasShortName { get; }
+
 
 
         public ParameterDocumentation(bool required, string helpText, bool hidden, object @default, string metaValue)

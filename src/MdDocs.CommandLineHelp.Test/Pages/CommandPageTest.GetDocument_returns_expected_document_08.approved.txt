@@ -22,28 +22,54 @@ test CommandName [<VALUE>]
 
 ### Parameter (Position 0)
 
+|                |        |
+| -------------- | ------ |
+| Position:      | 0      |
+| Required:      | No     |
+| Default value: | *None* |
 ___
 
 ### `Value2` Parameter (Position 1)
 
+|                |        |
+| -------------- | ------ |
+| *Name:*        | Value2 |
+| Position:      | 1      |
+| Required:      | Yes    |
+| Default value: | *None* |
 ___
 
 ### `Value3` Parameter (Position 2)
 
 Help text for value 3
 
+|                |        |
+| -------------- | ------ |
+| *Name:*        | Value3 |
+| Position:      | 2      |
+| Required:      | No     |
+| Default value: | *None* |
 ___
 
 ### `a` Parameter
 
 Description of parameter 1
 
-**Default value:** `some String`
-
+|                |                   |
+| -------------- | ----------------- |
+| Name:          | a                 |
+| Position:      | *Named parameter* |
+| Required:      | No                |
+| Default value: | some String       |
 ___
 
 ### `b` Parameter
 
 Description of parameter 2
 
-**Default value:** `23`
+|                |                   |
+| -------------- | ----------------- |
+| Name:          | b                 |
+| Position:      | *Named parameter* |
+| Required:      | No                |
+| Default value: | 23                |

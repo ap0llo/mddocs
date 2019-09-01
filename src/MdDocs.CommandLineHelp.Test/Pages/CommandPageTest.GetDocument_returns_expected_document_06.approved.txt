@@ -18,12 +18,21 @@ test Command2 [--parameter1 <VALUE>]
 
 Description of parameter 1
 
-**Default value:** `some String`
-
+|                |                   |
+| -------------- | ----------------- |
+| Name:          | parameter1        |
+| Position:      | *Named parameter* |
+| Required:      | No                |
+| Default value: | some String       |
 ___
 
 ### `parameter2` Parameter
 
 Description of parameter 2
 
-**Default value:** `23`
+|                |                   |
+| -------------- | ----------------- |
+| Name:          | parameter2        |
+| Position:      | *Named parameter* |
+| Required:      | No                |
+| Default value: | 23                |

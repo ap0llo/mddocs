@@ -36,16 +36,40 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
             return new MdContainerBlock()
               .AddIf(true, Heading)
               .AddIf(!String.IsNullOrEmpty(m_Value.HelpText), () => new MdParagraph(m_Value.HelpText))
-              .AddIf(m_Value.Default != null, () => GetDefaultValueParagraph());
+              .AddIf(true, GetDetailsTable());
         }
 
-        private MdParagraph GetDefaultValueParagraph()
+        
+        private MdTable GetDetailsTable()
         {
-            return new MdParagraph(
-                new MdStrongEmphasisSpan("Default value:"),
-                " ",
-                new MdCodeSpan(Convert.ToString(m_Value.Default))
-            );
+            // TODO: Type
+
+            var table = new MdTable(new MdTableRow("", ""));
+
+            if (m_Value.HasName)
+            {
+                table.Add(new MdTableRow(new MdEmphasisSpan("Name:"), m_Value.Name));
+            }
+          
+            table.Add(new MdTableRow("Position:", m_Value.Index.ToString()));
+
+            table.Add(new MdTableRow("Required:", m_Value.Required ? "Yes" : "No"));
+
+            //TODO: Add allowed values for enum types
+            if (m_Value.HasMetaValue)
+            {
+                table.Add(new MdTableRow("Value:", m_Value.MetaValue));
+            }
+
+            if (m_Value.HasDefault)
+            {
+                table.Add(new MdTableRow("Default value:", Convert.ToString(m_Value.Default)));
+            }
+            else
+            {
+                table.Add(new MdTableRow("Default value:", new MdEmphasisSpan("None")));
+            }
+            return table;
         }
     }
 }

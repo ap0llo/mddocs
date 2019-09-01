@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Microsoft.Extensions.Logging;
 using Mono.Cecil;
 
@@ -8,7 +9,12 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
     {
         public int Index { get; }
 
-        public string Name { get; }
+        public override string Name { get; }
+
+        public override bool HasName => !String.IsNullOrEmpty(Name);
+
+        public override bool HasShortName => false;
+
 
 
         public ValueDocumentation(int index, bool required = false, string name = null, string helpText = null, bool hidden = false, object @default = null, string metaValue = null)
