@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Grynwald.MarkdownGenerator;
 using Grynwald.MdDocs.CommandLineHelp.Model;
 
@@ -55,13 +56,16 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
             table.Add(new MdTableRow("Position:", new MdEmphasisSpan("Named parameter")));
 
             table.Add(new MdTableRow("Required:", m_Option.Required ? "Yes" : "No"));
-
-            //TODO: Add allowed values for enum types
+            
             if(m_Option.HasMetaValue)
             {
                 table.Add(new MdTableRow("Value:", m_Option.MetaValue));
             }
 
+            if(m_Option.HasAcceptedValues)
+            {
+                table.Add(new MdTableRow("Accepted values:", m_Option.AcceptedValues.Select(x => new MdCodeSpan(x)).Join(", ")));
+            }
 
             if (m_Option.HasDefault)
             {

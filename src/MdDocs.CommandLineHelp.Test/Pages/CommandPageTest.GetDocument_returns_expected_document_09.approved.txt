@@ -1,0 +1,38 @@
+﻿# `CommandName` Command
+
+## Usage
+
+```
+test CommandName [<PositionalParameter1>]
+                 [--paramter1 <VALUE>]
+```
+
+## Parameters
+
+| Position | Name                                                                 | Description                |
+| -------- | -------------------------------------------------------------------- | -------------------------- |
+| 0        | [*PositionalParameter1*](#positionalparameter1-parameter-position-0) |                            |
+|          | [paramter1](#paramter1-parameter)                                    | Description of parameter 1 |
+
+### `PositionalParameter1` Parameter (Position 0)
+
+|                  |                      |
+| ---------------- | -------------------- |
+| *Name:*          | PositionalParameter1 |
+| Position:        | 0                    |
+| Required:        | No                   |
+| Accepted values: | `Value1`, `Value2`   |
+| Default value:   | *None*               |
+___
+
+### `paramter1` Parameter
+
+Description of parameter 1
+
+|                  |                           |
+| ---------------- | ------------------------- |
+| Name:            | paramter1                 |
+| Position:        | *Named parameter*         |
+| Required:        | No                        |
+| Accepted values: | `Value1`, `Another Value` |
+| Default value:   | some String               |

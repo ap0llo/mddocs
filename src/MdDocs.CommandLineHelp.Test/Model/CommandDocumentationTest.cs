@@ -30,7 +30,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Model
             var sut = LoadDocumentation(typeof(Command3Options));
 
             // Options does not return hidden items
-            Assert.Equal(3, sut.Options.Count);
+            Assert.Equal(4, sut.Options.Count);
         }
 
         [Theory]

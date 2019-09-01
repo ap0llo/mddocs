@@ -44,5 +44,20 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Model
             Assert.Equal(helpText, sut.HelpText);
             Assert.Equal(defaultValue, sut.Default);
         }
+
+
+        [Fact]
+        public void AcceptedValues_is_loaded_correctly_for_enum_types()
+        {
+            var sut = LoadDocumentation(nameof(Command3Options.Option5Property));
+
+            Assert.NotNull(sut.AcceptedValues);
+            Assert.Equal(3, sut.AcceptedValues.Count);
+
+            foreach (var value in Enum.GetValues(typeof(SomeEnum)).Cast<SomeEnum>().Select(x => x.ToString()))
+            {
+                Assert.Contains(value, sut.AcceptedValues);
+            }
+        }
     }
 }

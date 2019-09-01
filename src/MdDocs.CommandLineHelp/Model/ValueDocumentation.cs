@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Logging;
 using Mono.Cecil;
@@ -17,14 +18,16 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
 
 
 
-        public ValueDocumentation(int index, bool required = false, string name = null, string helpText = null, bool hidden = false, object @default = null, string metaValue = null)
-            : base(required: required, helpText: helpText, hidden: hidden, @default: @default, metaValue: metaValue)
+        public ValueDocumentation(
+            int index, bool required = false, string name = null, string helpText = null, bool hidden = false,
+            object @default = null, string metaValue = null, IReadOnlyList<string> acceptedValues = null)
+            : base(required: required, helpText: helpText, hidden: hidden, @default: @default, metaValue: metaValue, acceptedValues: acceptedValues)
         {
             Index = index;
             Name = name;
         }
 
-        private ValueDocumentation(PropertyDefinition property) : base(property.GetAttribute(Constants.ValueAttributeFullName))
+        private ValueDocumentation(PropertyDefinition property) : base(property, property.GetAttribute(Constants.ValueAttributeFullName))
         {
             var valueAttribute = property.GetAttribute(Constants.ValueAttributeFullName);
 

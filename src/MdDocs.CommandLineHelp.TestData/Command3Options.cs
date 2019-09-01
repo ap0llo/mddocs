@@ -2,6 +2,13 @@
 
 namespace Grynwald.MdDocs.CommandLineHelp.TestData
 {
+    public enum SomeEnum
+    {
+        Value1,
+        Value2,
+        SomeOtherValue
+    }
+
     [Verb("command3")]
     public class Command3Options
     {
@@ -16,5 +23,8 @@ namespace Grynwald.MdDocs.CommandLineHelp.TestData
 
         [Option("option4", HelpText = "Option 4 Help text", Hidden = true, Default = "DefaultValue")]
         public string Option4Property { get; set; }
+
+        [Option("option5")]
+        public SomeEnum Option5Property { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
 using Mono.Cecil;
 
@@ -16,16 +17,18 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
         public override bool HasShortName => ShortName != null;
 
 
-        public OptionDocumentation(string name = null, char? shortName = null, bool required = false, string helpText = null, bool hidden = false, object @default = null, string metaValue = null)
-            : base(required: required, helpText: helpText, hidden: hidden, @default: @default, metaValue: metaValue)
+        public OptionDocumentation(
+            string name = null, char? shortName = null, bool required = false, string helpText = null,
+            bool hidden = false, object @default = null, string metaValue = null, IReadOnlyList<string> acceptedValues = null)
+            : base(required: required, helpText: helpText, hidden: hidden, @default: @default, metaValue: metaValue, acceptedValues: acceptedValues)
         {
             Name = name;
             ShortName = shortName;
         }
 
-        private OptionDocumentation(PropertyDefinition definition, ILogger logger) : base(definition.GetAttribute(Constants.OptionAttributeFullName))
+        private OptionDocumentation(PropertyDefinition property, ILogger logger) : base(property, property.GetAttribute(Constants.OptionAttributeFullName))
         {
-            foreach (var arg in definition.GetAttribute(Constants.OptionAttributeFullName).ConstructorArguments)
+            foreach (var arg in property.GetAttribute(Constants.OptionAttributeFullName).ConstructorArguments)
             {
                 if (arg.Type.FullName == typeof(string).FullName)
                 {
@@ -37,7 +40,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
                 }
                 else
                 {
-                    logger.LogWarning($"{definition.FullName}: Unexpected constructor argument of type '{arg.Type.FullName}' in OptionAttribute.");
+                    logger.LogWarning($"{property.FullName}: Unexpected constructor argument of type '{arg.Type.FullName}' in OptionAttribute.");
                 }
             }
         }

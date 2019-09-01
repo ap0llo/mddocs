@@ -158,6 +158,27 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
         }
 
 
+        [Fact]
+        public void GetDocument_returns_expected_document_09()
+        {
+            var model = new CommandDocumentation(
+                application: new ApplicationDocumentation("test"),
+                name: "CommandName",
+                options: new[]
+                {
+                    new OptionDocumentation(
+                        name: "paramter1",
+                        helpText: "Description of parameter 1",
+                        @default: "some String",
+                        acceptedValues: new[] { "Value1", "Another Value"})
+                },
+                values: new[]{
+                    new ValueDocumentation(0, name: "PositionalParameter1", acceptedValues: new[] { "Value1", "Value2"})
+                });
+
+            Approve(model);
+        }
+
 
         //TODO: values + only short name options
 
