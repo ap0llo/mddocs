@@ -38,8 +38,8 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
             Name = name;
             HelpText = helpText;
             Hidden = hidden;
-            Options = options?.ToArray() ?? Array.Empty<OptionDocumentation>();
-            Values = values?.ToArray() ?? Array.Empty<ValueDocumentation>();
+            Options = options?.Where(x => !x.Hidden)?.ToArray() ?? Array.Empty<OptionDocumentation>();
+            Values = values?.Where(x => !x.Hidden)?.ToArray() ?? Array.Empty<ValueDocumentation>();
             Parameters = Values.Cast<ParameterDocumentation>().Concat(Options).ToArray();
         }
 
@@ -74,6 +74,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
             return definition.Properties
                 .WithAttribute(Constants.OptionAttributeFullName)
                 .Select(property => OptionDocumentation.FromPropertyDefinition(property, logger))
+                .Where(option => !option.Hidden)
                 .ToArray();
         }
 
@@ -82,6 +83,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
             return definition.Properties
                 .WithAttribute(Constants.ValueAttributeFullName)
                 .Select(property => ValueDocumentation.FromPropertyDefinition(property, logger))
+                .Where(value => !value.Hidden)
                 .ToArray();
         }
     }

@@ -10,6 +10,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
         private readonly DocumentSet<IDocument> m_DocumentSet;
         private readonly IPathProvider m_PathProvider;
 
+
         public ApplicationPage(DocumentSet<IDocument> documentSet, IPathProvider pathProvider, ApplicationDocumentation model)
         {
             m_DocumentSet = documentSet ?? throw new ArgumentNullException(nameof(documentSet));

@@ -19,36 +19,21 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
         public ApplicationDocumentation(string name, string version = null, IEnumerable<CommandDocumentation> commands = null)
         {
             if (String.IsNullOrWhiteSpace(name))
+            {
                 throw new ArgumentException("Value must not be null or whitespace", nameof(name));
+            }
 
             Name = name;
             Version = version;
             Commands = commands?.ToArray() ?? Array.Empty<CommandDocumentation>();
         }
-        
 
-        public static ApplicationDocumentation FromAssemblyFile(string filePath, ILogger logger)
-        {
-            // TODO: Share this code with AssemblyDocumentation as far as possible
-            var dir = Path.GetDirectoryName(filePath);
-
-            var assemblyResolver = new DefaultAssemblyResolver();
-            assemblyResolver.AddSearchDirectory(dir);
-
-            // load assembly
-            logger.LogInformation($"Loading assembly from '{filePath}'");
-            var assemblyDefinition = AssemblyDefinition.ReadAssembly(filePath, new ReaderParameters() { AssemblyResolver = assemblyResolver });
-
-            using(assemblyDefinition)
-            {
-                return FromAssemblyDefinition(assemblyDefinition, logger);
-            }
-        }
-
-        private ApplicationDocumentation (AssemblyDefinition definition, ILogger logger)
+        private ApplicationDocumentation(AssemblyDefinition definition, ILogger logger)
         {
             if (logger is null)
+            {
                 throw new ArgumentNullException(nameof(logger));
+            }
 
             Name = definition
                 .GetAttributeOrDefault(Constants.AssemblyTitleAttributeFullName)
@@ -72,8 +57,27 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
         }
 
 
+        public static ApplicationDocumentation FromAssemblyFile(string filePath, ILogger logger)
+        {
+            // TODO: Share this code with AssemblyDocumentation as far as possible
+            var dir = Path.GetDirectoryName(filePath);
+
+            var assemblyResolver = new DefaultAssemblyResolver();
+            assemblyResolver.AddSearchDirectory(dir);
+
+            // load assembly
+            logger.LogInformation($"Loading assembly from '{filePath}'");
+            var assemblyDefinition = AssemblyDefinition.ReadAssembly(filePath, new ReaderParameters() { AssemblyResolver = assemblyResolver });
+
+            using (assemblyDefinition)
+            {
+                return FromAssemblyDefinition(assemblyDefinition, logger);
+            }
+        }
+
         public static ApplicationDocumentation FromAssemblyDefinition(AssemblyDefinition definition, ILogger logger) =>
             new ApplicationDocumentation(definition, logger);
+
 
         private IReadOnlyList<CommandDocumentation> LoadCommands(AssemblyDefinition definition, ILogger logger)
         {

@@ -2,7 +2,7 @@
 
 namespace Grynwald.MdDocs.CommandLineHelp.Model
 {
-    //TODO: MetaValue, Min, Max
+    //TODO: Min, Max
     public abstract class ParameterDocumentation
     {
         public bool Required { get; }
@@ -15,6 +15,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
 
         public string MetaValue { get; }
 
+
         public ParameterDocumentation(bool required, string helpText, bool hidden, object @default, string metaValue)
         {
             Required = required;
@@ -23,6 +24,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
             Default = @default;
             MetaValue = metaValue;
         }
+
 
         protected ParameterDocumentation(CustomAttribute attribute)
         {

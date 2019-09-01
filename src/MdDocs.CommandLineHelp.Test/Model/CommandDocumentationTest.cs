@@ -28,7 +28,9 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Model
         public void Options_returns_expected_number_of_items()
         {
             var sut = LoadDocumentation(typeof(Command3Options));
-            Assert.Equal(4, sut.Options.Count);
+
+            // Options does not return hidden items
+            Assert.Equal(3, sut.Options.Count);
         }
 
         [Theory]
@@ -47,12 +49,20 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Model
         [Theory]
         [InlineData(typeof(Command3Options), "option1")]
         [InlineData(typeof(Command3Options), "option3")]
-        [InlineData(typeof(Command3Options), "option4")]
         public void Expected_option_name_exists(Type optionsType, string optionName)
         {
             var command = LoadDocumentation(optionsType);
             Assert.Contains(command.Options, o => o.Name == optionName);
         }
+
+        [Theory]
+        [InlineData(typeof(Command3Options), "option4")]
+        public void Hiiden_options_are_ignored(Type optionsType, string optionName)
+        {
+            var command = LoadDocumentation(optionsType);
+            Assert.DoesNotContain(command.Options, o => o.Name == optionName);
+        }
+
 
         [Theory]
         [InlineData(typeof(Command3Options), 'x')]

@@ -18,7 +18,6 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
             Name = name;
         }
 
-
         private ValueDocumentation(PropertyDefinition property) : base(property.GetAttribute(Constants.ValueAttributeFullName))
         {
             var valueAttribute = property.GetAttribute(Constants.ValueAttributeFullName);
@@ -26,6 +25,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
             Index = (int)valueAttribute.ConstructorArguments.Single().Value;
             Name = valueAttribute.GetPropertyValueOrDefault<string>("MetaName");
         }
+
 
         public static ValueDocumentation FromPropertyDefinition(PropertyDefinition property, ILogger logger) =>
             new ValueDocumentation(property);
