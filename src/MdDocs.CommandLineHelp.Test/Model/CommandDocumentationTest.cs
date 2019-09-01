@@ -20,7 +20,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Model
 
             var typeDefinition = assemblyDefinition.MainModule.Types.Single(t => t.FullName == optionsType.FullName);
 
-            return CommandDocumentation.FromTypeDefinition(typeDefinition, NullLogger.Instance);
+            return CommandDocumentation.FromTypeDefinition(new ApplicationDocumentation("test"), typeDefinition, NullLogger.Instance);
         }
 
 

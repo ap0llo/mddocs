@@ -10,8 +10,8 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
         public char? ShortName { get; }
 
 
-        public OptionDocumentation(string name = null, char? shortName = null, string helpText = null, bool hidden = false, object @default = null)
-            : base(helpText: helpText, hidden: hidden, @default: @default)
+        public OptionDocumentation(string name = null, char? shortName = null, bool required = false, string helpText = null, bool hidden = false, object @default = null, string metaValue = null)
+            : base(required: required, helpText: helpText, hidden: hidden, @default: @default, metaValue: metaValue)
         {
             Name = name;
             ShortName = shortName;

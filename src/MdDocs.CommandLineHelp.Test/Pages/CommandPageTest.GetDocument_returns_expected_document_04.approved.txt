@@ -1,5 +1,14 @@
 ﻿# `Command2` Command
 
+## Usage
+
+```
+test Command2 --parameter1 <VALUE>
+              [--parameter2 <VALUE>]
+              [--parameter3|-x <VALUE>]
+              [-y <VALUE>]
+```
+
 ## Parameters
 
 | Name                                | Short Name                 | Description |

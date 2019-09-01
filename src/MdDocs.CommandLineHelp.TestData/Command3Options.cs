@@ -11,7 +11,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.TestData
         [Option('x')]
         public string Option2Property { get; set; }
 
-        [Option('y', "option3")]
+        [Option('y', "option3", Required = true)]
         public string Option3Property { get; set; }
 
         [Option("option4", HelpText = "Option 4 Help text", Hidden = true, Default = "DefaultValue")]

@@ -27,17 +27,18 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Model
         }
 
         [Theory]
-        [InlineData(nameof(Command4Options.Value1), 0, null, null, false, null)]
-        [InlineData(nameof(Command4Options.Value2), 1, "Value2 name", null, false, null)]
-        [InlineData(nameof(Command4Options.Value3), 2, null, "Value 3 Help text", false, null)]
-        [InlineData(nameof(Command4Options.Value4), 3,null, null, true, null)]
-        [InlineData(nameof(Command4Options.Value5), 4,null, null, false, "Value 5 Default")]
-        public void Value_has_the_expected_properties(string propertyName, int index, string name, string helpText, bool hidden, object defaultValue)
+        [InlineData(nameof(Command4Options.Value1), 0, false, null, null, false, null)]
+        [InlineData(nameof(Command4Options.Value2), 1, false, "Value2 name", null, false, null)]
+        [InlineData(nameof(Command4Options.Value3), 2, false, null, "Value 3 Help text", false, null)]
+        [InlineData(nameof(Command4Options.Value4), 3, true,null, null, true, null)]
+        [InlineData(nameof(Command4Options.Value5), 4, false,null, null, false, "Value 5 Default")]
+        public void Value_has_the_expected_properties(string propertyName, int index, bool required, string name, string helpText, bool hidden, object defaultValue)
         {
             var sut = LoadDocumentation(propertyName);
 
             Assert.Equal(index, sut.Index);
             Assert.Equal(name, sut.Name);
+            Assert.Equal(required, sut.Required);
             Assert.Equal(helpText, sut.HelpText);
             Assert.Equal(hidden, sut.Hidden);
             Assert.Equal(defaultValue, sut.Default);

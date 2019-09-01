@@ -1,19 +1,34 @@
 ﻿# `CommandName` Command
 
+## Usage
+
+```
+test CommandName [<VALUE>]
+                 [<VALUE:INTEGER>]
+                 [<Value3:STRING>]
+                 [--parameter1 <VALUE>]
+                 [--parameter2 <URI>]
+```
+
 ## Parameters
 
-| Position | Name                                   | Description                |
-| -------- | -------------------------------------- | -------------------------- |
-| 0        |                                        |                            |
-| 1        | [Value2](#value2-parameter-position-1) |                            |
-|          | [parameter1](#parameter1-parameter)    | Description of parameter 1 |
-|          | [parameter2](#parameter2-parameter)    | Description of parameter 2 |
+| Position | Name                                     | Description                |
+| -------- | ---------------------------------------- | -------------------------- |
+| 0        |                                          |                            |
+| 1        |                                          |                            |
+| 2        | [*Value3*](#value3-parameter-position-2) |                            |
+|          | [parameter1](#parameter1-parameter)      | Description of parameter 1 |
+|          | [parameter2](#parameter2-parameter)      | Description of parameter 2 |
 
 ### Parameter (Position 0)
 
 ___
 
-### `Value2` Parameter (Position 1)
+### Parameter (Position 1)
+
+___
+
+### `Value3` Parameter (Position 2)
 
 ___
 

@@ -8,6 +8,8 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
 {
     public sealed class CommandDocumentation
     {
+        public ApplicationDocumentation Application { get; }
+
         public string Name { get; }
 
         public string HelpText { get; }
@@ -22,6 +24,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
 
 
         public CommandDocumentation(
+            ApplicationDocumentation application,
             string name,
             string helpText = null,
             bool hidden = false,
@@ -31,6 +34,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
             if (String.IsNullOrEmpty(name))
                 throw new ArgumentException("Value must not be null or empty", nameof(name));
 
+            Application = application ?? throw new ArgumentNullException(nameof(application));
             Name = name;
             HelpText = helpText;
             Hidden = hidden;
@@ -40,8 +44,11 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
         }
 
 
-        public static CommandDocumentation FromTypeDefinition(TypeDefinition definition, ILogger logger)
+        public static CommandDocumentation FromTypeDefinition(ApplicationDocumentation application, TypeDefinition definition, ILogger logger)
         {
+            if (application is null)
+                throw new ArgumentNullException(nameof(application));
+
             if (definition is null)
                 throw new ArgumentNullException(nameof(definition));
 
@@ -53,6 +60,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
             var hidden = verbAttribute.GetPropertyValueOrDefault<bool>("Hidden");
 
             return new CommandDocumentation(
+                application: application,
                 name: name,
                 helpText: helpText,
                 hidden: hidden,

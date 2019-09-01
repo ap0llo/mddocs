@@ -14,7 +14,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.TestData
         [Value(2, HelpText = "Value 3 Help text")]
         public string Value3 { get; set; }
 
-        [Value(3, Hidden = true)]
+        [Value(3, Hidden = true, Required = true)]
         public string Value4 { get; set; }
 
         [Value(4, Default = "Value 5 Default")]

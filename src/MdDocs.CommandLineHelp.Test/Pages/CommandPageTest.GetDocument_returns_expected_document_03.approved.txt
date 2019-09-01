@@ -1,5 +1,11 @@
 ﻿# `Command2` Command
 
+## Usage
+
+```
+test Command2 [--parameter1 <VALUE>]
+```
+
 ## Parameters
 
 | Name                                | Description               |

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Text;
 using Grynwald.MarkdownGenerator;
 using Grynwald.MdDocs.CommandLineHelp.Model;
 
@@ -7,12 +8,12 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
 {
     public class CommandPage : IDocument
     {
-        private readonly CommandDocumentation m_Model;
+        private readonly CommandDocumentation m_Command;
 
 
         public CommandPage(CommandDocumentation model)
         {
-            m_Model = model ?? throw new ArgumentNullException(nameof(model));
+            m_Command = model ?? throw new ArgumentNullException(nameof(model));
         }
 
 
@@ -24,16 +25,18 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
             var document = new MdDocument();
 
             // Heading
-            document.Root.Add(new MdHeading(1, new MdCompositeSpan(new MdCodeSpan(m_Model.Name), " Command")));
+            document.Root.Add(new MdHeading(1, new MdCompositeSpan(new MdCodeSpan(m_Command.Name), " Command")));
 
             // Help text
-            if (!String.IsNullOrEmpty(m_Model.HelpText))
+            if (!String.IsNullOrEmpty(m_Command.HelpText))
             {
-                document.Root.Add(new MdParagraph(m_Model.HelpText));
+                document.Root.Add(new MdParagraph(m_Command.HelpText));
             }
 
+            document.Root.Add(GetUsageSection());
+
             // Parameters
-            if (m_Model.Parameters.Any(x => !x.Hidden))
+            if (m_Command.Parameters.Any(x => !x.Hidden))
             {
                 document.Root.Add(GetParametersSection());
             }
@@ -51,8 +54,8 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
             };
 
             var sections = Enumerable.Concat(
-                m_Model.Values.Where(x => !x.Hidden).Select(GetParameterSection),
-                m_Model.Options.Where(x => !x.Hidden).Select(GetParameterSection)
+                m_Command.Values.Where(x => !x.Hidden).Select(GetParameterSection),
+                m_Command.Options.Where(x => !x.Hidden).Select(GetParameterSection)
             ).ToArray();
 
 
@@ -71,14 +74,16 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
             return block;
         }
 
+        //TODO: Add Required true/false
         private MdTable GetParametersTable()
         {
-            MdSpan GetLinkOrEmptySpan(string text, string uri) => String.IsNullOrEmpty(text) ? (MdSpan)MdEmptySpan.Instance : new MdLinkSpan(text, uri);
+            MdSpan GetLinkOrEmptySpan(string text, string uri, bool italic = false) =>
+                String.IsNullOrEmpty(text) ? (MdSpan)MdEmptySpan.Instance : new MdLinkSpan(italic ? new MdEmphasisSpan(text) : (MdSpan)text, uri);
 
 
-            var addNameColumn = m_Model.Options.Any(x => !x.Hidden && !String.IsNullOrEmpty(x.Name));
-            var addShortNameColumn = m_Model.Options.Any(x => !x.Hidden && x.ShortName != null);
-            var addPositionColumn = m_Model.Values.Count > 0;
+            var addNameColumn = m_Command.Options.Any(x => !x.Hidden && !String.IsNullOrEmpty(x.Name));
+            var addShortNameColumn = m_Command.Options.Any(x => !x.Hidden && x.ShortName != null);
+            var addPositionColumn = m_Command.Values.Count > 0;
 
             var headerRow = new MdTableRow();
 
@@ -91,30 +96,30 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
 
             var table = new MdTable(headerRow);
 
-            foreach (var value in m_Model.Values.Where(x => !x.Hidden).OrderBy(x => x.Index))
+            foreach (var value in m_Command.Values.Where(x => !x.Hidden).OrderBy(x => x.Index))
             {
                 var anchor = "#" + GetHeading(value).Anchor;
 
                 var row = new MdTableRow();
 
                 row.Add(value.Index.ToString());
-                row.AddIf(addNameColumn, GetLinkOrEmptySpan(value.Name, anchor));
+                row.AddIf(addNameColumn, GetLinkOrEmptySpan(value.Name, anchor, italic: true));
 
-                row.AddIf(addShortNameColumn && !addNameColumn, GetLinkOrEmptySpan(value.Name, anchor));
-                row.AddIf(addShortNameColumn && addNameColumn, "");
+                row.AddIf(addShortNameColumn && !addNameColumn, GetLinkOrEmptySpan(value.Name, anchor, italic: true));
+                row.AddIf(addShortNameColumn && addNameColumn, MdEmptySpan.Instance);
                 
                 row.Add(value.HelpText ?? "");
 
                 table.Add(row);
             }
 
-            foreach (var option in m_Model.Options.Where(x => !x.Hidden))
+            foreach (var option in m_Command.Options.Where(x => !x.Hidden))
             {
                 var anchor = "#" + GetHeading(option).Anchor;
 
                 var row = new MdTableRow();
                 
-                row.AddIf(addPositionColumn, "");
+                row.AddIf(addPositionColumn, MdEmptySpan.Instance);
                 row.AddIf(addNameColumn, GetLinkOrEmptySpan(option.Name, anchor));                    
                 row.AddIf(addShortNameColumn, GetLinkOrEmptySpan(option.ShortName?.ToString(), anchor));
                 row.Add(option.HelpText ?? "");
@@ -125,7 +130,6 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
             return table;
         }
         
-
         private MdContainerBlock GetParameterSection(OptionDocumentation option)
         {
             var block = new MdContainerBlock
@@ -191,6 +195,109 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
                 //TODO: Find a better heading
                 return new MdHeading(3, new MdCompositeSpan($"Parameter (Position {value.Index})"));
             }
+        }
+
+        private MdContainerBlock GetUsageSection()
+        {
+            var block = new MdContainerBlock(new MdHeading(2, "Usage"));
+
+            var usageBuilder = new StringBuilder();
+            usageBuilder.Append(m_Command.Application.Name);
+            usageBuilder.Append(" ");
+            usageBuilder.Append(m_Command.Name);
+            usageBuilder.Append(" ");
+
+            var prefixLength = usageBuilder.Length;
+
+            //TODO: values
+            foreach(var value in m_Command.Values.Where(x => !x.Hidden).OrderBy(x => x.Index))
+            {
+                if (!value.Required)
+                {
+                    usageBuilder.Append("[");
+                }
+
+                usageBuilder.Append("<");
+                if(!String.IsNullOrEmpty(value.Name))
+                {
+                    usageBuilder.Append(value.Name);
+                }
+                else
+                {
+                    usageBuilder.Append("VALUE");
+                }
+
+                if(!String.IsNullOrEmpty(value.MetaValue))
+                {
+                    usageBuilder.Append(":");
+                    usageBuilder.Append(value.MetaValue);
+                }
+
+
+                usageBuilder.Append(">");
+
+
+                if (!value.Required)
+                {
+                    usageBuilder.Append("]");
+                }
+
+                usageBuilder.AppendLine();
+                usageBuilder.Append(' ', prefixLength);
+            }
+
+            foreach(var option in m_Command.Options.Where(x => !x.Hidden))
+            {
+                if(!option.Required)
+                {
+                    usageBuilder.Append("[");
+                }
+
+                // short and long name
+                if(!String.IsNullOrEmpty(option.Name) && option.ShortName != null)
+                {
+                    usageBuilder.Append($"--{option.Name}|-{option.ShortName}");
+                }
+                // long name only
+                else if(!String.IsNullOrEmpty(option.Name) && option.ShortName == null)
+                {
+                    usageBuilder.Append($"--{option.Name}");
+                }
+                //short name only
+                else if (String.IsNullOrEmpty(option.Name) && option.ShortName != null)
+                {
+                    usageBuilder.Append($"-{option.ShortName}");
+                }
+                else
+                {
+                    throw new InvalidOperationException();
+                }
+
+
+                usageBuilder.Append(" <");
+                if(!String.IsNullOrEmpty(option.MetaValue))
+                {
+                    usageBuilder.Append(option.MetaValue);
+                }
+                else
+                {
+                    usageBuilder.Append("VALUE");
+                }
+                usageBuilder.Append(">");
+
+                if (!option.Required)
+                {
+                    usageBuilder.Append("]");
+                }
+
+                usageBuilder.AppendLine();
+                usageBuilder.Append(' ', prefixLength);
+            }
+
+            block.Add(new MdCodeBlock(usageBuilder.ToString().TrimEnd()));
+
+
+            return block;
         }
     }
 }

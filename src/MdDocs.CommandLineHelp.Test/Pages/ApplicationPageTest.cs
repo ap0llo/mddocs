@@ -31,8 +31,8 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
         {
             var model = new ApplicationDocumentation(name: "ApplicationName", commands: new[]
             {
-                new CommandDocumentation(name: "command1", helpText: "Documentation for command 1"),
-                new CommandDocumentation(name: "command2")
+                new CommandDocumentation(application: new ApplicationDocumentation("test"), name: "command1", helpText: "Documentation for command 1"),
+                new CommandDocumentation(application: new ApplicationDocumentation("test"), name: "command2")
             });
 
             Approve(model);

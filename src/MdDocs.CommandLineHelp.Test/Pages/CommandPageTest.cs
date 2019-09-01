@@ -18,7 +18,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
         [Fact]
         public void GetDocument_returns_expected_document_01()
         {
-            var model = new CommandDocumentation("Command1");
+            var model = new CommandDocumentation(new ApplicationDocumentation("test"), "Command1");
 
             Approve(model);
         }
@@ -27,6 +27,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
         public void GetDocument_returns_expected_document_02()
         {
             var model = new CommandDocumentation(
+                application: new ApplicationDocumentation("test"),
                 name: "Command2",
                 helpText: "This is the help text of command 2"
             );
@@ -38,6 +39,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
         public void GetDocument_returns_expected_document_03()
         {
             var model = new CommandDocumentation(
+                application: new ApplicationDocumentation("test"),
                 name: "Command2",
                 options: new[]
                 {
@@ -51,10 +53,11 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
         public void GetDocument_returns_expected_document_04()
         {
             var model = new CommandDocumentation(
+                application: new ApplicationDocumentation("test"),
                 name: "Command2",
                 options: new[]
                 {
-                    new OptionDocumentation("parameter1"),
+                    new OptionDocumentation("parameter1", required: true),
                     new OptionDocumentation("parameter2"),
                     new OptionDocumentation("parameter3", 'x'),
                     new OptionDocumentation(null, 'y'),
@@ -68,6 +71,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
         public void GetDocument_returns_expected_document_05()
         {
             var model = new CommandDocumentation(
+                application: new ApplicationDocumentation("test"),
                 name: "Command2",
                 options: new[]
                 {
@@ -82,6 +86,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
         public void GetDocument_returns_expected_document_06()
         {
             var model = new CommandDocumentation(
+                application: new ApplicationDocumentation("test"),
                 name: "Command2",
                 options: new[]
                 {
@@ -102,6 +107,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
         public void GetDocument_returns_expected_document_07()
         {
             var model = new CommandDocumentation(
+                application: new ApplicationDocumentation("test"),
                 name: "CommandName",
                 options: new[]
                 {
@@ -112,11 +118,13 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
                     new OptionDocumentation(
                         name: "parameter2",
                         helpText: "Description of parameter 2",
-                        @default: 23)                   
+                        @default: 23,
+                        metaValue: "URI")                   
                 },
                 values: new[]{
                     new ValueDocumentation(0),
-                    new ValueDocumentation(1, "Value2")
+                    new ValueDocumentation(1, metaValue: "INTEGER"),
+                    new ValueDocumentation(2, name: "Value3", metaValue: "STRING"),
                 });
 
             Approve(model);
@@ -126,6 +134,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
         public void GetDocument_returns_expected_document_08()
         {
             var model = new CommandDocumentation(
+                application: new ApplicationDocumentation("test"),
                 name: "CommandName",
                 options: new[]
                 {
@@ -140,7 +149,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
                 },
                 values: new[]{
                     new ValueDocumentation(0),
-                    new ValueDocumentation(1, "Value2"),
+                    new ValueDocumentation(1, name: "Value2", required: true),
                     new ValueDocumentation(2, name: "Value3", helpText: "Help text for value 3"),
                     new ValueDocumentation(3, name: "Value4", hidden: true),
                 });

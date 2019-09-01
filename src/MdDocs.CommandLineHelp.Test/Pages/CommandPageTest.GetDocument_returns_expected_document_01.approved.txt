@@ -1,1 +1,7 @@
 ﻿# `Command1` Command
+
+## Usage
+
+```
+test Command1
+```

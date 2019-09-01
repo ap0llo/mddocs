@@ -1,3 +1,9 @@
 ﻿# `Command2` Command
 
 This is the help text of command 2
+
+## Usage
+
+```
+test Command2
+```

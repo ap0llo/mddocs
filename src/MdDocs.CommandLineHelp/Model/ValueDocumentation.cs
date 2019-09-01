@@ -11,8 +11,8 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
         public string Name { get; }
 
 
-        public ValueDocumentation(int index, string name = null, string helpText = null, bool hidden = false, object @default = null)
-            : base(helpText: helpText, hidden: hidden, @default: @default)
+        public ValueDocumentation(int index, bool required = false, string name = null, string helpText = null, bool hidden = false, object @default = null, string metaValue = null)
+            : base(required: required, helpText: helpText, hidden: hidden, @default: @default, metaValue: metaValue)
         {
             Index = index;
             Name = name;

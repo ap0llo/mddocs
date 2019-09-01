@@ -45,39 +45,41 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
             }
         }
 
-        public static ApplicationDocumentation FromAssemblyDefinition(AssemblyDefinition definition, ILogger logger)
+        private ApplicationDocumentation (AssemblyDefinition definition, ILogger logger)
         {
             if (logger is null)
                 throw new ArgumentNullException(nameof(logger));
 
-            var name = definition
-                .GetAttributeOrDefault(Constants.AssemblyTitleAttributeFullName)                
+            Name = definition
+                .GetAttributeOrDefault(Constants.AssemblyTitleAttributeFullName)
                 ?.ConstructorArguments?.Single().Value as string;
 
-            if(String.IsNullOrEmpty(name))
+            if (String.IsNullOrEmpty(Name))
             {
-                name = definition.Name.Name;
+                Name = definition.Name.Name;
             }
 
-            var version = definition
-                .GetAttributeOrDefault(Constants.AssemblyInformationalVersionAttribute)                
+            Version = definition
+                .GetAttributeOrDefault(Constants.AssemblyInformationalVersionAttribute)
                 ?.ConstructorArguments.Single().Value as string;
 
-            if(String.IsNullOrEmpty(version))
+            if (String.IsNullOrEmpty(Version))
             {
-                version = definition.Name.Version.ToString();
+                Version = definition.Name.Version.ToString();
             }
 
-            var commands = LoadCommands(definition, logger);
-            return new ApplicationDocumentation(name: name, version: version, commands: commands);
+            Commands = LoadCommands(definition, logger);
         }
 
 
-        private static IReadOnlyList<CommandDocumentation> LoadCommands(AssemblyDefinition definition, ILogger logger)
+        public static ApplicationDocumentation FromAssemblyDefinition(AssemblyDefinition definition, ILogger logger) =>
+            new ApplicationDocumentation(definition, logger);
+
+        private IReadOnlyList<CommandDocumentation> LoadCommands(AssemblyDefinition definition, ILogger logger)
         {
             return definition.MainModule.Types
                 .WithAttribute(Constants.VerbAttributeFullName)
-                .Select(type => CommandDocumentation.FromTypeDefinition(type, logger))
+                .Select(type => CommandDocumentation.FromTypeDefinition(this, type, logger))
                 .ToArray();
         }
     }
