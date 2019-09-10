@@ -11,12 +11,12 @@ test Command2 --parameter1 <VALUE>
 
 ## Parameters
 
-| Name                                | Short Name                 | Description |
-| ----------------------------------- | -------------------------- | ----------- |
-| [parameter1](#parameter1-parameter) |                            |             |
-| [parameter2](#parameter2-parameter) |                            |             |
-| [parameter3](#parameter3-parameter) | [x](#parameter3-parameter) |             |
-|                                     | [y](#y-parameter)          |             |
+| Name                                | Short Name                 | Required | Description |
+| ----------------------------------- | -------------------------- | -------- | ----------- |
+| [parameter1](#parameter1-parameter) |                            | Yes      |             |
+| [parameter2](#parameter2-parameter) |                            | No       |             |
+| [parameter3](#parameter3-parameter) | [x](#parameter3-parameter) | No       |             |
+|                                     | [y](#y-parameter)          | No       |             |
 
 ### `parameter1` Parameter
 

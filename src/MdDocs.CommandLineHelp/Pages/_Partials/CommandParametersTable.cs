@@ -20,7 +20,6 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
         }
 
 
-        //TODO: Add Required true/false
         protected override MdBlock ConvertToBlock()
         {
             MdSpan GetLinkOrEmptySpan(string text, string uri, bool italic = false)
@@ -28,12 +27,14 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
                 return String.IsNullOrEmpty(text) ? (MdSpan)MdEmptySpan.Instance : new MdLinkSpan(italic ? new MdEmphasisSpan(text) : (MdSpan)text, uri);
             }
 
-            // Only include the "Name" column, if any option has a 'long' name
+            // only include the "Name" column, if any option has a 'long' name
             var addNameColumn = m_Command.Options.Any(x => !String.IsNullOrEmpty(x.Name));
-            // Only include the "Short Name" column if option has a short name
+            // only include the "Short Name" column if option has a short name
             var addShortNameColumn = m_Command.Options.Any(x => x.ShortName != null);
-            // Only include the position column if the command has any unnamed parameters
+            // only include the position column if the command has any unnamed parameters
             var addPositionColumn = m_Command.Values.Count > 0;
+            // only add "Required" column if at least on option or value is mandatory
+            var addRequiredColumn = m_Command.Values.Any(x => x.Required) || m_Command.Options.Any(x => x.Required);
 
             // create empty table with header row
             var headerRow = new MdTableRow();
@@ -41,29 +42,33 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
             headerRow.AddIf(addNameColumn, "Name");
             headerRow.AddIf(addShortNameColumn && !addNameColumn, "Name");
             headerRow.AddIf(addShortNameColumn && addNameColumn, "Short Name");
+            headerRow.AddIf(addRequiredColumn, "Required");
             headerRow.Add("Description");
 
             var table = new MdTable(headerRow);
 
-            // Add a row for every value (unnamed parameter)
+            // add a row for every value (unnamed parameter)
             foreach (var value in m_Command.Values.OrderBy(x => x.Index))
             {
                 var link = "#" + m_GetValueAnchor(value);
 
                 var row = new MdTableRow();
 
-                // Add index and link to details anchor
+                // add index and link to details anchor
                 row.Add(GetLinkOrEmptySpan(value.Index.ToString(), link));
 
-                // Add name (if a name of the value was specified) and link to details anchor
+                // add name (if a name of the value was specified) and link to details anchor
                 row.AddIf(addNameColumn, GetLinkOrEmptySpan(value.Name, link, italic: true));
 
-                // If "Name" column was skipped, add the name in the "Short Name" column and link to details anchor
-                // If the name was already added to the name column, add an empty cell
+                // if "Name" column was skipped, add the name in the "Short Name" column and link to details anchor,
+                // if the name was already added to the name column, add an empty cell
                 row.AddIf(addShortNameColumn && !addNameColumn, GetLinkOrEmptySpan(value.Name, link, italic: true));
                 row.AddIf(addShortNameColumn && addNameColumn, MdEmptySpan.Instance);
 
-                // Add help text to "Description" column
+                // add value for "Required" column
+                row.AddIf(addRequiredColumn, value.Required ? "Yes" : "No");
+
+                // add help text to "Description" column
                 row.Add(value.HelpText ?? "");
 
                 table.Add(row);
@@ -85,7 +90,10 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
                 // if specified, add shot name and link to details anchor
                 row.AddIf(addShortNameColumn, GetLinkOrEmptySpan(option.ShortName?.ToString(), link));
 
-                // Add help text to "Description" column
+                // add value for "Required" column
+                row.AddIf(addRequiredColumn, option.Required ? "Yes" : "No");
+
+                // add help text to "Description" column
                 row.Add(option.HelpText ?? "");
 
                 table.Add(row);
