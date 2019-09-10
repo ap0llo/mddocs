@@ -9,10 +9,10 @@ test CommandName [<PositionalParameter1>]
 
 ## Parameters
 
-| Position | Name                                                                 | Description                |
-| -------- | -------------------------------------------------------------------- | -------------------------- |
-| 0        | [*PositionalParameter1*](#positionalparameter1-parameter-position-0) |                            |
-|          | [paramter1](#paramter1-parameter)                                    | Description of parameter 1 |
+| Position                                        | Name                                                                 | Description                |
+| ----------------------------------------------- | -------------------------------------------------------------------- | -------------------------- |
+| [0](#positionalparameter1-parameter-position-0) | [*PositionalParameter1*](#positionalparameter1-parameter-position-0) |                            |
+|                                                 | [paramter1](#paramter1-parameter)                                    | Description of parameter 1 |
 
 ### `PositionalParameter1` Parameter (Position 0)
 

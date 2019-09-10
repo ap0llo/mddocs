@@ -12,13 +12,13 @@ test CommandName [<VALUE>]
 
 ## Parameters
 
-| Position | Name                                     | Description                |
-| -------- | ---------------------------------------- | -------------------------- |
-| 0        |                                          |                            |
-| 1        |                                          |                            |
-| 2        | [*Value3*](#value3-parameter-position-2) |                            |
-|          | [parameter1](#parameter1-parameter)      | Description of parameter 1 |
-|          | [parameter2](#parameter2-parameter)      | Description of parameter 2 |
+| Position                          | Name                                     | Description                |
+| --------------------------------- | ---------------------------------------- | -------------------------- |
+| [0](#parameter-position-0)        |                                          |                            |
+| [1](#parameter-position-1)        |                                          |                            |
+| [2](#value3-parameter-position-2) | [*Value3*](#value3-parameter-position-2) |                            |
+|                                   | [parameter1](#parameter1-parameter)      | Description of parameter 1 |
+|                                   | [parameter2](#parameter2-parameter)      | Description of parameter 2 |
 
 ### Parameter (Position 0)
 

@@ -179,8 +179,29 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
             Approve(model);
         }
 
+        [Fact]
+        public void GetDocument_returns_expected_document_10()
+        {
+            var model = new CommandDocumentation(
+                application: new ApplicationDocumentation("test"),
+                name: "CommandName",
+                options: new[]
+                {
+                    new OptionDocumentation(
+                        shortName: 'a',
+                        acceptedValues: new[] { "Value1", "Another Value"}),
+                    new OptionDocumentation(
+                        shortName: 'b',
+                        acceptedValues: new[] { "Value1", "Another Value"})
+                },
+                values: new[]{
+                    new ValueDocumentation(0, acceptedValues: new[] { "Value1", "Value2"}),
+                    new ValueDocumentation(1, acceptedValues: new[] { "Value1", "Value2"})
+                });
 
-        //TODO: values + only short name options
+            Approve(model);
+        }
+
 
         private void Approve(CommandDocumentation model)
         {
