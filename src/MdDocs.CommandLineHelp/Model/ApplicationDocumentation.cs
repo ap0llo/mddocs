@@ -8,6 +8,7 @@ using Mono.Cecil;
 namespace Grynwald.MdDocs.CommandLineHelp.Model
 {
     //TODO: Handle applications without subcommands
+    //TODO: Load data from AssemblyUsageAttribute   
     public sealed class ApplicationDocumentation
     {
         public string Name { get; }

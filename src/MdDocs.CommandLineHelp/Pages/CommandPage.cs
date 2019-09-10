@@ -1,6 +1,7 @@
 ﻿using System;
 using Grynwald.MarkdownGenerator;
 using Grynwald.MdDocs.CommandLineHelp.Model;
+using Grynwald.MdDocs.Common.Pages;
 
 namespace Grynwald.MdDocs.CommandLineHelp.Pages
 {
@@ -28,7 +29,9 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
                 // Usage
                 .Add(new CommandUsageSection(m_Command))
                 // Parameters
-                .AddIf(m_Command.Parameters.Count > 0, () => new CommandParametersSection(m_Command));
+                .AddIf(m_Command.Parameters.Count > 0, () => new CommandParametersSection(m_Command))
+                // Footer
+                .Add(new PageFooter());
         }
     }
 }
