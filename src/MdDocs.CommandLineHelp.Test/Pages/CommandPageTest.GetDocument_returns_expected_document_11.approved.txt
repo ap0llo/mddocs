@@ -1,0 +1,34 @@
+﻿# `CommandName` Command
+
+## Usage
+
+```
+test CommandName [-a <VALUE>]
+                 [--xyz <VALUE>]
+```
+
+## Parameters
+
+| Name                  | Short Name        | Description |
+| --------------------- | ----------------- | ----------- |
+|                       | [a](#a-parameter) |             |
+| [xyz](#xyz-parameter) |                   |             |
+
+### `a` Parameter
+
+|                |                   |
+| -------------- | ----------------- |
+| Name:          | a                 |
+| Position:      | *Named parameter* |
+| Required:      | No                |
+| Default value: | *None*            |
+___
+
+### `xyz` Parameter
+
+|                |                   |
+| -------------- | ----------------- |
+| Name:          | xyz               |
+| Position:      | *Named parameter* |
+| Required:      | No                |
+| Default value: | *None*            |

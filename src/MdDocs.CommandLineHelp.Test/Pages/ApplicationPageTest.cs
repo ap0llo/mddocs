@@ -38,6 +38,19 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
             Approve(model);
         }
 
+        [Fact]
+        public void GetDocument_returns_expected_document_04()
+        {
+            // commands must be ordered by name
+            var model = new ApplicationDocumentation(name: "ApplicationName", commands: new[]
+            {
+                new CommandDocumentation(application: new ApplicationDocumentation("test"), name: "commandXYZ"),
+                new CommandDocumentation(application: new ApplicationDocumentation("test"), name: "commandAbc")
+            });
+
+            Approve(model);
+        }
+
 
         private void Approve(ApplicationDocumentation model)
         {

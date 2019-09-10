@@ -38,8 +38,8 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
             Name = name;
             HelpText = helpText;
             Hidden = hidden;
-            Options = options?.Where(x => !x.Hidden)?.ToArray() ?? Array.Empty<OptionDocumentation>();
-            Values = values?.Where(x => !x.Hidden)?.ToArray() ?? Array.Empty<ValueDocumentation>();
+            Options = options?.Where(x => !x.Hidden)?.OrderBy(x => x.Name ?? x.ShortName?.ToString())?.ToArray() ?? Array.Empty<OptionDocumentation>();
+            Values = values?.Where(x => !x.Hidden)?.OrderBy(x => x.Index)?.ToArray() ?? Array.Empty<ValueDocumentation>();
             Parameters = Values.Cast<ParameterDocumentation>().Concat(Options).ToArray();
         }
 

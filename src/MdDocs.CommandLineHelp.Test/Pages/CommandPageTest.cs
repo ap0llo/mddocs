@@ -202,6 +202,22 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
             Approve(model);
         }
 
+        [Fact]
+        public void GetDocument_returns_expected_document_11()
+        {
+            // parameters must be ordered by name / short name
+            var model = new CommandDocumentation(
+                application: new ApplicationDocumentation("test"),
+                name: "CommandName",
+                options: new[]
+                {
+                    new OptionDocumentation(name: "xyz"),
+                    new OptionDocumentation(shortName: 'a')
+                });
+
+            Approve(model);
+        }
+
 
         private void Approve(CommandDocumentation model)
         {

@@ -26,7 +26,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
 
             Name = name;
             Version = version;
-            Commands = commands?.ToArray() ?? Array.Empty<CommandDocumentation>();
+            Commands = commands?.OrderBy(x => x.Name)?.ToArray() ?? Array.Empty<CommandDocumentation>();
         }
 
         private ApplicationDocumentation(AssemblyDefinition definition, ILogger logger)
