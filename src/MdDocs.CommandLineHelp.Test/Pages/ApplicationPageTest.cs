@@ -51,6 +51,17 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
             Approve(model);
         }
 
+        [Fact]
+        public void GetDocument_returns_expected_document_05()
+        {
+            // commands must be ordered by name
+            var model = new ApplicationDocumentation(
+                name: "ApplicationName",
+                usage: new[] { "usage line 1", "usage line 2", "usage line 3" });
+
+            Approve(model);
+        }
+
 
         private void Approve(ApplicationDocumentation model)
         {

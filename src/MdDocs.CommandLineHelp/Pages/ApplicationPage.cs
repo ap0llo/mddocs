@@ -27,21 +27,29 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
         {
             var document = new MdDocument();
 
-            document.Root.Add(new MdHeading(1, $"{m_Model.Name} Command Line Reference"));
+            document.Add(new MdHeading(1, $"{m_Model.Name} Command Line Reference"));
 
             if (!String.IsNullOrEmpty(m_Model.Version))
             {
-                document.Root.Add(
+                document.Add(
                     new MdParagraph(
                         new MdStrongEmphasisSpan("Version:"),
                         " ",
                         m_Model.Version));
             }
 
+            if (m_Model.Usage.Count > 0)
+            {
+                document.Add(new MdHeading(2, "Usage"));
+                document.Add(new MdParagraph(
+                    String.Join(Environment.NewLine, m_Model.Usage)
+                ));
+            }
+
             if (m_Model.Commands.Count > 0)
             {
-                document.Root.Add(new MdHeading(2, "Commands"));
-                document.Root.Add(GetCommandsTable());
+                document.Add(new MdHeading(2, "Commands"));
+                document.Add(GetCommandsTable());
             }
 
             document.Root.Add(new PageFooter());

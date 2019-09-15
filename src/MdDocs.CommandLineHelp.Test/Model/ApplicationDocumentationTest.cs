@@ -32,12 +32,22 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Model
             Assert.Contains(sut.Commands, c => c.Name == name);
         }
 
-
         [Fact]
         public void Name_returns_expected_value()
         {
             var sut = LoadDocumentation();
             Assert.Equal("TestDataAssemblyTitle", sut.Name);
+        }
+
+        [Fact]
+        public void Usage_returns_expected_values()
+        {
+            var sut = LoadDocumentation();
+
+            Assert.NotNull(sut.Usage);
+            Assert.Equal(2, sut.Usage.Count);
+            Assert.Equal("AssemblyUsage Line 1", sut.Usage.First());
+            Assert.Equal("AssemblyUsage Line 2", sut.Usage.Last());
         }
     }
 }

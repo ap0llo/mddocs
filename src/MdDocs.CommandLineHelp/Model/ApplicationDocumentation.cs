@@ -7,18 +7,19 @@ using Mono.Cecil;
 
 namespace Grynwald.MdDocs.CommandLineHelp.Model
 {
-    //TODO: Handle applications without subcommands
-    //TODO: Load data from AssemblyUsageAttribute   
+    //TODO: Handle applications without subcommands  
     public sealed class ApplicationDocumentation
     {
         public string Name { get; }
 
         public string Version { get; }
 
+        public IReadOnlyList<string> Usage { get; }
+
         public IReadOnlyList<CommandDocumentation> Commands { get; }
 
 
-        public ApplicationDocumentation(string name, string version = null, IEnumerable<CommandDocumentation> commands = null)
+        public ApplicationDocumentation(string name, string version = null, IEnumerable<CommandDocumentation> commands = null, IEnumerable<string> usage = null)
         {
             if (String.IsNullOrWhiteSpace(name))
             {
@@ -28,6 +29,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
             Name = name;
             Version = version;
             Commands = commands?.OrderBy(x => x.Name)?.ToArray() ?? Array.Empty<CommandDocumentation>();
+            Usage = usage?.ToArray() ?? Array.Empty<string>();
         }
 
         private ApplicationDocumentation(AssemblyDefinition definition, ILogger logger)
@@ -56,9 +58,10 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
             }
 
             Commands = LoadCommands(definition, logger);
+            Usage = LoadAssemblyUsage(definition);
         }
 
-
+     
         public static ApplicationDocumentation FromAssemblyFile(string filePath, ILogger logger)
         {
             // TODO: Share this code with AssemblyDocumentation as far as possible
@@ -87,6 +90,19 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
                 .WithAttribute(Constants.VerbAttributeFullName)
                 .Select(type => CommandDocumentation.FromTypeDefinition(this, type, logger))
                 .ToArray();
+        }
+
+        private IReadOnlyList<string> LoadAssemblyUsage(AssemblyDefinition definition)
+        {
+            var assemblyUsageAttribute = definition.GetAttributeOrDefault(Constants.AssemblyUsageAttributeFullName);
+            if (assemblyUsageAttribute != null)
+            {
+                return assemblyUsageAttribute.ConstructorArguments.Select(x => x.Value).Cast<string>().ToArray();
+            }
+            else
+            {
+                return Array.Empty<string>();
+            }
         }
     }
 }
