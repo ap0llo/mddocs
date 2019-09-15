@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
+using Grynwald.MdDocs.Common.Model;
 using Microsoft.Extensions.Logging;
 using Mono.Cecil;
 
@@ -64,17 +64,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
      
         public static ApplicationDocumentation FromAssemblyFile(string filePath, ILogger logger)
         {
-            // TODO: Share this code with AssemblyDocumentation as far as possible
-            var dir = Path.GetDirectoryName(filePath);
-
-            var assemblyResolver = new DefaultAssemblyResolver();
-            assemblyResolver.AddSearchDirectory(dir);
-
-            // load assembly
-            logger.LogInformation($"Loading assembly from '{filePath}'");
-            var assemblyDefinition = AssemblyDefinition.ReadAssembly(filePath, new ReaderParameters() { AssemblyResolver = assemblyResolver });
-
-            using (assemblyDefinition)
+            using (var assemblyDefinition = AssemblyReader.ReadFile(filePath, logger))
             {
                 return FromAssemblyDefinition(assemblyDefinition, logger);
             }
