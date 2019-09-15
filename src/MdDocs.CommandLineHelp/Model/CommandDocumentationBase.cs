@@ -8,7 +8,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
 {
     public abstract class CommandDocumentationBase
     {
-        public ApplicationDocumentation Application { get; }
+        public ApplicationDocumentationBase Application { get; }
 
         public IReadOnlyList<OptionDocumentation> Options { get; } = Array.Empty<OptionDocumentation>();
 
@@ -19,7 +19,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
 
         // protected internal: Prevent implementations outside the assembly (abstract classes cannot be sealed)
         protected internal CommandDocumentationBase(
-            ApplicationDocumentation application,
+            ApplicationDocumentationBase application,
             IEnumerable<OptionDocumentation> options = null,
             IEnumerable<ValueDocumentation> values = null)
         {

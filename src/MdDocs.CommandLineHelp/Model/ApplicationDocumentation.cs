@@ -7,58 +7,30 @@ using Mono.Cecil;
 
 namespace Grynwald.MdDocs.CommandLineHelp.Model
 {
+    /// <summary>
+    /// Represents a application with multiple subcommands.
+    /// </summary>
     //TODO: Handle applications without subcommands  
-    public sealed class ApplicationDocumentation
+    public sealed class ApplicationDocumentation : ApplicationDocumentationBase
     {
-        public string Name { get; }
-
-        public string Version { get; }
-
-        public IReadOnlyList<string> Usage { get; }
-
         public IReadOnlyList<CommandDocumentation> Commands { get; }
 
 
         public ApplicationDocumentation(string name, string version = null, IEnumerable<CommandDocumentation> commands = null, IEnumerable<string> usage = null)
+            : base(name, version, usage)
         {
-            if (String.IsNullOrWhiteSpace(name))
-            {
-                throw new ArgumentException("Value must not be null or whitespace", nameof(name));
-            }
-
-            Name = name;
-            Version = version;
             Commands = commands?.OrderBy(x => x.Name)?.ToArray() ?? Array.Empty<CommandDocumentation>();
-            Usage = usage?.ToArray() ?? Array.Empty<string>();
         }
 
-        private ApplicationDocumentation(AssemblyDefinition definition, ILogger logger)
+        private ApplicationDocumentation(AssemblyDefinition definition, ILogger logger): base(
+                  name: LoadApplicationName(definition ?? throw new ArgumentNullException(nameof(definition))),
+                  version: LoadApplicationVersion(definition ?? throw new ArgumentNullException(nameof(definition))),
+                  usage: LoadAssemblyUsage(definition))
         {
             if (logger is null)
-            {
                 throw new ArgumentNullException(nameof(logger));
-            }
-
-            Name = definition
-                .GetAttributeOrDefault(Constants.AssemblyTitleAttributeFullName)
-                ?.ConstructorArguments?.Single().Value as string;
-
-            if (String.IsNullOrEmpty(Name))
-            {
-                Name = definition.Name.Name;
-            }
-
-            Version = definition
-                .GetAttributeOrDefault(Constants.AssemblyInformationalVersionAttribute)
-                ?.ConstructorArguments.Single().Value as string;
-
-            if (String.IsNullOrEmpty(Version))
-            {
-                Version = definition.Name.Version.ToString();
-            }
 
             Commands = LoadCommands(definition, logger);
-            Usage = LoadAssemblyUsage(definition);
         }
 
      
@@ -77,22 +49,11 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
         private IReadOnlyList<CommandDocumentation> LoadCommands(AssemblyDefinition definition, ILogger logger)
         {
             return definition.MainModule.Types
+                .Where(x => !x.IsAbstract)
                 .WithAttribute(Constants.VerbAttributeFullName)
                 .Select(type => CommandDocumentation.FromTypeDefinition(this, type, logger))
                 .ToArray();
         }
 
-        private IReadOnlyList<string> LoadAssemblyUsage(AssemblyDefinition definition)
-        {
-            var assemblyUsageAttribute = definition.GetAttributeOrDefault(Constants.AssemblyUsageAttributeFullName);
-            if (assemblyUsageAttribute != null)
-            {
-                return assemblyUsageAttribute.ConstructorArguments.Select(x => x.Value).Cast<string>().ToArray();
-            }
-            else
-            {
-                return Array.Empty<string>();
-            }
-        }
     }
 }

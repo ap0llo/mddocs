@@ -23,6 +23,13 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Model
             Assert.Equal(4, sut.Commands.Count);
         }
 
+        [Fact]
+        public void Abstract_types_are_ignored()
+        {
+            var sut = LoadDocumentation();
+            Assert.DoesNotContain(sut.Commands, c => c.Name == "command5");
+        }
+
         [Theory]
         [InlineData("command1")]
         [InlineData("command2")]
