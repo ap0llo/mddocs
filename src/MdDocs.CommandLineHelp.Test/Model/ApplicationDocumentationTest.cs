@@ -1,7 +1,8 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
+using System.Reflection;
 using Grynwald.MdDocs.CommandLineHelp.Model;
 using Grynwald.MdDocs.CommandLineHelp.TestData;
+using Grynwald.MdDocs.CommandLineHelp.TestData.SingleCommandApp;
 using Microsoft.Extensions.Logging.Abstractions;
 using Xunit;
 
@@ -9,10 +10,10 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Model
 {
     public class ApplicationDocumentationTest
     {
-        private ApplicationDocumentation LoadDocumentation()
+        private ApplicationDocumentation LoadDocumentation(Assembly assembly = null)
         {
-            var assemblyPath = typeof(Command1Options).Assembly.Location;
-            return ApplicationDocumentation.FromAssemblyFile(assemblyPath, NullLogger.Instance);
+            assembly = assembly ?? typeof(Command1Options).Assembly;            
+            return ApplicationDocumentation.FromAssemblyFile(assembly.Location, NullLogger.Instance);
         }
 
         [Fact]
@@ -48,6 +49,15 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Model
             Assert.Equal(2, sut.Usage.Count);
             Assert.Equal("AssemblyUsage Line 1", sut.Usage.First());
             Assert.Equal("AssemblyUsage Line 2", sut.Usage.Last());
+        }
+
+        [Fact]
+        public void Usage_is_empty_for_assemblies_without_usage_attribute()
+        {
+            var sut = LoadDocumentation(typeof(Options).Assembly);
+
+            Assert.NotNull(sut.Usage);
+            Assert.Empty(sut.Usage);            
         }
     }
 }

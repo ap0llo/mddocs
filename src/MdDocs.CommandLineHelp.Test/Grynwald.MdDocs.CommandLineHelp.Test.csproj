@@ -2,11 +2,10 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
-  <ItemGroup>
+  <ItemGroup Label="Package references">
     <PackageReference Include="ApprovalTests" Version="4.2.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
     <PackageReference Include="xunit" Version="2.4.1" />
@@ -16,7 +15,8 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
+  <ItemGroup Label="Project references">
+    <ProjectReference Include="..\MdDocs.CommandLineHelp.TestData.SingleCommandApp\Grynwald.MdDocs.CommandLineHelp.TestData.SingleCommandApp.csproj" />
     <ProjectReference Include="..\MdDocs.CommandLineHelp.TestData\Grynwald.MdDocs.CommandLineHelp.TestData.csproj" />
     <ProjectReference Include="..\MdDocs.CommandLineHelp\Grynwald.MdDocs.CommandLineHelp.csproj" />
   </ItemGroup>

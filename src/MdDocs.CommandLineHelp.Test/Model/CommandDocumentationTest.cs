@@ -1,8 +1,5 @@
-﻿
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
-using System.Text;
 using Grynwald.MdDocs.CommandLineHelp.Model;
 using Grynwald.MdDocs.CommandLineHelp.TestData;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -15,8 +12,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Model
     {
         private CommandDocumentation LoadDocumentation(Type optionsType)
         {
-            var assemblyPath = typeof(Command3Options).Assembly.Location;
-            var assemblyDefinition = AssemblyDefinition.ReadAssembly(assemblyPath);
+            var assemblyDefinition = AssemblyDefinition.ReadAssembly(optionsType.Assembly.Location);
 
             var typeDefinition = assemblyDefinition.MainModule.Types.Single(t => t.FullName == optionsType.FullName);
 
