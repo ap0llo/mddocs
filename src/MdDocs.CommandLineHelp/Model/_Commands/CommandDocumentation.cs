@@ -19,7 +19,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
 
 
         public CommandDocumentation(
-            MultiCommandApplicationDocumentation application,
+            ApplicationDocumentation application,
             string name,
             string helpText = null,
             bool hidden = false,

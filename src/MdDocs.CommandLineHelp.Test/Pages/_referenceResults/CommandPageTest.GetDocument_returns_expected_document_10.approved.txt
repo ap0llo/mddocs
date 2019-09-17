@@ -3,10 +3,10 @@
 ## Usage
 
 ```
-test CommandName [<VALUE>]
-                 [<VALUE>]
-                 [-a <VALUE>]
-                 [-b <VALUE>]
+TestApp CommandName [<VALUE>]
+                    [<VALUE>]
+                    [-a <VALUE>]
+                    [-b <VALUE>]
 ```
 
 ## Parameters

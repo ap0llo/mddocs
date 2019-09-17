@@ -6,6 +6,15 @@ using Grynwald.MdDocs.Common.Pages;
 
 namespace Grynwald.MdDocs.CommandLineHelp.Pages
 {
+    /// <summary>
+    /// A partial to render a section with information about a command's parameters.
+    /// Renders
+    /// <list type="bullet">
+    ///     <item>A "Parameters" heading.</item>
+    ///     <item>A table containing all the commands parameters (see <see cref="CommandParametersTable"/>).</item>
+    ///     <item>A details section for every parameter.</item>
+    /// </list>
+    /// </summary>
     internal class CommandParametersSection : MdPartial
     {
         private readonly CommandDocumentationBase m_Command;

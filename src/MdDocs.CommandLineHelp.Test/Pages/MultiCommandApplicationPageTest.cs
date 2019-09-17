@@ -1,5 +1,4 @@
 ﻿using ApprovalTests;
-using ApprovalTests.Namers;
 using ApprovalTests.Reporters;
 using Grynwald.MarkdownGenerator;
 using Grynwald.MdDocs.CommandLineHelp.Model;
@@ -10,7 +9,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
 {
     [Trait("Category", "SkipWhenLiveUnitTesting")]
     [UseReporter(typeof(DiffReporter))]
-    public class ApplicationPageTest
+    public class MultiCommandApplicationPageTest
     {
         [Fact]
         public void GetDocument_returns_expected_document_01()
@@ -74,14 +73,14 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
                 documentSet.Add(pathProvider.GetPath(command), new TextDocument());
             }
 
-            var applicationPage = new ApplicationPage(documentSet, pathProvider, model);
+            var applicationPage = new MultiCommandApplicationPage(documentSet, pathProvider, model);
             documentSet.Add(pathProvider.GetPath(model), applicationPage);
 
             var doc = applicationPage.GetDocument();
 
             Assert.NotNull(doc);
             var writer = new ApprovalTextWriter(doc.ToString());
-            Approvals.Verify(writer, new UnitTestFrameworkNamer(), Approvals.GetReporter());
+            Approvals.Verify(writer, new ApprovalNamer(), Approvals.GetReporter());
         }
     }
 }

@@ -40,12 +40,11 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
 
         private void RegisterApplicationPage()
         {
-            IDocument page;   
             if (m_Model is MultiCommandApplicationDocumentation multiCommandApplication)
             {
                 m_DocumentSet.Add(
                    m_PathProvider.GetPath(multiCommandApplication),
-                   new ApplicationPage(m_DocumentSet, m_PathProvider, multiCommandApplication));
+                   new MultiCommandApplicationPage(m_DocumentSet, m_PathProvider, multiCommandApplication));
             }
             else if(m_Model is SingleCommandApplicationDocumentation singleCommandApplication)
             {

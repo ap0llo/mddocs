@@ -3,11 +3,11 @@
 ## Usage
 
 ```
-test CommandName [<VALUE>]
-                 [<VALUE:INTEGER>]
-                 [<Value3:STRING>]
-                 [--parameter1 <VALUE>]
-                 [--parameter2 <URI>]
+TestApp CommandName [<VALUE>]
+                    [<VALUE:INTEGER>]
+                    [<Value3:STRING>]
+                    [--parameter1 <VALUE>]
+                    [--parameter2 <URI>]
 ```
 
 ## Parameters

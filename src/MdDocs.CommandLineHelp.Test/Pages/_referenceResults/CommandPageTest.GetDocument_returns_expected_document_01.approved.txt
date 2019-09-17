@@ -3,7 +3,7 @@
 ## Usage
 
 ```
-test Command1
+TestApp Command1
 ```
 ___
 

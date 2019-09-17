@@ -5,6 +5,16 @@ using Grynwald.MdDocs.Common.Pages;
 
 namespace Grynwald.MdDocs.CommandLineHelp.Pages
 {
+    /// <summary>
+    /// Page that renders documentation for a single command of a application with multiple sub-commands.
+    /// Shows
+    /// <list type="bullet">
+    ///     <item>Command name</item>
+    ///     <item>Command help text</item>
+    ///     <item>Usage of the command (see <see cref="NamedCommandUsageSection"/>).</item>
+    ///     <item>Information about the command's parameters (see <see cref="CommandParametersSection"/>).</item>
+    /// </list>
+    /// </summary>
     public class CommandPage : IDocument
     {
         private readonly CommandDocumentation m_Command;
@@ -27,7 +37,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
                 // Help text
                 .AddIf(!String.IsNullOrEmpty(m_Command.HelpText), () => new MdParagraph(m_Command.HelpText))
                 // Usage
-                .Add(new CommandUsageSection(m_Command))
+                .Add(new NamedCommandUsageSection(m_Command))
                 // Parameters
                 .AddIf(m_Command.Parameters.Count > 0, () => new CommandParametersSection(m_Command))
                 // Footer

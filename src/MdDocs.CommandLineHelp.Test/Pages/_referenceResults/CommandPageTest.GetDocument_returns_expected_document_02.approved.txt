@@ -5,7 +5,7 @@ This is the help text of command 2
 ## Usage
 
 ```
-test Command2
+TestApp Command2
 ```
 ___
 

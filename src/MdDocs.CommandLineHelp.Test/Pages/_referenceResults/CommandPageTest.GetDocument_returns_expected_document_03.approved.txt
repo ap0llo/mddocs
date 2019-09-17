@@ -3,7 +3,7 @@
 ## Usage
 
 ```
-test Command2 [--parameter1 <VALUE>]
+TestApp Command2 [--parameter1 <VALUE>]
 ```
 
 ## Parameters

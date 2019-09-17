@@ -5,6 +5,9 @@ using Grynwald.MdDocs.CommandLineHelp.Model;
 
 namespace Grynwald.MdDocs.CommandLineHelp.Pages
 {
+    /// <summary>
+    /// Partial to render the details for a value (positional parameter)
+    /// </summary>
     internal class ValueDetailsSection : ParameterDetailsSection
     {
         private readonly ValueDocumentation m_Value;

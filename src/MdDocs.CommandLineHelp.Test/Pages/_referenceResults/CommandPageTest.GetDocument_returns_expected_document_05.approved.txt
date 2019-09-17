@@ -3,8 +3,8 @@
 ## Usage
 
 ```
-test Command2 [-x <VALUE>]
-              [-y <VALUE>]
+TestApp Command2 [-x <VALUE>]
+                 [-y <VALUE>]
 ```
 
 ## Parameters

@@ -1,6 +1,4 @@
-﻿using System;
-using ApprovalTests;
-using ApprovalTests.Namers;
+﻿using ApprovalTests;
 using ApprovalTests.Reporters;
 using Grynwald.MarkdownGenerator;
 using Grynwald.MdDocs.CommandLineHelp.Model;
@@ -9,20 +7,13 @@ using Xunit;
 
 namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
 {
-    class TestAppDocumentation : ApplicationDocumentation
-    {
-        public TestAppDocumentation() : base("TestApp", "1.2.3", Array.Empty<string>())
-        {
-        }
-    }
-
     [Trait("Category", "SkipWhenLiveUnitTesting")]
     [UseReporter(typeof(DiffReporter))]
     public class SingleCommandApplicationPageTest
     {
         [Fact]
         public void GetDocument_returns_expected_document_01()
-        {            
+        {
             var parameters = new UnnamedCommandDocumentation(
                 application: new TestAppDocumentation(),
                 options: new[]
@@ -56,7 +47,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
 
             Assert.NotNull(doc);
             var writer = new ApprovalTextWriter(doc.ToString());
-            Approvals.Verify(writer, new UnitTestFrameworkNamer(), Approvals.GetReporter());
+            Approvals.Verify(writer, new ApprovalNamer(), Approvals.GetReporter());
         }
     }
 }

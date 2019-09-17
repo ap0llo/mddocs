@@ -5,6 +5,9 @@ using Grynwald.MdDocs.CommandLineHelp.Model;
 
 namespace Grynwald.MdDocs.CommandLineHelp.Pages
 {
+    /// <summary>
+    /// Partial to render the details for an option (named parameter)
+    /// </summary>
     internal class OptionDetailsSection : ParameterDetailsSection
     {
         private readonly OptionDocumentation m_Option;

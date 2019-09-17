@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Grynwald.MarkdownGenerator;
@@ -7,12 +8,11 @@ using Grynwald.MdDocs.Common.Pages;
 
 namespace Grynwald.MdDocs.CommandLineHelp.Pages
 {
-    internal class CommandUsageSection : MdPartial
+    internal abstract class CommandUsageSection : MdPartial
     {
-        private readonly CommandDocumentation m_Command;
+        private readonly CommandDocumentationBase m_Command;
 
-
-        public CommandUsageSection(CommandDocumentation command)
+        public CommandUsageSection(CommandDocumentationBase command)
         {
             m_Command = command ?? throw new ArgumentNullException(nameof(command));
         }
@@ -26,36 +26,26 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
             );
         }
 
+        protected abstract string GetUsage();
 
-        private string GetUsage()
+        protected void AppendParameters(StringBuilder stringBuilder, int indent)
         {
-            var stringBuilder = new StringBuilder()
-                .Append(m_Command.Application.Name)
-                .Append(" ")
-                .Append(m_Command.Name)
-                .Append(" ");
-
-            var prefixLength = stringBuilder.Length;
-
             foreach (var value in m_Command.Values.OrderBy(x => x.Index))
             {
                 stringBuilder
                     .Apply(AppendUsage, value)
-                    .Append(' ', prefixLength);
+                    .Append(' ', indent);
             }
 
             foreach (var option in m_Command.Options)
             {
                 stringBuilder
                     .Apply(AppendUsage, option)
-                    .Append(' ', prefixLength);
+                    .Append(' ', indent);
             }
-
-
-            return stringBuilder.ToString().Trim();
         }
 
-        private void AppendUsage(StringBuilder stringBuilder, ValueDocumentation value)
+        protected void AppendUsage(StringBuilder stringBuilder, ValueDocumentation value)
         {
             stringBuilder
                 .AppendIf(!value.Required, "[")
@@ -67,7 +57,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
                 .AppendLine();
         }
 
-        private void AppendUsage(StringBuilder stringBuilder, OptionDocumentation option)
+        protected void AppendUsage(StringBuilder stringBuilder, OptionDocumentation option)
         {
             stringBuilder
                 .AppendIf(!option.Required, "[")
@@ -80,7 +70,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
                 .AppendLine();
         }
 
-        private void AppendParameterName(StringBuilder stringBuilder, OptionDocumentation option)
+        protected void AppendParameterName(StringBuilder stringBuilder, OptionDocumentation option)
         {
             stringBuilder
                 .AppendIf(!String.IsNullOrEmpty(option.Name), "--", option.Name)

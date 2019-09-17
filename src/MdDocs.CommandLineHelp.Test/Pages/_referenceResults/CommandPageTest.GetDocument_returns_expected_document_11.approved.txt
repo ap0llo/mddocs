@@ -3,8 +3,8 @@
 ## Usage
 
 ```
-test CommandName [-a <VALUE>]
-                 [--xyz <VALUE>]
+TestApp CommandName [-a <VALUE>]
+                    [--xyz <VALUE>]
 ```
 
 ## Parameters
