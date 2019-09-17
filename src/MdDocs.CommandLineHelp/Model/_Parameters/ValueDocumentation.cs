@@ -6,16 +6,17 @@ using Mono.Cecil;
 
 namespace Grynwald.MdDocs.CommandLineHelp.Model
 {
+    /// <summary>
+    /// Represents an positional parameter.
+    /// </summary>
     public class ValueDocumentation : ParameterDocumentation
     {
         public int Index { get; }
 
+        // Values might have a name, but name is not used to bind the parameter when parsing.
         public override string Name { get; }
 
         public override bool HasName => !String.IsNullOrEmpty(Name);
-
-        public override bool HasShortName => false;
-
 
 
         public ValueDocumentation(
@@ -36,7 +37,6 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
         }
 
 
-        public static ValueDocumentation FromPropertyDefinition(PropertyDefinition property, ILogger logger) =>
-            new ValueDocumentation(property);
+        public static ValueDocumentation FromPropertyDefinition(PropertyDefinition property, ILogger logger) => new ValueDocumentation(property);
     }
 }

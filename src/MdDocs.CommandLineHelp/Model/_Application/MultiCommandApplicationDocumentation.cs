@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Grynwald.MdDocs.Common.Model;
 using Microsoft.Extensions.Logging;
 using Mono.Cecil;
 
@@ -21,7 +20,8 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
             Commands = commands?.OrderBy(x => x.Name)?.ToArray() ?? Array.Empty<CommandDocumentation>();
         }
 
-        private MultiCommandApplicationDocumentation(AssemblyDefinition definition, ILogger logger): base(
+        private MultiCommandApplicationDocumentation(AssemblyDefinition definition, ILogger logger)
+            : base(
                   name: LoadApplicationName(definition ?? throw new ArgumentNullException(nameof(definition))),
                   version: LoadApplicationVersion(definition ?? throw new ArgumentNullException(nameof(definition))),
                   usage: LoadAssemblyUsage(definition))
@@ -32,7 +32,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
             Commands = LoadCommands(definition, logger);
         }
 
-     
+
 
         public static MultiCommandApplicationDocumentation FromAssemblyDefinition(AssemblyDefinition definition, ILogger logger) =>
             new MultiCommandApplicationDocumentation(definition, logger);
@@ -46,6 +46,5 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
                 .Select(type => CommandDocumentation.FromTypeDefinition(this, type, logger))
                 .ToArray();
         }
-
     }
 }

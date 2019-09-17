@@ -47,9 +47,9 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
             }
 
             // Usage
-            document.Add(new UnnamedCommandUsageSection(m_Model.Parameters));
+            document.Add(new UnnamedCommandUsageSection(m_Model.Command));
             // Parameters
-            document.AddIf(m_Model.Parameters.Parameters.Count > 0, () => new CommandParametersSection(m_Model.Parameters));
+            document.AddIf(m_Model.Command.Parameters.Count > 0, () => new CommandParametersSection(m_Model.Command));
             // Footer
             document.Add(new PageFooter());
 

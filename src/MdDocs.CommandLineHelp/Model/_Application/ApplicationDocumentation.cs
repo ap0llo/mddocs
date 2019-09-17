@@ -7,6 +7,9 @@ using Mono.Cecil;
 
 namespace Grynwald.MdDocs.CommandLineHelp.Model
 {
+    /// <summary>
+    /// Base class for model describing an application.
+    /// </summary>
     public abstract class ApplicationDocumentation
     {
         public string Name { get; }
@@ -19,13 +22,31 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
         internal ApplicationDocumentation(string name, string version = null, IEnumerable<string> usage = null)
         {
             if (String.IsNullOrWhiteSpace(name))
-            {
                 throw new ArgumentException("Value must not be null or whitespace", nameof(name));
-            }
 
             Name = name;
             Version = version;
             Usage = usage?.ToArray() ?? Array.Empty<string>();
+        }
+
+
+        public static ApplicationDocumentation FromAssemblyFile(string filePath, ILogger logger)
+        {
+            using (var definition = AssemblyReader.ReadFile(filePath, logger))
+            {
+                var types = definition.MainModule.Types.Where(x => !x.IsAbstract);
+
+                if (types.Any(x => x.HasAttribute(Constants.VerbAttributeFullName)))
+                {
+                    logger.LogInformation($"Found a class attributed with '{Constants.VerbAttributeFullName}'. Assuming application has sub-commands");
+                    return MultiCommandApplicationDocumentation.FromAssemblyDefinition(definition, logger);
+                }
+                else
+                {
+                    logger.LogInformation($"Found *no* class attributed with '{Constants.VerbAttributeFullName}'. Assuming application without sub-commands");
+                    return SingleCommandApplicationDocumentation.FromAssemblyDefinition(definition, logger);
+                }
+            }
         }
 
 
@@ -37,7 +58,8 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
 
             if (String.IsNullOrEmpty(name))
             {
-                name = definition.Name.Name;
+                // no AssemblyTitle specified => return assembly name
+                return definition.Name.Name;
             }
 
             return name;
@@ -51,6 +73,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
 
             if (String.IsNullOrEmpty(version))
             {
+                // no AssemblyInformationalVersion found => return assembly version
                 version = definition.Name.Version.ToString();
             }
 
@@ -60,36 +83,10 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
         protected static IReadOnlyList<string> LoadAssemblyUsage(AssemblyDefinition definition)
         {
             var assemblyUsageAttribute = definition.GetAttributeOrDefault(Constants.AssemblyUsageAttributeFullName);
-            if (assemblyUsageAttribute != null)
-            {
-                return assemblyUsageAttribute.ConstructorArguments.Select(x => x.Value).Cast<string>().ToArray();
-            }
-            else
-            {
-                return Array.Empty<string>();
-            }
+
+            return assemblyUsageAttribute == null
+                ? Array.Empty<string>()
+                : assemblyUsageAttribute.ConstructorArguments.Select(x => x.Value).Cast<string>().ToArray();
         }
-
-
-        public static ApplicationDocumentation FromAssemblyFile(string filePath, ILogger logger)
-        {
-            using (var definition = AssemblyReader.ReadFile(filePath, logger))
-            {
-                var types = definition.MainModule.Types.Where(x => !x.IsAbstract);
-
-                if(types.Any(x => x.HasAttribute(Constants.VerbAttributeFullName)))
-                {
-                    return MultiCommandApplicationDocumentation.FromAssemblyDefinition(definition, logger);
-                }
-                else
-                {
-                    return SingleCommandApplicationDocumentation.FromAssemblyDefinition(definition, logger);
-                }
-            }
-        }
-
-
-        
-
     }
 }

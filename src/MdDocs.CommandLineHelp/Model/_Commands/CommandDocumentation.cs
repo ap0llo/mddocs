@@ -6,6 +6,9 @@ using Mono.Cecil;
 
 namespace Grynwald.MdDocs.CommandLineHelp.Model
 {
+    /// <summary>
+    /// Represents a named command (in an application with sub-commands)
+    /// </summary>
     public sealed class CommandDocumentation : CommandDocumentationBase
     {
         public string Name { get; }
@@ -25,10 +28,10 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
         {
             if (String.IsNullOrEmpty(name))
                 throw new ArgumentException("Value must not be null or empty", nameof(name));
-            
+
             Name = name;
             HelpText = helpText;
-            Hidden = hidden;            
+            Hidden = hidden;
         }
 
 

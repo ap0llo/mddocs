@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using Mono.Cecil;
+using System.Linq;
 using Grynwald.MdDocs.CommandLineHelp.Model;
 using Grynwald.MdDocs.CommandLineHelp.TestData;
-using System.Linq;
-using Xunit;
 using Microsoft.Extensions.Logging.Abstractions;
+using Mono.Cecil;
+using Xunit;
 
 namespace Grynwald.MdDocs.CommandLineHelp.Test.Model
 {
@@ -31,7 +30,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Model
         [Theory]
         [InlineData(nameof(Command3Options.Option1Property), "option1", null, false, false, null, null)]
         [InlineData(nameof(Command3Options.Option2Property), null, 'x', false, false, null, null)]
-        [InlineData(nameof(Command3Options.Option3Property), "option3", 'y', true, false,  null, null)]
+        [InlineData(nameof(Command3Options.Option3Property), "option3", 'y', true, false, null, null)]
         [InlineData(nameof(Command3Options.Option4Property), "option4", null, false, true, "Option 4 Help text", "DefaultValue")]
         public void Option_has_the_expected_properties(string propertyName, string name, char? shortName, bool required, bool hidden, string helpText, object defaultValue)
         {
@@ -44,7 +43,6 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Model
             Assert.Equal(helpText, sut.HelpText);
             Assert.Equal(defaultValue, sut.Default);
         }
-
 
         [Fact]
         public void AcceptedValues_is_loaded_correctly_for_enum_types()

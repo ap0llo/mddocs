@@ -21,10 +21,10 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Model
         {
             var sut = LoadDocumentation(Assembly.GetExecutingAssembly());
 
-            Assert.NotNull(sut.Parameters);
-            Assert.Empty(sut.Parameters.Options);
-            Assert.Empty(sut.Parameters.Values);
-            Assert.Empty(sut.Parameters.Parameters);
+            Assert.NotNull(sut.Command);
+            Assert.Empty(sut.Command.Options);
+            Assert.Empty(sut.Command.Values);
+            Assert.Empty(sut.Command.Parameters);
         }
 
         [Theory]
@@ -35,7 +35,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Model
         public void Expected_options_exist(string name)
         {
             var sut = LoadDocumentation(typeof(Options).Assembly);
-            Assert.Contains(sut.Parameters.Options, c => c.Name == name);
+            Assert.Contains(sut.Command.Options, c => c.Name == name);
         }
 
         [Theory]
@@ -43,7 +43,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Model
         public void Hidden_options_are_ignored(string name)
         {
             var sut = LoadDocumentation(typeof(Options).Assembly);
-            Assert.DoesNotContain(sut.Parameters.Options, c => c.Name == name);
+            Assert.DoesNotContain(sut.Command.Options, c => c.Name == name);
         }
 
         [Theory]
@@ -52,7 +52,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Model
         public void Expected_values_exist(int index)
         {
             var sut = LoadDocumentation(typeof(Options).Assembly);
-            Assert.Contains(sut.Parameters.Values, c => c.Index == index);
+            Assert.Contains(sut.Command.Values, c => c.Index == index);
         }
     }
 }

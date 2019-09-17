@@ -36,7 +36,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Model
         public void Commands_have_the_expected_properties(Type optionsType, string name, string helpText, bool hidden)
         {
             var command = LoadDocumentation(optionsType);
-                        
+
             Assert.Equal(name, command.Name);
             Assert.Equal(helpText, command.HelpText);
             Assert.Equal(hidden, command.Hidden);
@@ -71,11 +71,11 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Model
 
         [Theory]
         [InlineData(typeof(Command4Options), 0)]
-        [InlineData(typeof(Command4Options), 1)]        
-        public void Expected_value_exists (Type optionsType, int index)
+        [InlineData(typeof(Command4Options), 1)]
+        public void Expected_value_exists(Type optionsType, int index)
         {
             var command = LoadDocumentation(optionsType);
-            Assert.Contains(command.Values, o => o.Index== index);
+            Assert.Contains(command.Values, o => o.Index == index);
         }
     }
 }

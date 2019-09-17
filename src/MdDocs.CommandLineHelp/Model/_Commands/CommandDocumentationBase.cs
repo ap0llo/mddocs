@@ -6,14 +6,32 @@ using Mono.Cecil;
 
 namespace Grynwald.MdDocs.CommandLineHelp.Model
 {
+    /// <summary>
+    /// Base class for all command documentation classes
+    /// </summary>
     public abstract class CommandDocumentationBase
     {
+        /// <summary>
+        /// Gets the application the command belongs to.
+        /// </summary>
         public ApplicationDocumentation Application { get; }
 
+        /// <summary>
+        /// Gets the command's options (named parameters)
+        /// </summary>
         public IReadOnlyList<OptionDocumentation> Options { get; } = Array.Empty<OptionDocumentation>();
 
+        /// <summary>
+        /// Gets the commands's values (unnamed parameters)
+        /// </summary>
         public IReadOnlyList<ValueDocumentation> Values { get; } = Array.Empty<ValueDocumentation>();
 
+        /// <summary>
+        /// Gets the commands parameters (both named and unnamed). 
+        /// </summary>
+        /// <remarks>
+        /// Values is equivalent to <c>Options.Union(Values)</c>
+        /// </remarks>
         public IReadOnlyList<ParameterDocumentation> Parameters { get; } = Array.Empty<ParameterDocumentation>();
 
 

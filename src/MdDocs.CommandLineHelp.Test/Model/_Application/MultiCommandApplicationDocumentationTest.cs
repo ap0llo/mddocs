@@ -21,6 +21,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Model
             }
         }
 
+
         [Fact]
         public void Commands_returns_expected_number_of_commands()
         {
@@ -69,7 +70,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Model
             var sut = LoadDocumentation(typeof(Options).Assembly);
 
             Assert.NotNull(sut.Usage);
-            Assert.Empty(sut.Usage);            
+            Assert.Empty(sut.Usage);
         }
     }
 }

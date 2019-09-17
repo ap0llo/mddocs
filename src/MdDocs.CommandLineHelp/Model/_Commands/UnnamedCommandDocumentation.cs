@@ -5,9 +5,11 @@ using Mono.Cecil;
 
 namespace Grynwald.MdDocs.CommandLineHelp.Model
 {
+    /// <summary>
+    /// Represents an unnamed command (in an application without sub-commands)
+    /// </summary>
     public sealed class UnnamedCommandDocumentation : CommandDocumentationBase
     {
-
         public UnnamedCommandDocumentation(
             ApplicationDocumentation application,
             IEnumerable<OptionDocumentation> options = null,
@@ -24,7 +26,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
                 throw new ArgumentNullException(nameof(definition));
 
             // unnamed commands must not have a "verb" attribute
-            if(definition.HasAttribute(Constants.VerbAttributeFullName))
+            if (definition.HasAttribute(Constants.VerbAttributeFullName))
                 throw new ArgumentException("Cannot create unnamed command from type definition annotated with a Verb attribute", nameof(definition));
 
             return new UnnamedCommandDocumentation(application, LoadOptions(definition, logger), LoadValues(definition, logger));
