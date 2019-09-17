@@ -9,8 +9,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
 {
     /// <summary>
     /// Represents a application with multiple subcommands.
-    /// </summary>
-    //TODO: Handle applications without subcommands  
+    /// </summary>   
     public sealed class ApplicationDocumentation : ApplicationDocumentationBase
     {
         public IReadOnlyList<CommandDocumentation> Commands { get; }
@@ -34,13 +33,6 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
         }
 
      
-        public static ApplicationDocumentation FromAssemblyFile(string filePath, ILogger logger)
-        {
-            using (var assemblyDefinition = AssemblyReader.ReadFile(filePath, logger))
-            {
-                return FromAssemblyDefinition(assemblyDefinition, logger);
-            }
-        }
 
         public static ApplicationDocumentation FromAssemblyDefinition(AssemblyDefinition definition, ILogger logger) =>
             new ApplicationDocumentation(definition, logger);

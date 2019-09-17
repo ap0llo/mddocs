@@ -8,10 +8,10 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
 {
     internal class CommandParametersSection : MdPartial
     {
-        private readonly CommandDocumentation m_Command;
+        private readonly CommandDocumentationBase m_Command;
 
 
-        public CommandParametersSection(CommandDocumentation command)
+        public CommandParametersSection(CommandDocumentationBase command)
         {
             m_Command = command ?? throw new ArgumentNullException(nameof(command));
         }

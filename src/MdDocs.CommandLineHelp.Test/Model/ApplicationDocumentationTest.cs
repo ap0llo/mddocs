@@ -3,6 +3,7 @@ using System.Reflection;
 using Grynwald.MdDocs.CommandLineHelp.Model;
 using Grynwald.MdDocs.CommandLineHelp.TestData;
 using Grynwald.MdDocs.CommandLineHelp.TestData.SingleCommandApp;
+using Grynwald.MdDocs.Common.Model;
 using Microsoft.Extensions.Logging.Abstractions;
 using Xunit;
 
@@ -12,8 +13,12 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Model
     {
         private ApplicationDocumentation LoadDocumentation(Assembly assembly = null)
         {
-            assembly = assembly ?? typeof(Command1Options).Assembly;            
-            return ApplicationDocumentation.FromAssemblyFile(assembly.Location, NullLogger.Instance);
+            assembly = assembly ?? typeof(Command1Options).Assembly;
+
+            using (var definition = AssemblyReader.ReadFile(assembly.Location, NullLogger.Instance))
+            {
+                return ApplicationDocumentation.FromAssemblyDefinition(definition, NullLogger.Instance);
+            }
         }
 
         [Fact]

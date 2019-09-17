@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Grynwald.MdDocs.Common.Model;
+using Microsoft.Extensions.Logging;
 using Mono.Cecil;
 
 namespace Grynwald.MdDocs.CommandLineHelp.Model
@@ -14,8 +16,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
         public IReadOnlyList<string> Usage { get; }
 
 
-        // protected internal: Prevent implementations outside the assembly (abstract classes cannot be sealed)
-        protected internal ApplicationDocumentationBase(string name, string version = null, IEnumerable<string> usage = null)
+        internal ApplicationDocumentationBase(string name, string version = null, IEnumerable<string> usage = null)
         {
             if (String.IsNullOrWhiteSpace(name))
             {
@@ -68,5 +69,27 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
                 return Array.Empty<string>();
             }
         }
+
+
+        public static ApplicationDocumentationBase FromAssemblyFile(string filePath, ILogger logger)
+        {
+            using (var definition = AssemblyReader.ReadFile(filePath, logger))
+            {
+                var types = definition.MainModule.Types.Where(x => !x.IsAbstract);
+
+                if(types.Any(x => x.HasAttribute(Constants.VerbAttributeFullName)))
+                {
+                    return ApplicationDocumentation.FromAssemblyDefinition(definition, logger);
+                }
+                else
+                {
+                    return SingleCommandApplicationDocumentation.FromAssemblyDefinition(definition, logger);
+                }
+            }
+        }
+
+
+        
+
     }
 }

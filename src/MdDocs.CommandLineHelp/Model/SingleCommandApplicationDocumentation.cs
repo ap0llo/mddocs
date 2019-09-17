@@ -28,20 +28,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
             Parameters = LoadParameters(definition, logger);
         }
 
-
-        public static SingleCommandApplicationDocumentation FromAssemblyFile(string filePath, ILogger logger)
-        {
-            if (logger is null)
-            {
-                throw new ArgumentNullException(nameof(logger));
-            }
-
-            using (var assemblyDefinition = AssemblyReader.ReadFile(filePath, logger))
-            {
-                return FromAssemblyDefinition(assemblyDefinition, logger);
-            }
-        }
-
+        
         public static SingleCommandApplicationDocumentation FromAssemblyDefinition(AssemblyDefinition definition, ILogger logger) =>
             new SingleCommandApplicationDocumentation(definition, logger ?? throw new ArgumentNullException(nameof(logger)));
 
