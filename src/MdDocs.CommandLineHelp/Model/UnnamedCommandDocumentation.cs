@@ -9,13 +9,13 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
     {
 
         public UnnamedCommandDocumentation(
-            ApplicationDocumentationBase application,
+            ApplicationDocumentation application,
             IEnumerable<OptionDocumentation> options = null,
             IEnumerable<ValueDocumentation> values = null) : base(application, options, values)
         { }
 
 
-        public static UnnamedCommandDocumentation FromTypeDefinition(ApplicationDocumentationBase application, TypeDefinition definition, ILogger logger)
+        public static UnnamedCommandDocumentation FromTypeDefinition(ApplicationDocumentation application, TypeDefinition definition, ILogger logger)
         {
             if (application is null)
                 throw new ArgumentNullException(nameof(application));

@@ -72,7 +72,7 @@ namespace Grynwald.MdDocs
         {
             var logger = new ColoredConsoleLogger(opts.Verbose ? LogLevel.Debug : LogLevel.Information);
 
-            var model = ApplicationDocumentationBase.FromAssemblyFile(opts.AssemblyPath, logger);
+            var model = ApplicationDocumentation.FromAssemblyFile(opts.AssemblyPath, logger);
 
             var pageFactory = new CommandLinePageFactory(model, new DefaultPathProvider(), logger);
             var documentSet = pageFactory.GetPages();

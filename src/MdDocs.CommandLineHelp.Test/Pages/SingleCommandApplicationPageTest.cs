@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
 {
-    class TestAppDocumentation : ApplicationDocumentationBase
+    class TestAppDocumentation : ApplicationDocumentation
     {
         public TestAppDocumentation() : base("TestApp", "1.2.3", Array.Empty<string>())
         {

@@ -10,7 +10,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
     /// <summary>
     /// Represents a application without any-subcommands
     /// </summary>
-    public class SingleCommandApplicationDocumentation : ApplicationDocumentationBase
+    public class SingleCommandApplicationDocumentation : ApplicationDocumentation
     {
         public UnnamedCommandDocumentation Parameters { get; }
 

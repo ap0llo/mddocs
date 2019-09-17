@@ -7,7 +7,7 @@ using Mono.Cecil;
 
 namespace Grynwald.MdDocs.CommandLineHelp.Model
 {
-    public abstract class ApplicationDocumentationBase
+    public abstract class ApplicationDocumentation
     {
         public string Name { get; }
 
@@ -16,7 +16,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
         public IReadOnlyList<string> Usage { get; }
 
 
-        internal ApplicationDocumentationBase(string name, string version = null, IEnumerable<string> usage = null)
+        internal ApplicationDocumentation(string name, string version = null, IEnumerable<string> usage = null)
         {
             if (String.IsNullOrWhiteSpace(name))
             {
@@ -71,7 +71,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
         }
 
 
-        public static ApplicationDocumentationBase FromAssemblyFile(string filePath, ILogger logger)
+        public static ApplicationDocumentation FromAssemblyFile(string filePath, ILogger logger)
         {
             using (var definition = AssemblyReader.ReadFile(filePath, logger))
             {

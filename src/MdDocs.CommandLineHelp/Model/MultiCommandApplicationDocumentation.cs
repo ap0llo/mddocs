@@ -10,7 +10,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
     /// <summary>
     /// Represents a application with multiple subcommands.
     /// </summary>   
-    public sealed class MultiCommandApplicationDocumentation : ApplicationDocumentationBase
+    public sealed class MultiCommandApplicationDocumentation : ApplicationDocumentation
     {
         public IReadOnlyList<CommandDocumentation> Commands { get; }
 
