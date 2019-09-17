@@ -18,7 +18,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
         [Fact]
         public void GetDocument_returns_expected_document_01()
         {
-            var model = new CommandDocumentation(new ApplicationDocumentation("test"), "Command1");
+            var model = new CommandDocumentation(new MultiCommandApplicationDocumentation("test"), "Command1");
 
             Approve(model);
         }
@@ -27,7 +27,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
         public void GetDocument_returns_expected_document_02()
         {
             var model = new CommandDocumentation(
-                application: new ApplicationDocumentation("test"),
+                application: new MultiCommandApplicationDocumentation("test"),
                 name: "Command2",
                 helpText: "This is the help text of command 2"
             );
@@ -39,7 +39,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
         public void GetDocument_returns_expected_document_03()
         {
             var model = new CommandDocumentation(
-                application: new ApplicationDocumentation("test"),
+                application: new MultiCommandApplicationDocumentation("test"),
                 name: "Command2",
                 options: new[]
                 {
@@ -53,7 +53,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
         public void GetDocument_returns_expected_document_04()
         {
             var model = new CommandDocumentation(
-                application: new ApplicationDocumentation("test"),
+                application: new MultiCommandApplicationDocumentation("test"),
                 name: "Command2",
                 options: new[]
                 {
@@ -71,7 +71,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
         public void GetDocument_returns_expected_document_05()
         {
             var model = new CommandDocumentation(
-                application: new ApplicationDocumentation("test"),
+                application: new MultiCommandApplicationDocumentation("test"),
                 name: "Command2",
                 options: new[]
                 {
@@ -86,7 +86,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
         public void GetDocument_returns_expected_document_06()
         {
             var model = new CommandDocumentation(
-                application: new ApplicationDocumentation("test"),
+                application: new MultiCommandApplicationDocumentation("test"),
                 name: "Command2",
                 options: new[]
                 {
@@ -107,7 +107,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
         public void GetDocument_returns_expected_document_07()
         {
             var model = new CommandDocumentation(
-                application: new ApplicationDocumentation("test"),
+                application: new MultiCommandApplicationDocumentation("test"),
                 name: "CommandName",
                 options: new[]
                 {
@@ -134,7 +134,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
         public void GetDocument_returns_expected_document_08()
         {
             var model = new CommandDocumentation(
-                application: new ApplicationDocumentation("test"),
+                application: new MultiCommandApplicationDocumentation("test"),
                 name: "CommandName",
                 options: new[]
                 {
@@ -162,7 +162,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
         public void GetDocument_returns_expected_document_09()
         {
             var model = new CommandDocumentation(
-                application: new ApplicationDocumentation("test"),
+                application: new MultiCommandApplicationDocumentation("test"),
                 name: "CommandName",
                 options: new[]
                 {
@@ -183,7 +183,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
         public void GetDocument_returns_expected_document_10()
         {
             var model = new CommandDocumentation(
-                application: new ApplicationDocumentation("test"),
+                application: new MultiCommandApplicationDocumentation("test"),
                 name: "CommandName",
                 options: new[]
                 {
@@ -207,7 +207,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
         {
             // parameters must be ordered by name / short name
             var model = new CommandDocumentation(
-                application: new ApplicationDocumentation("test"),
+                application: new MultiCommandApplicationDocumentation("test"),
                 name: "CommandName",
                 options: new[]
                 {

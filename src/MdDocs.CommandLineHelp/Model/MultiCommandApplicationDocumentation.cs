@@ -10,18 +10,18 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
     /// <summary>
     /// Represents a application with multiple subcommands.
     /// </summary>   
-    public sealed class ApplicationDocumentation : ApplicationDocumentationBase
+    public sealed class MultiCommandApplicationDocumentation : ApplicationDocumentationBase
     {
         public IReadOnlyList<CommandDocumentation> Commands { get; }
 
 
-        public ApplicationDocumentation(string name, string version = null, IEnumerable<CommandDocumentation> commands = null, IEnumerable<string> usage = null)
+        public MultiCommandApplicationDocumentation(string name, string version = null, IEnumerable<CommandDocumentation> commands = null, IEnumerable<string> usage = null)
             : base(name, version, usage)
         {
             Commands = commands?.OrderBy(x => x.Name)?.ToArray() ?? Array.Empty<CommandDocumentation>();
         }
 
-        private ApplicationDocumentation(AssemblyDefinition definition, ILogger logger): base(
+        private MultiCommandApplicationDocumentation(AssemblyDefinition definition, ILogger logger): base(
                   name: LoadApplicationName(definition ?? throw new ArgumentNullException(nameof(definition))),
                   version: LoadApplicationVersion(definition ?? throw new ArgumentNullException(nameof(definition))),
                   usage: LoadAssemblyUsage(definition))
@@ -34,8 +34,8 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
 
      
 
-        public static ApplicationDocumentation FromAssemblyDefinition(AssemblyDefinition definition, ILogger logger) =>
-            new ApplicationDocumentation(definition, logger);
+        public static MultiCommandApplicationDocumentation FromAssemblyDefinition(AssemblyDefinition definition, ILogger logger) =>
+            new MultiCommandApplicationDocumentation(definition, logger);
 
 
         private IReadOnlyList<CommandDocumentation> LoadCommands(AssemblyDefinition definition, ILogger logger)

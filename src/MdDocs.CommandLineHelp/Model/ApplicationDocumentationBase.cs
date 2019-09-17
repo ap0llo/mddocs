@@ -79,7 +79,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
 
                 if(types.Any(x => x.HasAttribute(Constants.VerbAttributeFullName)))
                 {
-                    return ApplicationDocumentation.FromAssemblyDefinition(definition, logger);
+                    return MultiCommandApplicationDocumentation.FromAssemblyDefinition(definition, logger);
                 }
                 else
                 {

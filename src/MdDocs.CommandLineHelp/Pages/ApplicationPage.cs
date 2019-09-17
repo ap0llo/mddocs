@@ -7,12 +7,12 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
 {
     public class ApplicationPage : IDocument
     {
-        private readonly ApplicationDocumentation m_Model;
+        private readonly MultiCommandApplicationDocumentation m_Model;
         private readonly DocumentSet<IDocument> m_DocumentSet;
         private readonly IPathProvider m_PathProvider;
 
 
-        public ApplicationPage(DocumentSet<IDocument> documentSet, IPathProvider pathProvider, ApplicationDocumentation model)
+        public ApplicationPage(DocumentSet<IDocument> documentSet, IPathProvider pathProvider, MultiCommandApplicationDocumentation model)
         {
             m_DocumentSet = documentSet ?? throw new ArgumentNullException(nameof(documentSet));
             m_PathProvider = pathProvider ?? throw new ArgumentNullException(nameof(pathProvider));

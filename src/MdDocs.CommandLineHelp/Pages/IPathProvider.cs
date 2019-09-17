@@ -6,7 +6,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
     {
         string GetPath(SingleCommandApplicationDocumentation model);
 
-        string GetPath(ApplicationDocumentation model);
+        string GetPath(MultiCommandApplicationDocumentation model);
 
         string GetPath(CommandDocumentation model);
     }

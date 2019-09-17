@@ -16,7 +16,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
 
 
         public CommandDocumentation(
-            ApplicationDocumentation application,
+            MultiCommandApplicationDocumentation application,
             string name,
             string helpText = null,
             bool hidden = false,
@@ -32,7 +32,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
         }
 
 
-        public static CommandDocumentation FromTypeDefinition(ApplicationDocumentation application, TypeDefinition definition, ILogger logger)
+        public static CommandDocumentation FromTypeDefinition(MultiCommandApplicationDocumentation application, TypeDefinition definition, ILogger logger)
         {
             if (application is null)
                 throw new ArgumentNullException(nameof(application));

@@ -26,7 +26,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
         {
             RegisterApplicationPage();
 
-            if(m_Model is ApplicationDocumentation multiCommandApplication)
+            if(m_Model is MultiCommandApplicationDocumentation multiCommandApplication)
             {
                 foreach (var command in multiCommandApplication.Commands)
                 {
@@ -41,7 +41,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
         private void RegisterApplicationPage()
         {
             IDocument page;   
-            if (m_Model is ApplicationDocumentation multiCommandApplication)
+            if (m_Model is MultiCommandApplicationDocumentation multiCommandApplication)
             {
                 m_DocumentSet.Add(
                    m_PathProvider.GetPath(multiCommandApplication),

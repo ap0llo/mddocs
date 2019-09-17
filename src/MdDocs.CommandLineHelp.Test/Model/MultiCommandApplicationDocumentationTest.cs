@@ -9,15 +9,15 @@ using Xunit;
 
 namespace Grynwald.MdDocs.CommandLineHelp.Test.Model
 {
-    public class ApplicationDocumentationTest
+    public class MultiCommandApplicationDocumentationTest
     {
-        private ApplicationDocumentation LoadDocumentation(Assembly assembly = null)
+        private MultiCommandApplicationDocumentation LoadDocumentation(Assembly assembly = null)
         {
             assembly = assembly ?? typeof(Command1Options).Assembly;
 
             using (var definition = AssemblyReader.ReadFile(assembly.Location, NullLogger.Instance))
             {
-                return ApplicationDocumentation.FromAssemblyDefinition(definition, NullLogger.Instance);
+                return MultiCommandApplicationDocumentation.FromAssemblyDefinition(definition, NullLogger.Instance);
             }
         }
 

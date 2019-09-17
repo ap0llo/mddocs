@@ -22,14 +22,14 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Model
         private UnnamedCommandDocumentation LoadDocumentation(Type optionsType)
         {
             var definition = GetTypeDefinition(optionsType);
-            return UnnamedCommandDocumentation.FromTypeDefinition(new ApplicationDocumentation("Test"), definition, NullLogger.Instance);
+            return UnnamedCommandDocumentation.FromTypeDefinition(new MultiCommandApplicationDocumentation("Test"), definition, NullLogger.Instance);
         }
 
 
         [Fact]
         public void FromTypeDefinition_throws_ArgumentException_for_type_definitions_with_Verb_attributes()
         {
-            var application = new ApplicationDocumentation("Test");
+            var application = new MultiCommandApplicationDocumentation("Test");
             var definition = GetTypeDefinition(typeof(Command1Options));
 
             Assert.Throws<ArgumentException>(() => UnnamedCommandDocumentation.FromTypeDefinition(application, definition, NullLogger.Instance));
