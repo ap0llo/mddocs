@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <AssemblyName>DemoProject</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommandLineParser" Version="2.4.3" />
+  </ItemGroup>
+
+  <Target Name="UpdateDocs" DependsOnTargets="Build">
+    <PropertyGroup>
+      <MdDocsPath>$(MSBuildThisFileDirectory)..\MdDocs\Grynwald.MdDocs.csproj</MdDocsPath>
+      <DocsDir>$(MSBuildThisFileDirectory)..\..\docs\commandline-demo</DocsDir>
+    </PropertyGroup>
+    <Exec Command="dotnet run --project &quot;$(MdDocsPath)&quot; -- commandlinehelp  --assembly &quot;$(OutputPath)$(AssemblyName).dll&quot; --outdir &quot;$(DocsDir)&quot;" />
+  </Target>
+
+</Project>
