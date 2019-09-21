@@ -17,11 +17,15 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
     /// </summary>
     public class CommandPage : IDocument
     {
+        private readonly DocumentSet<IDocument> m_DocumentSet;
+        private readonly IPathProvider m_PathProvider;
         private readonly CommandDocumentation m_Command;
 
 
-        public CommandPage(CommandDocumentation model)
+        public CommandPage(DocumentSet<IDocument> documentSet, IPathProvider pathProvider, CommandDocumentation model)
         {
+            m_DocumentSet = documentSet ?? throw new ArgumentNullException(nameof(documentSet));
+            m_PathProvider = pathProvider ?? throw new ArgumentNullException(nameof(pathProvider));
             m_Command = model ?? throw new ArgumentNullException(nameof(model));
         }
 
@@ -34,8 +38,8 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
             return new MdDocument()
                 // Heading
                 .Add(new MdHeading(1, new MdCompositeSpan(new MdCodeSpan(m_Command.Name), " Command")))
-                // Application version
-                .Add(new ApplicationVersionBlock(m_Command.Application))
+                // add application info
+                .Add(GetApplicationInfo())
                 // Help text
                 .AddIf(!String.IsNullOrEmpty(m_Command.HelpText), () => new MdParagraph(m_Command.HelpText))
                 // Usage
@@ -44,6 +48,30 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
                 .AddIf(m_Command.Parameters.Count > 0, () => new CommandParametersSection(m_Command))
                 // Footer
                 .Add(new PageFooter());
+        }
+
+
+        private MdBlock GetApplicationInfo()
+        {
+            var applicationPage = m_DocumentSet[m_PathProvider.GetPath(m_Command.Application)];
+            var link = m_DocumentSet.GetLink(this, applicationPage, m_Command.Application.Name);
+
+            var span = new MdCompositeSpan()
+            {
+                new MdStrongEmphasisSpan("Application:"),
+                " ",
+                link
+            };
+
+            if (!String.IsNullOrEmpty(m_Command.Application.Version))
+            {
+                span.Add(new MdRawMarkdownSpan("\r\n"));
+                span.Add(new MdStrongEmphasisSpan("Version:"));
+                span.Add(" ");
+                span.Add(m_Command.Application.Version);
+            }
+
+            return new MdParagraph(span);
         }
     }
 }

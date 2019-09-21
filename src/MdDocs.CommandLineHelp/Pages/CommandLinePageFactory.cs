@@ -59,6 +59,6 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
         }
 
         private void RegisterCommandPage(CommandDocumentation command) =>
-            m_DocumentSet.Add(m_PathProvider.GetPath(command), new CommandPage(command));
+            m_DocumentSet.Add(m_PathProvider.GetPath(command), new CommandPage(m_DocumentSet, m_PathProvider, command));
     }
 }

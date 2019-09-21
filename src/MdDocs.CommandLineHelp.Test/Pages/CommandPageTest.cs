@@ -221,7 +221,17 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
 
         private void Approve(CommandDocumentation model)
         {
-            var commandPage = new CommandPage(model);
+            var pathProvider = new DefaultPathProvider();
+            var documentSet = new DocumentSet<IDocument>();
+
+            var commandPage = new CommandPage(documentSet, pathProvider, model);
+
+            // add dummy application page and command page itself to document set
+            // because command page will create a link to the application page
+            // which would fail otherwise
+            documentSet.Add(pathProvider.GetPath(model.Application), new TextDocument());
+            documentSet.Add(pathProvider.GetPath(model), commandPage);
+
             var doc = commandPage.GetDocument();
 
             Assert.NotNull(doc);
