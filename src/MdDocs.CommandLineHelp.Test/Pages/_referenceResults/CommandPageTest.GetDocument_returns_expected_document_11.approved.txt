@@ -1,5 +1,7 @@
 ﻿# `CommandName` Command
 
+**Version:** 1.2.3
+
 ## Usage
 
 ```

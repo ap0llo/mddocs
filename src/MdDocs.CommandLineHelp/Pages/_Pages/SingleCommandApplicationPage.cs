@@ -41,7 +41,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
 
                 // Application name and version
                 .Add(new MdHeading(1, $"{m_Model.Name} Command Line Reference"))
-                .AddIf(!String.IsNullOrEmpty(m_Model.Version), new MdParagraph(new MdStrongEmphasisSpan("Version:"), " ", m_Model.Version))
+                .Add(new ApplicationVersionBlock(m_Model))
 
                 // Usage (data from ApplicationUsage attribute)
                 .AddIf(m_Model.Usage.Count > 0, new MdHeading(2, "Usage"))

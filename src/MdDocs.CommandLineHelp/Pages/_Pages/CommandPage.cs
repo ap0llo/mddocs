@@ -34,6 +34,8 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
             return new MdDocument()
                 // Heading
                 .Add(new MdHeading(1, new MdCompositeSpan(new MdCodeSpan(m_Command.Name), " Command")))
+                // Application version
+                .Add(new ApplicationVersionBlock(m_Command.Application))
                 // Help text
                 .AddIf(!String.IsNullOrEmpty(m_Command.HelpText), () => new MdParagraph(m_Command.HelpText))
                 // Usage
