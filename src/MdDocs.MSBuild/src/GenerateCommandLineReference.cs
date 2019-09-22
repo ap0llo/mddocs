@@ -1,34 +1,23 @@
-﻿using System;
-using Grynwald.MdDocs.CommandLineHelp.Model;
+﻿using Grynwald.MdDocs.CommandLineHelp.Model;
 using Grynwald.MdDocs.CommandLineHelp.Pages;
-using Microsoft.Build.Framework;
-using Microsoft.Build.Utilities;
 
 namespace Grynwald.MdDocs.MSBuild
 {
-    public sealed class GenerateCommandLineReference : Task
+    public sealed class GenerateCommandLineReference : TaskBase
     {
-        [Required]
-        public ITaskItem Assembly { get; set; }
-
-        [Required]
-        public ITaskItem OutputDirectory { get; set; }
-
-
         public override bool Execute()
         {
-            var assemblyPath = Assembly.GetFullPath();
-            var outputDirectory = OutputDirectory.GetFullPath();
-            var logger = new MSBuildLogger(Log);
+            if (!ValidateParameters())
+                return false;
 
-            var model = ApplicationDocumentation.FromAssemblyFile(assemblyPath, logger);
+            var model = ApplicationDocumentation.FromAssemblyFile(AssemblyPath, Logger);
 
-            var pageFactory = new CommandLinePageFactory(model, new DefaultPathProvider(), logger);
+            var pageFactory = new CommandLinePageFactory(model, new DefaultPathProvider(), Logger);
             var documentSet = pageFactory.GetPages();
 
-            documentSet.Save(outputDirectory, cleanOutputDirectory: true);
+            documentSet.Save(OutputDirectoryPath, cleanOutputDirectory: true);
 
-            return !Log.HasLoggedErrors;
+            return Log.HasLoggedErrors == false;
         }
     }
 }

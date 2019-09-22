@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Grynwald.MdDocs.ApiReference.Pages
 {
+    //TODO: Use DocumentSet
     public class PageFactory
     {
         private readonly string m_RootOutputPath;
