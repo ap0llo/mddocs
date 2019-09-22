@@ -19,8 +19,8 @@ namespace Grynwald.MdDocs.ApiReference.Pages
         public override OutputPath OutputPath { get; }
 
 
-        public TypePage(PageFactory pageFactory, string rootOutputPath, TypeDocumentation model, ILogger logger)
-            : base(pageFactory, rootOutputPath, model)
+        public TypePage(ILinkProvider linkProvider, PageFactory pageFactory, string rootOutputPath, TypeDocumentation model, ILogger logger)
+            : base(linkProvider, pageFactory, rootOutputPath, model)
         {
             m_Logger = logger ?? throw new ArgumentNullException(nameof(logger));
             RelativeOutputPath = Path.Combine(GetTypeDirRelative(Model), "Type.md");

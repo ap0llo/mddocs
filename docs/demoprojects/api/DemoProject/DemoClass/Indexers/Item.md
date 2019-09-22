@@ -42,7 +42,7 @@ For overloaded members, there is a separate "Remarks" section for every overload
 
 ### See Also
 
-- Item\[int\]
+- [Item\[int\]](#itemint)
 
 ## Item\[int\]
 
@@ -89,7 +89,7 @@ var value = instance[42];
 
 ### See Also
 
-- Item\[int, int\]
+- [Item\[int, int\]](#itemint-int)
 
 ## Item\[object\]
 

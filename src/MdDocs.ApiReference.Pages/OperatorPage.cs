@@ -13,8 +13,8 @@ namespace Grynwald.MdDocs.ApiReference.Pages
         public override OutputPath OutputPath { get; }
 
 
-        public OperatorPage(PageFactory pageFactory, string rootOutputPath, OperatorDocumentation model, ILogger logger)
-            : base(pageFactory, rootOutputPath, model, logger)
+        public OperatorPage(ILinkProvider linkProvider, PageFactory pageFactory, string rootOutputPath, OperatorDocumentation model, ILogger logger)
+            : base(linkProvider, pageFactory, rootOutputPath, model, logger)
         {
             RelativeOutputPath = Path.Combine(GetTypeDirRelative(Model.TypeDocumentation), "Operators", $"{Model.Kind}.md");
             OutputPath = new OutputPath(GetTypeDir(Model.TypeDocumentation), "Operators", $"{Model.Kind}.md");

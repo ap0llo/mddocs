@@ -17,8 +17,8 @@ namespace Grynwald.MdDocs.ApiReference.Pages
         public override OutputPath OutputPath { get; }
 
 
-        public NamespacePage(PageFactory pageFactory, string rootOutputPath, NamespaceDocumentation model, ILogger logger)
-            : base(pageFactory, rootOutputPath, model)
+        public NamespacePage(ILinkProvider linkProvider, PageFactory pageFactory, string rootOutputPath, NamespaceDocumentation model, ILogger logger)
+            : base(linkProvider, pageFactory, rootOutputPath, model)
         {
             RelativeOutputPath = Path.Combine(GetNamespaceDirRelative(Model), "Namespace.md");
             OutputPath = new OutputPath(GetNamespaceDir(Model), "Namespace.md");

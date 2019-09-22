@@ -12,8 +12,8 @@ namespace Grynwald.MdDocs.ApiReference.Pages
         public override OutputPath OutputPath { get; }
 
 
-        public PropertyPage(PageFactory pageFactory, string rootOutputPath, PropertyDocumentation model, ILogger logger)
-            : base(pageFactory, rootOutputPath, model, logger)
+        public PropertyPage(ILinkProvider linkProvider, PageFactory pageFactory, string rootOutputPath, PropertyDocumentation model, ILogger logger)
+            : base(linkProvider, pageFactory, rootOutputPath, model, logger)
         {
             RelativeOutputPath = Path.Combine(GetTypeDirRelative(Model.TypeDocumentation), "Properties", $"{Model.Name}.md");
             OutputPath = new OutputPath(Path.Combine(GetTypeDir(Model.TypeDocumentation), "Properties", $"{Model.Name}.md"));

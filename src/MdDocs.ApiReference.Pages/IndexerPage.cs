@@ -12,8 +12,8 @@ namespace Grynwald.MdDocs.ApiReference.Pages
         public override OutputPath OutputPath { get; }
 
 
-        public IndexerPage(PageFactory pageFactory, string rootOutputPath, IndexerDocumentation model, ILogger logger)
-            : base(pageFactory, rootOutputPath, model, logger)
+        public IndexerPage(ILinkProvider linkProvider, PageFactory pageFactory, string rootOutputPath, IndexerDocumentation model, ILogger logger)
+            : base(linkProvider, pageFactory, rootOutputPath, model, logger)
         {
             RelativeOutputPath = Path.Combine(GetTypeDirRelative(Model.TypeDocumentation), "Indexers", $"{Model.Name}.md");
             OutputPath = new OutputPath(GetTypeDir(Model.TypeDocumentation), "Indexers", $"{Model.Name}.md");

@@ -1,4 +1,5 @@
-﻿using Grynwald.MdDocs.ApiReference.Model;
+﻿using Grynwald.MarkdownGenerator;
+using Grynwald.MdDocs.ApiReference.Model;
 
 namespace Grynwald.MdDocs.ApiReference.Pages
 {
@@ -9,15 +10,16 @@ namespace Grynwald.MdDocs.ApiReference.Pages
     {
         private readonly IDocumentation m_Model;
         private readonly PageFactory m_PageFactory;
+        private readonly DocumentSet<IDocument> m_DocumentSet;
 
-        public InternalLinkProvider(IDocumentation model, PageFactory pageFactory)
+        public InternalLinkProvider(IDocumentation model, PageFactory pageFactory, DocumentSet<IDocument> documentSet)
         {
             m_Model = model;
             m_PageFactory = pageFactory;
+            m_DocumentSet = documentSet;
         }
 
-        ///<inheritdoc />
-        public bool TryGetLink(MemberId id, out Link link)
+        public bool TryGetLink(IDocument from, MemberId id, out Link link)
         {
             var modelItem = m_Model.TryGetDocumentation(id);
 
@@ -35,13 +37,15 @@ namespace Grynwald.MdDocs.ApiReference.Pages
                 return false;
             }
 
+            var relativePath = m_DocumentSet.GetRelativePath(from, page);
+
             if (page.TryGetAnchor(id, out var anchor))
             {
-                link = new Link(page.OutputPath, anchor);
+                link = new Link(relativePath, anchor);
             }
             else
             {
-                link = new Link(page.OutputPath);
+                link = new Link(relativePath);
             }
 
             return true;

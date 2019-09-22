@@ -22,13 +22,13 @@ namespace Grynwald.MdDocs.ApiReference.Pages
         protected TModel Model { get; }
 
 
-        public PageBase(PageFactory pageFactory, string rootOutputPath, TModel model)
+        public PageBase(ILinkProvider linkProvider, PageFactory pageFactory, string rootOutputPath, TModel model)
         {
             PageFactory = pageFactory ?? throw new ArgumentNullException(nameof(pageFactory));
             m_RootOutputPath = rootOutputPath ?? throw new ArgumentNullException(nameof(rootOutputPath));
             Model = model ?? throw new ArgumentNullException(nameof(model));
 
-            m_LinkProvider = new CompositeLinkProvider(new InternalLinkProvider(model, pageFactory));
+            m_LinkProvider = linkProvider ?? throw new ArgumentNullException(nameof(linkProvider));
         }
 
 
@@ -79,9 +79,9 @@ namespace Grynwald.MdDocs.ApiReference.Pages
         {
             // try to generate a link to the target but avoid self-links
 
-            if (m_LinkProvider.TryGetLink(target, out var link))
+            if (m_LinkProvider.TryGetLink(this, target, out var link))
             {
-                if (OutputPath.Equals(link.Path))
+                if (String.IsNullOrEmpty(link.RelativePath))
                 {
                     // link in same file, but there is an anchor => link to anchor
                     if (link.HasAnchor)
@@ -89,12 +89,10 @@ namespace Grynwald.MdDocs.ApiReference.Pages
                 }
                 // link to different file and link has an anchor
                 else
-                {
-                    var relativePath = OutputPath.GetRelativePathTo(link.Path);
-
+                {                    
                     return link.HasAnchor
-                        ? new MdLinkSpan(text, relativePath + "#" + link.Anchor)
-                        : new MdLinkSpan(text, relativePath);
+                        ? new MdLinkSpan(text, link.RelativePath + "#" + link.Anchor)
+                        : new MdLinkSpan(text, link.RelativePath);
                 }
             }
 

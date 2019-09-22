@@ -1,4 +1,5 @@
 ﻿using System;
+using Grynwald.MarkdownGenerator;
 using Grynwald.MdDocs.ApiReference.Model;
 
 namespace Grynwald.MdDocs.ApiReference.Pages
@@ -13,12 +14,12 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             m_InnerProviders = innerProviders ?? throw new ArgumentNullException(nameof(innerProviders));
         }
 
-
-        public bool TryGetLink(MemberId id, out Link link)
+        
+        public bool TryGetLink(IDocument from, MemberId id, out Link link)
         {
             foreach (var provider in m_InnerProviders)
             {
-                if (provider.TryGetLink(id, out link))
+                if (provider.TryGetLink(from, id, out link))
                     return true;
             }
 

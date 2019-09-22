@@ -64,45 +64,47 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 
         private void LoadPages()
         {
+            var linkProvider = new CompositeLinkProvider(new InternalLinkProvider(m_Model, this, m_DocumentSet));
+
             m_Logger.LogInformation("Loading pages");
 
             foreach (var @namespace in m_Model.MainModuleDocumentation.Namespaces)
             {
-                var page = new NamespacePage(this, m_RootOutputPath, @namespace, m_Logger);
+                var page = new NamespacePage(linkProvider, this, m_RootOutputPath, @namespace, m_Logger);
                 m_Pages.Add(@namespace, page);
                 m_DocumentSet.Add(page.RelativeOutputPath, page);
             }
 
             foreach (var type in m_Model.MainModuleDocumentation.Types)
             {
-                var typePage = new TypePage(this, m_RootOutputPath, type, m_Logger);
+                var typePage = new TypePage(linkProvider, this, m_RootOutputPath, type, m_Logger);
                 m_Pages.Add(type, typePage);
                 m_DocumentSet.Add(typePage.RelativeOutputPath, typePage);
 
                 foreach (var property in type.Properties)
                 {
-                    var page = new PropertyPage(this, m_RootOutputPath, property, m_Logger);
+                    var page = new PropertyPage(linkProvider, this, m_RootOutputPath, property, m_Logger);
                     m_Pages.Add(property, page);
                     m_DocumentSet.Add(page.RelativeOutputPath, page);
                 }
 
                 foreach (var indexer in type.Indexers)
                 {
-                    var page = new IndexerPage(this, m_RootOutputPath, indexer, m_Logger);
+                    var page = new IndexerPage(linkProvider, this, m_RootOutputPath, indexer, m_Logger);
                     m_Pages.Add(indexer, page);
                     m_DocumentSet.Add(page.RelativeOutputPath, page);
                 }
 
                 if (type.Constructors != null)
                 {
-                    var page = new ConstructorsPage(this, m_RootOutputPath, type.Constructors, m_Logger);
+                    var page = new ConstructorsPage(linkProvider, this, m_RootOutputPath, type.Constructors, m_Logger);
                     m_Pages.Add(type.Constructors, page);
                     m_DocumentSet.Add(page.RelativeOutputPath, page);
                 }
 
                 foreach (var method in type.Methods)
                 {
-                    var page = new MethodPage(this, m_RootOutputPath, method, m_Logger);
+                    var page = new MethodPage(linkProvider, this, m_RootOutputPath, method, m_Logger);
                     m_Pages.Add(method, page);
                     m_DocumentSet.Add(page.RelativeOutputPath, page);
                 }
@@ -111,7 +113,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
                 {
                     foreach (var field in type.Fields)
                     {
-                        var page = new FieldPage(this, m_RootOutputPath, field, m_Logger);
+                        var page = new FieldPage(linkProvider, this, m_RootOutputPath, field, m_Logger);
                         m_Pages.Add(field, page);
                         m_DocumentSet.Add(page.RelativeOutputPath, page);
                     }
@@ -119,14 +121,14 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 
                 foreach (var ev in type.Events)
                 {
-                    var page = new EventPage(this, m_RootOutputPath, ev, m_Logger);
+                    var page = new EventPage(linkProvider, this, m_RootOutputPath, ev, m_Logger);
                     m_Pages.Add(ev, page);
                     m_DocumentSet.Add(page.RelativeOutputPath, page);
                 }
 
                 foreach (var op in type.Operators)
                 {
-                    var page = new OperatorPage(this, m_RootOutputPath, op, m_Logger);
+                    var page = new OperatorPage(linkProvider, this, m_RootOutputPath, op, m_Logger);
                     m_Pages.Add(op, page);
                     m_DocumentSet.Add(page.RelativeOutputPath, page);
                 }

@@ -7,10 +7,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
     /// </summary>
     internal class Link
     {
-        /// <summary>
-        /// Gets the link's target as absolute path.
-        /// </summary>
-        public string Path { get; }
+        public string RelativePath { get; }
 
         /// <summary>
         /// Gets the anchor of the link target within the target path. Can be <c>null</c>.
@@ -29,7 +26,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 
         public Link(string path, string anchor)
         {
-            Path = path;
+            RelativePath = path;
             Anchor = anchor;
         }
     }
