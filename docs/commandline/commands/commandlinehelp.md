@@ -1,7 +1,7 @@
 # `commandlinehelp` Command
 
 **Application:** [mddocs](../commandline.md)  
-**Version:** 0.1.194\-pre+e0631658d6
+**Version:** 0.1.197\-pre+ee449ffc5d
 
 Generate command line help for .NET console application implemented using the 'CommandLineParser' package
 
