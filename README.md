@@ -2,9 +2,12 @@
 
 ## Overview
 
-[![NuGet](https://img.shields.io/nuget/v/Grynwald.MdDocs.svg)](https://www.nuget.org/packages/Grynwald.MdDocs)
-[![MyGet](https://img.shields.io/myget/ap0llo-mddocs/vpre/Grynwald.MdDocs.svg?label=myget)](https://www.myget.org/feed/ap0llo-mddocs/package/nuget/Grynwald.MdDocs)
 [![Build Status](https://dev.azure.com/ap0llo/OSS/_apis/build/status/mddocs?branchName=master)](https://dev.azure.com/ap0llo/OSS/_build/latest?definitionId=11&branchName=master)
+
+| Package                   | NuGet.org                                                                                                                      | MyGet                                                                                                                                                                               |
+|---------------------------|--------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `Grynwald.MdDocs`         | [![NuGet](https://img.shields.io/nuget/v/Grynwald.MdDocs.svg)](https://www.nuget.org/packages/Grynwald.MdDocs)                 | [![MyGet](https://img.shields.io/myget/ap0llo-mddocs/vpre/Grynwald.MdDocs.svg?label=myget)](https://www.myget.org/feed/ap0llo-mddocs/package/nuget/Grynwald.MdDocs)                 |
+| `Grynwald.MdDocs.MSBuild` | [![NuGet](https://img.shields.io/nuget/v/Grynwald.MdDocs.MSBuild.svg)](https://www.nuget.org/packages/Grynwald.MdDocs.MSBuild) | [![MyGet](https://img.shields.io/myget/ap0llo-mddocs/vpre/Grynwald.MdDocs.MSBuild.svg?label=myget)](https://www.myget.org/feed/ap0llo-mddocs/package/nuget/Grynwald.MdDocs.MSBuild) |
 
 *MdDocs* is a tool to generate documentation in the form of Markdown documents.
 It currently supports:
@@ -19,22 +22,39 @@ For an example of what the output looks like, have a look at the [demoprojects](
 
 ## Installation
 
-*MdDocs* is a .NET Core tool distributed as NuGet package.
+*MdDocs* is a distributed as NuGet packages.
 
 - Prerelease builds are available on [MyGet](https://www.myget.org/feed/ap0llo-mddocs/package/nuget/Grynwald.Utilities)
 - Release versions are available on [NuGet.org](https://www.nuget.org/packages/Grynwald.MdDocs)
 
-To install the tool globally, run
+MdDocs can be used either as .NET Core (global) tool or integrated into
+the project build as a set of MSBuild targets.
+
+### Installing the .NET Core Tool
+
+The package `Grynwald.MdDocs` provides MdDocs as a .NET Core (global) tool.
+To install it, run
 
 ```ps1
 dotnet tool install --global Grynwald.MdDocs
 ```
 
+### Installing MSBuild integration
+
+The package `Grynwald.MdDocs.MSBuild` provides allows generating documentation
+as part of the build process. To install the package, run
+
+```ps1
+dotnet add package Grynwald.MdDocs.MSBuild
+```
+
 ## Usage
+
+### .NET Core Tool
 
 See also: [Command Line Reference](docs/commandline/commandline.md)
 
-## API Reference
+#### API Reference
 
 To generate API reference documentation for a .NET assembly, run:
 
@@ -45,11 +65,10 @@ mddocs apireference --assembly <PATH-TO-ASSEMBLY> --outdir <OUTPUT-DIRECTORY>
 **Note:** If the output directory already exists, all files in the output
 directory will be deleted.
 
-
 For an example of what the output looks like, have a look at the
 [demo project](docs/demoprojects/api/DemoProject/Namespace.md).
 
-## Command Line Help
+#### Command Line Help
 
 To generate command line help for .NET console application implemented using
 the [CommandLineParser package](https://www.nuget.org/packages/CommandLineParser/),
@@ -64,6 +83,45 @@ directory will be deleted.
 
 For an example of what the output looks like, have a look at the
 [demo project](docs/demoprojects/commandline/commandline.md).
+
+### MSBuild-integrated
+
+When the MSBuild package is installed, documentation can be generated
+by running the appropriate MSBuild targets. Optionally, the targets
+can eb configured to automatically generate documentation when the
+project is built.
+
+#### API Reference
+
+To generate API reference for a project, run
+
+```ps1
+dotnet msbuild <PROJECT> /t:GenerateApiReferenceDocumentation
+```
+
+By default, the API reference will be saved to `$(OutputPath)docs/api/`.
+The output path can be customized by setting the MSBuild property
+`ApiReferenceDocumentationOutputPath`.
+
+To automatically generate API documentation when the project is built,
+set the property `GenerateApiReferenceDocumentationOnBuild` to `true`
+(default: `false`).
+
+#### Command Line Help
+
+To generate command line documentation for a project, run
+
+```ps1
+dotnet msbuild <PROJECT> /t:GenerateCommandLineDocumentation
+```
+
+By default, documentation will be saved to `>$(OutputPath)docs/commandline/`.
+The output path can be customized by setting the MSBuild property
+`CommandLineDocumentationOutputPath`.
+
+To automatically generate command line documentation when the project is built,
+set the property `GenerateCommandLineDocumentationOnBuild` to `true`
+(default: `false`).
 
 ## Building from source
 
