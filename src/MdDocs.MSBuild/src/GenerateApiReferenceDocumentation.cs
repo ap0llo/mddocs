@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Grynwald.MdDocs.MSBuild
 {
-    public sealed class GenerateApiReference : TaskBase
+    public sealed class GenerateApiReferenceDocumentation : TaskBase
     {
         public override bool Execute()
         {

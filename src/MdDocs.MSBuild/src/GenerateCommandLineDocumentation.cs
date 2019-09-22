@@ -3,7 +3,7 @@ using Grynwald.MdDocs.CommandLineHelp.Pages;
 
 namespace Grynwald.MdDocs.MSBuild
 {
-    public sealed class GenerateCommandLineReference : TaskBase
+    public sealed class GenerateCommandLineDocumentation : TaskBase
     {
         public override bool Execute()
         {

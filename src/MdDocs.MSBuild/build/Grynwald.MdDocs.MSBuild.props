@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   
-  <UsingTask AssemblyFile="$(MdDocsTasksPath)" TaskName="Grynwald.MdDocs.MSBuild.GenerateApiReference"/>
-  <UsingTask AssemblyFile="$(MdDocsTasksPath)" TaskName="Grynwald.MdDocs.MSBuild.GenerateCommandLineReference"/>
+  <UsingTask AssemblyFile="$(MdDocsTasksPath)" TaskName="Grynwald.MdDocs.MSBuild.GenerateApiReferenceDocumentation"/>
+  <UsingTask AssemblyFile="$(MdDocsTasksPath)" TaskName="Grynwald.MdDocs.MSBuild.GenerateCommandLineDocumentation"/>
   
 </Project>
