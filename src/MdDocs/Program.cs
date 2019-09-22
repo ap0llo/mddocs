@@ -5,6 +5,8 @@ using System.Linq;
 using CommandLine;
 using Grynwald.MdDocs.ApiReference.Model;
 using Grynwald.MdDocs.ApiReference.Pages;
+using Grynwald.MdDocs.CommandLineHelp.Model;
+using Grynwald.MdDocs.CommandLineHelp.Pages;
 using Microsoft.Extensions.Logging;
 
 namespace Grynwald.MdDocs
@@ -22,20 +24,13 @@ namespace Grynwald.MdDocs
 
             // Parser needs at least two option classes, otherwise it
             // will not include the verb for the commands in the help output.
-            // After adding a real second command, DummyOptions can be removed
             return parser
-                .ParseArguments<ApiReferenceOptions, DummyOptions>(args)
+                .ParseArguments<ApiReferenceOptions, CommandLineHelpOptions>(args)
                 .MapResult(
-                    (ApiReferenceOptions opts) => OnApiReferenceCommand(opts),
-                    (DummyOptions opts) => OnDummyCommand(),
-                    (IEnumerable<Error> errors) => OnError(errors));
-        }
-
-        private static int OnDummyCommand()
-        {
-            Console.Error.WriteLine("Invalid arguments.");
-            return -1;
-        }
+                    (ApiReferenceOptions opts) => OnApiReferenceCommand(GetLogger(opts), opts),
+                    (CommandLineHelpOptions opts) => OnCommandLineHelpCommand(GetLogger(opts), opts),
+                    (IEnumerable<Error> errors) => OnError(errors)); ;
+        }      
 
         private static int OnError(IEnumerable<Error> errors)
         {
@@ -53,9 +48,8 @@ namespace Grynwald.MdDocs
             }
         }
 
-        private static int OnApiReferenceCommand(ApiReferenceOptions opts)
+        private static int OnApiReferenceCommand(ILogger logger, ApiReferenceOptions opts)
         {
-            var logger = new ColoredConsoleLogger(opts.Verbose ? LogLevel.Debug : LogLevel.Information);
 
             if (Directory.Exists(opts.OutputDirectory))
             {
@@ -71,5 +65,20 @@ namespace Grynwald.MdDocs
 
             return 0;
         }
+
+
+        private static int OnCommandLineHelpCommand(ILogger logger, CommandLineHelpOptions opts)
+        {
+            var model = ApplicationDocumentation.FromAssemblyFile(opts.AssemblyPath, logger);
+
+            var pageFactory = new CommandLinePageFactory(model, new DefaultPathProvider(), logger);
+            var documentSet = pageFactory.GetPages();
+
+            documentSet.Save(opts.OutputDirectory, cleanOutputDirectory: true);
+
+            return 0;
+        }
+
+        private static ILogger GetLogger(OptionsBase opts) => new ColoredConsoleLogger(opts.Verbose ? LogLevel.Debug : LogLevel.Information);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using Grynwald.MdDocs.ApiReference.Model.XmlDocs;
+using Grynwald.MdDocs.Common.Model;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Mono.Cecil;
@@ -63,14 +64,8 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// <returns>Returns a new instance of <see cref="AssemblyDocumentation"/> that provides documentation for the specified assembly.</returns>
         public static AssemblyDocumentation FromFile(string filePath, ILogger logger)
         {
-            var dir = Path.GetDirectoryName(filePath);
-
-            var assemblyResolver = new DefaultAssemblyResolver();
-            assemblyResolver.AddSearchDirectory(dir);
-
             // load assembly
-            logger.LogInformation($"Loading assembly from '{filePath}'");
-            var assemblyDefinition = AssemblyDefinition.ReadAssembly(filePath, new ReaderParameters() { AssemblyResolver = assemblyResolver });
+            var assemblyDefinition = AssemblyReader.ReadFile(filePath, logger);
 
             // loads XML documentation comments if the documentation file exists
             IXmlDocsProvider xmlDocsProvider;

@@ -56,6 +56,12 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             {
                 info.AddValue($"parameter{i}", new XunitSerializableTypeId(MethodId.Parameters[i]));
             }
+
+            // ReturnType is optional and might be null
+            if (MethodId.ReturnType != null)
+            {
+                info.AddValue(nameof(MethodId.ReturnType), new XunitSerializableTypeId(MethodId.ReturnType));
+            }
         }
 
         public static implicit operator MethodId(XunitSerializableMethodId serializable) => serializable?.MethodId;

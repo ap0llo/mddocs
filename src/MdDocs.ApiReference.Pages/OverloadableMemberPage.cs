@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using Grynwald.MarkdownGenerator;
 using Grynwald.MdDocs.ApiReference.Model;
+using Grynwald.MdDocs.Common.Pages;
 using Grynwald.Utilities.Collections;
 using Microsoft.Extensions.Logging;
 
@@ -56,7 +57,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
                 }
             }
 
-            AddFooter(document.Root);
+            document.Root.Add(new PageFooter());
 
             Directory.CreateDirectory(Path.GetDirectoryName(OutputPath));
             document.Save(OutputPath);

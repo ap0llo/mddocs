@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using Grynwald.MarkdownGenerator;
 using Grynwald.MdDocs.ApiReference.Model;
+using Grynwald.MdDocs.Common.Pages;
 using Microsoft.Extensions.Logging;
 
 using static Grynwald.MarkdownGenerator.FactoryMethods;
@@ -48,7 +49,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             AddTypeTable(document.Root, "Interfaces", Model.Types.Where(x => x.Kind == TypeKind.Interface));
             AddTypeTable(document.Root, "Enums", Model.Types.Where(x => x.Kind == TypeKind.Enum));            
 
-            AddFooter(document.Root);
+            document.Root.Add(new PageFooter());
 
             Directory.CreateDirectory(Path.GetDirectoryName(OutputPath));
             document.Save(OutputPath);

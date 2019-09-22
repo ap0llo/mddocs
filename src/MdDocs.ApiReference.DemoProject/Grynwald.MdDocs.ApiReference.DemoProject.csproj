@@ -1,11 +1,30 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
     <AssemblyName>DemoProject</AssemblyName>
     <RootNamespace>DemoProject</RootNamespace>
     <DocumentationFile>$(AssemblyName).xml</DocumentationFile>
     <IsPackable>false</IsPackable>
+    <AssemblyVersion>1.2.3</AssemblyVersion>
+    <Version>1.2.3</Version>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Remove="Nerdbank.GitVersioning" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MdDocs\Grynwald.MdDocs.csproj" />
+  </ItemGroup>
+
+
+  <Target Name="UpdateDocs" AfterTargets="AfterBuild" DependsOnTargets="GetTargetPath">
+    <PropertyGroup>
+      <MdDocsPath>$(MSBuildThisFileDirectory)..\MdDocs\Grynwald.MdDocs.csproj</MdDocsPath>
+      <DocsDir>$(MSBuildThisFileDirectory)..\..\docs\demoprojects\api</DocsDir>
+    </PropertyGroup>
+    <Exec Command="dotnet run --no-build --project &quot;$(MdDocsPath)&quot; -- apireference  --assembly &quot;@(TargetPathWithTargetPlatformMoniker->'%(FullPath)')&quot; --outdir &quot;$(DocsDir)&quot;" />
+  </Target>
 
 </Project>

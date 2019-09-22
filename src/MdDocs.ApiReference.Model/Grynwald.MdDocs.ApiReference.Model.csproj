@@ -5,20 +5,23 @@
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
-  <ItemGroup>
+  <ItemGroup Label="Package references">
     <PackageReference Include="Grynwald.Utilities" Version="1.5.6-pre" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.2.0" />
-    <PackageReference Include="Mono.Cecil" Version="0.10.3" />
+    <PackageReference Include="Mono.Cecil" Version="0.11.0" />
   </ItemGroup>
 
-  <ItemGroup>
+  <ItemGroup Label="Project references">
+    <ProjectReference Include="..\MdDocs.Common\Grynwald.MdDocs.Common.csproj" />
+  </ItemGroup>
+  
+  <ItemGroup Label="Assembly attributes">
     <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
       <_Parameter1>$(MSBuildProjectName).Test</_Parameter1>
     </AssemblyAttribute>
     <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
       <_Parameter1>Grynwald.MdDocs.ApiReference.Pages.Test</_Parameter1>
-    </AssemblyAttribute>
-      
+    </AssemblyAttribute>      
   </ItemGroup>
 
 </Project>
