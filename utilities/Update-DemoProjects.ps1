@@ -7,7 +7,7 @@ if($null -eq $dotnetCommand) {
 }
 
 $demoProjects = @(
-    #(Join-Path $repoRoot "src\MdDocs.ApiReference.DemoProject\Grynwald.MdDocs.ApiReference.DemoProject.csproj"),
+    (Join-Path $repoRoot "src\MdDocs.ApiReference.DemoProject\Grynwald.MdDocs.ApiReference.DemoProject.csproj"),
     (Join-Path $repoRoot "src\MdDocs.CommandLineHelp.DemoProject\Grynwald.MdDocs.CommandLineHelp.DemoProject.csproj")
 )
 

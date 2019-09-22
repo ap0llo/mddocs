@@ -20,17 +20,17 @@ public string this[int x, int y] { get; }
 
 ### Parameters
 
-`x`  Int32
+`x`  int
 
 Description of parameter `x` provided using the `param` element.
 
-`y`  Int32
+`y`  int
 
 Description of parameter `y` provided using the `param` element.
 
 ### Indexer Value
 
-String
+string
 
 The tag `value` allows specifying the value a indexer represents
 
@@ -54,13 +54,13 @@ public string this[int index] { get; }
 
 ### Parameters
 
-`index`  Int32
+`index`  int
 
 Description of parameter `index` provided using the `param` element.
 
 ### Indexer Value
 
-String
+string
 
 The tag `value` allows specifying the value a indexer represents
 
@@ -104,11 +104,11 @@ public string this[object arg] { get; }
 
 ### Parameters
 
-`arg`  Object
+`arg`  object
 
 ### Indexer Value
 
-String
+string
 
 ### Remarks
 

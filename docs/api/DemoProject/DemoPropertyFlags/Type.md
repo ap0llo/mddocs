@@ -16,7 +16,7 @@ public enum DemoPropertyFlags
 }
 ```
 
-**Inheritance:** Object → ValueType → Enum → DemoPropertyFlags
+**Inheritance:** object → ValueType → Enum → DemoPropertyFlags
 
 **Attributes:** FlagsAttribute
 

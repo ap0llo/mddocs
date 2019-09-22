@@ -10,7 +10,7 @@ public readonly int Field1;
 
 ## Field Value
 
-Int32
+int
 
 The tag `value` allows specifying the value a field represents
 

@@ -10,7 +10,7 @@ A class meant to demonstrate how the generated documentation looks like.
 public class DemoClass
 ```
 
-**Inheritance:** Object → DemoClass
+**Inheritance:** object → DemoClass
 
 ## Remarks
 
@@ -28,7 +28,7 @@ All of a types constructors will be listed in a table in the "Constructors" sect
 
 Similar tables are generated for a type's public fields, events, properties, indexers, methods and operator overloads
 
-Links to other members are supported (using the xml tag `see`), for example a link to [IDemoInterface](../IDemoInterface/Type.md). References to types outside the assembly are written to the output             but cannot be linked to, e.g. a reference to String
+Links to other members are supported (using the xml tag `see`), for example a link to [IDemoInterface](../IDemoInterface/Type.md). References to types outside the assembly are written to the output             but cannot be linked to, e.g. a reference to string
 
 The last section is the "See Also" section with links provided in the xml documentation using the `seealso` tag
 

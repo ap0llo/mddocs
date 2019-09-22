@@ -10,7 +10,7 @@ public readonly string Field2;
 
 ## Field Value
 
-String
+string
 
 The tag `value` allows specifying the value a field represents
 

@@ -1,7 +1,7 @@
 # `Command2` Command
 
 **Application:** [DemoProject](../commandline.md)  
-**Version:** 0.1.182\-pre+25d373f4d4
+**Version:** 0.1.184\-pre+071a670471
 
 Documentation for the 'command2' subcommand. This command has no parameters.
 

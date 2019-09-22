@@ -10,7 +10,7 @@ An example of an generic class.
 public class DemoClass<T1, T2>
 ```
 
-**Inheritance:** Object → DemoClass
+**Inheritance:** object → DemoClass\<T1, T2\>
 
 ## Type Parameters
 

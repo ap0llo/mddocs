@@ -11,7 +11,7 @@ An example of an custom attribute class for methods
 public class DemoAttribute : Attribute
 ```
 
-**Inheritance:** Object → Attribute → DemoAttribute
+**Inheritance:** object → Attribute → DemoAttribute
 
 **Attributes:** AttributeUsageAttribute
 

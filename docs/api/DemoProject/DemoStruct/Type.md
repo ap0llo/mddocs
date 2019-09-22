@@ -10,7 +10,7 @@ A struct meant to demonstrate how the generated documentation for structs looks 
 public struct DemoStruct
 ```
 
-**Inheritance:** Object → ValueType → DemoStruct
+**Inheritance:** object → ValueType → DemoStruct
 
 ## Remarks
 

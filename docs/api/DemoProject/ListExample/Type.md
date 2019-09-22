@@ -10,7 +10,7 @@ Example class to showcase the different supported list formats.
 public class ListExample
 ```
 
-**Inheritance:** Object → ListExample
+**Inheritance:** object → ListExample
 
 ## Remarks
 

@@ -13,7 +13,7 @@ public string Property3 { get; }
 
 ## Property Value
 
-String
+string
 
 ## Remarks
 

@@ -25,7 +25,7 @@ For overloaded members, there is a separate "Remarks" section for every overload
 
 ### Returns
 
-String
+string
 
 The return value of a method can be documented using the `returns` tag
 
@@ -52,7 +52,7 @@ public void Method1(string parameter);
 
 ### Parameters
 
-`parameter`  String
+`parameter`  string
 
 Description of parameter `parameter` provided using the `param` element.
 

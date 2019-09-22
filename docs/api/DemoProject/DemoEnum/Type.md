@@ -15,7 +15,7 @@ public enum DemoEnum
 }
 ```
 
-**Inheritance:** Object → ValueType → Enum → DemoEnum
+**Inheritance:** object → ValueType → Enum → DemoEnum
 
 ## Remarks
 

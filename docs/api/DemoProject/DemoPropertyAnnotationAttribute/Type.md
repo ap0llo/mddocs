@@ -11,7 +11,7 @@ An example of a custom attribute that is used to annotate a property with custom
 public class DemoPropertyAnnotationAttribute : Attribute
 ```
 
-**Inheritance:** Object → Attribute → DemoPropertyAnnotationAttribute
+**Inheritance:** object → Attribute → DemoPropertyAnnotationAttribute
 
 **Attributes:** AttributeUsageAttribute
 

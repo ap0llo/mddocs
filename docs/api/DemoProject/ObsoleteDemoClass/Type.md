@@ -13,7 +13,7 @@ A class meant to demonstrate how the generated documentation for a deprecated cl
 public class ObsoleteDemoClass
 ```
 
-**Inheritance:** Object → ObsoleteDemoClass
+**Inheritance:** object → ObsoleteDemoClass
 
 **Attributes:** ObsoleteAttribute
 

@@ -11,7 +11,7 @@ public string Property2 { get; set; }
 
 ## Property Value
 
-String
+string
 
 The tag `value` allows specifying the value a property represents
 
