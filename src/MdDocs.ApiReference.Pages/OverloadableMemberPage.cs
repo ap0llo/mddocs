@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Grynwald.MdDocs.ApiReference.Pages
 {
-    internal abstract class OverloadableMemberPage<TModel, TOverload> : MemberPage<TModel>
+    public abstract class OverloadableMemberPage<TModel, TOverload> : MemberPage<TModel>
         where TModel : OverloadableMemberDocumentation<TOverload>
         where TOverload : OverloadDocumentation
     {

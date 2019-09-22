@@ -7,20 +7,17 @@ using Grynwald.MdDocs.ApiReference.Model.XmlDocs;
 
 namespace Grynwald.MdDocs.ApiReference.Pages
 {
-    internal abstract class PageBase<TModel> : IMdSpanFactory, IPage where TModel : class, IDocumentation
+    public abstract class PageBase<TModel> : IMdSpanFactory, IPage where TModel : class, IDocumentation
     {
-        private static readonly char[] s_SplitChars = ".".ToCharArray();
         private readonly ILinkProvider m_LinkProvider;
 
 
-        public abstract string RelativeOutputPath { get; }
-
         protected PageFactory PageFactory { get; }
 
-        protected TModel Model { get; }
+        public TModel Model { get; }
 
 
-        public PageBase(ILinkProvider linkProvider, PageFactory pageFactory, TModel model)
+        internal PageBase(ILinkProvider linkProvider, PageFactory pageFactory, TModel model)
         {
             PageFactory = pageFactory ?? throw new ArgumentNullException(nameof(pageFactory));
             Model = model ?? throw new ArgumentNullException(nameof(model));
@@ -102,25 +99,6 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             anchor = default;
             return false;
         }
-
-
-        protected string GetTypeDirRelative(TypeDocumentation type)
-        {
-            var dirName = type.TypeId.Name;
-            if (type.TypeId is GenericTypeInstanceId genericTypeInstance)
-            {
-                dirName += "-" + genericTypeInstance.TypeArguments.Count;
-            }
-            else if (type.TypeId is GenericTypeId genericType)
-            {
-                dirName += "-" + genericType.Arity;
-            }
-
-            return Path.Combine(GetNamespaceDirRelative(type.NamespaceDocumentation), dirName);
-        }
-
-        protected string GetNamespaceDirRelative(NamespaceDocumentation namespaceDocumentation) =>
-           String.Join("/", namespaceDocumentation.Name.Split(s_SplitChars));
 
         protected MdSpan ConvertToSpan(TextBlock textBlock)
         {

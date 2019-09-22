@@ -8,12 +8,12 @@ using Microsoft.Extensions.Logging;
 
 namespace Grynwald.MdDocs.ApiReference.Pages
 {
-    internal abstract class SimpleMemberPage<TModel> : MemberPage<TModel> where TModel : SimpleMemberDocumentation
+    public abstract class SimpleMemberPage<TModel> : MemberPage<TModel> where TModel : SimpleMemberDocumentation
     {
         private readonly ILogger m_Logger;
 
 
-        public SimpleMemberPage(ILinkProvider linkProvider, PageFactory pageFactory, TModel model, ILogger logger)
+        internal SimpleMemberPage(ILinkProvider linkProvider, PageFactory pageFactory, TModel model, ILogger logger)
             : base(linkProvider, pageFactory, model)
         {
             m_Logger = logger ?? throw new ArgumentNullException(nameof(logger));

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using Grynwald.MarkdownGenerator;
 using Grynwald.MdDocs.ApiReference.Model;
 using Grynwald.Utilities.Collections;
@@ -11,22 +12,20 @@ namespace Grynwald.MdDocs.ApiReference.Pages
     public class PageFactory
     {
         private readonly ILogger m_Logger;
+        private readonly IPathProvider m_PathProvider;
         private readonly AssemblyDocumentation m_Model;
-        private readonly IDictionary<IDocumentation, IPage> m_Pages = new Dictionary<IDocumentation, IPage>();
+        private readonly IDictionary<IDocumentation, IPage> m_PagesByModel = new Dictionary<IDocumentation, IPage>();
         private readonly DocumentSet<IDocument> m_DocumentSet = new DocumentSet<IDocument>();
 
 
-        public IEnumerable<IPage> AllPages => m_Pages.Values;
-
-
-        public PageFactory(AssemblyDocumentation assemblyDocumentation)
-            : this(assemblyDocumentation, NullLogger.Instance)
+        public PageFactory(IPathProvider pathProvider, AssemblyDocumentation assemblyDocumentation)
+            : this(pathProvider, assemblyDocumentation, NullLogger.Instance)
         { }
 
-        public PageFactory(AssemblyDocumentation assemblyDocumentation, ILogger logger)
-        {            
+        public PageFactory(IPathProvider pathProvider, AssemblyDocumentation assemblyDocumentation, ILogger logger)
+        {
             m_Logger = logger ?? throw new ArgumentNullException(nameof(logger));
-
+            m_PathProvider = pathProvider ?? throw new ArgumentNullException(nameof(pathProvider));
             m_Model = assemblyDocumentation ?? throw new ArgumentNullException(nameof(assemblyDocumentation));
 
             LoadPages();
@@ -50,7 +49,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
                     return TryGetPage(operatorOverload.OperatorDocumentation);
 
                 default:
-                    return m_Pages.GetValueOrDefault(item);
+                    return m_PagesByModel.GetValueOrDefault(item);
             }
         }
 
@@ -66,42 +65,42 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             foreach (var @namespace in m_Model.MainModuleDocumentation.Namespaces)
             {
                 var page = new NamespacePage(linkProvider, this, @namespace, m_Logger);
-                m_Pages.Add(@namespace, page);
-                m_DocumentSet.Add(page.RelativeOutputPath, page);
+                m_PagesByModel.Add(@namespace, page);
+                m_DocumentSet.Add(m_PathProvider.GetPath(page), page);
             }
 
             foreach (var type in m_Model.MainModuleDocumentation.Types)
             {
                 var typePage = new TypePage(linkProvider, this, type, m_Logger);
-                m_Pages.Add(type, typePage);
-                m_DocumentSet.Add(typePage.RelativeOutputPath, typePage);
+                m_PagesByModel.Add(type, typePage);
+                m_DocumentSet.Add(m_PathProvider.GetPath(typePage), typePage);
 
                 foreach (var property in type.Properties)
                 {
                     var page = new PropertyPage(linkProvider, this, property, m_Logger);
-                    m_Pages.Add(property, page);
-                    m_DocumentSet.Add(page.RelativeOutputPath, page);
+                    m_PagesByModel.Add(property, page);
+                    m_DocumentSet.Add(m_PathProvider.GetPath(page), page);
                 }
 
                 foreach (var indexer in type.Indexers)
                 {
                     var page = new IndexerPage(linkProvider, this, indexer, m_Logger);
-                    m_Pages.Add(indexer, page);
-                    m_DocumentSet.Add(page.RelativeOutputPath, page);
+                    m_PagesByModel.Add(indexer, page);
+                    m_DocumentSet.Add(m_PathProvider.GetPath(page), page);
                 }
 
                 if (type.Constructors != null)
                 {
                     var page = new ConstructorsPage(linkProvider, this, type.Constructors, m_Logger);
-                    m_Pages.Add(type.Constructors, page);
-                    m_DocumentSet.Add(page.RelativeOutputPath, page);
+                    m_PagesByModel.Add(type.Constructors, page);
+                    m_DocumentSet.Add(m_PathProvider.GetPath(page), page);
                 }
 
                 foreach (var method in type.Methods)
                 {
                     var page = new MethodPage(linkProvider, this, method, m_Logger);
-                    m_Pages.Add(method, page);
-                    m_DocumentSet.Add(page.RelativeOutputPath, page);
+                    m_PagesByModel.Add(method, page);
+                    m_DocumentSet.Add(m_PathProvider.GetPath(page), page);
                 }
 
                 if (type.Kind != TypeKind.Enum)
@@ -109,23 +108,23 @@ namespace Grynwald.MdDocs.ApiReference.Pages
                     foreach (var field in type.Fields)
                     {
                         var page = new FieldPage(linkProvider, this, field, m_Logger);
-                        m_Pages.Add(field, page);
-                        m_DocumentSet.Add(page.RelativeOutputPath, page);
+                        m_PagesByModel.Add(field, page);
+                        m_DocumentSet.Add(m_PathProvider.GetPath(page), page);
                     }
                 }
 
                 foreach (var ev in type.Events)
                 {
                     var page = new EventPage(linkProvider, this, ev, m_Logger);
-                    m_Pages.Add(ev, page);
-                    m_DocumentSet.Add(page.RelativeOutputPath, page);
+                    m_PagesByModel.Add(ev, page);
+                    m_DocumentSet.Add(m_PathProvider.GetPath(page), page);
                 }
 
                 foreach (var op in type.Operators)
                 {
                     var page = new OperatorPage(linkProvider, this, op, m_Logger);
-                    m_Pages.Add(op, page);
-                    m_DocumentSet.Add(page.RelativeOutputPath, page);
+                    m_PagesByModel.Add(op, page);
+                    m_DocumentSet.Add(m_PathProvider.GetPath(page), page);
                 }
             }
         }

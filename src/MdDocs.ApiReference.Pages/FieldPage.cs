@@ -5,16 +5,11 @@ using Microsoft.Extensions.Logging;
 
 namespace Grynwald.MdDocs.ApiReference.Pages
 {
-    internal class FieldPage : SimpleMemberPage<FieldDocumentation>
+    public sealed class FieldPage : SimpleMemberPage<FieldDocumentation>
     {
-        public override string RelativeOutputPath { get; }
-
-
-
-        public FieldPage(ILinkProvider linkProvider, PageFactory pageFactory, FieldDocumentation model, ILogger logger)
+        internal FieldPage(ILinkProvider linkProvider, PageFactory pageFactory, FieldDocumentation model, ILogger logger)
             : base(linkProvider, pageFactory, model, logger)
         {
-            RelativeOutputPath= Path.Combine(GetTypeDirRelative(Model.TypeDocumentation), "Fields", $"{Model.Name}.md");
         }
 
 

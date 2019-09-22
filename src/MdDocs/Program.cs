@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using CommandLine;
 using Grynwald.MdDocs.ApiReference.Model;
@@ -53,7 +52,7 @@ namespace Grynwald.MdDocs
             //TODO: Make usage of ApplicationDocumentation and AssemblyDocumentation consistent
             using (var assemblyDocumentation = AssemblyDocumentation.FromFile(opts.AssemblyPath, logger))
             {
-                var pageFactory = new PageFactory(assemblyDocumentation, logger);
+                var pageFactory = new PageFactory(new ApiReference.Pages.DefaultPathProvider(),assemblyDocumentation, logger);
                 var documentSet = pageFactory.GetPages();
                 documentSet.Save(opts.OutputDirectory, cleanOutputDirectory: true);
             }
@@ -66,7 +65,7 @@ namespace Grynwald.MdDocs
         {
             var model = ApplicationDocumentation.FromAssemblyFile(opts.AssemblyPath, logger);
 
-            var pageFactory = new CommandLinePageFactory(model, new DefaultPathProvider(), logger);
+            var pageFactory = new CommandLinePageFactory(model, new CommandLineHelp.Pages.DefaultPathProvider(), logger);
             var documentSet = pageFactory.GetPages();
 
             documentSet.Save(opts.OutputDirectory, cleanOutputDirectory: true);

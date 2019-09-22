@@ -21,6 +21,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 
         public bool TryGetLink(IDocument from, MemberId id, out Link link)
         {
+            // map id -> model item
             var modelItem = m_Model.TryGetDocumentation(id);
 
             if (modelItem == null)
@@ -29,6 +30,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
                 return false;
             }
 
+            // map model  -> page
             var page = m_PageFactory.TryGetPage(modelItem);
 
             if (page == null)
@@ -37,6 +39,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
                 return false;
             }
 
+            // get link between pages
             var relativePath = m_DocumentSet.GetRelativePath(from, page);
 
             if (page.TryGetAnchor(id, out var anchor))

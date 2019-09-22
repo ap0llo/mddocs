@@ -8,18 +8,14 @@ using Microsoft.Extensions.Logging;
 
 namespace Grynwald.MdDocs.ApiReference.Pages
 {
-    internal class NamespacePage : PageBase<NamespaceDocumentation>
+    public sealed class NamespacePage : PageBase<NamespaceDocumentation>
     {
         private readonly ILogger m_Logger;
 
-        public override string RelativeOutputPath { get; }
 
-
-
-        public NamespacePage(ILinkProvider linkProvider, PageFactory pageFactory, NamespaceDocumentation model, ILogger logger)
+        internal NamespacePage(ILinkProvider linkProvider, PageFactory pageFactory, NamespaceDocumentation model, ILogger logger)
             : base(linkProvider, pageFactory, model)
         {
-            RelativeOutputPath = Path.Combine(GetNamespaceDirRelative(Model), "Namespace.md");
             m_Logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
         }
 

@@ -5,17 +5,11 @@ using Microsoft.Extensions.Logging;
 
 namespace Grynwald.MdDocs.ApiReference.Pages
 {
-    internal class OperatorPage : OverloadableMemberPage<OperatorDocumentation, OperatorOverloadDocumentation>
+    public sealed class OperatorPage : OverloadableMemberPage<OperatorDocumentation, OperatorOverloadDocumentation>
     {
-
-        public override string RelativeOutputPath { get; }
-
-
-
-        public OperatorPage(ILinkProvider linkProvider, PageFactory pageFactory, OperatorDocumentation model, ILogger logger)
+        internal OperatorPage(ILinkProvider linkProvider, PageFactory pageFactory, OperatorDocumentation model, ILogger logger)
             : base(linkProvider, pageFactory, model, logger)
         {
-            RelativeOutputPath = Path.Combine(GetTypeDirRelative(Model.TypeDocumentation), "Operators", $"{Model.Kind}.md");
         }
 
 

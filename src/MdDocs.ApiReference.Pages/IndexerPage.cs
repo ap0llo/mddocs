@@ -5,16 +5,11 @@ using Microsoft.Extensions.Logging;
 
 namespace Grynwald.MdDocs.ApiReference.Pages
 {
-    internal class IndexerPage : OverloadableMemberPage<IndexerDocumentation, IndexerOverloadDocumentation>
+    public sealed class IndexerPage : OverloadableMemberPage<IndexerDocumentation, IndexerOverloadDocumentation>
     {
-        public override string RelativeOutputPath { get; }
-
-
-
-        public IndexerPage(ILinkProvider linkProvider, PageFactory pageFactory, IndexerDocumentation model, ILogger logger)
+        internal IndexerPage(ILinkProvider linkProvider, PageFactory pageFactory, IndexerDocumentation model, ILogger logger)
             : base(linkProvider, pageFactory, model, logger)
         {
-            RelativeOutputPath = Path.Combine(GetTypeDirRelative(Model.TypeDocumentation), "Indexers", $"{Model.Name}.md");
         }
 
 
@@ -27,7 +22,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             AddValueSubSection(block, overload, headingLevel);
         }
 
-        protected virtual void AddValueSubSection(MdContainerBlock block, IndexerOverloadDocumentation overload, int headingLevel)
+        private void AddValueSubSection(MdContainerBlock block, IndexerOverloadDocumentation overload, int headingLevel)
         {
             block.Add(new MdHeading("Indexer Value", headingLevel));
             block.Add(

@@ -5,15 +5,12 @@ using Microsoft.Extensions.Logging;
 
 namespace Grynwald.MdDocs.ApiReference.Pages
 {
-    internal class ConstructorsPage : OverloadableMemberPage<ConstructorDocumentation, ConstructorOverloadDocumentation>
+    public sealed class ConstructorsPage : OverloadableMemberPage<ConstructorDocumentation, ConstructorOverloadDocumentation>
     {
-        public override string RelativeOutputPath { get; }
 
-
-        public ConstructorsPage(ILinkProvider linkProvider, PageFactory pageFactory, ConstructorDocumentation model, ILogger logger)
+        internal ConstructorsPage(ILinkProvider linkProvider, PageFactory pageFactory, ConstructorDocumentation model, ILogger logger)
             : base(linkProvider, pageFactory, model, logger)
         {
-            RelativeOutputPath = Path.Combine(GetTypeDirRelative(Model.TypeDocumentation), "Constructors.md");
         }
 
 
