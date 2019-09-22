@@ -10,6 +10,12 @@
     <PackAsTool>true</PackAsTool>
   </PropertyGroup>
 
+  <!-- Adjust NuGet package properties -->
+  <PropertyGroup>
+    <Description>MdDocs is a tool generate documentation as markdown files. This package provides MdDocs as .NET Core global tool.</Description>    
+  </PropertyGroup>
+
+
   <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="2.4.3" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.2.0" />
@@ -23,13 +29,10 @@
 
 
   <Target Name="UpdateDocs" AfterTargets="AfterBuild" DependsOnTargets="GetTargetPath">
-
     <PropertyGroup>      
       <DocsDir>$(MSBuildThisFileDirectory)..\..\docs\commandline</DocsDir>
     </PropertyGroup>
-
-    <Exec Command="dotnet &quot;@(TargetPathWithTargetPlatformMoniker->'%(FullPath)')&quot; commandlinehelp --assembly &quot;@(TargetPathWithTargetPlatformMoniker->'%(FullPath)')&quot; --outdir &quot;$(DocsDir)&quot;" />
-    
+    <Exec Command="dotnet &quot;@(TargetPathWithTargetPlatformMoniker->'%(FullPath)')&quot; commandlinehelp --assembly &quot;@(TargetPathWithTargetPlatformMoniker->'%(FullPath)')&quot; --outdir &quot;$(DocsDir)&quot;" />    
   </Target>
   
 </Project>
