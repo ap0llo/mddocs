@@ -32,6 +32,8 @@ dotnet tool install --global Grynwald.MdDocs
 
 ## Usage
 
+See also: [Command Line Reference](docs/commandline/commandline.md)
+
 ## API Reference
 
 To generate API reference documentation for a .NET assembly, run:
