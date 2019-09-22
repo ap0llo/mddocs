@@ -1,8 +1,6 @@
 ﻿using Grynwald.MarkdownGenerator;
 using Grynwald.MdDocs.ApiReference.Model;
 
-using static Grynwald.MarkdownGenerator.FactoryMethods;
-
 namespace Grynwald.MdDocs.ApiReference.Pages
 {
     internal abstract class MemberPage<TModel> : PageBase<TModel> where TModel : MemberDocumentation
@@ -15,8 +13,8 @@ namespace Grynwald.MdDocs.ApiReference.Pages
         protected void AddDeclaringTypeSection(MdContainerBlock block)
         {
             block.Add(
-                Paragraph(
-                    Bold("Declaring Type:"), " ", GetMdSpan(Model.TypeDocumentation.TypeId)
+                new MdParagraph(
+                    new MdStrongEmphasisSpan("Declaring Type:"), " ", GetMdSpan(Model.TypeDocumentation.TypeId)
             ));
         }
     }

@@ -3,8 +3,6 @@ using Grynwald.MarkdownGenerator;
 using Grynwald.MdDocs.ApiReference.Model;
 using Microsoft.Extensions.Logging;
 
-using static Grynwald.MarkdownGenerator.FactoryMethods;
-
 namespace Grynwald.MdDocs.ApiReference.Pages
 {
     internal class PropertyPage : SimpleMemberPage<PropertyDocumentation>
@@ -20,11 +18,11 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 
 
         protected override MdHeading GetHeading() =>
-            Heading($"{Model.TypeDocumentation.DisplayName}.{Model.Name} Property", 1);
+            new MdHeading($"{Model.TypeDocumentation.DisplayName}.{Model.Name} Property", 1);
 
         protected override void AddValueSection(MdContainerBlock block)
         {
-            block.Add(Heading("Property Value", 2));
+            block.Add(new MdHeading("Property Value", 2));
             block.Add(
                 GetMdParagraph(Model.Type)
             );
@@ -43,7 +41,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             if (Model.Exceptions.Count == 0)
                 return;
 
-            block.Add(Heading("Exceptions", 2));
+            block.Add(new MdHeading("Exceptions", 2));
 
             foreach (var exception in Model.Exceptions)
             {

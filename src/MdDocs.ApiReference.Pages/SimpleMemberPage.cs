@@ -6,8 +6,6 @@ using Grynwald.MdDocs.ApiReference.Model;
 using Grynwald.MdDocs.Common.Pages;
 using Microsoft.Extensions.Logging;
 
-using static Grynwald.MarkdownGenerator.FactoryMethods;
-
 namespace Grynwald.MdDocs.ApiReference.Pages
 {
     internal abstract class SimpleMemberPage<TModel> : MemberPage<TModel> where TModel : SimpleMemberDocumentation
@@ -26,7 +24,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
         {
             m_Logger.LogInformation($"Saving page '{OutputPath}'");
 
-            var document = Document(
+            var document = new MdDocument(
                 GetHeading()
             );
 
@@ -59,7 +57,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             }
 
             block.Add(
-                CodeBlock(Model.CSharpDefinition, "csharp")
+                new MdCodeBlock(Model.CSharpDefinition, "csharp")
             );
         }
 
@@ -68,7 +66,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             if (Model.Remarks == null)
                 return;
 
-            block.Add(Heading(2, "Remarks"));
+            block.Add(new MdHeading(2, "Remarks"));
             block.Add(ConvertToBlock(Model.Remarks));
         }
 
@@ -77,7 +75,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             if (Model.Example == null)
                 return;
 
-            block.Add(Heading(2, "Example"));
+            block.Add(new MdHeading(2, "Example"));
             block.Add(ConvertToBlock(Model.Example));
         }
 
@@ -85,10 +83,10 @@ namespace Grynwald.MdDocs.ApiReference.Pages
         {
             if (Model.SeeAlso.Count > 0)
             {
-                block.Add(Heading(2, "See Also"));
+                block.Add(new MdHeading(2, "See Also"));
                 block.Add(
-                    BulletList(
-                        Model.SeeAlso.Select(seeAlso => ListItem(ConvertToSpan(seeAlso)))
+                    new MdBulletList(
+                        Model.SeeAlso.Select(seeAlso => new MdListItem(ConvertToSpan(seeAlso)))
                 ));
             }
         }
