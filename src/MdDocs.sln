@@ -40,6 +40,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grynwald.MdDocs.CommandLine
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grynwald.MdDocs.CommandLineHelp.DemoProject", "MdDocs.CommandLineHelp.DemoProject\Grynwald.MdDocs.CommandLineHelp.DemoProject.csproj", "{811BFCAE-B1D5-48D6-8CA5-5B0B163D1C0F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grynwald.MdDocs.MSBuild", "MdDocs.MSBuild\Grynwald.MdDocs.MSBuild.csproj", "{F6EDF79B-917F-426C-8FC0-B49727878D79}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -206,6 +208,18 @@ Global
 		{811BFCAE-B1D5-48D6-8CA5-5B0B163D1C0F}.Release|x64.Build.0 = Release|Any CPU
 		{811BFCAE-B1D5-48D6-8CA5-5B0B163D1C0F}.Release|x86.ActiveCfg = Release|Any CPU
 		{811BFCAE-B1D5-48D6-8CA5-5B0B163D1C0F}.Release|x86.Build.0 = Release|Any CPU
+		{F6EDF79B-917F-426C-8FC0-B49727878D79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6EDF79B-917F-426C-8FC0-B49727878D79}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6EDF79B-917F-426C-8FC0-B49727878D79}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F6EDF79B-917F-426C-8FC0-B49727878D79}.Debug|x64.Build.0 = Debug|Any CPU
+		{F6EDF79B-917F-426C-8FC0-B49727878D79}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F6EDF79B-917F-426C-8FC0-B49727878D79}.Debug|x86.Build.0 = Debug|Any CPU
+		{F6EDF79B-917F-426C-8FC0-B49727878D79}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6EDF79B-917F-426C-8FC0-B49727878D79}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6EDF79B-917F-426C-8FC0-B49727878D79}.Release|x64.ActiveCfg = Release|Any CPU
+		{F6EDF79B-917F-426C-8FC0-B49727878D79}.Release|x64.Build.0 = Release|Any CPU
+		{F6EDF79B-917F-426C-8FC0-B49727878D79}.Release|x86.ActiveCfg = Release|Any CPU
+		{F6EDF79B-917F-426C-8FC0-B49727878D79}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

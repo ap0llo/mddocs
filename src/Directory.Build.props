@@ -12,6 +12,11 @@
     <BaseIntermediateOutputPath>$(BaseOutputPath)intermediate\$(MSBuildProjectName)\</BaseIntermediateOutputPath>
     <OutputPath>$(BaseOutputPath)$(Configuration)\$(MSBuildProjectName)\</OutputPath>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <!--
+       Suppressed warnings:
+         - NU5125: "The 'licenseUrl' element will be deprecated. Consider using the 'license' element instead"
+    -->
+    <NoWarn>NU5125</NoWarn>
   </PropertyGroup>
   
   <ItemGroup>

@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
+    <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
+    <BuildOutputTargetFolder>build</BuildOutputTargetFolder>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="build\*" Pack="true" PackagePath="build\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.9.20" ExcludeAssets="runtime"  />
+  </ItemGroup>
+  
+</Project>

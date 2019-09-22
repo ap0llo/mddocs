@@ -1,0 +1,16 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup>
+    <!-- Default to .NET Framework build-->
+    <MdDocsTasksDirectory>$(MSBuildThisFileDirectory)net461\</MdDocsTasksDirectory>
+    <!-- Overwrite property when running in .NET Core MSBuild-->
+    <MdDocsTasksDirectory Condition="'$(MSBuildRuntimeType)' == 'Core'">$(MSBuildThisFileDirectory)netstandard2.0\</MdDocsTasksDirectory>
+    
+    <MdDocsTasksPath Condition="'$(MdDocsTasksPath)' == 'MdDocsTasksPath' ">$(MdDocsTasksDirectory)Grynwald.MdDocs.MSBuild.dll</MdDocsTasksPath>    
+  </PropertyGroup>
+
+  
+  <UsingTask AssemblyFile="$(MdDocsTasksPath)" TaskName="Grynwald.MdDocs.MSBuild.GenerateApiReference"/>
+  <UsingTask AssemblyFile="$(MdDocsTasksPath)" TaskName="Grynwald.MdDocs.MSBuild.GenerateCommandLineReference"/>
+  
+</Project>
