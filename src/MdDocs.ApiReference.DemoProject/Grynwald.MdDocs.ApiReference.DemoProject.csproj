@@ -19,12 +19,12 @@
   </ItemGroup>
 
 
-  <Target Name="UpdateDocs" AfterTargets="AfterBuild">
+  <Target Name="UpdateDocs" AfterTargets="AfterBuild" DependsOnTargets="GetTargetPath">
     <PropertyGroup>
       <MdDocsPath>$(MSBuildThisFileDirectory)..\MdDocs\Grynwald.MdDocs.csproj</MdDocsPath>
       <DocsDir>$(MSBuildThisFileDirectory)..\..\docs\demoprojects\api</DocsDir>
     </PropertyGroup>
-    <Exec Command="dotnet run --no-build --project &quot;$(MdDocsPath)&quot; -- apireference  --assembly &quot;$(OutputPath)$(AssemblyName).dll&quot; --outdir &quot;$(DocsDir)&quot;" />
+    <Exec Command="dotnet run --no-build --project &quot;$(MdDocsPath)&quot; -- apireference  --assembly &quot;@(TargetPathWithTargetPlatformMoniker->'%(FullPath)')&quot; --outdir &quot;$(DocsDir)&quot;" />
   </Target>
 
 </Project>
