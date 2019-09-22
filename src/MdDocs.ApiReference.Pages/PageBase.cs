@@ -13,8 +13,9 @@ namespace Grynwald.MdDocs.ApiReference.Pages
         private readonly string m_RootOutputPath;
         private readonly ILinkProvider m_LinkProvider;
 
-
         public abstract OutputPath OutputPath { get; }
+
+        public abstract string RelativeOutputPath { get; }
 
         protected PageFactory PageFactory { get; }
 
@@ -30,8 +31,10 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             m_LinkProvider = new CompositeLinkProvider(new InternalLinkProvider(model, pageFactory));
         }
 
-
         public abstract void Save();
+
+        // IDocument.Save
+        public abstract void Save(string path);
 
 
         public MdParagraph GetMdParagraph(MemberId id) => new MdParagraph(GetMdSpan(id, false));
@@ -123,8 +126,26 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             return Path.Combine(GetNamespaceDir(type.NamespaceDocumentation), dirName);
         }
 
+        protected string GetTypeDirRelative(TypeDocumentation type)
+        {
+            var dirName = type.TypeId.Name;
+            if (type.TypeId is GenericTypeInstanceId genericTypeInstance)
+            {
+                dirName += "-" + genericTypeInstance.TypeArguments.Count;
+            }
+            else if (type.TypeId is GenericTypeId genericType)
+            {
+                dirName += "-" + genericType.Arity;
+            }
+
+            return Path.Combine(GetNamespaceDirRelative(type.NamespaceDocumentation), dirName);
+        }
+
         protected string GetNamespaceDir(NamespaceDocumentation namespaceDocumentation) =>
             Path.Combine(m_RootOutputPath, String.Join("/", namespaceDocumentation.Name.Split(s_SplitChars)));
+
+        protected string GetNamespaceDirRelative(NamespaceDocumentation namespaceDocumentation) =>
+           String.Join("/", namespaceDocumentation.Name.Split(s_SplitChars));
 
         protected MdSpan ConvertToSpan(TextBlock textBlock)
         {

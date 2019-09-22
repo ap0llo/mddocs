@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Grynwald.MarkdownGenerator;
 using Grynwald.MdDocs.ApiReference.Model;
@@ -26,9 +25,11 @@ namespace Grynwald.MdDocs.ApiReference.Pages
         }
 
 
-        public override void Save()
+        public override void Save() => Save(OutputPath);
+
+        public override void Save(string path)
         {
-            m_Logger.LogInformation($"Saving page '{OutputPath}'");
+            m_Logger.LogInformation($"Saving page '{path}'");
 
             var document = new MdDocument(
                 GetPageHeading()
@@ -56,9 +57,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             }
 
             document.Root.Add(new PageFooter());
-
-            Directory.CreateDirectory(Path.GetDirectoryName(OutputPath));
-            document.Save(OutputPath);
+            document.Save(path);
         }
 
 

@@ -21,8 +21,10 @@ namespace Grynwald.MdDocs.MSBuild
             //TODO: Make usage of ApplicationDocumentation and AssemblyDocumentation consistent
             using (var assemblyDocumentation = AssemblyDocumentation.FromFile(AssemblyPath, Logger))
             {
-                var factory = new PageFactory(assemblyDocumentation, OutputDirectoryPath, Logger);
-                factory.SaveAll();
+                var pageFactory = new PageFactory(assemblyDocumentation, OutputDirectoryPath, Logger);
+                var documentSet = pageFactory.GetPages();
+
+                documentSet.Save(OutputDirectoryPath, cleanOutputDirectory: true);
             }
 
             return Log.HasLoggedErrors == false;

@@ -13,6 +13,9 @@ namespace Grynwald.MdDocs.ApiReference.Pages
     {
         private readonly ILogger m_Logger;
 
+
+        public override string RelativeOutputPath { get; }
+
         public override OutputPath OutputPath { get; }
 
 
@@ -20,13 +23,16 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             : base(pageFactory, rootOutputPath, model)
         {
             m_Logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            RelativeOutputPath = Path.Combine(GetTypeDirRelative(Model), "Type.md");
             OutputPath = new OutputPath(GetTypeDir(Model), "Type.md");
         }
 
 
-        public override void Save()
+        public override void Save() => Save(OutputPath);
+
+        public override void Save(string path)
         {
-            m_Logger.LogInformation($"Saving page '{OutputPath}'");
+            m_Logger.LogInformation($"Saving page '{path}'");
 
             var document = new MdDocument(
                 new MdHeading($"{Model.DisplayName} {Model.Kind}", 1)
@@ -69,8 +75,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 
             document.Root.Add(new PageFooter());
 
-            Directory.CreateDirectory(Path.GetDirectoryName(OutputPath));
-            document.Save(OutputPath);
+            document.Save(path);
         }
 
 

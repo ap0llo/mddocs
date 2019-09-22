@@ -12,6 +12,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
     {
         private readonly ILogger m_Logger;
 
+        public override string RelativeOutputPath { get; }
 
         public override OutputPath OutputPath { get; }
 
@@ -19,14 +20,17 @@ namespace Grynwald.MdDocs.ApiReference.Pages
         public NamespacePage(PageFactory pageFactory, string rootOutputPath, NamespaceDocumentation model, ILogger logger)
             : base(pageFactory, rootOutputPath, model)
         {
+            RelativeOutputPath = Path.Combine(GetNamespaceDirRelative(Model), "Namespace.md");
             OutputPath = new OutputPath(GetNamespaceDir(Model), "Namespace.md");
             m_Logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
         }
 
 
-        public override void Save()
+        public override void Save() => Save(OutputPath);
+
+        public override void Save(string path)
         {
-            m_Logger.LogInformation($"Saving page '{OutputPath}'");
+            m_Logger.LogInformation($"Saving page '{path}'");
 
             var document = new MdDocument(
                new MdHeading($"{Model.Name} Namespace", 1)
@@ -48,8 +52,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             AddTypeTable(document.Root, "Enums", Model.Types.Where(x => x.Kind == TypeKind.Enum));
 
             document.Root.Add(new PageFooter());
-
-            Directory.CreateDirectory(Path.GetDirectoryName(OutputPath));
+            
             document.Save(OutputPath);
         }
 
@@ -69,6 +72,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             )));
 
         }
+
         private void AddTypeTable(MdContainerBlock block, string heading, IEnumerable<TypeDocumentation> types)
         {
             if (!types.Any())

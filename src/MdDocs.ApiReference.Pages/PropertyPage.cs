@@ -7,12 +7,15 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 {
     internal class PropertyPage : SimpleMemberPage<PropertyDocumentation>
     {
+        public override string RelativeOutputPath { get; }
+
         public override OutputPath OutputPath { get; }
 
 
         public PropertyPage(PageFactory pageFactory, string rootOutputPath, PropertyDocumentation model, ILogger logger)
             : base(pageFactory, rootOutputPath, model, logger)
         {
+            RelativeOutputPath = Path.Combine(GetTypeDirRelative(Model.TypeDocumentation), "Properties", $"{Model.Name}.md");
             OutputPath = new OutputPath(Path.Combine(GetTypeDir(Model.TypeDocumentation), "Properties", $"{Model.Name}.md"));
         }
 

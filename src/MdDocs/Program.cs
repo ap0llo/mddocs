@@ -49,18 +49,13 @@ namespace Grynwald.MdDocs
         }
 
         private static int OnApiReferenceCommand(ILogger logger, ApiReferenceOptions opts)
-        {
-            if (Directory.Exists(opts.OutputDirectory))
-            {
-                logger.LogInformation($"Cleaning output directory '{opts.OutputDirectory}'");
-                Directory.Delete(opts.OutputDirectory, true);
-            }
-
+        {            
             //TODO: Make usage of ApplicationDocumentation and AssemblyDocumentation consistent
             using (var assemblyDocumentation = AssemblyDocumentation.FromFile(opts.AssemblyPath, logger))
             {
-                var factory = new PageFactory(assemblyDocumentation, opts.OutputDirectory, logger);
-                factory.SaveAll();
+                var pageFactory = new PageFactory(assemblyDocumentation, opts.OutputDirectory, logger);
+                var documentSet = pageFactory.GetPages();
+                documentSet.Save(opts.OutputDirectory, cleanOutputDirectory: true);
             }
 
             return 0;
