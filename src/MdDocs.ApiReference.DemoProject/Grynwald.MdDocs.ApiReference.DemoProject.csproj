@@ -9,7 +9,7 @@
   </PropertyGroup>
 
 
-  <Target Name="UpdateDocs" DependsOnTargets="Build">
+  <Target Name="UpdateDocs" DependsOnTargets="Build" AfterTargets="Build">
     <PropertyGroup>
       <MdDocsPath>$(MSBuildThisFileDirectory)..\MdDocs\Grynwald.MdDocs.csproj</MdDocsPath>
       <DocsDir>$(MSBuildThisFileDirectory)..\..\docs\api</DocsDir>

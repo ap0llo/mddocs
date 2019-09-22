@@ -10,7 +10,7 @@
     <PackageReference Include="CommandLineParser" Version="2.4.3" />
   </ItemGroup>
 
-  <Target Name="UpdateDocs" DependsOnTargets="Build">
+  <Target Name="UpdateDocs" DependsOnTargets="Build" AfterTargets="Build">
     <PropertyGroup>
       <MdDocsPath>$(MSBuildThisFileDirectory)..\MdDocs\Grynwald.MdDocs.csproj</MdDocsPath>
       <DocsDir>$(MSBuildThisFileDirectory)..\..\docs\commandline-demo</DocsDir>
