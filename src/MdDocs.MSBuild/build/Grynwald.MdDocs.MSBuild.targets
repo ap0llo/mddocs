@@ -1,2 +1,47 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!--
+    ============================================================================================================  
+      Target "GenerateApiReferenceDocumentation"
+    ============================================================================================================    
+      Generates API reference docs for the project
+  -->
+  <Target Name="GenerateApiReferenceDocumentation"
+          DependsOnTargets="_MdDocs-CheckForInnerBuild;GetTargetPath"
+          Condition=" '$(IsInnerBuild)' == 'true'"> <!-- Only run in the "inner" build -->
+
+    <PropertyGroup>
+      <ApiReferenceDocumentationOutputPath Condition=" '$(ApiReferenceDocumentationOutputPath)' == '' ">$(OutputPath)docs\api\</ApiReferenceDocumentationOutputPath>
+    </PropertyGroup>
+    
+    <Message Text="Generating API Reference documentation to '$(ApiReferenceDocumentationOutputPath)'" />
+    <GenerateApiReferenceDocumentation Assembly="@(TargetPathWithTargetPlatformMoniker->'%(FullPath)')" 
+                                       OutputDirectory="$(ApiReferenceDocumentationOutputPath)" />
+  </Target>
+
+  <!--
+    ============================================================================================================  
+      Target "_MdDocs-GenerateApiReferenceDocumentationAfterBuild"
+    ============================================================================================================
+      Triggers API reference generation if property 'GenerateApiReferenceDocumentationOnBuild' is set to true
+  -->
+  <Target Name="_MdDocs-GenerateApiReferenceDocumentationAfterBuild" 
+          Condition=" '$(GenerateApiReferenceDocumentationOnBuild)' == 'true' "
+          AfterTargets="Build"
+          DependsOnTargets="GenerateApiReferenceDocumentation">    
+  </Target>  
+
+  <!--
+    ============================================================================================================
+      Target "_MdDocs-CheckForInnerBuild"
+    ============================================================================================================    
+      Determines if were running in the "inner" build (multi-targeted csprojs run multiple "Build" 
+      targets (one "main" build and one build for every target framework)
+  -->
+  <Target Name="_MdDocs-CheckForInnerBuild">
+    <PropertyGroup>
+      <IsInnerBuild>true</IsInnerBuild>
+      <IsInnerBuild Condition="'$(TargetFrameworks)' != '' AND '$(TargetFramework)' == ''">false</IsInnerBuild>
+    </PropertyGroup>
+  </Target>
+  
 </Project>
