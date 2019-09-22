@@ -1,6 +1,6 @@
 # DemoProject Command Line Reference
 
-**Version:** 0.1.185\-pre+bcd0223db0
+**Version:** 1.2.3
 
 ## Usage
 

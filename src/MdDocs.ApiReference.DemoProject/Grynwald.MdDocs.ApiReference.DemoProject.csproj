@@ -6,10 +6,15 @@
     <RootNamespace>DemoProject</RootNamespace>
     <DocumentationFile>$(AssemblyName).xml</DocumentationFile>
     <IsPackable>false</IsPackable>
+    <AssemblyVersion>1.2.3</AssemblyVersion>
+    <Version>1.2.3</Version>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Remove="Nerdbank.GitVersioning" />
+  </ItemGroup>
 
-  <Target Name="UpdateDocs" DependsOnTargets="Build" AfterTargets="Build">
+  <Target Name="UpdateDocs" AfterTargets="AfterBuild">
     <PropertyGroup>
       <MdDocsPath>$(MSBuildThisFileDirectory)..\MdDocs\Grynwald.MdDocs.csproj</MdDocsPath>
       <DocsDir>$(MSBuildThisFileDirectory)..\..\docs\api</DocsDir>

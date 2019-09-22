@@ -1,7 +1,7 @@
 # `Command1` Command
 
 **Application:** [DemoProject](../commandline.md)  
-**Version:** 0.1.185\-pre+bcd0223db0
+**Version:** 1.2.3
 
 Documentation for the 'command1' subcommand. For every subcommand, a separate page will be generated.  
 The command page includes the commands description (provided as 'HelpText' on the \[Verb\] attribute.)
