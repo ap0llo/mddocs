@@ -1,6 +1,6 @@
 ﻿namespace Grynwald.MdDocs.ApiReference.Pages
 {
-    public interface IPathProvider
+    public interface IApiReferencePathProvider
     {
         string GetPath(ConstructorsPage page);
 

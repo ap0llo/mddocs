@@ -18,11 +18,11 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
     public class CommandPage : IDocument
     {
         private readonly DocumentSet<IDocument> m_DocumentSet;
-        private readonly IPathProvider m_PathProvider;
+        private readonly ICommandLineHelpPathProvider m_PathProvider;
         private readonly CommandDocumentation m_Command;
 
 
-        public CommandPage(DocumentSet<IDocument> documentSet, IPathProvider pathProvider, CommandDocumentation model)
+        public CommandPage(DocumentSet<IDocument> documentSet, ICommandLineHelpPathProvider pathProvider, CommandDocumentation model)
         {
             m_DocumentSet = documentSet ?? throw new ArgumentNullException(nameof(documentSet));
             m_PathProvider = pathProvider ?? throw new ArgumentNullException(nameof(pathProvider));

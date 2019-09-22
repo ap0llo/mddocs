@@ -12,17 +12,17 @@ namespace Grynwald.MdDocs.ApiReference.Pages
     public class PageFactory
     {
         private readonly ILogger m_Logger;
-        private readonly IPathProvider m_PathProvider;
+        private readonly IApiReferencePathProvider m_PathProvider;
         private readonly AssemblyDocumentation m_Model;
         private readonly IDictionary<IDocumentation, IPage> m_PagesByModel = new Dictionary<IDocumentation, IPage>();
         private readonly DocumentSet<IDocument> m_DocumentSet = new DocumentSet<IDocument>();
 
 
-        public PageFactory(IPathProvider pathProvider, AssemblyDocumentation assemblyDocumentation)
+        public PageFactory(IApiReferencePathProvider pathProvider, AssemblyDocumentation assemblyDocumentation)
             : this(pathProvider, assemblyDocumentation, NullLogger.Instance)
         { }
 
-        public PageFactory(IPathProvider pathProvider, AssemblyDocumentation assemblyDocumentation, ILogger logger)
+        public PageFactory(IApiReferencePathProvider pathProvider, AssemblyDocumentation assemblyDocumentation, ILogger logger)
         {
             m_Logger = logger ?? throw new ArgumentNullException(nameof(logger));
             m_PathProvider = pathProvider ?? throw new ArgumentNullException(nameof(pathProvider));

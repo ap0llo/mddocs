@@ -12,7 +12,7 @@ namespace Grynwald.MdDocs.MSBuild
 
             using (var model = ApplicationDocumentation.FromAssemblyFile(AssemblyPath, Logger))
             {
-                var pageFactory = new CommandLinePageFactory(model, new DefaultPathProvider(), Logger);
+                var pageFactory = new CommandLinePageFactory(model, new DefaultCommandLineHelpPathProvider(), Logger);
                 pageFactory.GetPages().Save(OutputDirectoryPath, cleanOutputDirectory: true); 
             }
 

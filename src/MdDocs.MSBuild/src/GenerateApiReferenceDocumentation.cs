@@ -20,7 +20,7 @@ namespace Grynwald.MdDocs.MSBuild
             
             using (var assemblyDocumentation = AssemblyDocumentation.FromAssemblyFile(AssemblyPath, Logger))
             {
-                var pageFactory = new PageFactory(new DefaultPathProvider(), assemblyDocumentation, Logger);
+                var pageFactory = new PageFactory(new DefaultApiReferencePathProvider(), assemblyDocumentation, Logger);
                 pageFactory.GetPages().Save(OutputDirectoryPath, cleanOutputDirectory: true);
             }
 

@@ -64,7 +64,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
 
         private void Approve(MultiCommandApplicationDocumentation model)
         {
-            var pathProvider = new DefaultPathProvider();
+            var pathProvider = new DefaultCommandLineHelpPathProvider();
             var documentSet = new DocumentSet<IDocument>();
 
             // add dummy pages for all commands

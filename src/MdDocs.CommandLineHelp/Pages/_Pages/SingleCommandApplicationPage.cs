@@ -21,10 +21,10 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
     {
         private readonly SingleCommandApplicationDocumentation m_Model;
         private readonly DocumentSet<IDocument> m_DocumentSet;
-        private readonly IPathProvider m_PathProvider;
+        private readonly ICommandLineHelpPathProvider m_PathProvider;
 
 
-        public SingleCommandApplicationPage(DocumentSet<IDocument> documentSet, IPathProvider pathProvider, SingleCommandApplicationDocumentation model)
+        public SingleCommandApplicationPage(DocumentSet<IDocument> documentSet, ICommandLineHelpPathProvider pathProvider, SingleCommandApplicationDocumentation model)
         {
             m_DocumentSet = documentSet ?? throw new ArgumentNullException(nameof(documentSet));
             m_PathProvider = pathProvider ?? throw new ArgumentNullException(nameof(pathProvider));

@@ -4,7 +4,7 @@ using Grynwald.MdDocs.ApiReference.Model;
 
 namespace Grynwald.MdDocs.ApiReference.Pages
 {
-    public class DefaultPathProvider : IPathProvider
+    public class DefaultApiReferencePathProvider : IApiReferencePathProvider
     {
         private static readonly char[] s_SplitChars = ".".ToCharArray();
 

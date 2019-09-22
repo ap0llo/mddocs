@@ -8,13 +8,13 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
     public class CommandLinePageFactory
     {
         private readonly ApplicationDocumentation m_Model;
-        private readonly IPathProvider m_PathProvider;
+        private readonly ICommandLineHelpPathProvider m_PathProvider;
         private readonly ILogger m_Logger;
 
         private readonly DocumentSet<IDocument> m_DocumentSet = new DocumentSet<IDocument>();
 
 
-        public CommandLinePageFactory(ApplicationDocumentation model, IPathProvider pathProvider, ILogger logger)
+        public CommandLinePageFactory(ApplicationDocumentation model, ICommandLineHelpPathProvider pathProvider, ILogger logger)
         {
             m_Model = model ?? throw new ArgumentNullException(nameof(model));
             m_PathProvider = pathProvider ?? throw new ArgumentNullException(nameof(pathProvider));

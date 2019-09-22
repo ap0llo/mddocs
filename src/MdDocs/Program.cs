@@ -51,7 +51,7 @@ namespace Grynwald.MdDocs
         {
             using (var assemblyDocumentation = AssemblyDocumentation.FromAssemblyFile(opts.AssemblyPath, logger))
             {
-                var pageFactory = new PageFactory(new ApiReference.Pages.DefaultPathProvider(),assemblyDocumentation, logger);
+                var pageFactory = new PageFactory(new DefaultApiReferencePathProvider(),assemblyDocumentation, logger);
                 pageFactory.GetPages().Save(opts.OutputDirectory, cleanOutputDirectory: true);
             }
 
@@ -63,7 +63,7 @@ namespace Grynwald.MdDocs
         {
             using (var model = ApplicationDocumentation.FromAssemblyFile(opts.AssemblyPath, logger))
             {
-                var pageFactory = new CommandLinePageFactory(model, new CommandLineHelp.Pages.DefaultPathProvider(), logger);
+                var pageFactory = new CommandLinePageFactory(model, new DefaultCommandLineHelpPathProvider(), logger);
                 pageFactory.GetPages().Save(opts.OutputDirectory, cleanOutputDirectory: true);
             }
 

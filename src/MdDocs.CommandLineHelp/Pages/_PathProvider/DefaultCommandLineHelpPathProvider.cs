@@ -2,7 +2,7 @@
 
 namespace Grynwald.MdDocs.CommandLineHelp.Pages
 {
-    public class DefaultPathProvider : IPathProvider
+    public class DefaultCommandLineHelpPathProvider : ICommandLineHelpPathProvider
     {
         public string GetPath(ApplicationDocumentation model) => "commandline.md";
 
