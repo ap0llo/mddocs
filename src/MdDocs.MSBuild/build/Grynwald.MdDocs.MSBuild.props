@@ -6,7 +6,7 @@
     <!-- Overwrite property when running in .NET Core MSBuild-->
     <MdDocsTasksDirectory Condition="'$(MSBuildRuntimeType)' == 'Core'">$(MSBuildThisFileDirectory)netstandard2.0\</MdDocsTasksDirectory>
     
-    <MdDocsTasksPath Condition="'$(MdDocsTasksPath)' == 'MdDocsTasksPath' ">$(MdDocsTasksDirectory)Grynwald.MdDocs.MSBuild.dll</MdDocsTasksPath>    
+    <MdDocsTasksPath Condition="'$(MdDocsTasksPath)' == '' ">$(MdDocsTasksDirectory)Grynwald.MdDocs.MSBuild.dll</MdDocsTasksPath>    
   </PropertyGroup>
 
   
