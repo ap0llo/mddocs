@@ -7,9 +7,15 @@
 [![Build Status](https://dev.azure.com/ap0llo/OSS/_apis/build/status/mddocs?branchName=master)](https://dev.azure.com/ap0llo/OSS/_build/latest?definitionId=11&branchName=master)
 
 *MdDocs* is a tool to generate documentation in the form of Markdown documents.
-It currently supports generating API reference from a .NET assembly and the corresponding XML documentation file.
+It currently supports:
 
-For an example of what the output looks like, have a look at the [DemoProject](docs/demoprojects/api/DemoProject/Namespace.md) docs.
+- Generating API reference from a .NET assembly and the corresponding XML
+  documentation file
+- Generating command line help for projects that use the
+  [CommandLineParser package](https://www.nuget.org/packages/CommandLineParser/)
+  for parsing
+  
+For an example of what the output looks like, have a look at the [demoprojects](docs/demoprojects) directory.
 
 ## Installation
 
@@ -26,13 +32,33 @@ dotnet tool install --global Grynwald.MdDocs
 
 ## Usage
 
-To generate API reference documentation for a .NET assembly, run
+## API Reference
+
+To generate API reference documentation for a .NET assembly, run:
 
 ```ps1
 mddocs apireference --assembly <PATH-TO-ASSEMBLY> --outdir <OUTPUT-DIRECTORY>
 ```
 
 **Note:** The tool will delete all files in the output directory before writing the result.
+
+For an example of what the output looks like, have a look at the
+[demo project](docs/demoprojects/api/DemoProject/Namespace.md).
+
+## Command Line Help
+
+To generate command line help for .NET console application implemented using
+the [CommandLineParser package](https://www.nuget.org/packages/CommandLineParser/),
+run:
+
+```ps1
+mddocs commandlinehelp --assembly <PATH-TO-ASSEMBLY> --outdir <OUTPUT-DIRECTORY>
+```
+
+**Note:** The tool will delete all files in the output directory before writing the result.
+
+For an example of what the output looks like, have a look at the
+[demo project](docs/demoprojects/commandline/commandline.md).
 
 ## Building from source
 
@@ -62,6 +88,7 @@ MdDocs is a .NET Core application and can be built using the .NET SDK 2.1
 - [xUnit](http://xunit.github.io/)
 - [Xunit.Combinatorial](https://github.com/AArnott/Xunit.Combinatorial)
 - [Moq](https://github.com/moq/moq4)
+- [ApprovalTests](https://github.com/approvals/ApprovalTests.Net)
 
 ## Versioning and Branching
 
