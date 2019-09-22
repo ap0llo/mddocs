@@ -6,8 +6,8 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 {
     public sealed class PropertyPage : SimpleMemberPage<PropertyDocumentation>
     {
-        internal PropertyPage(ILinkProvider linkProvider, PageFactory pageFactory, PropertyDocumentation model, ILogger logger)
-            : base(linkProvider, pageFactory, model, logger)
+        internal PropertyPage(ILinkProvider linkProvider, PropertyDocumentation model, ILogger logger)
+            : base(linkProvider, model, logger)
         { }
 
 

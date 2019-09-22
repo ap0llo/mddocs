@@ -17,10 +17,10 @@ namespace Grynwald.MdDocs.ApiReference.Pages
         private readonly Lazy<IReadOnlyDictionary<MemberId, MdHeading>> m_Headings;
 
 
-        internal OverloadableMemberPage(ILinkProvider linkProvider, PageFactory pageFactory, TModel model, ILogger logger)
-            : base(linkProvider, pageFactory, model)
+        internal OverloadableMemberPage(ILinkProvider linkProvider, TModel model, ILogger logger)
+            : base(linkProvider, model)
         {
-            m_Logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
+            m_Logger = logger ?? throw new ArgumentNullException(nameof(logger));
             m_Headings = new Lazy<IReadOnlyDictionary<MemberId, MdHeading>>(LoadHeadings);
         }
 

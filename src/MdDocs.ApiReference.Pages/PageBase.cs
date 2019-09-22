@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
 using Grynwald.MarkdownGenerator;
 using Grynwald.MdDocs.ApiReference.Model;
@@ -12,14 +11,11 @@ namespace Grynwald.MdDocs.ApiReference.Pages
         private readonly ILinkProvider m_LinkProvider;
 
 
-        protected PageFactory PageFactory { get; }
-
         public TModel Model { get; }
 
 
-        internal PageBase(ILinkProvider linkProvider, PageFactory pageFactory, TModel model)
+        internal PageBase(ILinkProvider linkProvider, TModel model)
         {
-            PageFactory = pageFactory ?? throw new ArgumentNullException(nameof(pageFactory));
             Model = model ?? throw new ArgumentNullException(nameof(model));
 
             m_LinkProvider = linkProvider ?? throw new ArgumentNullException(nameof(linkProvider));
@@ -83,7 +79,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
                 }
                 // link to different file and link has an anchor
                 else
-                {                    
+                {
                     return link.HasAnchor
                         ? new MdLinkSpan(text, link.RelativePath + "#" + link.Anchor)
                         : new MdLinkSpan(text, link.RelativePath);
@@ -164,6 +160,5 @@ namespace Grynwald.MdDocs.ApiReference.Pages
                 return CreateLink(type, type.DisplayName);
             }
         }
-
     }
 }

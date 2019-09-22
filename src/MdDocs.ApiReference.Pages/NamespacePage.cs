@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Grynwald.MarkdownGenerator;
 using Grynwald.MdDocs.ApiReference.Model;
@@ -13,8 +12,8 @@ namespace Grynwald.MdDocs.ApiReference.Pages
         private readonly ILogger m_Logger;
 
 
-        internal NamespacePage(ILinkProvider linkProvider, PageFactory pageFactory, NamespaceDocumentation model, ILogger logger)
-            : base(linkProvider, pageFactory, model)
+        internal NamespacePage(ILinkProvider linkProvider, NamespaceDocumentation model, ILogger logger)
+            : base(linkProvider, model)
         {
             m_Logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
         }
@@ -44,7 +43,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             AddTypeTable(document.Root, "Enums", Model.Types.Where(x => x.Kind == TypeKind.Enum));
 
             document.Root.Add(new PageFooter());
-            
+
             document.Save(path);
         }
 
@@ -83,6 +82,5 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             }
             block.Add(table);
         }
-
     }
 }

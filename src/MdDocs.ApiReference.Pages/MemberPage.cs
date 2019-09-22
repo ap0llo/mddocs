@@ -5,8 +5,8 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 {
     public abstract class MemberPage<TModel> : PageBase<TModel> where TModel : MemberDocumentation
     {
-        internal MemberPage(ILinkProvider linkProvider, PageFactory pageFactory, TModel model)
-            : base(linkProvider, pageFactory, model)
+        internal MemberPage(ILinkProvider linkProvider, TModel model)
+            : base(linkProvider, model)
         { }
 
 
