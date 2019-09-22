@@ -10,7 +10,7 @@
           Condition=" '$(IsInnerBuild)' == 'true'">  <!-- Only run in the "inner" build -->
 
     <PropertyGroup>
-      <ApiReferenceDocumentationOutputPath Condition=" '$(ApiReferenceDocumentationOutputPath)' == '' ">$(OutputPath)docs\api\</ApiReferenceDocumentationOutputPath>
+      <ApiReferenceDocumentationOutputPath Condition=" '$(ApiReferenceDocumentationOutputPath)' == '' ">$(OutputPath)docs/api/</ApiReferenceDocumentationOutputPath>
     </PropertyGroup>
     
     <Message Text="Saving API Reference documentation to '$(ApiReferenceDocumentationOutputPath)'" />
@@ -42,7 +42,7 @@
           Condition=" '$(IsInnerBuild)' == 'true'">  <!-- Only run in the "inner" build -->
 
     <PropertyGroup>
-      <CommandLineDocumentationOutputPath Condition=" '$(CommandLineDocumentationOutputPath)' == '' ">$(OutputPath)docs\commandline\</CommandLineDocumentationOutputPath>
+      <CommandLineDocumentationOutputPath Condition=" '$(CommandLineDocumentationOutputPath)' == '' ">$(OutputPath)docs/commandline/</CommandLineDocumentationOutputPath>
     </PropertyGroup>
 
     <Message Text="Saving command line documentation to '$(CommandLineDocumentationOutputPath)'" />
