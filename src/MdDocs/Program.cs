@@ -27,9 +27,9 @@ namespace Grynwald.MdDocs
             return parser
                 .ParseArguments<ApiReferenceOptions, CommandLineHelpOptions>(args)
                 .MapResult(
-                    (ApiReferenceOptions opts) => OnApiReferenceCommand(opts),
-                    (CommandLineHelpOptions opts) => OnCommandLineHelpCommand(opts),
-                    (IEnumerable<Error> errors) => OnError(errors));
+                    (ApiReferenceOptions opts) => OnApiReferenceCommand(GetLogger(opts), opts),
+                    (CommandLineHelpOptions opts) => OnCommandLineHelpCommand(GetLogger(opts), opts),
+                    (IEnumerable<Error> errors) => OnError(errors)); ;
         }      
 
         private static int OnError(IEnumerable<Error> errors)
@@ -48,9 +48,8 @@ namespace Grynwald.MdDocs
             }
         }
 
-        private static int OnApiReferenceCommand(ApiReferenceOptions opts)
+        private static int OnApiReferenceCommand(ILogger logger, ApiReferenceOptions opts)
         {
-            var logger = new ColoredConsoleLogger(opts.Verbose ? LogLevel.Debug : LogLevel.Information);
 
             if (Directory.Exists(opts.OutputDirectory))
             {
@@ -68,10 +67,8 @@ namespace Grynwald.MdDocs
         }
 
 
-        private static int OnCommandLineHelpCommand(CommandLineHelpOptions opts)
+        private static int OnCommandLineHelpCommand(ILogger logger, CommandLineHelpOptions opts)
         {
-            var logger = new ColoredConsoleLogger(opts.Verbose ? LogLevel.Debug : LogLevel.Information);
-
             var model = ApplicationDocumentation.FromAssemblyFile(opts.AssemblyPath, logger);
 
             var pageFactory = new CommandLinePageFactory(model, new DefaultPathProvider(), logger);
@@ -81,5 +78,7 @@ namespace Grynwald.MdDocs
 
             return 0;
         }
+
+        private static ILogger GetLogger(OptionsBase opts) => new ColoredConsoleLogger(opts.Verbose ? LogLevel.Debug : LogLevel.Information);
     }
 }
