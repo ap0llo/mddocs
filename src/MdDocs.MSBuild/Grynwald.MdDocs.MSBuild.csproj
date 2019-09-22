@@ -1,0 +1,53 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
+    <IsPackable>true</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.9.20" ExcludeAssets="runtime" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MdDocs.ApiReference.Model\Grynwald.MdDocs.ApiReference.Model.csproj" />
+    <ProjectReference Include="..\MdDocs.ApiReference.Pages\Grynwald.MdDocs.ApiReference.Pages.csproj" />
+    <ProjectReference Include="..\MdDocs.CommandLineHelp\Grynwald.MdDocs.CommandLineHelp.csproj" />
+  </ItemGroup>
+
+  <!-- Adjust NuGet package properties -->
+  <PropertyGroup>
+    <Description>MdDocs is a tool generate documentation as markdown files. This package integrates the generation of documentation into the build process.</Description>    
+    <PackageTags>$(PackageTags) msbuild</PackageTags>
+    <DevelopmentDependency>true</DevelopmentDependency>
+  </PropertyGroup>
+
+
+  <!-- NuGet Packaging -->
+  <PropertyGroup>
+    <!-- Copy all referenced assemblies to the output directory -->
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <!-- Do not include dependencies as package dependencies-->
+    <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
+    <!-- Place assemblies into the 'build' directory-->
+    <BuildOutputTargetFolder>build</BuildOutputTargetFolder>
+    
+    <!-- Register additional targets-->
+    <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);IncludeDependenciesInPackage</TargetsForTfmSpecificBuildOutput>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+  
+  <!-- Include files from the 'build' directory-->
+  <ItemGroup>
+    <Content Include="build\*" Pack="true" PackagePath="build\" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  
+  <!-- Include all assemblies in the output directory in the package-->
+  <Target Name="IncludeDependenciesInPackage" DependsOnTargets="GetTargetPath">
+    <ItemGroup>
+      <BuildOutputInPackage Include="$(OutputPath)*.dll" Exclude="$(OutputPath)$(AssemblyName).dll" />
+    </ItemGroup>
+  </Target>
+  
+</Project>

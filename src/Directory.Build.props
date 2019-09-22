@@ -11,7 +11,15 @@
     <BaseOutputPath Condition="!HasTrailingSlash('BaseOutputPath')">$(BaseOutputPath)\</BaseOutputPath>
     <BaseIntermediateOutputPath>$(BaseOutputPath)intermediate\$(MSBuildProjectName)\</BaseIntermediateOutputPath>
     <OutputPath>$(BaseOutputPath)$(Configuration)\$(MSBuildProjectName)\</OutputPath>
+    <PackageOutputPath>$(BaseOutputPath)$(Configuration)\packages\</PackageOutputPath>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <!--
+       Suppressed warnings:
+         - NU5125: "The 'licenseUrl' element will be deprecated. Consider using the 'license' element instead"
+    -->
+    <NoWarn>NU5125</NoWarn>
+    <!-- Make NuGet packaging opt-in instead of opt-out. -->
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
   
   <ItemGroup>

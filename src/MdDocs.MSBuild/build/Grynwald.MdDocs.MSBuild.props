@@ -1,0 +1,23 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <!-- Select appropriate task assembly -->
+  <PropertyGroup>
+    <!-- Default to .NET Framework build-->
+    <MdDocsTasksDirectory>$(MSBuildThisFileDirectory)net461/</MdDocsTasksDirectory>
+    <!-- Overwrite property when running in .NET Core MSBuild-->
+    <MdDocsTasksDirectory Condition="'$(MSBuildRuntimeType)' == 'Core'">$(MSBuildThisFileDirectory)netstandard2.0/</MdDocsTasksDirectory>
+    
+    <MdDocsTasksPath Condition="'$(MdDocsTasksPath)' == '' ">$(MdDocsTasksDirectory)Grynwald.MdDocs.MSBuild.dll</MdDocsTasksPath>    
+  </PropertyGroup>
+
+  <!-- Load custom task assembly -->
+  <UsingTask AssemblyFile="$(MdDocsTasksPath)" TaskName="Grynwald.MdDocs.MSBuild.GenerateApiReferenceDocumentation"/>
+  <UsingTask AssemblyFile="$(MdDocsTasksPath)" TaskName="Grynwald.MdDocs.MSBuild.GenerateCommandLineDocumentation"/>
+
+  <!-- Define default values for properties: By default, disable generation of documentation -->
+  <PropertyGroup>
+    <GenerateApiReferenceDocumentationOnBuild Condition="'$(GenerateApiReferenceDocumentationOnBuild)' == ''">false</GenerateApiReferenceDocumentationOnBuild>
+    <GenerateCommandLineDocumentationOnBuild Condition="'$(GenerateCommandLineDocumentationOnBuild)' == ''">false</GenerateCommandLineDocumentationOnBuild>
+  </PropertyGroup>
+  
+</Project>
