@@ -4,16 +4,11 @@ using Microsoft.Extensions.Logging;
 
 namespace Grynwald.MdDocs.ApiReference.Pages
 {
-    internal class FieldPage : SimpleMemberPage<FieldDocumentation>
+    public sealed class FieldPage : SimpleMemberPage<FieldDocumentation>
     {
-        public override OutputPath OutputPath { get; }
-
-
-        public FieldPage(PageFactory pageFactory, string rootOutputPath, FieldDocumentation model, ILogger logger)
-            : base(pageFactory, rootOutputPath, model, logger)
-        {
-            OutputPath = new OutputPath(GetTypeDir(Model.TypeDocumentation), "Fields", $"{Model.Name}.md");
-        }
+        internal FieldPage(ILinkProvider linkProvider, FieldDocumentation model, ILogger logger)
+            : base(linkProvider, model, logger)
+        { }
 
 
         protected override MdHeading GetHeading() =>

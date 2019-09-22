@@ -4,16 +4,11 @@ using Microsoft.Extensions.Logging;
 
 namespace Grynwald.MdDocs.ApiReference.Pages
 {
-    internal class EventPage : SimpleMemberPage<EventDocumentation>
+    public sealed class EventPage : SimpleMemberPage<EventDocumentation>
     {
-        public override OutputPath OutputPath { get; }
-
-
-        public EventPage(PageFactory pageFactory, string rootOutputPath, EventDocumentation model, ILogger logger)
-            : base(pageFactory, rootOutputPath, model, logger)
-        {
-            OutputPath = new OutputPath(GetTypeDir(Model.TypeDocumentation), "Events", $"{Model.Name}.md");
-        }
+        internal EventPage(ILinkProvider linkProvider, EventDocumentation model, ILogger logger)
+            : base(linkProvider, model, logger)
+        { }
 
 
         protected override MdHeading GetHeading() =>

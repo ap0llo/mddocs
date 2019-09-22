@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Grynwald.MarkdownGenerator;
 using Grynwald.MdDocs.ApiReference.Model;
@@ -9,24 +8,22 @@ using Microsoft.Extensions.Logging;
 
 namespace Grynwald.MdDocs.ApiReference.Pages
 {
-    internal class TypePage : PageBase<TypeDocumentation>
+    public sealed class TypePage : PageBase<TypeDocumentation>
     {
         private readonly ILogger m_Logger;
 
-        public override OutputPath OutputPath { get; }
 
-
-        public TypePage(PageFactory pageFactory, string rootOutputPath, TypeDocumentation model, ILogger logger)
-            : base(pageFactory, rootOutputPath, model)
+        internal TypePage(ILinkProvider linkProvider, TypeDocumentation model, ILogger logger)
+            : base(linkProvider, model)
         {
             m_Logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            OutputPath = new OutputPath(GetTypeDir(Model), "Type.md");
         }
 
 
-        public override void Save()
+
+        public override void Save(string path)
         {
-            m_Logger.LogInformation($"Saving page '{OutputPath}'");
+            m_Logger.LogInformation($"Saving page '{path}'");
 
             var document = new MdDocument(
                 new MdHeading($"{Model.DisplayName} {Model.Kind}", 1)
@@ -69,8 +66,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 
             document.Root.Add(new PageFooter());
 
-            Directory.CreateDirectory(Path.GetDirectoryName(OutputPath));
-            document.Save(OutputPath);
+            document.Save(path);
         }
 
 

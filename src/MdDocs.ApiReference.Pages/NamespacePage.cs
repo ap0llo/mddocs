@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Grynwald.MarkdownGenerator;
 using Grynwald.MdDocs.ApiReference.Model;
@@ -8,25 +7,21 @@ using Microsoft.Extensions.Logging;
 
 namespace Grynwald.MdDocs.ApiReference.Pages
 {
-    internal class NamespacePage : PageBase<NamespaceDocumentation>
+    public sealed class NamespacePage : PageBase<NamespaceDocumentation>
     {
         private readonly ILogger m_Logger;
 
 
-        public override OutputPath OutputPath { get; }
-
-
-        public NamespacePage(PageFactory pageFactory, string rootOutputPath, NamespaceDocumentation model, ILogger logger)
-            : base(pageFactory, rootOutputPath, model)
+        internal NamespacePage(ILinkProvider linkProvider, NamespaceDocumentation model, ILogger logger)
+            : base(linkProvider, model)
         {
-            OutputPath = new OutputPath(GetNamespaceDir(Model), "Namespace.md");
             m_Logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
         }
 
 
-        public override void Save()
+        public override void Save(string path)
         {
-            m_Logger.LogInformation($"Saving page '{OutputPath}'");
+            m_Logger.LogInformation($"Saving page '{path}'");
 
             var document = new MdDocument(
                new MdHeading($"{Model.Name} Namespace", 1)
@@ -49,8 +44,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 
             document.Root.Add(new PageFooter());
 
-            Directory.CreateDirectory(Path.GetDirectoryName(OutputPath));
-            document.Save(OutputPath);
+            document.Save(path);
         }
 
 
@@ -69,6 +63,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             )));
 
         }
+
         private void AddTypeTable(MdContainerBlock block, string heading, IEnumerable<TypeDocumentation> types)
         {
             if (!types.Any())
@@ -87,6 +82,5 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             }
             block.Add(table);
         }
-
     }
 }

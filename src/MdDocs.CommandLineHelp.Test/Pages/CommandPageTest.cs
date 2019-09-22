@@ -221,7 +221,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
 
         private void Approve(CommandDocumentation model)
         {
-            var pathProvider = new DefaultPathProvider();
+            var pathProvider = new DefaultCommandLineHelpPathProvider();
             var documentSet = new DocumentSet<IDocument>();
 
             var commandPage = new CommandPage(documentSet, pathProvider, model);

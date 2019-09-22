@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Grynwald.MarkdownGenerator;
 using Grynwald.MdDocs.ApiReference.Model;
@@ -10,7 +9,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Grynwald.MdDocs.ApiReference.Pages
 {
-    internal abstract class OverloadableMemberPage<TModel, TOverload> : MemberPage<TModel>
+    public abstract class OverloadableMemberPage<TModel, TOverload> : MemberPage<TModel>
         where TModel : OverloadableMemberDocumentation<TOverload>
         where TOverload : OverloadDocumentation
     {
@@ -18,17 +17,18 @@ namespace Grynwald.MdDocs.ApiReference.Pages
         private readonly Lazy<IReadOnlyDictionary<MemberId, MdHeading>> m_Headings;
 
 
-        internal OverloadableMemberPage(PageFactory pageFactory, string rootOutputPath, TModel model, ILogger logger)
-            : base(pageFactory, rootOutputPath, model)
+        internal OverloadableMemberPage(ILinkProvider linkProvider, TModel model, ILogger logger)
+            : base(linkProvider, model)
         {
-            m_Logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
+            m_Logger = logger ?? throw new ArgumentNullException(nameof(logger));
             m_Headings = new Lazy<IReadOnlyDictionary<MemberId, MdHeading>>(LoadHeadings);
         }
 
 
-        public override void Save()
+
+        public override void Save(string path)
         {
-            m_Logger.LogInformation($"Saving page '{OutputPath}'");
+            m_Logger.LogInformation($"Saving page '{path}'");
 
             var document = new MdDocument(
                 GetPageHeading()
@@ -56,9 +56,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             }
 
             document.Root.Add(new PageFooter());
-
-            Directory.CreateDirectory(Path.GetDirectoryName(OutputPath));
-            document.Save(OutputPath);
+            document.Save(path);
         }
 
 

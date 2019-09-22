@@ -8,21 +8,20 @@ using Microsoft.Extensions.Logging;
 
 namespace Grynwald.MdDocs.ApiReference.Pages
 {
-    internal abstract class SimpleMemberPage<TModel> : MemberPage<TModel> where TModel : SimpleMemberDocumentation
+    public abstract class SimpleMemberPage<TModel> : MemberPage<TModel> where TModel : SimpleMemberDocumentation
     {
         private readonly ILogger m_Logger;
 
 
-        public SimpleMemberPage(PageFactory pageFactory, string rootOutputPath, TModel model, ILogger logger)
-            : base(pageFactory, rootOutputPath, model)
+        internal SimpleMemberPage(ILinkProvider linkProvider, TModel model, ILogger logger)
+            : base(linkProvider, model)
         {
             m_Logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-
-        public override void Save()
+        public override void Save(string path)
         {
-            m_Logger.LogInformation($"Saving page '{OutputPath}'");
+            m_Logger.LogInformation($"Saving page '{path}'");
 
             var document = new MdDocument(
                 GetHeading()
@@ -43,9 +42,8 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             AddSeeAlsoSection(document.Root);
 
             document.Root.Add(new PageFooter());
-
-            Directory.CreateDirectory(Path.GetDirectoryName(OutputPath));
-            document.Save(OutputPath);
+            
+            document.Save(path);
         }
 
 

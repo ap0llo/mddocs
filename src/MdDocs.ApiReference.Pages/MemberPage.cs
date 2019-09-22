@@ -3,10 +3,10 @@ using Grynwald.MdDocs.ApiReference.Model;
 
 namespace Grynwald.MdDocs.ApiReference.Pages
 {
-    internal abstract class MemberPage<TModel> : PageBase<TModel> where TModel : MemberDocumentation
+    public abstract class MemberPage<TModel> : PageBase<TModel> where TModel : MemberDocumentation
     {
-        public MemberPage(PageFactory pageFactory, string rootOutputPath, TModel model)
-            : base(pageFactory, rootOutputPath, model)
+        internal MemberPage(ILinkProvider linkProvider, TModel model)
+            : base(linkProvider, model)
         { }
 
 

@@ -4,16 +4,11 @@ using Microsoft.Extensions.Logging;
 
 namespace Grynwald.MdDocs.ApiReference.Pages
 {
-    internal class ConstructorsPage : OverloadableMemberPage<ConstructorDocumentation, ConstructorOverloadDocumentation>
+    public sealed class ConstructorsPage : OverloadableMemberPage<ConstructorDocumentation, ConstructorOverloadDocumentation>
     {
-        public override OutputPath OutputPath { get; }
-
-
-        public ConstructorsPage(PageFactory pageFactory, string rootOutputPath, ConstructorDocumentation model, ILogger logger)
-            : base(pageFactory, rootOutputPath, model, logger)
-        {
-            OutputPath = new OutputPath(GetTypeDir(Model.TypeDocumentation), "Constructors.md");
-        }
+        internal ConstructorsPage(ILinkProvider linkProvider, ConstructorDocumentation model, ILogger logger)
+            : base(linkProvider, model, logger)
+        { }
 
 
         protected override MdHeading GetPageHeading() =>

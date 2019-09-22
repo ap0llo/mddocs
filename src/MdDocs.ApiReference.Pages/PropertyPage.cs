@@ -1,20 +1,14 @@
-﻿using System.IO;
-using Grynwald.MarkdownGenerator;
+﻿using Grynwald.MarkdownGenerator;
 using Grynwald.MdDocs.ApiReference.Model;
 using Microsoft.Extensions.Logging;
 
 namespace Grynwald.MdDocs.ApiReference.Pages
 {
-    internal class PropertyPage : SimpleMemberPage<PropertyDocumentation>
+    public sealed class PropertyPage : SimpleMemberPage<PropertyDocumentation>
     {
-        public override OutputPath OutputPath { get; }
-
-
-        public PropertyPage(PageFactory pageFactory, string rootOutputPath, PropertyDocumentation model, ILogger logger)
-            : base(pageFactory, rootOutputPath, model, logger)
-        {
-            OutputPath = new OutputPath(Path.Combine(GetTypeDir(Model.TypeDocumentation), "Properties", $"{Model.Name}.md"));
-        }
+        internal PropertyPage(ILinkProvider linkProvider, PropertyDocumentation model, ILogger logger)
+            : base(linkProvider, model, logger)
+        { }
 
 
         protected override MdHeading GetHeading() =>
@@ -36,7 +30,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             AddExceptionsSection(block);
         }
 
-        protected void AddExceptionsSection(MdContainerBlock block)
+        private void AddExceptionsSection(MdContainerBlock block)
         {
             if (Model.Exceptions.Count == 0)
                 return;

@@ -54,7 +54,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// </summary>
         /// <param name="filePath">The file of the assembly to load.</param>
         /// <returns>Returns a new instance of <see cref="AssemblyDocumentation"/> that provides documentation for the specified assembly.</returns>
-        public static AssemblyDocumentation FromFile(string filePath) => FromFile(filePath, NullLogger.Instance);
+        public static AssemblyDocumentation FromAssemblyFile(string filePath) => FromAssemblyFile(filePath, NullLogger.Instance);
 
         /// <summary>
         /// Loads the documentation model from an assembly file.
@@ -62,7 +62,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// <param name="filePath">The file of the assembly to load.</param>
         /// <param name="logger">The logger to use.</param>
         /// <returns>Returns a new instance of <see cref="AssemblyDocumentation"/> that provides documentation for the specified assembly.</returns>
-        public static AssemblyDocumentation FromFile(string filePath, ILogger logger)
+        public static AssemblyDocumentation FromAssemblyFile(string filePath, ILogger logger)
         {
             // load assembly
             var assemblyDefinition = AssemblyReader.ReadFile(filePath, logger);

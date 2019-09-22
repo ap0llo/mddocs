@@ -37,7 +37,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
 
         private void Approve(SingleCommandApplicationDocumentation model)
         {
-            var pathProvider = new DefaultPathProvider();
+            var pathProvider = new DefaultCommandLineHelpPathProvider();
             var documentSet = new DocumentSet<IDocument>();
 
             var applicationPage = new SingleCommandApplicationPage(documentSet, pathProvider, model);

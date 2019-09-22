@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
 using Grynwald.MarkdownGenerator;
 using Grynwald.MdDocs.ApiReference.Model;
@@ -7,31 +6,23 @@ using Grynwald.MdDocs.ApiReference.Model.XmlDocs;
 
 namespace Grynwald.MdDocs.ApiReference.Pages
 {
-    internal abstract class PageBase<TModel> : IMdSpanFactory, IPage where TModel : class, IDocumentation
+    public abstract class PageBase<TModel> : IMdSpanFactory, IPage where TModel : class, IDocumentation
     {
-        private static readonly char[] s_SplitChars = ".".ToCharArray();
-        private readonly string m_RootOutputPath;
         private readonly ILinkProvider m_LinkProvider;
 
 
-        public abstract OutputPath OutputPath { get; }
-
-        protected PageFactory PageFactory { get; }
-
-        protected TModel Model { get; }
+        public TModel Model { get; }
 
 
-        public PageBase(PageFactory pageFactory, string rootOutputPath, TModel model)
+        internal PageBase(ILinkProvider linkProvider, TModel model)
         {
-            PageFactory = pageFactory ?? throw new ArgumentNullException(nameof(pageFactory));
-            m_RootOutputPath = rootOutputPath ?? throw new ArgumentNullException(nameof(rootOutputPath));
             Model = model ?? throw new ArgumentNullException(nameof(model));
 
-            m_LinkProvider = new CompositeLinkProvider(new InternalLinkProvider(model, pageFactory));
+            m_LinkProvider = linkProvider ?? throw new ArgumentNullException(nameof(linkProvider));
         }
 
 
-        public abstract void Save();
+        public abstract void Save(string path);
 
 
         public MdParagraph GetMdParagraph(MemberId id) => new MdParagraph(GetMdSpan(id, false));
@@ -78,9 +69,9 @@ namespace Grynwald.MdDocs.ApiReference.Pages
         {
             // try to generate a link to the target but avoid self-links
 
-            if (m_LinkProvider.TryGetLink(target, out var link))
+            if (m_LinkProvider.TryGetLink(this, target, out var link))
             {
-                if (OutputPath.Equals(link.Path))
+                if (String.IsNullOrEmpty(link.RelativePath))
                 {
                     // link in same file, but there is an anchor => link to anchor
                     if (link.HasAnchor)
@@ -89,11 +80,9 @@ namespace Grynwald.MdDocs.ApiReference.Pages
                 // link to different file and link has an anchor
                 else
                 {
-                    var relativePath = OutputPath.GetRelativePathTo(link.Path);
-
                     return link.HasAnchor
-                        ? new MdLinkSpan(text, relativePath + "#" + link.Anchor)
-                        : new MdLinkSpan(text, relativePath);
+                        ? new MdLinkSpan(text, link.RelativePath + "#" + link.Anchor)
+                        : new MdLinkSpan(text, link.RelativePath);
                 }
             }
 
@@ -106,25 +95,6 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             anchor = default;
             return false;
         }
-
-
-        protected string GetTypeDir(TypeDocumentation type)
-        {
-            var dirName = type.TypeId.Name;
-            if (type.TypeId is GenericTypeInstanceId genericTypeInstance)
-            {
-                dirName += "-" + genericTypeInstance.TypeArguments.Count;
-            }
-            else if (type.TypeId is GenericTypeId genericType)
-            {
-                dirName += "-" + genericType.Arity;
-            }
-
-            return Path.Combine(GetNamespaceDir(type.NamespaceDocumentation), dirName);
-        }
-
-        protected string GetNamespaceDir(NamespaceDocumentation namespaceDocumentation) =>
-            Path.Combine(m_RootOutputPath, String.Join("/", namespaceDocumentation.Name.Split(s_SplitChars)));
 
         protected MdSpan ConvertToSpan(TextBlock textBlock)
         {
@@ -190,6 +160,5 @@ namespace Grynwald.MdDocs.ApiReference.Pages
                 return CreateLink(type, type.DisplayName);
             }
         }
-
     }
 }

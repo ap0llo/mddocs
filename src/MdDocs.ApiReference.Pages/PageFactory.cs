@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using Grynwald.MarkdownGenerator;
 using Grynwald.MdDocs.ApiReference.Model;
 using Grynwald.Utilities.Collections;
 using Microsoft.Extensions.Logging;
@@ -7,30 +9,23 @@ using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Grynwald.MdDocs.ApiReference.Pages
 {
-    //TODO: Use DocumentSet
     public class PageFactory
     {
-        private readonly string m_RootOutputPath;
         private readonly ILogger m_Logger;
+        private readonly IApiReferencePathProvider m_PathProvider;
         private readonly AssemblyDocumentation m_Model;
-        private readonly IDictionary<IDocumentation, IPage> m_Pages = new Dictionary<IDocumentation, IPage>();
+        private readonly IDictionary<IDocumentation, IPage> m_PagesByModel = new Dictionary<IDocumentation, IPage>();
+        private readonly DocumentSet<IDocument> m_DocumentSet = new DocumentSet<IDocument>();
 
 
-        public IEnumerable<IPage> AllPages => m_Pages.Values;
-
-
-        public PageFactory(AssemblyDocumentation assemblyDocumentation, string outDir)
-            : this(assemblyDocumentation, outDir, NullLogger.Instance)
+        public PageFactory(IApiReferencePathProvider pathProvider, AssemblyDocumentation assemblyDocumentation)
+            : this(pathProvider, assemblyDocumentation, NullLogger.Instance)
         { }
 
-        public PageFactory(AssemblyDocumentation assemblyDocumentation, string outDir, ILogger logger)
+        public PageFactory(IApiReferencePathProvider pathProvider, AssemblyDocumentation assemblyDocumentation, ILogger logger)
         {
-            if (String.IsNullOrEmpty(outDir))
-                throw new ArgumentException("Value must not be null or empty", nameof(outDir));
-
-            m_RootOutputPath = outDir;
             m_Logger = logger ?? throw new ArgumentNullException(nameof(logger));
-
+            m_PathProvider = pathProvider ?? throw new ArgumentNullException(nameof(pathProvider));
             m_Model = assemblyDocumentation ?? throw new ArgumentNullException(nameof(assemblyDocumentation));
 
             LoadPages();
@@ -54,69 +49,82 @@ namespace Grynwald.MdDocs.ApiReference.Pages
                     return TryGetPage(operatorOverload.OperatorDocumentation);
 
                 default:
-                    return m_Pages.GetValueOrDefault(item);
+                    return m_PagesByModel.GetValueOrDefault(item);
             }
         }
 
-        public void SaveAll()
-        {
-            m_Logger.LogInformation($"Saving pages to output directory '{m_RootOutputPath}'");
-            foreach (var page in AllPages)
-            {
-                page.Save();
-            }
-        }
+        public DocumentSet<IDocument> GetPages() => m_DocumentSet;
 
 
         private void LoadPages()
         {
+            var linkProvider = new CompositeLinkProvider(new InternalLinkProvider(m_Model, this, m_DocumentSet));
+
             m_Logger.LogInformation("Loading pages");
 
             foreach (var @namespace in m_Model.MainModuleDocumentation.Namespaces)
             {
-                m_Pages.Add(@namespace, new NamespacePage(this, m_RootOutputPath, @namespace, m_Logger));
+                var page = new NamespacePage(linkProvider, @namespace, m_Logger);
+                m_PagesByModel.Add(@namespace, page);
+                m_DocumentSet.Add(m_PathProvider.GetPath(page), page);
             }
 
             foreach (var type in m_Model.MainModuleDocumentation.Types)
             {
-                m_Pages.Add(type, new TypePage(this, m_RootOutputPath, type, m_Logger));
+                var typePage = new TypePage(linkProvider, type, m_Logger);
+                m_PagesByModel.Add(type, typePage);
+                m_DocumentSet.Add(m_PathProvider.GetPath(typePage), typePage);
 
                 foreach (var property in type.Properties)
                 {
-                    m_Pages.Add(property, new PropertyPage(this, m_RootOutputPath, property, m_Logger));
+                    var page = new PropertyPage(linkProvider, property, m_Logger);
+                    m_PagesByModel.Add(property, page);
+                    m_DocumentSet.Add(m_PathProvider.GetPath(page), page);
                 }
 
                 foreach (var indexer in type.Indexers)
                 {
-                    m_Pages.Add(indexer, new IndexerPage(this, m_RootOutputPath, indexer, m_Logger));
+                    var page = new IndexerPage(linkProvider, indexer, m_Logger);
+                    m_PagesByModel.Add(indexer, page);
+                    m_DocumentSet.Add(m_PathProvider.GetPath(page), page);
                 }
 
                 if (type.Constructors != null)
                 {
-                    m_Pages.Add(type.Constructors, new ConstructorsPage(this, m_RootOutputPath, type.Constructors, m_Logger));
+                    var page = new ConstructorsPage(linkProvider, type.Constructors, m_Logger);
+                    m_PagesByModel.Add(type.Constructors, page);
+                    m_DocumentSet.Add(m_PathProvider.GetPath(page), page);
                 }
 
                 foreach (var method in type.Methods)
                 {
-                    m_Pages.Add(method, new MethodPage(this, m_RootOutputPath, method, m_Logger));
+                    var page = new MethodPage(linkProvider, method, m_Logger);
+                    m_PagesByModel.Add(method, page);
+                    m_DocumentSet.Add(m_PathProvider.GetPath(page), page);
                 }
 
                 if (type.Kind != TypeKind.Enum)
                 {
                     foreach (var field in type.Fields)
                     {
-                        m_Pages.Add(field, new FieldPage(this, m_RootOutputPath, field, m_Logger));
+                        var page = new FieldPage(linkProvider, field, m_Logger);
+                        m_PagesByModel.Add(field, page);
+                        m_DocumentSet.Add(m_PathProvider.GetPath(page), page);
                     }
                 }
 
                 foreach (var ev in type.Events)
                 {
-                    m_Pages.Add(ev, new EventPage(this, m_RootOutputPath, ev, m_Logger));
+                    var page = new EventPage(linkProvider, ev, m_Logger);
+                    m_PagesByModel.Add(ev, page);
+                    m_DocumentSet.Add(m_PathProvider.GetPath(page), page);
                 }
 
                 foreach (var op in type.Operators)
                 {
-                    m_Pages.Add(op, new OperatorPage(this, m_RootOutputPath, op, m_Logger));
+                    var page = new OperatorPage(linkProvider, op, m_Logger);
+                    m_PagesByModel.Add(op, page);
+                    m_DocumentSet.Add(m_PathProvider.GetPath(page), page);
                 }
             }
         }

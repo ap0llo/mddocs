@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using CommandLine;
 using Grynwald.MdDocs.ApiReference.Model;
@@ -50,17 +49,10 @@ namespace Grynwald.MdDocs
 
         private static int OnApiReferenceCommand(ILogger logger, ApiReferenceOptions opts)
         {
-            if (Directory.Exists(opts.OutputDirectory))
+            using (var assemblyDocumentation = AssemblyDocumentation.FromAssemblyFile(opts.AssemblyPath, logger))
             {
-                logger.LogInformation($"Cleaning output directory '{opts.OutputDirectory}'");
-                Directory.Delete(opts.OutputDirectory, true);
-            }
-
-            //TODO: Make usage of ApplicationDocumentation and AssemblyDocumentation consistent
-            using (var assemblyDocumentation = AssemblyDocumentation.FromFile(opts.AssemblyPath, logger))
-            {
-                var factory = new PageFactory(assemblyDocumentation, opts.OutputDirectory, logger);
-                factory.SaveAll();
+                var pageFactory = new PageFactory(new DefaultApiReferencePathProvider(),assemblyDocumentation, logger);
+                pageFactory.GetPages().Save(opts.OutputDirectory, cleanOutputDirectory: true);
             }
 
             return 0;
@@ -69,12 +61,11 @@ namespace Grynwald.MdDocs
 
         private static int OnCommandLineHelpCommand(ILogger logger, CommandLineHelpOptions opts)
         {
-            var model = ApplicationDocumentation.FromAssemblyFile(opts.AssemblyPath, logger);
-
-            var pageFactory = new CommandLinePageFactory(model, new DefaultPathProvider(), logger);
-            var documentSet = pageFactory.GetPages();
-
-            documentSet.Save(opts.OutputDirectory, cleanOutputDirectory: true);
+            using (var model = ApplicationDocumentation.FromAssemblyFile(opts.AssemblyPath, logger))
+            {
+                var pageFactory = new CommandLinePageFactory(model, new DefaultCommandLineHelpPathProvider(), logger);
+                pageFactory.GetPages().Save(opts.OutputDirectory, cleanOutputDirectory: true);
+            }
 
             return 0;
         }
