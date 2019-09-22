@@ -9,14 +9,12 @@ namespace Grynwald.MdDocs.ApiReference.Pages
     {
         public override string RelativeOutputPath { get; }
 
-        public override OutputPath OutputPath { get; }
 
 
-        public FieldPage(ILinkProvider linkProvider, PageFactory pageFactory, string rootOutputPath, FieldDocumentation model, ILogger logger)
-            : base(linkProvider, pageFactory, rootOutputPath, model, logger)
+        public FieldPage(ILinkProvider linkProvider, PageFactory pageFactory, FieldDocumentation model, ILogger logger)
+            : base(linkProvider, pageFactory, model, logger)
         {
             RelativeOutputPath= Path.Combine(GetTypeDirRelative(Model.TypeDocumentation), "Fields", $"{Model.Name}.md");
-            OutputPath = new OutputPath(GetTypeDir(Model.TypeDocumentation), "Fields", $"{Model.Name}.md");
         }
 
 

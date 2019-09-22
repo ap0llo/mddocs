@@ -10,14 +10,11 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 
         public override string RelativeOutputPath { get; }
 
-        public override OutputPath OutputPath { get; }
 
-
-        public EventPage(ILinkProvider linkProvider, PageFactory pageFactory, string rootOutputPath, EventDocumentation model, ILogger logger)
-            : base(linkProvider, pageFactory, rootOutputPath, model, logger)
+        public EventPage(ILinkProvider linkProvider, PageFactory pageFactory, EventDocumentation model, ILogger logger)
+            : base(linkProvider, pageFactory, model, logger)
         {
             RelativeOutputPath = Path.Combine(GetTypeDirRelative(Model.TypeDocumentation), "Events", $"{Model.Name}.md");
-            OutputPath = new OutputPath(GetTypeDir(Model.TypeDocumentation), "Events", $"{Model.Name}.md");
         }
 
 

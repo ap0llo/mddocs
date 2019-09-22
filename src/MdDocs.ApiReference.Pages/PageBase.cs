@@ -10,10 +10,8 @@ namespace Grynwald.MdDocs.ApiReference.Pages
     internal abstract class PageBase<TModel> : IMdSpanFactory, IPage where TModel : class, IDocumentation
     {
         private static readonly char[] s_SplitChars = ".".ToCharArray();
-        private readonly string m_RootOutputPath;
         private readonly ILinkProvider m_LinkProvider;
 
-        public abstract OutputPath OutputPath { get; }
 
         public abstract string RelativeOutputPath { get; }
 
@@ -22,10 +20,9 @@ namespace Grynwald.MdDocs.ApiReference.Pages
         protected TModel Model { get; }
 
 
-        public PageBase(ILinkProvider linkProvider, PageFactory pageFactory, string rootOutputPath, TModel model)
+        public PageBase(ILinkProvider linkProvider, PageFactory pageFactory, TModel model)
         {
             PageFactory = pageFactory ?? throw new ArgumentNullException(nameof(pageFactory));
-            m_RootOutputPath = rootOutputPath ?? throw new ArgumentNullException(nameof(rootOutputPath));
             Model = model ?? throw new ArgumentNullException(nameof(model));
 
             m_LinkProvider = linkProvider ?? throw new ArgumentNullException(nameof(linkProvider));
@@ -107,21 +104,6 @@ namespace Grynwald.MdDocs.ApiReference.Pages
         }
 
 
-        protected string GetTypeDir(TypeDocumentation type)
-        {
-            var dirName = type.TypeId.Name;
-            if (type.TypeId is GenericTypeInstanceId genericTypeInstance)
-            {
-                dirName += "-" + genericTypeInstance.TypeArguments.Count;
-            }
-            else if (type.TypeId is GenericTypeId genericType)
-            {
-                dirName += "-" + genericType.Arity;
-            }
-
-            return Path.Combine(GetNamespaceDir(type.NamespaceDocumentation), dirName);
-        }
-
         protected string GetTypeDirRelative(TypeDocumentation type)
         {
             var dirName = type.TypeId.Name;
@@ -136,9 +118,6 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 
             return Path.Combine(GetNamespaceDirRelative(type.NamespaceDocumentation), dirName);
         }
-
-        protected string GetNamespaceDir(NamespaceDocumentation namespaceDocumentation) =>
-            Path.Combine(m_RootOutputPath, String.Join("/", namespaceDocumentation.Name.Split(s_SplitChars)));
 
         protected string GetNamespaceDirRelative(NamespaceDocumentation namespaceDocumentation) =>
            String.Join("/", namespaceDocumentation.Name.Split(s_SplitChars));

@@ -13,8 +13,8 @@ namespace Grynwald.MdDocs.ApiReference.Pages
         private readonly ILogger m_Logger;
 
 
-        public SimpleMemberPage(ILinkProvider linkProvider, PageFactory pageFactory, string rootOutputPath, TModel model, ILogger logger)
-            : base(linkProvider, pageFactory, rootOutputPath, model)
+        public SimpleMemberPage(ILinkProvider linkProvider, PageFactory pageFactory, TModel model, ILogger logger)
+            : base(linkProvider, pageFactory, model)
         {
             m_Logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }

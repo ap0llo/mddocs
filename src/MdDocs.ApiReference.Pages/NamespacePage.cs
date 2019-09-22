@@ -14,14 +14,12 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 
         public override string RelativeOutputPath { get; }
 
-        public override OutputPath OutputPath { get; }
 
 
-        public NamespacePage(ILinkProvider linkProvider, PageFactory pageFactory, string rootOutputPath, NamespaceDocumentation model, ILogger logger)
-            : base(linkProvider, pageFactory, rootOutputPath, model)
+        public NamespacePage(ILinkProvider linkProvider, PageFactory pageFactory, NamespaceDocumentation model, ILogger logger)
+            : base(linkProvider, pageFactory, model)
         {
             RelativeOutputPath = Path.Combine(GetNamespaceDirRelative(Model), "Namespace.md");
-            OutputPath = new OutputPath(GetNamespaceDir(Model), "Namespace.md");
             m_Logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
         }
 
@@ -51,7 +49,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 
             document.Root.Add(new PageFooter());
             
-            document.Save(OutputPath);
+            document.Save(path);
         }
 
 

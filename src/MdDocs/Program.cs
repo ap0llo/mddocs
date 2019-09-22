@@ -53,7 +53,7 @@ namespace Grynwald.MdDocs
             //TODO: Make usage of ApplicationDocumentation and AssemblyDocumentation consistent
             using (var assemblyDocumentation = AssemblyDocumentation.FromFile(opts.AssemblyPath, logger))
             {
-                var pageFactory = new PageFactory(assemblyDocumentation, opts.OutputDirectory, logger);
+                var pageFactory = new PageFactory(assemblyDocumentation, logger);
                 var documentSet = pageFactory.GetPages();
                 documentSet.Save(opts.OutputDirectory, cleanOutputDirectory: true);
             }
