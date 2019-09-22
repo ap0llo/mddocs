@@ -6,6 +6,7 @@
     <AssemblyName>mddocs</AssemblyName>
     <PackageId>$(MSBuildProjectName)</PackageId>
     <RootNamespace>$(MSBuildProjectName)</RootNamespace>
+    <IsPackable>true</IsPackable>
     <PackAsTool>true</PackAsTool>
   </PropertyGroup>
 
