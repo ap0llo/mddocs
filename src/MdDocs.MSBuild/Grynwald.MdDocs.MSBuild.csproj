@@ -19,6 +19,7 @@
   <PropertyGroup>
     <Description>MdDocs is a tool generate documentation as markdown files. This package integrates the generation of documentation into the build process.</Description>    
     <PackageTags>$(PackageTags) msbuild</PackageTags>
+    <DevelopmentDependency>true</DevelopmentDependency>
   </PropertyGroup>
 
 
