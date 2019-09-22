@@ -40,7 +40,9 @@ To generate API reference documentation for a .NET assembly, run:
 mddocs apireference --assembly <PATH-TO-ASSEMBLY> --outdir <OUTPUT-DIRECTORY>
 ```
 
-**Note:** The tool will delete all files in the output directory before writing the result.
+**Note:** If the output directory already exists, all files in the output
+directory will be deleted.
+
 
 For an example of what the output looks like, have a look at the
 [demo project](docs/demoprojects/api/DemoProject/Namespace.md).
@@ -55,7 +57,8 @@ run:
 mddocs commandlinehelp --assembly <PATH-TO-ASSEMBLY> --outdir <OUTPUT-DIRECTORY>
 ```
 
-**Note:** The tool will delete all files in the output directory before writing the result.
+**Note:** If the output directory already exists, all files in the output
+directory will be deleted.
 
 For an example of what the output looks like, have a look at the
 [demo project](docs/demoprojects/commandline/commandline.md).

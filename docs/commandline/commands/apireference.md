@@ -1,7 +1,7 @@
 # `apireference` Command
 
 **Application:** [mddocs](../commandline.md)  
-**Version:** 0.1.193\-pre+e15875a8c8
+**Version:** 0.1.194\-pre+e0631658d6
 
 Generate API reference documentation for a .NET assembly.
 
@@ -15,11 +15,11 @@ mddocs apireference --assembly|-a <VALUE>
 
 ## Parameters
 
-| Name                            | Short Name               | Required | Description                                          |
-| ------------------------------- | ------------------------ | -------- | ---------------------------------------------------- |
-| [assembly](#assembly-parameter) | [a](#assembly-parameter) | Yes      | Path of the assembly to generate documentation for.  |
-| [outdir](#outdir-parameter)     | [o](#outdir-parameter)   | Yes      | Path of the directory to write the documentation to. |
-| [verbose](#verbose-parameter)   | [v](#verbose-parameter)  | No       | Show more detailed log output.                       |
+| Name                            | Short Name               | Required | Description                                                                                                                                     |
+| ------------------------------- | ------------------------ | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| [assembly](#assembly-parameter) | [a](#assembly-parameter) | Yes      | Path of the assembly to generate documentation for.                                                                                             |
+| [outdir](#outdir-parameter)     | [o](#outdir-parameter)   | Yes      | Path of the directory to write the documentation to. If the output directory already exists, all files in the output directory will be deleted. |
+| [verbose](#verbose-parameter)   | [v](#verbose-parameter)  | No       | Show more detailed log output.                                                                                                                  |
 
 ### `assembly` Parameter
 
@@ -36,7 +36,7 @@ ___
 
 ### `outdir` Parameter
 
-Path of the directory to write the documentation to.
+Path of the directory to write the documentation to. If the output directory already exists, all files in the output directory will be deleted.
 
 |                |                   |
 | -------------- | ----------------- |
