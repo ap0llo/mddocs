@@ -50,7 +50,7 @@ namespace Grynwald.MdDocs
         private static int OnApiReferenceCommand(ILogger logger, ApiReferenceOptions opts)
         {            
             //TODO: Make usage of ApplicationDocumentation and AssemblyDocumentation consistent
-            using (var assemblyDocumentation = AssemblyDocumentation.FromFile(opts.AssemblyPath, logger))
+            using (var assemblyDocumentation = AssemblyDocumentation.FromAssemblyFile(opts.AssemblyPath, logger))
             {
                 var pageFactory = new PageFactory(new ApiReference.Pages.DefaultPathProvider(),assemblyDocumentation, logger);
                 var documentSet = pageFactory.GetPages();
