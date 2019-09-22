@@ -17,14 +17,11 @@ namespace Grynwald.MdDocs.MSBuild
                 Logger.LogInformation($"Cleaning output directory '{OutputDirectoryPath}'");
                 Directory.Delete(OutputDirectoryPath, true);
             }
-
-            //TODO: Make usage of ApplicationDocumentation and AssemblyDocumentation consistent
+            
             using (var assemblyDocumentation = AssemblyDocumentation.FromAssemblyFile(AssemblyPath, Logger))
             {
                 var pageFactory = new PageFactory(new DefaultPathProvider(), assemblyDocumentation, Logger);
-                var documentSet = pageFactory.GetPages();
-
-                documentSet.Save(OutputDirectoryPath, cleanOutputDirectory: true);
+                pageFactory.GetPages().Save(OutputDirectoryPath, cleanOutputDirectory: true);
             }
 
             return Log.HasLoggedErrors == false;

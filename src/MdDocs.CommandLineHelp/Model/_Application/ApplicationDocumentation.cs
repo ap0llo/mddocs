@@ -10,7 +10,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
     /// <summary>
     /// Base class for model describing an application.
     /// </summary>
-    public abstract class ApplicationDocumentation
+    public abstract class ApplicationDocumentation : IDisposable
     {
         public string Name { get; }
 
@@ -87,6 +87,11 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
             return assemblyUsageAttribute == null
                 ? Array.Empty<string>()
                 : assemblyUsageAttribute.ConstructorArguments.Select(x => x.Value).Cast<string>().ToArray();
+        }
+
+        public void Dispose()
+        {
+            //nop
         }
     }
 }

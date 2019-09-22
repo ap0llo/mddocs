@@ -10,12 +10,11 @@ namespace Grynwald.MdDocs.MSBuild
             if (!ValidateParameters())
                 return false;
 
-            var model = ApplicationDocumentation.FromAssemblyFile(AssemblyPath, Logger);
-
-            var pageFactory = new CommandLinePageFactory(model, new DefaultPathProvider(), Logger);
-            var documentSet = pageFactory.GetPages();
-
-            documentSet.Save(OutputDirectoryPath, cleanOutputDirectory: true);
+            using (var model = ApplicationDocumentation.FromAssemblyFile(AssemblyPath, Logger))
+            {
+                var pageFactory = new CommandLinePageFactory(model, new DefaultPathProvider(), Logger);
+                pageFactory.GetPages().Save(OutputDirectoryPath, cleanOutputDirectory: true); 
+            }
 
             return Log.HasLoggedErrors == false;
         }

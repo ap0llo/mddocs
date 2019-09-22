@@ -48,13 +48,11 @@ namespace Grynwald.MdDocs
         }
 
         private static int OnApiReferenceCommand(ILogger logger, ApiReferenceOptions opts)
-        {            
-            //TODO: Make usage of ApplicationDocumentation and AssemblyDocumentation consistent
+        {
             using (var assemblyDocumentation = AssemblyDocumentation.FromAssemblyFile(opts.AssemblyPath, logger))
             {
                 var pageFactory = new PageFactory(new ApiReference.Pages.DefaultPathProvider(),assemblyDocumentation, logger);
-                var documentSet = pageFactory.GetPages();
-                documentSet.Save(opts.OutputDirectory, cleanOutputDirectory: true);
+                pageFactory.GetPages().Save(opts.OutputDirectory, cleanOutputDirectory: true);
             }
 
             return 0;
@@ -63,12 +61,11 @@ namespace Grynwald.MdDocs
 
         private static int OnCommandLineHelpCommand(ILogger logger, CommandLineHelpOptions opts)
         {
-            var model = ApplicationDocumentation.FromAssemblyFile(opts.AssemblyPath, logger);
-
-            var pageFactory = new CommandLinePageFactory(model, new CommandLineHelp.Pages.DefaultPathProvider(), logger);
-            var documentSet = pageFactory.GetPages();
-
-            documentSet.Save(opts.OutputDirectory, cleanOutputDirectory: true);
+            using (var model = ApplicationDocumentation.FromAssemblyFile(opts.AssemblyPath, logger))
+            {
+                var pageFactory = new CommandLinePageFactory(model, new CommandLineHelp.Pages.DefaultPathProvider(), logger);
+                pageFactory.GetPages().Save(opts.OutputDirectory, cleanOutputDirectory: true);
+            }
 
             return 0;
         }
