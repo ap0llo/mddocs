@@ -1,7 +1,7 @@
 # `commandlinehelp` Command
 
 **Application:** [mddocs](../commandline.md)  
-**Version:** 0.1.192\-pre+c939a94467
+**Version:** 0.1.193\-pre+e15875a8c8
 
 Generate command line help for .NET console application implemented using the 'CommandLineParser' package
 
@@ -10,6 +10,7 @@ Generate command line help for .NET console application implemented using the 'C
 ```
 mddocs commandlinehelp --assembly|-a <VALUE>
                        --outdir|-o <VALUE>
+                       [--verbose|-v <VALUE>]
 ```
 
 ## Parameters
@@ -18,6 +19,7 @@ mddocs commandlinehelp --assembly|-a <VALUE>
 | ------------------------------- | ------------------------ | -------- | ---------------------------------------------------------------------------- |
 | [assembly](#assembly-parameter) | [a](#assembly-parameter) | Yes      | Path of the command line application assembly to generate documentation for. |
 | [outdir](#outdir-parameter)     | [o](#outdir-parameter)   | Yes      | Path of the directory to write the documentation to.                         |
+| [verbose](#verbose-parameter)   | [v](#verbose-parameter)  | No       | Show more detailed log output.                                               |
 
 ### `assembly` Parameter
 
@@ -42,6 +44,19 @@ Path of the directory to write the documentation to.
 | Short name:    | o                 |
 | Position:      | *Named parameter* |
 | Required:      | Yes               |
+| Default value: | *None*            |
+___
+
+### `verbose` Parameter
+
+Show more detailed log output.
+
+|                |                   |
+| -------------- | ----------------- |
+| Name:          | verbose           |
+| Short name:    | v                 |
+| Position:      | *Named parameter* |
+| Required:      | No                |
 | Default value: | *None*            |
 ___
 

@@ -20,13 +20,15 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Model
         }
 
 
-        [Fact]
-        public void Options_returns_expected_number_of_items()
+        [Theory]
+        [InlineData(typeof(Command1Options), 2)]
+        [InlineData(typeof(Command3Options), 4)]
+        public void Options_returns_expected_number_of_items(Type optionsType, int numberOfOptions)
         {
-            var sut = LoadDocumentation(typeof(Command3Options));
+            var sut = LoadDocumentation(optionsType);
 
             // Options does not return hidden items
-            Assert.Equal(4, sut.Options.Count);
+            Assert.Equal(numberOfOptions, sut.Options.Count);
         }
 
         [Theory]

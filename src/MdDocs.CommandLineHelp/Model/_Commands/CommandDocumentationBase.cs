@@ -52,7 +52,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
 
         protected static IReadOnlyList<OptionDocumentation> LoadOptions(TypeDefinition definition, ILogger logger)
         {
-            return definition.Properties
+            return definition.GetAllProperties()
                 .WithAttribute(Constants.OptionAttributeFullName)
                 .Select(property => OptionDocumentation.FromPropertyDefinition(property, logger))
                 .Where(option => !option.Hidden)
@@ -61,7 +61,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
 
         protected static IReadOnlyList<ValueDocumentation> LoadValues(TypeDefinition definition, ILogger logger)
         {
-            return definition.Properties
+            return definition.GetAllProperties()
                 .WithAttribute(Constants.ValueAttributeFullName)
                 .Select(property => ValueDocumentation.FromPropertyDefinition(property, logger))
                 .Where(value => !value.Hidden)

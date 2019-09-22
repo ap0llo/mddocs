@@ -1,6 +1,6 @@
 # mddocs Command Line Reference
 
-**Version:** 0.1.192\-pre+c939a94467
+**Version:** 0.1.193\-pre+e15875a8c8
 
 ## Commands
 
