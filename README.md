@@ -9,7 +9,7 @@
 *MdDocs* is a tool to generate documentation in the form of Markdown documents.
 It currently supports generating API reference from a .NET assembly and the corresponding XML documentation file.
 
-For an example of what the output looks like, have a look at the [DemoProject](docs/api/DemoProject/Namespace.md) docs.
+For an example of what the output looks like, have a look at the [DemoProject](docs/demoprojects/api/DemoProject/Namespace.md) docs.
 
 ## Installation
 
