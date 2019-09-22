@@ -8,7 +8,5 @@ namespace Grynwald.MdDocs.ApiReference.Pages
         OutputPath OutputPath { get; }
 
         bool TryGetAnchor(MemberId id, out string anchor);
-
-        void Save();
     }
 }

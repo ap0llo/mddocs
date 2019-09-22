@@ -19,8 +19,6 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             m_Logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public override void Save() => Save(OutputPath);
-
         public override void Save(string path)
         {
             m_Logger.LogInformation($"Saving page '{path}'");

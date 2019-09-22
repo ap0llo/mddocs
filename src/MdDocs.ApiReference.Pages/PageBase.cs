@@ -31,9 +31,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             m_LinkProvider = new CompositeLinkProvider(new InternalLinkProvider(model, pageFactory));
         }
 
-        public abstract void Save();
 
-        // IDocument.Save
         public abstract void Save(string path);
 
 

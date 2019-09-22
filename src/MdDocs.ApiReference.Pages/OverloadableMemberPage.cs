@@ -25,7 +25,6 @@ namespace Grynwald.MdDocs.ApiReference.Pages
         }
 
 
-        public override void Save() => Save(OutputPath);
 
         public override void Save(string path)
         {

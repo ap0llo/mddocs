@@ -26,8 +26,6 @@ namespace Grynwald.MdDocs.ApiReference.Pages
         }
 
 
-        public override void Save() => Save(OutputPath);
-
         public override void Save(string path)
         {
             m_Logger.LogInformation($"Saving page '{path}'");
