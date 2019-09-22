@@ -7,13 +7,13 @@
   -->
   <Target Name="GenerateApiReferenceDocumentation"
           DependsOnTargets="_MdDocs-CheckForInnerBuild;GetTargetPath"
-          Condition=" '$(IsInnerBuild)' == 'true'"> <!-- Only run in the "inner" build -->
+          Condition=" '$(IsInnerBuild)' == 'true'">  <!-- Only run in the "inner" build -->
 
     <PropertyGroup>
       <ApiReferenceDocumentationOutputPath Condition=" '$(ApiReferenceDocumentationOutputPath)' == '' ">$(OutputPath)docs\api\</ApiReferenceDocumentationOutputPath>
     </PropertyGroup>
     
-    <Message Text="Generating API Reference documentation to '$(ApiReferenceDocumentationOutputPath)'" />
+    <Message Text="Saving API Reference documentation to '$(ApiReferenceDocumentationOutputPath)'" />
     <GenerateApiReferenceDocumentation Assembly="@(TargetPathWithTargetPlatformMoniker->'%(FullPath)')" 
                                        OutputDirectory="$(ApiReferenceDocumentationOutputPath)" />
   </Target>
@@ -22,14 +22,49 @@
     ============================================================================================================  
       Target "_MdDocs-GenerateApiReferenceDocumentationAfterBuild"
     ============================================================================================================
-      Triggers API reference generation if property 'GenerateApiReferenceDocumentationOnBuild' is set to true
+      Triggers API reference generation after build
+      if property 'GenerateApiReferenceDocumentationOnBuild' is set to true
   -->
   <Target Name="_MdDocs-GenerateApiReferenceDocumentationAfterBuild" 
           Condition=" '$(GenerateApiReferenceDocumentationOnBuild)' == 'true' "
           AfterTargets="Build"
           DependsOnTargets="GenerateApiReferenceDocumentation">    
-  </Target>  
+  </Target>
 
+  <!--
+    ============================================================================================================  
+      Target "GenerateCommandLineDocumentation"
+    ============================================================================================================    
+      Generates command line docs for the project
+  -->
+  <Target Name="GenerateCommandLineDocumentation"
+          DependsOnTargets="_MdDocs-CheckForInnerBuild;GetTargetPath"
+          Condition=" '$(IsInnerBuild)' == 'true'">  <!-- Only run in the "inner" build -->
+
+    <PropertyGroup>
+      <CommandLineDocumentationOutputPath Condition=" '$(CommandLineDocumentationOutputPath)' == '' ">$(OutputPath)docs\commandline\</CommandLineDocumentationOutputPath>
+    </PropertyGroup>
+
+    <Message Text="Saving command line documentation to '$(CommandLineDocumentationOutputPath)'" />
+    <GenerateCommandLineDocumentation Assembly="@(TargetPathWithTargetPlatformMoniker->'%(FullPath)')"
+                                      OutputDirectory="$(CommandLineDocumentationOutputPath)" />
+  </Target>
+
+
+  <!--
+    ============================================================================================================  
+      Target "_MdDocs-GenerateCommandLineDocumentationAfterBuild"
+    ============================================================================================================
+      Triggers command line documentation generation after build if property 
+      'GenerateCommandLineDocumentationOnBuild' is set to true
+  -->
+  <Target Name="_MdDocs-GenerateCommandLineDocumentationAfterBuild"
+          Condition=" '$(GenerateCommandLineDocumentationOnBuild)' == 'true' "
+          AfterTargets="Build"
+          DependsOnTargets="GenerateCommandLineDocumentation">
+  </Target>
+
+  
   <!--
     ============================================================================================================
       Target "_MdDocs-CheckForInnerBuild"

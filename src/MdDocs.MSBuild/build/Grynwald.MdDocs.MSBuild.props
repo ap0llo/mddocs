@@ -17,6 +17,7 @@
   <!-- Define default values for properties: By default, disable generation of documentation -->
   <PropertyGroup>
     <GenerateApiReferenceDocumentationOnBuild Condition="'$(GenerateApiReferenceDocumentationOnBuild)' == ''">false</GenerateApiReferenceDocumentationOnBuild>
+    <GenerateCommandLineDocumentationOnBuild Condition="'$(GenerateCommandLineDocumentationOnBuild)' == ''">false</GenerateCommandLineDocumentationOnBuild>
   </PropertyGroup>
   
 </Project>
