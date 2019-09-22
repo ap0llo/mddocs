@@ -7,8 +7,6 @@ using Grynwald.MdDocs.ApiReference.Model;
 using Grynwald.MdDocs.Common.Pages;
 using Microsoft.Extensions.Logging;
 
-using static Grynwald.MarkdownGenerator.FactoryMethods;
-
 namespace Grynwald.MdDocs.ApiReference.Pages
 {
     internal class TypePage : PageBase<TypeDocumentation>
@@ -31,7 +29,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             m_Logger.LogInformation($"Saving page '{OutputPath}'");
 
             var document = new MdDocument(
-                Heading($"{Model.DisplayName} {Model.Kind}", 1)
+                new MdHeading($"{Model.DisplayName} {Model.Kind}", 1)
             );
 
             AddObsoleteWarning(document.Root, Model);
@@ -80,12 +78,12 @@ namespace Grynwald.MdDocs.ApiReference.Pages
         {
             // Add Namespace            
             block.Add(
-                Paragraph(Bold("Namespace:"), " ", GetMdSpan(Model.NamespaceDocumentation.NamespaceId))
+                new MdParagraph(new MdStrongEmphasisSpan("Namespace:"), " ", GetMdSpan(Model.NamespaceDocumentation.NamespaceId))
             );
 
             // Add Assembly
             block.Add(
-                Paragraph(Bold("Assembly:"), " " + Model.AssemblyName)
+                new MdParagraph(new MdStrongEmphasisSpan("Assembly:"), " " + Model.AssemblyName)
             );
 
             if (Model.Summary != null)
@@ -94,14 +92,14 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             }
 
             // Definition as code
-            block.Add(CodeBlock(Model.CSharpDefinition, "csharp"));
+            block.Add(new MdCodeBlock(Model.CSharpDefinition, "csharp"));
 
             // Add list of base types            
             if (Model.InheritanceHierarchy.Count > 1)
             {
                 block.Add(
-                    Paragraph(
-                        Bold("Inheritance:"),
+                    new MdParagraph(
+                        new MdStrongEmphasisSpan("Inheritance:"),
                         " ",
                         Model.InheritanceHierarchy.Select(GetMdSpan).Join(" → ")
                 ));
@@ -111,8 +109,8 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             if (Model.Attributes.Count > 0)
             {
                 block.Add(
-                    Paragraph(
-                        Bold("Attributes:"),
+                    new MdParagraph(
+                        new MdStrongEmphasisSpan("Attributes:"),
                         " ",
                         Model.Attributes.Select(GetMdSpan).Join(",")
                 ));
@@ -122,8 +120,8 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             if (Model.ImplementedInterfaces.Count > 0)
             {
                 block.Add(
-                    Paragraph(
-                        Bold("Implements:"),
+                    new MdParagraph(
+                        new MdStrongEmphasisSpan("Implements:"),
                         " ",
                         Model.ImplementedInterfaces.Select(GetMdSpan).Join(","))
                 );
@@ -134,7 +132,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
         {
             if (Model.Remarks != null)
             {
-                block.Add(Heading(2, "Remarks"));
+                block.Add(new MdHeading(2, "Remarks"));
                 block.Add(ConvertToBlock(Model.Remarks));
             }
         }
@@ -143,19 +141,19 @@ namespace Grynwald.MdDocs.ApiReference.Pages
         {
             if (overloads.Any())
             {
-                var table = Table(Row("Name", "Description"));
+                var table = new MdTable(new MdTableRow("Name", "Description"));
 
                 foreach (var ctor in overloads.OrderBy(x => x.Signature))
                 {
                     table.Add(
-                        Row(
+                        new MdTableRow(
                             CreateLink(ctor.MemberId, ctor.Signature),
                             ConvertToSpan(ctor.Summary)
                     ));
                 }
 
                 block.Add(
-                    Heading(sectionHeading, 2),
+                    new MdHeading(sectionHeading, 2),
                     table
                 );
             }
@@ -165,13 +163,13 @@ namespace Grynwald.MdDocs.ApiReference.Pages
         {
             if (members.Any())
             {
-                block.Add(Heading(sectionHeading, 2));
+                block.Add(new MdHeading(sectionHeading, 2));
 
-                var table = Table(Row("Name", "Description"));
+                var table = new MdTable(new MdTableRow("Name", "Description"));
                 foreach (var member in members.OrderBy(x => x.Name))
                 {
                     table.Add(
-                        Row(
+                        new MdTableRow(
                             CreateLink(member.MemberId, member.Name),
                             ConvertToSpan(member.Summary)
                     ));
@@ -185,7 +183,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             if (Model.Example == null)
                 return;
 
-            block.Add(Heading("Example", 2));
+            block.Add(new MdHeading("Example", 2));
             block.Add(ConvertToBlock(Model.Example));
         }
 
@@ -193,10 +191,10 @@ namespace Grynwald.MdDocs.ApiReference.Pages
         {
             if (Model.SeeAlso.Count > 0)
             {
-                block.Add(Heading(2, "See Also"));
+                block.Add(new MdHeading(2, "See Also"));
                 block.Add(
-                    BulletList(
-                        Model.SeeAlso.Select(seeAlso => ListItem(ConvertToSpan(seeAlso)))
+                    new MdBulletList(
+                        Model.SeeAlso.Select(seeAlso => new MdListItem(ConvertToSpan(seeAlso)))
                 ));
             }
         }
@@ -207,12 +205,12 @@ namespace Grynwald.MdDocs.ApiReference.Pages
                 return;
 
 
-            block.Add(Heading("Type Parameters", 2));
+            block.Add(new MdHeading("Type Parameters", 2));
 
             foreach (var typeParameter in Model.TypeParameters)
             {
                 block.Add(
-                    Paragraph(CodeSpan(typeParameter.Name)
+                    new MdParagraph(new MdCodeSpan(typeParameter.Name)
                 ));
 
                 if (typeParameter.Description != null)

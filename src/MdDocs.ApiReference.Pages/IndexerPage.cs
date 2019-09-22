@@ -2,8 +2,6 @@
 using Grynwald.MdDocs.ApiReference.Model;
 using Microsoft.Extensions.Logging;
 
-using static Grynwald.MarkdownGenerator.FactoryMethods;
-
 namespace Grynwald.MdDocs.ApiReference.Pages
 {
     internal class IndexerPage : OverloadableMemberPage<IndexerDocumentation, IndexerOverloadDocumentation>
@@ -19,7 +17,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 
 
         protected override MdHeading GetPageHeading() =>
-            Heading($"{Model.TypeDocumentation.DisplayName}.{Model.Name} Indexer", 1);
+            new MdHeading($"{Model.TypeDocumentation.DisplayName}.{Model.Name} Indexer", 1);
 
         protected override void AddParametersSubSection(MdContainerBlock block, IndexerOverloadDocumentation overload, int headingLevel)
         {
@@ -29,7 +27,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 
         protected virtual void AddValueSubSection(MdContainerBlock block, IndexerOverloadDocumentation overload, int headingLevel)
         {
-            block.Add(Heading("Indexer Value", headingLevel));
+            block.Add(new MdHeading("Indexer Value", headingLevel));
             block.Add(
                 GetMdParagraph(overload.Type)
             );

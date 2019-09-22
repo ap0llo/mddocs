@@ -2,8 +2,6 @@
 using Grynwald.MdDocs.ApiReference.Model;
 using Microsoft.Extensions.Logging;
 
-using static Grynwald.MarkdownGenerator.FactoryMethods;
-
 namespace Grynwald.MdDocs.ApiReference.Pages
 {
     internal class ConstructorsPage : OverloadableMemberPage<ConstructorDocumentation, ConstructorOverloadDocumentation>
@@ -19,7 +17,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 
 
         protected override MdHeading GetPageHeading() =>
-            Heading($"{Model.TypeDocumentation.DisplayName} Constructors", 1);
+            new MdHeading($"{Model.TypeDocumentation.DisplayName} Constructors", 1);
 
         //No "Returns" subsection for constructors
         protected override void AddReturnsSubSection(MdContainerBlock block, ConstructorOverloadDocumentation overload, int headingLevel)

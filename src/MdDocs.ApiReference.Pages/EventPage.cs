@@ -2,8 +2,6 @@
 using Grynwald.MdDocs.ApiReference.Model;
 using Microsoft.Extensions.Logging;
 
-using static Grynwald.MarkdownGenerator.FactoryMethods;
-
 namespace Grynwald.MdDocs.ApiReference.Pages
 {
     internal class EventPage : SimpleMemberPage<EventDocumentation>
@@ -19,7 +17,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 
 
         protected override MdHeading GetHeading() =>
-            Heading($"{Model.TypeDocumentation.DisplayName}.{Model.Name} Event", 1);
+            new MdHeading($"{Model.TypeDocumentation.DisplayName}.{Model.Name} Event", 1);
 
         // No "Value"section for events
         protected override void AddValueSection(MdContainerBlock block)

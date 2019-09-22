@@ -8,8 +8,6 @@ using Grynwald.MdDocs.Common.Pages;
 using Grynwald.Utilities.Collections;
 using Microsoft.Extensions.Logging;
 
-using static Grynwald.MarkdownGenerator.FactoryMethods;
-
 namespace Grynwald.MdDocs.ApiReference.Pages
 {
     internal abstract class OverloadableMemberPage<TModel, TOverload> : MemberPage<TModel>
@@ -32,7 +30,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
         {
             m_Logger.LogInformation($"Saving page '{OutputPath}'");
 
-            var document = Document(
+            var document = new MdDocument(
                 GetPageHeading()
             );
 
@@ -82,19 +80,19 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 
         protected void AddOverloadsTableSection(MdContainerBlock block, IEnumerable<TOverload> overloads, int headingLevel)
         {
-            var table = Table(Row("Signature", "Description"));
+            var table = new MdTable(new MdTableRow("Signature", "Description"));
             foreach (var overload in overloads)
             {
                 // optimization: we know the section we're linking to is on the same page
                 // so we can create the link to the anchor without going through PageBase.CreateLink()
-                var link = Link(overload.Signature, "#" + m_Headings.Value[overload.MemberId].Anchor);
+                var link = new MdLinkSpan(overload.Signature, "#" + m_Headings.Value[overload.MemberId].Anchor);
                 table.Add(
-                    Row(link, ConvertToSpan(overload.Summary))
+                    new MdTableRow(link, ConvertToSpan(overload.Summary))
                 );
             }
 
             block.Add(
-                Heading("Overloads", headingLevel),
+                new MdHeading("Overloads", headingLevel),
                 table
             );
         }
@@ -127,7 +125,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
                 block.Add(ConvertToBlock(overload.Summary));
             }
 
-            block.Add(CodeBlock(overload.CSharpDefinition, "csharp"));
+            block.Add(new MdCodeBlock(overload.CSharpDefinition, "csharp"));
         }
 
         protected virtual void AddTypeParametersSubSection(MdContainerBlock block, TOverload overload, int headingLevel)
@@ -136,12 +134,12 @@ namespace Grynwald.MdDocs.ApiReference.Pages
                 return;
 
 
-            block.Add(Heading("Type Parameters", headingLevel));
+            block.Add(new MdHeading("Type Parameters", headingLevel));
 
             foreach (var typeParameter in overload.TypeParameters)
             {
                 block.Add(
-                    Paragraph(CodeSpan(typeParameter.Name)
+                    new MdParagraph(new MdCodeSpan(typeParameter.Name)
                 ));
 
                 if (typeParameter.Description != null)
@@ -160,13 +158,13 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             block.Add(parametersBlock);
 
 
-            parametersBlock.Add(Heading("Parameters", headingLevel));
+            parametersBlock.Add(new MdHeading("Parameters", headingLevel));
 
             foreach (var parameter in overload.Parameters)
             {
                 parametersBlock.Add(
-                    Paragraph(
-                        CodeSpan(parameter.Name),
+                    new MdParagraph(
+                        new MdCodeSpan(parameter.Name),
                         "  ",
                         GetMdSpan(parameter.ParameterType)
                 ));
@@ -184,7 +182,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             if (overload.Type.IsVoid)
                 return;
 
-            block.Add(Heading("Returns", headingLevel));
+            block.Add(new MdHeading("Returns", headingLevel));
 
             // add return type
             block.Add(
@@ -203,7 +201,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             if (overload.Exceptions.Count == 0)
                 return;
 
-            block.Add(Heading("Exceptions", headingLevel));
+            block.Add(new MdHeading("Exceptions", headingLevel));
 
             foreach (var exception in overload.Exceptions)
             {
@@ -219,7 +217,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             if (overload.Example == null)
                 return;
 
-            block.Add(Heading("Example", headingLevel));
+            block.Add(new MdHeading("Example", headingLevel));
             block.Add(ConvertToBlock(overload.Example));
         }
 
@@ -228,7 +226,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             if (overload.Remarks == null)
                 return;
 
-            block.Add(Heading("Remarks", headingLevel));
+            block.Add(new MdHeading("Remarks", headingLevel));
             block.Add(ConvertToBlock(overload.Remarks));
         }
 
@@ -237,10 +235,10 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             if (overload.SeeAlso.Count == 0)
                 return;
 
-            block.Add(Heading("See Also", headingLevel));
+            block.Add(new MdHeading("See Also", headingLevel));
             block.Add(
-                BulletList(
-                    overload.SeeAlso.Select(seeAlso => ListItem(ConvertToSpan(seeAlso)))
+                new MdBulletList(
+                    overload.SeeAlso.Select(seeAlso => new MdListItem(ConvertToSpan(seeAlso)))
             ));
         }
 
@@ -256,7 +254,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
                 var headings = new Dictionary<MemberId, MdHeading>();
                 foreach (var overload in Model.Overloads)
                 {
-                    headings.Add(overload.MemberId, Heading(overload.Signature, 2));
+                    headings.Add(overload.MemberId, new MdHeading(overload.Signature, 2));
                 }
                 return headings;
             }

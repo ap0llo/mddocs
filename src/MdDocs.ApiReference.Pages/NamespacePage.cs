@@ -6,8 +6,6 @@ using Grynwald.MdDocs.ApiReference.Model;
 using Grynwald.MdDocs.Common.Pages;
 using Microsoft.Extensions.Logging;
 
-using static Grynwald.MarkdownGenerator.FactoryMethods;
-
 namespace Grynwald.MdDocs.ApiReference.Pages
 {
     internal class NamespacePage : PageBase<NamespaceDocumentation>
@@ -31,14 +29,14 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             m_Logger.LogInformation($"Saving page '{OutputPath}'");
 
             var document = new MdDocument(
-               Heading($"{Model.Name} Namespace", 1)
+               new MdHeading($"{Model.Name} Namespace", 1)
             );
 
             // Add parent Namespace
-            if(Model.ParentNamespaceDocumentation != null)
+            if (Model.ParentNamespaceDocumentation != null)
             {
                 document.Root.Add(
-                    Paragraph(Bold("Namespace:"), " ", GetMdSpan(Model.ParentNamespaceDocumentation.NamespaceId))
+                    new MdParagraph(new MdStrongEmphasisSpan("Namespace:"), " ", GetMdSpan(Model.ParentNamespaceDocumentation.NamespaceId))
                 );
             }
 
@@ -47,7 +45,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             AddTypeTable(document.Root, "Classes", Model.Types.Where(x => x.Kind == TypeKind.Class));
             AddTypeTable(document.Root, "Structs", Model.Types.Where(x => x.Kind == TypeKind.Struct));
             AddTypeTable(document.Root, "Interfaces", Model.Types.Where(x => x.Kind == TypeKind.Interface));
-            AddTypeTable(document.Root, "Enums", Model.Types.Where(x => x.Kind == TypeKind.Enum));            
+            AddTypeTable(document.Root, "Enums", Model.Types.Where(x => x.Kind == TypeKind.Enum));
 
             document.Root.Add(new PageFooter());
 
@@ -61,28 +59,28 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             if (!Model.Namespaces.Any())
                 return;
 
-            block.Add(Heading(2, "Namespaces"));
+            block.Add(new MdHeading(2, "Namespaces"));
 
             block.Add(
-                BulletList(
+                new MdBulletList(
                     Model.Namespaces
                         .OrderBy(x => x.Name)
-                        .Select(@namespace => ListItem(GetMdSpan(@namespace.NamespaceId))
-            )));            
-            
+                        .Select(@namespace => new MdListItem(GetMdSpan(@namespace.NamespaceId))
+            )));
+
         }
         private void AddTypeTable(MdContainerBlock block, string heading, IEnumerable<TypeDocumentation> types)
         {
             if (!types.Any())
                 return;
 
-            block.Add(Heading(2, heading));
+            block.Add(new MdHeading(2, heading));
 
-            var table = Table(Row("Name", "Description"));
+            var table = new MdTable(new MdTableRow("Name", "Description"));
             foreach (var type in types.OrderBy(x => x.DisplayName))
             {
                 table.Add(
-                    Row(
+                    new MdTableRow(
                         CreateLink(type.MemberId, type.DisplayName),
                         ConvertToSpan(type.Summary)
                 ));

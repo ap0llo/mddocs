@@ -5,8 +5,6 @@ using Grynwald.MarkdownGenerator;
 using Grynwald.MdDocs.ApiReference.Model;
 using Grynwald.MdDocs.ApiReference.Model.XmlDocs;
 
-using static Grynwald.MarkdownGenerator.FactoryMethods;
-
 namespace Grynwald.MdDocs.ApiReference.Pages
 {
     internal abstract class PageBase<TModel> : IMdSpanFactory, IPage where TModel : class, IDocumentation
@@ -157,9 +155,9 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             if (String.IsNullOrEmpty(message))
                 message = "This API is obsolete.";
 
-            block.Add(Paragraph(
+            block.Add(new MdParagraph(
                 "⚠️ ",
-                Bold("Warning:"),
+                new MdStrongEmphasisSpan("Warning:"),
                 " ",
                 message
             ));
@@ -175,7 +173,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 
             if (type is GenericTypeInstanceId genericType)
             {
-                return CompositeSpan(
+                return new MdCompositeSpan(
                     genericType.Name,
                     "<",
                     genericType.TypeArguments.Select(t => GetMdSpan(t, noLink)).Join(", "),

@@ -2,8 +2,6 @@
 using Grynwald.MdDocs.ApiReference.Model;
 using Microsoft.Extensions.Logging;
 
-using static Grynwald.MarkdownGenerator.FactoryMethods;
-
 namespace Grynwald.MdDocs.ApiReference.Pages
 {
     internal class FieldPage : SimpleMemberPage<FieldDocumentation>
@@ -19,11 +17,11 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 
 
         protected override MdHeading GetHeading() =>
-            Heading($"{Model.TypeDocumentation.DisplayName}.{Model.Name} Field", 1);
+            new MdHeading($"{Model.TypeDocumentation.DisplayName}.{Model.Name} Field", 1);
 
         protected override void AddValueSection(MdContainerBlock block)
         {
-            block.Add(Heading("Field Value", 2));
+            block.Add(new MdHeading("Field Value", 2));
             block.Add(GetMdParagraph(Model.Type));
 
             if (Model.Value != null)

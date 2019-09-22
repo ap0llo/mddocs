@@ -4,8 +4,6 @@ using Grynwald.MdDocs.ApiReference.Model.XmlDocs;
 using Moq;
 using Xunit;
 
-using static Grynwald.MarkdownGenerator.FactoryMethods;
-
 namespace Grynwald.MdDocs.ApiReference.Pages.Test
 {
     public partial class TextBlockToMarkdownConverterTest
@@ -38,14 +36,14 @@ namespace Grynwald.MdDocs.ApiReference.Pages.Test
 
             var list = listType == ListType.Number ? new MdOrderedList() : (MdList)new MdBulletList();
             list.Add(
-                ListItem(
-                    Paragraph("Description 1")));
+                new MdListItem(
+                    new MdParagraph("Description 1")));
             list.Add(
-                ListItem(
-                    Paragraph(StrongEmphasis("Term 2", ":"), " "),
-                    Paragraph("Description 2")));
+                new MdListItem(
+                    new MdParagraph(new MdStrongEmphasisSpan("Term 2", ":"), " "),
+                    new MdParagraph("Description 2")));
 
-            var expected = Container(list);
+            var expected = new MdContainerBlock(list);
 
             // ACT
             var actual = TextBlockToMarkdownConverter.ConvertToBlock(input, Mock.Of<IMdSpanFactory>());
@@ -64,9 +62,9 @@ namespace Grynwald.MdDocs.ApiReference.Pages.Test
                 Enumerable.Range(1, numberOfListItems).Select(i => CreateListItem($"Item {i}"))
             );
 
-            var expected = Container(
-                OrderedList(
-                    Enumerable.Range(1, numberOfListItems).Select(i => ListItem($"Item {i}"))
+            var expected = new MdContainerBlock(
+                new MdOrderedList(
+                    Enumerable.Range(1, numberOfListItems).Select(i => new MdListItem($"Item {i}"))
             ));
 
             // ACT
@@ -87,11 +85,11 @@ namespace Grynwald.MdDocs.ApiReference.Pages.Test
                 CreateListItem("C1R2", "C2R2")
             );
 
-            var expected = Container(
-                Table(
-                    Row("Header 1", "Header 2"),
-                    Row("C1R1", "C2R1"),
-                    Row("C1R2", "C2R2")
+            var expected = new MdContainerBlock(
+                new MdTable(
+                    new MdTableRow("Header 1", "Header 2"),
+                    new MdTableRow("C1R1", "C2R1"),
+                    new MdTableRow("C1R2", "C2R2")
             ));
 
             // ACT

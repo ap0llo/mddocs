@@ -2,8 +2,6 @@
 using Grynwald.MdDocs.ApiReference.Model;
 using Microsoft.Extensions.Logging;
 
-using static Grynwald.MarkdownGenerator.FactoryMethods;
-
 namespace Grynwald.MdDocs.ApiReference.Pages
 {
     internal class OperatorPage : OverloadableMemberPage<OperatorDocumentation, OperatorOverloadDocumentation>
@@ -19,6 +17,6 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 
 
         protected override MdHeading GetPageHeading() =>
-            Heading($"{Model.TypeDocumentation.DisplayName}.{Model.Kind} Operator", 1);
+            new MdHeading($"{Model.TypeDocumentation.DisplayName}.{Model.Kind} Operator", 1);
     }
 }
