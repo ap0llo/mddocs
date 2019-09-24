@@ -218,13 +218,29 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
             Approve(model);
         }
 
+        [Fact]
+        public void GetDocument_returns_expected_document_12()
+        {
+            // parameters must be ordered by name / short name
+            var model = new CommandDocumentation(
+                application: new TestAppDocumentation(),
+                name: "CommandName",
+                options: new[]
+                {
+                    new OptionDocumentation(name: "xyz"),
+                    new OptionDocumentation(shortName: 'a')
+                });
 
-        private void Approve(CommandDocumentation model)
+            Approve(model, new TestCommandLinePageOptions() { IncludeVersion = false });
+        }
+
+
+        private void Approve(CommandDocumentation model, ICommandLinePageOptions options = null)
         {
             var pathProvider = new DefaultCommandLineHelpPathProvider();
             var documentSet = new DocumentSet<IDocument>();
 
-            var commandPage = new CommandPage(documentSet, pathProvider, model);
+            var commandPage = new CommandPage(documentSet, pathProvider, model, options ?? new TestCommandLinePageOptions());
 
             // add dummy application page and command page itself to document set
             // because command page will create a link to the application page

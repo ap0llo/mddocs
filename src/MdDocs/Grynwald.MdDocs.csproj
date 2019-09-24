@@ -32,7 +32,7 @@
     <PropertyGroup>      
       <DocsDir>$(MSBuildThisFileDirectory)..\..\docs\commandline</DocsDir>
     </PropertyGroup>
-    <Exec Command="dotnet &quot;@(TargetPathWithTargetPlatformMoniker->'%(FullPath)')&quot; commandlinehelp --assembly &quot;@(TargetPathWithTargetPlatformMoniker->'%(FullPath)')&quot; --outdir &quot;$(DocsDir)&quot;" />    
+    <Exec Command="dotnet &quot;@(TargetPathWithTargetPlatformMoniker->'%(FullPath)')&quot; commandlinehelp --assembly &quot;@(TargetPathWithTargetPlatformMoniker->'%(FullPath)')&quot; --outdir &quot;$(DocsDir)&quot; --no-version" />    
   </Target>
   
 </Project>

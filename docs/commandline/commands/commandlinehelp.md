@@ -1,7 +1,6 @@
 # `commandlinehelp` Command
 
-**Application:** [mddocs](../commandline.md)  
-**Version:** 0.1.217\-pre+fa69ba0878
+**Application:** [mddocs](../commandline.md)
 
 Generate command line help for .NET console application implemented using the 'CommandLineParser' package
 
@@ -9,17 +8,19 @@ Generate command line help for .NET console application implemented using the 'C
 
 ```
 mddocs commandlinehelp --assembly|-a <VALUE>
+                       [--no-version <VALUE>]
                        --outdir|-o <VALUE>
                        [--verbose|-v <VALUE>]
 ```
 
 ## Parameters
 
-| Name                            | Short Name               | Required | Description                                                                                                                                     |
-| ------------------------------- | ------------------------ | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| [assembly](#assembly-parameter) | [a](#assembly-parameter) | Yes      | Path of the command line application assembly to generate documentation for.                                                                    |
-| [outdir](#outdir-parameter)     | [o](#outdir-parameter)   | Yes      | Path of the directory to write the documentation to. If the output directory already exists, all files in the output directory will be deleted. |
-| [verbose](#verbose-parameter)   | [v](#verbose-parameter)  | No       | Show more detailed log output.                                                                                                                  |
+| Name                                | Short Name               | Required | Description                                                                                                                                     |
+| ----------------------------------- | ------------------------ | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| [assembly](#assembly-parameter)     | [a](#assembly-parameter) | Yes      | Path of the command line application assembly to generate documentation for.                                                                    |
+| [no\-version](#noversion-parameter) |                          | No       | Do not include the application version in the generated documentation                                                                           |
+| [outdir](#outdir-parameter)         | [o](#outdir-parameter)   | Yes      | Path of the directory to write the documentation to. If the output directory already exists, all files in the output directory will be deleted. |
+| [verbose](#verbose-parameter)       | [v](#verbose-parameter)  | No       | Show more detailed log output.                                                                                                                  |
 
 ### `assembly` Parameter
 
@@ -31,6 +32,18 @@ Path of the command line application assembly to generate documentation for.
 | Short name:    | a                 |
 | Position:      | *Named parameter* |
 | Required:      | Yes               |
+| Default value: | *None*            |
+___
+
+### `no-version` Parameter
+
+Do not include the application version in the generated documentation
+
+|                |                   |
+| -------------- | ----------------- |
+| Name:          | no\-version       |
+| Position:      | *Named parameter* |
+| Required:      | No                |
 | Default value: | *None*            |
 ___
 

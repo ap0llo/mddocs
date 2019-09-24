@@ -20,15 +20,21 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
     public class SingleCommandApplicationPage : IDocument
     {
         private readonly SingleCommandApplicationDocumentation m_Model;
+        private readonly ICommandLinePageOptions m_Options;
         private readonly DocumentSet<IDocument> m_DocumentSet;
         private readonly ICommandLineHelpPathProvider m_PathProvider;
 
 
-        public SingleCommandApplicationPage(DocumentSet<IDocument> documentSet, ICommandLineHelpPathProvider pathProvider, SingleCommandApplicationDocumentation model)
+        public SingleCommandApplicationPage(
+            DocumentSet<IDocument> documentSet,
+            ICommandLineHelpPathProvider pathProvider,
+            SingleCommandApplicationDocumentation model,
+            ICommandLinePageOptions options)
         {
             m_DocumentSet = documentSet ?? throw new ArgumentNullException(nameof(documentSet));
             m_PathProvider = pathProvider ?? throw new ArgumentNullException(nameof(pathProvider));
             m_Model = model ?? throw new ArgumentNullException(nameof(model));
+            m_Options = options ?? throw new ArgumentNullException(nameof(options));
         }
 
 
@@ -41,7 +47,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
 
                 // Application name and version
                 .Add(new MdHeading(1, $"{m_Model.Name} Command Line Reference"))
-                .Add(new ApplicationVersionBlock(m_Model))
+                .AddIf(m_Options.IncludeVersion, new ApplicationVersionBlock(m_Model))
 
                 // Usage (data from ApplicationUsage attribute)
                 .AddIf(m_Model.Usage.Count > 0, new MdHeading(2, "Usage"))

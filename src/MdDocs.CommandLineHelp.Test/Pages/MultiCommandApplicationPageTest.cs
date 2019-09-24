@@ -56,13 +56,26 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
             // commands must be ordered by name
             var model = new MultiCommandApplicationDocumentation(
                 name: "ApplicationName",
-                usage: new[] { "usage line 1", "usage line 2", "usage line 3" });
+                usage: new[] { "usage line 1", "usage line 2", "usage line 3" },
+                version: "4.5.6");
 
             Approve(model);
         }
 
+        [Fact]
+        public void GetDocument_returns_expected_document_06()
+        {
+            // commands must be ordered by name
+            var model = new MultiCommandApplicationDocumentation(
+                name: "ApplicationName",
+                usage: new[] { "usage line 1", "usage line 2", "usage line 3" },
+                version: "4.5.6");
 
-        private void Approve(MultiCommandApplicationDocumentation model)
+            Approve(model, new TestCommandLinePageOptions() { IncludeVersion = false });
+        }
+
+
+        private void Approve(MultiCommandApplicationDocumentation model, ICommandLinePageOptions options = null)
         {
             var pathProvider = new DefaultCommandLineHelpPathProvider();
             var documentSet = new DocumentSet<IDocument>();
@@ -73,7 +86,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
                 documentSet.Add(pathProvider.GetPath(command), new TextDocument());
             }
 
-            var applicationPage = new MultiCommandApplicationPage(documentSet, pathProvider, model);
+            var applicationPage = new MultiCommandApplicationPage(documentSet, pathProvider, model, options ?? new TestCommandLinePageOptions());
             documentSet.Add(pathProvider.GetPath(model), applicationPage);
 
             var doc = applicationPage.GetDocument();

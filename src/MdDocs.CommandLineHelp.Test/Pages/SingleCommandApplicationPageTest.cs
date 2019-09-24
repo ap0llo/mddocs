@@ -31,16 +31,32 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
                 });
 
             var application = new SingleCommandApplicationDocumentation(name: "ApplicationName", parameters, "1.2.3", new[] { "Usage line 1", "Usage line2" });
+
             Approve(application);
         }
 
 
-        private void Approve(SingleCommandApplicationDocumentation model)
+        [Fact]
+        public void GetDocument_returns_expected_document_02()
+        {
+            var parameters = new UnnamedCommandDocumentation(
+                application: new TestAppDocumentation(),
+                options: new[]
+                {
+                    new OptionDocumentation("parameter1", required: true),
+                });
+
+            var application = new SingleCommandApplicationDocumentation(name: "ApplicationName", parameters, "1.2.3", new[] { "Usage line 1", "Usage line2" });
+
+            Approve(application, new TestCommandLinePageOptions() { IncludeVersion = false });
+        }
+
+        private void Approve(SingleCommandApplicationDocumentation model, ICommandLinePageOptions options = null)
         {
             var pathProvider = new DefaultCommandLineHelpPathProvider();
             var documentSet = new DocumentSet<IDocument>();
 
-            var applicationPage = new SingleCommandApplicationPage(documentSet, pathProvider, model);
+            var applicationPage = new SingleCommandApplicationPage(documentSet, pathProvider, model, options ?? new TestCommandLinePageOptions());
             documentSet.Add(pathProvider.GetPath(model), applicationPage);
 
             var doc = applicationPage.GetDocument();

@@ -1,7 +1,6 @@
 # `apireference` Command
 
-**Application:** [mddocs](../commandline.md)  
-**Version:** 0.1.217\-pre+fa69ba0878
+**Application:** [mddocs](../commandline.md)
 
 Generate API reference documentation for a .NET assembly.
 

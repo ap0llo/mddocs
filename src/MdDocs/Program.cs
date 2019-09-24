@@ -63,7 +63,7 @@ namespace Grynwald.MdDocs
         {
             using (var model = ApplicationDocumentation.FromAssemblyFile(opts.AssemblyPath, logger))
             {
-                var pageFactory = new CommandLinePageFactory(model, new DefaultCommandLineHelpPathProvider(), logger);
+                var pageFactory = new CommandLinePageFactory(model, opts, new DefaultCommandLineHelpPathProvider(), logger);
                 pageFactory.GetPages().Save(opts.OutputDirectory, cleanOutputDirectory: true);
             }
 
