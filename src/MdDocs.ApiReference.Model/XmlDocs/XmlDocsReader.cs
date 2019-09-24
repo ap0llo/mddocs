@@ -90,7 +90,8 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
 
             return document.Root.Element("members").Elements("member")
                 .Where(element => element.Attribute("name") != null)
-                .Select(element => ReadMember(element.Attribute("name").Value, element, logger))
+                .Select(element => TryReadMember(element, logger))
+                .Where(x => x != null)
                 .ToList();
         }
 
@@ -98,17 +99,13 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
         /// <summary>
         /// Reads all documentation for a single member
         /// </summary>
-        private static MemberElement ReadMember(string memberId, XElement element, ILogger logger)
+        private static MemberElement TryReadMember(XElement element, ILogger logger)
         {
-            MemberId id;
-            try
+            var name = element.Attribute("name").Value;
+
+            if(!TryParseMemberId(logger, name, out var id))
             {
-                id = MemberId.Parse(memberId);
-            }
-            catch (MemberIdParserException ex)
-            {
-                logger.LogCritical(ex, $"Failed to parse member id '{memberId}'");
-                throw;
+                return null;
             }
 
             var memberElement = new MemberElement(id);
@@ -158,9 +155,8 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
                     case "seealso":
                         {
                             var cref = FindAttribute(elementNode, "cref");
-                            if (cref != null)
+                            if (cref != null && TryParseMemberId(logger, cref, out var memberId))
                             {
-                                var memberId = MemberId.Parse(cref);
                                 member.SeeAlso.Add(new SeeAlsoElement(memberId, ReadTextBlock(elementNode, logger)));
                             }
                         }
@@ -168,19 +164,8 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
                     case "exception":
                         {
                             var cref = FindAttribute(elementNode, "cref");
-                            if (cref != null)
+                            if (cref != null && TryParseMemberId(logger, cref, out var memberId))
                             {
-                                MemberId memberId;
-                                try
-                                {
-                                    memberId = MemberId.Parse(cref);
-                                }
-                                catch (MemberIdParserException ex)
-                                {
-                                    logger.LogError(ex, $"Failed to parse member id '{cref}' in element 'exception'. Ignoring exception element.");
-                                    break;
-                                }
-
                                 if (memberId is TypeId typeId)
                                 {
                                     member.Exceptions.Add(
@@ -252,7 +237,10 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
                                 element = new CElement(elementNode.Value);
                                 break;
                             case "see":
-                                element = new SeeElement(new MemberIdParser(FindAttribute(elementNode, "cref")).Parse());
+                                if(TryParseMemberId(logger, FindAttribute(elementNode, "cref"), out var memberId))
+                                {
+                                    element = new SeeElement(memberId);
+                                }
                                 break;
                             case "list":                                                                
                                 element = ReadList(elementNode, logger);                                
@@ -421,6 +409,21 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
                         return line.Substring(indent);
                 })
                 .ToArray());
+        }
+
+        private static bool TryParseMemberId(ILogger logger, string value, out MemberId memberId)
+        {
+            try
+            {
+                memberId = MemberId.Parse(value);
+                return true;
+            }
+            catch (MemberIdParserException ex)
+            {
+                logger.LogWarning(ex, $"Failed to parse member id '{value}'.");
+                memberId = default;
+                return false;
+            }
         }
     }
 }
