@@ -19,7 +19,7 @@
   </ItemGroup>
 
 
-  <Target Name="UpdateDocs" AfterTargets="AfterBuild" DependsOnTargets="GetTargetPath">
+  <Target Name="UpdateDocs" AfterTargets="AfterBuild" DependsOnTargets="GetTargetPath" Condition="'$(BuildingForLiveUnitTesting)' != 'true'">
     <PropertyGroup>
       <MdDocsPath>$(MSBuildThisFileDirectory)..\MdDocs\Grynwald.MdDocs.csproj</MdDocsPath>
       <DocsDir>$(MSBuildThisFileDirectory)..\..\docs\demoprojects\api</DocsDir>

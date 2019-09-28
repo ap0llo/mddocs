@@ -28,7 +28,7 @@
   </ItemGroup>
 
 
-  <Target Name="UpdateDocs" AfterTargets="AfterBuild" DependsOnTargets="GetTargetPath">
+  <Target Name="UpdateDocs" AfterTargets="AfterBuild" DependsOnTargets="GetTargetPath" Condition="'$(BuildingForLiveUnitTesting)' != 'true'">
     <PropertyGroup>      
       <DocsDir>$(MSBuildThisFileDirectory)..\..\docs\commandline</DocsDir>
     </PropertyGroup>
