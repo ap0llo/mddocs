@@ -9,6 +9,7 @@ using Xunit;
 
 namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
 {
+    [Trait("Category", "SkipWhenLiveUnitTesting")]
     public class XmlDocsProviderTest : TestBase
     {
         private readonly string m_XmlDocsPath;
