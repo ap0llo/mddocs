@@ -9,7 +9,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
     /// For a list of tags in documentation comments, see
     /// https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/xmldoc/recommended-tags-for-documentation-comments
     /// </remarks>
-    public sealed class CElement : Element
+    public sealed class CElement : Element, IEquatable<CElement>
     {
         /// <summary>
         /// Gets the content of the element
@@ -29,5 +29,14 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
 
         /// <inheritdoc />
         public override void Accept(IVisitor visitor) => visitor.Visit(this);
+
+        /// <inheritdoc />
+        public override bool Equals(object obj) => Equals(obj as CElement);
+
+        /// <inheritdoc />
+        public override int GetHashCode() => StringComparer.Ordinal.GetHashCode(Content);
+
+        /// <inheritdoc />
+        public bool Equals(CElement other) => other != null && StringComparer.Ordinal.Equals(Content, other.Content);
     }
 }

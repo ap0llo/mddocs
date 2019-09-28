@@ -9,7 +9,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
     /// For a list of tags in documentation comments, see
     /// https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/xmldoc/recommended-tags-for-documentation-comments
     /// </remarks>
-    public sealed class CodeElement : Element
+    public sealed class CodeElement : Element, IEquatable<CodeElement>
     {
         /// <summary>
         /// Gets the content of the code element.
@@ -39,5 +39,32 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
 
         /// <inheritdoc />
         public override void Accept(IVisitor visitor) => visitor.Visit(this);
+
+        /// <inheritdoc />
+        public bool Equals(CodeElement other)
+        {
+            if (other == null)
+                return false;
+
+            if (ReferenceEquals(this, other))
+                return true;
+
+            return StringComparer.Ordinal.Equals(Content, other.Content) &&
+                   StringComparer.Ordinal.Equals(Language, other.Language);
+        }
+
+        /// <inheritdoc />
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hash = StringComparer.Ordinal.GetHashCode(Content) * 397;
+                hash ^= Language == null ? 0 : StringComparer.Ordinal.GetHashCode(Language);
+                return hash;
+            }
+        }
+
+        /// <inheritdoc />
+        public override bool Equals(object obj) => Equals(obj as CodeElement);
     }
 }

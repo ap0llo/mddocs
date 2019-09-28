@@ -7,7 +7,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
     /// <summary>
     /// Represents a sequence of text elements read from XML documentation comments.
     /// </summary>
-    public sealed class TextBlock : Element
+    public sealed class TextBlock : Element, IEquatable<TextBlock>
     {
         /// <summary>
         /// Gets whether the text block contains any elements
@@ -33,5 +33,28 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
 
         /// <inheritdoc />
         public override void Accept(IVisitor visitor) => visitor.Visit(this);
+
+        /// <inheritdoc />
+        public override int GetHashCode()
+        {
+            if (Elements.Count == 0)
+                return 0;
+
+            unchecked
+            {
+                var hash = Elements[0].GetHashCode() * 397;
+                for (int i = 1; i < Elements.Count; i++)
+                {
+                    hash ^= Elements[i].GetHashCode();
+                }
+                return hash;
+            }
+        }
+
+        /// <inheritdoc />
+        public override bool Equals(object obj) => Equals(obj as TextBlock);
+
+        /// <inheritdoc />
+        public bool Equals(TextBlock other) => other != null && Elements.SequenceEqual(other.Elements);
     }
 }

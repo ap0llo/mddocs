@@ -13,5 +13,11 @@
         /// Calls the appropriate <c>Visit</c> method for this element on the specified visitor.
         /// </summary>
         public abstract void Accept(IVisitor visitor);
+
+        /// <inheritdoc />
+        public abstract override int GetHashCode();
+
+        /// <inheritdoc />
+        public abstract override bool Equals(object obj);
     }
 }

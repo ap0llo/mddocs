@@ -12,7 +12,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
     /// https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/xmldoc/recommended-tags-for-documentation-comments
     /// </para>
     /// </remarks>
-    public class ParaElement : Element
+    public sealed class ParaElement : Element, IEquatable<ParaElement>
     {
         /// <summary>
         /// Gets the paragraphs's content.
@@ -33,5 +33,14 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
 
         /// <inheritdoc />
         public override void Accept(IVisitor visitor) => visitor.Visit(this);
+
+        /// <inheritdoc />
+        public override int GetHashCode() => Text.GetHashCode();
+
+        /// <inheritdoc />
+        public override bool Equals(object obj) => Equals(obj as ParaElement);
+
+        /// <inheritdoc />
+        public bool Equals(ParaElement other) => other != null && Text.Equals(other.Text);
     }
 }

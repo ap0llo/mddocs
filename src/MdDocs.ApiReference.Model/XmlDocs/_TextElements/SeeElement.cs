@@ -12,7 +12,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
     /// https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/xmldoc/recommended-tags-for-documentation-comments
     /// </para>
     /// </remarks>
-    public sealed class SeeElement : Element
+    public sealed class SeeElement : Element, IEquatable<SeeElement>
     {
         /// <summary>
         /// Gets the id of the member being referenced.
@@ -33,5 +33,14 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
 
         /// <inheritdoc />
         public override void Accept(IVisitor visitor) => visitor.Visit(this);
+
+        /// <inheritdoc />
+        public override int GetHashCode() => MemberId.GetHashCode();
+
+        /// <inheritdoc />
+        public override bool Equals(object obj) => Equals(obj as SeeElement);
+
+        /// <inheritdoc />
+        public bool Equals(SeeElement other) => other != null && MemberId.Equals(other.MemberId);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
 {
@@ -10,7 +11,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
     /// For a list of tags in documentation comments, see
     /// https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/xmldoc/recommended-tags-for-documentation-comments
     /// </remarks>
-    public sealed class ListElement : Element
+    public sealed class ListElement : Element, IEquatable<ListElement>
     {
         /// <summary>
         /// Gets the type of the list.
@@ -48,5 +49,47 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
 
         /// <inheritdoc />
         public override void Accept(IVisitor visitor) => visitor.Visit(this);
+
+        /// <inheritdoc />
+        public bool Equals(ListElement other)
+        {
+            if (other == null)
+                return false;
+
+            if (ReferenceEquals(this, other))
+                return true;
+
+            if (Type != other.Type)
+                return false;
+
+            if (ListHeader != null)
+            {
+                if (!ListHeader.Equals(other.ListHeader))
+                    return false;
+            }
+            else
+            {
+                if (other.ListHeader != null)
+                    return false;
+            }
+
+            return Items.SequenceEqual(other.Items);
+        }
+
+        /// <inheritdoc />
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hash = Type.GetHashCode() * 397;
+                if (ListHeader != null)
+                    hash ^= ListHeader.GetHashCode();
+
+                return hash;
+            }
+        }
+
+        /// <inheritdoc />
+        public override bool Equals(object obj) => Equals(obj as ListElement);
     }
 }

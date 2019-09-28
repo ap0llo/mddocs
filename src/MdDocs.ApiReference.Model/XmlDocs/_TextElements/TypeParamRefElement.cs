@@ -12,7 +12,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
     /// https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/xmldoc/recommended-tags-for-documentation-comments
     /// </para>
     /// </remarks>
-    public sealed class TypeParamRefElement : Element
+    public sealed class TypeParamRefElement : Element, IEquatable<TypeParamRefElement>
     {
         /// <summary>
         /// Gets the name of the type parameter being referenced.
@@ -33,5 +33,14 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
 
         /// <inheritdoc />
         public override void Accept(IVisitor visitor) => visitor.Visit(this);
+
+        /// <inheritdoc />
+        public override int GetHashCode() => StringComparer.Ordinal.GetHashCode(Name);
+
+        /// <inheritdoc />
+        public override bool Equals(object obj) => Equals(obj as TypeParamRefElement);
+
+        /// <inheritdoc />
+        public bool Equals(TypeParamRefElement other) => other != null && StringComparer.Ordinal.Equals(Name, other.Name);
     }
 }

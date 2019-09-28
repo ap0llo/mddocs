@@ -9,7 +9,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
     /// For a list of tags in documentation comments, see
     /// https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/xmldoc/recommended-tags-for-documentation-comments
     /// </remarks>
-    public class TextElement : Element
+    public class TextElement : Element, IEquatable<TextElement>
     {
         /// <summary>
         /// Gets the text elements content
@@ -30,5 +30,14 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
 
         /// <inheritdoc />
         public override void Accept(IVisitor visitor) => visitor.Visit(this);
+
+        /// <inheritdoc />
+        public override int GetHashCode() => StringComparer.Ordinal.GetHashCode(Content);
+
+        /// <inheritdoc />
+        public override bool Equals(object obj) => Equals(obj as TextElement);
+
+        /// <inheritdoc />
+        public bool Equals(TextElement other) => other != null && StringComparer.Ordinal.Equals(Content, other.Content);
     }
 }

@@ -203,9 +203,13 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
         /// <summary>
         /// Reads all supported text elements.
         /// </summary>
-        private TextBlock ReadTextBlock(XElement xml)
+        /// <remarks>
+        /// Member is <c>internal</c> for testing purposes only.
+        /// </remarks>
+        internal TextBlock ReadTextBlock(XElement xml)
         {
             var textElements = new List<Element>();
+            var indent = default(int?);
 
             foreach (var node in xml.Nodes())
             {
@@ -239,7 +243,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
                                 // http://ewsoftware.github.io/XMLCommentsGuide/html/1abd1992-e3d0-45b4-b43d-91fcfc5e5574.htm
                                 var languageAttribute = elementNode.Attribute("language") ?? elementNode.Attribute("lang");
 
-                                element = new CodeElement(TrimCode(elementNode.Value), languageAttribute?.Value);
+                                element = new CodeElement(TrimCode(elementNode.Value, null), languageAttribute?.Value);
                                 break;
 
                             case "c":
@@ -266,7 +270,12 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
                         break;
 
                     case XText textNode:
-                        element = new TextElement(TrimText(textNode.Value));
+                        if(indent == null)
+                        {
+                            indent = DetermineIndentation(textNode.Value);
+                        }
+
+                        element = new TextElement(TrimText(textNode.Value, indent));
                         break;
 
                     default:
@@ -361,14 +370,14 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
         /// <summary>
         /// Trims the text by removing new lines and trimming the indent.
         /// </summary>
-        private static string TrimText(string content) => TrimLines(content, StringSplitOptions.RemoveEmptyEntries, " ");
+        private static string TrimText(string content, int? indent) => TrimLines(content, StringSplitOptions.RemoveEmptyEntries, " ", indent);
 
         /// <summary>
         /// Trims the code by removing extra indent.
         /// </summary>
-        private static string TrimCode(string content) => TrimLines(content, StringSplitOptions.None, Environment.NewLine);
+        private static string TrimCode(string content, int? indent) => TrimLines(content, StringSplitOptions.None, Environment.NewLine, indent);
 
-        private static string TrimLines(string content, StringSplitOptions splitOptions, string joinWith)
+        private static string TrimLines(string content, StringSplitOptions splitOptions, string joinWith, int? indent)
         {
             var lines = content.Split(new[] { Environment.NewLine, "\n" }, splitOptions).ToList();
 
@@ -391,11 +400,14 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
             // The indent of the first line of content determines the base 
             // indent for all the lines, which we should remove since it's just 
             // a doc gen artifact.
-            var indent = lines[0].TakeWhile(c => Char.IsWhiteSpace(c)).Count();
+            //if(indent == null)
+            //{
+            //    indent = lines[0].TakeWhile(c => Char.IsWhiteSpace(c)).Count();
+            //}
             // Indent in generated XML doc files is greater than 4 always. 
             // This allows us to optimize the case where the author actually placed 
             // whitespace inline in between tags.
-            if (indent <= 4 && !String.IsNullOrEmpty(lines[0]) && lines[0][0] != '\t')
+            if (indent != null && indent <= 4 && !String.IsNullOrEmpty(lines[0]) && lines[0][0] != '\t')
                 indent = 0;
 
             return String.Join(joinWith, lines
@@ -403,13 +415,44 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
                 {
                     if (String.IsNullOrEmpty(line))
                         return line;
-                    else if (line.Length < indent)
+                    else if (String.IsNullOrWhiteSpace(line))
                         return String.Empty;
+                    else if (indent != null && line.Length >= indent.Value && line.Substring(0, indent.Value).Trim().Length == 0)
+                        return line.Substring(indent.Value);
                     else
-                        return line.Substring(indent);
+                        return line;
                 })
                 .ToArray());
         }
+
+        private static int? DetermineIndentation(string content)
+        {
+            var lines = content.Split(new[] { Environment.NewLine, "\n" }, StringSplitOptions.RemoveEmptyEntries).ToList();
+
+            if (lines.Count == 0)
+                return null;
+
+            // Remove leading and trailing empty lines which are used for wrapping in the doc XML.
+            if (lines[0].Trim().Length == 0)
+                lines.RemoveAt(0);
+
+            if (lines.Count == 0)
+                return null;
+
+            if (lines[lines.Count - 1].Trim().Length == 0)
+                lines.RemoveAt(lines.Count - 1);
+
+            if (lines.Count == 0)
+                return null;
+
+            // The indent of the first line of content determines the base 
+            // indent for all the lines, which we should remove since it's just 
+            // a doc gen artifact.
+            
+            return lines[0].TakeWhile(c => Char.IsWhiteSpace(c)).Count();
+           
+        }
+
 
         private bool TryParseMemberId(string value, out MemberId memberId)
         {
