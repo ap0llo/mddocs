@@ -112,7 +112,7 @@ string
 
 ### Remarks
 
-If a member is marked as obsolete using ObsoleteAttribute a warning is included in the generated documentation.              The documentation also includes the message specified for the obsolete attribute.
+If a member is marked as obsolete using ObsoleteAttribute a warning is included in the generated documentation.  The documentation also includes the message specified for the obsolete attribute.
 
 ___
 

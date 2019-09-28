@@ -26,7 +26,7 @@ DemoPropertyFlags serves two purposes:
 
 On the one hand it showcases the generated documentation for "flag" enums. For flag enums, the numeric values for the possible enum values are represented as hexadecimal numbers in contrast to decimal numbers for other enum types.
 
-Furthermore, this enum is used in [DemoPropertyAnnotationAttribute](../DemoPropertyAnnotationAttribute/Type.md) and demonstrates             how custom attributes are included in the documentation for properties (see [Property2](../DemoClass/Properties/Property2.md))
+Furthermore, this enum is used in [DemoPropertyAnnotationAttribute](../DemoPropertyAnnotationAttribute/Type.md) and demonstrates how custom attributes are included in the documentation for properties (see [Property2](../DemoClass/Properties/Property2.md))
 
 ## Fields
 

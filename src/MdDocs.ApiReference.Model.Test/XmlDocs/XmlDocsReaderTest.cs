@@ -146,5 +146,72 @@ namespace Grynwald.MdDocs.ApiReference.Model.Test.XmlDocs
                 Assert.Null(listItem.Description);
         }
 
+        [Fact]
+        public void ReadTextBlock_returns_the_expected_elements_01()
+        {
+            var xml = @"            <para>
+            Similar pages are also generated for interfaces, structs
+            and enums
+            </para> ";
+
+            ReadTextBlock_returns_the_expected_elements(
+                xml,
+                new TextElement("Similar pages are also generated for interfaces, structs and enums")
+            );
+        }
+
+        [Fact]
+        public void ReadTextBlock_returns_the_expected_elements_02()
+        {
+            var xml = @"            <para>
+            <see cref=""T:DemoProject.DemoStruct"" />
+            </para> ";
+
+            ReadTextBlock_returns_the_expected_elements(
+                xml,
+                new SeeElement(MemberId.Parse("T:DemoProject.DemoStruct"))
+            );
+        }
+
+        [Fact]
+        public void ReadTextBlock_returns_the_expected_elements_03()
+        {
+            var xml = @"            <para>
+            Similar pages are also generated for interfaces, structs (see <see cref=""T:DemoProject.DemoStruct""/>)
+            and enums
+            </para> ";
+
+            ReadTextBlock_returns_the_expected_elements(
+                xml,
+                new TextElement("Similar pages are also generated for interfaces, structs (see "),
+                new SeeElement(MemberId.Parse("T:DemoProject.DemoStruct")),
+                new TextElement(") and enums")
+            );
+        }
+
+        [Fact]
+        public void ReadTextBlock_returns_the_expected_elements_04()
+        {
+            var xml = @"<para>Lorem ipsum dolor sit amet.</para>";
+
+            ReadTextBlock_returns_the_expected_elements(
+                xml,
+                new TextElement("Lorem ipsum dolor sit amet.")
+            );
+        }
+
+        private void ReadTextBlock_returns_the_expected_elements(string xml, params Element[] expectedElements)
+        {
+            // ARRANGE
+            var sut = new XmlDocsReader(NullLogger.Instance);
+            var expected = new TextBlock(expectedElements);
+
+            // ACT
+            var actual = sut.ReadTextBlock(XElement.Parse(xml));
+
+            // ASSERT            
+            Assert.Equal(expected, actual);
+        }
+
     }
 }

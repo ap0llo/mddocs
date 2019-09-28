@@ -39,15 +39,15 @@
     ///             </item>
     ///         </list>
     ///     ]]></code>
-    ///      a numbered list will be rendered:
-    ///      <list type="number">
-    ///             <item>
-    ///                 <description>Item 1</description>
-    ///             </item>
-    ///             <item>
-    ///                 <description>Item 2</description>
-    ///             </item>
-    ///         </list>
+    ///     a numbered list will be rendered:
+    ///     <list type="number">
+    ///            <item>
+    ///                <description>Item 1</description>
+    ///            </item>
+    ///            <item>
+    ///                <description>Item 2</description>
+    ///            </item>
+    ///        </list>
     /// </para>
     /// <para>
     ///     Both numbered and bullet list also support items that specify both a <c>description</c> and a <c>term</c>:

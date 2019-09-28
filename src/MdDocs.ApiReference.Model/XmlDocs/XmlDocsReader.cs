@@ -270,11 +270,10 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
                         break;
 
                     case XText textNode:
-                        if(indent == null)
-                        {
-                            indent = DetermineIndentation(textNode.Value);
-                        }
-
+                        // determine the indentation of text in the XML document
+                        // when the first text element is encountered.
+                        // The indentation needs to be removed from all lines in the current text block
+                        indent = indent ?? DetermineIndentation(textNode.Value);
                         element = new TextElement(TrimText(textNode.Value, indent));
                         break;
 
@@ -379,6 +378,12 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
 
         private static string TrimLines(string content, StringSplitOptions splitOptions, string joinWith, int? indent)
         {
+            // If no indent was specified, calculate it now
+            if (indent == null)
+            {
+                indent = DetermineIndentation(content);
+            }
+
             var lines = content.Split(new[] { Environment.NewLine, "\n" }, splitOptions).ToList();
 
             if (lines.Count == 0)
@@ -397,36 +402,58 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
             if (lines.Count == 0)
                 return String.Empty;
 
-            // The indent of the first line of content determines the base 
-            // indent for all the lines, which we should remove since it's just 
-            // a doc gen artifact.
-            //if(indent == null)
-            //{
-            //    indent = lines[0].TakeWhile(c => Char.IsWhiteSpace(c)).Count();
-            //}
             // Indent in generated XML doc files is greater than 4 always. 
             // This allows us to optimize the case where the author actually placed 
             // whitespace inline in between tags.
-            if (indent != null && indent <= 4 && !String.IsNullOrEmpty(lines[0]) && lines[0][0] != '\t')
+            if (indent <= 4 && !String.IsNullOrEmpty(lines[0]) && lines[0][0] != '\t')
                 indent = 0;
 
             return String.Join(joinWith, lines
                 .Select(line =>
                 {
-                    if (String.IsNullOrEmpty(line))
-                        return line;
-                    else if (String.IsNullOrWhiteSpace(line))
+                    if (String.IsNullOrWhiteSpace(line))
                         return String.Empty;
-                    else if (indent != null && line.Length >= indent.Value && line.Substring(0, indent.Value).Trim().Length == 0)
+                    // remove indentation from line, when it starts with <indent> whitespace characters
+                    else if (indent.Value <= line.Length && line.Substring(0, indent.Value).Trim().Length == 0)
                         return line.Substring(indent.Value);
+                    // line has non-whitespace content within the indentation => return it unchanged
                     else
                         return line;
                 })
                 .ToArray());
         }
 
+        /// <summary>
+        /// Attempts to get the number of character the text is indented with.
+        /// </summary>
         private static int? DetermineIndentation(string content)
         {
+            //  When inline documentation is written to a XML file by the compiler, 
+            //  all text is indented by the same number of character:
+            //
+            //  Entire block is indented
+            //    │
+            //    │    <member name="F:DemoProject.DemoClass.Field1">             Empty leading line  
+            //    │       <remarks>                                         <───────┘                        
+            //    └───>     Remarks allow specification of more detailed information about a member, in this case a field
+            //              supplementing the information specified in the summary
+            //  ┌───>     </remarks>
+            //  │     </member>
+            //  │
+            //  │
+            //  Empty trailing line
+            //
+            //  In order to properly render the documentation, the leading whitespace
+            //  needs to be removed. 
+            //  
+            //  This methods determines the number of character that have to be removed
+            //  from all lines by 
+            //    - removing the first line (probably only whitespace, as can be seen in the example above)
+            //    - removing the last line (probably only whitespace, as can be seen in the example above)
+            //    - counting the number of whitespace characters in the first non-whitespace line
+            //
+
+
             var lines = content.Split(new[] { Environment.NewLine, "\n" }, StringSplitOptions.RemoveEmptyEntries).ToList();
 
             if (lines.Count == 0)
@@ -447,10 +474,9 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
 
             // The indent of the first line of content determines the base 
             // indent for all the lines, which we should remove since it's just 
-            // a doc gen artifact.
-            
+            // a doc gen artifact.            
             return lines[0].TakeWhile(c => Char.IsWhiteSpace(c)).Count();
-           
+
         }
 
 

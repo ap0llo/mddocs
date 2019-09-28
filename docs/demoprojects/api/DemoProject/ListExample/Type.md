@@ -76,7 +76,7 @@ In this case, the value of `term` will be rendered as bold prefix for the descri
 
    Item 2
 
-By changing the type of the list to `table`, the list will be rendered as two\-column table.                 To specify the header row of the table , use `listheader`
+By changing the type of the list to `table`, the list will be rendered as two\-column table. To specify the header row of the table , use `listheader`
 
 ```xml
 <list type="number">

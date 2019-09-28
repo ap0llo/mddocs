@@ -28,11 +28,11 @@ All of a types constructors will be listed in a table in the "Constructors" sect
 
 Similar tables are generated for a type's public fields, events, properties, indexers, methods and operator overloads
 
-Links to other members are supported (using the xml tag `see`), for example a link to [IDemoInterface](../IDemoInterface/Type.md). References to types outside the assembly are written to the output             but cannot be linked to, e.g. a reference to string
+Links to other members are supported (using the xml tag `see`), for example a link to [IDemoInterface](../IDemoInterface/Type.md). References to types outside the assembly are written to the output but cannot be linked to, e.g. a reference to string
 
 The last section is the "See Also" section with links provided in the xml documentation using the `seealso` tag
 
-Similar pages are also generated for interfaces (see [IDemoInterface](../IDemoInterface/Type.md)), structs (see [DemoStruct](../DemoStruct/Type.md))             and enums (see  [DemoEnum](../DemoEnum/Type.md))Documentation can also contains list and tables. See [ListExample](../ListExample/Type.md) for a showcase of the different supported list formats.
+Similar pages are also generated for interfaces (see [IDemoInterface](../IDemoInterface/Type.md)), structs (see [DemoStruct](../DemoStruct/Type.md)) and enums (see  [DemoEnum](../DemoEnum/Type.md))Documentation can also contains list and tables. See [ListExample](../ListExample/Type.md) for a showcase of the different supported list formats.
 
 ## Constructors
 
@@ -90,7 +90,7 @@ Similar pages are also generated for interfaces (see [IDemoInterface](../IDemoIn
 
 ## Example
 
-Using the `example` tag, examples on how to use a type can be included in the documentation.             To specify the language inside of a `code` element, use the `language` attribute.
+Using the `example` tag, examples on how to use a type can be included in the documentation. To specify the language inside of a `code` element, use the `language` attribute.
 
 ```csharp
 // create a new instance of DemoClass
