@@ -22,18 +22,15 @@
 */
 #endregion
 
-#pragma warning disable IDE0049 // Use framework type
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Xml.Linq;
+using Microsoft.Extensions.Logging;
 
 namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
 {
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Xml;
-    using System.Xml.Linq;
-    using Microsoft.Extensions.Logging;
-
     /// <summary>
     /// Reads .NET XML API documentation files.
     /// </summary>
@@ -45,52 +42,54 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
     /// https://github.com/kzu/NuDoq/blob/56ad8c508003490d859214753591440b123616f5/src/NuDoq/DocReader.cs
     /// </para>
     /// </remarks>
-    internal static class XmlDocsReader
+    internal class XmlDocsReader
     {
+        private readonly ILogger m_Logger;
+
+
+        public XmlDocsReader(ILogger logger)
+        {
+            m_Logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        }
+
+
         /// <summary>
         /// Reads the specified documentation file and returns list of members.
         /// </summary>
         /// <param name="fileName">Path to the documentation file.</param>
-        /// /// <param name="logger">The logger to use for the operation.</param>
         /// <returns>All documented members found in the given file.</returns>
         /// <exception cref="FileNotFoundException">Thrown when the specified file does not exist.</exception>
         /// <exception cref="ArgumentNullException">Thrown when any of the specified parameters is <c>null</c></exception>
-        public static IReadOnlyList<MemberElement> Read(string fileName, ILogger logger)
+        public IReadOnlyList<MemberElement> Read(string fileName)
         {
             if (fileName == null)
                 throw new ArgumentNullException(nameof(fileName));
 
-            if (logger == null)
-                throw new ArgumentNullException(nameof(logger));
-
             if (!File.Exists(fileName))
                 throw new FileNotFoundException("Could not find documentation file to load.", fileName);
 
-            logger.LogInformation($"Reading XML documentation comments from '{fileName}'");
+            m_Logger.LogInformation($"Reading XML documentation comments from '{fileName}'");
 
             var document = XDocument.Load(fileName, LoadOptions.SetBaseUri | LoadOptions.SetLineInfo);
 
-            return Read(document, logger);            
+            return Read(document);
         }
 
         /// <summary>
         /// Reads the specified documentation document and returns list of members.
         /// </summary>
         /// <param name="document">The XML documentation file to read.</param>
-        /// <param name="logger">The logger to use for the operation.</param>
         /// <returns>All documented members found in the given file.</returns>
         /// <exception cref="ArgumentNullException">Thrown when any of the specified parameters is <c>null</c></exception>
-        public static IReadOnlyList<MemberElement> Read(XDocument document, ILogger logger)
+        public IReadOnlyList<MemberElement> Read(XDocument document)
         {
             if (document == null)
                 throw new ArgumentNullException(nameof(document));
 
-            if (logger == null)
-                throw new ArgumentNullException(nameof(logger));
-
-            return document.Root.Element("members").Elements("member")
+            return document.Root.Element("members")
+                .Elements("member")
                 .Where(element => element.Attribute("name") != null)
-                .Select(element => TryReadMember(element, logger))
+                .Select(element => TryReadMember(element))
                 .Where(x => x != null)
                 .ToList();
         }
@@ -99,18 +98,18 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
         /// <summary>
         /// Reads all documentation for a single member
         /// </summary>
-        private static MemberElement TryReadMember(XElement element, ILogger logger)
+        private MemberElement TryReadMember(XElement element)
         {
-            var name = element.Attribute("name").Value;
+            var name = element.Attribute("name")?.Value;
 
-            if(!TryParseMemberId(logger, name, out var id))
+            if (!TryParseMemberId(name, out var id))
             {
                 return null;
             }
 
             var memberElement = new MemberElement(id);
 
-            ReadMemberContent(element, memberElement, logger);
+            ReadMemberContent(element, memberElement);
 
             return memberElement;
         }
@@ -119,115 +118,125 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
         /// <summary>
         /// Reads all supported documentation elements and adds it to the specified member.
         /// </summary>
-        private static void ReadMemberContent(XElement xml, MemberElement member, ILogger logger)
+        private void ReadMemberContent(XElement xml, MemberElement member)
         {
-            foreach (var elementNode in xml.Elements())
+            foreach (var element in xml.Elements())
             {
-                var elementName = elementNode.Name.LocalName;
+                var elementName = element.Name.LocalName;
 
-                logger.LogDebug($"Reading XML documentation element '{elementName}'");
+                m_Logger.LogDebug($"Reading XML documentation element '{elementName}'");
 
                 switch (elementName)
                 {
                     case "summary":
-                        member.Summary = ReadTextBlock(elementNode, logger);
+                        member.Summary = ReadTextBlock(element);
                         break;
+
                     case "remarks":
-                        member.Remarks = ReadTextBlock(elementNode, logger);
+                        member.Remarks = ReadTextBlock(element);
                         break;
+
                     case "example":
-                        member.Example = ReadTextBlock(elementNode, logger);
+                        member.Example = ReadTextBlock(element);
                         break;
+
                     case "param":
                         {
-                            var name = FindAttribute(elementNode, "name");
-                            if (name != null)
-                                member.Parameters.Add(name, ReadTextBlock(elementNode, logger));
+                            if (element.TryGetAttributeValue("name", out var name))
+                                member.Parameters.Add(name, ReadTextBlock(element));
                         }
                         break;
+
                     case "typeparam":
                         {
-                            var name = FindAttribute(elementNode, "name");
-                            if (name != null)
-                                member.TypeParameters.Add(name, ReadTextBlock(elementNode, logger));
+                            if (element.TryGetAttributeValue("name", out var name))
+                                member.TypeParameters.Add(name, ReadTextBlock(element));
                         }
                         break;
+
                     case "seealso":
                         {
-                            var cref = FindAttribute(elementNode, "cref");
-                            if (cref != null && TryParseMemberId(logger, cref, out var memberId))
-                            {
-                                member.SeeAlso.Add(new SeeAlsoElement(memberId, ReadTextBlock(elementNode, logger)));
-                            }
+                            if (TryParseMemberId(element.Attribute("cref")?.Value, out var memberId))
+                                member.SeeAlso.Add(new SeeAlsoElement(memberId, ReadTextBlock(element)));
                         }
                         break;
+
                     case "exception":
-                        {
-                            var cref = FindAttribute(elementNode, "cref");
-                            if (cref != null && TryParseMemberId(logger, cref, out var memberId))
-                            {
-                                if (memberId is TypeId typeId)
-                                {
-                                    member.Exceptions.Add(
-                                        new ExceptionElement(typeId, ReadTextBlock(elementNode, logger))
-                                    );
-                                }
-                                else
-                                {
-                                    logger.LogWarning($"Unexpected member id '{cref}' in 'exception' element. " +
-                                                      $"Expected id of type {nameof(TypeId)} but was {memberId.GetType().Name}. " +
-                                                      $"Ignoring exception element.");
-                                }
-                            }
-                        }
+                        ReadExceptionElement(element, member);
                         break;
+
                     case "value":
-                        member.Value = ReadTextBlock(elementNode, logger);
+                        member.Value = ReadTextBlock(element);
                         break;
+
                     case "returns":
-                        member.Returns = ReadTextBlock(elementNode, logger);
+                        member.Returns = ReadTextBlock(element);
                         break;
 
                     // ignore unknown elements
                     default:
-                        logger.LogWarning($"Encountered unknown element '{elementName}'. Element will be ignored.");
+                        m_Logger.LogWarning($"Encountered unknown element '{elementName}'. Element will be ignored.");
                         break;
                 }
+            }
+        }
+
+        private void ReadExceptionElement(XElement element, MemberElement member)
+        {
+            var cref = element.Attribute("cref")?.Value;
+
+            if (!TryParseMemberId(cref, out var memberId))
+                return;
+
+            if (memberId is TypeId typeId)
+            {
+                member.Exceptions.Add(new ExceptionElement(typeId, ReadTextBlock(element)));
+            }
+            else
+            {
+                m_Logger.LogWarning($"Unexpected member id '{cref}' in 'exception' element. " +
+                                    $"Expected id of type {nameof(TypeId)} but was {memberId.GetType().Name}. " +
+                                    $"Ignoring exception element.");
             }
         }
 
         /// <summary>
         /// Reads all supported text elements.
         /// </summary>
-        private static TextBlock ReadTextBlock(XElement xml, ILogger logger)
+        private TextBlock ReadTextBlock(XElement xml)
         {
             var textElements = new List<Element>();
 
             foreach (var node in xml.Nodes())
             {
                 var element = default(Element);
-                switch (node.NodeType)
+                switch (node)
                 {
-                    case XmlNodeType.Element:
-                        var elementNode = (XElement)node;
-                        var elementName = elementNode.Name.LocalName;
-                        switch (elementName)
+                    case XElement elementNode:
+                        switch (elementNode.Name.LocalName)
                         {
                             case "para":
-                                element = new ParaElement(ReadTextBlock(elementNode, logger));
+                                element = new ParaElement(ReadTextBlock(elementNode));
                                 break;
-                            case "paramref":
-                                element = new ParamRefElement(FindAttribute(elementNode, "name"));
-                                break;
-                            case "typeparamref":
-                                element = new TypeParamRefElement(FindAttribute(elementNode, "name"));
-                                break;
-                            case "code":
 
+                            case "paramref":
+                                {
+                                    if (elementNode.TryGetAttributeValue("name", out var name))
+                                        element = new ParamRefElement(name);
+                                }
+                                break;
+
+                            case "typeparamref":
+                                {
+                                    if (elementNode.TryGetAttributeValue("name", out var name))
+                                        element = new TypeParamRefElement(name);
+                                }
+                                break;
+
+                            case "code":
                                 // get the "language" attribute. If there is no "language" attribute, use the "lang"
                                 // attribute. "lang" is legacy syntax according to SandCastle documentation
                                 // http://ewsoftware.github.io/XMLCommentsGuide/html/1abd1992-e3d0-45b4-b43d-91fcfc5e5574.htm
-
                                 var languageAttribute = elementNode.Attribute("language") ?? elementNode.Attribute("lang");
 
                                 element = new CodeElement(TrimCode(elementNode.Value), languageAttribute?.Value);
@@ -236,25 +245,30 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
                             case "c":
                                 element = new CElement(elementNode.Value);
                                 break;
+
                             case "see":
-                                if(TryParseMemberId(logger, FindAttribute(elementNode, "cref"), out var memberId))
+                                if (elementNode.TryGetAttributeValue("cref", out var cref) &&
+                                    TryParseMemberId(cref, out var memberId))
                                 {
                                     element = new SeeElement(memberId);
                                 }
                                 break;
-                            case "list":                                                                
-                                element = ReadList(elementNode, logger);                                
+
+                            case "list":
+                                element = ReadList(elementNode);
                                 break;
-                            
+
                             // ignore unknown elements
                             default:
-                                logger.LogWarning($"Encountered unknown element '{elementName}'. Element will be ignored.");
+                                m_Logger.LogWarning($"Encountered unknown element '{elementNode.Name}'. Element will be ignored.");
                                 break;
                         }
                         break;
-                    case XmlNodeType.Text:
-                        element = new TextElement(TrimText(((XText)node).Value));
+
+                    case XText textNode:
+                        element = new TextElement(TrimText(textNode.Value));
                         break;
+
                     default:
                         break;
                 }
@@ -268,10 +282,10 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
             return new TextBlock(textElements);
         }
 
-        private static ListElement ReadList(XElement xml, ILogger logger)
+        private ListElement ReadList(XElement xml)
         {
             // parse list type
-            if (!Enum.TryParse<ListType>(FindAttribute(xml, "type"), ignoreCase: true, out var listType))
+            if (!Enum.TryParse<ListType>(xml.Attribute("type")?.Value, ignoreCase: true, out var listType))
             {
                 listType = ListType.None;
             }
@@ -282,60 +296,60 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
             // get list header and list items
             foreach (var node in xml.Nodes())
             {
-                if(node is XElement element)
+                if (node is XElement element)
                 {
-                    if(element.Name.LocalName == "item")
+                    if (element.Name.LocalName == "item")
                     {
-                        var listItem = ReadListItem(element, logger);
+                        var listItem = ReadListItem(element);
 
-                        if(listItem != default)
+                        if (listItem != default)
                             listItems.Add(listItem);
 
                         continue;
                     }
-                    else if(element.Name.LocalName == "listheader" && listHeader == null)
+                    else if (element.Name.LocalName == "listheader" && listHeader == null)
                     {
-                        listHeader = ReadListItem(element, logger);
+                        listHeader = ReadListItem(element);
                         continue;
                     }
                 }
 
-                logger.LogWarning($"Encountered unexpected node '{node}' while reading list. Node will be ignored.");
+                m_Logger.LogWarning($"Encountered unexpected node '{node}' while reading list. Node will be ignored.");
             }
 
             return new ListElement(listType, listHeader, listItems);
         }
 
-        private static ListItemElement ReadListItem(XElement xml, ILogger logger)
+        private ListItemElement ReadListItem(XElement xml)
         {
             TextBlock term = null;
             TextBlock description = null;
 
-            foreach(var node in xml.Nodes())
+            foreach (var node in xml.Nodes())
             {
                 // Read term and description from first term/description elements.
                 // Ignore subsequent term/description elements
-                if(node is XElement element)
+                if (node is XElement element)
                 {
                     if (element.Name.LocalName == "term" && term == null)
                     {
-                        term = ReadTextBlock(element, logger);
+                        term = ReadTextBlock(element);
                         continue;
                     }
-                    else if(element.Name.LocalName == "description" && description == null)
+                    else if (element.Name.LocalName == "description" && description == null)
                     {
-                        description = ReadTextBlock(element, logger);
+                        description = ReadTextBlock(element);
                         continue;
                     }
                 }
 
-                logger.LogWarning($"Encountered unexpected node '{node}' while reading list. Node will be ignored.");
+                m_Logger.LogWarning($"Encountered unexpected node '{node}' while reading list. Node will be ignored.");
             }
 
             // item without term or description => return null
-            if(description == null)
+            if (description == null)
             {
-                logger.LogWarning($"Ignoring list item {xml} because no 'description' element was found.");
+                m_Logger.LogWarning($"Ignoring list item {xml} because no 'description' element was found.");
                 return null;
             }
             else
@@ -345,87 +359,66 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
         }
 
         /// <summary>
-        /// Retrieves an attribute value if found, otherwise, returns a null string.
-        /// </summary>
-        private static string FindAttribute(XElement elementNode, string attributeName)
-        {
-            return elementNode.Attributes().Where(x => x.Name == attributeName).Select(x => x.Value).FirstOrDefault();
-        }
-
-        /// <summary>
         /// Trims the text by removing new lines and trimming the indent.
         /// </summary>
-        private static string TrimText(string content)
-        {
-            return TrimLines(content, StringSplitOptions.RemoveEmptyEntries, " ");
-        }
+        private static string TrimText(string content) => TrimLines(content, StringSplitOptions.RemoveEmptyEntries, " ");
 
         /// <summary>
         /// Trims the code by removing extra indent.
         /// </summary>
-        private static string TrimCode(string content)
-        {
-            return TrimLines(content, StringSplitOptions.None, Environment.NewLine);
-        }
+        private static string TrimCode(string content) => TrimLines(content, StringSplitOptions.None, Environment.NewLine);
 
         private static string TrimLines(string content, StringSplitOptions splitOptions, string joinWith)
         {
             var lines = content.Split(new[] { Environment.NewLine, "\n" }, splitOptions).ToList();
 
             if (lines.Count == 0)
-                return string.Empty;
+                return String.Empty;
 
             // Remove leading and trailing empty lines which are used for wrapping in the doc XML.
             if (lines[0].Trim().Length == 0)
                 lines.RemoveAt(0);
 
             if (lines.Count == 0)
-                return string.Empty;
+                return String.Empty;
 
             if (lines[lines.Count - 1].Trim().Length == 0)
                 lines.RemoveAt(lines.Count - 1);
 
             if (lines.Count == 0)
-                return string.Empty;
+                return String.Empty;
 
             // The indent of the first line of content determines the base 
-            // indent for all the lines, which   we should remove since it's just 
+            // indent for all the lines, which we should remove since it's just 
             // a doc gen artifact.
-            var indent = lines[0].TakeWhile(c => char.IsWhiteSpace(c)).Count();
+            var indent = lines[0].TakeWhile(c => Char.IsWhiteSpace(c)).Count();
             // Indent in generated XML doc files is greater than 4 always. 
             // This allows us to optimize the case where the author actually placed 
             // whitespace inline in between tags.
-            if (indent <= 4 && !string.IsNullOrEmpty(lines[0]) && lines[0][0] != '\t')
+            if (indent <= 4 && !String.IsNullOrEmpty(lines[0]) && lines[0][0] != '\t')
                 indent = 0;
 
-            return string.Join(joinWith, lines
+            return String.Join(joinWith, lines
                 .Select(line =>
                 {
-                    if (string.IsNullOrEmpty(line))
+                    if (String.IsNullOrEmpty(line))
                         return line;
                     else if (line.Length < indent)
-                        return string.Empty;
+                        return String.Empty;
                     else
                         return line.Substring(indent);
                 })
                 .ToArray());
         }
 
-        private static bool TryParseMemberId(ILogger logger, string value, out MemberId memberId)
+        private bool TryParseMemberId(string value, out MemberId memberId)
         {
-            try
+            if (!MemberId.TryParse(value, out memberId))
             {
-                memberId = MemberId.Parse(value);
-                return true;
-            }
-            catch (MemberIdParserException ex)
-            {
-                logger.LogWarning(ex, $"Failed to parse member id '{value}'.");
-                memberId = default;
+                m_Logger.LogWarning($"Failed to parse member id '{value}'.");
                 return false;
             }
+            return true;
         }
     }
 }
-
-#pragma warning restore IDE0049 // Use framework type

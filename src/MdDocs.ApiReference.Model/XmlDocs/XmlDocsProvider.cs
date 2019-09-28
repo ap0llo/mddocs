@@ -19,7 +19,8 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
         /// <param name="logger">The logger to log events to.</param>
         internal XmlDocsProvider(string xmlDocsPath, ILogger logger)
         {
-            var model = XmlDocsReader.Read(xmlDocsPath, logger);
+            var xmlDocsReader = new XmlDocsReader(logger);
+            var model = xmlDocsReader.Read(xmlDocsPath);
             m_Members = model.ToDictionary(m => m.MemberId);
         }
 

@@ -10,7 +10,9 @@ namespace Grynwald.MdDocs.ApiReference.Model.Test.XmlDocs
     {
         private static ListElement ReadList(XDocument document)
         {
-            var members = XmlDocsReader.Read(document, NullLogger.Instance);
+            var xmlDocsReader = new XmlDocsReader(NullLogger.Instance);
+
+            var members = xmlDocsReader.Read(document);
             Assert.Single(members);
             Assert.Single(members.Single().Summary.Elements);
 
