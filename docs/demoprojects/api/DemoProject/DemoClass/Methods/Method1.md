@@ -1,6 +1,6 @@
 # DemoClass.Method1 Method
 
-**Declaring Type:** [DemoClass](../Type.md)
+**Declaring Type:** [DemoClass](../index.md)
 
 ## Overloads
 

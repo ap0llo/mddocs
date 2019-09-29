@@ -1,17 +1,17 @@
 # DemoClass Constructors
 
-**Declaring Type:** [DemoClass](Type.md)
+**Declaring Type:** [DemoClass](../index.md)
 
 ## Overloads
 
-| Signature                       | Description                                                                      |
-| ------------------------------- | -------------------------------------------------------------------------------- |
-| [DemoClass()](#democlass)       | Initializes a new instance of [DemoClass](Type.md)                               |
-| [DemoClass(int)](#democlassint) | Initializes a new instance of [DemoClass](Type.md) with the specified parameters |
+| Signature                       | Description                                                                          |
+| ------------------------------- | ------------------------------------------------------------------------------------ |
+| [DemoClass()](#democlass)       | Initializes a new instance of [DemoClass](../index.md)                               |
+| [DemoClass(int)](#democlassint) | Initializes a new instance of [DemoClass](../index.md) with the specified parameters |
 
 ## DemoClass()
 
-Initializes a new instance of [DemoClass](Type.md)
+Initializes a new instance of [DemoClass](../index.md)
 
 ```csharp
 public DemoClass();
@@ -23,7 +23,7 @@ Remarks allow specification of more detailed information about a member, in this
 
 ## DemoClass(int)
 
-Initializes a new instance of [DemoClass](Type.md) with the specified parameters
+Initializes a new instance of [DemoClass](../index.md) with the specified parameters
 
 ```csharp
 public DemoClass(int parameter);

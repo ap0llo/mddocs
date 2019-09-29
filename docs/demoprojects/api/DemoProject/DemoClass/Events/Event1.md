@@ -1,6 +1,6 @@
 # DemoClass.Event1 Event
 
-**Declaring Type:** [DemoClass](../Type.md)
+**Declaring Type:** [DemoClass](../index.md)
 
 An example of a public event.
 

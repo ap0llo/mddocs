@@ -1,8 +1,8 @@
 # DemoPropertyAnnotationAttribute Constructors
 
-**Declaring Type:** [DemoPropertyAnnotationAttribute](Type.md)
+**Declaring Type:** [DemoPropertyAnnotationAttribute](../index.md)
 
-Initializes a new instance of [DemoPropertyAnnotationAttribute](Type.md)
+Initializes a new instance of [DemoPropertyAnnotationAttribute](../index.md)
 
 ```csharp
 public DemoPropertyAnnotationAttribute(DemoPropertyFlags flags);
@@ -10,7 +10,7 @@ public DemoPropertyAnnotationAttribute(DemoPropertyFlags flags);
 
 ## Parameters
 
-`flags`  [DemoPropertyFlags](../DemoPropertyFlags/Type.md)
+`flags`  [DemoPropertyFlags](../../DemoPropertyFlags/index.md)
 
 The flags to annotate the property with
 

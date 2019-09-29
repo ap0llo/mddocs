@@ -1,6 +1,6 @@
 # DemoClass.Method4 Method
 
-**Declaring Type:** [DemoClass](../Type.md)
+**Declaring Type:** [DemoClass](../index.md)
 
 ⚠️ **Warning:** This API is obsolete.
 

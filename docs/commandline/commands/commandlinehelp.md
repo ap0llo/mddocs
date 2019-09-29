@@ -1,6 +1,6 @@
 # `commandlinehelp` Command
 
-**Application:** [mddocs](../commandline.md)
+**Application:** [mddocs](../index.md)
 
 Generate command line help for .NET console application implemented using the 'CommandLineParser' package
 

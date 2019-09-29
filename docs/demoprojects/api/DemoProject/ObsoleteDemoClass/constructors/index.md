@@ -1,6 +1,6 @@
 # ObsoleteDemoClass Constructors
 
-**Declaring Type:** [ObsoleteDemoClass](Type.md)
+**Declaring Type:** [ObsoleteDemoClass](../index.md)
 
 ```csharp
 public ObsoleteDemoClass();

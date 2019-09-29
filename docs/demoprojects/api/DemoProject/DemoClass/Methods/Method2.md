@@ -1,6 +1,6 @@
 # DemoClass.Method2 Method
 
-**Declaring Type:** [DemoClass](../Type.md)
+**Declaring Type:** [DemoClass](../index.md)
 
 Example of an non\-overloaded methods with a custom attribute.
 

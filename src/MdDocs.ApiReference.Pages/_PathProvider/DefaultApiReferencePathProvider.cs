@@ -9,23 +9,23 @@ namespace Grynwald.MdDocs.ApiReference.Pages
         private static readonly char[] s_SplitChars = ".".ToCharArray();
 
 
-        public string GetPath(ConstructorsPage page) => Path.Combine(GetTypeDirRelative(page.Model.TypeDocumentation), "Constructors.md");
+        public string GetPath(ConstructorsPage page) => Path.Combine(GetTypeDirRelative(page.Model.TypeDocumentation), "constructors", "index.md");
 
-        public string GetPath(FieldPage page) => Path.Combine(GetTypeDirRelative(page.Model.TypeDocumentation), "Fields", $"{page.Model.Name}.md");
+        public string GetPath(FieldPage page) => Path.Combine(GetTypeDirRelative(page.Model.TypeDocumentation), "fields", $"{page.Model.Name}.md");
 
-        public string GetPath(EventPage page) => Path.Combine(GetTypeDirRelative(page.Model.TypeDocumentation), "Events", $"{page.Model.Name}.md");
+        public string GetPath(EventPage page) => Path.Combine(GetTypeDirRelative(page.Model.TypeDocumentation), "events", $"{page.Model.Name}.md");
 
-        public string GetPath(IndexerPage page) => Path.Combine(GetTypeDirRelative(page.Model.TypeDocumentation), "Indexers", $"{page.Model.Name}.md");
+        public string GetPath(IndexerPage page) => Path.Combine(GetTypeDirRelative(page.Model.TypeDocumentation), "indexers", $"{page.Model.Name}.md");
 
-        public string GetPath(PropertyPage page) => Path.Combine(GetTypeDirRelative(page.Model.TypeDocumentation), "Properties", $"{page.Model.Name}.md");
+        public string GetPath(PropertyPage page) => Path.Combine(GetTypeDirRelative(page.Model.TypeDocumentation), "properties", $"{page.Model.Name}.md");
 
-        public string GetPath(MethodPage page) => Path.Combine(GetTypeDirRelative(page.Model.TypeDocumentation), "Methods", $"{page.Model.Name}.md");
+        public string GetPath(MethodPage page) => Path.Combine(GetTypeDirRelative(page.Model.TypeDocumentation), "methods", $"{page.Model.Name}.md");
 
-        public string GetPath(OperatorPage page) => Path.Combine(GetTypeDirRelative(page.Model.TypeDocumentation), "Operators", $"{page.Model.Kind}.md");
+        public string GetPath(OperatorPage page) => Path.Combine(GetTypeDirRelative(page.Model.TypeDocumentation), "operators", $"{page.Model.Kind}.md");
 
-        public string GetPath(NamespacePage page) => Path.Combine(GetNamespaceDirRelative(page.Model), "Namespace.md");
+        public string GetPath(NamespacePage page) => Path.Combine(GetNamespaceDirRelative(page.Model), "index.md");
 
-        public string GetPath(TypePage page) => Path.Combine(GetTypeDirRelative(page.Model), "Type.md");
+        public string GetPath(TypePage page) => Path.Combine(GetTypeDirRelative(page.Model), "index.md");
 
 
         protected string GetTypeDirRelative(TypeDocumentation type)

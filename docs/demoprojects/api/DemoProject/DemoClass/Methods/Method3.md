@@ -1,6 +1,6 @@
 # DemoClass.Method3 Method
 
-**Declaring Type:** [DemoClass](../Type.md)
+**Declaring Type:** [DemoClass](../index.md)
 
 Example of a generic method.
 

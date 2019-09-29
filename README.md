@@ -52,7 +52,7 @@ dotnet add package Grynwald.MdDocs.MSBuild
 
 ### .NET Core Tool
 
-See also: [Command Line Reference](docs/commandline/commandline.md)
+See also: [Command Line Reference](docs/commandline/index.md)
 
 #### API Reference
 
@@ -66,7 +66,7 @@ mddocs apireference --assembly <PATH-TO-ASSEMBLY> --outdir <OUTPUT-DIRECTORY>
 directory will be deleted.
 
 For an example of what the output looks like, have a look at the
-[demo project](docs/demoprojects/api/DemoProject/Namespace.md).
+[demo project](docs/demoprojects/api/DemoProject/index.md).
 
 #### Command Line Help
 
@@ -82,7 +82,7 @@ mddocs commandlinehelp --assembly <PATH-TO-ASSEMBLY> --outdir <OUTPUT-DIRECTORY>
 directory will be deleted.
 
 For an example of what the output looks like, have a look at the
-[demo project](docs/demoprojects/commandline/commandline.md).
+[demo project](docs/demoprojects/commandline/index.md).
 
 ### MSBuild-integrated
 

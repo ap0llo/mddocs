@@ -1,6 +1,6 @@
 # DemoClass\<T1, T2\> Constructors
 
-**Declaring Type:** [DemoClass\<T1, T2\>](Type.md)
+**Declaring Type:** [DemoClass\<T1, T2\>](../index.md)
 
 ```csharp
 public DemoClass();

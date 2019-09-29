@@ -1,6 +1,6 @@
 # DemoAttribute Constructors
 
-**Declaring Type:** [DemoAttribute](Type.md)
+**Declaring Type:** [DemoAttribute](../index.md)
 
 ```csharp
 public DemoAttribute();

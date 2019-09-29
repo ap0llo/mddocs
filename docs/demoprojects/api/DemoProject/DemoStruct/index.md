@@ -1,6 +1,6 @@
 # DemoStruct Struct
 
-**Namespace:** [DemoProject](../Namespace.md)
+**Namespace:** [DemoProject](../index.md)
 
 **Assembly:** DemoProject
 
@@ -16,13 +16,13 @@ public struct DemoStruct
 
 This page demonstrates how the generated documentation for structs looks like. The same layout is used for classes, structs, interfaces, and enums.
 
-A more detailed description of type documentation can be seen in the documentation of [DemoClass](../DemoClass/Type.md)
+A more detailed description of type documentation can be seen in the documentation of [DemoClass](../DemoClass/index.md)
 
 ## See Also
 
-- [DemoClass](../DemoClass/Type.md)
-- [IDemoInterface](../IDemoInterface/Type.md)
-- [DemoEnum](../DemoEnum/Type.md)
+- [DemoClass](../DemoClass/index.md)
+- [IDemoInterface](../IDemoInterface/index.md)
+- [DemoEnum](../DemoEnum/index.md)
 
 ___
 

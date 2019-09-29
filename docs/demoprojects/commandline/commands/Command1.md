@@ -1,6 +1,6 @@
 # `Command1` Command
 
-**Application:** [DemoProject](../commandline.md)  
+**Application:** [DemoProject](../index.md)  
 **Version:** 1.2.3
 
 Documentation for the 'command1' subcommand. For every subcommand, a separate page will be generated.  

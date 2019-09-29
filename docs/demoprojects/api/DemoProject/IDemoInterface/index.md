@@ -1,6 +1,6 @@
 # IDemoInterface Interface
 
-**Namespace:** [DemoProject](../Namespace.md)
+**Namespace:** [DemoProject](../index.md)
 
 **Assembly:** DemoProject
 
@@ -14,13 +14,13 @@ public interface IDemoInterface
 
 This page demonstrates how the generated documentation for interfaces looks like. The same layout is used for classes, structs, interfaces, and enums.
 
-A more detailed description of type documentation can be seen in the documentation of [DemoClass](../DemoClass/Type.md)
+A more detailed description of type documentation can be seen in the documentation of [DemoClass](../DemoClass/index.md)
 
 ## See Also
 
-- [DemoClass](../DemoClass/Type.md)
-- [DemoEnum](../DemoEnum/Type.md)
-- [DemoStruct](../DemoStruct/Type.md)
+- [DemoClass](../DemoClass/index.md)
+- [DemoEnum](../DemoEnum/index.md)
+- [DemoStruct](../DemoStruct/index.md)
 
 ___
 

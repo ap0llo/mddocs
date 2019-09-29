@@ -1,6 +1,6 @@
 # DemoClass Class
 
-**Namespace:** [DemoProject](../Namespace.md)
+**Namespace:** [DemoProject](../index.md)
 
 **Assembly:** DemoProject
 
@@ -28,65 +28,65 @@ All of a types constructors will be listed in a table in the "Constructors" sect
 
 Similar tables are generated for a type's public fields, events, properties, indexers, methods and operator overloads
 
-Links to other members are supported (using the xml tag `see`), for example a link to [IDemoInterface](../IDemoInterface/Type.md). References to types outside the assembly are written to the output but cannot be linked to, e.g. a reference to string
+Links to other members are supported (using the xml tag `see`), for example a link to [IDemoInterface](../IDemoInterface/index.md). References to types outside the assembly are written to the output but cannot be linked to, e.g. a reference to string
 
 The last section is the "See Also" section with links provided in the xml documentation using the `seealso` tag
 
-Similar pages are also generated for interfaces (see [IDemoInterface](../IDemoInterface/Type.md)), structs (see [DemoStruct](../DemoStruct/Type.md)) and enums (see  [DemoEnum](../DemoEnum/Type.md))Documentation can also contains list and tables. See [ListExample](../ListExample/Type.md) for a showcase of the different supported list formats.
+Similar pages are also generated for interfaces (see [IDemoInterface](../IDemoInterface/index.md)), structs (see [DemoStruct](../DemoStruct/index.md)) and enums (see  [DemoEnum](../DemoEnum/index.md))Documentation can also contains list and tables. See [ListExample](../ListExample/index.md) for a showcase of the different supported list formats.
 
 ## Constructors
 
-| Name                                           | Description                                                           |
-| ---------------------------------------------- | --------------------------------------------------------------------- |
-| [DemoClass()](Constructors.md#democlass)       | Initializes a new instance of DemoClass                               |
-| [DemoClass(int)](Constructors.md#democlassint) | Initializes a new instance of DemoClass with the specified parameters |
+| Name                                                 | Description                                                           |
+| ---------------------------------------------------- | --------------------------------------------------------------------- |
+| [DemoClass()](constructors/index.md#democlass)       | Initializes a new instance of DemoClass                               |
+| [DemoClass(int)](constructors/index.md#democlassint) | Initializes a new instance of DemoClass with the specified parameters |
 
 ## Fields
 
 | Name                       | Description                   |
 | -------------------------- | ----------------------------- |
-| [Field1](Fields/Field1.md) | An example of a public field. |
-| [Field2](Fields/Field2.md) | An example of a public field. |
+| [Field1](fields/Field1.md) | An example of a public field. |
+| [Field2](fields/Field2.md) | An example of a public field. |
 
 ## Events
 
 | Name                       | Description                   |
 | -------------------------- | ----------------------------- |
-| [Event1](Events/Event1.md) | An example of a public event. |
-| [Event2](Events/Event2.md) | An example of a public event. |
+| [Event1](events/Event1.md) | An example of a public event. |
+| [Event2](events/Event2.md) | An example of a public event. |
 
 ## Properties
 
 | Name                                 | Description                                                            |
 | ------------------------------------ | ---------------------------------------------------------------------- |
-| [Property1](Properties/Property1.md) | An example of a read\-only property.                                   |
-| [Property2](Properties/Property2.md) | An example of a read\/write property annotated with a custom attribute |
-| [Property3](Properties/Property3.md) | An example of an obsolete property.                                    |
+| [Property1](properties/Property1.md) | An example of a read\-only property.                                   |
+| [Property2](properties/Property2.md) | An example of a read\/write property annotated with a custom attribute |
+| [Property3](properties/Property3.md) | An example of an obsolete property.                                    |
 
 ## Indexers
 
 | Name                                             | Description                                       |
 | ------------------------------------------------ | ------------------------------------------------- |
-| [Item\[int, int\]](Indexers/Item.md#itemint-int) | An example of an indexer with two parameters.     |
-| [Item\[int\]](Indexers/Item.md#itemint)          | An example of an indexer with a single parameter. |
-| [Item\[object\]](Indexers/Item.md#itemobject)    | An example of an obsolete indexer.                |
+| [Item\[int, int\]](indexers/Item.md#itemint-int) | An example of an indexer with two parameters.     |
+| [Item\[int\]](indexers/Item.md#itemint)          | An example of an indexer with a single parameter. |
+| [Item\[object\]](indexers/Item.md#itemobject)    | An example of an obsolete indexer.                |
 
 ## Methods
 
 | Name                                                | Description                                                    |
 | --------------------------------------------------- | -------------------------------------------------------------- |
-| [Method1()](Methods/Method1.md#method1)             | Example of an overloaded method without parameters             |
-| [Method1(string)](Methods/Method1.md#method1string) | Example of an overloaded method accepting one parameter.       |
-| [Method2()](Methods/Method2.md)                     | Example of an non\-overloaded methods with a custom attribute. |
-| [Method3\<T\>(T)](Methods/Method3.md)               | Example of a generic method.                                   |
-| [Method4()](Methods/Method4.md)                     | Example of an obsolete method.                                 |
+| [Method1()](methods/Method1.md#method1)             | Example of an overloaded method without parameters             |
+| [Method1(string)](methods/Method1.md#method1string) | Example of an overloaded method accepting one parameter.       |
+| [Method2()](methods/Method2.md)                     | Example of an non\-overloaded methods with a custom attribute. |
+| [Method3\<T\>(T)](methods/Method3.md)               | Example of a generic method.                                   |
+| [Method4()](methods/Method4.md)                     | Example of an obsolete method.                                 |
 
 ## Operators
 
 | Name                                                          | Description                                       |
 | ------------------------------------------------------------- | ------------------------------------------------- |
-| [Addition(DemoClass, DemoClass)](Operators/Addition.md)       | Example of an overload of the binary + operator.  |
-| [Subtraction(DemoClass, DemoClass)](Operators/Subtraction.md) | Example of an overload of the binary \- operator. |
+| [Addition(DemoClass, DemoClass)](operators/Addition.md)       | Example of an overload of the binary + operator.  |
+| [Subtraction(DemoClass, DemoClass)](operators/Subtraction.md) | Example of an overload of the binary \- operator. |
 
 ## Example
 
@@ -99,11 +99,11 @@ var instance = new DemoClass();
 
 ## See Also
 
-- [IDemoInterface](../IDemoInterface/Type.md)
-- [By providing text in the `seealso` element, the link text can be changed](../DemoStruct/Type.md)
-- [DemoEnum](../DemoEnum/Type.md)
+- [IDemoInterface](../IDemoInterface/index.md)
+- [By providing text in the `seealso` element, the link text can be changed](../DemoStruct/index.md)
+- [DemoEnum](../DemoEnum/index.md)
 - No link can be generated if the referenced type is defined in another assembly (`System.String` in this case)
-- [ListExample](../ListExample/Type.md)
+- [ListExample](../ListExample/index.md)
 
 ___
 

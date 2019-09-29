@@ -1,6 +1,6 @@
 # DemoClass.Item Indexer
 
-**Declaring Type:** [DemoClass](../Type.md)
+**Declaring Type:** [DemoClass](../index.md)
 
 ## Overloads
 

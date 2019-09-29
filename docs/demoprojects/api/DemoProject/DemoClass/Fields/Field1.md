@@ -1,6 +1,6 @@
 # DemoClass.Field1 Field
 
-**Declaring Type:** [DemoClass](../Type.md)
+**Declaring Type:** [DemoClass](../index.md)
 
 An example of a public field.
 

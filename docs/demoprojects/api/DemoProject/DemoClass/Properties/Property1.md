@@ -1,6 +1,6 @@
 # DemoClass.Property1 Property
 
-**Declaring Type:** [DemoClass](../Type.md)
+**Declaring Type:** [DemoClass](../index.md)
 
 An example of a read\-only property.
 

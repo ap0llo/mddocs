@@ -1,6 +1,6 @@
 # ListExample Constructors
 
-**Declaring Type:** [ListExample](Type.md)
+**Declaring Type:** [ListExample](../index.md)
 
 ```csharp
 public ListExample();

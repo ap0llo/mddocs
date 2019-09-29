@@ -1,6 +1,6 @@
 ﻿# `Command1` Command
 
-**Application:** [TestApp](../commandline.md)  
+**Application:** [TestApp](../index.md)  
 **Version:** 1.2.3
 
 ## Usage

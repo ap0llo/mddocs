@@ -1,6 +1,6 @@
 # DemoClass.Subtraction Operator
 
-**Declaring Type:** [DemoClass](../Type.md)
+**Declaring Type:** [DemoClass](../index.md)
 
 Example of an overload of the binary \- operator.
 
@@ -10,11 +10,11 @@ public static DemoClass operator -(DemoClass left, DemoClass right);
 
 ## Parameters
 
-`left`  [DemoClass](../Type.md)
+`left`  [DemoClass](../index.md)
 
 Description of parameter `left` provided using the `param` element.
 
-`right`  [DemoClass](../Type.md)
+`right`  [DemoClass](../index.md)
 
 Description of parameter `right` provided using the `param` element.
 
@@ -26,7 +26,7 @@ For overloaded members, there is a separate "Remarks" section for every overload
 
 ## Returns
 
-[DemoClass](../Type.md)
+[DemoClass](../index.md)
 
 The return value of an operator can be documented using the `returns` tag
 
