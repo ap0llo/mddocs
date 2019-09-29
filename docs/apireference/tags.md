@@ -29,8 +29,8 @@ mddocs differentiates between two kinds of tags:
 - [para](./tags/para.md)
 - [paramref](./tags/paramref.md)
 - [typeparamref](./tags/typeparamref.md)
-- code
-- c
+- [code](./tags/code.md)
+- [c](./tags/c.md)
 - [see](./tags/see.md)
 - list
 
