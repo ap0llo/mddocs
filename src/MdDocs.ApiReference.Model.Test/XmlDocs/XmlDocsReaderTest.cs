@@ -200,6 +200,33 @@ namespace Grynwald.MdDocs.ApiReference.Model.Test.XmlDocs
             );
         }
 
+        [Fact]
+        public void ReadTextBlock_returns_the_expected_elements_05()
+        {
+            var xml = @"<para><see cref=""T:DemoProject.DemoClass"" /></para>";
+
+            ReadTextBlock_returns_the_expected_elements(
+                xml,
+                new SeeElement(MemberId.Parse("T:DemoProject.DemoClass"))
+            );
+        }
+
+        [Fact]
+        public void ReadTextBlock_returns_the_expected_elements_06()
+        {
+            var xml = @"<para><see cref=""T:DemoProject.DemoClass"">Lorem ipsum dolor sit amet.</see></para>";
+
+            ReadTextBlock_returns_the_expected_elements(
+                xml,
+                new SeeElement(
+                    MemberId.Parse("T:DemoProject.DemoClass"),
+                    new TextBlock(new[]
+                    {
+                        new TextElement("Lorem ipsum dolor sit amet.")
+                    }))
+            );
+        }
+
         private void ReadTextBlock_returns_the_expected_elements(string xml, params Element[] expectedElements)
         {
             // ARRANGE

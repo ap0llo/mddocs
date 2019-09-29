@@ -30,6 +30,8 @@ Similar tables are generated for a type's public fields, events, properties, ind
 
 Links to other members are supported (using the xml tag `see`), for example a link to [IDemoInterface](../IDemoInterface/index.md). References to types outside the assembly are written to the output but cannot be linked to, e.g. a reference to string
 
+For the `see` tag alternative text is supported as well. To specify the link text, insert content inside the `see` element, for example `<see cref="IDemoInterface">Custom text</see>` which is rendered like this: [Custom text](../IDemoInterface/index.md)
+
 The last section is the "See Also" section with links provided in the xml documentation using the `seealso` tag
 
 Similar pages are also generated for interfaces (see [IDemoInterface](../IDemoInterface/index.md)), structs (see [DemoStruct](../DemoStruct/index.md)) and enums (see  [DemoEnum](../DemoEnum/index.md))Documentation can also contains list and tables. See [ListExample](../ListExample/index.md) for a showcase of the different supported list formats.

@@ -39,7 +39,21 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 
         public void Visit(TextElement element) => Result.Add(new MdTextSpan(element.Content));
 
-        public void Visit(SeeElement element) => Result.Add(m_SpanFactory.GetMdSpan(element.MemberId));
+        public void Visit(SeeElement element)
+        {
+            MdSpan span;
+            if(element.Text.IsEmpty)
+            {
+                span = m_SpanFactory.GetMdSpan(element.MemberId);
+            }
+            else
+            {
+                var linkText = TextBlockToMarkdownConverter.ConvertToSpan(element.Text, m_SpanFactory);
+                span = m_SpanFactory.CreateLink(element.MemberId, linkText);
+            }
+
+            Result.Add(span);
+        }
 
         public void Visit(TextBlock text)
         {

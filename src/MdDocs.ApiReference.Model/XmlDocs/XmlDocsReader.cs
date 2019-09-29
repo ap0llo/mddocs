@@ -254,7 +254,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
                                 if (elementNode.TryGetAttributeValue("cref", out var cref) &&
                                     TryParseMemberId(cref, out var memberId))
                                 {
-                                    element = new SeeElement(memberId);
+                                    element = new SeeElement(memberId, ReadTextBlock(elementNode));
                                 }
                                 break;
 

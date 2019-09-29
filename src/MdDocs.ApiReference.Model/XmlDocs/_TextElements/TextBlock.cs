@@ -9,6 +9,8 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
     /// </summary>
     public sealed class TextBlock : Element, IEquatable<TextBlock>
     {
+        public static readonly TextBlock Empty = new TextBlock(Array.Empty<Element>());
+
         /// <summary>
         /// Gets whether the text block contains any elements
         /// </summary>
@@ -43,7 +45,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
             unchecked
             {
                 var hash = Elements[0].GetHashCode() * 397;
-                for (int i = 1; i < Elements.Count; i++)
+                for (var i = 1; i < Elements.Count; i++)
                 {
                     hash ^= Elements[i].GetHashCode();
                 }

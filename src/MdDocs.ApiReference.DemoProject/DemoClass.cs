@@ -38,6 +38,11 @@ namespace DemoProject
     /// but cannot be linked to, e.g. a reference to <see cref="String"/>
     /// </para>
     /// <para>
+    /// For the <c>see</c> tag alternative text is supported as well. To specify the link text, insert content inside
+    /// the <c>see</c> element, for example <c><![CDATA[<see cref="IDemoInterface">Custom text</see>]]></c> which is rendered
+    /// like this: <see cref="IDemoInterface">Custom text</see>
+    /// </para>
+    /// <para>
     /// The last section is the "See Also" section with links provided in the xml documentation using the <c>seealso</c> tag
     /// </para>
     /// <para>
