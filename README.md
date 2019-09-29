@@ -68,6 +68,9 @@ directory will be deleted.
 For an example of what the output looks like, have a look at the
 [demo project](docs/demoprojects/api/DemoProject/index.md).
 
+For a list of supported documentation tags, see
+[Supported documentation tags](./docs/apireference/tags.md).
+
 #### Command Line Help
 
 To generate command line help for .NET console application implemented using
@@ -107,6 +110,15 @@ To automatically generate API documentation when the project is built,
 set the property `GenerateApiReferenceDocumentationOnBuild` to `true`
 (default: `false`).
 
+**Note:** If the output directory already exists, all files in the output
+directory will be deleted.
+
+For an example of what the output looks like, have a look at the
+[demo project](docs/demoprojects/api/DemoProject/index.md).
+
+For a list of supported documentation tags, see
+[Supported documentation tags](./docs/apireference/tags.md).
+
 #### Command Line Help
 
 To generate command line documentation for a project, run
@@ -122,6 +134,12 @@ The output path can be customized by setting the MSBuild property
 To automatically generate command line documentation when the project is built,
 set the property `GenerateCommandLineDocumentationOnBuild` to `true`
 (default: `false`).
+
+**Note:** If the output directory already exists, all files in the output
+directory will be deleted.
+
+For an example of what the output looks like, have a look at the
+[demo project](docs/demoprojects/commandline/index.md).
 
 ## Building from source
 
