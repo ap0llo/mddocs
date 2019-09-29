@@ -15,7 +15,7 @@ section.
 | Indexers    | Yes       |
 | Methods     | Yes       |
 
-For each member, only a single `remarks` tags can be added.
+For each member, only a single `remarks` tag can be added.
 
 ## Usage
 

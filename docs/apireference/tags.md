@@ -16,7 +16,7 @@ mddocs differentiates between two kinds of tags:
 
 - [summary](./tags/summary.md)
 - [remarks](./tags/remarks.md)
-- example
+- [example](./tags/example.md)
 - param
 - typeparam
 - [seealso](./tags/seealso.md)
