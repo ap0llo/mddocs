@@ -46,7 +46,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
 
 
         /// <summary>
-        /// Initializes a new instance of <see cref="SeeAlsoElement"/>referencing a code element (using the <c>cref</c> attribute).
+        /// Initializes a new instance of <see cref="SeeAlsoElement"/> referencing a code element (using the <c>cref</c> attribute).
         /// </summary>
         /// <param name="memberId">The id of the member being referenced.</param>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="memberId"/> is <c>null</c>.</exception>
@@ -68,19 +68,19 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
 
 
         /// <summary>
-        /// Initializes a new instance of <see cref="SeeAlsoElement"/> referencing a external resource (using the <c>href</c> attribute).
+        /// Initializes a new instance of <see cref="SeeAlsoElement"/> referencing an external resource (using the <c>href</c> attribute).
         /// </summary>
         /// <param name="target">The uri of the external resource.</param>
-        /// <exception cref="ArgumentNullException">Thrown when <paramref name="memberId"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="target"/> is <c>null</c>.</exception>
         public SeeAlsoElement(Uri target) : this(target, TextBlock.Empty)
         { }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="SeeAlsoElement"/> referencing a external resource (using the <c>href</c> attribute).
+        /// Initializes a new instance of <see cref="SeeAlsoElement"/> referencing an external resource (using the <c>href</c> attribute).
         /// </summary>
-        /// <param name="target">The url of the external resource.</param>
+        /// <param name="target">The uri of the external resource.</param>
         /// <param name="text">The content of the <c>seealso</c> element.</param>
-        /// <exception cref="ArgumentNullException">Thrown when <paramref name="memberId"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="target"/> is <c>null</c>.</exception>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="text"/> is <c>null</c>.</exception>
         public SeeAlsoElement(Uri target, TextBlock text)
         {

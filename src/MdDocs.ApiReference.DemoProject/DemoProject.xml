@@ -52,16 +52,22 @@
             Links to other members are supported (using the xml tag <c>see</c>), for example a link to 
             <see cref="T:DemoProject.IDemoInterface" />. References to types outside the assembly are written to the output
             but cannot be linked to, e.g. a reference to <see cref="T:System.String"/>
+            To specify the link text, insert content inside the <c>see</c> element,
+            for example <c><![CDATA[<see cref="IDemoInterface">Custom text</see>]]></c> which is rendered
+            like this: <see cref="T:DemoProject.IDemoInterface">Custom text</see>
             </para>
             <para>
-            For the <c>see</c> tag alternative text is supported as well. To specify the link text, insert content inside
-            the <c>see</c> element, for example <c><![CDATA[<see cref="IDemoInterface">Custom text</see>]]></c> which is rendered
-            like this: <see cref="T:DemoProject.IDemoInterface">Custom text</see>
+            Additionally, links to websites can be added using the <c>href</c> attribute, for example,
+            <c><![CDATA[<see href="http://example.com" />]]></c> is rendered as <see href="http://example.com" /> and
+             <c><![CDATA[<see href="http://example.com">Link text</see>]]></c> is rendered as <see href="http://example.com">Link text</see>.
+            Note: <c>href</c> is supported by mddocs but is not part of the official specification
+            and thus not supported by Visual Studio. When both <c>cref</c> and <c>href</c> attributes are specified,
+            the <c>href</c> attribute is ignored.
             </para>
             <para>
             The last section is the "See Also" section with links provided in the xml documentation using the <c>seealso</c> tag.
             Using the <c>cref</c> attribute, links to other members can be added. Additionally, links to websites can be added
-            using the <c>href</c> attribute. Note: <c>href</c> is supported by mddocs but not part of the official specification
+            using the <c>href</c> attribute. Note: <c>href</c> is supported by mddocs is but not part of the official specification
             and thus not supported by Visual Studio. When both <c>cref</c> and <c>href</c> attributes are specified,
             the <c>href</c> attribute is ignored.
             </para>

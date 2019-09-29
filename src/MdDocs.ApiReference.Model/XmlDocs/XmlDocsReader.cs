@@ -162,7 +162,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
                             // <seealso /> allows adding links to the documentation
                             //
                             //   - using  <seealso cref="..." /> a link to other assembly members
-                            //     can be inserted (supported by Visual Studio=
+                            //     can be inserted (supported by Visual Studio)
                             //   - using <seealso href="..." /> a link to an external resource,
                             //     typically a website can be specified (unofficial extension, not supported by VS)
                             //
@@ -276,10 +276,28 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
                                 break;
 
                             case "see":
-                                if (elementNode.TryGetAttributeValue("cref", out var cref) &&
-                                    TryParseMemberId(cref, out var memberId))
+                                // <see /> allows adding links to the documentation
+                                //
+                                //   - using  <see cref="..." /> a link to other assembly members
+                                //     can be inserted (supported by Visual Studio)
+                                //   - using <see href="..." /> a link to an external resource,
+                                //     typically a website can be specified (unofficial extension, not supported by VS)
+                                //
+                                //   If both cref and href attributes are present, href is ignored
+                                //
+                                if (elementNode.TryGetAttributeValue("cref", out var cref))
                                 {
-                                    element = new SeeElement(memberId, ReadTextBlock(elementNode));
+                                    if(TryParseMemberId(cref, out var memberId))
+                                    {
+                                        element = new SeeElement(memberId, ReadTextBlock(elementNode));
+                                    }
+                                }
+                                else if(elementNode.TryGetAttributeValue("href", out var href))
+                                {
+                                    if(Uri.TryCreate(href, UriKind.Absolute, out var target))
+                                    {
+                                        element = new SeeElement(target, ReadTextBlock(elementNode));
+                                    }
                                 }
                                 break;
 

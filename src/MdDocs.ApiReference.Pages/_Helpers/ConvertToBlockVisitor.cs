@@ -64,15 +64,39 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             if (element is null)
                 throw new ArgumentNullException(nameof(element));
 
+            // While Visual Studio only allows referring to other code elements using the <c>cref</c> attribute,
+            // linking to external resources (e.g. websites) is supported by as well using the <c>href</c> attribute.
+            //
+            // When a both attributes are present, the external link is ignored.
+
             MdSpan span;
-            if(element.Text.IsEmpty)
+
+            // <seealso /> references another assembly member
+            if(element.MemberId != null)
             {
-                span = m_SpanFactory.GetMdSpan(element.MemberId);
+                if (element.Text.IsEmpty)
+                {
+                    span = m_SpanFactory.GetMdSpan(element.MemberId);
+                }
+                else
+                {
+                    var linkText = TextBlockToMarkdownConverter.ConvertToSpan(element.Text, m_SpanFactory);
+                    span = m_SpanFactory.CreateLink(element.MemberId, linkText);
+                }
+
             }
+            // <seealso /> references an external resource
             else
             {
-                var linkText = TextBlockToMarkdownConverter.ConvertToSpan(element.Text, m_SpanFactory);
-                span = m_SpanFactory.CreateLink(element.MemberId, linkText);
+                if (element.Text.IsEmpty)
+                {
+                    span = new MdLinkSpan(element.Target.ToString(), element.Target);
+                }
+                else
+                {
+                    var linkText = TextBlockToMarkdownConverter.ConvertToSpan(element.Text, m_SpanFactory);
+                    span = new MdLinkSpan(linkText, element.Target);
+                }
             }
 
             AddToCurrentParagraph(span);

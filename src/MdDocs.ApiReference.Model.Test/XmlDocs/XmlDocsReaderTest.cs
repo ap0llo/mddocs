@@ -230,7 +230,6 @@ namespace Grynwald.MdDocs.ApiReference.Model.Test.XmlDocs
             );
         }
 
-
         private void ReadTextBlock_returns_the_expected_elements(string xml, params Element[] expectedElements)
         {
             // ARRANGE
@@ -242,6 +241,84 @@ namespace Grynwald.MdDocs.ApiReference.Model.Test.XmlDocs
 
             // ASSERT            
             Assert.Equal(expected, actual);
+        }
+
+
+        [Fact]
+        public void ReadTextBlock_correctly_reads_see_elements_01()
+        {
+            var xml = @"<see cref=""T:SomeNamespace.SomeClass"" />";
+            var expected = new SeeElement(MemberId.Parse("T:SomeNamespace.SomeClass"));
+
+            ReadTextBlock_correctly_reads_see_elements(xml, expected);
+        }
+
+        [Fact]
+        public void ReadTextBlock_correctly_reads_see_elements_02()
+        {
+            var xml = @"<see cref=""T:SomeNamespace.SomeClass"">Lorem ipsum dolor sit amet.</see>";
+            var expected = new SeeElement(
+                MemberId.Parse("T:SomeNamespace.SomeClass"),
+                new TextBlock(new[] { new TextElement("Lorem ipsum dolor sit amet.") } ));
+
+            ReadTextBlock_correctly_reads_see_elements(xml, expected);
+        }
+
+        [Fact]
+        public void ReadTextBlock_correctly_reads_see_elements_03()
+        {
+            var xml = @"<see href=""http://example.com"" />";
+            var expected = new SeeElement(new Uri("http://example.com"));
+
+            ReadTextBlock_correctly_reads_see_elements(xml, expected);
+        }
+
+        [Fact]
+        public void ReadTextBlock_correctly_reads_see_elements_04()
+        {
+            var xml = @"<see href=""http://example.com"">Lorem ipsum dolor sit amet.</see>";
+            var expected = new SeeElement(
+                new Uri("http://example.com"),
+                new TextBlock(new[] { new TextElement("Lorem ipsum dolor sit amet.") }));
+
+            ReadTextBlock_correctly_reads_see_elements(xml, expected);
+        }
+
+        [Fact]
+        public void ReadTextBlock_correctly_reads_see_elements_05()
+        {
+            var xml = @"<see href=""http://example.com"" cref=""T:SomeNamespace.SomeClass"" />";
+            var expected = new SeeElement(MemberId.Parse("T:SomeNamespace.SomeClass"));
+
+            ReadTextBlock_correctly_reads_see_elements(xml, expected);
+        }
+
+        [Fact]
+        public void ReadTextBlock_correctly_reads_see_elements_06()
+        {
+            var xml = @"<see href=""http://example.com"" cref=""T:SomeNamespace.SomeClass"">Lorem ipsum dolor sit amet.</see>";
+            var expected = new SeeElement(
+                MemberId.Parse("T:SomeNamespace.SomeClass"),
+                new TextBlock(new[] { new TextElement("Lorem ipsum dolor sit amet.") }));
+
+            ReadTextBlock_correctly_reads_see_elements(xml, expected);
+        }
+
+
+        private void ReadTextBlock_correctly_reads_see_elements(string xml, SeeElement expected)
+        {
+            // ARRANGE
+            xml = $@"<para>{xml}</para>";
+            var sut = new XmlDocsReader(NullLogger.Instance);
+
+            // ACT
+            var textBlock = sut.ReadTextBlock(XElement.Parse(xml));
+
+            // ASSERT
+
+            var element = Assert.Single(textBlock.Elements);
+            var seeElement = Assert.IsType<SeeElement>(element);
+            Assert.Equal(expected, seeElement);
         }
 
 

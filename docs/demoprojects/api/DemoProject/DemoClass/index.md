@@ -28,11 +28,11 @@ All of a types constructors will be listed in a table in the "Constructors" sect
 
 Similar tables are generated for a type's public fields, events, properties, indexers, methods and operator overloads
 
-Links to other members are supported (using the xml tag `see`), for example a link to [IDemoInterface](../IDemoInterface/index.md). References to types outside the assembly are written to the output but cannot be linked to, e.g. a reference to string
+Links to other members are supported (using the xml tag `see`), for example a link to [IDemoInterface](../IDemoInterface/index.md). References to types outside the assembly are written to the output but cannot be linked to, e.g. a reference to stringTo specify the link text, insert content inside the `see` element, for example `<see cref="IDemoInterface">Custom text</see>` which is rendered like this: [Custom text](../IDemoInterface/index.md)
 
-For the `see` tag alternative text is supported as well. To specify the link text, insert content inside the `see` element, for example `<see cref="IDemoInterface">Custom text</see>` which is rendered like this: [Custom text](../IDemoInterface/index.md)
+Additionally, links to websites can be added using the `href` attribute, for example,`<see href="http://example.com" />` is rendered as [http:\/\/example.com\/](http://example.com/) and`<see href="http://example.com">Link text</see>` is rendered as [Link text](http://example.com/). Note: `href` is supported by mddocs but is not part of the official specification and thus not supported by Visual Studio. When both `cref` and `href` attributes are specified, the `href` attribute is ignored.
 
-The last section is the "See Also" section with links provided in the xml documentation using the `seealso` tag. Using the `cref` attribute, links to other members can be added. Additionally, links to websites can be added using the `href` attribute. Note: `href` is supported by mddocs but not part of the official specification and thus not supported by Visual Studio. When both `cref` and `href` attributes are specified, the `href` attribute is ignored.
+The last section is the "See Also" section with links provided in the xml documentation using the `seealso` tag. Using the `cref` attribute, links to other members can be added. Additionally, links to websites can be added using the `href` attribute. Note: `href` is supported by mddocs is but not part of the official specification and thus not supported by Visual Studio. When both `cref` and `href` attributes are specified, the `href` attribute is ignored.
 
 Similar pages are also generated for interfaces (see [IDemoInterface](../IDemoInterface/index.md)), structs (see [DemoStruct](../DemoStruct/index.md)) and enums (see  [DemoEnum](../DemoEnum/index.md))Documentation can also contains list and tables. See [ListExample](../ListExample/index.md) for a showcase of the different supported list formats.
 
