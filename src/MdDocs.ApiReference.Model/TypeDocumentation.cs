@@ -246,10 +246,10 @@ namespace Grynwald.MdDocs.ApiReference.Model
             TypeParameters = LoadTypeParameters();
 
             var documentationComments = m_XmlDocsProvider.TryGetDocumentationComments(MemberId);
-            Summary = documentationComments?.Summary;
-            Remarks = documentationComments?.Remarks;
+            Summary = documentationComments?.Summary ?? TextBlock.Empty;
+            Remarks = documentationComments?.Remarks ?? TextBlock.Empty;
             SeeAlso = documentationComments?.SeeAlso?.AsReadOnlyList() ?? Array.Empty<SeeAlsoElement>();
-            Example = documentationComments?.Example;
+            Example = documentationComments?.Example ?? TextBlock.Empty;
 
             CSharpDefinition = CSharpDefinitionFormatter.GetDefinition(definition);
 

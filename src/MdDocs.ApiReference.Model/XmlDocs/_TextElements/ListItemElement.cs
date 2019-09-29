@@ -15,7 +15,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
         /// The term described by the list item.
         /// </summary>
         /// <value>
-        /// The content of the <c>term></c> element if it was specified or <c>null</c>
+        /// The content of the <c>term></c> element if it was specified or a empty text blco
         /// </value>
         public TextBlock Term { get; }
 
@@ -33,7 +33,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="description"/> is <c>null</c>.</exception>
         public ListItemElement(TextBlock term, TextBlock description)
         {
-            Term = term;
+            Term = term ?? TextBlock.Empty;
             Description = description ?? throw new ArgumentNullException(nameof(description));
         }
 
@@ -47,7 +47,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
             unchecked
             {
                 var hash = Description.GetHashCode() * 397;
-                hash ^= Term == null ? 0 : Term.GetHashCode();
+                hash ^= Term.GetHashCode();
                 return hash;
             }
         }
@@ -64,18 +64,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
             if (ReferenceEquals(this, other))
                 return true;
 
-            if (Term != null)
-            {
-                if (!Term.Equals(other.Term))
-                    return false;
-            }
-            else
-            {
-                if (other.Term != null)
-                    return false;
-            }
-
-            return Description.Equals(other.Description);
+            return Term.Equals(other.Term) && Description.Equals(other.Description);
         }
     }
 }

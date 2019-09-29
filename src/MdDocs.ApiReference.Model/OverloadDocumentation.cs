@@ -83,12 +83,12 @@ namespace Grynwald.MdDocs.ApiReference.Model
             MemberId = memberId ?? throw new ArgumentNullException(nameof(memberId));
 
             var documentationComments = xmlDocsProvider.TryGetDocumentationComments(memberId);
-            Summary = documentationComments?.Summary;
-            Remarks = documentationComments?.Remarks;
+            Summary = documentationComments?.Summary ?? TextBlock.Empty;
+            Remarks = documentationComments?.Remarks ?? TextBlock.Empty;
             SeeAlso = documentationComments?.SeeAlso?.AsReadOnlyList() ?? Array.Empty<SeeAlsoElement>();
-            Returns = documentationComments?.Returns;
+            Returns = documentationComments?.Returns ?? TextBlock.Empty;
             Exceptions = documentationComments?.Exceptions?.AsReadOnlyList() ?? Array.Empty<ExceptionElement>();
-            Example = documentationComments?.Example;
+            Example = documentationComments?.Example ?? TextBlock.Empty;
         }
 
 

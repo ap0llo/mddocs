@@ -24,10 +24,17 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
         /// Gets the content of the <c>seealso</c> element.
         /// </summary>
         /// <value>
-        /// The content of the <c>seealso</c> element or <c>null</c> if no text was specified.
+        /// The content of the <c>see</c> element or an empty text block if no text was specified.
         /// </value>
         public TextBlock Text { get; }
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="SeeAlsoElement"/>.
+        /// </summary>
+        /// <param name="memberId">The if of the member being referenced.</param>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="memberId"/> is <c>null</c>.</exception>
+        public SeeAlsoElement(MemberId memberId) : this(memberId, TextBlock.Empty)
+        { }
 
         /// <summary>
         /// Initializes a new instance of <see cref="SeeAlsoElement"/>.
@@ -35,10 +42,11 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
         /// <param name="memberId">The if of the member being referenced.</param>
         /// <param name="text">The content of the <c>seealso</c> element. Can be <c>null</c></param>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="memberId"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="text"/> is <c>null</c>.</exception>
         public SeeAlsoElement(MemberId memberId, TextBlock text)
         {
             MemberId = memberId ?? throw new ArgumentNullException(nameof(memberId));
-            Text = text;
+            Text = text ?? throw new ArgumentNullException(nameof(text));
         }
     }
 }

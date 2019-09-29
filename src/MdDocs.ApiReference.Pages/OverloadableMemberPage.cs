@@ -118,7 +118,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 
         protected virtual void AddDefinitionSubSection(MdContainerBlock block, TOverload overload, int headingLevel)
         {
-            if (overload.Summary != null)
+            if (!overload.Summary.IsEmpty)
             {
                 block.Add(ConvertToBlock(overload.Summary));
             }
@@ -188,7 +188,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             );
 
             // add returns documentation
-            if (overload.Returns != null)
+            if (!overload.Returns.IsEmpty)
             {
                 block.Add(ConvertToBlock(overload.Returns));
             }
@@ -212,7 +212,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 
         protected virtual void AddExampleSubSection(MdContainerBlock block, TOverload overload, int headingLevel)
         {
-            if (overload.Example == null)
+            if (overload.Example.IsEmpty)
                 return;
 
             block.Add(new MdHeading("Example", headingLevel));
@@ -221,7 +221,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 
         protected virtual void AddRemarksSubSection(MdContainerBlock block, TOverload overload, int headingLevel)
         {
-            if (overload.Remarks == null)
+            if (overload.Remarks.IsEmpty)
                 return;
 
             block.Add(new MdHeading("Remarks", headingLevel));

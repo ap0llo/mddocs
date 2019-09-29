@@ -19,7 +19,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             block.Add(new MdHeading("Field Value", 2));
             block.Add(GetMdParagraph(Model.Type));
 
-            if (Model.Value != null)
+            if (!Model.Value.IsEmpty)
             {
                 block.Add(ConvertToBlock(Model.Value));
             }

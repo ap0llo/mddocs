@@ -70,10 +70,10 @@ namespace Grynwald.MdDocs.ApiReference.Model
             definitionAttributes = definitionAttributes ?? throw new ArgumentNullException(nameof(definitionAttributes));
 
             var documentationComments = xmlDocsProvider.TryGetDocumentationComments(memberId);
-            Summary = documentationComments?.Summary;
-            Remarks = documentationComments?.Remarks;
+            Summary = documentationComments?.Summary ?? TextBlock.Empty;
+            Remarks = documentationComments?.Remarks ?? TextBlock.Empty;
             SeeAlso = documentationComments?.SeeAlso?.AsReadOnlyList() ?? Array.Empty<SeeAlsoElement>();
-            Example = documentationComments?.Example;
+            Example = documentationComments?.Example ?? TextBlock.Empty;
 
             IsObsolete = definitionAttributes.IsObsolete(out var obsoleteMessage);
             ObsoleteMessage = obsoleteMessage;

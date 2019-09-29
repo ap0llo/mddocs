@@ -101,11 +101,11 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             {
                 MdTableRow CreateRow(ListItemElement itemElement)
                 {
-                    var term = itemElement?.Term == null
+                    var term = itemElement.Term.IsEmpty
                         ? MdEmptySpan.Instance
                         : TextBlockToMarkdownConverter.ConvertToSpan(itemElement.Term, m_SpanFactory);
 
-                    var description = itemElement?.Description == null
+                    var description = itemElement.Description.IsEmpty
                         ? MdEmptySpan.Instance
                         : TextBlockToMarkdownConverter.ConvertToSpan(itemElement.Description, m_SpanFactory);
 
@@ -148,7 +148,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 
         public void Visit(ListItemElement element)
         {
-            if (element.Term != null)
+            if (!element.Term.IsEmpty)
             {
                 var term = TextBlockToMarkdownConverter.ConvertToSpan(element.Term, m_SpanFactory);
                 

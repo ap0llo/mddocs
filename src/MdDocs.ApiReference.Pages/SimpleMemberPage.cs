@@ -49,7 +49,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 
         protected virtual void AddDefinitionSection(MdContainerBlock block)
         {
-            if (Model.Summary != null)
+            if (!Model.Summary.IsEmpty)
             {
                 block.Add(ConvertToBlock(Model.Summary));
             }
@@ -61,7 +61,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 
         protected virtual void AddRemarksSection(MdContainerBlock block)
         {
-            if (Model.Remarks == null)
+            if (Model.Remarks.IsEmpty)
                 return;
 
             block.Add(new MdHeading(2, "Remarks"));
@@ -70,7 +70,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 
         protected virtual void AddExampleSection(MdContainerBlock block)
         {
-            if (Model.Example == null)
+            if (Model.Example.IsEmpty)
                 return;
 
             block.Add(new MdHeading(2, "Example"));

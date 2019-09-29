@@ -45,7 +45,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
             Type = definition.FieldType.ToTypeId();
             CSharpDefinition = CSharpDefinitionFormatter.GetDefinition(definition);
 
-            Value = xmlDocsProvider.TryGetDocumentationComments(MemberId)?.Value;
+            Value = xmlDocsProvider.TryGetDocumentationComments(MemberId)?.Value ?? TextBlock.Empty;
         }
     }
 }

@@ -42,6 +42,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
         /// <param name="memberId">The id of the member being referenced.</param>
         /// <param name="text">The element's content.</param>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="memberId"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="text"/> is <c>null</c>.</exception>
         public SeeElement(MemberId memberId, TextBlock text)
         {
             MemberId = memberId ?? throw new ArgumentNullException(nameof(memberId));
@@ -58,7 +59,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
             unchecked
             {
                 var hash = MemberId.GetHashCode() * 397;
-                hash ^= Text != null ? Text.GetHashCode() : 0;                
+                hash ^= Text.GetHashCode();                
                 return hash;
             }
         }
@@ -75,17 +76,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
             if (ReferenceEquals(this, other))
                 return true;
 
-            if (!MemberId.Equals(other.MemberId))
-                return false;
-
-            if(Text == null)
-            {
-                return other.Text == null;
-            }
-            else
-            {
-                return Text.Equals(other.Text);
-            }
+            return MemberId.Equals(other.MemberId) && Text.Equals(other.Text);
         }
     }
 }

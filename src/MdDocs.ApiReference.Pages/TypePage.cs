@@ -82,7 +82,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
                 new MdParagraph(new MdStrongEmphasisSpan("Assembly:"), " " + Model.AssemblyName)
             );
 
-            if (Model.Summary != null)
+            if (!Model.Summary.IsEmpty)
             {
                 block.Add(ConvertToBlock(Model.Summary));
             }
@@ -126,7 +126,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 
         private void AddRemarksSection(MdContainerBlock block)
         {
-            if (Model.Remarks != null)
+            if (!Model.Remarks.IsEmpty)
             {
                 block.Add(new MdHeading(2, "Remarks"));
                 block.Add(ConvertToBlock(Model.Remarks));
@@ -176,7 +176,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 
         private void AddExampleSection(MdContainerBlock block)
         {
-            if (Model.Example == null)
+            if (Model.Example.IsEmpty)
                 return;
 
             block.Add(new MdHeading("Example", 2));

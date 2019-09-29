@@ -135,10 +135,12 @@ namespace Grynwald.MdDocs.ApiReference.Model.Test.XmlDocs
 
             var listItem = list.Items.Single();
 
+            Assert.NotNull(listItem.Term);
+
             if (expectTerm)
-                Assert.NotNull(listItem.Term);
+                Assert.False(listItem.Term.IsEmpty);
             else
-                Assert.Null(listItem.Term);
+                Assert.True(listItem.Term.IsEmpty);
 
             if (expectDescription)
                 Assert.NotNull(listItem.Description);

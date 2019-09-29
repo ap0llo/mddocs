@@ -23,7 +23,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
         /// </para>       
         /// </remarks>
         /// <value>The specified summary or <c>null</c> if no summary was specified.</value>
-        public TextBlock Summary { get; set; }
+        public TextBlock Summary { get; set; } = TextBlock.Empty;
 
         /// <summary>
         /// Gets the remarks for the member.
@@ -36,13 +36,13 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
         /// </para>
         /// </remarks>
         /// <value>The specified remarks or <c>null</c> if no remarks were specified.</value>
-        public TextBlock Remarks { get; set; }
+        public TextBlock Remarks { get; set; } = TextBlock.Empty;
 
         /// <summary>
         /// Gets the example for the member.
         /// </summary>
         /// <value>The specified example or <c>null</c> if no example was specified.</value>
-        public TextBlock Example { get; set; }
+        public TextBlock Example { get; set; } = TextBlock.Empty;
 
         /// <summary>
         /// Gets the list of documented exceptions for a member.
@@ -90,12 +90,12 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
         /// </para>
         /// </remarks>
         /// <value>The specified text or <c>null</c> if no documentation was specified.</value>
-        public TextBlock Value { get; set; }
+        public TextBlock Value { get; set; } = TextBlock.Empty;
 
         /// <summary>
         /// Gets the documentation provided using the <c>returns</c> tag.
         /// </summary>
-        public TextBlock Returns { get; set; }
+        public TextBlock Returns { get; set; } = TextBlock.Empty;
 
         /// <summary>
         /// Gets the items specified for the member using the <c>seealso</c> tag.
