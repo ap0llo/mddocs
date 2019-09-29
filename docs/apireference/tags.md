@@ -27,8 +27,8 @@ mddocs differentiates between two kinds of tags:
 ## Inline tags
 
 - [para](./tags/para.md)
-- paramref
-- typeparamref
+- [paramref](./tags/paramref.md)
+- [typeparamref](./tags/typeparamref.md)
 - code
 - c
 - [see](./tags/see.md)
