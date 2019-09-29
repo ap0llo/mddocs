@@ -20,7 +20,7 @@ mddocs differentiates between two kinds of tags:
 - [param](./tags/param.md)
 - [typeparam](./tags/typeparam.md)
 - [seealso](./tags/seealso.md)
-- exception
+- [exception](./tags/exception.md)
 - value
 - returns
 
