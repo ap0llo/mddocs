@@ -15,7 +15,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
     /// <para>
     /// When a <c>cref</c> attribute is present, the <c>href</c> attribute is ignored.
     /// </para>
-    /// Supported for types, fields, event, properties and methods.
+    /// Supported for types, fields, event, properties, indexers and methods.
     /// </para>
     /// <para>
     /// For a list of tags in documentation comments, see

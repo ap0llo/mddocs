@@ -19,7 +19,7 @@ mddocs differentiates between two kinds of tags:
 - example
 - param
 - typeparam
-- seealso
+- [seealso](./tags/seealso.md)
 - exception
 - value
 - returns
@@ -31,7 +31,7 @@ mddocs differentiates between two kinds of tags:
 - typeparamref
 - code
 - c
-- see
+- [see](./tags/see.md)
 - list
 
 ## See Also
