@@ -504,9 +504,9 @@
             Example class to showcase the different supported list formats.
             </summary>
             <remarks>
-            To create a list, use the <c>list</c> tag. Using this tag, bullet lists, numbered lists and two-column tables can be created.
+            To create a list, use the <c>list</c> tag. Using this tag, bulleted lists, numbered lists and two-column tables can be created.
             <para>
-                To create a bullet list, use the following syntax:
+                To create a bulleted list, use the following syntax:
                 <code language="xml"><![CDATA[
                     <list type="bullet">
                         <item>
@@ -517,7 +517,7 @@
                         </item>
                     </list>
                 ]]></code>
-                which is rendered as this list
+                which is rendered as like this
                  <list type="bullet">
                         <item>
                             <description>Item 1</description>
@@ -550,7 +550,7 @@
                    </list>
             </para>
             <para>
-                Both numbered and bullet list also support items that specify both a <c>description</c> and a <c>term</c>:
+                Both numbered and bulleted lists also support items that specify both a <c>description</c> and a <c>term</c>:
                 <code language="xml"><![CDATA[
                     <list type="number">
                         <item>
@@ -580,7 +580,7 @@
                 By changing the type of the list to <c>table</c>, the list will be rendered as two-column table.
                 To specify the header row of the table , use <c>listheader</c>
                 <code language="xml"><![CDATA[
-                    <list type="number">
+                    <list type="table">
                         <listheader>
                             <term>Term</term>
                             <description>Description</description>

@@ -32,7 +32,7 @@ mddocs differentiates between two kinds of tags:
 - [code](./tags/code.md)
 - [c](./tags/c.md)
 - [see](./tags/see.md)
-- list
+- [list](./tags/list.md)
 
 ## See Also
 

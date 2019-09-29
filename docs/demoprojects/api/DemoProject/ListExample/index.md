@@ -14,9 +14,9 @@ public class ListExample
 
 ## Remarks
 
-To create a list, use the `list` tag. Using this tag, bullet lists, numbered lists and two\-column tables can be created.
+To create a list, use the `list` tag. Using this tag, bulleted lists, numbered lists and two\-column tables can be created.
 
-To create a bullet list, use the following syntax:
+To create a bulleted list, use the following syntax:
 
 ```xml
 <list type="bullet">
@@ -29,7 +29,7 @@ To create a bullet list, use the following syntax:
 </list>
 ```
 
-which is rendered as this list
+which is rendered as like this
 
 - Item 1
 - Item 2
@@ -52,7 +52,7 @@ a numbered list will be rendered:
 1. Item 1
 2. Item 2
 
-Both numbered and bullet list also support items that specify both a `description` and a `term`:
+Both numbered and bulleted lists also support items that specify both a `description` and a `term`:
 
 ```xml
 <list type="number">
@@ -79,7 +79,7 @@ In this case, the value of `term` will be rendered as bold prefix for the descri
 By changing the type of the list to `table`, the list will be rendered as two\-column table. To specify the header row of the table , use `listheader`
 
 ```xml
-<list type="number">
+<list type="table">
     <listheader>
         <term>Term</term>
         <description>Description</description>
