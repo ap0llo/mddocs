@@ -103,14 +103,36 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 
         protected MdSpan ConvertToSpan(SeeAlsoElement seeAlso)
         {
-            if (seeAlso.Text.IsEmpty)
+            // While Visual Studio only allows referring to other code elements using the <c>cref</c> attribute,
+            // linking to external resources (e.g. websites) is supported by as well using the <c>href</c> attribute.
+            //
+            // When a both attributes are present, the external link is ignored.
+
+            // <seealso /> references another assembly member
+            if (seeAlso.MemberId != null)
             {
-                return GetMdSpan(seeAlso.MemberId);
+                if (seeAlso.Text.IsEmpty)
+                {
+                    return GetMdSpan(seeAlso.MemberId);
+                }
+                else
+                {
+                    var text = ConvertToSpan(seeAlso.Text);
+                    return CreateLink(seeAlso.MemberId, text);
+                }
             }
+            // <seealso /> references an external resource
             else
             {
-                var text = ConvertToSpan(seeAlso.Text);
-                return CreateLink(seeAlso.MemberId, text);
+                if (seeAlso.Text.IsEmpty)
+                {
+                    return new MdLinkSpan(seeAlso.Target.ToString(), seeAlso.Target);
+                }
+                else
+                {
+                    var text = ConvertToSpan(seeAlso.Text);
+                    return new MdLinkSpan(text, seeAlso.Target);
+                }
             }
         }
 

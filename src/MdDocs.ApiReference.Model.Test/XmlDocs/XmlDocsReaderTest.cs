@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Xml.Linq;
 using Grynwald.MdDocs.ApiReference.Model.XmlDocs;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -229,6 +230,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.Test.XmlDocs
             );
         }
 
+
         private void ReadTextBlock_returns_the_expected_elements(string xml, params Element[] expectedElements)
         {
             // ARRANGE
@@ -242,5 +244,99 @@ namespace Grynwald.MdDocs.ApiReference.Model.Test.XmlDocs
             Assert.Equal(expected, actual);
         }
 
+
+        [Fact]
+        public void ReadMemberContent_correctly_parses_seealso_elements_01()
+        {
+            var xml = @"<seealso cref=""T:SomeNamespace.SomeClass"" />";
+
+            var expected = new SeeAlsoElement(MemberId.Parse("T:SomeNamespace.SomeClass"));
+
+            ReadMemberContent_correctly_parses_seealso_elements(xml, expected);
+        }
+
+        [Fact]
+        public void ReadMemberContent_correctly_parses_seealso_elements_02()
+        {
+            var xml = @"<seealso cref=""T:SomeNamespace.SomeClass"">Lorem ipsum dolor sit ament.</seealso>";
+
+            var expected = new SeeAlsoElement(
+                MemberId.Parse("T:SomeNamespace.SomeClass"),
+                new TextBlock(new[]
+                {
+                    new TextElement("Lorem ipsum dolor sit ament.")
+                }));
+
+            ReadMemberContent_correctly_parses_seealso_elements(xml, expected);
+        }
+
+
+        [Fact]
+        public void ReadMemberContent_correctly_parses_seealso_elements_03()
+        {
+            var xml = @"<seealso href=""http://example.com"" />";
+
+            var expected = new SeeAlsoElement(new Uri("http://example.com"));
+
+            ReadMemberContent_correctly_parses_seealso_elements(xml, expected);
+        }
+
+        [Fact]
+        public void ReadMemberContent_correctly_parses_seealso_elements_04()
+        {
+            var xml = @"<seealso href=""http://example.com"">Lorem ipsum dolor sit ament.</seealso>";
+
+            var expected = new SeeAlsoElement(
+                new Uri("http://example.com"),
+                new TextBlock(new[]
+                {
+                    new TextElement("Lorem ipsum dolor sit ament.")
+                }));
+
+            ReadMemberContent_correctly_parses_seealso_elements(xml, expected);
+        }
+
+
+        [Fact]
+        public void ReadMemberContent_correctly_parses_seealso_elements_05()
+        {
+            var xml = @"<seealso cref=""T:SomeNamespace.SomeClass"" href=""http://example.com"" />";
+
+            var expected = new SeeAlsoElement(MemberId.Parse("T:SomeNamespace.SomeClass"));
+
+            ReadMemberContent_correctly_parses_seealso_elements(xml, expected);
+        }
+
+        [Fact]
+        public void ReadMemberContent_correctly_parses_seealso_elements_06()
+        {
+            var xml = @"<seealso cref=""T:SomeNamespace.SomeClass"" href=""http://example.com"">Lorem ipsum dolor sit ament.</seealso>";
+
+            var expected = new SeeAlsoElement(
+                MemberId.Parse("T:SomeNamespace.SomeClass"),
+                new TextBlock(new[]
+                {
+                    new TextElement("Lorem ipsum dolor sit ament.")
+                }));
+
+            ReadMemberContent_correctly_parses_seealso_elements(xml, expected);
+        }
+
+
+        private void ReadMemberContent_correctly_parses_seealso_elements(string xml, SeeAlsoElement expected)
+        {
+            // ARRANGE
+            xml = $@"<container>{xml}</container>";
+
+            var sut = new XmlDocsReader(NullLogger.Instance);
+            var memberElement = new MemberElement(MemberId.Parse("T:DemoProject.DemoClass"));
+
+            // ACT
+            sut.ReadMemberContent(XElement.Parse(xml), memberElement);
+
+            // ASSERT
+            var actual = Assert.Single(memberElement.SeeAlso);
+            Assert.Equal(expected, actual);
+        }
     }
 }

@@ -43,7 +43,11 @@ namespace DemoProject
     /// like this: <see cref="IDemoInterface">Custom text</see>
     /// </para>
     /// <para>
-    /// The last section is the "See Also" section with links provided in the xml documentation using the <c>seealso</c> tag
+    /// The last section is the "See Also" section with links provided in the xml documentation using the <c>seealso</c> tag.
+    /// Using the <c>cref</c> attribute, links to other members can be added. Additionally, links to websites can be added
+    /// using the <c>href</c> attribute. Note: <c>href</c> is supported by mddocs but not part of the official specification
+    /// and thus not supported by Visual Studio. When both <c>cref</c> and <c>href</c> attributes are specified,
+    /// the <c>href</c> attribute is ignored.
     /// </para>
     /// <para>
     /// Similar pages are also generated for interfaces (see <see cref="IDemoInterface"/>), structs (see <see cref="DemoStruct"/>)
@@ -64,6 +68,8 @@ namespace DemoProject
     /// <seealso cref="DemoEnum" />
     /// <seealso cref="System.String">No link can be generated if the referenced type is defined in another assembly (<c>System.String</c> in this case)</seealso>
     /// <seealso cref="ListExample"/>
+    /// <seealso href="http://example.com"/>
+    /// <seealso href="http://example.com">External link with custom text</seealso>
     public class DemoClass
     {
         /// <summary>

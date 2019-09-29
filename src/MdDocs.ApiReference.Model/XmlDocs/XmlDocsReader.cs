@@ -118,7 +118,10 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
         /// <summary>
         /// Reads all supported documentation elements and adds it to the specified member.
         /// </summary>
-        private void ReadMemberContent(XElement xml, MemberElement member)
+        /// <remarks>
+        /// Member is <c>internal</c> for testing purposes only.
+        /// </remarks>
+        internal void ReadMemberContent(XElement xml, MemberElement member)
         {
             foreach (var element in xml.Elements())
             {
@@ -156,8 +159,30 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
 
                     case "seealso":
                         {
-                            if (TryParseMemberId(element.Attribute("cref")?.Value, out var memberId))
-                                member.SeeAlso.Add(new SeeAlsoElement(memberId, ReadTextBlock(element)));
+                            // <seealso /> allows adding links to the documentation
+                            //
+                            //   - using  <seealso cref="..." /> a link to other assembly members
+                            //     can be inserted (supported by Visual Studio=
+                            //   - using <seealso href="..." /> a link to an external resource,
+                            //     typically a website can be specified (unofficial extension, not supported by VS)
+                            //
+                            //   If both cref and href attributes are present, href is ignored
+                            //
+
+                            if (element.TryGetAttributeValue("cref", out var cref))
+                            {
+                                if (TryParseMemberId(cref, out var memberId))
+                                {
+                                    member.SeeAlso.Add(new SeeAlsoElement(memberId, ReadTextBlock(element)));
+                                }
+                            }
+                            else if(element.TryGetAttributeValue("href", out var href))
+                            {
+                                if(Uri.TryCreate(href, UriKind.Absolute, out var target))
+                                {
+                                    member.SeeAlso.Add(new SeeAlsoElement(target, ReadTextBlock(element)));
+                                }
+                            }
                         }
                         break;
 

@@ -32,7 +32,7 @@ Links to other members are supported (using the xml tag `see`), for example a li
 
 For the `see` tag alternative text is supported as well. To specify the link text, insert content inside the `see` element, for example `<see cref="IDemoInterface">Custom text</see>` which is rendered like this: [Custom text](../IDemoInterface/index.md)
 
-The last section is the "See Also" section with links provided in the xml documentation using the `seealso` tag
+The last section is the "See Also" section with links provided in the xml documentation using the `seealso` tag. Using the `cref` attribute, links to other members can be added. Additionally, links to websites can be added using the `href` attribute. Note: `href` is supported by mddocs but not part of the official specification and thus not supported by Visual Studio. When both `cref` and `href` attributes are specified, the `href` attribute is ignored.
 
 Similar pages are also generated for interfaces (see [IDemoInterface](../IDemoInterface/index.md)), structs (see [DemoStruct](../DemoStruct/index.md)) and enums (see  [DemoEnum](../DemoEnum/index.md))Documentation can also contains list and tables. See [ListExample](../ListExample/index.md) for a showcase of the different supported list formats.
 
@@ -106,6 +106,8 @@ var instance = new DemoClass();
 - [DemoEnum](../DemoEnum/index.md)
 - No link can be generated if the referenced type is defined in another assembly (`System.String` in this case)
 - [ListExample](../ListExample/index.md)
+- [http:\/\/example.com\/](http://example.com/)
+- [External link with custom text](http://example.com/)
 
 ___
 
