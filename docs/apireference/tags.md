@@ -14,8 +14,8 @@ mddocs differentiates between two kinds of tags:
 
 ## Top-level tags
 
-- summary
-- remarks
+- [summary](./tags/summary.md)
+- [remarks](./tags/remarks.md)
 - example
 - param
 - typeparam
