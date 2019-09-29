@@ -21,8 +21,8 @@ mddocs differentiates between two kinds of tags:
 - [typeparam](./tags/typeparam.md)
 - [seealso](./tags/seealso.md)
 - [exception](./tags/exception.md)
-- value
-- returns
+- [value](./tags/value.md)
+- [returns](./tags/returns.md)
 
 ## Inline tags
 
