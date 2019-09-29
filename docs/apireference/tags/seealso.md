@@ -1,6 +1,6 @@
 # `seealso` Tag
 
-The `<seealso/>` tag allows specifying a link to additional documentation
+The `seealso` tag allows specifying a link to additional documentation
 items. In the generated documentation, the links will be included in a
 "See also" section at the end of the page.
 

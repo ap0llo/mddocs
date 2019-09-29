@@ -1,6 +1,6 @@
 # `see` Tag
 
-The `<see />` tag allows adding an link to a text. In the generated
+The `see` tag allows adding an link to a text. In the generated
 documentation, the link will be rendered as inline link in the documentation
 text.
 
