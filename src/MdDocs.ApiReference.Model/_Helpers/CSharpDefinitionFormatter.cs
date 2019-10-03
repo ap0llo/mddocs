@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Grynwald.MdDocs.Common;
 using Grynwald.Utilities.Text;
 using Mono.Cecil;
 
@@ -479,7 +480,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
             definitionBuilder.AppendLine("{");
             definitionBuilder.AppendJoin(
                 ",\r\n",
-                GetEnumValues(type).Select(x => $"    {x.name} = {(isFlagsEnum ? "0x" + x.value.ToString("X") : x.value.ToString())}")
+                type.GetEnumValues().Select(x => $"    {x.name} = {(isFlagsEnum ? "0x" + x.value.ToString("X") : x.value.ToString())}")
             );
             definitionBuilder.AppendLine();
             definitionBuilder.AppendLine("}");
@@ -560,7 +561,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
                 // get the arguments value and all possible values for the enum
                 var intValue = Convert.ToInt64(attributeArgument.Value);
-                var values = GetEnumValues(typeDefinition);
+                var values = typeDefinition.GetEnumValues();
 
                 // get the friendly name for the enum
                 var enumName = GetDisplayName(typeDefinition);
@@ -604,13 +605,6 @@ namespace Grynwald.MdDocs.ApiReference.Model
         }
 
         private static bool IsFlagsEnum(TypeDefinition type) => type.CustomAttributes.Any(a => a.AttributeType.FullName == Constants.FlagsAttributeFullName);
-
-        private static (string name, long value)[] GetEnumValues(TypeDefinition definition)
-        {
-            return definition.Fields
-                .Where(f => f.IsPublic && !f.IsSpecialName)
-                .Select(f => (f.Name, Convert.ToInt64(f.Constant))).ToArray();
-        }
 
         private static string GetDisplayName(TypeReference typeReference) => typeReference.ToTypeId().DisplayName;
     }

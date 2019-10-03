@@ -57,5 +57,15 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Model
                 Assert.Contains(value, sut.AcceptedValues);
             }
         }
+
+
+        [Fact]
+        public void Default_of_enum_options_gets_the_enum_constant_as_string()
+        {
+            var sut = LoadDocumentation(nameof(Command3Options.Option6Property));
+
+            Assert.NotNull(sut.Default);
+            Assert.Equal(SomeEnum.SomeOtherValue.ToString(), sut.Default);
+        }
     }
 }

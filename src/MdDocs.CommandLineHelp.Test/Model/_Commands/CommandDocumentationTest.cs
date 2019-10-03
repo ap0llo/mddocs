@@ -22,7 +22,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Model
 
         [Theory]
         [InlineData(typeof(Command1Options), 2)]
-        [InlineData(typeof(Command3Options), 4)]
+        [InlineData(typeof(Command3Options), 5)]
         public void Options_returns_expected_number_of_items(Type optionsType, int numberOfOptions)
         {
             var sut = LoadDocumentation(optionsType);

@@ -46,7 +46,7 @@ Specifies the preset to use for generating Markdown files.
 | Position:        | *Named parameter*   |
 | Required:        | No                  |
 | Accepted values: | `Default`, `MkDocs` |
-| Default value:   | 0                   |
+| Default value:   | `Default`           |
 
 ___
 

@@ -26,5 +26,8 @@ namespace Grynwald.MdDocs.CommandLineHelp.TestData
 
         [Option("option5")]
         public SomeEnum Option5Property { get; set; }
+
+        [Option("option6", Default = SomeEnum.SomeOtherValue)]
+        public SomeEnum Option6Property { get; set; }
     }
 }

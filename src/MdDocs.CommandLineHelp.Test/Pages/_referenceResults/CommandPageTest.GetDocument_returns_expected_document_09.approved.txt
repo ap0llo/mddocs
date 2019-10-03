@@ -39,7 +39,7 @@ Description of parameter 1
 | Position:        | *Named parameter*         |
 | Required:        | No                        |
 | Accepted values: | `Value1`, `Another Value` |
-| Default value:   | some String               |
+| Default value:   | `some String`             |
 
 ___
 

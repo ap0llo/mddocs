@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Grynwald.MdDocs.Common;
 using Mono.Cecil;
 
 namespace Grynwald.MdDocs.CommandLineHelp.Model
@@ -87,7 +88,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
         {
             Required = attribute.GetPropertyValueOrDefault<bool>("Required");
             Hidden = attribute.GetPropertyValueOrDefault<bool>("Hidden");
-            Default = attribute.GetPropertyValueOrDefault<object>("Default");
+            Default = LoadDefaultValue(property, attribute);
             HelpText = attribute.GetPropertyValueOrDefault<string>("HelpText");
             MetaValue = attribute.GetPropertyValueOrDefault<string>("MetaValue");
             AcceptedValues = GetAcceptedValues(property);
@@ -105,6 +106,22 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
                 .Where(f => f.IsPublic && !f.IsSpecialName)
                 .Select(f => f.Name)
                 .ToArray();
+        }
+
+        private object LoadDefaultValue(PropertyDefinition property, CustomAttribute attribute)
+        {
+            var value = attribute.GetPropertyValueOrDefault<object>("Default");
+
+            var type = property.PropertyType.Resolve();
+            if (value != null && type.IsEnum)
+            {
+                var enumValues = type.GetEnumValues();
+                var longValue = Convert.ToInt64(value);
+
+                return enumValues.FirstOrDefault(x => x.value == longValue).name;
+            }
+
+            return value;
         }
     }
 }

@@ -72,7 +72,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
 
             if (m_Option.HasDefault)
             {
-                table.Add(new MdTableRow("Default value:", Convert.ToString(m_Option.Default)));
+                table.Add(new MdTableRow("Default value:", new MdCodeSpan(Convert.ToString(m_Option.Default))));
             }
             else
             {

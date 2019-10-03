@@ -65,7 +65,7 @@ Description of parameter 1
 | Name:          | parameter1        |
 | Position:      | *Named parameter* |
 | Required:      | No                |
-| Default value: | some String       |
+| Default value: | `some String`     |
 
 ___
 
@@ -79,7 +79,7 @@ Description of parameter 2
 | Position:      | *Named parameter* |
 | Required:      | No                |
 | Value:         | URI               |
-| Default value: | 23                |
+| Default value: | `23`              |
 
 ___
 
