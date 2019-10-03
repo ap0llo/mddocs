@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using Grynwald.MarkdownGenerator;
 using Grynwald.MdDocs.ApiReference.Model;
 using Grynwald.Utilities.Collections;

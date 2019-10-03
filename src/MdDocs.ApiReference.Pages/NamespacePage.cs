@@ -18,11 +18,13 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             m_Logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
         }
 
+        public sealed override void Save(string path) => GetDocument().Save(path);
 
-        public override void Save(string path)
+        public sealed override void Save(string path, MdSerializationOptions markdownOptions) => GetDocument().Save(path, markdownOptions);
+
+
+        private MdDocument GetDocument()
         {
-            m_Logger.LogInformation($"Saving page '{path}'");
-
             var document = new MdDocument(
                new MdHeading($"{Model.Name} Namespace", 1)
             );
@@ -44,9 +46,8 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 
             document.Root.Add(new PageFooter());
 
-            document.Save(path);
+            return document;
         }
-
 
         private void AddNamespacesList(MdContainerBlock block)
         {

@@ -15,7 +15,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
     ///     <item>A table of sub-commands linking to the documentation for the command (see <see cref="CommandPage"/>).</item>
     /// </list>
     /// </summary>
-    public class MultiCommandApplicationPage : IDocument
+    public class MultiCommandApplicationPage : IMarkdownDocument
     {
         private readonly MultiCommandApplicationDocumentation m_Model;
         private readonly ICommandLinePageOptions m_Options;
@@ -37,6 +37,8 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
 
 
         public void Save(string path) => GetDocument().Save(path);
+
+        public void Save(string path, MdSerializationOptions markdownOptions) => GetDocument().Save(path, markdownOptions);
 
 
         internal MdDocument GetDocument()

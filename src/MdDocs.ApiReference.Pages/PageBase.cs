@@ -24,6 +24,8 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 
         public abstract void Save(string path);
 
+        public abstract void Save(string path, MdSerializationOptions options);
+
 
         public MdParagraph GetMdParagraph(MemberId id) => new MdParagraph(GetMdSpan(id, false));
 

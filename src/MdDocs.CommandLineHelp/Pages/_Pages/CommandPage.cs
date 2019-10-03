@@ -15,7 +15,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
     ///     <item>Information about the command's parameters (see <see cref="CommandParametersSection"/>).</item>
     /// </list>
     /// </summary>
-    public class CommandPage : IDocument
+    public class CommandPage : IMarkdownDocument
     {
         private readonly DocumentSet<IDocument> m_DocumentSet;
         private readonly ICommandLineHelpPathProvider m_PathProvider;
@@ -32,6 +32,8 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
 
 
         public void Save(string path) => GetDocument().Save(path);
+
+        public void Save(string path, MdSerializationOptions markdownOptions) => GetDocument().Save(path, markdownOptions);
 
 
         internal MdDocument GetDocument()

@@ -26,39 +26,9 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 
 
 
-        public override void Save(string path)
-        {
-            m_Logger.LogInformation($"Saving page '{path}'");
+        public sealed override void Save(string path) => GetDocument().Save(path);
 
-            var document = new MdDocument(
-                GetPageHeading()
-            );
-
-            AddDeclaringTypeSection(document.Root);
-
-            //TODO: List method Attributes
-
-            if (Model.Overloads.Count == 1)
-            {
-                AddOverloadSection(document.Root, Model.Overloads.Single(), 1);
-            }
-            else
-            {
-                var orderedOverloads = Model.Overloads.OrderBy(x => x.Signature).ToArray();
-
-                AddOverloadsTableSection(document.Root, orderedOverloads, headingLevel: 2);
-
-                foreach (var overload in orderedOverloads)
-                {
-                    document.Root.Add(m_Headings.Value[overload.MemberId]);
-                    AddOverloadSection(document.Root, overload, 2);
-                }
-            }
-
-            document.Root.Add(new PageFooter());
-            document.Save(path);
-        }
-
+        public sealed override void Save(string path, MdSerializationOptions markdownOptions) => GetDocument().Save(path, markdownOptions);
 
         public override bool TryGetAnchor(MemberId id, out string anchor)
         {
@@ -238,6 +208,37 @@ namespace Grynwald.MdDocs.ApiReference.Pages
                 new MdBulletList(
                     overload.SeeAlso.Select(seeAlso => new MdListItem(ConvertToSpan(seeAlso)))
             ));
+        }
+
+        protected virtual MdDocument GetDocument()
+        {
+            var document = new MdDocument(
+                GetPageHeading()
+            );
+
+            AddDeclaringTypeSection(document.Root);
+
+            //TODO: List method Attributes
+
+            if (Model.Overloads.Count == 1)
+            {
+                AddOverloadSection(document.Root, Model.Overloads.Single(), 1);
+            }
+            else
+            {
+                var orderedOverloads = Model.Overloads.OrderBy(x => x.Signature).ToArray();
+
+                AddOverloadsTableSection(document.Root, orderedOverloads, headingLevel: 2);
+
+                foreach (var overload in orderedOverloads)
+                {
+                    document.Root.Add(m_Headings.Value[overload.MemberId]);
+                    AddOverloadSection(document.Root, overload, 2);
+                }
+            }
+
+            document.Root.Add(new PageFooter());
+            return document;
         }
 
 

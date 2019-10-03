@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
 using Grynwald.MarkdownGenerator;
 using Grynwald.MdDocs.ApiReference.Model;
@@ -19,10 +18,13 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             m_Logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public override void Save(string path)
-        {
-            m_Logger.LogInformation($"Saving page '{path}'");
+        public sealed override void Save(string path) => GetDocument().Save(path);
 
+        public sealed override void Save(string path, MdSerializationOptions markdownOptions) => GetDocument().Save(path, markdownOptions);
+
+
+        private MdDocument GetDocument()
+        {
             var document = new MdDocument(
                 GetHeading()
             );
@@ -42,10 +44,9 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             AddSeeAlsoSection(document.Root);
 
             document.Root.Add(new PageFooter());
-            
-            document.Save(path);
-        }
 
+            return document;
+        }
 
         protected virtual void AddDefinitionSection(MdContainerBlock block)
         {

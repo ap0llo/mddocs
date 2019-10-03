@@ -1,4 +1,5 @@
 ﻿using Grynwald.MarkdownGenerator;
+using Grynwald.MdDocs.Common.Pages;
 
 namespace Grynwald.MdDocs.Common
 {
@@ -11,6 +12,10 @@ namespace Grynwald.MdDocs.Common
                 if (document is MdDocument mdDocument)
                 {
                     mdDocument.Save(path, markdownOptions);
+                }
+                else if (document is IMarkdownDocument markdownDocument)
+                {
+                    markdownDocument.Save(path, markdownOptions);
                 }
                 else
                 {
