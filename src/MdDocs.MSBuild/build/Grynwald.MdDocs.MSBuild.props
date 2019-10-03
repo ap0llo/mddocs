@@ -18,6 +18,7 @@
   <PropertyGroup>
     <GenerateApiReferenceDocumentationOnBuild Condition="'$(GenerateApiReferenceDocumentationOnBuild)' == ''">false</GenerateApiReferenceDocumentationOnBuild>
     <GenerateCommandLineDocumentationOnBuild Condition="'$(GenerateCommandLineDocumentationOnBuild)' == ''">false</GenerateCommandLineDocumentationOnBuild>
+    <MdDocsMarkdownPreset Condition="'$(MdDocsMarkdownPreset)' == ''">Default</MdDocsMarkdownPreset>
   </PropertyGroup>
   
 </Project>

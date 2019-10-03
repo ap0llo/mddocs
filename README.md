@@ -102,13 +102,14 @@ To generate API reference for a project, run
 dotnet msbuild <PROJECT> /t:GenerateApiReferenceDocumentation
 ```
 
-By default, the API reference will be saved to `$(OutputPath)docs/api/`.
-The output path can be customized by setting the MSBuild property
-`ApiReferenceDocumentationOutputPath`.
+The behaviour of the target can be customized by setting the following
+MSBuild properties:
 
-To automatically generate API documentation when the project is built,
-set the property `GenerateApiReferenceDocumentationOnBuild` to `true`
-(default: `false`).
+| Property Name                              | Default Value            | Description                                                                               |
+|--------------------------------------------|--------------------------|-------------------------------------------------------------------------------------------|
+| `ApiReferenceDocumentationOutputPath`      | `$(OutputPath)docs/api/` | The directory to save the generated documetation to.                                      |
+| `GenerateApiReferenceDocumentationOnBuild` | `false`                  | Set the to `true` to automatically generate API documentation when the project is built.  |
+| `MdDocsMarkdownPreset`                     | `Default`                | Specify the "preset" to use for the generated markdown. Valid values: `Default`, `MkDocs` |
 
 **Note:** If the output directory already exists, all files in the output
 directory will be deleted.
@@ -127,13 +128,14 @@ To generate command line documentation for a project, run
 dotnet msbuild <PROJECT> /t:GenerateCommandLineDocumentation
 ```
 
-By default, documentation will be saved to `>$(OutputPath)docs/commandline/`.
-The output path can be customized by setting the MSBuild property
-`CommandLineDocumentationOutputPath`.
+The behaviour of the target can be customized by setting the following
+MSBuild properties:
 
-To automatically generate command line documentation when the project is built,
-set the property `GenerateCommandLineDocumentationOnBuild` to `true`
-(default: `false`).
+| Property Name                             | Default Value                    | Description                                                                                   |
+|-------------------------------------------|----------------------------------|-----------------------------------------------------------------------------------------------|
+| `CommandLineDocumentationOutputPath`      | `$(OutputPath)docs/commandline/` | The directory to save the generated documetation to.                                          |
+| `GenerateCommandLineDocumentationOnBuild` | `false`                          | Set to `true` to automatically generate command line documentation when the project is built. |
+| `MdDocsMarkdownPreset`                    | `Default`                        | Specify the "preset" to use for the generated markdown. Valid values: `Default`, `MkDocs`     |
 
 **Note:** If the output directory already exists, all files in the output
 directory will be deleted.

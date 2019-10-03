@@ -1,5 +1,8 @@
-﻿using Microsoft.Build.Framework;
+﻿using System;
+using Grynwald.MarkdownGenerator;
+using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
+using Microsoft.Extensions.Logging;
 using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Grynwald.MdDocs.MSBuild
@@ -15,6 +18,7 @@ namespace Grynwald.MdDocs.MSBuild
         [Required]
         public ITaskItem OutputDirectory { get; set; }
 
+        public string MarkdownPreset { get; set; }
 
         protected ILogger Logger
         {
@@ -41,5 +45,25 @@ namespace Grynwald.MdDocs.MSBuild
             return Log.HasLoggedErrors == false;
         }
 
+
+        protected MdSerializationOptions GetSerializationOptions()
+        {
+            if (String.IsNullOrEmpty(MarkdownPreset))
+            {
+                return MdSerializationOptions.Presets.Default;
+            }
+
+            try
+            {
+                var preset = MdSerializationOptions.Presets.Get(MarkdownPreset);
+                Logger.LogInformation($"Using preset '{MarkdownPreset}' for generating markdown");
+                return preset;
+            }
+            catch (PresetNotFoundException)
+            {
+                Logger.LogInformation($"Preset '{MarkdownPreset}' not found. Using default serialization options");
+                return MdSerializationOptions.Presets.Default;
+            }
+        }
     }
 }

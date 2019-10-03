@@ -15,7 +15,8 @@
     
     <Message Text="Saving API Reference documentation to '$(ApiReferenceDocumentationOutputPath)'" />
     <GenerateApiReferenceDocumentation Assembly="@(TargetPathWithTargetPlatformMoniker->'%(FullPath)')" 
-                                       OutputDirectory="$(ApiReferenceDocumentationOutputPath)" />
+                                       OutputDirectory="$(ApiReferenceDocumentationOutputPath)"
+                                       MarkdownPreset="$(MdDocsMarkdownPreset)" />
   </Target>
 
   <!--
@@ -47,7 +48,8 @@
 
     <Message Text="Saving command line documentation to '$(CommandLineDocumentationOutputPath)'" />
     <GenerateCommandLineDocumentation Assembly="@(TargetPathWithTargetPlatformMoniker->'%(FullPath)')"
-                                      OutputDirectory="$(CommandLineDocumentationOutputPath)" />
+                                      OutputDirectory="$(CommandLineDocumentationOutputPath)"
+                                      MarkdownPreset="$(MdDocsMarkdownPreset)" />
   </Target>
 
 

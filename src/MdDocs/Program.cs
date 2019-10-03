@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using CommandLine;
+using Grynwald.MarkdownGenerator;
 using Grynwald.MdDocs.ApiReference.Model;
 using Grynwald.MdDocs.ApiReference.Pages;
 using Grynwald.MdDocs.CommandLineHelp.Model;
 using Grynwald.MdDocs.CommandLineHelp.Pages;
+using Grynwald.MdDocs.Common;
 using Microsoft.Extensions.Logging;
 
 namespace Grynwald.MdDocs
@@ -29,7 +31,7 @@ namespace Grynwald.MdDocs
                     (ApiReferenceOptions opts) => OnApiReferenceCommand(GetLogger(opts), opts),
                     (CommandLineHelpOptions opts) => OnCommandLineHelpCommand(GetLogger(opts), opts),
                     (IEnumerable<Error> errors) => OnError(errors)); ;
-        }      
+        }
 
         private static int OnError(IEnumerable<Error> errors)
         {
@@ -49,27 +51,56 @@ namespace Grynwald.MdDocs
 
         private static int OnApiReferenceCommand(ILogger logger, ApiReferenceOptions opts)
         {
+            var serializationOptions = GetSerializationOptions(logger, opts);
+
             using (var assemblyDocumentation = AssemblyDocumentation.FromAssemblyFile(opts.AssemblyPath, logger))
             {
-                var pageFactory = new PageFactory(new DefaultApiReferencePathProvider(),assemblyDocumentation, logger);
-                pageFactory.GetPages().Save(opts.OutputDirectory, cleanOutputDirectory: true);
+                var pageFactory = new PageFactory(new DefaultApiReferencePathProvider(), assemblyDocumentation, logger);
+                pageFactory.GetPages().Save(
+                    opts.OutputDirectory,
+                    cleanOutputDirectory: true,
+                    markdownOptions: serializationOptions);
             }
 
             return 0;
         }
 
-
         private static int OnCommandLineHelpCommand(ILogger logger, CommandLineHelpOptions opts)
         {
+            var serializationOptions = GetSerializationOptions(logger, opts);
+
             using (var model = ApplicationDocumentation.FromAssemblyFile(opts.AssemblyPath, logger))
             {
                 var pageFactory = new CommandLinePageFactory(model, opts, new DefaultCommandLineHelpPathProvider(), logger);
-                pageFactory.GetPages().Save(opts.OutputDirectory, cleanOutputDirectory: true);
+                pageFactory.GetPages().Save(
+                    opts.OutputDirectory,
+                    cleanOutputDirectory: true,
+                    markdownOptions: serializationOptions);
+
             }
 
             return 0;
         }
 
         private static ILogger GetLogger(OptionsBase opts) => new ColoredConsoleLogger(opts.Verbose ? LogLevel.Debug : LogLevel.Information);
+
+        private static MdSerializationOptions GetSerializationOptions(ILogger logger, OptionsBase opts)
+        {
+            var presetName = opts.MarkdownPreset.ToString();
+
+            try
+            {
+                var preset = MdSerializationOptions.Presets.Get(presetName);
+                logger.LogInformation($"Using preset '{presetName}' for generating markdown");
+                return preset;
+            }
+            catch (PresetNotFoundException)
+            {
+                logger.LogInformation($"Preset '{presetName}' not found. Using default serialization options");
+                return MdSerializationOptions.Presets.Default;
+            }
+        }
+
+
     }
 }

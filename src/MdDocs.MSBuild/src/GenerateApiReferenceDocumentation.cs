@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using Grynwald.MdDocs.ApiReference.Model;
 using Grynwald.MdDocs.ApiReference.Pages;
+using Grynwald.MdDocs.Common;
 using Microsoft.Extensions.Logging;
 
 namespace Grynwald.MdDocs.MSBuild
@@ -17,11 +18,13 @@ namespace Grynwald.MdDocs.MSBuild
                 Logger.LogInformation($"Cleaning output directory '{OutputDirectoryPath}'");
                 Directory.Delete(OutputDirectoryPath, true);
             }
-            
+
+            var serializationOptions = GetSerializationOptions();
+
             using (var assemblyDocumentation = AssemblyDocumentation.FromAssemblyFile(AssemblyPath, Logger))
             {
                 var pageFactory = new PageFactory(new DefaultApiReferencePathProvider(), assemblyDocumentation, Logger);
-                pageFactory.GetPages().Save(OutputDirectoryPath, cleanOutputDirectory: true);
+                pageFactory.GetPages().Save(OutputDirectoryPath, cleanOutputDirectory: true, markdownOptions: serializationOptions);
             }
 
             return Log.HasLoggedErrors == false;
