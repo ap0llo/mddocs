@@ -6,8 +6,8 @@
       Generates API reference docs for the project
   -->
   <Target Name="GenerateApiReferenceDocumentation"
-          DependsOnTargets="_MdDocs-CheckForInnerBuild;GetTargetPath"
-          Condition=" '$(IsInnerBuild)' == 'true'">  <!-- Only run in the "inner" build -->
+          DependsOnTargets="GetTargetPath"
+          Condition=" '$(TargetFramework)' != ''">  <!-- Only run in the "inner" build -->
 
     <PropertyGroup>
       <ApiReferenceDocumentationOutputPath Condition=" '$(ApiReferenceDocumentationOutputPath)' == '' ">$(OutputPath)docs/api/</ApiReferenceDocumentationOutputPath>
@@ -39,8 +39,8 @@
       Generates command line docs for the project
   -->
   <Target Name="GenerateCommandLineDocumentation"
-          DependsOnTargets="_MdDocs-CheckForInnerBuild;GetTargetPath"
-          Condition=" '$(IsInnerBuild)' == 'true'">  <!-- Only run in the "inner" build -->
+          DependsOnTargets="GetTargetPath"
+          Condition=" '$(TargetFramework)' != ''">  <!-- Only run in the "inner" build -->
 
     <PropertyGroup>
       <CommandLineDocumentationOutputPath Condition=" '$(CommandLineDocumentationOutputPath)' == '' ">$(OutputPath)docs/commandline/</CommandLineDocumentationOutputPath>
@@ -64,21 +64,6 @@
           Condition=" '$(GenerateCommandLineDocumentationOnBuild)' == 'true' "
           AfterTargets="Build"
           DependsOnTargets="GenerateCommandLineDocumentation">
-  </Target>
-
-  
-  <!--
-    ============================================================================================================
-      Target "_MdDocs-CheckForInnerBuild"
-    ============================================================================================================    
-      Determines if were running in the "inner" build (multi-targeted csprojs run multiple "Build" 
-      targets (one "main" build and one build for every target framework)
-  -->
-  <Target Name="_MdDocs-CheckForInnerBuild">
-    <PropertyGroup>
-      <IsInnerBuild>true</IsInnerBuild>
-      <IsInnerBuild Condition="'$(TargetFrameworks)' != '' AND '$(TargetFramework)' == ''">false</IsInnerBuild>
-    </PropertyGroup>
   </Target>
   
 </Project>
