@@ -1,4 +1,4 @@
-# `apireference` Command
+﻿# `apireference` Command
 
 **Application:** [mddocs](../index.md)
 

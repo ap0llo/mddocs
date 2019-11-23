@@ -1,4 +1,4 @@
-# DemoClass\<T1, T2\> Class
+﻿# DemoClass\<T1, T2\> Class
 
 **Namespace:** [DemoProject](../index.md)
 

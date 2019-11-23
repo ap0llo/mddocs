@@ -1,4 +1,4 @@
-# DemoPropertyFlags Enum
+﻿# DemoPropertyFlags Enum
 
 **Namespace:** [DemoProject](../index.md)
 

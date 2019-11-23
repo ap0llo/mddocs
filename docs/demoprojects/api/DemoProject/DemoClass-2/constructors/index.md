@@ -1,4 +1,4 @@
-# DemoClass\<T1, T2\> Constructors
+﻿# DemoClass\<T1, T2\> Constructors
 
 **Declaring Type:** [DemoClass\<T1, T2\>](../index.md)
 

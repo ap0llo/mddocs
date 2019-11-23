@@ -1,4 +1,4 @@
-# `commandlinehelp` Command
+﻿# `commandlinehelp` Command
 
 **Application:** [mddocs](../index.md)
 

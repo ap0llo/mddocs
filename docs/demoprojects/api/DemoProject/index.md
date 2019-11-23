@@ -1,4 +1,4 @@
-# DemoProject Namespace
+﻿# DemoProject Namespace
 
 ## Classes
 

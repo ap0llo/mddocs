@@ -1,4 +1,4 @@
-# DemoClass.Property1 Property
+﻿# DemoClass.Property1 Property
 
 **Declaring Type:** [DemoClass](../index.md)
 

@@ -1,4 +1,4 @@
-# ObsoleteDemoClass Constructors
+﻿# ObsoleteDemoClass Constructors
 
 **Declaring Type:** [ObsoleteDemoClass](../index.md)
 

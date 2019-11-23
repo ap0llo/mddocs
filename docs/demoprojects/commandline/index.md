@@ -1,4 +1,4 @@
-# DemoProject Command Line Reference
+﻿# DemoProject Command Line Reference
 
 **Version:** 1.2.3
 

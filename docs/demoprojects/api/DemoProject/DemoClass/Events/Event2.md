@@ -1,4 +1,4 @@
-# DemoClass.Event2 Event
+﻿# DemoClass.Event2 Event
 
 **Declaring Type:** [DemoClass](../index.md)
 

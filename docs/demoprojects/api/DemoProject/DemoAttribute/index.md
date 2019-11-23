@@ -1,4 +1,4 @@
-# DemoAttribute Class
+﻿# DemoAttribute Class
 
 **Namespace:** [DemoProject](../index.md)
 

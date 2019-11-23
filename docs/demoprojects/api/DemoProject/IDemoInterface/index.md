@@ -1,4 +1,4 @@
-# IDemoInterface Interface
+﻿# IDemoInterface Interface
 
 **Namespace:** [DemoProject](../index.md)
 

@@ -1,4 +1,4 @@
-# mddocs Command Line Reference
+﻿# mddocs Command Line Reference
 
 ## Commands
 

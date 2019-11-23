@@ -1,4 +1,4 @@
-# DemoPropertyAnnotationAttribute Constructors
+﻿# DemoPropertyAnnotationAttribute Constructors
 
 **Declaring Type:** [DemoPropertyAnnotationAttribute](../index.md)
 

@@ -1,4 +1,4 @@
-# DemoClass.Method2 Method
+﻿# DemoClass.Method2 Method
 
 **Declaring Type:** [DemoClass](../index.md)
 

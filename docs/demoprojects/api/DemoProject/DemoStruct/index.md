@@ -1,4 +1,4 @@
-# DemoStruct Struct
+﻿# DemoStruct Struct
 
 **Namespace:** [DemoProject](../index.md)
 

@@ -1,4 +1,4 @@
-# DemoClass.Property3 Property
+﻿# DemoClass.Property3 Property
 
 ⚠️ **Warning:** This API is obsolete.
 

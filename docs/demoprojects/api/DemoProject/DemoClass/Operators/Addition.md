@@ -1,4 +1,4 @@
-# DemoClass.Addition Operator
+﻿# DemoClass.Addition Operator
 
 **Declaring Type:** [DemoClass](../index.md)
 

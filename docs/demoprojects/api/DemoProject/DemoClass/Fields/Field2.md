@@ -1,4 +1,4 @@
-# DemoClass.Field2 Field
+﻿# DemoClass.Field2 Field
 
 **Declaring Type:** [DemoClass](../index.md)
 

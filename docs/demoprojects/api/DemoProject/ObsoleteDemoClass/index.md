@@ -1,4 +1,4 @@
-# ObsoleteDemoClass Class
+﻿# ObsoleteDemoClass Class
 
 ⚠️ **Warning:** This class is obsolete. Use DemoClass instead.
 

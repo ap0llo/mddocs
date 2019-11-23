@@ -1,4 +1,4 @@
-# DemoClass.Item Indexer
+﻿# DemoClass.Item Indexer
 
 **Declaring Type:** [DemoClass](../index.md)
 

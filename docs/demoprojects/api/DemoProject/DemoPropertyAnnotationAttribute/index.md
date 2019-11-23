@@ -1,4 +1,4 @@
-# DemoPropertyAnnotationAttribute Class
+﻿# DemoPropertyAnnotationAttribute Class
 
 **Namespace:** [DemoProject](../index.md)
 

@@ -1,4 +1,4 @@
-# `Command1` Command
+﻿# `Command1` Command
 
 **Application:** [DemoProject](../index.md)  
 **Version:** 1.2.3

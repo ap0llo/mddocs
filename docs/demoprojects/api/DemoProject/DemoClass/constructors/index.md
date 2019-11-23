@@ -1,4 +1,4 @@
-# DemoClass Constructors
+﻿# DemoClass Constructors
 
 **Declaring Type:** [DemoClass](../index.md)
 

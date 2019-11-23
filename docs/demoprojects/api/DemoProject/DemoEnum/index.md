@@ -1,4 +1,4 @@
-# DemoEnum Enum
+﻿# DemoEnum Enum
 
 **Namespace:** [DemoProject](../index.md)
 
