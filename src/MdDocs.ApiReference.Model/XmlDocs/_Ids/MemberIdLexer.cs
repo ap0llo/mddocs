@@ -131,6 +131,11 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
                         m_Position++;
                         break;
 
+                    case '@':
+                        yield return new MemberIdToken(MemberIdTokenKind.At, "@");
+                        m_Position++;
+                        break;
+
                     default:
                         yield return ReadNameToken();
                         break;
@@ -157,7 +162,8 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
                     Current == '[' ||
                     Current == ']' ||
                     Current == ',' ||
-                    Current == '~')
+                    Current == '~' ||
+                    Current == '@')
                 {
                     break;
                 }

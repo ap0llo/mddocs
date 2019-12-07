@@ -312,6 +312,21 @@ namespace DemoProject
         public void Method4() => throw new NotImplementedException();
 
         /// <summary>
+        /// Example of an method with a <c>out</c> parameter.
+        /// </summary>
+        public void Method5(out string value) => throw new NotImplementedException();
+
+        /// <summary>
+        /// Example of an method with a <c>ref</c> parameter.
+        /// </summary>
+        public void Method6(ref string value) => throw new NotImplementedException();
+
+        /// <summary>
+        /// Example of an method with a <c>ref</c> parameter.
+        /// </summary>
+        public void Method7(ref string[] value) => throw new NotImplementedException();
+
+        /// <summary>
         /// Example of an overload of the binary + operator.
         /// </summary>
         /// <remarks>

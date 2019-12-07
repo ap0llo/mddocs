@@ -57,6 +57,11 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
                     TypeId = new GenericTypeParameterId(Enum.Parse<GenericTypeParameterId.MemberKind>(definingMemberKind), index);
                     break;
 
+                case nameof(ByReferenceTypeId):
+                    var byReferenceElementType = info.GetValue<XunitSerializableTypeId>(nameof(ByReferenceTypeId.ElementType));
+                    TypeId = new ByReferenceTypeId(byReferenceElementType);
+                    break;
+                    
                 default:
                     throw new NotImplementedException();
             }
@@ -93,6 +98,11 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
                     info.AddValue("type", nameof(GenericTypeParameterId));
                     info.AddValue(nameof(GenericTypeParameterId.DefiningMemberKind), typeParameter.DefiningMemberKind.ToString());
                     info.AddValue(nameof(GenericTypeParameterId.Index), typeParameter.Index);
+                    break;
+
+                case ByReferenceTypeId byReferenceTypeId:
+                    info.AddValue("type", nameof(ByReferenceTypeId));
+                    info.AddValue(nameof(ByReferenceTypeId.ElementType), new XunitSerializableTypeId(byReferenceTypeId.ElementType));
                     break;
 
                 default:

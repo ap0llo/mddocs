@@ -219,6 +219,22 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
                         new TypeId[] { new ArrayTypeId(new SimpleTypeId("System", "Int32"), 2) })
                 );
 
+                yield return new MemberIdParserTestCase(
+                   "M:TestClass.TestMethod(System.Int32@)",
+                   new MethodId(
+                       new SimpleTypeId("", "TestClass"),
+                       "TestMethod",
+                       new TypeId[] { new ByReferenceTypeId(new SimpleTypeId("System", "Int32")) })
+               );
+
+
+                yield return new MemberIdParserTestCase(
+                   "M:TestClass.TestMethod(System.Int32[]@)",
+                   new MethodId(
+                       new SimpleTypeId("", "TestClass"),
+                       "TestMethod",
+                       new TypeId[] { new ByReferenceTypeId(new ArrayTypeId(new SimpleTypeId("System", "Int32"))) })
+                );
             }
         }
 
