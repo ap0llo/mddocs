@@ -10,7 +10,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.TestData
     public static class TestClass_Attributes_ExtensionMethods
     {
 
-        // defining an indexer makes the c# compiler emit a Extension attribute
+        // defining an extension method makes the c# compiler emit a Extension attribute
         // this should be ignored when reading the type's attribute
         public static void Foo(this string str) => throw new NotImplementedException();
     }
