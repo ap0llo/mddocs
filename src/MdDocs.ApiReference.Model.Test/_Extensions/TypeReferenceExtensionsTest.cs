@@ -200,12 +200,12 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         }
 
         [Fact]
-        public void ToMemberId_returns_the_expected_value_for_ref_parameters()
+        public void ToMemberId_returns_the_expected_value_for_ref_parameters_01()
         {
             // ARRANGE
             var typeReference = GetTypeDefinition(typeof(TestClass_RefParameters))
                 .Methods
-                .Single(x => x.Name == nameof(TestClass_RefParameters.MethodWithRefParameter))
+                .Single(x => x.Name == nameof(TestClass_RefParameters.Method2))
                 .Parameters
                 .Single()
                 .ParameterType;
@@ -222,12 +222,34 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         }
 
         [Fact]
+        public void ToMemberId_returns_the_expected_value_for_ref_parameters_02()
+        {
+            // ARRANGE
+            var typeReference = GetTypeDefinition(typeof(TestClass_RefParameters))
+                .Methods
+                .Single(x => x.Name == nameof(TestClass_RefParameters.Method3))
+                .Parameters
+                .Single()
+                .ParameterType;
+
+            var expectedMemberId = new ByReferenceTypeId(new ArrayTypeId(new SimpleTypeId("System", "String")));
+
+            // ACT
+            var actualMemberId = typeReference.ToMemberId();
+
+            // ASSERT
+            Assert.NotNull(actualMemberId);
+            Assert.Equal(expectedMemberId, actualMemberId);
+
+        }
+
+        [Fact]
         public void ToMemberId_returns_the_expected_value_for_out_parameters()
         {
             // ARRANGE
             var parameter = GetTypeDefinition(typeof(TestClass_RefParameters))
                 .Methods
-                .Single(x => x.Name == nameof(TestClass_RefParameters.MethodWithOutParameter))
+                .Single(x => x.Name == nameof(TestClass_RefParameters.Method1))
                 .Parameters
                 .Single(); ;
 

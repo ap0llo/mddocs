@@ -228,6 +228,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.TestData
 
         public void Method14(object parameter1, out string value) => throw new NotImplementedException();
 
+        public void Method15(out string[] value) => throw new NotImplementedException();
 
         public static TestClass_CSharpDefinition operator +(TestClass_CSharpDefinition other) => throw new NotImplementedException();
         public static TestClass_CSharpDefinition operator +(TestClass_CSharpDefinition left, TestClass_CSharpDefinition right) => throw new NotImplementedException();

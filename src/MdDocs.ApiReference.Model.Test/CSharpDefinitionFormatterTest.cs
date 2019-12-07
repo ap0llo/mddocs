@@ -135,6 +135,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         [InlineData(nameof(TestClass_CSharpDefinition.Method12), "public void Method12(ref int value);")]
         [InlineData(nameof(TestClass_CSharpDefinition.Method13), "public void Method13(out string value);")]
         [InlineData(nameof(TestClass_CSharpDefinition.Method14), "public void Method14(object parameter1, out string value);")]
+        [InlineData(nameof(TestClass_CSharpDefinition.Method15), "public void Method15(out string[] value);")]
         public void GetDefinition_returns_the_expected_definition_for_methods(string methodName, string expected)
         {
             // ARRANGE
