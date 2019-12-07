@@ -8,7 +8,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
     public sealed class ByReferenceTypeId : TypeId, IEquatable<ByReferenceTypeId>
     {
         /// <inheritdoc />
-        public override string DisplayName => $"{ElementType.Name}&";
+        public override string DisplayName => $"{ElementType.DisplayName}&";
 
         /// <inheritdoc />
         public override bool IsVoid => false;

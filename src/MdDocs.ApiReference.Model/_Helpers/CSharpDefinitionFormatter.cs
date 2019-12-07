@@ -50,7 +50,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
                 definitionBuilder.Append("[");
                 definitionBuilder.AppendJoin(
                     ", ",
-                    property.Parameters.Select(x => $"{GetDisplayName(x.ParameterType)} {x.Name}")
+                    property.Parameters.Select(GetDefinition)
                 );
                 definitionBuilder.Append("]");
             }
@@ -234,7 +234,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
             definitionBuilder.AppendJoin(
                 ", ",
-                method.Parameters.Select(p => $"{GetDisplayName(p.ParameterType)} {p.Name}")
+                method.Parameters.Select(GetDefinition)
             );
             definitionBuilder.Append(");");
 
@@ -606,6 +606,41 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
         private static bool IsFlagsEnum(TypeDefinition type) => type.CustomAttributes.Any(a => a.AttributeType.FullName == Constants.FlagsAttributeFullName);
 
-        private static string GetDisplayName(TypeReference typeReference) => typeReference.ToTypeId().DisplayName;
+        private static string GetDisplayName(TypeReference typeReference)
+        {
+            return typeReference.ToTypeId().DisplayName;
+        }
+
+        private static string GetDefinition(ParameterDefinition parameter)
+        {
+            var definitionBuilder = new StringBuilder();
+            var parameterType = parameter.ParameterType;
+
+            // special handling for 'out' and 'ref' parameters
+            // do not use the type's actual display name, but add the modified before the parameter
+            // and use the by-reference type's element type,
+            // i.e. display "ref string parameter" instead of "string& parameter"
+            if(parameterType is ByReferenceType byReferenceType)
+            {
+                parameterType = byReferenceType.ElementType;
+                if(parameter.Attributes.HasFlag(ParameterAttributes.Out))
+                {
+                    definitionBuilder.Append("out ");
+                }
+                else
+                {
+                    definitionBuilder.Append("ref ");
+                }
+            }
+
+            // add parameter type
+            definitionBuilder.Append(GetDisplayName(parameterType));
+            definitionBuilder.Append(" ");
+
+            // add parameter name
+            definitionBuilder.Append(parameter.Name);
+
+            return definitionBuilder.ToString();
+        }
     }
 }
