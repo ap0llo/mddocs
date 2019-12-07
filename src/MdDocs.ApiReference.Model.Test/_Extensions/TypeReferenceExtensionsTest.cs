@@ -263,5 +263,27 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             Assert.Equal(expectedMemberId, actualMemberId);
             Assert.Equal(ParameterAttributes.Out, parameter.Attributes);
         }
+
+
+        [Fact]
+        public void ToMemberId_returns_the_expected_value_for_in_parameters()
+        {
+            // ARRANGE
+            var parameter = GetTypeDefinition(typeof(TestClass_RefParameters))
+                .Methods
+                .Single(x => x.Name == nameof(TestClass_RefParameters.Method4))
+                .Parameters
+                .Single(); ;
+
+            var expectedMemberId = new ByReferenceTypeId(new SimpleTypeId("System", "String"));
+
+            // ACT
+            var actualMemberId = parameter.ParameterType.ToMemberId();
+
+            // ASSERT
+            Assert.NotNull(actualMemberId);
+            Assert.Equal(expectedMemberId, actualMemberId);
+            Assert.Equal(ParameterAttributes.In, parameter.Attributes);
+        }
     }
 }

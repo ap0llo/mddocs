@@ -18,6 +18,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         [InlineData(nameof(TestClass_SignatureFormatter.Method8), "Method8(ConsoleColor?)")]
         [InlineData(nameof(TestClass_SignatureFormatter.Method9), "Method9(string)")]
         [InlineData(nameof(TestClass_SignatureFormatter.Method10), "Method10(string)")]
+        [InlineData(nameof(TestClass_SignatureFormatter.Method11), "Method11(string)")]
         public void GetSignature_returns_the_expected_result(string methodName, string expectedSignature)
         {
             // ARRANGE
@@ -43,6 +44,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         [InlineData(nameof(TestClass_SignatureFormatter.Method8), "Method8(ConsoleColor?)")]
         [InlineData(nameof(TestClass_SignatureFormatter.Method9), "Method9(string)")]
         [InlineData(nameof(TestClass_SignatureFormatter.Method10), "Method10(string)")]
+        [InlineData(nameof(TestClass_SignatureFormatter.Method11), "Method11(string)")]
         public void GetSignature_returns_the_expected_result_for_method_ids(string methodName, string expectedSignature)
         {
             // ARRANGE

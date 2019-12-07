@@ -48,6 +48,8 @@ namespace Grynwald.MdDocs.ApiReference.Test.TestData
 
         public void Method10(out string value) => throw new NotImplementedException();
 
+        public void Method11(in string value) => throw new NotImplementedException();
+
 
 
         public static TestClass_SignatureFormatter operator +(TestClass_SignatureFormatter left, TestClass_SignatureFormatter right) => throw new NotImplementedException();

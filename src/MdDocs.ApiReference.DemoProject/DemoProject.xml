@@ -325,6 +325,11 @@
             Example of an method with a <c>ref</c> parameter.
             </summary>
         </member>
+        <member name="M:DemoProject.DemoClass.Method8(System.String@)">
+            <summary>
+            Example of an method with a <c>in</c> parameter.
+            </summary>
+        </member>
         <member name="M:DemoProject.DemoClass.op_Addition(DemoProject.DemoClass,DemoProject.DemoClass)">
             <summary>
             Example of an overload of the binary + operator.

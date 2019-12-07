@@ -10,5 +10,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.TestData
         public bool Method2(ref string value) => throw new NotImplementedException();
 
         public bool Method3(ref string[] value) => throw new NotImplementedException();
+
+        public bool Method4(in string value) => throw new NotImplementedException();
     }
 }

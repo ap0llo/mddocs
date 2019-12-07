@@ -327,6 +327,11 @@ namespace DemoProject
         public void Method7(ref string[] value) => throw new NotImplementedException();
 
         /// <summary>
+        /// Example of an method with a <c>in</c> parameter.
+        /// </summary>
+        public void Method8(in string value) => throw new NotImplementedException();
+
+        /// <summary>
         /// Example of an overload of the binary + operator.
         /// </summary>
         /// <remarks>

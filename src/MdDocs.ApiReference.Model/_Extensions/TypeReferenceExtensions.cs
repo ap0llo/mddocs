@@ -75,7 +75,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
             {
                 return new ArrayTypeId(arrayType.ElementType.ToTypeId(), arrayType.Dimensions.Count);
             }
-            // reference type ('ref' and 'out' parameters)
+            // reference type ('ref', 'out' and 'in' parameters)
             else if(typeReference is ByReferenceType byReferenceType)
             {
                 return new ByReferenceTypeId(byReferenceType.ElementType.ToTypeId());

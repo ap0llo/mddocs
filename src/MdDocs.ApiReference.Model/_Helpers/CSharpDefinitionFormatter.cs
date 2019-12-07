@@ -627,6 +627,10 @@ namespace Grynwald.MdDocs.ApiReference.Model
                 {
                     definitionBuilder.Append("out ");
                 }
+                else if (parameter.Attributes.HasFlag(ParameterAttributes.In))
+                {
+                    definitionBuilder.Append("in ");
+                }
                 else
                 {
                     definitionBuilder.Append("ref ");

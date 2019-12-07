@@ -85,6 +85,7 @@ Similar pages are also generated for interfaces (see [IDemoInterface](../IDemoIn
 | [Method5(string)](methods/Method5.md)               | Example of an method with a `out` parameter.                   |
 | [Method6(string)](methods/Method6.md)               | Example of an method with a `ref` parameter.                   |
 | [Method7(string\[\])](methods/Method7.md)           | Example of an method with a `ref` parameter.                   |
+| [Method8(string)](methods/Method8.md)               | Example of an method with a `in` parameter.                    |
 
 ## Operators
 
