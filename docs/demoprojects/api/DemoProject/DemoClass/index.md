@@ -82,6 +82,9 @@ Similar pages are also generated for interfaces (see [IDemoInterface](../IDemoIn
 | [Method2()](methods/Method2.md)                     | Example of an non\-overloaded methods with a custom attribute. |
 | [Method3\<T\>(T)](methods/Method3.md)               | Example of a generic method.                                   |
 | [Method4()](methods/Method4.md)                     | Example of an obsolete method.                                 |
+| [Method5(string)](methods/Method5.md)               | Example of an method with a `out` parameter.                   |
+| [Method6(string)](methods/Method6.md)               | Example of an method with a `ref` parameter.                   |
+| [Method7(string\[\])](methods/Method7.md)           | Example of an method with a `ref` parameter.                   |
 
 ## Operators
 

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Mono.Cecil;
 
 namespace Grynwald.MdDocs.ApiReference.Model
@@ -73,6 +74,11 @@ namespace Grynwald.MdDocs.ApiReference.Model
             else if (typeReference is ArrayType arrayType)
             {
                 return new ArrayTypeId(arrayType.ElementType.ToTypeId(), arrayType.Dimensions.Count);
+            }
+            // reference type ('ref' and 'out' parameters)
+            else if(typeReference is ByReferenceType byReferenceType)
+            {
+                return new ByReferenceTypeId(byReferenceType.ElementType.ToTypeId());
             }
             // type is a "normal", non-generic type
             else

@@ -329,6 +329,40 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
                     new MemberIdToken(MemberIdTokenKind.CloseParenthesis, ")"),
                     new MemberIdToken(MemberIdTokenKind.Eof, "")
                 );
+
+                yield return new MemberIdLexerTestCase(
+                    "M:Type.Method(System.String@)",
+                    new MemberIdToken(MemberIdTokenKind.IdentifierType, "M"),
+                    new MemberIdToken(MemberIdTokenKind.Colon, ":"),
+                    new MemberIdToken(MemberIdTokenKind.Name, "Type"),
+                    new MemberIdToken(MemberIdTokenKind.Dot, "."),
+                    new MemberIdToken(MemberIdTokenKind.Name, "Method"),
+                    new MemberIdToken(MemberIdTokenKind.OpenParenthesis, "("),
+                    new MemberIdToken(MemberIdTokenKind.Name, "System"),
+                    new MemberIdToken(MemberIdTokenKind.Dot, "."),
+                    new MemberIdToken(MemberIdTokenKind.Name, "String"),
+                    new MemberIdToken(MemberIdTokenKind.At, "@"),
+                    new MemberIdToken(MemberIdTokenKind.CloseParenthesis, ")"),
+                    new MemberIdToken(MemberIdTokenKind.Eof, "")
+                );
+
+                yield return new MemberIdLexerTestCase(
+                    "M:Type.Method(System.String[]@)",
+                    new MemberIdToken(MemberIdTokenKind.IdentifierType, "M"),
+                    new MemberIdToken(MemberIdTokenKind.Colon, ":"),
+                    new MemberIdToken(MemberIdTokenKind.Name, "Type"),
+                    new MemberIdToken(MemberIdTokenKind.Dot, "."),
+                    new MemberIdToken(MemberIdTokenKind.Name, "Method"),
+                    new MemberIdToken(MemberIdTokenKind.OpenParenthesis, "("),
+                    new MemberIdToken(MemberIdTokenKind.Name, "System"),
+                    new MemberIdToken(MemberIdTokenKind.Dot, "."),
+                    new MemberIdToken(MemberIdTokenKind.Name, "String"),
+                    new MemberIdToken(MemberIdTokenKind.OpenSquareBracket, "["),
+                    new MemberIdToken(MemberIdTokenKind.CloseSquareBracket, "]"),
+                    new MemberIdToken(MemberIdTokenKind.At, "@"),
+                    new MemberIdToken(MemberIdTokenKind.CloseParenthesis, ")"),
+                    new MemberIdToken(MemberIdTokenKind.Eof, "")
+                );
             }
         }
 

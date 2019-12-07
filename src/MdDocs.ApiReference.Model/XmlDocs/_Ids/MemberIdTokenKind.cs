@@ -63,6 +63,10 @@
         /// </summary>
         CloseSquareBracket,
         /// <summary>
+        /// A at('@') token
+        /// </summary>
+        At,
+        /// <summary>
         /// A token indicating the end of the text to parse
         /// </summary>
         Eof

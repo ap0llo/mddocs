@@ -73,6 +73,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
                 typeof(CSharpDefinitionTestEnum),
                 typeof(TestClass_XmlDocs<,>),
                 typeof(TestClass_NoDocumentation),
+                typeof(TestClass_RefParameters),
             })
             .Distinct()
             .Select(GetTypeDefinition)

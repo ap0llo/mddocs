@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Grynwald.MdDocs.ApiReference.Model;
 using Grynwald.MdDocs.ApiReference.Test.TestData;
+using Mono.Cecil;
 using Xunit;
 
 namespace Grynwald.MdDocs.ApiReference.Test.Model
@@ -92,7 +93,6 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             Assert.NotNull(actualMemberId);
             Assert.Equal(expectedMemberId, actualMemberId);
         }
-
 
         [Fact]
         public void ToMemberId_returns_expected_value_for_array_types_01()
@@ -197,6 +197,71 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             // ASSERT
             Assert.NotNull(actualMemberId);
             Assert.Equal(expectedMemberId, actualMemberId);
+        }
+
+        [Fact]
+        public void ToMemberId_returns_the_expected_value_for_ref_parameters_01()
+        {
+            // ARRANGE
+            var typeReference = GetTypeDefinition(typeof(TestClass_RefParameters))
+                .Methods
+                .Single(x => x.Name == nameof(TestClass_RefParameters.Method2))
+                .Parameters
+                .Single()
+                .ParameterType;
+
+            var expectedMemberId = new ByReferenceTypeId(new SimpleTypeId("System", "String"));
+
+            // ACT
+            var actualMemberId = typeReference.ToMemberId();
+
+            // ASSERT
+            Assert.NotNull(actualMemberId);
+            Assert.Equal(expectedMemberId, actualMemberId);
+
+        }
+
+        [Fact]
+        public void ToMemberId_returns_the_expected_value_for_ref_parameters_02()
+        {
+            // ARRANGE
+            var typeReference = GetTypeDefinition(typeof(TestClass_RefParameters))
+                .Methods
+                .Single(x => x.Name == nameof(TestClass_RefParameters.Method3))
+                .Parameters
+                .Single()
+                .ParameterType;
+
+            var expectedMemberId = new ByReferenceTypeId(new ArrayTypeId(new SimpleTypeId("System", "String")));
+
+            // ACT
+            var actualMemberId = typeReference.ToMemberId();
+
+            // ASSERT
+            Assert.NotNull(actualMemberId);
+            Assert.Equal(expectedMemberId, actualMemberId);
+
+        }
+
+        [Fact]
+        public void ToMemberId_returns_the_expected_value_for_out_parameters()
+        {
+            // ARRANGE
+            var parameter = GetTypeDefinition(typeof(TestClass_RefParameters))
+                .Methods
+                .Single(x => x.Name == nameof(TestClass_RefParameters.Method1))
+                .Parameters
+                .Single(); ;
+
+            var expectedMemberId = new ByReferenceTypeId(new SimpleTypeId("System", "String"));
+
+            // ACT
+            var actualMemberId = parameter.ParameterType.ToMemberId();
+
+            // ASSERT
+            Assert.NotNull(actualMemberId);
+            Assert.Equal(expectedMemberId, actualMemberId);
+            Assert.Equal(ParameterAttributes.Out, parameter.Attributes);
         }
     }
 }

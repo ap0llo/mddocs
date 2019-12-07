@@ -18,5 +18,8 @@
             Kind = kind;
             Value = value;
         }
+
+
+        public override string ToString() => $"{nameof(MemberIdTokenKind)}.{Kind}: '{Value}'";
     }
 }

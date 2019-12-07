@@ -310,6 +310,21 @@
             a warning is included in the generated documentation.
             </remarks>
         </member>
+        <member name="M:DemoProject.DemoClass.Method5(System.String@)">
+            <summary>
+            Example of an method with a <c>out</c> parameter.
+            </summary>
+        </member>
+        <member name="M:DemoProject.DemoClass.Method6(System.String@)">
+            <summary>
+            Example of an method with a <c>ref</c> parameter.
+            </summary>
+        </member>
+        <member name="M:DemoProject.DemoClass.Method7(System.String[]@)">
+            <summary>
+            Example of an method with a <c>ref</c> parameter.
+            </summary>
+        </member>
         <member name="M:DemoProject.DemoClass.op_Addition(DemoProject.DemoClass,DemoProject.DemoClass)">
             <summary>
             Example of an overload of the binary + operator.

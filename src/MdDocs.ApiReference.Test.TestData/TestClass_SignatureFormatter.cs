@@ -4,21 +4,21 @@ using System.IO;
 
 namespace Grynwald.MdDocs.ApiReference.Test.TestData
 {
-    class TestClass_MethodFormatter
+    class TestClass_SignatureFormatter
     {
-        public TestClass_MethodFormatter()
+        public TestClass_SignatureFormatter()
         {
         }
 
-        public TestClass_MethodFormatter(string foo)
+        public TestClass_SignatureFormatter(string foo)
         {
         }
 
-        public TestClass_MethodFormatter(string foo, IEnumerable<string> bar)
+        public TestClass_SignatureFormatter(string foo, IEnumerable<string> bar)
         {
         }
 
-        public TestClass_MethodFormatter(string foo, IEnumerable<string> bar, IList<DirectoryInfo> baz)
+        public TestClass_SignatureFormatter(string foo, IEnumerable<string> bar, IList<DirectoryInfo> baz)
         {
         }
 
@@ -44,21 +44,25 @@ namespace Grynwald.MdDocs.ApiReference.Test.TestData
 
         public int? Method8(ConsoleColor? parameter) => throw new NotImplementedException();
 
+        public void Method9(ref string value) => throw new NotImplementedException();
+
+        public void Method10(out string value) => throw new NotImplementedException();
 
 
-        public static TestClass_MethodFormatter operator +(TestClass_MethodFormatter left, TestClass_MethodFormatter right) => throw new NotImplementedException();
 
-        public static implicit operator string(TestClass_MethodFormatter instance) => throw new NotImplementedException();
+        public static TestClass_SignatureFormatter operator +(TestClass_SignatureFormatter left, TestClass_SignatureFormatter right) => throw new NotImplementedException();
+
+        public static implicit operator string(TestClass_SignatureFormatter instance) => throw new NotImplementedException();
     }
 
-    class TestClass_MethodFormatter<T>
+    class TestClass_SignatureFormatter<T>
     {
-        public TestClass_MethodFormatter()
+        public TestClass_SignatureFormatter()
         {
 
         }
 
-        public TestClass_MethodFormatter(string param)
+        public TestClass_SignatureFormatter(string param)
         {
 
         }

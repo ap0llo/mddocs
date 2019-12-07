@@ -362,6 +362,12 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
             // arrays of arrays are allowed, too
             type = ParseArraySuffix(type);
 
+
+            // optional suffix: @
+            // if the type is followed by an '@' the parameter is being parsed by reference
+            // (methods with 'out' or 'ref' parameter)
+            type = ParseByReferenceSuffix(type);
+
             return type;
         }
 
@@ -370,6 +376,18 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
 
         private int ParseMethodArity() =>
             TestAndMatchToken(MemberIdTokenKind.DoubleBacktick) ? Int32.Parse(MatchToken(MemberIdTokenKind.Number)) : 0;
+
+        private TypeId ParseByReferenceSuffix(TypeId type)
+        {
+            if(TestAndMatchToken(MemberIdTokenKind.At))
+            {
+                return new ByReferenceTypeId(type);
+            }
+            else
+            {
+                return type;
+            }
+        }
 
         private string MatchToken(MemberIdTokenKind kind)
         {
