@@ -63,7 +63,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
             {
                 signatureBuilder.AppendJoin(
                     ", ",
-                    method.Parameters.Select(p => GetParameterSignature(p.ParameterType.ToTypeId()))
+                    method.Parameters.Select(p => p.ParameterType.ToTypeId().DisplayName)
                 );
             }
             signatureBuilder.Append(")");
@@ -116,7 +116,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
             {
                 signatureBuilder.AppendJoin(
                     ", ",
-                    method.Parameters.Select(GetParameterSignature)
+                    method.Parameters.Select(p => p.DisplayName)
                 );
             }
             signatureBuilder.Append(")");
@@ -169,19 +169,6 @@ namespace Grynwald.MdDocs.ApiReference.Model
             }
 
             return signatureBuilder.ToString();
-        }
-
-
-        private static string GetParameterSignature(TypeId parameterType)
-        {
-            if (parameterType is ByReferenceTypeId byReferenceType)
-            {
-                return byReferenceType.ElementType.DisplayName;
-            }
-            else
-            {
-                return parameterType.DisplayName;
-            }
         }
     }
 }

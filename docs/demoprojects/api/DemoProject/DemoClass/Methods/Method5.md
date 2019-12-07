@@ -10,7 +10,7 @@ public void Method5(out string value);
 
 ## Parameters
 
-`value`  string&
+`value`  string
 
 ___
 

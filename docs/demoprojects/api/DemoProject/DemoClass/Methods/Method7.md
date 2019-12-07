@@ -10,7 +10,7 @@ public void Method7(ref string[] value);
 
 ## Parameters
 
-`value`  string\[\]&
+`value`  string\[\]
 
 ___
 
