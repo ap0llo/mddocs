@@ -330,6 +330,18 @@
             Example of an method with a <c>in</c> parameter.
             </summary>
         </member>
+        <member name="M:DemoProject.DemoClass.Method9(System.String,System.String)">
+            <summary>
+            Example of an method with a optional parameters.
+            </summary>
+            <remarks>
+            <para>
+            The default value for both parameters is shown in the method signature.
+            </para>
+            </remarks>
+            <param name="value1">The <paramref name="value1"/> parameter is optional and has a default value of <c>someString</c>.</param>
+            <param name="value2">The <paramref name="value2"/> parameter is optional and has a default value of <c>null</c>.</param>
+        </member>
         <member name="M:DemoProject.DemoClass.op_Addition(DemoProject.DemoClass,DemoProject.DemoClass)">
             <summary>
             Example of an overload of the binary + operator.

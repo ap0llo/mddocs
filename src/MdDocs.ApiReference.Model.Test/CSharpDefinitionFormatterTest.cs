@@ -137,6 +137,11 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         [InlineData(nameof(TestClass_CSharpDefinition.Method14), "public void Method14(object parameter1, out string value);")]
         [InlineData(nameof(TestClass_CSharpDefinition.Method15), "public void Method15(out string[] value);")]
         [InlineData(nameof(TestClass_CSharpDefinition.Method16), "public void Method16(in string value);")]
+        [InlineData(nameof(TestClass_CSharpDefinition.Method17), "public void Method17(string stringParameter = \"default\");")]
+        [InlineData(nameof(TestClass_CSharpDefinition.Method18), "public void Method18(string stringParameter = null, int intParameter = 23);")]
+        [InlineData(nameof(TestClass_CSharpDefinition.Method19), "public void Method19(CSharpDefinitionTestEnum parameter = CSharpDefinitionTestEnum.Value1);")]
+        [InlineData(nameof(TestClass_CSharpDefinition.Method20), "public void Method20([Optional]string stringParameter);")]
+        [InlineData(nameof(TestClass_CSharpDefinition.Method21), "public void Method21(string stringParameter = \"default\");")]
         public void GetDefinition_returns_the_expected_definition_for_methods(string methodName, string expected)
         {
             // ARRANGE

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Runtime.InteropServices;
 
 namespace Grynwald.MdDocs.ApiReference.Test.TestData
 {
@@ -231,6 +232,17 @@ namespace Grynwald.MdDocs.ApiReference.Test.TestData
         public void Method15(out string[] value) => throw new NotImplementedException();
 
         public void Method16(in string value) => throw new NotImplementedException();
+
+        public void Method17(string stringParameter = "default") => throw new NotImplementedException();
+
+        public void Method18(string stringParameter = null, int intParameter = 23) => throw new NotImplementedException();
+
+        public void Method19(CSharpDefinitionTestEnum parameter = CSharpDefinitionTestEnum.Value1) => throw new NotImplementedException();
+
+        public void Method20([Optional]string stringParameter) => throw new NotImplementedException();
+
+        public void Method21([Optional][DefaultParameterValue("default")]string stringParameter) => throw new NotImplementedException();
+
 
         public static TestClass_CSharpDefinition operator +(TestClass_CSharpDefinition other) => throw new NotImplementedException();
         public static TestClass_CSharpDefinition operator +(TestClass_CSharpDefinition left, TestClass_CSharpDefinition right) => throw new NotImplementedException();

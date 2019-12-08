@@ -332,6 +332,18 @@ namespace DemoProject
         public void Method8(in string value) => throw new NotImplementedException();
 
         /// <summary>
+        /// Example of an method with a optional parameters.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// The default value for both parameters is shown in the method signature.
+        /// </para>
+        /// </remarks>
+        /// <param name="value1">The <paramref name="value1"/> parameter is optional and has a default value of <c>someString</c>.</param>
+        /// <param name="value2">The <paramref name="value2"/> parameter is optional and has a default value of <c>null</c>.</param>
+        public void Method9(string value1 = "someString", string value2 = null) => throw new NotImplementedException();
+
+        /// <summary>
         /// Example of an overload of the binary + operator.
         /// </summary>
         /// <remarks>

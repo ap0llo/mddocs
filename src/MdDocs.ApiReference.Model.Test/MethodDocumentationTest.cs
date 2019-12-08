@@ -13,7 +13,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         {
             var methodName = "TestMethod1";
 
-            // get methods, use StartsWith() as generic overloads are suffixed with the numer
+            // get methods, use StartsWith() as generic overloads are suffixed with the number
             // of type parameters
             var methodOverloads = GetTypeDefinition(typeof(TestClass_MethodOverloads))
                 .Methods
@@ -23,6 +23,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
 
             Assert.Equal(methodName, sut.Name);
         }
+
 
 
         protected override MemberDocumentation GetMemberDocumentationInstance()

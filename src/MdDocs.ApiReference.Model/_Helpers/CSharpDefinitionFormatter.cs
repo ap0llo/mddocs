@@ -544,23 +544,29 @@ namespace Grynwald.MdDocs.ApiReference.Model
             }
         }
 
-        private static string GetLiteral(CustomAttributeArgument attributeArgument)
+        private static string GetLiteral(CustomAttributeArgument attributeArgument) => GetLiteral(attributeArgument.Type, attributeArgument.Value);
+
+        private static string GetLiteral(TypeReference typeReference, object value)
         {
-            var definition = attributeArgument.Type.Resolve();
+            var typeDefinition = typeReference.Resolve();
 
             // string => put in quotation marks
-            if (attributeArgument.Type.FullName == Constants.StringFullName)
+            if (typeReference.FullName == Constants.StringFullName)
             {
-                return $"\"{attributeArgument.Value}\"";
+                if(value is null)
+                {
+                    return "null";
+                }
+                else
+                {
+                    return $"\"{value}\"";
+                }
             }
             // special handling for enums
-            else if (definition != null && definition.Kind() == TypeKind.Enum)
+            else if (typeDefinition != null && typeDefinition.Kind() == TypeKind.Enum)
             {
-                // get the definition of the enum
-                var typeDefinition = attributeArgument.Type.Resolve();
-
                 // get the arguments value and all possible values for the enum
-                var intValue = Convert.ToInt64(attributeArgument.Value);
+                var intValue = Convert.ToInt64(value);
                 var values = typeDefinition.GetEnumValues();
 
                 // get the friendly name for the enum
@@ -571,9 +577,9 @@ namespace Grynwald.MdDocs.ApiReference.Model
                 {
                     var builder = new StringBuilder();
 
-                    foreach (var (name, value) in values)
+                    foreach (var (name, enumValue) in values)
                     {
-                        if ((intValue & value) != 0)
+                        if ((intValue & enumValue) != 0)
                         {
                             if (builder.Length > 0)
                                 builder.Append(" | ");
@@ -594,13 +600,13 @@ namespace Grynwald.MdDocs.ApiReference.Model
                 // on error (e.g. a value not defined in the enum), just return the plain value
                 else
                 {
-                    return attributeArgument.Value.ToString();
+                    return value.ToString();
                 }
             }
             // otherwise: convert value to string
             else
             {
-                return attributeArgument.Value.ToString();
+                return value.ToString();
             }
         }
 
@@ -616,11 +622,20 @@ namespace Grynwald.MdDocs.ApiReference.Model
             var definitionBuilder = new StringBuilder();
             var parameterType = parameter.ParameterType;
 
+            // If the parameter is optional, but does not have a default value
+            // display it as [Optional] attribute at the before the parameter.
+            // If the parameter is optional AND has a default parameter,
+            // render it as " = <VALUE>" after the parameter (see below).
+            if (parameter.Attributes.HasFlag(ParameterAttributes.Optional) && !parameter.Attributes.HasFlag(ParameterAttributes.HasDefault))
+            {
+                definitionBuilder.Append("[Optional]");
+            }
+
             // special handling for 'out' and 'ref' parameters
             // do not use the type's actual display name, but add the modified before the parameter
             // and use the by-reference type's element type,
             // i.e. display "ref string parameter" instead of "string& parameter"
-            if(parameterType is ByReferenceType byReferenceType)
+            if (parameterType is ByReferenceType byReferenceType)
             {
                 parameterType = byReferenceType.ElementType;
                 if(parameter.Attributes.HasFlag(ParameterAttributes.Out))
@@ -643,6 +658,14 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
             // add parameter name
             definitionBuilder.Append(parameter.Name);
+            
+            // if parameter has a default value, include it in the definition
+            if (parameter.Attributes.HasFlag(ParameterAttributes.Optional) &&
+                parameter.Attributes.HasFlag(ParameterAttributes.HasDefault))
+            {
+                definitionBuilder.Append(" = ");
+                definitionBuilder.Append(GetLiteral(parameter.ParameterType, parameter.Constant));                
+            }
 
             return definitionBuilder.ToString();
         }
