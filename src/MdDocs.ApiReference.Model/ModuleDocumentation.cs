@@ -121,10 +121,9 @@ namespace Grynwald.MdDocs.ApiReference.Model
             m_Types.Add(typeDocumentation.TypeId, typeDocumentation);
             namespaceDocumentation.AddType(typeDocumentation);
 
-
             if(typeDefinition.HasNestedTypes)
             {
-                foreach(var nestedType in typeDefinition.NestedTypes)
+                foreach(var nestedType in typeDefinition.NestedTypes.Where(x => x.IsNestedPublic))
                 {
                     LoadTypeRecursively(nestedType, typeDocumentation);
                 }
