@@ -646,6 +646,31 @@
             </para>
             </remarks>
         </member>
+        <member name="T:DemoProject.NestedTypesDemo">
+            <summary>
+            This class shows an example of how the documentation for nested types looks.
+            </summary>
+        </member>
+        <member name="T:DemoProject.NestedTypesDemo.NestedClass1">
+            <summary>
+            This is an example of a nested class
+            </summary>
+        </member>
+        <member name="T:DemoProject.NestedTypesDemo.NestedClass2">
+            <summary>
+            This is an example of a nested class that in turn contains nested types
+            </summary>
+        </member>
+        <member name="T:DemoProject.NestedTypesDemo.NestedClass2.NestedClass3">
+            <summary>
+            This is an example of an nested class within a nested class
+            </summary>
+        </member>
+        <member name="T:DemoProject.NestedTypesDemo.NestedInterface1">
+            <summary>
+            This is an example of a nested interface
+            </summary>
+        </member>
         <member name="T:DemoProject.ObsoleteDemoClass">
             <summary>
             A class meant to demonstrate how the generated documentation for a deprecated class looks like.
