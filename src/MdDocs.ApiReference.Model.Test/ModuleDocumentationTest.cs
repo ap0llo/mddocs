@@ -75,6 +75,8 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
                 typeof(TestClass_XmlDocs<,>),
                 typeof(TestClass_NoDocumentation),
                 typeof(TestClass_RefParameters),
+                typeof(TestClass_NestedTypes),
+                typeof(TestClass_NestedTypes.NestedClass1),
             })
             .Distinct()
             .Select(GetTypeDefinition)

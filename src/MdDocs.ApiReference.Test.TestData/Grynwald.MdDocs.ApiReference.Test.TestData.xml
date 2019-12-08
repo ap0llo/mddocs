@@ -79,6 +79,11 @@
             Test method 3
             </summary>
         </member>
+        <member name="T:Grynwald.MdDocs.ApiReference.Test.TestData.TestClass_InnerClasses.InnerClass1">
+            <summary>
+            Example of an inner class
+            </summary>
+        </member>
         <member name="T:Grynwald.MdDocs.ApiReference.Test.TestData.TestClass_InternalType">
             <summary>
             Internal Test class

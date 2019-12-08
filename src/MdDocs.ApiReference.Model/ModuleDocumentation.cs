@@ -56,8 +56,8 @@ namespace Grynwald.MdDocs.ApiReference.Model
             m_Types = new Dictionary<TypeId, TypeDocumentation>();
             m_Namespaces = new Dictionary<NamespaceId, NamespaceDocumentation>();
 
-            foreach (var typeDefinition in Definition.Types.Where(t => t.IsPublic))
-            {                
+            foreach (var typeDefinition in GetTypeDefinitions(Definition))
+            {
                 var namespaceDocumentation = GetNamespaceDocumentation(typeDefinition.Namespace);
 
                 var typeDocumentation = new TypeDocumentation(this, namespaceDocumentation, typeDefinition, m_XmlDocsProvider, logger);
@@ -112,6 +112,41 @@ namespace Grynwald.MdDocs.ApiReference.Model
             parentNamespace?.AddNamespace(newNamespace);
 
             return newNamespace;
+        }
+
+
+        private static IReadOnlyList<TypeDefinition> GetTypeDefinitions(ModuleDefinition module)
+        {
+            var types = new List<TypeDefinition>();
+
+            foreach (var type in module.Types.Where(t => t.IsPublic))
+            {
+                types.Add(type);
+
+                if(type.HasNestedTypes)
+                {
+                    types.AddRange(GetTypeDefinitions(type));
+                }
+            }
+
+            return types;
+        }
+
+        private static IReadOnlyList<TypeDefinition> GetTypeDefinitions(TypeDefinition type)
+        {
+            var types = new List<TypeDefinition>();
+
+            foreach (var nestedType in type.NestedTypes.Where(t => t.IsNestedPublic))
+            {
+                types.Add(nestedType);
+
+                if(nestedType.HasNestedTypes)
+                {
+                    types.AddRange(GetTypeDefinitions(nestedType));
+                }
+            }
+
+            return types;
         }
     }
 }
