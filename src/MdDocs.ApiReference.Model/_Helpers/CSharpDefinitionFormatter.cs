@@ -136,8 +136,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
             var definitionBuilder = new StringBuilder();
 
             // attributes
-            var customAttributes = GetCustomAttributes(method);
-            AppendCustomAttributes(definitionBuilder, customAttributes);
+            AppendCustomAttributes(definitionBuilder, method.GetCustomAttributes());
 
             // method is constructor
             if (method.IsConstructor)
@@ -313,11 +312,8 @@ namespace Grynwald.MdDocs.ApiReference.Model
             return definitionBuilder.ToString();
         }
 
-
-        private static IEnumerable<CustomAttribute> GetCustomAttributes(MethodDefinition method) =>
-            method.CustomAttributes.Where(a => a.AttributeType.FullName != Constants.ExtensionAttributeFullName);
-
-        private static void AppendCustomAttributes(StringBuilder definitionBuilder, IEnumerable<CustomAttribute> customAttributes)
+   
+        private static void AppendCustomAttributes(StringBuilder definitionBuilder, IEnumerable<CustomAttribute> customAttributes, bool singleLine = false)
         {
             foreach (var attribute in customAttributes)
             {
@@ -344,7 +340,11 @@ namespace Grynwald.MdDocs.ApiReference.Model
                 }
 
                 definitionBuilder.Append("]");
-                definitionBuilder.Append("\r\n");
+
+                if(!singleLine)
+                {
+                    definitionBuilder.Append("\r\n");
+                }
             }
         }
 
@@ -630,6 +630,8 @@ namespace Grynwald.MdDocs.ApiReference.Model
             {
                 definitionBuilder.Append("[Optional]");
             }
+
+            AppendCustomAttributes(definitionBuilder, parameter.GetCustomAttributes(), singleLine: true);
 
             // special handling for 'out' and 'ref' parameters
             // do not use the type's actual display name, but add the modified before the parameter

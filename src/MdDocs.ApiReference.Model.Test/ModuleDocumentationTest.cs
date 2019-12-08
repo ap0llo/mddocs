@@ -51,6 +51,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
                 typeof(CSharpDefinitionTest2Attribute),
                 typeof(CSharpDefinitionTest3Attribute),
                 typeof(CSharpDefinitionTest4Attribute),
+                typeof(CSharpDefinitionTest5Attribute),
                 typeof(CSharpDefinitionTestFlagsEnum),
                 typeof(CSharpDefinitionTest_StaticClass),
                 typeof(CSharpDefinitionTest_AbstractClass),

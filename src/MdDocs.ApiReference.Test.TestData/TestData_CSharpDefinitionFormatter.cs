@@ -45,6 +45,10 @@ namespace Grynwald.MdDocs.ApiReference.Test.TestData
         }
     }
 
+    public class CSharpDefinitionTest5Attribute : Attribute
+    {        
+    }
+
     public enum CSharpDefinitionTestEnum
     {
         Value1 = 1,
@@ -242,6 +246,10 @@ namespace Grynwald.MdDocs.ApiReference.Test.TestData
         public void Method20([Optional]string stringParameter) => throw new NotImplementedException();
 
         public void Method21([Optional][DefaultParameterValue("default")]string stringParameter) => throw new NotImplementedException();
+
+        public void Method22([CSharpDefinitionTest5]string parameter1) => throw new NotImplementedException();
+
+        public void Method23([CSharpDefinitionTest4(CSharpDefinitionTestEnum.Value2)][CSharpDefinitionTest5]string parameter1) => throw new NotImplementedException();
 
 
         public static TestClass_CSharpDefinition operator +(TestClass_CSharpDefinition other) => throw new NotImplementedException();
