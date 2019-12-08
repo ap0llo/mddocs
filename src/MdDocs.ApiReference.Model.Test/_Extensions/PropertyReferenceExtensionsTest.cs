@@ -13,7 +13,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
 
         private PropertyReference GetPropertyReference(string typeName, string propertyName)
         {
-            return GetTypeDefinition(typeName)
+            return GetTypeDefinition(typeName, 0)
                .Properties
                .First(x => x.Name == propertyName);
         }

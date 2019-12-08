@@ -157,11 +157,13 @@ namespace Grynwald.MdDocs.ApiReference.Model
                 // method name is the name of the type
                 var methodName = method.DeclaringType.Name;
 
-                if (method.DeclaringType.HasGenericParameters)
+                if (method.DeclaringType.HasGenericParameters && !method.DeclaringType.IsNested)
                 {
                     // remove number of type parameters from type name
                     methodName = methodName.Substring(0, methodName.LastIndexOf("`"));
                 }
+
+                //TODO: Support for nested types
 
                 definitionBuilder.Append(methodName);
             }
@@ -292,12 +294,14 @@ namespace Grynwald.MdDocs.ApiReference.Model
             definitionBuilder.Append(" ");
 
             // class name and type parameters
-            if (type.HasGenericParameters)
+            if (type.HasGenericParameters && !type.IsNested)
             {
                 // remove number of type parameters from type name
-                var name = type.Name.Substring(0, type.Name.LastIndexOf("`"));
+                var name = type.Name.Substring(0, type.Name.LastIndexOf('`'));
                 definitionBuilder.Append(name);
                 AppendTypeParameters(definitionBuilder, type.GenericParameters);
+
+                //TODO: Support for nested types
             }
             else
             {

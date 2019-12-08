@@ -79,11 +79,6 @@
             Test method 3
             </summary>
         </member>
-        <member name="T:Grynwald.MdDocs.ApiReference.Test.TestData.TestClass_InnerClasses.InnerClass1">
-            <summary>
-            Example of an inner class
-            </summary>
-        </member>
         <member name="T:Grynwald.MdDocs.ApiReference.Test.TestData.TestClass_InternalType">
             <summary>
             Internal Test class
@@ -192,6 +187,21 @@
         <member name="M:Grynwald.MdDocs.ApiReference.Test.TestData.TestClass_MultipleOperatorOverloads.op_Addition(Grynwald.MdDocs.ApiReference.Test.TestData.TestClass_MultipleOperatorOverloads,System.Double)">
             <summary>
             Binary plus operator
+            </summary>
+        </member>
+        <member name="T:Grynwald.MdDocs.ApiReference.Test.TestData.TestClass_NestedTypes.NestedClass1">
+            <summary>
+            Example of an inner class
+            </summary>
+        </member>
+        <member name="T:Grynwald.MdDocs.ApiReference.Test.TestData.TestClass_NestedTypes.NestedInterface1">
+            <summary>
+            Example of an inner class
+            </summary>
+        </member>
+        <member name="T:Grynwald.MdDocs.ApiReference.Test.TestData.TestClass_NestedTypes`1.NestedClass1">
+            <summary>
+            Example of an inner class
             </summary>
         </member>
         <member name="T:Grynwald.MdDocs.ApiReference.Test.TestData.TestClass_Obsolete">

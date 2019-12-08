@@ -77,6 +77,12 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
                 typeof(TestClass_RefParameters),
                 typeof(TestClass_NestedTypes),
                 typeof(TestClass_NestedTypes.NestedClass1),
+                typeof(TestClass_NestedTypes.NestedClass1.NestedClass2),
+                typeof(TestClass_NestedTypes.NestedInterface1),
+                typeof(TestClass_NestedTypes.NestedClass4<>),
+                typeof(TestClass_NestedTypes<>),
+                typeof(TestClass_NestedTypes<>.NestedClass1),
+                typeof(TestClass_NestedTypes<>.NestedClass1.NestedClass2<>),
             })
             .Distinct()
             .Select(GetTypeDefinition)
@@ -112,6 +118,29 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             // ASSERT            
             Assert.All(
                 internalTypes,
+                internalType => Assert.DoesNotContain(actualTypes, x => x.Definition.Equals(internalType))
+            );
+        }
+
+
+        [Fact]
+        public void Types_does_not_include_non_public_nested_types()
+        {
+            //ARRANGE
+            var internalNestedTypes = new[]
+            {
+                typeof(TestClass_NestedTypes.NestedClass3)
+            }
+            .Select(GetTypeDefinition)
+            .ToArray();
+
+            // ACT
+            var sut = m_AssemblyDocumentation.Value.MainModuleDocumentation;
+            var actualTypes = sut.Types;
+
+            // ASSERT            
+            Assert.All(
+                internalNestedTypes,
                 internalType => Assert.DoesNotContain(actualTypes, x => x.Definition.Equals(internalType))
             );
         }

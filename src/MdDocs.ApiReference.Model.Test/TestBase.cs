@@ -37,9 +37,17 @@ namespace Grynwald.MdDocs.ApiReference.Test
 
         protected TypeId GetTypeId(Type t) => GetTypeDefinition(t).ToTypeId();
 
-        protected TypeDefinition GetTypeDefinition(Type t) => GetTypeDefinition(t.Name);
+        protected TypeDefinition GetTypeDefinition(Type t)
+        {
+            if(t.IsGenericType)
+            {
+                return GetTypeDefinition(t.Name, t.GetGenericArguments().Length);
+            }
 
-        protected TypeDefinition GetTypeDefinition(string name) => m_AssemblyDefinition.Value.MainModule.GetTypes().Single(typeDef => typeDef.Name == name);
+            return GetTypeDefinition(t.Name, 0);
+        }
+
+        protected TypeDefinition GetTypeDefinition(string name, int arity) => m_AssemblyDefinition.Value.MainModule.GetTypes().Single(typeDef => typeDef.Name == name && typeDef.GenericParameters.Count == arity);
 
         protected TypeDocumentation GetTypeDocumentation(Type type)
         {
@@ -56,9 +64,9 @@ namespace Grynwald.MdDocs.ApiReference.Test
             return sut;
         }
 
-        protected TypeDocumentation GetTypeDocumentation(string typeName)
+        protected TypeDocumentation GetTypeDocumentation(string typeName, int arity)
         {
-            var typeDefinition = GetTypeDefinition(typeName);
+            var typeDefinition = GetTypeDefinition(typeName, arity);
 
             var sut = new TypeDocumentation(
                 m_AssemblyDocumentation.Value.MainModuleDocumentation,

@@ -34,16 +34,24 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// <remarks>
         /// For built-in types like <c>System.String</c> this will return the C# name of the type, e.g. <c>string</c>.
         /// </remarks>
-        public override string DisplayName =>
-            s_BuiltInTypes.TryGetValue(NamespaceAndName, out var builtinName)
-                ? builtinName
-                : Name;
+        public override string DisplayName
+        {
+            get
+            {
+                var name = IsNestedType ? $"{DeclaringType.DisplayName}.{Name}" : Name;
+
+                var namespaceAndName = String.IsNullOrEmpty(Namespace.Name) ? name : $"{Namespace.Name}.{name}";
+                return s_BuiltInTypes.TryGetValue(namespaceAndName, out var builtinName)
+                    ? builtinName
+                    : name;
+            }
+        }
 
 
         /// <summary>
         /// Gets whether this type id refers to <see cref="System.Void"/>
         /// </summary>
-        public override bool IsVoid => Namespace.IsSystem && Name == "Void";
+        public override bool IsVoid => !IsNestedType && Namespace.IsSystem && Name == "Void";
 
         /// <summary>
         /// Initializes a new instance of <see cref="SimpleTypeId"/>.
@@ -59,6 +67,14 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// <param name="namespace">The namespace the type is defined in.</param>
         /// <param name="name">The type's name.</param>
         public SimpleTypeId(NamespaceId @namespace, string name) : base(@namespace, name)
+        { }
+
+        /// <summary>
+        /// Initializes a new instance of <see cref="SimpleTypeId"/> for a nested type.
+        /// </summary>
+        /// <param name="declaringType">The type the nested type is defined in.</param>
+        /// <param name="name">The type's name.</param>
+        public SimpleTypeId(TypeId declaringType, string name) : base(declaringType, name)
         { }
 
 
