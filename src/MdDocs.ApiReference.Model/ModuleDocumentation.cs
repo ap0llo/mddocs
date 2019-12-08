@@ -56,14 +56,9 @@ namespace Grynwald.MdDocs.ApiReference.Model
             m_Types = new Dictionary<TypeId, TypeDocumentation>();
             m_Namespaces = new Dictionary<NamespaceId, NamespaceDocumentation>();
 
-            foreach (var typeDefinition in GetTypeDefinitions(Definition))
+            foreach (var typeDefinition in Definition.Types.Where(t => t.IsPublic))
             {
-                var namespaceDocumentation = GetNamespaceDocumentation(typeDefinition.Namespace);
-
-                var typeDocumentation = new TypeDocumentation(this, namespaceDocumentation, typeDefinition, m_XmlDocsProvider, logger);
-
-                m_Types.Add(typeDocumentation.TypeId, typeDocumentation);
-                namespaceDocumentation.AddType(typeDocumentation);
+                LoadTypeRecursively(typeDefinition, declaringType: null);
             }
 
             Types = ReadOnlyCollectionAdapter.Create(m_Types.Values);
@@ -115,38 +110,26 @@ namespace Grynwald.MdDocs.ApiReference.Model
         }
 
 
-        private static IReadOnlyList<TypeDefinition> GetTypeDefinitions(ModuleDefinition module)
+
+        private void LoadTypeRecursively(TypeDefinition typeDefinition, TypeDocumentation declaringType)
         {
-            var types = new List<TypeDefinition>();
+            var typeId = typeDefinition.ToTypeId();
+            var namespaceDocumentation = GetNamespaceDocumentation(typeId.Namespace.Name);
 
-            foreach (var type in module.Types.Where(t => t.IsPublic))
+            var typeDocumentation = new TypeDocumentation(this, namespaceDocumentation, typeDefinition, m_XmlDocsProvider, m_Logger, declaringType);
+
+            m_Types.Add(typeDocumentation.TypeId, typeDocumentation);
+            namespaceDocumentation.AddType(typeDocumentation);
+
+
+            if(typeDefinition.HasNestedTypes)
             {
-                types.Add(type);
-
-                if(type.HasNestedTypes)
+                foreach(var nestedType in typeDefinition.NestedTypes)
                 {
-                    types.AddRange(GetTypeDefinitions(type));
+                    LoadTypeRecursively(nestedType, typeDocumentation);
                 }
             }
-
-            return types;
         }
 
-        private static IReadOnlyList<TypeDefinition> GetTypeDefinitions(TypeDefinition type)
-        {
-            var types = new List<TypeDefinition>();
-
-            foreach (var nestedType in type.NestedTypes.Where(t => t.IsNestedPublic))
-            {
-                types.Add(nestedType);
-
-                if(nestedType.HasNestedTypes)
-                {
-                    types.AddRange(GetTypeDefinitions(nestedType));
-                }
-            }
-
-            return types;
-        }
     }
 }

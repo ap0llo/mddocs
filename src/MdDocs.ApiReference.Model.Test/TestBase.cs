@@ -58,7 +58,8 @@ namespace Grynwald.MdDocs.ApiReference.Test
                 new NamespaceDocumentation(m_AssemblyDocumentation.Value.MainModuleDocumentation, null, new NamespaceId(type.Namespace), NullLogger.Instance),
                 typeDefinition,
                 NullXmlDocsProvider.Instance,
-                NullLogger.Instance
+                NullLogger.Instance,
+                null
             );
 
             return sut;
@@ -73,7 +74,8 @@ namespace Grynwald.MdDocs.ApiReference.Test
                 new NamespaceDocumentation(m_AssemblyDocumentation.Value.MainModuleDocumentation, null, new NamespaceId(typeDefinition.Namespace), NullLogger.Instance),
                 typeDefinition,
                 NullXmlDocsProvider.Instance,
-                NullLogger.Instance
+                NullLogger.Instance,
+                null
             );
 
             return sut;
