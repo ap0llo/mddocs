@@ -267,6 +267,17 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             "}\r\n"
         )]
         [InlineData(
+            nameof(CSharpDefinitionTestFlagsEnum2),
+            "[Flags]\r\n" +
+            "public enum CSharpDefinitionTestFlagsEnum2 : short\r\n" +
+            "{\r\n" +
+            "    Value1 = 0x1,\r\n" +
+            "    Value2 = 0x2,\r\n" +
+            "    Value3 = 0x4,\r\n" +
+            "    All = 0x7\r\n" +
+            "}\r\n"
+        )]
+        [InlineData(
             nameof(CSharpDefinitionTestEnum),
             "public enum CSharpDefinitionTestEnum\r\n" +
             "{\r\n" +
@@ -278,6 +289,14 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         [InlineData("CSharpDefinitionTest_GenericInterface_Contravariant`1", "public interface CSharpDefinitionTest_GenericInterface_Contravariant<in TParam>")]
         [InlineData("CSharpDefinitionTest_GenericInterface_Covariant`1", "public interface CSharpDefinitionTest_GenericInterface_Covariant<out TParam>")]
         [InlineData("CSharpDefinitionTest_GenericClass2`2", "public class CSharpDefinitionTest_GenericClass2<TParam1, TParam2>")]
+        [InlineData(nameof(CSharpDefinitionTest_ClassWithAttribute2),
+            "[CSharpDefinitionTest6(CSharpDefinitionTestFlagsEnum2.All)]\r\n" +
+            "public class CSharpDefinitionTest_ClassWithAttribute2"
+        )]
+        [InlineData(nameof(CSharpDefinitionTest_ClassWithAttribute3),
+            "[CSharpDefinitionTest6(CSharpDefinitionTestFlagsEnum2.Value1 | CSharpDefinitionTestFlagsEnum2.Value2)]\r\n" +
+            "public class CSharpDefinitionTest_ClassWithAttribute3"
+        )]
         public void GetDefinition_returns_the_expected_definition_for_types(string typeName, string expected)
         {
             // ARRANGE

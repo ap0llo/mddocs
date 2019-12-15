@@ -7,7 +7,7 @@
 An example of an custom attribute class for methods
 
 ```csharp
-[AttributeUsage(AttributeTargets.Method | AttributeTargets.All)]
+[AttributeUsage(AttributeTargets.Method)]
 public class DemoAttribute : Attribute
 ```
 

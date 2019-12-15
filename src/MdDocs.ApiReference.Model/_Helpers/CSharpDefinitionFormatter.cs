@@ -581,16 +581,57 @@ namespace Grynwald.MdDocs.ApiReference.Model
                 {
                     var builder = new StringBuilder();
 
-                    foreach (var (name, enumValue) in values)
+                    // if there is an exact match for the value in the enum
+                    // return only a single value, e.g.
+                    //
+                    // enum MyEnum
+                    // {
+                    //    Value1 = 0x01,
+                    //    Value2 = 0x02,
+                    //    Value3 = 0x04,
+                    //    All = Value1 | Value2 | Value3,
+                    // }
+                    //
+                    // when the value is 0x07, return 'MyEnum.All' instead of 'MyEnum.Value1 | MyEnum.Value2 | MyEnum.Value3' 
+                    if (values.Any(x => x.value == intValue))
                     {
-                        if ((intValue & enumValue) != 0)
+                        builder.Append(enumName);
+                        builder.Append(".");
+                        builder.Append(values.Single(x => x.value == intValue).name);
+                    }
+                    else
+                    {
+                        foreach (var (name, enumValue) in values)
                         {
-                            if (builder.Length > 0)
-                                builder.Append(" | ");
+                            // check if there the value has the flag defined by the current enum element
+                            // (as replacement for Enum.HasFlag())
+                            //
+                            // A binary AND must yield the current enum value, just comparing the result of the
+                            // AND to 0 is not sufficient, because the flags enum might have members that represent
+                            // multiple flags, e.g.:
+                            //
+                            // enum MyEnum
+                            // {
+                            //    Value1 = 0x01,
+                            //    Value2 = 0x02,
+                            //    Value3 = 0x04,
+                            //    All = Value1 | Value2 | Value3,
+                            // }
+                            //
+                            // when the enum is used like 'MyEnum.Value1 | MyEnum.Value2'
+                            // we want to only returns the two actually used values, but
+                            // '(MyEnum.Value1 | MyEnum.Value2) & MyEnum.All' is != 0
+                            // which means 'All' would always be included, unless we check
+                            // if the & yields the enum value (bc '(MyEnum.Value1 | MyEnum.Value2) & MyEnum.All != MyEnum.All)
+                            if ((intValue & enumValue) == enumValue && (intValue & enumValue) != 0)
+                            {
+                                if (builder.Length > 0)
+                                    builder.Append(" | ");
 
-                            builder.Append(enumName);
-                            builder.Append(".");
-                            builder.Append(name);
+                                builder.Append(enumName);
+                                builder.Append(".");
+                                builder.Append(name);
+                            }
                         }
                     }
 

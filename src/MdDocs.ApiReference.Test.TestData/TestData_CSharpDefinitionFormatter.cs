@@ -31,6 +31,16 @@ namespace Grynwald.MdDocs.ApiReference.Test.TestData
         }
     }
 
+    [Flags]
+    public enum CSharpDefinitionTestFlagsEnum2 : short
+    {
+        Value1 = 0x01,
+        Value2 = 0x01 << 1,
+        Value3 = 0x01 << 2,
+        All = Value1 | Value2  | Value3
+    }
+
+
     public class CSharpDefinitionTest3Attribute : Attribute
     {
         public CSharpDefinitionTest3Attribute(BindingFlags value)
@@ -48,6 +58,22 @@ namespace Grynwald.MdDocs.ApiReference.Test.TestData
     public class CSharpDefinitionTest5Attribute : Attribute
     {        
     }
+
+
+    public class CSharpDefinitionTest6Attribute : Attribute
+    {
+        public CSharpDefinitionTest6Attribute(CSharpDefinitionTestFlagsEnum2 value)
+        {
+        }
+    }
+
+    [CSharpDefinitionTest6(CSharpDefinitionTestFlagsEnum2.All)]
+    public class CSharpDefinitionTest_ClassWithAttribute2
+    { }
+
+    [CSharpDefinitionTest6(CSharpDefinitionTestFlagsEnum2.Value1 | CSharpDefinitionTestFlagsEnum2.Value2)]
+    public class CSharpDefinitionTest_ClassWithAttribute3
+    { }
 
     public enum CSharpDefinitionTestEnum
     {
