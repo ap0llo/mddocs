@@ -1,5 +1,7 @@
 ﻿# NestedTypesDemo.NestedInterface1 Interface
 
+**Declaring Type:** [NestedTypesDemo](../index.md)
+
 **Namespace:** [DemoProject](../../index.md)
 
 **Assembly:** DemoProject

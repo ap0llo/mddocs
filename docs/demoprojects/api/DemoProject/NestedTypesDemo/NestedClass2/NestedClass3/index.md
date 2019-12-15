@@ -1,5 +1,7 @@
 ﻿# NestedTypesDemo.NestedClass2.NestedClass3 Class
 
+**Declaring Type:** [NestedTypesDemo.NestedClass2](../index.md)
+
 **Namespace:** [DemoProject](../../../index.md)
 
 **Assembly:** DemoProject

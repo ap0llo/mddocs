@@ -73,6 +73,14 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 
         private void AddDefinitionSection(MdContainerBlock block)
         {
+            // Add declaring type
+            if (Model.IsNestedType)
+            {
+                block.Add(
+                    new MdParagraph(new MdStrongEmphasisSpan("Declaring Type:"), " ", GetMdSpan(Model.DeclaringType.TypeId))
+                );
+            }
+
             // Add Namespace            
             block.Add(
                 new MdParagraph(new MdStrongEmphasisSpan("Namespace:"), " ", GetMdSpan(Model.NamespaceDocumentation.NamespaceId))
