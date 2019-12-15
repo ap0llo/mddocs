@@ -5,7 +5,7 @@
 **Assembly:** DemoProject
 
 ```csharp
-interface NestedInterface1
+public interface NestedInterface1
 ```
 ___
 

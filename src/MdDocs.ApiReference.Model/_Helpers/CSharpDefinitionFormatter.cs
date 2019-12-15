@@ -294,14 +294,30 @@ namespace Grynwald.MdDocs.ApiReference.Model
             definitionBuilder.Append(" ");
 
             // class name and type parameters
-            if (type.HasGenericParameters && !type.IsNested)
+            if (type.HasGenericParameters)
             {
                 // remove number of type parameters from type name
-                var name = type.Name.Substring(0, type.Name.LastIndexOf('`'));
-                definitionBuilder.Append(name);
-                AppendTypeParameters(definitionBuilder, type.GenericParameters);
+                var index = type.Name.LastIndexOf('`');
 
-                //TODO: Support for nested types
+                // for nested types, the type's name might not include the arity
+                // because all type parameters are type parameters of the declaring type, e.g.
+                // 
+                // public class MyClass<T>
+                // {
+                //    public class NestedType
+                //    { }
+                // }
+                //
+                if (index > 0)
+                {
+                    var name = type.Name.Substring(0, index);
+                    definitionBuilder.Append(name);
+                    AppendTypeParameters(definitionBuilder, type.GenericParameters);
+                }
+                else
+                {
+                    definitionBuilder.Append(type.Name);
+                }
             }
             else
             {
@@ -316,7 +332,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
             return definitionBuilder.ToString();
         }
 
-   
+
         private static void AppendCustomAttributes(StringBuilder definitionBuilder, IEnumerable<CustomAttribute> customAttributes, bool singleLine = false)
         {
             foreach (var attribute in customAttributes)
@@ -345,7 +361,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
                 definitionBuilder.Append("]");
 
-                if(!singleLine)
+                if (!singleLine)
                 {
                     definitionBuilder.Append("\r\n");
                 }
@@ -388,7 +404,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         private static void AppendTypeModifiers(StringBuilder definitionBuilder, TypeDefinition type, TypeKind typeKind)
         {
             // "public"
-            if (type.IsPublic)
+            if (type.IsPublic || type.IsNestedPublic)
             {
                 definitionBuilder.Append("public ");
             }
@@ -557,7 +573,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
             // string => put in quotation marks
             if (typeReference.FullName == Constants.StringFullName)
             {
-                if(value is null)
+                if (value is null)
                 {
                     return "null";
                 }
@@ -685,7 +701,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
             if (parameterType is ByReferenceType byReferenceType)
             {
                 parameterType = byReferenceType.ElementType;
-                if(parameter.Attributes.HasFlag(ParameterAttributes.Out))
+                if (parameter.Attributes.HasFlag(ParameterAttributes.Out))
                 {
                     definitionBuilder.Append("out ");
                 }
@@ -705,13 +721,13 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
             // add parameter name
             definitionBuilder.Append(parameter.Name);
-            
+
             // if parameter has a default value, include it in the definition
             if (parameter.Attributes.HasFlag(ParameterAttributes.Optional) &&
                 parameter.Attributes.HasFlag(ParameterAttributes.HasDefault))
             {
                 definitionBuilder.Append(" = ");
-                definitionBuilder.Append(GetLiteral(parameter.ParameterType, parameter.Constant));                
+                definitionBuilder.Append(GetLiteral(parameter.ParameterType, parameter.Constant));
             }
 
             return definitionBuilder.ToString();

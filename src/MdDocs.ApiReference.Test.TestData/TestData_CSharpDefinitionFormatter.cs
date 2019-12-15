@@ -37,7 +37,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.TestData
         Value1 = 0x01,
         Value2 = 0x01 << 1,
         Value3 = 0x01 << 2,
-        All = Value1 | Value2  | Value3
+        All = Value1 | Value2 | Value3
     }
 
 
@@ -56,7 +56,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.TestData
     }
 
     public class CSharpDefinitionTest5Attribute : Attribute
-    {        
+    {
     }
 
 
@@ -312,5 +312,22 @@ namespace Grynwald.MdDocs.ApiReference.Test.TestData
     public static class TestClass_CSharpDefinition_ExtensionMethods
     {
         public static void Method1(this string param) => throw new NotImplementedException();
+    }
+
+
+
+    public class TestClass_CSharpDefinition_NestedTypes
+    {
+        public class TestClass_CSharpDefinition_NestedClass1
+        {
+            public class TestClass_CSharpDefinition_NestedClass2
+            { }
+        }
+
+        public interface TestClass_CSharpDefinition_NestedInterface1
+        { }
+
+        public class TestClass_CSharpDefinition_NestedClass4<T>
+        { }
     }
 }

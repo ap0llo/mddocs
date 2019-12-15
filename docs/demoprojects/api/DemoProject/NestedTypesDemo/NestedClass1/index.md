@@ -5,7 +5,7 @@
 **Assembly:** DemoProject
 
 ```csharp
-class NestedClass1
+public class NestedClass1
 ```
 
 **Inheritance:** object → NestedTypesDemo.NestedClass1

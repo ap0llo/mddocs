@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Grynwald.MdDocs.ApiReference.Model;
 using Grynwald.MdDocs.ApiReference.Test.TestData;
 using Xunit;
+using Mono.Cecil;
 
 namespace Grynwald.MdDocs.ApiReference.Test.Model
 {
@@ -304,6 +306,50 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
                 .MainModule
                 .Types
                 .Single(p => p.Name == typeName);
+
+            // ACT
+            var actual = CSharpDefinitionFormatter.GetDefinition(typeDefinition);
+
+            // ASSERT
+            Assert.Equal(expected, actual);
+        }
+
+
+        [Theory]
+        [InlineData(
+            nameof(TestClass_CSharpDefinition_NestedTypes),
+            nameof(TestClass_CSharpDefinition_NestedTypes.TestClass_CSharpDefinition_NestedClass1),
+            "public class TestClass_CSharpDefinition_NestedClass1"
+        )]
+        [InlineData(
+            nameof(TestClass_CSharpDefinition_NestedTypes),
+            nameof(TestClass_CSharpDefinition_NestedTypes.TestClass_CSharpDefinition_NestedInterface1),
+            "public interface TestClass_CSharpDefinition_NestedInterface1"
+        )]
+        [InlineData(
+            nameof(TestClass_CSharpDefinition_NestedTypes),
+            "TestClass_CSharpDefinition_NestedClass4`1",
+            "public class TestClass_CSharpDefinition_NestedClass4<T>"
+        )]
+        [InlineData(nameof(
+            TestClass_CSharpDefinition_NestedTypes),
+            nameof(TestClass_CSharpDefinition_NestedTypes.TestClass_CSharpDefinition_NestedClass1.TestClass_CSharpDefinition_NestedClass2),
+            "public class TestClass_CSharpDefinition_NestedClass2"
+        )]
+        public void GetDefinition_returns_the_expected_definition_for_nested_types(string declaringTypeName, string typeName, string expected)
+        {
+            IEnumerable<TypeDefinition> GetNestedTypes(TypeDefinition type)
+            {
+                return type.NestedTypes.Union(type.NestedTypes.SelectMany(GetNestedTypes));
+            }
+
+            // ARRANGE
+            var declaringTypeDefinition = m_AssemblyDefinition.Value
+                .MainModule
+                .Types
+                .Single(p => p.Name == declaringTypeName);
+
+            var typeDefinition = GetNestedTypes(declaringTypeDefinition).Single(p => p.Name == typeName);
 
             // ACT
             var actual = CSharpDefinitionFormatter.GetDefinition(typeDefinition);
