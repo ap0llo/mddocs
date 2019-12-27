@@ -77,26 +77,37 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
 
         private NamespaceId ParseNamespaceId()
         {
-            var nameSegments = ParseNameSegments();
-            var namespaceId = new NamespaceId(String.Join(".", nameSegments));
+            var namespaceBuilder = new NamespaceIdBuilder();
 
-            // all token should be parsed now
+            // there needs to be at least one name
+            namespaceBuilder.AddNameSegment(MatchToken(MemberIdTokenKind.Name));
+
+            // as long as there are more dots, consume more name segments
+            while (TestAndMatchToken(MemberIdTokenKind.Dot))
+            {
+                namespaceBuilder.AddNameSegment(MatchToken(MemberIdTokenKind.Name));
+            }
+            
+            // all tokens should be parsed now
             MatchToken(MemberIdTokenKind.Eof);
 
-            return namespaceId;
+            return namespaceBuilder.ToNamespaceId();
         }
 
         private TypeId ParseTypeId()
         {
             // id always starts with a name            
-            var nameSegments = ParseNameSegments();
+            var nameSegments = ParseNameSegmentsWithArity();
 
-            // optional part: number of type arguments for generic types
-            var arity = ParseTypeArity();
+            var typeIdBuilder = TypeIdBuilder.Create();
+            foreach (var (name, arity) in nameSegments)
+            {
+                typeIdBuilder = typeIdBuilder
+                    .AddNameSegment(name)
+                    .SetArity(arity);
+            }
 
-            var namespaceName = String.Join(".", nameSegments.Take(nameSegments.Count - 1));
-            var typeName = nameSegments[nameSegments.Count - 1];
-            var type = CreateTypeId(namespaceName, typeName, arity);
+            var type = typeIdBuilder.ToTypeId();
 
             // if the type if followed by square brackets, the id refers to an array type
             // arrays of arrays are allowed, too
@@ -110,51 +121,27 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
 
         private FieldId ParseFieldId()
         {
-            var (definingType, name) = ParseFieldOrEventId();
+            var (definingType, name) = ParseMemberId();
+
+            // there shouldn't be anything left after that
+            MatchToken(MemberIdTokenKind.Eof);
+
             return new FieldId(definingType, name);
         }
 
         private EventId ParseEventId()
         {
-            var (definingType, name) = ParseFieldOrEventId();
-            return new EventId(definingType, name);
-        }
-
-        private (TypeId definingType, string name) ParseFieldOrEventId()
-        {
-            // id always starts with a name                        
-            var nameSegments = ParseNameSegments();
-
-            // optional part: type arity
-            var typeArity = ParseTypeArity();
-
-            // for generic types, the name of the field or event follows after the arity
-            if (typeArity != 0)
-            {
-                MatchToken(MemberIdTokenKind.Dot);
-                nameSegments.Add(MatchToken(MemberIdTokenKind.Name));
-            }
+            var (definingType, name) = ParseMemberId();
 
             // there shouldn't be anything left after that
             MatchToken(MemberIdTokenKind.Eof);
 
-            return CreateTypeIdFromMemberNameSegments(nameSegments, typeArity);
+            return new EventId(definingType, name);
         }
 
         private MethodId ParseMethodId()
         {
-            // id always starts with a name            
-            var nameSegments = ParseNameSegments();
-
-            // optional part: type arity
-            var typeArity = ParseTypeArity();
-
-            // for generic types, the name of the method follows after the arity
-            if (typeArity != 0)
-            {
-                MatchToken(MemberIdTokenKind.Dot);
-                nameSegments.Add(MatchToken(MemberIdTokenKind.Name));
-            }
+            var (definingType, methodName) = ParseMemberId();
 
             // optional part: method arity
             var methodArity = ParseMethodArity();
@@ -172,25 +159,13 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
             // ensure we parsed all tokens
             MatchToken(MemberIdTokenKind.Eof);
 
-            var (definingType, methodName) = CreateTypeIdFromMemberNameSegments(nameSegments, typeArity);
-
             return new MethodId(definingType, methodName, methodArity, methodParameters, methodReturnType);
         }
 
         private PropertyId ParsePropertyId()
         {
-            // id always starts with a name            
-            var nameSegments = ParseNameSegments();
-
-            // optional part: back-tick + number => arity of generic type
-            var typeArity = ParseTypeArity();
-
-            // for generic types, the name of the property follows after the arity
-            if (typeArity != 0)
-            {
-                MatchToken(MemberIdTokenKind.Dot);
-                nameSegments.Add(MatchToken(MemberIdTokenKind.Name));
-            }
+            // parse defining type and property name
+            var (definingType, propertyName) = ParseMemberId();
 
             // optional part: parameter list (used for indexers)
             var parameters = ParseParameterList();
@@ -198,29 +173,62 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
             // ensure we parsed all tokens
             MatchToken(MemberIdTokenKind.Eof);
 
-            var (definingType, propertyName) = CreateTypeIdFromMemberNameSegments(nameSegments, typeArity);
-
             return new PropertyId(definingType, propertyName, parameters ?? Array.Empty<TypeId>());
         }
 
 
-        private List<string> ParseNameSegments()
+        private (TypeId definingType, string name) ParseMemberId()
         {
-            var nameSegments = new List<string>
-            {
+            // id always starts with a name
+            var nameSegments = ParseNameSegmentsWithArity();
 
+            // there need to be at least 2 name segments:
+            // - The defining type (might be a single name if type is defined in global namespace)
+            // - The name of the member (method, field, property, event)
+            if (nameSegments.Count < 2)
+                throw new MemberIdParserException("Invalid input, type member name requires name of defining type and member");
+
+            // the last segment is the name of the member
+            var lastSegment = nameSegments.Last();
+
+            // there mustn't be any (type) arity on the last segment
+            // (method type parameters are handled separately in ParseMethoodId())
+            if (lastSegment.arity != 0)
+                throw new MemberIdParserException("Invalid input, unexpected arity suffix on member name");
+
+            // all segments but the last are part of the name of the defining type
+            nameSegments = nameSegments.Take(nameSegments.Count - 1).ToList();
+            
+            var typeBuilder = TypeIdBuilder.Create();
+            foreach (var (name, arity) in nameSegments)
+            {
+                typeBuilder = typeBuilder
+                    .AddNameSegment(name)
+                    .SetArity(arity);
+            }
+
+            return (typeBuilder.ToTypeId(), lastSegment.name);
+        }
+
+        private List<(string name, int arity)> ParseNameSegmentsWithArity()
+        {
+            var segments = new List<(string, int)>
+            {
                 // there must be at least one name segment
-                MatchToken(MemberIdTokenKind.Name)
+                (MatchToken(MemberIdTokenKind.Name), ParseTypeArity())
             };
 
             // as long as there are more dots, consume more name segments
             while (Current.Kind == MemberIdTokenKind.Dot)
             {
                 MatchToken(MemberIdTokenKind.Dot);
-                nameSegments.Add(MatchToken(MemberIdTokenKind.Name));
+
+                var name = MatchToken(MemberIdTokenKind.Name);
+                var arity = ParseTypeArity();
+                segments.Add((name, arity));
             }
 
-            return nameSegments;
+            return segments;
         }
 
         private TypeId ParseArraySuffix(TypeId elementType)
@@ -333,28 +341,38 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
             }
             else
             {
-                var nameSegments = ParseNameSegments();
+                var typeIdBuilder = TypeIdBuilder.Create();
 
-                // optional part: type arguments (enclosed by '{' and '}')
-                var typeArguments = default(IReadOnlyList<TypeId>);
-                if (TestAndMatchToken(MemberIdTokenKind.OpenBrace))
+                // there needs to be at least one name segment
+                typeIdBuilder = typeIdBuilder.AddNameSegment(MatchToken(MemberIdTokenKind.Name));
+
+                // consume all name tokens as long as the current token is a '.'
+                // A open brace '{' indicates the start of a list of type arguments
+                while (TestToken(MemberIdTokenKind.Dot, MemberIdTokenKind.OpenBrace))
                 {
-                    typeArguments = ParseTypeNameList();
-                    MatchToken(MemberIdTokenKind.CloseBrace);
+                    if (TestAndMatchToken(MemberIdTokenKind.Dot))
+                    {
+                        // match a single name token and append it to the current type name
+                        var name = MatchToken(MemberIdTokenKind.Name);
+                        typeIdBuilder = typeIdBuilder.AddNameSegment(name);
+                    }
+                    else if (TestAndMatchToken(MemberIdTokenKind.OpenBrace))
+                    {
+                        // parse list of type arguments
+                        var typeArguments = ParseTypeNameList();
+                        typeIdBuilder = typeIdBuilder.SetTypeArguments(typeArguments);
+
+                        // type argument list must be followed by a '}'
+                        MatchToken(MemberIdTokenKind.CloseBrace);
+                    }
+                    else
+                    {
+                        // should never happen
+                        throw new InvalidOperationException();
+                    }
                 }
 
-                var namespaceName = String.Join(".", nameSegments.Take(nameSegments.Count - 1));
-                var typeName = nameSegments[nameSegments.Count - 1];
-
-
-                if (typeArguments != null)
-                {
-                    type = new GenericTypeInstanceId(new NamespaceId(namespaceName), typeName, typeArguments);
-                }
-                else
-                {
-                    type = new SimpleTypeId(new NamespaceId(namespaceName), typeName);
-                }
+                type = typeIdBuilder.ToTypeId();
             }
 
             // optional part: array declaration
@@ -362,11 +380,14 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
             // arrays of arrays are allowed, too
             type = ParseArraySuffix(type);
 
-
             // optional suffix: @
             // if the type is followed by an '@' the parameter is being parsed by reference
             // (methods with 'out' or 'ref' parameter)
-            type = ParseByReferenceSuffix(type);
+
+            if (TestAndMatchToken(MemberIdTokenKind.At))
+            {
+                type = new ByReferenceTypeId(type);
+            }
 
             return type;
         }
@@ -376,18 +397,6 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
 
         private int ParseMethodArity() =>
             TestAndMatchToken(MemberIdTokenKind.DoubleBacktick) ? Int32.Parse(MatchToken(MemberIdTokenKind.Number)) : 0;
-
-        private TypeId ParseByReferenceSuffix(TypeId type)
-        {
-            if(TestAndMatchToken(MemberIdTokenKind.At))
-            {
-                return new ByReferenceTypeId(type);
-            }
-            else
-            {
-                return type;
-            }
-        }
 
         private string MatchToken(MemberIdTokenKind kind)
         {
@@ -416,34 +425,14 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
             }
         }
 
+        private bool TestToken(MemberIdTokenKind kind1, MemberIdTokenKind kind2)
+        {
+            return Current.Kind == kind1 || Current.Kind == kind2;
+        }
+
         private MemberIdParserException UnexpectedToken(params MemberIdTokenKind[] expected)
         {
             return new MemberIdParserException($"Unexpected token. Expected {String.Join(",", expected)} but was {Current.Kind}");
-        }
-
-        private TypeId CreateTypeId(string namespaceName, string typeName, int arity)
-        {
-            if (arity > 0)
-            {
-                return new GenericTypeId(new NamespaceId(namespaceName), typeName, arity);
-            }
-            else
-            {
-                return new SimpleTypeId(new NamespaceId(namespaceName), typeName);
-            }
-        }
-
-        private (TypeId definingType, string memberName) CreateTypeIdFromMemberNameSegments(IReadOnlyList<string> nameSegments, int typeArity)
-        {
-            // type member name needs at least two name segments (type name + field/event/property/method name)
-            if (nameSegments.Count < 2)
-                throw new MemberIdParserException("Invalid input, type member name requires name of defining type and member");
-
-            var namespaceName = String.Join(".", nameSegments.Take(nameSegments.Count - 2));
-            var typeName = nameSegments[nameSegments.Count - 2];
-            var name = nameSegments[nameSegments.Count - 1];
-
-            return (CreateTypeId(namespaceName, typeName, typeArity), name);
         }
     }
 }

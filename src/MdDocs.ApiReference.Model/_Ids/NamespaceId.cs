@@ -7,6 +7,8 @@ namespace Grynwald.MdDocs.ApiReference.Model
     /// </summary>
     public sealed class NamespaceId : MemberId, IEquatable<NamespaceId>
     {
+        public static readonly NamespaceId GlobalNamespace = new NamespaceId("");
+
         /// <summary>
         /// Gets the name of the namespace.
         /// </summary>

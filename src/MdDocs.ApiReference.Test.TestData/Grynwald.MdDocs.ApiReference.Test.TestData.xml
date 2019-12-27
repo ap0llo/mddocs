@@ -194,15 +194,31 @@
             Example of an inner class
             </summary>
         </member>
+        <member name="M:Grynwald.MdDocs.ApiReference.Test.TestData.TestClass_NestedTypes.NestedClass1.Method1">
+            <summary>
+            Method in a nested class
+            </summary>
+        </member>
         <member name="T:Grynwald.MdDocs.ApiReference.Test.TestData.TestClass_NestedTypes.NestedInterface1">
             <summary>
             Example of an inner class
+            </summary>
+        </member>
+        <member name="M:Grynwald.MdDocs.ApiReference.Test.TestData.TestClass_NestedTypes.NestedClass4`1.Method1">
+            <summary>
+            Method in a nested class
             </summary>
         </member>
         <member name="T:Grynwald.MdDocs.ApiReference.Test.TestData.TestClass_NestedTypes`1.NestedClass1">
             <summary>
             Example of an inner class
             </summary>
+        </member>
+        <member name="M:Grynwald.MdDocs.ApiReference.Test.TestData.TestClass_NestedTypes`1.Method3(Grynwald.MdDocs.ApiReference.Test.TestData.TestClass_NestedTypes{System.String}.NestedClass1.NestedClass2{System.Int32})">
+            <summary>
+            Method 3
+            </summary>
+            <param name="parameter"></param>
         </member>
         <member name="T:Grynwald.MdDocs.ApiReference.Test.TestData.TestClass_Obsolete">
             <summary>
