@@ -6,6 +6,8 @@
 
 **Assembly:** DemoProject
 
+This is an example of an nested class within a nested class
+
 ```csharp
 public class NestedClass3
 ```

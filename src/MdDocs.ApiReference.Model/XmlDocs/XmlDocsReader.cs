@@ -45,35 +45,24 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
     internal class XmlDocsReader
     {
         private readonly ILogger m_Logger;
+        private readonly XDocument m_Document;
+        private readonly string m_FileName;
+        private readonly IReadOnlyCollection<TypeId> m_OuterTypes;
 
-
-        public XmlDocsReader(ILogger logger)
+        public XmlDocsReader(ILogger logger, string fileName, IReadOnlyCollection<TypeId> outerTypes)
         {
             m_Logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            m_FileName = fileName ?? throw new ArgumentNullException(nameof(fileName));
+            m_OuterTypes = outerTypes ?? throw new ArgumentNullException(nameof(outerTypes));
         }
 
-
-        /// <summary>
-        /// Reads the specified documentation file and returns list of members.
-        /// </summary>
-        /// <param name="fileName">Path to the documentation file.</param>
-        /// <returns>All documented members found in the given file.</returns>
-        /// <exception cref="FileNotFoundException">Thrown when the specified file does not exist.</exception>
-        /// <exception cref="ArgumentNullException">Thrown when any of the specified parameters is <c>null</c></exception>
-        public IReadOnlyList<MemberElement> Read(string fileName)
+        public XmlDocsReader(ILogger logger, XDocument document, IReadOnlyCollection<TypeId> outerTypes)
         {
-            if (fileName == null)
-                throw new ArgumentNullException(nameof(fileName));
-
-            if (!File.Exists(fileName))
-                throw new FileNotFoundException("Could not find documentation file to load.", fileName);
-
-            m_Logger.LogInformation($"Reading XML documentation comments from '{fileName}'");
-
-            var document = XDocument.Load(fileName, LoadOptions.SetBaseUri | LoadOptions.SetLineInfo);
-
-            return Read(document);
+            m_Logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            m_Document = document ?? throw new ArgumentNullException(nameof(document));
+            m_OuterTypes = outerTypes ?? throw new ArgumentNullException(nameof(outerTypes));
         }
+
 
         /// <summary>
         /// Reads the specified documentation document and returns list of members.
@@ -81,10 +70,22 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
         /// <param name="document">The XML documentation file to read.</param>
         /// <returns>All documented members found in the given file.</returns>
         /// <exception cref="ArgumentNullException">Thrown when any of the specified parameters is <c>null</c></exception>
-        public IReadOnlyList<MemberElement> Read(XDocument document)
+        public IReadOnlyList<MemberElement> Read()
         {
-            if (document == null)
-                throw new ArgumentNullException(nameof(document));
+            XDocument document;
+            if(m_Document == null)
+            {
+                if (!File.Exists(m_FileName))
+                    throw new FileNotFoundException("Could not find documentation file to load.", m_FileName);
+
+                m_Logger.LogInformation($"Reading XML documentation comments from '{m_FileName}'");
+
+                document = XDocument.Load(m_FileName, LoadOptions.SetBaseUri | LoadOptions.SetLineInfo);
+            }
+            else
+            {
+                document = m_Document;
+            }
 
             return document.Root.Element("members")
                 .Elements("member")
@@ -525,7 +526,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
 
         private bool TryParseMemberId(string value, out MemberId memberId)
         {
-            if (!MemberId.TryParse(value, out memberId))
+            if (!MemberId.TryParse(value, m_OuterTypes, out memberId))
             {
                 m_Logger.LogWarning($"Failed to parse member id '{value}'.");
                 return false;

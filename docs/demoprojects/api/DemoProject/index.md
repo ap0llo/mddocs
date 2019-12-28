@@ -10,9 +10,9 @@
 | [DemoPropertyAnnotationAttribute](DemoPropertyAnnotationAttribute/index.md)                     | An example of a custom attribute that is used to annotate a property with custom flags.         |
 | [ListExample](ListExample/index.md)                                                             | Example class to showcase the different supported list formats.                                 |
 | [NestedTypesDemo](NestedTypesDemo/index.md)                                                     | This class shows an example of how the documentation for nested types looks.                    |
-| [NestedTypesDemo.NestedClass1](NestedTypesDemo/NestedClass1/index.md)                           |                                                                                                 |
-| [NestedTypesDemo.NestedClass2](NestedTypesDemo/NestedClass2/index.md)                           |                                                                                                 |
-| [NestedTypesDemo.NestedClass2.NestedClass3](NestedTypesDemo/NestedClass2/NestedClass3/index.md) |                                                                                                 |
+| [NestedTypesDemo.NestedClass1](NestedTypesDemo/NestedClass1/index.md)                           | This is an example of a nested class                                                            |
+| [NestedTypesDemo.NestedClass2](NestedTypesDemo/NestedClass2/index.md)                           | This is an example of a nested class that in turn contains nested types                         |
+| [NestedTypesDemo.NestedClass2.NestedClass3](NestedTypesDemo/NestedClass2/NestedClass3/index.md) | This is an example of an nested class within a nested class                                     |
 | [ObsoleteDemoClass](ObsoleteDemoClass/index.md)                                                 | A class meant to demonstrate how the generated documentation for a deprecated class looks like. |
 
 ## Structs
@@ -26,7 +26,7 @@
 | Name                                                                          | Description                                                                                 |
 | ----------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
 | [IDemoInterface](IDemoInterface/index.md)                                     | A interface meant to demonstrate how the generated documentation for interfaces looks like. |
-| [NestedTypesDemo.NestedInterface1](NestedTypesDemo/NestedInterface1/index.md) |                                                                                             |
+| [NestedTypesDemo.NestedInterface1](NestedTypesDemo/NestedInterface1/index.md) | This is an example of a nested interface                                                    |
 
 ## Enums
 

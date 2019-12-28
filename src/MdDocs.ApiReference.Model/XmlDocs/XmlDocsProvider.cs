@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Grynwald.Utilities.Collections;
 using Microsoft.Extensions.Logging;
+using Mono.Cecil;
 
 namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
 {
@@ -17,10 +19,19 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
         /// </summary>
         /// <param name="xmlDocsPath">The path of the XML documentation file to read.</param>
         /// <param name="logger">The logger to log events to.</param>
-        internal XmlDocsProvider(string xmlDocsPath, ILogger logger)
+        internal XmlDocsProvider(AssemblyDefinition assemblyDefinition, string xmlDocsPath, ILogger logger)
         {
-            var xmlDocsReader = new XmlDocsReader(logger);
-            var model = xmlDocsReader.Read(xmlDocsPath);
+            if (assemblyDefinition is null)
+                throw new ArgumentNullException(nameof(assemblyDefinition));
+
+            var outerTypes = assemblyDefinition
+                .MainModule
+                .Types
+                .Select(x => x.ToTypeId())
+                .ToHashSet();
+
+            var xmlDocsReader = new XmlDocsReader(logger, xmlDocsPath, outerTypes);
+            var model = xmlDocsReader.Read();
             m_Members = model.ToDictionary(m => m.MemberId);
         }
 

@@ -6,6 +6,8 @@
 
 **Assembly:** DemoProject
 
+This is an example of a nested interface
+
 ```csharp
 public interface NestedInterface1
 ```
