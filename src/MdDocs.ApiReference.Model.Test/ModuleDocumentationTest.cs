@@ -92,6 +92,9 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
                 typeof(TestClass_CSharpDefinition_NestedTypes.TestClass_CSharpDefinition_NestedClass1.TestClass_CSharpDefinition_NestedClass2),
                 typeof(TestClass_CSharpDefinition_NestedTypes.TestClass_CSharpDefinition_NestedInterface1),
                 typeof(TestClass_CSharpDefinition_NestedTypes.TestClass_CSharpDefinition_NestedClass4<>),
+                typeof(TestClass_CSharpDefinition_NestedTypes.TestClass_CSharpDefinition_NestedClass4<>.NestedClass5),
+                typeof(TestClass_CSharpDefinition_NestedTypes.NestedClass6<,>),
+                typeof(TestClass_CSharpDefinition_NestedTypes.NestedClass6<,>.NestedClass7<>),
             })
             .Distinct()
             .Select(GetTypeDefinition)

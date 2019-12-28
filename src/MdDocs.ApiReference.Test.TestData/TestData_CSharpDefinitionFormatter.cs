@@ -328,6 +328,16 @@ namespace Grynwald.MdDocs.ApiReference.Test.TestData
         { }
 
         public class TestClass_CSharpDefinition_NestedClass4<T>
-        { }
+        {
+            public class NestedClass5
+            { }
+        }
+
+
+        public class NestedClass6<T1, T2>
+        {
+            public class NestedClass7<T3>
+            { }
+        }
     }
 }

@@ -9,7 +9,7 @@
 This is an example of a nested class
 
 ```csharp
-public class NestedClass1
+public class NestedTypesDemo.NestedClass1
 ```
 
 **Inheritance:** object → NestedTypesDemo.NestedClass1
