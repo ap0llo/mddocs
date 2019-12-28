@@ -117,6 +117,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
             var namespaceDocumentation = GetNamespaceDocumentation(typeId.Namespace.Name);
 
             var typeDocumentation = new TypeDocumentation(this, namespaceDocumentation, typeDefinition, m_XmlDocsProvider, m_Logger, declaringType);
+            declaringType?.AddNestedType(typeDocumentation);
 
             m_Types.Add(typeDocumentation.TypeId, typeDocumentation);
             namespaceDocumentation.AddType(typeDocumentation);

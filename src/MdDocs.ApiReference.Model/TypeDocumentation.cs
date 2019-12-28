@@ -21,6 +21,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         private readonly IDictionary<string, IndexerDocumentation> m_Indexers;
         private readonly IDictionary<string, MethodDocumentation> m_Methods;
         private readonly IDictionary<OperatorKind, OperatorDocumentation> m_Operators;
+        private readonly List<TypeDocumentation> m_NestedTypes = new List<TypeDocumentation>();
 
 
         /// <summary>
@@ -156,6 +157,11 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// The model class for the declaring type if the type is a nested type, otherwise <c>null</c>.
         /// </value>
         public TypeDocumentation DeclaringType { get; }
+
+        /// <summary>
+        /// Gets the type's nested types
+        /// </summary>
+        public IReadOnlyCollection<TypeDocumentation> NestedTypes => m_NestedTypes;
 
         /// <summary>
         /// Gets the type's underlying Mono.Cecil definition.
@@ -317,6 +323,18 @@ namespace Grynwald.MdDocs.ApiReference.Model
                 default:
                     return ModuleDocumentation.TryGetDocumentation(id);
             }
+        }
+
+
+        internal void AddNestedType(TypeDocumentation nestedType)
+        {
+            if (nestedType is null)
+                throw new ArgumentNullException(nameof(nestedType));
+
+            if (nestedType.DeclaringType != this)
+                throw new ArgumentException("Cannot add nested type with a different declaring type", nameof(nestedType));
+
+            m_NestedTypes.Add(nestedType);
         }
 
 

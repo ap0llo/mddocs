@@ -62,6 +62,8 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 
             //TODO: Extension methods
 
+            AddNestedTypesSection(document.Root);
+
             AddExampleSection(document.Root);
 
             AddSeeAlsoSection(document.Root);
@@ -223,6 +225,25 @@ namespace Grynwald.MdDocs.ApiReference.Pages
                     block.Add(ConvertToBlock(typeParameter.Description));
                 }
             }
+        }
+
+        private void AddNestedTypesSection(MdContainerBlock block)
+        {
+            if (Model.NestedTypes.Count == 0)
+                return;
+
+            block.Add(new MdHeading(2, "Nested Types"));
+
+            var table = new MdTable(new MdTableRow("Name", "Description"));
+            foreach (var type in Model.NestedTypes.OrderBy(x => x.DisplayName))
+            {
+                table.Add(
+                    new MdTableRow(
+                        CreateLink(type.MemberId, type.DisplayName),
+                        ConvertToSpan(type.Summary)
+                ));
+            }
+            block.Add(table);
         }
     }
 }
