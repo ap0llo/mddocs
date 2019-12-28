@@ -343,12 +343,12 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         )]
         [InlineData(
             nameof(TestClass_CSharpDefinition_NestedTypes),
-            "NestedClass7`1",
+            "NestedClass7`1",   
             "public class TestClass_CSharpDefinition_NestedTypes.NestedClass6<T1, T2>.NestedClass7<T3>"
         )]
         public void GetDefinition_returns_the_expected_definition_for_nested_types(string declaringTypeName, string typeName, string expected)
         {
-            static IEnumerable<TypeDefinition> GetNestedTypes(TypeDefinition type)
+            IEnumerable<TypeDefinition> GetNestedTypes(TypeDefinition type)
             {
                 return type.NestedTypes.Union(type.NestedTypes.SelectMany(GetNestedTypes));
             }

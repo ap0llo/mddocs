@@ -281,61 +281,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// Gets the C# code defining the specified type.
         /// </summary>
         public static string GetDefinition(TypeDefinition type)
-        {            
-            static void AppendTypeName(StringBuilder definitionBuilder, TypeDefinition type)
-            {
-                if (type.IsNested)
-                {
-                    AppendTypeName(definitionBuilder, type.DeclaringType);
-                    definitionBuilder.Append(".");
-                }
-
-                // class name and type parameters
-                if (type.HasGenericParameters)
-                {
-                    // remove number of type parameters from type name
-                    var index = type.Name.LastIndexOf('`');
-
-                    // for nested types, the type's name might not include the arity
-                    // because all type parameters are type parameters of the declaring type, e.g.
-                    // 
-                    // public class MyClass<T>
-                    // {
-                    //    public class NestedType
-                    //    { }
-                    // }
-                    //
-                    if (index > 0)
-                    {
-                        var name = type.Name.Substring(0, index);
-                        definitionBuilder.Append(name);
-
-                        IEnumerable<GenericParameter> genericParameters = type.GenericParameters;
-                        if (type.IsNested)
-                        {
-                            // determine generic parameter for nested types:
-                            // type.GenericParameters for a nested class contains both the
-                            // generic parameters of the nested type *and* the generic parameters
-                            // of the surrounding types.
-                            // To avoid appending too many generic parameters,
-                            // remove the declaring type's parameter from the list.                            
-                            genericParameters = genericParameters
-                                .Where(p1 => !type.DeclaringType.GenericParameters.Any(p2 => p2.Name == p1.Name));
-                        }
-
-                        AppendTypeParameters(definitionBuilder, genericParameters);
-                    }
-                    else
-                    {
-                        definitionBuilder.Append(type.Name);
-                    }
-                }
-                else
-                {
-                    definitionBuilder.Append(type.Name);
-                }
-            }
-
+        {                        
             var definitionBuilder = new StringBuilder();
             var typeKind = type.Kind();
 
@@ -347,7 +293,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
             definitionBuilder.Append(" ");
 
             // type name
-            AppendTypeName(definitionBuilder, type);
+            AppendTypeDefinitionTypeName(definitionBuilder, type);
 
             // base type and interface implementations
             AppendBaseTypes(type, typeKind, definitionBuilder);
@@ -358,7 +304,60 @@ namespace Grynwald.MdDocs.ApiReference.Model
         }
 
 
-        
+        private static void AppendTypeDefinitionTypeName(StringBuilder definitionBuilder, TypeDefinition type)
+        {
+            if (type.IsNested)
+            {
+                AppendTypeDefinitionTypeName(definitionBuilder, type.DeclaringType);
+                definitionBuilder.Append(".");
+            }
+
+            // class name and type parameters
+            if (type.HasGenericParameters)
+            {
+                // remove number of type parameters from type name
+                var index = type.Name.LastIndexOf('`');
+
+                // for nested types, the type's name might not include the arity
+                // because all type parameters are type parameters of the declaring type, e.g.
+                // 
+                // public class MyClass<T>
+                // {
+                //    public class NestedType
+                //    { }
+                // }
+                //
+                if (index > 0)
+                {
+                    var name = type.Name.Substring(0, index);
+                    definitionBuilder.Append(name);
+
+                    IEnumerable<GenericParameter> genericParameters = type.GenericParameters;
+                    if (type.IsNested)
+                    {
+                        // determine generic parameter for nested types:
+                        // type.GenericParameters for a nested class contains both the
+                        // generic parameters of the nested type *and* the generic parameters
+                        // of the surrounding types.
+                        // To avoid appending too many generic parameters,
+                        // remove the declaring type's parameter from the list.                            
+                        genericParameters = genericParameters
+                            .Where(p1 => !type.DeclaringType.GenericParameters.Any(p2 => p2.Name == p1.Name));
+                    }
+
+                    AppendTypeParameters(definitionBuilder, genericParameters);
+                }
+                else
+                {
+                    definitionBuilder.Append(type.Name);
+                }
+            }
+            else
+            {
+                definitionBuilder.Append(type.Name);
+            }
+        }
+
         private static void AppendCustomAttributes(StringBuilder definitionBuilder, IEnumerable<CustomAttribute> customAttributes, bool singleLine = false)
         {
             foreach (var attribute in customAttributes)
