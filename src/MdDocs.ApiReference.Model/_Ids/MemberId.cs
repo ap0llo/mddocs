@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿#nullable disable
+
+using System.Collections.Generic;
 using Grynwald.MdDocs.ApiReference.Model.XmlDocs;
 
 namespace Grynwald.MdDocs.ApiReference.Model

@@ -1,4 +1,6 @@
-﻿// The code in this file is derived from the "DocReader" class from the NuDoq project.
+﻿#nullable disable
+
+// The code in this file is derived from the "DocReader" class from the NuDoq project.
 // The original version of this file was downloaded from
 // https://github.com/kzu/NuDoq/blob/56ad8c508003490d859214753591440b123616f5/src/NuDoq/DocReader.cs
 //

@@ -1,4 +1,6 @@
-﻿using System;
+﻿#nullable disable
+
+using System;
 using Grynwald.MdDocs.ApiReference.Model;
 using Xunit.Abstractions;
 

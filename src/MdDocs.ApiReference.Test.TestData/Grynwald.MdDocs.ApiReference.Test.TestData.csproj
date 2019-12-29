@@ -5,6 +5,7 @@
     <IsPackable>false</IsPackable>
     <NoWarn>$(NoWarn),1591,67,660,661</NoWarn>
     <DocumentationFile>$(AssemblyName).xml</DocumentationFile>
+    <Nullable>disable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>

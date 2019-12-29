@@ -1,4 +1,6 @@
-﻿using Grynwald.MarkdownGenerator;
+﻿#nullable disable
+
+using Grynwald.MarkdownGenerator;
 
 namespace Grynwald.MdDocs.Common.Pages
 {

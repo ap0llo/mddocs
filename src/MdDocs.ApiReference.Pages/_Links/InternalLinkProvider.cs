@@ -1,4 +1,6 @@
-﻿using Grynwald.MarkdownGenerator;
+﻿#nullable disable
+
+using Grynwald.MarkdownGenerator;
 using Grynwald.MdDocs.ApiReference.Model;
 
 namespace Grynwald.MdDocs.ApiReference.Pages

@@ -1,4 +1,6 @@
-﻿using ApprovalTests;
+﻿#nullable disable
+
+using ApprovalTests;
 using ApprovalTests.Reporters;
 using Grynwald.MarkdownGenerator;
 using Grynwald.MdDocs.CommandLineHelp.Model;

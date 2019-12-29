@@ -1,4 +1,6 @@
-﻿using CommandLine;
+﻿#nullable disable
+
+using CommandLine;
 
 namespace Grynwald.MdDocs
 {

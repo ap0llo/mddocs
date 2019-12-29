@@ -1,4 +1,6 @@
-﻿using System;
+﻿#nullable disable
+
+using System;
 
 namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
 {

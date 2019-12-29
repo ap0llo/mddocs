@@ -1,4 +1,6 @@
-﻿namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
+﻿#nullable disable
+
+namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
 {
     /// <summary>
     /// Empty implementation of <see cref="IXmlDocsProvider"/>.

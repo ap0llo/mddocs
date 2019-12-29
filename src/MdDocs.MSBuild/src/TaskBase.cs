@@ -1,4 +1,6 @@
-﻿using System;
+﻿#nullable disable
+
+using System;
 using Grynwald.MarkdownGenerator;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;

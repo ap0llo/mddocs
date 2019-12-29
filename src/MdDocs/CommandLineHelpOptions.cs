@@ -1,4 +1,6 @@
-﻿using CommandLine;
+﻿#nullable disable
+
+using CommandLine;
 using Grynwald.MdDocs.CommandLineHelp.Pages;
 
 namespace Grynwald.MdDocs
