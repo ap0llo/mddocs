@@ -57,14 +57,16 @@ jobs:
       packageType: sdk
       version: $(dotNetSdk_Version)
 
-  # Set the build number (utilizes Nerdbank.GitVersioning)
+  # Restore local .NET Core tools
   - task: DotNetCoreCLI@2
-    displayName: Install NBGV tool    
+    displayName: Restore local tools
     inputs:
       command: custom
       custom: tool
-      arguments: install --tool-path . nbgv
-  - script: nbgv cloud
+      arguments: restore
+
+  # Set the build number using Nerdbank.GitVersioning
+  - script: dotnet tool run nbgv cloud
     displayName: Set Version
 
   # Restore, Build, Test
@@ -179,15 +181,16 @@ jobs:
     inputs:
       version: $(dotNetSdk_Version)
 
-  # Set the build number (utilizes Nerdbank.GitVersioning). 
-  # This step is necessary as $(Build.BuildNumber) is used as name of the GitHub release
+  # Restore local .NET Core tools
   - task: DotNetCoreCLI@2
-    displayName: Install NBGV tool    
+    displayName: Restore local tools
     inputs:
       command: custom
       custom: tool
-      arguments: install --tool-path . nbgv
-  - script: nbgv cloud
+      arguments: restore
+
+  # Set the build number using Nerdbank.GitVersioning
+  - script: dotnet tool run nbgv cloud
     displayName: Set Version
 
   # Get build artifacts and create a GitHub release
