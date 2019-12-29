@@ -31,7 +31,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
         /// <param name="term">The content of the list items <c>term</c> element. Can be <c>null</c></param>
         /// <param name="description">The content of the list items <c>description</c> element.</param>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="description"/> is <c>null</c>.</exception>
-        public ListItemElement(TextBlock term, TextBlock description)
+        public ListItemElement(TextBlock? term, TextBlock description)
         {
             Term = term ?? TextBlock.Empty;
             Description = description ?? throw new ArgumentNullException(nameof(description));
@@ -56,7 +56,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
         public override bool Equals(object obj) => Equals(obj as ListItemElement);
 
         /// <inheritdoc />
-        public bool Equals(ListItemElement other)
+        public bool Equals(ListItemElement? other)
         {
             if (other == null)
                 return false;

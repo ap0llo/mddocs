@@ -22,7 +22,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
         /// <value>
         /// The language of the code sample if it was specified or <c>null</c> is no language was specified.
         /// </value>
-        public string Language { get; }
+        public string? Language { get; }
 
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
         /// </summary>
         /// <param name="content">The content of the element.</param>
         /// <param name="language">The language of the code sample. Can be <c>null</c></param>
-        public CodeElement(string content, string language)
+        public CodeElement(string content, string? language)
         {
             Content = content ?? throw new ArgumentNullException(nameof(content));
             Language = language;
@@ -41,7 +41,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
         public override void Accept(IVisitor visitor) => visitor.Visit(this);
 
         /// <inheritdoc />
-        public bool Equals(CodeElement other)
+        public bool Equals(CodeElement? other)
         {
             if (other == null)
                 return false;

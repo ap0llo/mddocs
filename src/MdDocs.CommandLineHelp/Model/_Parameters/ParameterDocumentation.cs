@@ -21,7 +21,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
         /// Gets the parameter's help text.
         /// </summary>
         /// <value>The help text or <c>null</c> is no help text was specified.</value>
-        public string HelpText { get; }
+        public string? HelpText { get; }
 
         /// <summary>
         /// Gets whether the parameter is hidden
@@ -32,19 +32,19 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
         /// Gets the parameter's default value
         /// </summary>
         /// <value>The parameter's default value or <c>null</c> is no default parameter was specified.</value>
-        public object Default { get; }
+        public object? Default { get; }
 
         /// <summary>
         /// Gets the parameter's meta value (a description of the parameter value)
         /// </summary>
         /// <value>The parameter's meta value or <c>null</c>.</value>
-        public string MetaValue { get; }
+        public string? MetaValue { get; }
 
         /// <summary>
         /// Gets the parameter's possible values.
         /// </summary>
         /// <value>The possible values for the parameter of <c>null</c> is the accepted values are unknown.</value>
-        public IReadOnlyList<string> AcceptedValues { get; }
+        public IReadOnlyList<string>? AcceptedValues { get; }
 
         /// <summary>
         /// Get whether the parameter has a default value.
@@ -65,7 +65,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
         /// Gets the parameter's name
         /// </summary>
         /// <value>The parameter's name or <c>null</c> if the parameter has no name.</value>
-        public abstract string Name { get; }
+        public abstract string? Name { get; }
 
         /// <summary>
         /// Gets whether the parameter has a name.
@@ -73,7 +73,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
         public abstract bool HasName { get; }
 
 
-        public ParameterDocumentation(bool required, string helpText, bool hidden, object @default, string metaValue, IReadOnlyList<string> acceptedValues)
+        public ParameterDocumentation(bool required, string? helpText, bool hidden, object? @default, string? metaValue, IReadOnlyList<string>? acceptedValues)
         {
             Required = required;
             HelpText = helpText;
@@ -95,7 +95,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
         }
 
 
-        private IReadOnlyList<string> GetAcceptedValues(PropertyDefinition property)
+        private IReadOnlyList<string>? GetAcceptedValues(PropertyDefinition property)
         {
             var type = property.PropertyType.Resolve();
 
@@ -108,7 +108,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
                 .ToArray();
         }
 
-        private object LoadDefaultValue(PropertyDefinition property, CustomAttribute attribute)
+        private object? LoadDefaultValue(PropertyDefinition property, CustomAttribute attribute)
         {
             var value = attribute.GetPropertyValueOrDefault<object>("Default");
 

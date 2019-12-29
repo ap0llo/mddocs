@@ -9,6 +9,6 @@ namespace Grynwald.MdDocs
     internal class ApiReferenceOptions : OptionsBase
     {
         [Option('a', "assembly", Required = true, HelpText = "Path of the assembly to generate documentation for.")]
-        public string AssemblyPath { get; set; }
+        public string? AssemblyPath { get; set; }
     }
 }

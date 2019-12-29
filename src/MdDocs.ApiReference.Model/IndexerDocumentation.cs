@@ -49,7 +49,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
 
         /// <inheritdoc />
-        public override IDocumentation TryGetDocumentation(MemberId id)
+        public override IDocumentation? TryGetDocumentation(MemberId id)
         {
             if (id is PropertyId propertyId &&
                propertyId.DefiningType.Equals(TypeDocumentation.TypeId) &&

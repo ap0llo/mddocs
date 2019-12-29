@@ -19,7 +19,10 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
 
             // parameterless constructor required by xunit
             public MemberIdLexerTestCase()
-            { }
+            {
+                Input = null!;          // set by Serialize()
+                ExpectedTokens = null!; // set by Serialize()
+            }
 
             internal MemberIdLexerTestCase(string input, params MemberIdToken[] expectedTokens)
             {

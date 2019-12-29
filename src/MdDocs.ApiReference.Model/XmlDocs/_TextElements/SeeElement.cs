@@ -24,13 +24,13 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
         /// Gets the id of the member being referenced (using the <c>cref</c> attribute).
         /// </summary>
         /// <value>The id of the member being referenced or <c>null</c>, if the element references an external resource.</value>
-        public MemberId MemberId { get; }
+        public MemberId? MemberId { get; }
 
         /// <summary>
         /// Gets the target of the external resource being referenced (using the <c>href</c> attribute).
         /// </summary>
         /// <value>The uri of the external resource or <c>null</c>, if the element references a assembly member.</value>
-        public Uri Target { get; }
+        public Uri? Target { get; }
 
         /// <summary>
         /// Gets the text of the <c>see</c> element.
@@ -103,7 +103,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
                 }
                 else
                 {
-                    var hash = Target.GetHashCode() * 397;
+                    var hash = Target!.GetHashCode() * 397;
                     hash ^= MemberId != null ? MemberId.GetHashCode() : 0;
                     hash ^= Text.GetHashCode();
                     return hash;
@@ -115,7 +115,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
         public override bool Equals(object obj) => Equals(obj as SeeElement);
 
         /// <inheritdoc />
-        public bool Equals(SeeElement other)
+        public bool Equals(SeeElement? other)
         {
             if (other == null)
                 return false;

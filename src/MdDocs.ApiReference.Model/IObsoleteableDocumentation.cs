@@ -18,6 +18,6 @@
         /// <c>null</c> is no message was provided or the type was not marked as obsolete.
         /// </value>
         /// <seealso cref="ObsoleteAttribute" />
-        string ObsoleteMessage { get; }
+        string? ObsoleteMessage { get; }
     }
 }

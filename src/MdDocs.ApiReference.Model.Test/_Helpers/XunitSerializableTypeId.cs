@@ -15,7 +15,9 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
 
         // parameterless constructor required by XUnit
         public XunitSerializableTypeId()
-        { }
+        {
+            TypeId = null!; // set by Serialize()
+        }
 
         public XunitSerializableTypeId(TypeId typeId)
         {
@@ -38,7 +40,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
                 case nameof(SimpleTypeId):                    
                     if(isNestedType)
                     {                        
-                        TypeId = new SimpleTypeId(declaringType, name);
+                        TypeId = new SimpleTypeId(declaringType!, name);
                     }
                     else
                     {
@@ -50,7 +52,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
                     var arity = info.GetValue<int>(nameof(GenericTypeId.Arity));
                     if(isNestedType)
                     {
-                        TypeId = new GenericTypeId(declaringType, name, arity);
+                        TypeId = new GenericTypeId(declaringType!, name, arity);
                     }
                     else
                     {
@@ -62,7 +64,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
                     var typeArguments = info.GetValue<XunitSerializableTypeId[]>(nameof(GenericTypeInstanceId.TypeArguments));
                     if (isNestedType)
                     {
-                        TypeId = new GenericTypeInstanceId(declaringType, name, typeArguments.Select(x => x.TypeId).ToArray());
+                        TypeId = new GenericTypeInstanceId(declaringType!, name, typeArguments.Select(x => x.TypeId).ToArray());
                     }
                     else
                     {
@@ -100,7 +102,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             info.AddValue(nameof(TypeId.IsNestedType), TypeId.IsNestedType);
             if (TypeId.IsNestedType)
             {
-                info.AddValue(nameof(TypeId.DeclaringType), new XunitSerializableTypeId(TypeId.DeclaringType));
+                info.AddValue(nameof(TypeId.DeclaringType), new XunitSerializableTypeId(TypeId.DeclaringType!));
             }
 
             switch (TypeId)
@@ -141,6 +143,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             }
         }
 
-        public static implicit operator TypeId(XunitSerializableTypeId serializable) => serializable?.TypeId;
+        public static implicit operator TypeId(XunitSerializableTypeId serializable) =>
+            serializable?.TypeId ?? throw new InvalidOperationException();
     }
 }

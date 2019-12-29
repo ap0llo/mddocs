@@ -50,7 +50,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Model
             var sut = LoadDocumentation(nameof(Command3Options.Option5Property));
 
             Assert.NotNull(sut.AcceptedValues);
-            Assert.Equal(3, sut.AcceptedValues.Count);
+            Assert.Equal(3, sut.AcceptedValues!.Count);
 
             foreach (var value in Enum.GetValues(typeof(SomeEnum)).Cast<SomeEnum>().Select(x => x.ToString()))
             {

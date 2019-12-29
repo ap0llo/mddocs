@@ -23,6 +23,6 @@
 
 
         /// <inheritdoc />
-        public MemberElement TryGetDocumentationComments(MemberId id) => null;
+        public MemberElement? TryGetDocumentationComments(MemberId id) => null;
     }
 }

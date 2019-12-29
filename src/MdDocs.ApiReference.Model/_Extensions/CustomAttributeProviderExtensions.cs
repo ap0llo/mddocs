@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using Mono.Cecil;
 
 namespace Grynwald.MdDocs.ApiReference.Model
@@ -22,7 +23,11 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// <param name="member">The member to check.</param>
         /// <param name="message">If the member is obsolete and a message was specified, the message is saved to the <paramref name="message"/> parameter. Otherwise the value will be null.</param>
         /// <returns>Returns true if the member has been marked as obsolete using the <c>System.ObsoleteAttribute</c> attribute.</returns>
-        public static bool IsObsolete(this ICustomAttributeProvider member, out string message)
+#if NETSTANDARD2_1 || NETCOREAPP3_0 || NETCOREAPP3_1
+        public static bool IsObsolete(this ICustomAttributeProvider member, [NotNullWhen(true)]out string? message)
+#else
+        public static bool IsObsolete(this ICustomAttributeProvider member, out string? message)
+#endif
         {
             var obsoleteAttribute = member.CustomAttributes.SingleOrDefault(x => x.AttributeType.FullName == Constants.ObsoleteAttributeFullName);
 

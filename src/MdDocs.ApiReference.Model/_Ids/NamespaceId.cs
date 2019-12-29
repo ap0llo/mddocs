@@ -31,7 +31,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
 
         /// <inheritdoc />
-        public override bool Equals(object obj) => Equals(obj as NamespaceId);
+        public override bool Equals(object? obj) => Equals(obj as NamespaceId);
 
         /// <inheritdoc />
         public override int GetHashCode() => StringComparer.Ordinal.GetHashCode(Name);
@@ -39,7 +39,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// <summary>
         /// Determines whether this instance of <see cref="NamespaceId"/> refers to the same namespace as <paramref name="other"/>.
         /// </summary>
-        public bool Equals(NamespaceId other)
+        public bool Equals(NamespaceId? other)
         {
             return other != null &&
                    StringComparer.Ordinal.Equals(Name, other.Name);

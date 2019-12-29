@@ -112,7 +112,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
             {
                 signatureBuilder.Append(method.Parameters[0].DisplayName);
                 signatureBuilder.Append(" to ");
-                signatureBuilder.Append(method.ReturnType.DisplayName);
+                signatureBuilder.Append(method.ReturnType!.DisplayName);
             }
             else
             {

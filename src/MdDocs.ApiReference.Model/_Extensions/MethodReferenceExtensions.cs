@@ -59,7 +59,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
                 : Array.Empty<TypeId>();
 
             // return type is only included in the method id if it is a explicit or implicit conversion overload
-            TypeId returnType = default;
+            TypeId? returnType = default;
             var operatorKind = method.GetOperatorKind();
             if (operatorKind == OperatorKind.Implicit || operatorKind == OperatorKind.Explicit)
             {

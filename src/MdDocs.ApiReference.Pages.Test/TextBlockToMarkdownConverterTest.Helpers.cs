@@ -14,10 +14,10 @@ namespace Grynwald.MdDocs.ApiReference.Pages.Test
         private TextBlock CreateTextBlock(string content) =>
             CreateTextBlock(new TextElement(content));
 
-        private TextBlock CreateList(ListType listType, ListItemElement header, params ListItemElement[] items) =>
+        private TextBlock CreateList(ListType listType, ListItemElement? header, params ListItemElement[] items) =>
             CreateTextBlock(new ListElement(listType, header, items));
 
-        private TextBlock CreateList(ListType listType, ListItemElement header, IEnumerable<ListItemElement> items) =>
+        private TextBlock CreateList(ListType listType, ListItemElement? header, IEnumerable<ListItemElement> items) =>
             CreateTextBlock(new ListElement(listType, header, items.ToArray()));
 
         private ListItemElement CreateListItem(string text) =>

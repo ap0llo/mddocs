@@ -5,6 +5,7 @@
     <IsPackable>false</IsPackable>
     <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
     <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
+    <Nullable>disable</Nullable>
   </PropertyGroup>
 
   <ItemGroup Label="Package references">

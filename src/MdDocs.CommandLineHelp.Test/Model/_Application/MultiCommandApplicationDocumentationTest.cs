@@ -11,9 +11,9 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Model
 {
     public class MultiCommandApplicationDocumentationTest
     {
-        private MultiCommandApplicationDocumentation LoadDocumentation(Assembly assembly = null)
+        private MultiCommandApplicationDocumentation LoadDocumentation(Assembly? assembly = null)
         {
-            assembly = assembly ?? typeof(Command1Options).Assembly;
+            assembly ??= typeof(Command1Options).Assembly;
 
             using (var definition = AssemblyReader.ReadFile(assembly.Location, NullLogger.Instance))
             {

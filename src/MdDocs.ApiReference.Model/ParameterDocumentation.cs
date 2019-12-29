@@ -29,7 +29,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// Gets the parameters documentation
         /// </summary>
         /// <value>Gets the documentation for the parameter (specified using the <c>param</c> tag) or <c>null</c> if no documentation is available</value>
-        public TextBlock Description { get; }
+        public TextBlock? Description { get; }
 
         /// <summary>
         /// Gets the underlying Mono.Cecil definition of the parameter.
@@ -56,7 +56,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
 
         /// <inheritdoc />
-        public IDocumentation TryGetDocumentation(MemberId id) =>
+        public IDocumentation? TryGetDocumentation(MemberId id) =>
             OverloadDocumentation.TryGetDocumentation(id);
     }
 }

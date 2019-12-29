@@ -30,7 +30,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 
         public sealed override void Save(string path, MdSerializationOptions markdownOptions) => GetDocument().Save(path, markdownOptions);
 
-        public override bool TryGetAnchor(MemberId id, out string anchor)
+        public override bool TryGetAnchor(MemberId id, out string? anchor)
         {
             if (m_Headings.Value.ContainsKey(id))
             {

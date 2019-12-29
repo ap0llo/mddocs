@@ -42,7 +42,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// <summary>
         /// Gets the <c>value</c> documentation for the field.
         /// </summary>
-        public TextBlock Value { get; }
+        public TextBlock? Value { get; }
 
         /// <inheritdoc />
         public override TypeId Type { get; }
@@ -51,7 +51,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         public override bool IsObsolete { get; }
 
         /// <inheritdoc />
-        public override string ObsoleteMessage { get; }
+        public override string? ObsoleteMessage { get; }
 
         /// <summary>
         /// Gets the underlying Mono.Cecil definition of the indexer.
@@ -68,7 +68,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         internal IndexerOverloadDocumentation(
             IndexerDocumentation indexerDocumentation,
             PropertyDefinition definition,
-            IXmlDocsProvider xmlDocsProvider) : base(definition?.ToMemberId(), xmlDocsProvider)
+            IXmlDocsProvider xmlDocsProvider) : base(definition.ToMemberId(), xmlDocsProvider)
         {
             IndexerDocumentation = indexerDocumentation ?? throw new ArgumentNullException(nameof(indexerDocumentation));
             Definition = definition ?? throw new ArgumentNullException(nameof(definition));
@@ -89,7 +89,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
 
         /// <inheritdoc />
-        public override IDocumentation TryGetDocumentation(MemberId id) =>
+        public override IDocumentation? TryGetDocumentation(MemberId id) =>
             MemberId.Equals(id) ? this : IndexerDocumentation.TryGetDocumentation(id);
     }
 }

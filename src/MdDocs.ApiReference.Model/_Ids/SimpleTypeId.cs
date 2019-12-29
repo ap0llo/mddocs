@@ -38,7 +38,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         {
             get
             {
-                var name = IsNestedType ? $"{DeclaringType.DisplayName}.{Name}" : Name;
+                var name = IsNestedType ? $"{DeclaringType!.DisplayName}.{Name}" : Name;
 
                 var namespaceAndName = String.IsNullOrEmpty(Namespace.Name) ? name : $"{Namespace.Name}.{name}";
                 return s_BuiltInTypes.TryGetValue(namespaceAndName, out var builtinName)
@@ -79,10 +79,10 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
 
         /// <inheritdoc />
-        public override bool Equals(object obj) => Equals(obj as SimpleTypeId);
+        public override bool Equals(object? obj) => Equals(obj as SimpleTypeId);
 
         /// <inheritdoc />
-        public override bool Equals(TypeId other) => other is SimpleTypeId && base.Equals(other);
+        public override bool Equals(TypeId? other) => other is SimpleTypeId && base.Equals(other);
 
         /// <inheritdoc />
         public override int GetHashCode() => base.GetHashCode();
@@ -90,6 +90,6 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// <summary>
         /// Determines whether this instance of <see cref="SimpleTypeId"/> refers to the same type as <paramref name="other"/>.
         /// </summary>
-        public bool Equals(SimpleTypeId other) => other != null && Equals((TypeId)other);
+        public bool Equals(SimpleTypeId? other) => other != null && Equals(other as TypeId);
     }
 }

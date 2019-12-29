@@ -14,12 +14,12 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
     {
         public string Name { get; }
 
-        public string Version { get; }
+        public string? Version { get; }
 
         public IReadOnlyList<string> Usage { get; }
 
 
-        internal ApplicationDocumentation(string name, string version = null, IEnumerable<string> usage = null)
+        internal ApplicationDocumentation(string name, string? version = null, IEnumerable<string>? usage = null)
         {
             if (String.IsNullOrWhiteSpace(name))
                 throw new ArgumentException("Value must not be null or whitespace", nameof(name));
@@ -56,7 +56,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
                 .GetAttributeOrDefault(Constants.AssemblyTitleAttributeFullName)
                 ?.ConstructorArguments?.Single().Value as string;
 
-            if (String.IsNullOrEmpty(name))
+            if (name == null || String.IsNullOrEmpty(name))
             {
                 // no AssemblyTitle specified => return assembly name
                 return definition.Name.Name;
@@ -65,7 +65,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
             return name;
         }
 
-        protected static string LoadApplicationVersion(AssemblyDefinition definition)
+        protected static string? LoadApplicationVersion(AssemblyDefinition definition)
         {
             var version = definition
               .GetAttributeOrDefault(Constants.AssemblyInformationalVersionAttribute)

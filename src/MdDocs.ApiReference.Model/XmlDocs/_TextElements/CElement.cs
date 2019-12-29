@@ -37,6 +37,6 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
         public override int GetHashCode() => StringComparer.Ordinal.GetHashCode(Content);
 
         /// <inheritdoc />
-        public bool Equals(CElement other) => other != null && StringComparer.Ordinal.Equals(Content, other.Content);
+        public bool Equals(CElement? other) => other != null && StringComparer.Ordinal.Equals(Content, other.Content);
     }
 }

@@ -35,7 +35,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// <summary>
         /// Gets the type's parent type if the type is a nested type
         /// </summary>
-        public TypeId DeclaringType { get; }
+        public TypeId? DeclaringType { get; }
 
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// <summary>
         /// Determines whether this instance of <see cref="TypeId" /> refers to the same type as <paramref name="other"/>.
         /// </summary>
-        public virtual bool Equals(TypeId other)
+        public virtual bool Equals(TypeId? other)
         {
             if (ReferenceEquals(this, other))
                 return true;
@@ -94,7 +94,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
             if (IsNestedType)
             {
-                return DeclaringType.Equals(other.DeclaringType) &&
+                return DeclaringType!.Equals(other.DeclaringType) &&
                        StringComparer.Ordinal.Equals(Name, other.Name);
             }
             else

@@ -75,7 +75,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
         }
 
 
-        private void Approve(MultiCommandApplicationDocumentation model, ICommandLinePageOptions options = null)
+        private void Approve(MultiCommandApplicationDocumentation model, ICommandLinePageOptions? options = null)
         {
             var pathProvider = new DefaultCommandLineHelpPathProvider();
             var documentSet = new DocumentSet<IDocument>();

@@ -12,7 +12,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
         /// <summary>
         /// Gets the anchor of the link target within the target path. Can be <c>null</c>.
         /// </summary>
-        public string Anchor { get; }
+        public string? Anchor { get; }
 
         /// <summary>
         /// Determines whether the link provides an anchor.
@@ -24,7 +24,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
         public Link(string path) : this(path, default)
         { }
 
-        public Link(string path, string anchor)
+        public Link(string path, string? anchor)
         {
             RelativePath = path;
             Anchor = anchor;

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using ApprovalTests;
-using ApprovalTests.Namers;
+﻿using ApprovalTests;
 using ApprovalTests.Reporters;
 using Grynwald.MarkdownGenerator;
 using Grynwald.MdDocs.CommandLineHelp.Model;
@@ -235,7 +231,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
         }
 
 
-        private void Approve(CommandDocumentation model, ICommandLinePageOptions options = null)
+        private void Approve(CommandDocumentation model, ICommandLinePageOptions? options = null)
         {
             var pathProvider = new DefaultCommandLineHelpPathProvider();
             var documentSet = new DocumentSet<IDocument>();

@@ -10,6 +10,6 @@
         /// </summary>
         /// <param name="id">The id of the member to retrieve documentation for.</param>
         /// <returns>Returns the documentation for the specified member of <c>null</c> if no documentation was found.</returns>
-        MemberElement TryGetDocumentationComments(MemberId id);
+        MemberElement? TryGetDocumentationComments(MemberId id);
     }
 }

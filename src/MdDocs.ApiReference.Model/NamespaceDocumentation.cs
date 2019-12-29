@@ -35,7 +35,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// <value>
         /// The documentation model for the parent namespace or <c>null</c> is there is no parent namespace.
         /// </value>
-        public NamespaceDocumentation ParentNamespaceDocumentation { get; }
+        public NamespaceDocumentation? ParentNamespaceDocumentation { get; }
 
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// <param name="parentNamespaceDocumentation">The documentation model of the namespace that contains this namespace.</param>
         /// <param name="namespaceId">The id of the namespace.</param>
         /// <param name="logger">The logger to use.</param>
-        internal NamespaceDocumentation(ModuleDocumentation moduleDocumentation, NamespaceDocumentation parentNamespaceDocumentation, NamespaceId namespaceId, ILogger logger)
+        internal NamespaceDocumentation(ModuleDocumentation moduleDocumentation, NamespaceDocumentation? parentNamespaceDocumentation, NamespaceId namespaceId, ILogger logger)
         {
             m_ModuleDocumentation = moduleDocumentation ?? throw new ArgumentNullException(nameof(moduleDocumentation));
             ParentNamespaceDocumentation = parentNamespaceDocumentation;
@@ -73,7 +73,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
 
         /// <inheritdoc />
-        public IDocumentation TryGetDocumentation(MemberId member) => m_ModuleDocumentation.TryGetDocumentation(member);
+        public IDocumentation? TryGetDocumentation(MemberId member) => m_ModuleDocumentation.TryGetDocumentation(member);
 
 
         /// <summary>

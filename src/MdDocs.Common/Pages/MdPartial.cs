@@ -7,7 +7,7 @@ namespace Grynwald.MdDocs.Common.Pages
         protected abstract MdBlock ConvertToBlock();
 
 
-        public static implicit operator MdBlock(MdPartial partial) => partial?.ConvertToBlock();
+        public static implicit operator MdBlock(MdPartial? partial) => partial?.ConvertToBlock() ?? MdEmptyBlock.Instance;
 
     }
 }

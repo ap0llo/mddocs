@@ -14,7 +14,9 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
 
         // parameterless constructor required by xunit
         public XunitSerializableNamespaceId()
-        { }
+        {
+            NamespaceId = null!; // set by Serialize()
+        }
 
         public XunitSerializableNamespaceId(NamespaceId namespaceId)
         {
@@ -34,6 +36,6 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             info.AddValue(nameof(NamespaceId.Name), NamespaceId.Name);
         }
 
-        public static implicit operator NamespaceId(XunitSerializableNamespaceId serializable) => serializable?.NamespaceId;
+        public static implicit operator NamespaceId(XunitSerializableNamespaceId serializable) => serializable?.NamespaceId ?? throw new InvalidOperationException();
     }
 }

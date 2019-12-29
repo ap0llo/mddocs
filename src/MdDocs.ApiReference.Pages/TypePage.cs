@@ -43,7 +43,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             AddOverloadableMembersSection(
                 document.Root,
                 "Constructors",
-                (IEnumerable<OverloadDocumentation>)Model.Constructors?.Overloads ?? Array.Empty<OverloadDocumentation>()
+                (IEnumerable<OverloadDocumentation>?)Model.Constructors?.Overloads ?? Array.Empty<OverloadDocumentation>()
             );
 
             AddSimpleMembersSection(document.Root, "Fields", Model.Fields);
@@ -79,7 +79,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             if (Model.IsNestedType)
             {
                 block.Add(
-                    new MdParagraph(new MdStrongEmphasisSpan("Declaring Type:"), " ", GetMdSpan(Model.DeclaringType.TypeId))
+                    new MdParagraph(new MdStrongEmphasisSpan("Declaring Type:"), " ", GetMdSpan(Model.DeclaringType!.TypeId))
                 );
             }
 

@@ -53,6 +53,17 @@ namespace Grynwald.MdDocs
         {
             var serializationOptions = GetSerializationOptions(logger, opts);
 
+            if (opts.AssemblyPath == null || String.IsNullOrWhiteSpace(opts.AssemblyPath))
+            {
+                Console.Error.WriteLine($"Invalid assembly path '{opts.AssemblyPath}'");
+                return -1;
+            }
+            if (opts.OutputDirectory == null || String.IsNullOrWhiteSpace(opts.OutputDirectory))
+            {
+                Console.Error.WriteLine($"Invalid output directory '{opts.OutputDirectory}'");
+                return -1;
+            }
+
             using (var assemblyDocumentation = AssemblyDocumentation.FromAssemblyFile(opts.AssemblyPath, logger))
             {
                 var pageFactory = new PageFactory(new DefaultApiReferencePathProvider(), assemblyDocumentation, logger);
@@ -68,6 +79,17 @@ namespace Grynwald.MdDocs
         private static int OnCommandLineHelpCommand(ILogger logger, CommandLineHelpOptions opts)
         {
             var serializationOptions = GetSerializationOptions(logger, opts);
+
+            if (opts.AssemblyPath == null || String.IsNullOrWhiteSpace(opts.AssemblyPath))
+            {
+                Console.Error.WriteLine($"Invalid assembly path '{opts.AssemblyPath}'");
+                return -1;
+            }
+            if (opts.OutputDirectory == null || String.IsNullOrWhiteSpace(opts.OutputDirectory))
+            {
+                Console.Error.WriteLine($"Invalid output directory '{opts.OutputDirectory}'");
+                return -1;
+            }
 
             using (var model = ApplicationDocumentation.FromAssemblyFile(opts.AssemblyPath, logger))
             {

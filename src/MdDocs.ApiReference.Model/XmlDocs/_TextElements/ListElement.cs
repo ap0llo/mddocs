@@ -24,7 +24,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
         /// <value>
         /// The list header of <c>null</c> is no list header was specified.
         /// </value>
-        public ListItemElement ListHeader { get; }
+        public ListItemElement? ListHeader { get; }
 
         /// <summary>
         /// Gets the list's items.
@@ -39,7 +39,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
         /// <param name="listHeader">The list's header. Can be <c>null</c></param>
         /// <param name="items">The list's element.</param>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="items"/> is <c>null</c>.</exception>
-        public ListElement(ListType type, ListItemElement listHeader, IReadOnlyList<ListItemElement> items)
+        public ListElement(ListType type, ListItemElement? listHeader, IReadOnlyList<ListItemElement> items)
         {
             Type = type;
             ListHeader = listHeader;
@@ -51,7 +51,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
         public override void Accept(IVisitor visitor) => visitor.Visit(this);
 
         /// <inheritdoc />
-        public bool Equals(ListElement other)
+        public bool Equals(ListElement? other)
         {
             if (other == null)
                 return false;

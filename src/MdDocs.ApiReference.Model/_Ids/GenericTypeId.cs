@@ -26,7 +26,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
                     return $"{m_TypeParameterDisplayNames.Single()}?";
                 }
 
-                var name = IsNestedType ? $"{DeclaringType.DisplayName}.{Name}" : Name;
+                var name = IsNestedType ? $"{DeclaringType!.DisplayName}.{Name}" : Name;
                 return $"{name}<{String.Join(", ", m_TypeParameterDisplayNames)}>";
             }
         }
@@ -107,10 +107,10 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
 
         /// <inheritdoc />
-        public override bool Equals(object obj) => Equals(obj as GenericTypeId);
+        public override bool Equals(object? obj) => Equals(obj as GenericTypeId);
 
         /// <inheritdoc />
-        public override bool Equals(TypeId other) => Equals(other as GenericTypeId);
+        public override bool Equals(TypeId? other) => Equals(other as GenericTypeId);
 
         /// <inheritdoc />
         public override int GetHashCode()
@@ -126,7 +126,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// <summary>
         /// Determines whether this instance of <see cref="GenericTypeId"/> refers to the same type as <paramref name="other"/>.
         /// </summary>
-        public bool Equals(GenericTypeId other)
+        public bool Equals(GenericTypeId? other)
         {
             if (ReferenceEquals(this, other))
                 return true;

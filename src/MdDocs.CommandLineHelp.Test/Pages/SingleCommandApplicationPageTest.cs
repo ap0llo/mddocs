@@ -51,7 +51,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
             Approve(application, new TestCommandLinePageOptions() { IncludeVersion = false });
         }
 
-        private void Approve(SingleCommandApplicationDocumentation model, ICommandLinePageOptions options = null)
+        private void Approve(SingleCommandApplicationDocumentation model, ICommandLinePageOptions? options = null)
         {
             var pathProvider = new DefaultCommandLineHelpPathProvider();
             var documentSet = new DocumentSet<IDocument>();

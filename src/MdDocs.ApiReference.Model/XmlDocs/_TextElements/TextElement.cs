@@ -38,6 +38,6 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
         public override bool Equals(object obj) => Equals(obj as TextElement);
 
         /// <inheritdoc />
-        public bool Equals(TextElement other) => other != null && StringComparer.Ordinal.Equals(Content, other.Content);
+        public bool Equals(TextElement? other) => other != null && StringComparer.Ordinal.Equals(Content, other.Content);
     }
 }

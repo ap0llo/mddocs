@@ -42,7 +42,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             
             if (type.IsNestedType)
             {
-                return Path.Combine(GetTypeDirRelative(type.DeclaringType), dirName);
+                return Path.Combine(GetTypeDirRelative(type.DeclaringType!), dirName);
             }
             else
             {

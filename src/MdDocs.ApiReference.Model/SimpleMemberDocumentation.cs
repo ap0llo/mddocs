@@ -55,11 +55,12 @@ namespace Grynwald.MdDocs.ApiReference.Model
         public bool IsObsolete { get; }
 
         /// <inheritdoc />
-        public string ObsoleteMessage { get; }
+        public string? ObsoleteMessage { get; }
 
 
         // private protected constructor => prevent implementation outside of this assembly
-        private protected SimpleMemberDocumentation(TypeDocumentation typeDocumentation, MemberId memberId,
+        private protected SimpleMemberDocumentation(TypeDocumentation typeDocumentation,
+                                                    MemberId memberId,
                                                     IXmlDocsProvider xmlDocsProvider,
                                                     ICustomAttributeProvider definitionAttributes) : base(typeDocumentation)
         {
@@ -81,7 +82,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
 
         /// <inheritdoc />
-        public override IDocumentation TryGetDocumentation(MemberId id) =>
+        public override IDocumentation? TryGetDocumentation(MemberId id) =>
             MemberId.Equals(id) ? this : TypeDocumentation.TryGetDocumentation(id);
     }
 }

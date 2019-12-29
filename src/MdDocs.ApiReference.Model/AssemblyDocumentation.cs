@@ -46,7 +46,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         public void Dispose() => Definition.Dispose();
 
         /// <inheritdoc />
-        public IDocumentation TryGetDocumentation(MemberId member) =>
+        public IDocumentation? TryGetDocumentation(MemberId member) =>
             MainModuleDocumentation.TryGetDocumentation(member);
 
         /// <summary>

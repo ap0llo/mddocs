@@ -15,7 +15,9 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
 
         // parameterless constructor required by xunit
         public XunitSerializableMethodId()
-        { }
+        {
+            MethodId = null!; // set by Serialize()
+        }
 
         public XunitSerializableMethodId(MethodId methodId)
         {
@@ -64,6 +66,6 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             }
         }
 
-        public static implicit operator MethodId(XunitSerializableMethodId serializable) => serializable?.MethodId;
+        public static implicit operator MethodId(XunitSerializableMethodId serializable) => serializable?.MethodId ?? throw new InvalidOperationException();
     }
 }

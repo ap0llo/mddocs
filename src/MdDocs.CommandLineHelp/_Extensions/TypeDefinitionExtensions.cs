@@ -16,7 +16,7 @@ namespace Grynwald.MdDocs.CommandLineHelp
 
             var properties = new List<PropertyDefinition>();
 
-            var currentType = type;
+            TypeDefinition? currentType = type;
             while (currentType != null)
             {
                 properties.AddRange(currentType.Properties);

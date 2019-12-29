@@ -41,6 +41,6 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
         public override bool Equals(object obj) => Equals(obj as TypeParamRefElement);
 
         /// <inheritdoc />
-        public bool Equals(TypeParamRefElement other) => other != null && StringComparer.Ordinal.Equals(Name, other.Name);
+        public bool Equals(TypeParamRefElement? other) => other != null && StringComparer.Ordinal.Equals(Name, other.Name);
     }
 }

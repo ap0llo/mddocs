@@ -1,4 +1,5 @@
-﻿using System.Xml.Linq;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Xml.Linq;
 
 namespace Grynwald.MdDocs.ApiReference.Model
 {
@@ -9,7 +10,11 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// </summary>
         /// <param name="element"></param>
         /// <returns>Returns <c>true</c> if the attribute was found, otherwise <c>false</c></returns>
-        public static bool TryGetAttributeValue(this XElement element, string name, out string value)
+#if NETSTANDARD2_1 || NETCOREAPP3_0 || NETCOREAPP3_1
+        public static bool TryGetAttributeValue(this XElement element, string name, [NotNullWhen(true)]out string? value)
+#else
+        public static bool TryGetAttributeValue(this XElement element, string name, out string? value)
+#endif
         {
             var attribute = element.Attribute(name);
             if (attribute != null)

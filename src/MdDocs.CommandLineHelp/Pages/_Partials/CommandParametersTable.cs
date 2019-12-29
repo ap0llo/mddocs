@@ -26,7 +26,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
 
         protected override MdBlock ConvertToBlock()
         {
-            MdSpan GetLinkOrEmptySpan(string text, string uri, bool italic = false)
+            MdSpan GetLinkOrEmptySpan(string? text, string uri, bool italic = false)
             {
                 return String.IsNullOrEmpty(text) ? (MdSpan)MdEmptySpan.Instance : new MdLinkSpan(italic ? new MdEmphasisSpan(text) : (MdSpan)text, uri);
             }

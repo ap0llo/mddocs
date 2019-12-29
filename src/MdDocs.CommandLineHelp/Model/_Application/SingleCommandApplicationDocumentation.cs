@@ -14,7 +14,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
         public UnnamedCommandDocumentation Command { get; }
 
 
-        public SingleCommandApplicationDocumentation(string name, UnnamedCommandDocumentation parameters, string version = null, IEnumerable<string> usage = null)
+        public SingleCommandApplicationDocumentation(string name, UnnamedCommandDocumentation parameters, string? version = null, IEnumerable<string>? usage = null)
             : base(name, version, usage)
         {
             Command = parameters ?? throw new ArgumentNullException(nameof(parameters));

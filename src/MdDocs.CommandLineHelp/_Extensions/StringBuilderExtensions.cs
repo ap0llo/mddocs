@@ -13,7 +13,7 @@ namespace Grynwald.MdDocs.CommandLineHelp
             condition ? stringBuilder.Append(value) : stringBuilder;
 
 
-        public static StringBuilder AppendIf(this StringBuilder stringBuilder, bool condition, params string[] values)
+        public static StringBuilder AppendIf(this StringBuilder stringBuilder, bool condition, params string?[] values)
         {
             if (condition)
             {

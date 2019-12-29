@@ -17,7 +17,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
 
         /// <inheritdoc />
-        public override bool Equals(object obj) => Equals(obj as FieldId);
+        public override bool Equals(object? obj) => Equals(obj as FieldId);
 
         /// <inheritdoc />
         public override int GetHashCode()
@@ -33,7 +33,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// <summary>
         /// Determines whether this instance of <see cref="FieldId"/> refers to the same field as <paramref name="other"/>.
         /// </summary>
-        public bool Equals(FieldId other)
+        public bool Equals(FieldId? other)
         {
             if (ReferenceEquals(this, other))
                 return true;

@@ -26,10 +26,10 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
 
         /// <inheritdoc />
-        public override bool Equals(object obj) => Equals(obj as ByReferenceTypeId);
+        public override bool Equals(object? obj) => Equals(obj as ByReferenceTypeId);
 
         /// <inheritdoc />
-        public override bool Equals(TypeId other) => other is ByReferenceTypeId && base.Equals(other);
+        public override bool Equals(TypeId? other) => other is ByReferenceTypeId && base.Equals(other);
 
         /// <inheritdoc />
         public override int GetHashCode() => base.GetHashCode();
@@ -37,7 +37,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// <summary>
         /// Determines whether this instance of <see cref="ByReferenceTypeId"/> refers to the same type as <paramref name="other"/>.
         /// </summary>
-        public bool Equals(ByReferenceTypeId other) => other != null && ElementType.Equals(other.ElementType);
+        public bool Equals(ByReferenceTypeId? other) => other != null && ElementType.Equals(other.ElementType);
 
 
     }

@@ -14,7 +14,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
         private readonly IMdSpanFactory m_SpanFactory;
 
         private readonly Stack<MdContainerBlockBase> m_Blocks;
-        private MdParagraph m_CurrentParagraph;
+        private MdParagraph? m_CurrentParagraph;
 
         /// <summary>
         /// Gets the root block of the generated markdown
@@ -86,7 +86,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 
             }
             // <seealso /> references an external resource
-            else
+            else if(element.Target != null)
             {
                 if (element.Text.IsEmpty)
                 {
@@ -97,6 +97,10 @@ namespace Grynwald.MdDocs.ApiReference.Pages
                     var linkText = TextBlockToMarkdownConverter.ConvertToSpan(element.Text, m_SpanFactory);
                     span = new MdLinkSpan(linkText, element.Target);
                 }
+            }
+            else
+            {
+                throw new InvalidOperationException($"Encountered instance of {nameof(SeeElement)} where both {nameof(SeeElement.MemberId)} and {nameof(SeeElement.Target)} were null.");
             }
 
             AddToCurrentParagraph(span);
@@ -123,8 +127,13 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 
             if (listElement.Type == ListType.Table)
             {
-                MdTableRow CreateRow(ListItemElement itemElement)
+                MdTableRow CreateRow(ListItemElement? itemElement)
                 {
+                    if(itemElement == null)
+                    {
+                        return new MdTableRow("", "");
+                    }
+
                     var term = itemElement.Term.IsEmpty
                         ? MdEmptySpan.Instance
                         : TextBlockToMarkdownConverter.ConvertToSpan(itemElement.Term, m_SpanFactory);

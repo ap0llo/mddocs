@@ -14,7 +14,9 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
 
         // parameterless constructor required by xunit
         public XunitSerializableMemberId()
-        { }
+        {
+            MemberId = null!; // set by Serialize()
+        }
 
         public XunitSerializableMemberId(MemberId memberId)
         {
@@ -96,6 +98,6 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             }
         }
 
-        public static implicit operator MemberId(XunitSerializableMemberId serializable) => serializable?.MemberId;
+        public static implicit operator MemberId(XunitSerializableMemberId serializable) => serializable?.MemberId ?? throw new InvalidOperationException();
     }
 }
