@@ -1,6 +1,4 @@
-﻿#nullable disable
-
-using System;
+﻿using System;
 using System.Linq;
 using Grynwald.MarkdownGenerator;
 using Grynwald.MdDocs.ApiReference.Model;
@@ -75,7 +73,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 
             if (m_LinkProvider.TryGetLink(this, target, out var link))
             {
-                if (String.IsNullOrEmpty(link.RelativePath))
+                if (String.IsNullOrEmpty(link!.RelativePath))
                 {
                     // link in same file, but there is an anchor => link to anchor
                     if (link.HasAnchor)
@@ -94,7 +92,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             return text;
         }
 
-        public virtual bool TryGetAnchor(MemberId id, out string anchor)
+        public virtual bool TryGetAnchor(MemberId id, out string? anchor)
         {
             anchor = default;
             return false;
@@ -126,7 +124,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
                 }
             }
             // <seealso /> references an external resource
-            else
+            else if(seeAlso.Target != null)
             {
                 if (seeAlso.Text.IsEmpty)
                 {
@@ -137,6 +135,10 @@ namespace Grynwald.MdDocs.ApiReference.Pages
                     var text = ConvertToSpan(seeAlso.Text);
                     return new MdLinkSpan(text, seeAlso.Target);
                 }
+            }
+            else
+            {
+                throw new InvalidOperationException($"Encountered instance of {nameof(SeeAlsoElement)} where both {nameof(SeeAlsoElement.MemberId)} and {nameof(SeeAlsoElement.Target)} were null.");
             }
         }
 

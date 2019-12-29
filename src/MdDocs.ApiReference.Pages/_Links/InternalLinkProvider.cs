@@ -1,6 +1,4 @@
-﻿#nullable disable
-
-using Grynwald.MarkdownGenerator;
+﻿using Grynwald.MarkdownGenerator;
 using Grynwald.MdDocs.ApiReference.Model;
 
 namespace Grynwald.MdDocs.ApiReference.Pages
@@ -21,7 +19,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             m_DocumentSet = documentSet;
         }
 
-        public bool TryGetLink(IDocument from, MemberId id, out Link link)
+        public bool TryGetLink(IDocument from, MemberId id, out Link? link)
         {
             // map id -> model item
             var modelItem = m_Model.TryGetDocumentation(id);

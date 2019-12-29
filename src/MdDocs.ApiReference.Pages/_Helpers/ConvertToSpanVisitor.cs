@@ -71,7 +71,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             }
             else
             {
-                throw new InvalidOperationException($"Encountered instance of {nameof(SeeElement)} where both {nameof(SeeAlsoElement.MemberId)} and {nameof(SeeAlsoElement.Target)} were null.");
+                throw new InvalidOperationException($"Encountered instance of {nameof(SeeElement)} where both {nameof(SeeElement.MemberId)} and {nameof(SeeElement.Target)} were null.");
             }
             Result.Add(span);
         }

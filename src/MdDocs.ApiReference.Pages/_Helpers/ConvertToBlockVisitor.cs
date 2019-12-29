@@ -1,6 +1,4 @@
-﻿#nullable disable
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Grynwald.MarkdownGenerator;
@@ -16,7 +14,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
         private readonly IMdSpanFactory m_SpanFactory;
 
         private readonly Stack<MdContainerBlockBase> m_Blocks;
-        private MdParagraph m_CurrentParagraph;
+        private MdParagraph? m_CurrentParagraph;
 
         /// <summary>
         /// Gets the root block of the generated markdown
@@ -102,7 +100,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             }
             else
             {
-                throw new InvalidOperationException($"Encountered instance of {nameof(SeeElement)} where both {nameof(SeeAlsoElement.MemberId)} and {nameof(SeeAlsoElement.Target)} were null.");
+                throw new InvalidOperationException($"Encountered instance of {nameof(SeeElement)} where both {nameof(SeeElement.MemberId)} and {nameof(SeeElement.Target)} were null.");
             }
 
             AddToCurrentParagraph(span);
@@ -129,8 +127,13 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 
             if (listElement.Type == ListType.Table)
             {
-                MdTableRow CreateRow(ListItemElement itemElement)
+                MdTableRow CreateRow(ListItemElement? itemElement)
                 {
+                    if(itemElement == null)
+                    {
+                        return new MdTableRow("", "");
+                    }
+
                     var term = itemElement.Term.IsEmpty
                         ? MdEmptySpan.Instance
                         : TextBlockToMarkdownConverter.ConvertToSpan(itemElement.Term, m_SpanFactory);

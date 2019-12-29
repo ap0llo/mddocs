@@ -5,6 +5,6 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 {
     public interface IPage : IMarkdownDocument
     {
-        bool TryGetAnchor(MemberId id, out string anchor);
+        bool TryGetAnchor(MemberId id, out string? anchor);
     }
 }

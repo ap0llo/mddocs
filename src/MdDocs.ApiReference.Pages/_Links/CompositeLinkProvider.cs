@@ -1,6 +1,4 @@
-﻿#nullable disable
-
-using System;
+﻿using System;
 using Grynwald.MarkdownGenerator;
 using Grynwald.MdDocs.ApiReference.Model;
 
@@ -17,7 +15,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
         }
 
         
-        public bool TryGetLink(IDocument from, MemberId id, out Link link)
+        public bool TryGetLink(IDocument from, MemberId id, out Link? link)
         {
             foreach (var provider in m_InnerProviders)
             {
