@@ -1,6 +1,4 @@
-﻿#nullable disable
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -481,7 +479,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
             if (typeKind == TypeKind.Enum)
             {
                 var underlyingType = type.Fields.Single(f => f.Name == "value__").FieldType;
-                if (underlyingType?.FullName != Constants.Int32FullName)
+                if (underlyingType.FullName != Constants.Int32FullName)
                 {
                     definitionBuilder.Append(" : ");
                     definitionBuilder.Append(GetDisplayName(underlyingType));

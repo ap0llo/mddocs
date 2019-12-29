@@ -1,6 +1,4 @@
-﻿#nullable disable
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -28,7 +26,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// The return type is only relevant if the method is an overload of the <c>implicit</c> or <c>explicit</c> operators.
         /// For all other methods, the return type is not part of a method's identifying properties.
         /// </remarks>
-        public TypeId ReturnType { get; }
+        public TypeId? ReturnType { get; }
 
 
         /// <summary>
@@ -70,7 +68,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// The return type is only relevant if the method is an overload of the <c>implicit</c> or <c>explicit</c> operators.
         /// For all other methods, the return type is not part of a method's identifying properties.
         /// </param>
-        public MethodId(TypeId definingType, string name, int arity, IReadOnlyList<TypeId> parameters, TypeId returnType) : base(definingType, name)
+        public MethodId(TypeId definingType, string name, int arity, IReadOnlyList<TypeId> parameters, TypeId? returnType) : base(definingType, name)
         {
             Arity = arity;
             Parameters = parameters ?? throw new ArgumentNullException(nameof(parameters));
@@ -79,7 +77,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
 
         /// <inheritdoc />
-        public override bool Equals(object obj) => Equals(obj as MethodId);
+        public override bool Equals(object? obj) => Equals(obj as MethodId);
 
         /// <inheritdoc />
         public override int GetHashCode()
@@ -105,7 +103,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// <summary>
         /// Determines whether this instance of <see cref="MethodId"/> refers to the same method as <paramref name="other"/>.
         /// </summary>
-        public bool Equals(MethodId other)
+        public bool Equals(MethodId? other)
         {
             if (ReferenceEquals(this, other))
                 return true;

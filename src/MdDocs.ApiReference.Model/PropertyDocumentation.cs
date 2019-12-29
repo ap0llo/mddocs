@@ -1,6 +1,4 @@
-﻿#nullable disable
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Grynwald.MdDocs.ApiReference.Model.XmlDocs;
 using Grynwald.Utilities.Collections;
@@ -25,7 +23,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// <summary>
         /// Gets the <c>value</c> documentation of the property.
         /// </summary>
-        public TextBlock Value { get; }
+        public TextBlock? Value { get; }
 
         /// <summary>
         /// Gets the documented exceptions for the property.
@@ -45,7 +43,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// <param name="definition">The underlying Mono.Cecil definition of the property.</param>
         /// <param name="xmlDocsProvider">The XML documentation provider to use for loading XML documentation comments.</param>
         internal PropertyDocumentation(TypeDocumentation typeDocumentation, PropertyDefinition definition, IXmlDocsProvider xmlDocsProvider)
-            : base(typeDocumentation, definition?.ToMemberId(), xmlDocsProvider, definition)
+            : base(typeDocumentation, definition.ToMemberId(), xmlDocsProvider, definition)
         {
             Definition = definition ?? throw new ArgumentNullException(nameof(definition));
             xmlDocsProvider = xmlDocsProvider ?? throw new ArgumentNullException(nameof(xmlDocsProvider));

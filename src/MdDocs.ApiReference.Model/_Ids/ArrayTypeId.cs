@@ -1,6 +1,4 @@
-﻿#nullable disable
-
-using System;
+﻿using System;
 
 namespace Grynwald.MdDocs.ApiReference.Model
 {
@@ -48,10 +46,10 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
 
         /// <inheritdoc />
-        public override bool Equals(TypeId other) => Equals(other as ArrayTypeId);
+        public override bool Equals(TypeId? other) => Equals(other as ArrayTypeId);
 
         /// <inheritdoc />
-        public override bool Equals(object obj) => Equals(obj as ArrayTypeId);
+        public override bool Equals(object? obj) => Equals(obj as ArrayTypeId);
 
         /// <inheritdoc />
         public override int GetHashCode()
@@ -67,7 +65,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// <summary>
         /// Determines whether this instance of <see cref="ArrayTypeId"/> refers to the same type as <paramref name="other"/>.
         /// </summary>
-        public bool Equals(ArrayTypeId other)
+        public bool Equals(ArrayTypeId? other)
         {
             return other != null &&
                    ElementType.Equals(other.ElementType) &&

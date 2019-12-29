@@ -1,6 +1,4 @@
-﻿#nullable disable
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -59,6 +57,6 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
         public override bool Equals(object obj) => Equals(obj as TextBlock);
 
         /// <inheritdoc />
-        public bool Equals(TextBlock other) => other != null && Elements.SequenceEqual(other.Elements);
+        public bool Equals(TextBlock? other) => other != null && Elements.SequenceEqual(other.Elements);
     }
 }

@@ -1,6 +1,4 @@
-﻿#nullable disable
-
-namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
+﻿namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
 {
     /// <summary>
     /// Empty implementation of <see cref="IXmlDocsProvider"/>.
@@ -25,6 +23,6 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
 
 
         /// <inheritdoc />
-        public MemberElement TryGetDocumentationComments(MemberId id) => null;
+        public MemberElement? TryGetDocumentationComments(MemberId id) => null;
     }
 }

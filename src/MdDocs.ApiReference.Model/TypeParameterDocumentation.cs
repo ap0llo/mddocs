@@ -1,6 +1,4 @@
-﻿#nullable disable
-
-using System;
+﻿using System;
 using Grynwald.MdDocs.ApiReference.Model.XmlDocs;
 using Grynwald.Utilities.Collections;
 using Mono.Cecil;
@@ -24,7 +22,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// Gets the type parameter's description 
         /// </summary>
         /// <value>The documentation as provided by the user or <c>null</c> if no description was specified.</value>
-        public TextBlock Description { get; }
+        public TextBlock? Description { get; }
 
 
         /// <summary>
@@ -52,6 +50,6 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
 
         /// <inheritdoc />
-        public IDocumentation TryGetDocumentation(MemberId member) => m_Parent.TryGetDocumentation(member);
+        public IDocumentation? TryGetDocumentation(MemberId member) => m_Parent.TryGetDocumentation(member);
     }
 }

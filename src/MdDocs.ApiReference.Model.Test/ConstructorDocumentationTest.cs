@@ -7,7 +7,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
     {
         protected override MemberDocumentation GetMemberDocumentationInstance()
         {
-            return GetTypeDocumentation(typeof(TestClass_Constructors)).Constructors;
+            return GetTypeDocumentation(typeof(TestClass_Constructors)).Constructors!;
         }
     }
 }

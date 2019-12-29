@@ -32,8 +32,8 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
 
             // ASSERT
             Assert.NotNull(documentation);
-            Assert.IsType<TypeDocumentation>(documentation);
-            Assert.Equal(typeId, ((TypeDocumentation)documentation).TypeId);
+            var typeDocumentation = Assert.IsType<TypeDocumentation>(documentation);
+            Assert.Equal(typeId, typeDocumentation.TypeId);
         }
     }
 }

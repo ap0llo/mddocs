@@ -1,6 +1,4 @@
-﻿#nullable disable
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -42,7 +40,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
 
         /// <inheritdoc />
-        public override bool Equals(object obj) => Equals(obj as PropertyId);
+        public override bool Equals(object? obj) => Equals(obj as PropertyId);
 
         /// <inheritdoc />
         public override int GetHashCode()
@@ -64,7 +62,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// <summary>
         /// Determines whether this instance of <see cref="PropertyId"/> refers to the same property of indexer as <paramref name="other"/>.
         /// </summary>
-        public bool Equals(PropertyId other)
+        public bool Equals(PropertyId? other)
         {
             if (ReferenceEquals(this, other))
                 return true;

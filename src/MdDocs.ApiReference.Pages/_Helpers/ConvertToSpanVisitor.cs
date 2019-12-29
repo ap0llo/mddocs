@@ -42,16 +42,37 @@ namespace Grynwald.MdDocs.ApiReference.Pages
         public void Visit(SeeElement element)
         {
             MdSpan span;
-            if(element.Text.IsEmpty)
+
+            // <seealso /> references another assembly member
+            if(element.MemberId != null)
             {
-                span = m_SpanFactory.GetMdSpan(element.MemberId);
+                if (element.Text.IsEmpty)
+                {
+                    span = m_SpanFactory.GetMdSpan(element.MemberId);
+                }
+                else
+                {
+                    var linkText = TextBlockToMarkdownConverter.ConvertToSpan(element.Text, m_SpanFactory);
+                    span = m_SpanFactory.CreateLink(element.MemberId, linkText);
+                }
+            }
+            // <seealso /> references an external resource
+            else if(element.Target != null)
+            {
+                if (element.Text.IsEmpty)
+                {
+                    span = new MdLinkSpan(element.Target.ToString(), element.Target);
+                }
+                else
+                {
+                    var linkText = TextBlockToMarkdownConverter.ConvertToSpan(element.Text, m_SpanFactory);
+                    span = new MdLinkSpan(linkText, element.Target);
+                }
             }
             else
             {
-                var linkText = TextBlockToMarkdownConverter.ConvertToSpan(element.Text, m_SpanFactory);
-                span = m_SpanFactory.CreateLink(element.MemberId, linkText);
+                throw new InvalidOperationException($"Encountered instance of {nameof(SeeElement)} where both {nameof(SeeAlsoElement.MemberId)} and {nameof(SeeAlsoElement.Target)} were null.");
             }
-
             Result.Add(span);
         }
 

@@ -1,6 +1,4 @@
-﻿#nullable disable
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Grynwald.MdDocs.ApiReference.Model.XmlDocs;
@@ -35,7 +33,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         public override bool IsObsolete { get; }
 
         /// <inheritdoc />
-        public override string ObsoleteMessage { get; }
+        public override string? ObsoleteMessage { get; }
 
         /// <summary>
         /// Gets the underlying Mono.Cecil definition of the method overload.
@@ -50,7 +48,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// <param name="xmlDocsProvider">The XML documentation provider to use for loading XML documentation comments.</param>
         // private protected constructor => prevent implementation outside of this assembly
         private protected MethodLikeOverloadDocumentation(MethodDefinition definition, IXmlDocsProvider xmlDocsProvider)
-            : base(definition?.ToMemberId(), xmlDocsProvider)
+            : base(definition.ToMemberId(), xmlDocsProvider)
         {
             Definition = definition ?? throw new ArgumentNullException(nameof(definition));
             m_XmlDocsProvider = xmlDocsProvider ?? throw new ArgumentNullException(nameof(xmlDocsProvider));

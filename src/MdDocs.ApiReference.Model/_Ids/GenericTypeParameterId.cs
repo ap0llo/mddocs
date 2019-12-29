@@ -1,6 +1,4 @@
-﻿#nullable disable
-
-using System;
+﻿using System;
 
 namespace Grynwald.MdDocs.ApiReference.Model
 {
@@ -64,15 +62,15 @@ namespace Grynwald.MdDocs.ApiReference.Model
         }
 
         /// <inheritdoc />
-        public override bool Equals(TypeId other) => Equals(other as GenericTypeParameterId);
+        public override bool Equals(TypeId? other) => Equals(other as GenericTypeParameterId);
 
         /// <inheritdoc />
-        public override bool Equals(object obj) => Equals(obj as GenericTypeParameterId);
+        public override bool Equals(object? obj) => Equals(obj as GenericTypeParameterId);
 
         /// <summary>
         /// Determines whether this instance of <see cref="GenericTypeParameterId"/> refers to the same type parameter as <paramref name="other"/>.
         /// </summary>
-        public bool Equals(GenericTypeParameterId other)
+        public bool Equals(GenericTypeParameterId? other)
         {
             return other != null &&
                    DefiningMemberKind == other.DefiningMemberKind &&

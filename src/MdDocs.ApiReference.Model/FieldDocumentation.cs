@@ -1,6 +1,4 @@
-﻿#nullable disable
-
-using System;
+﻿using System;
 using Grynwald.MdDocs.ApiReference.Model.XmlDocs;
 using Mono.Cecil;
 
@@ -39,7 +37,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// <param name="xmlDocsProvider">The XML documentation provider to use for loading XML documentation comments.</param>
         /// <exception cref="ArgumentNullException">Thrown when one of the constructor arguments is null.</exception>
         internal FieldDocumentation(TypeDocumentation typeDocumentation, FieldDefinition definition, IXmlDocsProvider xmlDocsProvider)
-            : base(typeDocumentation, definition?.ToMemberId(), xmlDocsProvider, definition)
+            : base(typeDocumentation, definition.ToMemberId(), xmlDocsProvider, definition)
         {
             Definition = definition ?? throw new ArgumentNullException(nameof(definition));
             xmlDocsProvider = xmlDocsProvider ?? throw new ArgumentNullException(nameof(xmlDocsProvider));

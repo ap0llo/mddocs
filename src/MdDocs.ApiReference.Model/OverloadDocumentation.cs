@@ -74,7 +74,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         public abstract bool IsObsolete { get; }
 
         /// <inheritdoc />
-        public abstract string ObsoleteMessage { get; }
+        public abstract string? ObsoleteMessage { get; }
 
 
         // private protected constructor => prevent implementation outside of this assembly
@@ -93,6 +93,6 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
 
         /// <inheritdoc />
-        public abstract IDocumentation TryGetDocumentation(MemberId id);
+        public abstract IDocumentation? TryGetDocumentation(MemberId id);
     }
 }

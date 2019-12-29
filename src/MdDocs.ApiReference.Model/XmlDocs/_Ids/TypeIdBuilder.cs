@@ -1,6 +1,4 @@
-﻿#nullable disable
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
@@ -10,7 +8,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
         private class OuterTypeIdBuilder : TypeIdBuilder
         {
             private NamespaceIdBuilder m_NamespaceBuilder;
-            private readonly string m_CurrentName;
+            private readonly string? m_CurrentName;
 
             public OuterTypeIdBuilder()
             { }
@@ -76,6 +74,9 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
 
             private TypeId ToTypeId(int arity)
             {
+                if (m_CurrentName == null)
+                    throw new InvalidOperationException("Cannot create type id when no name segment was added.");
+
                 if (arity == 0)
                 {
                     return new SimpleTypeId(m_NamespaceBuilder.ToNamespaceId(), m_CurrentName);
@@ -88,6 +89,9 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
 
             private TypeId ToTypeId(IReadOnlyList<TypeId> typeArguments)
             {
+                if (m_CurrentName == null)
+                    throw new InvalidOperationException("Cannot create type id when no name segment was added.");
+
                 if (typeArguments.Count == 0)
                 {
                     return new SimpleTypeId(m_NamespaceBuilder.ToNamespaceId(), m_CurrentName);
@@ -104,9 +108,9 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
         private class NestedTypeIdBuilder : TypeIdBuilder
         {
             private readonly TypeId m_DeclaringType;
-            private readonly string m_Name;
+            private readonly string? m_Name;
             private readonly int m_Arity;
-            private readonly IReadOnlyList<TypeId> m_TypeArguments;
+            private readonly IReadOnlyList<TypeId>? m_TypeArguments;
 
 
             public NestedTypeIdBuilder(TypeId declaringType)
@@ -114,14 +118,14 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
                 m_DeclaringType = declaringType;
             }
 
-            private NestedTypeIdBuilder(TypeId declaringType, string name, int arity)
+            private NestedTypeIdBuilder(TypeId declaringType, string? name, int arity)
             {
                 m_DeclaringType = declaringType;
                 m_Name = name;
                 m_Arity = arity;
             }
 
-            private NestedTypeIdBuilder(TypeId declaringType, string name, IReadOnlyList<TypeId> typeArguments)
+            private NestedTypeIdBuilder(TypeId declaringType, string? name, IReadOnlyList<TypeId> typeArguments)
             {
                 m_DeclaringType = declaringType;
                 m_Name = name;

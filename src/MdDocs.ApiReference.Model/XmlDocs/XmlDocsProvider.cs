@@ -36,6 +36,6 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
         }
 
         /// <inheritdoc />
-        public MemberElement TryGetDocumentationComments(MemberId id) => m_Members.GetValueOrDefault(id);
+        public MemberElement? TryGetDocumentationComments(MemberId id) => m_Members.GetValueOrDefault(id);
     }
 }

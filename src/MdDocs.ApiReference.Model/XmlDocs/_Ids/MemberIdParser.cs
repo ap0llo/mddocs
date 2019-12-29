@@ -1,6 +1,4 @@
-﻿#nullable disable
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -44,6 +42,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
         {
             m_Lexer = new MemberIdLexer(text);
             m_OuterTypes = outerTypes ?? throw new ArgumentNullException(nameof(outerTypes));
+            m_Tokens = Array.Empty<MemberIdToken>();
         }
 
 

@@ -1,6 +1,4 @@
-﻿#nullable disable
-
-using System;
+﻿using System;
 
 namespace Grynwald.MdDocs.ApiReference.Model
 {
@@ -19,7 +17,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
 
         /// <inheritdoc />
-        public override bool Equals(object obj) => Equals(obj as EventId);
+        public override bool Equals(object? obj) => Equals(obj as EventId);
 
         /// <inheritdoc />
         public override int GetHashCode()
@@ -35,7 +33,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// <summary>
         /// Determines whether this instance of <see cref="EventId"/> refers to the same event as <paramref name="other"/>.
         /// </summary>
-        public bool Equals(EventId other)
+        public bool Equals(EventId? other)
         {
             if (ReferenceEquals(this, other))
                 return true;

@@ -1,6 +1,4 @@
-﻿#nullable disable
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Grynwald.MdDocs.ApiReference.Model.XmlDocs;
@@ -84,7 +82,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// <summary>
         /// Gets the type's constructors.
         /// </summary>
-        public ConstructorDocumentation Constructors { get; }
+        public ConstructorDocumentation? Constructors { get; }
 
         /// <summary>
         /// Gets the type's methods.
@@ -145,7 +143,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         public bool IsObsolete { get; }
 
         /// <inheritdoc />
-        public string ObsoleteMessage { get; }
+        public string? ObsoleteMessage { get; }
 
         /// <summary>
         /// Gets whether this type is a nested type
@@ -158,7 +156,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// <value>
         /// The model class for the declaring type if the type is a nested type, otherwise <c>null</c>.
         /// </value>
-        public TypeDocumentation DeclaringType { get; }
+        public TypeDocumentation? DeclaringType { get; }
 
         /// <summary>
         /// Gets the type's nested types
@@ -184,7 +182,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
                                    TypeDefinition definition,
                                    IXmlDocsProvider xmlDocsProvider,
                                    ILogger logger,
-                                   TypeDocumentation declaringType)
+                                   TypeDocumentation? declaringType)
         {
             TypeId = definition.ToTypeId();
             DeclaringType = declaringType;            
@@ -284,7 +282,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
 
         /// <inheritdoc />
-        public IDocumentation TryGetDocumentation(MemberId id)
+        public IDocumentation? TryGetDocumentation(MemberId id)
         {
             switch (id)
             {
@@ -306,7 +304,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
                 case MethodId methodId when methodId.DefiningType.Equals(TypeId):
                     if (methodId.IsConstructor())
                     {
-                        return Constructors.TryGetDocumentation(methodId);
+                        return Constructors!.TryGetDocumentation(methodId);
                     }
 
                     if (m_Methods.ContainsKey(methodId.Name))
@@ -348,7 +346,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
             var inheritance = new LinkedList<TypeId>();
             inheritance.AddFirst(TypeId);
 
-            var currentBaseType = Definition.BaseType.Resolve();
+            TypeDefinition? currentBaseType = Definition.BaseType.Resolve();
             while (currentBaseType != null)
             {
                 inheritance.AddFirst(currentBaseType.ToTypeId());

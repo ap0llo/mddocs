@@ -1,6 +1,4 @@
-﻿#nullable disable
-
-using System;
+﻿using System;
 
 namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
 {
@@ -40,7 +38,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
         public override void Accept(IVisitor visitor) => visitor.Visit(this);
 
         /// <inheritdoc />
-        public bool Equals(ParamRefElement other) => other != null && StringComparer.Ordinal.Equals(Name, other.Name);
+        public bool Equals(ParamRefElement? other) => other != null && StringComparer.Ordinal.Equals(Name, other.Name);
 
         /// <inheritdoc />
         public override int GetHashCode() => StringComparer.Ordinal.GetHashCode(Name);

@@ -88,7 +88,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 
             }
             // <seealso /> references an external resource
-            else
+            else if(element.Target != null)
             {
                 if (element.Text.IsEmpty)
                 {
@@ -99,6 +99,10 @@ namespace Grynwald.MdDocs.ApiReference.Pages
                     var linkText = TextBlockToMarkdownConverter.ConvertToSpan(element.Text, m_SpanFactory);
                     span = new MdLinkSpan(linkText, element.Target);
                 }
+            }
+            else
+            {
+                throw new InvalidOperationException($"Encountered instance of {nameof(SeeElement)} where both {nameof(SeeAlsoElement.MemberId)} and {nameof(SeeAlsoElement.Target)} were null.");
             }
 
             AddToCurrentParagraph(span);

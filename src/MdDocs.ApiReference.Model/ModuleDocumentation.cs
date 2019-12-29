@@ -1,6 +1,4 @@
-﻿#nullable disable
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Grynwald.MdDocs.ApiReference.Model.XmlDocs;
@@ -69,7 +67,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
 
         /// <inheritdoc />
-        public IDocumentation TryGetDocumentation(MemberId member)
+        public IDocumentation? TryGetDocumentation(MemberId member)
         {
             switch (member)
             {
@@ -113,7 +111,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
 
 
-        private void LoadTypeRecursively(TypeDefinition typeDefinition, TypeDocumentation declaringType)
+        private void LoadTypeRecursively(TypeDefinition typeDefinition, TypeDocumentation? declaringType)
         {
             var typeId = typeDefinition.ToTypeId();
             var namespaceDocumentation = GetNamespaceDocumentation(typeId.Namespace.Name);

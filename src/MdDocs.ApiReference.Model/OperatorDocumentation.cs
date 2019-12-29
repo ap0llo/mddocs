@@ -57,7 +57,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
 
         /// <inheritdoc />
-        public override IDocumentation TryGetDocumentation(MemberId id)
+        public override IDocumentation? TryGetDocumentation(MemberId id)
         {
             if (id is MethodId methodId &&
                methodId.DefiningType.Equals(TypeDocumentation.TypeId) &&

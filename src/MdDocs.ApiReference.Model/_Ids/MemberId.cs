@@ -1,6 +1,5 @@
-﻿#nullable disable
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Grynwald.MdDocs.ApiReference.Model.XmlDocs;
 
 namespace Grynwald.MdDocs.ApiReference.Model
@@ -13,7 +12,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
     {
         // force re-implementation of equality members
 
-        public abstract override bool Equals(object obj);
+        public abstract override bool Equals(object? obj);
 
         public abstract override int GetHashCode();
 
@@ -67,9 +66,19 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// would be parsed into a type named <c>NestedClass</c> with a namespace <c>Namespace.Class1</c>.
         /// When the list of outer types contains the type <c>Namespace.Class1</c>, the id is parsed correctly.
         /// </para>
-        /// </remarks>        
-        public static bool TryParse(string value, IReadOnlyCollection<TypeId> outerTypes, out MemberId memberId)
+        /// </remarks>
+#if NETSTANDARD2_1 || NETCOREAPP3_0 || NETCOREAPP3_1
+        public static bool TryParse(string? value, IReadOnlyCollection<TypeId> outerTypes, [NotNullWhen(true)]out MemberId? memberId)
+#else
+        public static bool TryParse(string? value, IReadOnlyCollection<TypeId> outerTypes, out MemberId? memberId)
+#endif
         {
+            if(value == null)
+            {
+                memberId = default;
+                return false;
+            }
+
             try
             {
                 var parser = new MemberIdParser(value, outerTypes);

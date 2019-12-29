@@ -1,6 +1,4 @@
-﻿#nullable disable
-
-// The code in this file is derived from the "DocReader" class from the NuDoq project.
+﻿// The code in this file is derived from the "DocReader" class from the NuDoq project.
 // The original version of this file was downloaded from
 // https://github.com/kzu/NuDoq/blob/56ad8c508003490d859214753591440b123616f5/src/NuDoq/DocReader.cs
 //
@@ -47,8 +45,8 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
     internal class XmlDocsReader
     {
         private readonly ILogger m_Logger;
-        private readonly XDocument m_Document;
-        private readonly string m_FileName;
+        private readonly XDocument? m_Document;
+        private readonly string? m_FileName;
         private readonly IReadOnlyCollection<TypeId> m_OuterTypes;
 
         public XmlDocsReader(ILogger logger, string fileName, IReadOnlyCollection<TypeId> outerTypes)
@@ -94,23 +92,23 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
                 .Where(element => element.Attribute("name") != null)
                 .Select(element => TryReadMember(element))
                 .Where(x => x != null)
-                .ToList();
+                .ToList()!;
         }
 
 
         /// <summary>
         /// Reads all documentation for a single member
         /// </summary>
-        private MemberElement TryReadMember(XElement element)
+        private MemberElement? TryReadMember(XElement element)
         {
             var name = element.Attribute("name")?.Value;
 
-            if (!TryParseMemberId(name, out var id))
+            if (name == null || !TryParseMemberId(name, out var id))
             {
                 return null;
             }
 
-            var memberElement = new MemberElement(id);
+            var memberElement = new MemberElement(id!);
 
             ReadMemberContent(element, memberElement);
 
@@ -149,14 +147,14 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
                     case "param":
                         {
                             if (element.TryGetAttributeValue("name", out var name))
-                                member.Parameters.Add(name, ReadTextBlock(element));
+                                member.Parameters.Add(name!, ReadTextBlock(element));
                         }
                         break;
 
                     case "typeparam":
                         {
                             if (element.TryGetAttributeValue("name", out var name))
-                                member.TypeParameters.Add(name, ReadTextBlock(element));
+                                member.TypeParameters.Add(name!, ReadTextBlock(element));
                         }
                         break;
 
@@ -176,7 +174,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
                             {
                                 if (TryParseMemberId(cref, out var memberId))
                                 {
-                                    member.SeeAlso.Add(new SeeAlsoElement(memberId, ReadTextBlock(element)));
+                                    member.SeeAlso.Add(new SeeAlsoElement(memberId!, ReadTextBlock(element)));
                                 }
                             }
                             else if(element.TryGetAttributeValue("href", out var href))
@@ -223,7 +221,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
             else
             {
                 m_Logger.LogWarning($"Unexpected member id '{cref}' in 'exception' element. " +
-                                    $"Expected id of type {nameof(TypeId)} but was {memberId.GetType().Name}. " +
+                                    $"Expected id of type {nameof(TypeId)} but was {memberId!.GetType().Name}. " +
                                     $"Ignoring exception element.");
             }
         }
@@ -254,14 +252,14 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
                             case "paramref":
                                 {
                                     if (elementNode.TryGetAttributeValue("name", out var name))
-                                        element = new ParamRefElement(name);
+                                        element = new ParamRefElement(name!);
                                 }
                                 break;
 
                             case "typeparamref":
                                 {
                                     if (elementNode.TryGetAttributeValue("name", out var name))
-                                        element = new TypeParamRefElement(name);
+                                        element = new TypeParamRefElement(name!);
                                 }
                                 break;
 
@@ -292,7 +290,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
                                 {
                                     if(TryParseMemberId(cref, out var memberId))
                                     {
-                                        element = new SeeElement(memberId, ReadTextBlock(elementNode));
+                                        element = new SeeElement(memberId!, ReadTextBlock(elementNode));
                                     }
                                 }
                                 else if(elementNode.TryGetAttributeValue("href", out var href))
@@ -344,7 +342,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
                 listType = ListType.None;
             }
 
-            var listHeader = (ListItemElement)null;
+            ListItemElement? listHeader = default;
             var listItems = new List<ListItemElement>();
 
             // get list header and list items
@@ -374,10 +372,10 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
             return new ListElement(listType, listHeader, listItems);
         }
 
-        private ListItemElement ReadListItem(XElement xml)
+        private ListItemElement? ReadListItem(XElement xml)
         {
-            TextBlock term = null;
-            TextBlock description = null;
+            TextBlock? term = null;
+            TextBlock? description = null;
 
             foreach (var node in xml.Nodes())
             {
@@ -460,7 +458,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
                     if (String.IsNullOrWhiteSpace(line))
                         return String.Empty;
                     // remove indentation from line, when it starts with <indent> whitespace characters
-                    else if (indent.Value <= line.Length && line.Substring(0, indent.Value).Trim().Length == 0)
+                    else if (indent! <= line.Length && line.Substring(0, indent!.Value).Trim().Length == 0)
                         return line.Substring(indent.Value);
                     // line has non-whitespace content within the indentation => return it unchanged
                     else
@@ -526,7 +524,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
         }
 
 
-        private bool TryParseMemberId(string value, out MemberId memberId)
+        private bool TryParseMemberId(string? value, out MemberId? memberId)
         {
             if (!MemberId.TryParse(value, m_OuterTypes, out memberId))
             {
