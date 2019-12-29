@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <AssemblyName>DemoProject</AssemblyName>
     <RootNamespace>DemoProject</RootNamespace>
     <DocumentationFile>$(AssemblyName).xml</DocumentationFile>
@@ -24,7 +24,7 @@
       <MdDocsPath>$(MSBuildThisFileDirectory)..\MdDocs\Grynwald.MdDocs.csproj</MdDocsPath>
       <DocsDir>$(MSBuildThisFileDirectory)..\..\docs\demoprojects\api</DocsDir>
     </PropertyGroup>
-    <Exec Command="dotnet run --no-build --project &quot;$(MdDocsPath)&quot; -- apireference  --assembly &quot;@(TargetPathWithTargetPlatformMoniker->'%(FullPath)')&quot; --outdir &quot;$(DocsDir)&quot;" />
+    <Exec Command="dotnet run --no-build --framework $(TargetFramework) --project &quot;$(MdDocsPath)&quot; -- apireference  --assembly &quot;@(TargetPathWithTargetPlatformMoniker->'%(FullPath)')&quot; --outdir &quot;$(DocsDir)&quot;" />
   </Target>
 
 </Project>

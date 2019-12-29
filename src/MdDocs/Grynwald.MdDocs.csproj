@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFrameworks>netcoreapp2.1;netcoreapp3.1</TargetFrameworks>
     <AssemblyName>mddocs</AssemblyName>
     <PackageId>$(MSBuildProjectName)</PackageId>
     <RootNamespace>$(MSBuildProjectName)</RootNamespace>
@@ -28,7 +28,7 @@
   </ItemGroup>
 
 
-  <Target Name="UpdateDocs" AfterTargets="AfterBuild" DependsOnTargets="GetTargetPath" Condition="'$(BuildingForLiveUnitTesting)' != 'true'">
+  <Target Name="UpdateDocs" AfterTargets="AfterBuild" DependsOnTargets="GetTargetPath" Condition="'$(BuildingForLiveUnitTesting)' != 'true' AND '$(TargetFramework)' == 'netcoreapp3.1' ">
     <PropertyGroup>      
       <DocsDir>$(MSBuildThisFileDirectory)..\..\docs\commandline</DocsDir>
     </PropertyGroup>
