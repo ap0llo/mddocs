@@ -1,8 +1,7 @@
-﻿#nullable disable
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Mono.Cecil;
 
 namespace Grynwald.MdDocs.CommandLineHelp.Model
@@ -15,7 +14,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
         private readonly ILogger m_Logger;
 
 
-        public override string Name { get; }
+        public override string? Name { get; }
 
         public char? ShortName { get; }
 
@@ -25,12 +24,13 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
 
 
         public OptionDocumentation(
-            string name = null, char? shortName = null, bool required = false, string helpText = null,
-            bool hidden = false, object @default = null, string metaValue = null, IReadOnlyList<string> acceptedValues = null)
+            string? name = null, char? shortName = null, bool required = false, string? helpText = null,
+            bool hidden = false, object? @default = null, string? metaValue = null, IReadOnlyList<string>? acceptedValues = null)
             : base(required: required, helpText: helpText, hidden: hidden, @default: @default, metaValue: metaValue, acceptedValues: acceptedValues)
         {
             Name = name;
             ShortName = shortName;
+            m_Logger = NullLogger.Instance;
         }
 
         private OptionDocumentation(PropertyDefinition definition, ILogger logger)
@@ -46,9 +46,9 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
             new OptionDocumentation(definition, logger);
 
 
-        private (string name, char? shortName) LoadNames(PropertyDefinition definition)
+        private (string? name, char? shortName) LoadNames(PropertyDefinition definition)
         {
-            string name = default;
+            string? name = default;
             char? shortName = default;
             foreach (var arg in definition.GetAttribute(Constants.OptionAttributeFullName).ConstructorArguments)
             {

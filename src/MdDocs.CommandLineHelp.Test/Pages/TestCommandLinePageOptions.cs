@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Grynwald.MdDocs.CommandLineHelp.Pages;
+﻿using Grynwald.MdDocs.CommandLineHelp.Pages;
 
 namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
 {

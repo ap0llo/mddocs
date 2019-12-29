@@ -1,6 +1,4 @@
-﻿#nullable disable
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Logging;
@@ -16,14 +14,14 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
         public int Index { get; }
 
         // Values might have a name, but name is not used to bind the parameter when parsing.
-        public override string Name { get; }
+        public override string? Name { get; }
 
         public override bool HasName => !String.IsNullOrEmpty(Name);
 
 
         public ValueDocumentation(
-            int index, bool required = false, string name = null, string helpText = null, bool hidden = false,
-            object @default = null, string metaValue = null, IReadOnlyList<string> acceptedValues = null)
+            int index, bool required = false, string? name = null, string? helpText = null, bool hidden = false,
+            object? @default = null, string? metaValue = null, IReadOnlyList<string>? acceptedValues = null)
             : base(required: required, helpText: helpText, hidden: hidden, @default: @default, metaValue: metaValue, acceptedValues: acceptedValues)
         {
             Index = index;

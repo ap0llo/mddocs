@@ -1,6 +1,4 @@
-﻿#nullable disable
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Logging;
@@ -40,8 +38,8 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
         // protected internal: Prevent implementations outside the assembly (abstract classes cannot be sealed)
         protected internal CommandDocumentationBase(
             ApplicationDocumentation application,
-            IEnumerable<OptionDocumentation> options = null,
-            IEnumerable<ValueDocumentation> values = null)
+            IEnumerable<OptionDocumentation>? options = null,
+            IEnumerable<ValueDocumentation>? values = null)
         {
             Application = application ?? throw new ArgumentNullException(nameof(application));
 

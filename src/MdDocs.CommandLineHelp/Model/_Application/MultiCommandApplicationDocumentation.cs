@@ -1,6 +1,4 @@
-﻿#nullable disable
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Logging;
@@ -16,7 +14,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
         public IReadOnlyList<CommandDocumentation> Commands { get; }
 
 
-        public MultiCommandApplicationDocumentation(string name, string version = null, IEnumerable<CommandDocumentation> commands = null, IEnumerable<string> usage = null)
+        public MultiCommandApplicationDocumentation(string name, string? version = null, IEnumerable<CommandDocumentation>? commands = null, IEnumerable<string>? usage = null)
             : base(name, version, usage)
         {
             Commands = commands?.OrderBy(x => x.Name)?.ToArray() ?? Array.Empty<CommandDocumentation>();

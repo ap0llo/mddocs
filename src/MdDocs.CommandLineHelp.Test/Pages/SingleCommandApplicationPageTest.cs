@@ -1,6 +1,4 @@
-﻿#nullable disable
-
-using ApprovalTests;
+﻿using ApprovalTests;
 using ApprovalTests.Reporters;
 using Grynwald.MarkdownGenerator;
 using Grynwald.MdDocs.CommandLineHelp.Model;
@@ -53,7 +51,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
             Approve(application, new TestCommandLinePageOptions() { IncludeVersion = false });
         }
 
-        private void Approve(SingleCommandApplicationDocumentation model, ICommandLinePageOptions options = null)
+        private void Approve(SingleCommandApplicationDocumentation model, ICommandLinePageOptions? options = null)
         {
             var pathProvider = new DefaultCommandLineHelpPathProvider();
             var documentSet = new DocumentSet<IDocument>();

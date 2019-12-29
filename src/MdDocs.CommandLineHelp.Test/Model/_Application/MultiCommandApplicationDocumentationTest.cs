@@ -1,6 +1,4 @@
-﻿#nullable disable
-
-using System.Linq;
+﻿using System.Linq;
 using System.Reflection;
 using Grynwald.MdDocs.CommandLineHelp.Model;
 using Grynwald.MdDocs.CommandLineHelp.TestData;
@@ -13,9 +11,9 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Model
 {
     public class MultiCommandApplicationDocumentationTest
     {
-        private MultiCommandApplicationDocumentation LoadDocumentation(Assembly assembly = null)
+        private MultiCommandApplicationDocumentation LoadDocumentation(Assembly? assembly = null)
         {
-            assembly = assembly ?? typeof(Command1Options).Assembly;
+            assembly ??= typeof(Command1Options).Assembly;
 
             using (var definition = AssemblyReader.ReadFile(assembly.Location, NullLogger.Instance))
             {

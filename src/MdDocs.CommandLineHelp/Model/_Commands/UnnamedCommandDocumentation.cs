@@ -1,6 +1,4 @@
-﻿#nullable disable
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
 using Mono.Cecil;
@@ -14,8 +12,8 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
     {
         public UnnamedCommandDocumentation(
             ApplicationDocumentation application,
-            IEnumerable<OptionDocumentation> options = null,
-            IEnumerable<ValueDocumentation> values = null) : base(application, options, values)
+            IEnumerable<OptionDocumentation>? options = null,
+            IEnumerable<ValueDocumentation>? values = null) : base(application, options, values)
         { }
 
 

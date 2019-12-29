@@ -1,6 +1,4 @@
-﻿#nullable disable
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Logging;
@@ -15,7 +13,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
     {
         public string Name { get; }
 
-        public string HelpText { get; }
+        public string? HelpText { get; }
 
         public bool Hidden { get; }
 
@@ -23,10 +21,10 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
         public CommandDocumentation(
             ApplicationDocumentation application,
             string name,
-            string helpText = null,
+            string? helpText = null,
             bool hidden = false,
-            IEnumerable<OptionDocumentation> options = null,
-            IEnumerable<ValueDocumentation> values = null) : base(application, options, values)
+            IEnumerable<OptionDocumentation>? options = null,
+            IEnumerable<ValueDocumentation>? values = null) : base(application, options, values)
         {
             if (String.IsNullOrEmpty(name))
                 throw new ArgumentException("Value must not be null or empty", nameof(name));
