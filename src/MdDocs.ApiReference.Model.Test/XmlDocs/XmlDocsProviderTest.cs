@@ -1,6 +1,4 @@
-﻿#nullable disable
-
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
 using Grynwald.MdDocs.ApiReference.Model;
@@ -26,7 +24,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
             // select "Enable debug symbol and xml documentation comment generation"
             // (see https://docs.microsoft.com/en-us/visualstudio/test/live-unit-testing?view=vs-2017#configure-live-unit-testing)
 
-            var assemblyPath = new Uri(typeof(TestClass_Type).Assembly.CodeBase).LocalPath;
+            var assemblyPath = new Uri(typeof(TestClass_Type).Assembly.CodeBase!).LocalPath;
             m_XmlDocsPath = Path.ChangeExtension(assemblyPath, ".xml");
         }
 
@@ -139,7 +137,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
             // ASSERT
             Assert.NotNull(docs);
 
-            Assert.NotNull(docs.MemberId);
+            Assert.NotNull(docs!.MemberId);
             Assert.IsAssignableFrom<GenericTypeId>(docs.MemberId);
 
             Assert.NotNull(docs.Summary);
@@ -153,14 +151,16 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
             Assert.Contains(docs.TypeParameters, x => x.Key == "T1");
             Assert.Contains(docs.TypeParameters, x => x.Key == "T2");
 
+            Assert.All(docs.SeeAlso, seeAlso => Assert.NotNull(seeAlso.MemberId));
+
             Assert.Equal(2, docs.SeeAlso.Count);
             Assert.Single(
                 docs.SeeAlso,
-                seeAlso => seeAlso.Text.Elements.Count == 1 && seeAlso.MemberId.Equals(new SimpleTypeId("Grynwald.MdDocs.ApiReference.Test.TestData", "TestClass_Type"))
+                seeAlso => seeAlso.Text.Elements.Count == 1 && seeAlso.MemberId!.Equals(new SimpleTypeId("Grynwald.MdDocs.ApiReference.Test.TestData", "TestClass_Type"))
             );
             Assert.Single(
                 docs.SeeAlso,
-                seeAlso => seeAlso.Text.Elements.Count == 0 && seeAlso.MemberId.Equals(new SimpleTypeId("Grynwald.MdDocs.ApiReference.Test.TestData", "TestInterface_Type"))
+                seeAlso => seeAlso.Text.Elements.Count == 0 && seeAlso.MemberId!.Equals(new SimpleTypeId("Grynwald.MdDocs.ApiReference.Test.TestData", "TestInterface_Type"))
             );
         }
 
@@ -182,7 +182,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
             // ASSERT
             Assert.NotNull(docs);
 
-            Assert.NotNull(docs.MemberId);
+            Assert.NotNull(docs!.MemberId);
             Assert.IsAssignableFrom<MethodId>(docs.MemberId);
 
             Assert.NotNull(docs.Remarks);
@@ -200,14 +200,16 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
 
             Assert.NotNull(docs.Returns);
 
+            Assert.All(docs.SeeAlso, seeAlso => Assert.NotNull(seeAlso.MemberId));
+
             Assert.Equal(2, docs.SeeAlso.Count);
             Assert.Single(
                 docs.SeeAlso,
-                seeAlso => seeAlso.Text.Elements.Count == 1 && seeAlso.MemberId.Equals(new SimpleTypeId("Grynwald.MdDocs.ApiReference.Test.TestData", "TestClass_Type"))
+                seeAlso => seeAlso.Text.Elements.Count == 1 && seeAlso.MemberId!.Equals(new SimpleTypeId("Grynwald.MdDocs.ApiReference.Test.TestData", "TestClass_Type"))
             );
             Assert.Single(
                 docs.SeeAlso,
-                seeAlso => seeAlso.Text.Elements.Count == 0 && seeAlso.MemberId.Equals(new SimpleTypeId("Grynwald.MdDocs.ApiReference.Test.TestData", "TestInterface_Type"))
+                seeAlso => seeAlso.Text.Elements.Count == 0 && seeAlso.MemberId!.Equals(new SimpleTypeId("Grynwald.MdDocs.ApiReference.Test.TestData", "TestInterface_Type"))
             );
         }
 
@@ -229,7 +231,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
             // ASSERT
             Assert.NotNull(docs);
 
-            Assert.NotNull(docs.MemberId);
+            Assert.NotNull(docs!.MemberId);
             Assert.IsAssignableFrom<FieldId>(docs.MemberId);
 
             Assert.NotNull(docs.Summary);
@@ -240,14 +242,16 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
 
             Assert.NotNull(docs.Value);
 
+            Assert.All(docs.SeeAlso, seeAlso => Assert.NotNull(seeAlso.MemberId));
+
             Assert.Equal(2, docs.SeeAlso.Count);
             Assert.Single(
                 docs.SeeAlso,
-                seeAlso => seeAlso.Text.Elements.Count == 1 && seeAlso.MemberId.Equals(new SimpleTypeId("Grynwald.MdDocs.ApiReference.Test.TestData", "TestClass_Type"))
+                seeAlso => seeAlso.Text.Elements.Count == 1 && seeAlso.MemberId!.Equals(new SimpleTypeId("Grynwald.MdDocs.ApiReference.Test.TestData", "TestClass_Type"))
             );
             Assert.Single(
                 docs.SeeAlso,
-                seeAlso => seeAlso.Text.Elements.Count == 0 && seeAlso.MemberId.Equals(new SimpleTypeId("Grynwald.MdDocs.ApiReference.Test.TestData", "TestInterface_Type"))
+                seeAlso => seeAlso.Text.Elements.Count == 0 && seeAlso.MemberId!.Equals(new SimpleTypeId("Grynwald.MdDocs.ApiReference.Test.TestData", "TestInterface_Type"))
             );
         }
 
@@ -269,7 +273,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
             // ASSERT
             Assert.NotNull(docs);
 
-            Assert.NotNull(docs.MemberId);
+            Assert.NotNull(docs!.MemberId);
             Assert.IsAssignableFrom<PropertyId>(docs.MemberId);
 
             Assert.NotNull(docs.Summary);
@@ -284,14 +288,16 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
             Assert.Single(docs.Exceptions);
             Assert.Contains(docs.Exceptions, x => x.Type.Equals(MemberId.Parse("T:System.ArgumentException", Array.Empty<TypeId>())));
 
+            Assert.All(docs.SeeAlso, seeAlso => Assert.NotNull(seeAlso.MemberId));
+
             Assert.Equal(2, docs.SeeAlso.Count);
             Assert.Single(
                 docs.SeeAlso,
-                seeAlso => seeAlso.Text.Elements.Count == 1 && seeAlso.MemberId.Equals(new SimpleTypeId("Grynwald.MdDocs.ApiReference.Test.TestData", "TestClass_Type"))
+                seeAlso => seeAlso.Text.Elements.Count == 1 && seeAlso.MemberId!.Equals(new SimpleTypeId("Grynwald.MdDocs.ApiReference.Test.TestData", "TestClass_Type"))
             );
             Assert.Single(
                 docs.SeeAlso,
-                seeAlso => seeAlso.Text.Elements.Count == 0 && seeAlso.MemberId.Equals(new SimpleTypeId("Grynwald.MdDocs.ApiReference.Test.TestData", "TestInterface_Type"))
+                seeAlso => seeAlso.Text.Elements.Count == 0 && seeAlso.MemberId!.Equals(new SimpleTypeId("Grynwald.MdDocs.ApiReference.Test.TestData", "TestInterface_Type"))
             );
         }
 
@@ -313,7 +319,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
             // ASSERT
             Assert.NotNull(docs);
 
-            Assert.NotNull(docs.MemberId);
+            Assert.NotNull(docs!.MemberId);
             Assert.IsAssignableFrom<EventId>(docs.MemberId);
 
             Assert.NotNull(docs.Summary);
@@ -322,14 +328,16 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
 
             Assert.NotNull(docs.Example);
 
+
             Assert.Equal(2, docs.SeeAlso.Count);
+            Assert.All(docs.SeeAlso, seeAlso => Assert.NotNull(seeAlso.MemberId));
             Assert.Single(
                 docs.SeeAlso,
-                seeAlso => seeAlso.Text.Elements.Count == 1 && seeAlso.MemberId.Equals(new SimpleTypeId("Grynwald.MdDocs.ApiReference.Test.TestData", "TestClass_Type"))
+                seeAlso => seeAlso.Text.Elements.Count == 1 && seeAlso.MemberId!.Equals(new SimpleTypeId("Grynwald.MdDocs.ApiReference.Test.TestData", "TestClass_Type"))
             );
             Assert.Single(
                 docs.SeeAlso,
-                seeAlso => seeAlso.Text.Elements.Count == 0 && seeAlso.MemberId.Equals(new SimpleTypeId("Grynwald.MdDocs.ApiReference.Test.TestData", "TestInterface_Type"))
+                seeAlso => seeAlso.Text.Elements.Count == 0 && seeAlso.MemberId!.Equals(new SimpleTypeId("Grynwald.MdDocs.ApiReference.Test.TestData", "TestInterface_Type"))
             );
         }
 
@@ -348,7 +356,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
             // ASSERT
             Assert.NotNull(docs);
 
-            Assert.NotNull(docs.MemberId);
+            Assert.NotNull(docs!.MemberId);
             Assert.IsAssignableFrom<TypeId>(docs.MemberId);
 
             Assert.NotNull(docs.Summary);            

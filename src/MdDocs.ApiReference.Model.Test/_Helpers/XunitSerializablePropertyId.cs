@@ -1,6 +1,4 @@
-﻿#nullable disable
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Grynwald.MdDocs.ApiReference.Model;
 using Xunit.Abstractions;
@@ -17,7 +15,9 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
 
         // parameterless constructor required by xunit
         public XunitSerializablePropertyId()
-        { }
+        {
+            PropertyId = null!; // set by Serialize()
+        }
 
         public XunitSerializablePropertyId(PropertyId propertyId)
         {
@@ -54,6 +54,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             }
         }
 
-        public static implicit operator PropertyId(XunitSerializablePropertyId serializable) => serializable?.PropertyId;
+        public static implicit operator PropertyId(XunitSerializablePropertyId serializable) =>
+            serializable?.PropertyId ?? throw new InvalidOperationException();
     }
 }

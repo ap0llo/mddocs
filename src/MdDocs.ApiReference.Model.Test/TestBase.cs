@@ -1,6 +1,4 @@
-﻿#nullable disable
-
-using System;
+﻿using System;
 using System.Linq;
 using System.Reflection;
 using Grynwald.MdDocs.ApiReference.Model;
@@ -18,7 +16,7 @@ namespace Grynwald.MdDocs.ApiReference.Test
 
         public TestBase()
         {
-            var assemblyPath = Assembly.GetAssembly(typeof(TestClass_Type)).Location;
+            var assemblyPath = Assembly.GetAssembly(typeof(TestClass_Type))!.Location;
 
             m_AssemblyDefinition = new Lazy<AssemblyDefinition>(() => AssemblyDefinition.ReadAssembly(assemblyPath));
             m_AssemblyDocumentation = new Lazy<AssemblyDocumentation>(
@@ -57,7 +55,7 @@ namespace Grynwald.MdDocs.ApiReference.Test
 
             var sut = new TypeDocumentation(
                 m_AssemblyDocumentation.Value.MainModuleDocumentation,
-                new NamespaceDocumentation(m_AssemblyDocumentation.Value.MainModuleDocumentation, null, new NamespaceId(type.Namespace), NullLogger.Instance),
+                new NamespaceDocumentation(m_AssemblyDocumentation.Value.MainModuleDocumentation, null, new NamespaceId(type.Namespace ?? ""), NullLogger.Instance),
                 typeDefinition,
                 NullXmlDocsProvider.Instance,
                 NullLogger.Instance,

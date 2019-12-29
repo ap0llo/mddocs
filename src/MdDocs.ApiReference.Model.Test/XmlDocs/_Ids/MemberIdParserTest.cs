@@ -1,6 +1,4 @@
-﻿#nullable disable
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -25,9 +23,13 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
 
             // parameterless constructor required by xunit
             public MemberIdParserTestCase()
-            { }
+            {
+                Input = null!;              // set by Serialize()
+                ExpectedMemberId = null!;   // set by Serialize()
+                OuterTypes = null!;         // set by Serialize()
+            }
 
-            public MemberIdParserTestCase(string input, MemberId expectedMemberId, IReadOnlyCollection<TypeId> outerTypes = null)
+            public MemberIdParserTestCase(string input, MemberId expectedMemberId, IReadOnlyCollection<TypeId>? outerTypes = null)
             {
                 Input = input;
                 ExpectedMemberId = expectedMemberId;

@@ -1,6 +1,4 @@
-﻿#nullable disable
-
-using System;
+﻿using System;
 using Grynwald.MdDocs.ApiReference.Model;
 using Xunit.Abstractions;
 
@@ -16,7 +14,9 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
 
         // parameterless constructor required by xunit
         public XunitSerializableEventId()
-        { }
+        {
+            EventId = null!; // set by Serialize()
+        }
 
         public XunitSerializableEventId(EventId eventId)
         {
@@ -38,6 +38,6 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             info.AddValue(nameof(EventId.Name), EventId.Name);
         }
 
-        public static implicit operator EventId(XunitSerializableEventId serializable) => serializable?.EventId;
+        public static implicit operator EventId(XunitSerializableEventId serializable) => serializable?.EventId ?? throw new InvalidOperationException();
     }
 }

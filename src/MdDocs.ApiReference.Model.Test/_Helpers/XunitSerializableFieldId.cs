@@ -1,6 +1,4 @@
-﻿#nullable disable
-
-using System;
+﻿using System;
 using Grynwald.MdDocs.ApiReference.Model;
 using Xunit.Abstractions;
 
@@ -16,7 +14,9 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
 
         // parameterless constructor required by xunit
         public XunitSerializableFieldId()
-        { }
+        {
+            FieldId = null!; // set by Serialize()
+        }
 
         public XunitSerializableFieldId(FieldId fieldId)
         {
@@ -38,6 +38,6 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             info.AddValue(nameof(FieldId.Name), FieldId.Name);
         }
 
-        public static implicit operator FieldId(XunitSerializableFieldId serializable) => serializable?.FieldId;
+        public static implicit operator FieldId(XunitSerializableFieldId serializable) => serializable?.FieldId ?? throw new InvalidOperationException();
     }
 }
