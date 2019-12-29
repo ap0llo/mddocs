@@ -19,11 +19,13 @@ namespace Grynwald.MdDocs.ApiReference.Model
         {
             get
             {
-                if (TypeArguments.Count == 1 && Namespace.IsSystem && Name.Equals("Nullable"))
+                if (!IsNestedType && TypeArguments.Count == 1 && Namespace.IsSystem && Name.Equals("Nullable"))
                 {
                     return $"{TypeArguments.Single().DisplayName}?";
                 }
-                return $"{Name}<{String.Join(", ", TypeArguments.Select(a => a.DisplayName))}>";
+
+                var name = IsNestedType ? $"{DeclaringType.DisplayName}.{Name}" : Name;
+                return $"{name}<{String.Join(", ", TypeArguments.Select(a => a.DisplayName))}>";
             }
         }
 
@@ -36,11 +38,12 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// </summary>
         /// <param name="namespaceName">The namespace the type is defined in.</param>
         /// <param name="name">The type's name.</param>
+        /// <param name="typeArguments">The type's type arguments.</param>
         public GenericTypeInstanceId(string namespaceName, string name, IReadOnlyList<TypeId> typeArguments)
             : this(new NamespaceId(namespaceName), name, typeArguments)
         { }
 
-        /// <param name="typeArguments">The type's type arguments.</param>/// <summary>
+        /// <summary>
         /// Initializes a new instance of <see cref="GenericTypeInstanceId"/>.
         /// </summary>
         /// <param name="namespace">The namespace the type is defined in.</param>
@@ -51,6 +54,16 @@ namespace Grynwald.MdDocs.ApiReference.Model
             TypeArguments = typeArguments ?? throw new ArgumentNullException(nameof(typeArguments));
         }
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="GenericTypeInstanceId"/> for a nested type.
+        /// </summary>
+        /// <param name="declaringType">The type in which the nested type is defined in.</param>
+        /// <param name="name">The type's name.</param>
+        /// <param name="typeArguments">The type's type arguments.</param>
+        public GenericTypeInstanceId(TypeId declaringType, string name, IReadOnlyList<TypeId> typeArguments) : base(declaringType, name)
+        {
+            TypeArguments = typeArguments ?? throw new ArgumentNullException(nameof(typeArguments));
+        }
 
         /// <inheritdoc />
         public override bool Equals(TypeId other) => Equals(other as GenericTypeInstanceId);

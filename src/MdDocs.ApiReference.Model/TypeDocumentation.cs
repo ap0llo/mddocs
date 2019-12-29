@@ -21,6 +21,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         private readonly IDictionary<string, IndexerDocumentation> m_Indexers;
         private readonly IDictionary<string, MethodDocumentation> m_Methods;
         private readonly IDictionary<OperatorKind, OperatorDocumentation> m_Operators;
+        private readonly List<TypeDocumentation> m_NestedTypes = new List<TypeDocumentation>();
 
 
         /// <summary>
@@ -56,7 +57,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// <summary>
         /// Gets the kind of the type (class, struct, interface ...)
         /// </summary>
-        public TypeKind Kind { get; }
+        public TypeKind Kind { get; }        
 
         /// <summary>
         /// Gets the type's fields.
@@ -145,6 +146,24 @@ namespace Grynwald.MdDocs.ApiReference.Model
         public string ObsoleteMessage { get; }
 
         /// <summary>
+        /// Gets whether this type is a nested type
+        /// </summary>
+        public bool IsNestedType => DeclaringType != null;
+
+        /// <summary>
+        /// Gets the model object for the type this type is defined in if it is a nested type.
+        /// </summary>
+        /// <value>
+        /// The model class for the declaring type if the type is a nested type, otherwise <c>null</c>.
+        /// </value>
+        public TypeDocumentation DeclaringType { get; }
+
+        /// <summary>
+        /// Gets the type's nested types
+        /// </summary>
+        public IReadOnlyCollection<TypeDocumentation> NestedTypes => m_NestedTypes;
+
+        /// <summary>
         /// Gets the type's underlying Mono.Cecil definition.
         /// </summary>
         internal TypeDefinition Definition { get; }
@@ -159,10 +178,14 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// <param name="xmlDocsProvider">The XML documentation provider to use for loading XML documentation comments.</param>
         /// <param name="logger">The logger to use.</param>
         internal TypeDocumentation(ModuleDocumentation moduleDocumentation,
-                                   NamespaceDocumentation namespaceDocumentation, TypeDefinition definition,
-                                   IXmlDocsProvider xmlDocsProvider, ILogger logger)
+                                   NamespaceDocumentation namespaceDocumentation,
+                                   TypeDefinition definition,
+                                   IXmlDocsProvider xmlDocsProvider,
+                                   ILogger logger,
+                                   TypeDocumentation declaringType)
         {
             TypeId = definition.ToTypeId();
+            DeclaringType = declaringType;            
 
             ModuleDocumentation = moduleDocumentation ?? throw new ArgumentNullException(nameof(moduleDocumentation));
             NamespaceDocumentation = namespaceDocumentation ?? throw new ArgumentNullException(nameof(namespaceDocumentation));
@@ -300,6 +323,18 @@ namespace Grynwald.MdDocs.ApiReference.Model
                 default:
                     return ModuleDocumentation.TryGetDocumentation(id);
             }
+        }
+
+
+        internal void AddNestedType(TypeDocumentation nestedType)
+        {
+            if (nestedType is null)
+                throw new ArgumentNullException(nameof(nestedType));
+
+            if (nestedType.DeclaringType != this)
+                throw new ArgumentException("Cannot add nested type with a different declaring type", nameof(nestedType));
+
+            m_NestedTypes.Add(nestedType);
         }
 
 

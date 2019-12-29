@@ -72,7 +72,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
             var docsFilePath = Path.ChangeExtension(filePath, ".xml");
             if (File.Exists(docsFilePath))
             {
-                xmlDocsProvider = new XmlDocsProvider(docsFilePath, logger);
+                xmlDocsProvider = new XmlDocsProvider(assemblyDefinition, docsFilePath, logger);
             }
             else
             {

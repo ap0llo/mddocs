@@ -28,9 +28,14 @@ namespace Grynwald.MdDocs.ApiReference.Model
         public abstract bool IsVoid { get; }
 
         /// <summary>
-        /// Gets the types name including the namespace name.
+        /// Gets whether the type is a nested type
         /// </summary>
-        protected string NamespaceAndName => String.IsNullOrEmpty(Namespace.Name) ? Name : $"{Namespace.Name}.{Name}";
+        public bool IsNestedType => DeclaringType != null;
+
+        /// <summary>
+        /// Gets the type's parent type if the type is a nested type
+        /// </summary>
+        public TypeId DeclaringType { get; }
 
 
         /// <summary>
@@ -45,6 +50,22 @@ namespace Grynwald.MdDocs.ApiReference.Model
                 throw new ArgumentException("Value must not be null or empty", nameof(name));
 
             Namespace = @namespace ?? throw new ArgumentNullException(nameof(@namespace));
+            Name = name;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of <see cref="TypeId"/> for a nested type.
+        /// </summary>
+        /// <param name="declaringType">The type that defines the nested type</param>
+        /// <param name="name">The type's name.</param>
+        // private protected constructor => prevent implementation outside of this assembly
+        private protected TypeId(TypeId declaringType, string name)
+        {
+            if (String.IsNullOrEmpty(name))
+                throw new ArgumentException("Value must not be null or empty", nameof(name));
+
+            DeclaringType = declaringType ?? throw new ArgumentNullException(nameof(declaringType));
+            Namespace = declaringType.Namespace;
             Name = name;
         }
 
@@ -71,8 +92,16 @@ namespace Grynwald.MdDocs.ApiReference.Model
             if (other == null)
                 return false;
 
-            return Namespace.Equals(other.Namespace) &&
-                   StringComparer.Ordinal.Equals(Name, other.Name);
+            if (IsNestedType)
+            {
+                return DeclaringType.Equals(other.DeclaringType) &&
+                       StringComparer.Ordinal.Equals(Name, other.Name);
+            }
+            else
+            {
+                return Namespace.Equals(other.Namespace) &&
+                       StringComparer.Ordinal.Equals(Name, other.Name);
+            }
         }
     }
 }

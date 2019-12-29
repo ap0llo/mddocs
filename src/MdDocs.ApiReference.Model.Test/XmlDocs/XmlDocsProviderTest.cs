@@ -34,10 +34,11 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
         public void TryGetDocumentationComments_returns_null_for_type_without_documentation(Type type)
         {
             // ARRANGE
-            var id = GetTypeDefinition(type).ToMemberId();
+            var typeDefinition = GetTypeDefinition(type);
+            var id = typeDefinition.ToMemberId();
 
             // ACT
-            var sut = new XmlDocsProvider(m_XmlDocsPath, NullLogger.Instance);
+            var sut = new XmlDocsProvider(typeDefinition.Module.Assembly, m_XmlDocsPath, NullLogger.Instance);
             var docs = sut.TryGetDocumentationComments(id);
 
             // ASSERT
@@ -49,13 +50,14 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
         public void TryGetDocumentationComments_returns_null_for_method_without_documentation(Type type, string methodName)
         {
             // ARRANGE
-            var id = GetTypeDefinition(type)
+            var typeDefinition = GetTypeDefinition(type);
+            var id = typeDefinition
                 .Methods
                 .Single(x => x.Name == methodName)
                 .ToMemberId();
 
             // ACT
-            var sut = new XmlDocsProvider(m_XmlDocsPath, NullLogger.Instance);
+            var sut = new XmlDocsProvider(typeDefinition.Module.Assembly, m_XmlDocsPath, NullLogger.Instance);
             var docs = sut.TryGetDocumentationComments(id);
 
             // ASSERT
@@ -67,13 +69,14 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
         public void TryGetDocumentationComments_returns_null_for_field_without_documentation(Type type, string fieldName)
         {
             // ARRANGE
-            var id = GetTypeDefinition(type)
+            var typeDefinition = GetTypeDefinition(type);
+            var id = typeDefinition
                 .Fields
                 .Single(x => x.Name == fieldName)
                 .ToMemberId();
 
             // ACT
-            var sut = new XmlDocsProvider(m_XmlDocsPath, NullLogger.Instance);
+            var sut = new XmlDocsProvider(typeDefinition.Module.Assembly, m_XmlDocsPath, NullLogger.Instance);
             var docs = sut.TryGetDocumentationComments(id);
 
             // ASSERT
@@ -85,13 +88,14 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
         public void TryGetDocumentationComments_returns_null_for_property_without_documentation(Type type, string propertyName)
         {
             // ARRANGE
-            var id = GetTypeDefinition(type)
+            var typeDefinition = GetTypeDefinition(type);
+            var id = typeDefinition
                 .Properties
                 .Single(x => x.Name == propertyName)
                 .ToMemberId();
 
             // ACT
-            var sut = new XmlDocsProvider(m_XmlDocsPath, NullLogger.Instance);
+            var sut = new XmlDocsProvider(typeDefinition.Module.Assembly, m_XmlDocsPath, NullLogger.Instance);
             var docs = sut.TryGetDocumentationComments(id);
 
             // ASSERT
@@ -103,13 +107,14 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
         public void TryGetDocumentationComments_returns_null_for_event_without_documentation(Type type, string eventName)
         {
             // ARRANGE
-            var id = GetTypeDefinition(type)
+            var typeDefinition = GetTypeDefinition(type);
+            var id = typeDefinition
                 .Events
                 .Single(x => x.Name == eventName)
                 .ToMemberId();
 
             // ACT
-            var sut = new XmlDocsProvider(m_XmlDocsPath, NullLogger.Instance);
+            var sut = new XmlDocsProvider(typeDefinition.Module.Assembly, m_XmlDocsPath, NullLogger.Instance);
             var summary = sut.TryGetDocumentationComments(id);
 
             // ASSERT
@@ -122,10 +127,11 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
         public void TryGetDocumentationComments_gets_expected_docs_for_type(Type type)
         {
             // ARRANGE
-            var id = GetTypeDefinition(type).ToMemberId();
+            var typeDefinition = GetTypeDefinition(type);
+            var id = typeDefinition.ToMemberId();
 
             // ACT
-            var sut = new XmlDocsProvider(m_XmlDocsPath, NullLogger.Instance);
+            var sut = new XmlDocsProvider(typeDefinition.Module.Assembly, m_XmlDocsPath, NullLogger.Instance);
             var docs = sut.TryGetDocumentationComments(id);
 
             // ASSERT
@@ -161,13 +167,14 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
         public void TryGetDocumentationComments_gets_expected_docs_for_a_method(Type type, string methodName)
         {
             // ARRANGE
-            var id = GetTypeDefinition(type)
+            var typeDefinition = GetTypeDefinition(type);
+            var id = typeDefinition
                 .Methods
                 .Single(x => x.Name == methodName)
                 .ToMemberId();
 
             // ACT
-            var sut = new XmlDocsProvider(m_XmlDocsPath, NullLogger.Instance);
+            var sut = new XmlDocsProvider(typeDefinition.Module.Assembly, m_XmlDocsPath, NullLogger.Instance);
             var docs = sut.TryGetDocumentationComments(id);
 
             // ASSERT
@@ -182,8 +189,8 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
 
             Assert.NotNull(docs.Exceptions);
             Assert.Equal(2, docs.Exceptions.Count);
-            Assert.Contains(docs.Exceptions, x => x.Type.Equals(MemberId.Parse("T:System.InvalidOperationException")));
-            Assert.Contains(docs.Exceptions, x => x.Type.Equals(MemberId.Parse("T:System.ArgumentException")));
+            Assert.Contains(docs.Exceptions, x => x.Type.Equals(MemberId.Parse("T:System.InvalidOperationException", Array.Empty<TypeId>())));
+            Assert.Contains(docs.Exceptions, x => x.Type.Equals(MemberId.Parse("T:System.ArgumentException", Array.Empty<TypeId>())));
 
             Assert.NotNull(docs.Parameters);
             Assert.Single(docs.Parameters);
@@ -207,13 +214,14 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
         public void TryGetDocumentationComments_gets_expected_docs_for_a_field(Type type, string fieldName)
         {
             // ARRANGE
-            var id = GetTypeDefinition(type)
+            var typeDefinition = GetTypeDefinition(type);
+            var id = typeDefinition
                 .Fields
                 .Single(x => x.Name == fieldName)
                 .ToMemberId();
 
             // ACT
-            var sut = new XmlDocsProvider(m_XmlDocsPath, NullLogger.Instance);
+            var sut = new XmlDocsProvider(typeDefinition.Module.Assembly, m_XmlDocsPath, NullLogger.Instance);
             var docs = sut.TryGetDocumentationComments(id);
 
             // ASSERT
@@ -246,13 +254,14 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
         public void TryGetDocumentationComments_gets_expected_docs_for_a_property(Type type, string propertyName)
         {
             // ARRANGE
-            var id = GetTypeDefinition(type)
+            var typeDefinition = GetTypeDefinition(type);
+            var id = typeDefinition
                 .Properties
                 .Single(x => x.Name == propertyName)
                 .ToMemberId();
 
             // ACT
-            var sut = new XmlDocsProvider(m_XmlDocsPath, NullLogger.Instance);
+            var sut = new XmlDocsProvider(typeDefinition.Module.Assembly, m_XmlDocsPath, NullLogger.Instance);
             var docs = sut.TryGetDocumentationComments(id);
 
             // ASSERT
@@ -271,7 +280,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
 
             Assert.NotNull(docs.Exceptions);
             Assert.Single(docs.Exceptions);
-            Assert.Contains(docs.Exceptions, x => x.Type.Equals(MemberId.Parse("T:System.ArgumentException")));
+            Assert.Contains(docs.Exceptions, x => x.Type.Equals(MemberId.Parse("T:System.ArgumentException", Array.Empty<TypeId>())));
 
             Assert.Equal(2, docs.SeeAlso.Count);
             Assert.Single(
@@ -289,13 +298,14 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
         public void TryGetDocumentationComments_gets_expected_docs_for_a_event(Type type, string eventName)
         {
             // ARRANGE
-            var id = GetTypeDefinition(type)
+            var typeDefinition = GetTypeDefinition(type);
+            var id = typeDefinition
                 .Events
                 .Single(x => x.Name == eventName)
                 .ToMemberId();
 
             // ACT
-            var sut = new XmlDocsProvider(m_XmlDocsPath, NullLogger.Instance);
+            var sut = new XmlDocsProvider(typeDefinition.Module.Assembly, m_XmlDocsPath, NullLogger.Instance);
             var docs = sut.TryGetDocumentationComments(id);
 
             // ASSERT
@@ -319,6 +329,27 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
                 docs.SeeAlso,
                 seeAlso => seeAlso.Text.Elements.Count == 0 && seeAlso.MemberId.Equals(new SimpleTypeId("Grynwald.MdDocs.ApiReference.Test.TestData", "TestInterface_Type"))
             );
+        }
+
+
+        [Fact]
+        public void TryGetDocumentationComments_gets_expected_docs_for_a_nested_type()
+        {
+            // ARRANGE
+            var typeDefinition = GetTypeDefinition(typeof(TestClass_NestedTypes.NestedClass1));
+            var id = typeDefinition.ToMemberId();
+            
+            // ACT
+            var sut = new XmlDocsProvider(typeDefinition.Module.Assembly, m_XmlDocsPath, NullLogger.Instance);
+            var docs = sut.TryGetDocumentationComments(id);
+
+            // ASSERT
+            Assert.NotNull(docs);
+
+            Assert.NotNull(docs.MemberId);
+            Assert.IsAssignableFrom<TypeId>(docs.MemberId);
+
+            Assert.NotNull(docs.Summary);            
         }
     }
 }

@@ -7,7 +7,7 @@
 An example of a custom attribute that is used to annotate a property with custom flags.
 
 ```csharp
-[AttributeUsage(AttributeTargets.Property | AttributeTargets.All)]
+[AttributeUsage(AttributeTargets.Property)]
 public class DemoPropertyAnnotationAttribute : Attribute
 ```
 

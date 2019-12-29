@@ -21,11 +21,13 @@ namespace Grynwald.MdDocs.ApiReference.Model
         {
             get
             {
-                if(Arity == 1 && Namespace.IsSystem && Name.Equals("Nullable"))
+                if(!IsNestedType && Arity == 1 && Namespace.IsSystem && Name.Equals("Nullable"))
                 {
                     return $"{m_TypeParameterDisplayNames.Single()}?";
                 }
-                return $"{Name}<{String.Join(", ", m_TypeParameterDisplayNames)}>";
+
+                var name = IsNestedType ? $"{DeclaringType.DisplayName}.{Name}" : Name;
+                return $"{name}<{String.Join(", ", m_TypeParameterDisplayNames)}>";
             }
         }
 
@@ -71,6 +73,37 @@ namespace Grynwald.MdDocs.ApiReference.Model
                 ? new [] { "T" }
                 : Enumerable.Range(1, arity).Select(x => "T" + x).ToArray();
         }
+
+        /// <summary>
+        /// Initializes a new instance of <see cref="GenericTypeId"/> for a nested type.
+        /// </summary>
+        /// <param name="declaringType">The type the nested type is defined in.</param>
+        /// <param name="name">The name of the type.</param>
+        /// <param name="arity">The number of type parameter the type defines.</param>
+        /// <param name="typeParameterDisplayNames">The display names of the type parameters (e.g. "TKey", "TValue"...)</param>
+        public GenericTypeId(TypeId declaringType, string name, int arity, IReadOnlyList<string> typeParameterDisplayNames) : base(declaringType, name)
+        {
+            m_TypeParameterDisplayNames = typeParameterDisplayNames ?? throw new ArgumentNullException(nameof(typeParameterDisplayNames));
+            Arity = arity;
+
+            if (typeParameterDisplayNames?.Count != arity)
+                throw new ArgumentException("The number of type parameter display names must match the type's arity", nameof(typeParameterDisplayNames));
+        }
+
+        /// <summary>
+        /// Initializes a new instance of <see cref="GenericTypeId"/> for a nested type.
+        /// </summary>
+        /// <param name="declaringType">The type the nested type is defined in.</param>
+        /// <param name="name">The name of the type.</param>
+        /// <param name="arity">The number of type parameter the type defines.</param>
+        public GenericTypeId(TypeId declaringType, string name, int arity) : base(declaringType, name)
+        {
+            Arity = arity;
+            m_TypeParameterDisplayNames = arity == 1
+                ? new[] { "T" }
+                : Enumerable.Range(1, arity).Select(x => "T" + x).ToArray();
+        }
+
 
 
         /// <inheritdoc />

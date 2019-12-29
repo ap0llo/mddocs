@@ -157,11 +157,13 @@ namespace Grynwald.MdDocs.ApiReference.Model
                 // method name is the name of the type
                 var methodName = method.DeclaringType.Name;
 
-                if (method.DeclaringType.HasGenericParameters)
+                if (method.DeclaringType.HasGenericParameters && !method.DeclaringType.IsNested)
                 {
                     // remove number of type parameters from type name
                     methodName = methodName.Substring(0, methodName.LastIndexOf("`"));
                 }
+
+                //TODO: Support for nested types
 
                 definitionBuilder.Append(methodName);
             }
@@ -279,9 +281,8 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// Gets the C# code defining the specified type.
         /// </summary>
         public static string GetDefinition(TypeDefinition type)
-        {
+        {                        
             var definitionBuilder = new StringBuilder();
-
             var typeKind = type.Kind();
 
             AppendCustomAttributes(definitionBuilder, type.GetCustomAttributes());
@@ -291,18 +292,8 @@ namespace Grynwald.MdDocs.ApiReference.Model
             definitionBuilder.Append(typeKind.ToString().ToLower());
             definitionBuilder.Append(" ");
 
-            // class name and type parameters
-            if (type.HasGenericParameters)
-            {
-                // remove number of type parameters from type name
-                var name = type.Name.Substring(0, type.Name.LastIndexOf("`"));
-                definitionBuilder.Append(name);
-                AppendTypeParameters(definitionBuilder, type.GenericParameters);
-            }
-            else
-            {
-                definitionBuilder.Append(type.Name);
-            }
+            // type name
+            AppendTypeDefinitionTypeName(definitionBuilder, type);
 
             // base type and interface implementations
             AppendBaseTypes(type, typeKind, definitionBuilder);
@@ -312,7 +303,61 @@ namespace Grynwald.MdDocs.ApiReference.Model
             return definitionBuilder.ToString();
         }
 
-   
+
+        private static void AppendTypeDefinitionTypeName(StringBuilder definitionBuilder, TypeDefinition type)
+        {
+            if (type.IsNested)
+            {
+                AppendTypeDefinitionTypeName(definitionBuilder, type.DeclaringType);
+                definitionBuilder.Append(".");
+            }
+
+            // class name and type parameters
+            if (type.HasGenericParameters)
+            {
+                // remove number of type parameters from type name
+                var index = type.Name.LastIndexOf('`');
+
+                // for nested types, the type's name might not include the arity
+                // because all type parameters are type parameters of the declaring type, e.g.
+                // 
+                // public class MyClass<T>
+                // {
+                //    public class NestedType
+                //    { }
+                // }
+                //
+                if (index > 0)
+                {
+                    var name = type.Name.Substring(0, index);
+                    definitionBuilder.Append(name);
+
+                    IEnumerable<GenericParameter> genericParameters = type.GenericParameters;
+                    if (type.IsNested)
+                    {
+                        // determine generic parameter for nested types:
+                        // type.GenericParameters for a nested class contains both the
+                        // generic parameters of the nested type *and* the generic parameters
+                        // of the surrounding types.
+                        // To avoid appending too many generic parameters,
+                        // remove the declaring type's parameter from the list.                            
+                        genericParameters = genericParameters
+                            .Where(p1 => !type.DeclaringType.GenericParameters.Any(p2 => p2.Name == p1.Name));
+                    }
+
+                    AppendTypeParameters(definitionBuilder, genericParameters);
+                }
+                else
+                {
+                    definitionBuilder.Append(type.Name);
+                }
+            }
+            else
+            {
+                definitionBuilder.Append(type.Name);
+            }
+        }
+
         private static void AppendCustomAttributes(StringBuilder definitionBuilder, IEnumerable<CustomAttribute> customAttributes, bool singleLine = false)
         {
             foreach (var attribute in customAttributes)
@@ -341,7 +386,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
                 definitionBuilder.Append("]");
 
-                if(!singleLine)
+                if (!singleLine)
                 {
                     definitionBuilder.Append("\r\n");
                 }
@@ -384,7 +429,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         private static void AppendTypeModifiers(StringBuilder definitionBuilder, TypeDefinition type, TypeKind typeKind)
         {
             // "public"
-            if (type.IsPublic)
+            if (type.IsPublic || type.IsNestedPublic)
             {
                 definitionBuilder.Append("public ");
             }
@@ -553,7 +598,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
             // string => put in quotation marks
             if (typeReference.FullName == Constants.StringFullName)
             {
-                if(value is null)
+                if (value is null)
                 {
                     return "null";
                 }
@@ -577,16 +622,57 @@ namespace Grynwald.MdDocs.ApiReference.Model
                 {
                     var builder = new StringBuilder();
 
-                    foreach (var (name, enumValue) in values)
+                    // if there is an exact match for the value in the enum
+                    // return only a single value, e.g.
+                    //
+                    // enum MyEnum
+                    // {
+                    //    Value1 = 0x01,
+                    //    Value2 = 0x02,
+                    //    Value3 = 0x04,
+                    //    All = Value1 | Value2 | Value3,
+                    // }
+                    //
+                    // when the value is 0x07, return 'MyEnum.All' instead of 'MyEnum.Value1 | MyEnum.Value2 | MyEnum.Value3' 
+                    if (values.Any(x => x.value == intValue))
                     {
-                        if ((intValue & enumValue) != 0)
+                        builder.Append(enumName);
+                        builder.Append(".");
+                        builder.Append(values.Single(x => x.value == intValue).name);
+                    }
+                    else
+                    {
+                        foreach (var (name, enumValue) in values)
                         {
-                            if (builder.Length > 0)
-                                builder.Append(" | ");
+                            // check if there the value has the flag defined by the current enum element
+                            // (as replacement for Enum.HasFlag())
+                            //
+                            // A binary AND must yield the current enum value, just comparing the result of the
+                            // AND to 0 is not sufficient, because the flags enum might have members that represent
+                            // multiple flags, e.g.:
+                            //
+                            // enum MyEnum
+                            // {
+                            //    Value1 = 0x01,
+                            //    Value2 = 0x02,
+                            //    Value3 = 0x04,
+                            //    All = Value1 | Value2 | Value3,
+                            // }
+                            //
+                            // when the enum is used like 'MyEnum.Value1 | MyEnum.Value2'
+                            // we want to only returns the two actually used values, but
+                            // '(MyEnum.Value1 | MyEnum.Value2) & MyEnum.All' is != 0
+                            // which means 'All' would always be included, unless we check
+                            // if the & yields the enum value (bc '(MyEnum.Value1 | MyEnum.Value2) & MyEnum.All != MyEnum.All)
+                            if ((intValue & enumValue) == enumValue && (intValue & enumValue) != 0)
+                            {
+                                if (builder.Length > 0)
+                                    builder.Append(" | ");
 
-                            builder.Append(enumName);
-                            builder.Append(".");
-                            builder.Append(name);
+                                builder.Append(enumName);
+                                builder.Append(".");
+                                builder.Append(name);
+                            }
                         }
                     }
 
@@ -640,7 +726,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
             if (parameterType is ByReferenceType byReferenceType)
             {
                 parameterType = byReferenceType.ElementType;
-                if(parameter.Attributes.HasFlag(ParameterAttributes.Out))
+                if (parameter.Attributes.HasFlag(ParameterAttributes.Out))
                 {
                     definitionBuilder.Append("out ");
                 }
@@ -660,13 +746,13 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
             // add parameter name
             definitionBuilder.Append(parameter.Name);
-            
+
             // if parameter has a default value, include it in the definition
             if (parameter.Attributes.HasFlag(ParameterAttributes.Optional) &&
                 parameter.Attributes.HasFlag(ParameterAttributes.HasDefault))
             {
                 definitionBuilder.Append(" = ");
-                definitionBuilder.Append(GetLiteral(parameter.ParameterType, parameter.Constant));                
+                definitionBuilder.Append(GetLiteral(parameter.ParameterType, parameter.Constant));
             }
 
             return definitionBuilder.ToString();

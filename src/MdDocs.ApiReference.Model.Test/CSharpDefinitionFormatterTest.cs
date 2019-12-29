@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Grynwald.MdDocs.ApiReference.Model;
 using Grynwald.MdDocs.ApiReference.Test.TestData;
 using Xunit;
+using Mono.Cecil;
 
 namespace Grynwald.MdDocs.ApiReference.Test.Model
 {
@@ -267,6 +269,17 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             "}\r\n"
         )]
         [InlineData(
+            nameof(CSharpDefinitionTestFlagsEnum2),
+            "[Flags]\r\n" +
+            "public enum CSharpDefinitionTestFlagsEnum2 : short\r\n" +
+            "{\r\n" +
+            "    Value1 = 0x1,\r\n" +
+            "    Value2 = 0x2,\r\n" +
+            "    Value3 = 0x4,\r\n" +
+            "    All = 0x7\r\n" +
+            "}\r\n"
+        )]
+        [InlineData(
             nameof(CSharpDefinitionTestEnum),
             "public enum CSharpDefinitionTestEnum\r\n" +
             "{\r\n" +
@@ -278,6 +291,14 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         [InlineData("CSharpDefinitionTest_GenericInterface_Contravariant`1", "public interface CSharpDefinitionTest_GenericInterface_Contravariant<in TParam>")]
         [InlineData("CSharpDefinitionTest_GenericInterface_Covariant`1", "public interface CSharpDefinitionTest_GenericInterface_Covariant<out TParam>")]
         [InlineData("CSharpDefinitionTest_GenericClass2`2", "public class CSharpDefinitionTest_GenericClass2<TParam1, TParam2>")]
+        [InlineData(nameof(CSharpDefinitionTest_ClassWithAttribute2),
+            "[CSharpDefinitionTest6(CSharpDefinitionTestFlagsEnum2.All)]\r\n" +
+            "public class CSharpDefinitionTest_ClassWithAttribute2"
+        )]
+        [InlineData(nameof(CSharpDefinitionTest_ClassWithAttribute3),
+            "[CSharpDefinitionTest6(CSharpDefinitionTestFlagsEnum2.Value1 | CSharpDefinitionTestFlagsEnum2.Value2)]\r\n" +
+            "public class CSharpDefinitionTest_ClassWithAttribute3"
+        )]
         public void GetDefinition_returns_the_expected_definition_for_types(string typeName, string expected)
         {
             // ARRANGE
@@ -285,6 +306,60 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
                 .MainModule
                 .Types
                 .Single(p => p.Name == typeName);
+
+            // ACT
+            var actual = CSharpDefinitionFormatter.GetDefinition(typeDefinition);
+
+            // ASSERT
+            Assert.Equal(expected, actual);
+        }
+
+
+        [Theory]
+        [InlineData(
+            nameof(TestClass_CSharpDefinition_NestedTypes),
+            nameof(TestClass_CSharpDefinition_NestedTypes.TestClass_CSharpDefinition_NestedClass1),
+            "public class TestClass_CSharpDefinition_NestedTypes.TestClass_CSharpDefinition_NestedClass1"
+        )]
+        [InlineData(
+            nameof(TestClass_CSharpDefinition_NestedTypes),
+            nameof(TestClass_CSharpDefinition_NestedTypes.TestClass_CSharpDefinition_NestedInterface1),
+            "public interface TestClass_CSharpDefinition_NestedTypes.TestClass_CSharpDefinition_NestedInterface1"
+        )]
+        [InlineData(
+            nameof(TestClass_CSharpDefinition_NestedTypes),
+            "TestClass_CSharpDefinition_NestedClass4`1",
+            "public class TestClass_CSharpDefinition_NestedTypes.TestClass_CSharpDefinition_NestedClass4<T>"
+        )]
+        [InlineData(
+            nameof(TestClass_CSharpDefinition_NestedTypes),
+            nameof(TestClass_CSharpDefinition_NestedTypes.TestClass_CSharpDefinition_NestedClass1.TestClass_CSharpDefinition_NestedClass2),
+            "public class TestClass_CSharpDefinition_NestedTypes.TestClass_CSharpDefinition_NestedClass1.TestClass_CSharpDefinition_NestedClass2"
+        )]
+        [InlineData(
+            nameof(TestClass_CSharpDefinition_NestedTypes),
+            "NestedClass5",
+            "public class TestClass_CSharpDefinition_NestedTypes.TestClass_CSharpDefinition_NestedClass4<T>.NestedClass5"
+        )]
+        [InlineData(
+            nameof(TestClass_CSharpDefinition_NestedTypes),
+            "NestedClass7`1",   
+            "public class TestClass_CSharpDefinition_NestedTypes.NestedClass6<T1, T2>.NestedClass7<T3>"
+        )]
+        public void GetDefinition_returns_the_expected_definition_for_nested_types(string declaringTypeName, string typeName, string expected)
+        {
+            IEnumerable<TypeDefinition> GetNestedTypes(TypeDefinition type)
+            {
+                return type.NestedTypes.Union(type.NestedTypes.SelectMany(GetNestedTypes));
+            }
+
+            // ARRANGE
+            var declaringTypeDefinition = m_AssemblyDefinition.Value
+                .MainModule
+                .Types
+                .Single(p => p.Name == declaringTypeName);
+
+            var typeDefinition = GetNestedTypes(declaringTypeDefinition).Single(p => p.Name == typeName);
 
             // ACT
             var actual = CSharpDefinitionFormatter.GetDefinition(typeDefinition);

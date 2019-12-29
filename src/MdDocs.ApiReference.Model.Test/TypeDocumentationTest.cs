@@ -457,7 +457,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             };
 
             // ACT
-            var sut = GetTypeDocumentation(typeName);
+            var sut = GetTypeDocumentation(typeName, 0);
 
             // ASSERT
             Assert.NotNull(sut.Attributes);

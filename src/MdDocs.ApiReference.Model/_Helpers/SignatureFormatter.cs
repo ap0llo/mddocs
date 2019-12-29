@@ -28,11 +28,13 @@ namespace Grynwald.MdDocs.ApiReference.Model
                 var name = method.DeclaringType.Name;
 
                 // remove number of type parameters from name
-                if (method.DeclaringType.HasGenericParameters)
+                if (method.DeclaringType.HasGenericParameters && !method.DeclaringType.IsNested)
                 {
                     name = name.Substring(0, name.LastIndexOf('`'));
                 }
 
+                //TODO: Support for nested types
+    
                 signatureBuilder.Append(name);
             }
             else if (operatorKind.HasValue)

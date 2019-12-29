@@ -31,6 +31,16 @@ namespace Grynwald.MdDocs.ApiReference.Test.TestData
         }
     }
 
+    [Flags]
+    public enum CSharpDefinitionTestFlagsEnum2 : short
+    {
+        Value1 = 0x01,
+        Value2 = 0x01 << 1,
+        Value3 = 0x01 << 2,
+        All = Value1 | Value2 | Value3
+    }
+
+
     public class CSharpDefinitionTest3Attribute : Attribute
     {
         public CSharpDefinitionTest3Attribute(BindingFlags value)
@@ -46,8 +56,24 @@ namespace Grynwald.MdDocs.ApiReference.Test.TestData
     }
 
     public class CSharpDefinitionTest5Attribute : Attribute
-    {        
+    {
     }
+
+
+    public class CSharpDefinitionTest6Attribute : Attribute
+    {
+        public CSharpDefinitionTest6Attribute(CSharpDefinitionTestFlagsEnum2 value)
+        {
+        }
+    }
+
+    [CSharpDefinitionTest6(CSharpDefinitionTestFlagsEnum2.All)]
+    public class CSharpDefinitionTest_ClassWithAttribute2
+    { }
+
+    [CSharpDefinitionTest6(CSharpDefinitionTestFlagsEnum2.Value1 | CSharpDefinitionTestFlagsEnum2.Value2)]
+    public class CSharpDefinitionTest_ClassWithAttribute3
+    { }
 
     public enum CSharpDefinitionTestEnum
     {
@@ -286,5 +312,32 @@ namespace Grynwald.MdDocs.ApiReference.Test.TestData
     public static class TestClass_CSharpDefinition_ExtensionMethods
     {
         public static void Method1(this string param) => throw new NotImplementedException();
+    }
+
+
+
+    public class TestClass_CSharpDefinition_NestedTypes
+    {
+        public class TestClass_CSharpDefinition_NestedClass1
+        {
+            public class TestClass_CSharpDefinition_NestedClass2
+            { }
+        }
+
+        public interface TestClass_CSharpDefinition_NestedInterface1
+        { }
+
+        public class TestClass_CSharpDefinition_NestedClass4<T>
+        {
+            public class NestedClass5
+            { }
+        }
+
+
+        public class NestedClass6<T1, T2>
+        {
+            public class NestedClass7<T3>
+            { }
+        }
     }
 }

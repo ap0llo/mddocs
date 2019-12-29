@@ -71,10 +71,30 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
                 typeof(CSharpDefinitionTest_ReadOnlyStruct),
                 typeof(CSharpDefinitionTest_GenericInterface_Contravariant<>),
                 typeof(CSharpDefinitionTest_GenericInterface_Covariant<>),
+                typeof(CSharpDefinitionTestFlagsEnum2),
+                typeof(CSharpDefinitionTest_ClassWithAttribute2),
+                typeof(CSharpDefinitionTest_ClassWithAttribute3),
+                typeof(CSharpDefinitionTest6Attribute),
                 typeof(CSharpDefinitionTestEnum),
                 typeof(TestClass_XmlDocs<,>),
                 typeof(TestClass_NoDocumentation),
                 typeof(TestClass_RefParameters),
+                typeof(TestClass_NestedTypes),
+                typeof(TestClass_NestedTypes.NestedClass1),
+                typeof(TestClass_NestedTypes.NestedClass1.NestedClass2),
+                typeof(TestClass_NestedTypes.NestedInterface1),
+                typeof(TestClass_NestedTypes.NestedClass4<>),
+                typeof(TestClass_NestedTypes<>),
+                typeof(TestClass_NestedTypes<>.NestedClass1),
+                typeof(TestClass_NestedTypes<>.NestedClass1.NestedClass2<>),
+                typeof(TestClass_CSharpDefinition_NestedTypes),
+                typeof(TestClass_CSharpDefinition_NestedTypes.TestClass_CSharpDefinition_NestedClass1),
+                typeof(TestClass_CSharpDefinition_NestedTypes.TestClass_CSharpDefinition_NestedClass1.TestClass_CSharpDefinition_NestedClass2),
+                typeof(TestClass_CSharpDefinition_NestedTypes.TestClass_CSharpDefinition_NestedInterface1),
+                typeof(TestClass_CSharpDefinition_NestedTypes.TestClass_CSharpDefinition_NestedClass4<>),
+                typeof(TestClass_CSharpDefinition_NestedTypes.TestClass_CSharpDefinition_NestedClass4<>.NestedClass5),
+                typeof(TestClass_CSharpDefinition_NestedTypes.NestedClass6<,>),
+                typeof(TestClass_CSharpDefinition_NestedTypes.NestedClass6<,>.NestedClass7<>),
             })
             .Distinct()
             .Select(GetTypeDefinition)
@@ -110,6 +130,29 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             // ASSERT            
             Assert.All(
                 internalTypes,
+                internalType => Assert.DoesNotContain(actualTypes, x => x.Definition.Equals(internalType))
+            );
+        }
+
+
+        [Fact]
+        public void Types_does_not_include_non_public_nested_types()
+        {
+            //ARRANGE
+            var internalNestedTypes = new[]
+            {
+                typeof(TestClass_NestedTypes.NestedClass3)
+            }
+            .Select(GetTypeDefinition)
+            .ToArray();
+
+            // ACT
+            var sut = m_AssemblyDocumentation.Value.MainModuleDocumentation;
+            var actualTypes = sut.Types;
+
+            // ASSERT            
+            Assert.All(
+                internalNestedTypes,
                 internalType => Assert.DoesNotContain(actualTypes, x => x.Definition.Equals(internalType))
             );
         }

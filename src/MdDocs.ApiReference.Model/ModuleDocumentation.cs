@@ -57,13 +57,8 @@ namespace Grynwald.MdDocs.ApiReference.Model
             m_Namespaces = new Dictionary<NamespaceId, NamespaceDocumentation>();
 
             foreach (var typeDefinition in Definition.Types.Where(t => t.IsPublic))
-            {                
-                var namespaceDocumentation = GetNamespaceDocumentation(typeDefinition.Namespace);
-
-                var typeDocumentation = new TypeDocumentation(this, namespaceDocumentation, typeDefinition, m_XmlDocsProvider, logger);
-
-                m_Types.Add(typeDocumentation.TypeId, typeDocumentation);
-                namespaceDocumentation.AddType(typeDocumentation);
+            {
+                LoadTypeRecursively(typeDefinition, declaringType: null);
             }
 
             Types = ReadOnlyCollectionAdapter.Create(m_Types.Values);
@@ -113,5 +108,28 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
             return newNamespace;
         }
+
+
+
+        private void LoadTypeRecursively(TypeDefinition typeDefinition, TypeDocumentation declaringType)
+        {
+            var typeId = typeDefinition.ToTypeId();
+            var namespaceDocumentation = GetNamespaceDocumentation(typeId.Namespace.Name);
+
+            var typeDocumentation = new TypeDocumentation(this, namespaceDocumentation, typeDefinition, m_XmlDocsProvider, m_Logger, declaringType);
+            declaringType?.AddNestedType(typeDocumentation);
+
+            m_Types.Add(typeDocumentation.TypeId, typeDocumentation);
+            namespaceDocumentation.AddType(typeDocumentation);
+
+            if(typeDefinition.HasNestedTypes)
+            {
+                foreach(var nestedType in typeDefinition.NestedTypes.Where(x => x.IsNestedPublic))
+                {
+                    LoadTypeRecursively(nestedType, typeDocumentation);
+                }
+            }
+        }
+
     }
 }

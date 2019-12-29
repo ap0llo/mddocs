@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Grynwald.MdDocs.ApiReference.Model;
 using Grynwald.MdDocs.ApiReference.Model.XmlDocs;
@@ -17,15 +18,18 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
 
             public MemberId ExpectedMemberId { get; private set; }
 
+            public IReadOnlyCollection<TypeId> OuterTypes { get; private set; }
+
 
             // parameterless constructor required by xunit
             public MemberIdParserTestCase()
             { }
 
-            public MemberIdParserTestCase(string input, MemberId expectedMemberId)
+            public MemberIdParserTestCase(string input, MemberId expectedMemberId, IReadOnlyCollection<TypeId> outerTypes = null)
             {
                 Input = input;
                 ExpectedMemberId = expectedMemberId;
+                OuterTypes = outerTypes ?? Array.Empty<TypeId>();
             }
 
 
@@ -33,12 +37,14 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
             {
                 Input = info.GetValue<string>(nameof(Input));
                 ExpectedMemberId = info.GetValue<XunitSerializableMemberId>(nameof(ExpectedMemberId));
+                OuterTypes = info.GetValue<XunitSerializableTypeId[]>(nameof(OuterTypes)).Select(x => x.TypeId).ToHashSet();
             }
 
             public void Serialize(IXunitSerializationInfo info)
             {
                 info.AddValue(nameof(Input), Input);
                 info.AddValue(nameof(ExpectedMemberId), new XunitSerializableMemberId(ExpectedMemberId));
+                info.AddValue(nameof(OuterTypes), OuterTypes.Select(x => new XunitSerializableTypeId(x)).ToArray());
             }
 
             public override string ToString() => Input;
@@ -235,6 +241,55 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
                        "TestMethod",
                        new TypeId[] { new ByReferenceTypeId(new ArrayTypeId(new SimpleTypeId("System", "Int32"))) })
                 );
+
+
+                yield return new MemberIdParserTestCase(
+                    "M:TestNamespace.TestClass1`1.NestedClass1.Method1",
+                    new MethodId(
+                        new SimpleTypeId(
+                            new GenericTypeId(
+                            new NamespaceId("TestNamespace"),
+                            "TestClass1",
+                            1),
+                            "NestedClass1"),
+                    "Method1")
+                );
+
+
+                yield return new MemberIdParserTestCase(
+                    "M:Namespace.Class1.Method1(Namespace.Class2{System.String}.NestedClass1.NestedClass2{System.Int32})",
+                    new MethodId(
+                        new SimpleTypeId("Namespace", "Class1"),
+                        "Method1",
+                        new TypeId[]
+                        {
+                            new GenericTypeInstanceId(
+                                new SimpleTypeId(
+                                    new GenericTypeInstanceId(
+                                        "Namespace",
+                                        "Class2",
+                                        new TypeId[] { new SimpleTypeId("System", "String") } ),
+                                    "NestedClass1"),
+                                "NestedClass2",
+                                new TypeId[] { new SimpleTypeId("System", "Int32") })
+                        })
+                );
+
+                yield return new MemberIdParserTestCase(
+                    input: "M:Namespace.Class1.NestedClass1.Method1",
+                    expectedMemberId: new MethodId(new SimpleTypeId(new SimpleTypeId("Namespace", "Class1"), "NestedClass1"), "Method1"),
+                    outerTypes: new[] { new SimpleTypeId("Namespace", "Class1") }
+                );
+
+                yield return new MemberIdParserTestCase(
+                    input: "M:Namespace.Class1.NestedClass1.Method1(Namespace.Class1.NestedClass2)",
+                    expectedMemberId: new MethodId(
+                        new SimpleTypeId(new SimpleTypeId("Namespace", "Class1"), "NestedClass1"),
+                        "Method1",
+                        new[] { new SimpleTypeId(new SimpleTypeId("Namespace", "Class1"), "NestedClass2") }),
+                    outerTypes: new[] { new SimpleTypeId("Namespace", "Class1") }
+                );
+
             }
         }
 
@@ -295,6 +350,17 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
                     "P:MdDoc.Test.TestData.TestClass_Properties.Item(System.Int32[0:,0:,])",
                     new PropertyId(new SimpleTypeId("MdDoc.Test.TestData", "TestClass_Properties"), "Item", new[] { new ArrayTypeId(new SimpleTypeId("System", "Int32"), 3) })
                 );
+
+                yield return new MemberIdParserTestCase(
+                    "P:MdDoc.Test.TestData.TestClass_Properties`1.NestedClass1.Property1",
+                    new PropertyId(new SimpleTypeId(new GenericTypeId("MdDoc.Test.TestData", "TestClass_Properties", 1), "NestedClass1"), "Property1")
+                );
+
+                yield return new MemberIdParserTestCase(
+                    input: "P:Namespace.Class1.NestedClass1.Property1",
+                    expectedMemberId: new PropertyId(new SimpleTypeId(new SimpleTypeId("Namespace", "Class1"), "NestedClass1"), "Property1"),
+                    outerTypes: new[] { new SimpleTypeId("Namespace", "Class1") }
+                );
             }
         }
 
@@ -323,6 +389,48 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
                 yield return new MemberIdParserTestCase("T:System.Collections.Generic.IEnumerable`1[]", new ArrayTypeId(new GenericTypeId("System.Collections.Generic", "IEnumerable", 1)));
                 yield return new MemberIdParserTestCase("T:System.Collections.Generic.IEnumerable`23", new GenericTypeId("System.Collections.Generic", "IEnumerable", 23));
                 yield return new MemberIdParserTestCase("T:System.Collections.Generic.IDictionary`2", new GenericTypeId("System.Collections.Generic", "IDictionary", 2));
+
+                yield return new MemberIdParserTestCase(
+                    "T:TestNamespace.TestClass1`1.NestedClass1",
+                    new SimpleTypeId(
+                        new GenericTypeId(
+                        new NamespaceId("TestNamespace"),
+                        "TestClass1",
+                        1),
+                        "NestedClass1"
+                    )
+                );
+
+                yield return new MemberIdParserTestCase(
+                    "T:TestNamespace.TestClass1`1.NestedClass1`2",
+                    new GenericTypeId(
+                        new GenericTypeId(
+                        new NamespaceId("TestNamespace"),
+                        "TestClass1",
+                        1),
+                        "NestedClass1",
+                        2
+                    )
+                );
+
+
+                yield return new MemberIdParserTestCase(
+                    "T:TestNamespace.TestClass1`1.NestedClass1.NestedClass2",
+                    new SimpleTypeId(
+                        new SimpleTypeId(
+                            new GenericTypeId(
+                            new NamespaceId("TestNamespace"),
+                            "TestClass1",
+                            1),
+                            "NestedClass1"),
+                        "NestedClass2")
+                );
+
+                yield return new MemberIdParserTestCase(
+                    input: "T:Namespace.Class1.NestedClass1",
+                    expectedMemberId: new SimpleTypeId(new SimpleTypeId("Namespace", "Class1"), "NestedClass1"),
+                    outerTypes: new[] { new SimpleTypeId("Namespace", "Class1") }
+                );
             }
         }
 
@@ -354,6 +462,13 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
                 yield return new MemberIdParserTestCase("F:System.String.Length", new FieldId(new SimpleTypeId("System", "String"), "Length"));
                 yield return new MemberIdParserTestCase("F:System.Foo.String.Length", new FieldId(new SimpleTypeId("System.Foo", "String"), "Length"));
                 yield return new MemberIdParserTestCase("F:System.String`2.Length", new FieldId(new GenericTypeId("System", "String", 2), "Length"));
+                yield return new MemberIdParserTestCase("F:Namespace.TestClass`2.NestedClass.Length", new FieldId(new SimpleTypeId(new GenericTypeId("Namespace", "TestClass", 2), "NestedClass"), "Length"));
+
+                yield return new MemberIdParserTestCase(
+                    input: "F:Namespace.Class1.NestedClass1.Field1",
+                    expectedMemberId: new FieldId(new SimpleTypeId(new SimpleTypeId("Namespace", "Class1"), "NestedClass1"), "Field1"),
+                    outerTypes: new[] { new SimpleTypeId("Namespace", "Class1") }
+                );
             }
         }
 
@@ -370,6 +485,13 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
                 yield return new MemberIdParserTestCase("E:Namespace.Class.Event1", new EventId(new SimpleTypeId("Namespace", "Class"), "Event1"));
                 yield return new MemberIdParserTestCase("E:Namespace.Namespace.Class.Event1", new EventId(new SimpleTypeId("Namespace.Namespace", "Class"), "Event1"));
                 yield return new MemberIdParserTestCase("E:Namespace.Class`23.Event1", new EventId(new GenericTypeId("Namespace", "Class", 23), "Event1"));
+                yield return new MemberIdParserTestCase("E:Namespace.Class`23.NestedClass.Event1", new EventId(new SimpleTypeId(new GenericTypeId("Namespace", "Class", 23), "NestedClass"), "Event1"));
+
+                yield return new MemberIdParserTestCase(
+                    input: "E:Namespace.Class1.NestedClass1.Event1",
+                    expectedMemberId: new EventId(new SimpleTypeId(new SimpleTypeId("Namespace", "Class1"), "NestedClass1"), "Event1"),
+                    outerTypes: new[] { new SimpleTypeId("Namespace", "Class1") }
+                );
             }
         }
 
@@ -384,7 +506,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
         public void Member_ids_are_parsed_as_expected(MemberIdParserTestCase testCase)
         {
             // ARRANGE
-            var parser = new MemberIdParser(testCase.Input);
+            var parser = new MemberIdParser(testCase.Input, testCase.OuterTypes);
 
             // ACT
             var memberId = parser.Parse();
@@ -411,7 +533,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
         [InlineData("N:")]
         public void Parse_throws_Exception_for_invalid_input_data(string input)
         {
-            Assert.Throws<MemberIdParserException>(() => new MemberIdParser(input).Parse());
+            Assert.Throws<MemberIdParserException>(() => new MemberIdParser(input, Array.Empty<TypeId>()).Parse());
         }
     }
 }

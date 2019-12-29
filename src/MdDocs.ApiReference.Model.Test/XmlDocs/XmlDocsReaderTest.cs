@@ -11,9 +11,9 @@ namespace Grynwald.MdDocs.ApiReference.Model.Test.XmlDocs
     {
         private static ListElement ReadList(XDocument document)
         {
-            var xmlDocsReader = new XmlDocsReader(NullLogger.Instance);
+            var xmlDocsReader = new XmlDocsReader(NullLogger.Instance, document, Array.Empty<TypeId>());
 
-            var members = xmlDocsReader.Read(document);
+            var members = xmlDocsReader.Read();
             Assert.Single(members);
             Assert.Single(members.Single().Summary.Elements);
 
@@ -172,7 +172,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.Test.XmlDocs
 
             ReadTextBlock_returns_the_expected_elements(
                 xml,
-                new SeeElement(MemberId.Parse("T:DemoProject.DemoStruct"))
+                new SeeElement(MemberId.Parse("T:DemoProject.DemoStruct", Array.Empty<TypeId>()))
             );
         }
 
@@ -187,7 +187,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.Test.XmlDocs
             ReadTextBlock_returns_the_expected_elements(
                 xml,
                 new TextElement("Similar pages are also generated for interfaces, structs (see "),
-                new SeeElement(MemberId.Parse("T:DemoProject.DemoStruct")),
+                new SeeElement(MemberId.Parse("T:DemoProject.DemoStruct", Array.Empty<TypeId>())),
                 new TextElement(") and enums")
             );
         }
@@ -210,7 +210,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.Test.XmlDocs
 
             ReadTextBlock_returns_the_expected_elements(
                 xml,
-                new SeeElement(MemberId.Parse("T:DemoProject.DemoClass"))
+                new SeeElement(MemberId.Parse("T:DemoProject.DemoClass", Array.Empty<TypeId>()))
             );
         }
 
@@ -222,7 +222,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.Test.XmlDocs
             ReadTextBlock_returns_the_expected_elements(
                 xml,
                 new SeeElement(
-                    MemberId.Parse("T:DemoProject.DemoClass"),
+                    MemberId.Parse("T:DemoProject.DemoClass", Array.Empty<TypeId>()),
                     new TextBlock(new[]
                     {
                         new TextElement("Lorem ipsum dolor sit amet.")
@@ -233,7 +233,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.Test.XmlDocs
         private void ReadTextBlock_returns_the_expected_elements(string xml, params Element[] expectedElements)
         {
             // ARRANGE
-            var sut = new XmlDocsReader(NullLogger.Instance);
+            var sut = new XmlDocsReader(NullLogger.Instance, new XDocument(), Array.Empty<TypeId>());
             var expected = new TextBlock(expectedElements);
 
             // ACT
@@ -248,7 +248,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.Test.XmlDocs
         public void ReadTextBlock_correctly_reads_see_elements_01()
         {
             var xml = @"<see cref=""T:SomeNamespace.SomeClass"" />";
-            var expected = new SeeElement(MemberId.Parse("T:SomeNamespace.SomeClass"));
+            var expected = new SeeElement(MemberId.Parse("T:SomeNamespace.SomeClass", Array.Empty<TypeId>()));
 
             ReadTextBlock_correctly_reads_see_elements(xml, expected);
         }
@@ -258,7 +258,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.Test.XmlDocs
         {
             var xml = @"<see cref=""T:SomeNamespace.SomeClass"">Lorem ipsum dolor sit amet.</see>";
             var expected = new SeeElement(
-                MemberId.Parse("T:SomeNamespace.SomeClass"),
+                MemberId.Parse("T:SomeNamespace.SomeClass", Array.Empty<TypeId>()),
                 new TextBlock(new[] { new TextElement("Lorem ipsum dolor sit amet.") } ));
 
             ReadTextBlock_correctly_reads_see_elements(xml, expected);
@@ -288,7 +288,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.Test.XmlDocs
         public void ReadTextBlock_correctly_reads_see_elements_05()
         {
             var xml = @"<see href=""http://example.com"" cref=""T:SomeNamespace.SomeClass"" />";
-            var expected = new SeeElement(MemberId.Parse("T:SomeNamespace.SomeClass"));
+            var expected = new SeeElement(MemberId.Parse("T:SomeNamespace.SomeClass", Array.Empty<TypeId>()));
 
             ReadTextBlock_correctly_reads_see_elements(xml, expected);
         }
@@ -298,7 +298,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.Test.XmlDocs
         {
             var xml = @"<see href=""http://example.com"" cref=""T:SomeNamespace.SomeClass"">Lorem ipsum dolor sit amet.</see>";
             var expected = new SeeElement(
-                MemberId.Parse("T:SomeNamespace.SomeClass"),
+                MemberId.Parse("T:SomeNamespace.SomeClass", Array.Empty<TypeId>()),
                 new TextBlock(new[] { new TextElement("Lorem ipsum dolor sit amet.") }));
 
             ReadTextBlock_correctly_reads_see_elements(xml, expected);
@@ -309,7 +309,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.Test.XmlDocs
         {
             // ARRANGE
             xml = $@"<para>{xml}</para>";
-            var sut = new XmlDocsReader(NullLogger.Instance);
+            var sut = new XmlDocsReader(NullLogger.Instance, new XDocument(), Array.Empty<TypeId>());
 
             // ACT
             var textBlock = sut.ReadTextBlock(XElement.Parse(xml));
@@ -327,7 +327,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.Test.XmlDocs
         {
             var xml = @"<seealso cref=""T:SomeNamespace.SomeClass"" />";
 
-            var expected = new SeeAlsoElement(MemberId.Parse("T:SomeNamespace.SomeClass"));
+            var expected = new SeeAlsoElement(MemberId.Parse("T:SomeNamespace.SomeClass", Array.Empty<TypeId>()));
 
             ReadMemberContent_correctly_parses_seealso_elements(xml, expected);
         }
@@ -338,7 +338,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.Test.XmlDocs
             var xml = @"<seealso cref=""T:SomeNamespace.SomeClass"">Lorem ipsum dolor sit ament.</seealso>";
 
             var expected = new SeeAlsoElement(
-                MemberId.Parse("T:SomeNamespace.SomeClass"),
+                MemberId.Parse("T:SomeNamespace.SomeClass", Array.Empty<TypeId>()),
                 new TextBlock(new[]
                 {
                     new TextElement("Lorem ipsum dolor sit ament.")
@@ -379,7 +379,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.Test.XmlDocs
         {
             var xml = @"<seealso cref=""T:SomeNamespace.SomeClass"" href=""http://example.com"" />";
 
-            var expected = new SeeAlsoElement(MemberId.Parse("T:SomeNamespace.SomeClass"));
+            var expected = new SeeAlsoElement(MemberId.Parse("T:SomeNamespace.SomeClass", Array.Empty<TypeId>()));
 
             ReadMemberContent_correctly_parses_seealso_elements(xml, expected);
         }
@@ -390,7 +390,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.Test.XmlDocs
             var xml = @"<seealso cref=""T:SomeNamespace.SomeClass"" href=""http://example.com"">Lorem ipsum dolor sit ament.</seealso>";
 
             var expected = new SeeAlsoElement(
-                MemberId.Parse("T:SomeNamespace.SomeClass"),
+                MemberId.Parse("T:SomeNamespace.SomeClass", Array.Empty<TypeId>()),
                 new TextBlock(new[]
                 {
                     new TextElement("Lorem ipsum dolor sit ament.")
@@ -405,8 +405,8 @@ namespace Grynwald.MdDocs.ApiReference.Model.Test.XmlDocs
             // ARRANGE
             xml = $@"<container>{xml}</container>";
 
-            var sut = new XmlDocsReader(NullLogger.Instance);
-            var memberElement = new MemberElement(MemberId.Parse("T:DemoProject.DemoClass"));
+            var sut = new XmlDocsReader(NullLogger.Instance, new XDocument(), Array.Empty<TypeId>());
+            var memberElement = new MemberElement(MemberId.Parse("T:DemoProject.DemoClass", Array.Empty<TypeId>()));
 
             // ACT
             sut.ReadMemberContent(XElement.Parse(xml), memberElement);

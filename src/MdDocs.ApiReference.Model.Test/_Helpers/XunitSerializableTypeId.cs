@@ -6,14 +6,14 @@ using Xunit.Abstractions;
 namespace Grynwald.MdDocs.ApiReference.Test.Model
 {
     /// <summary>
-    /// Adapter to make <see cref="TypeIdId"/> serializable by xunit
+    /// Adapter to make <see cref="TypeIdId"/> serializable by XUnit
     /// </summary>
     class XunitSerializableTypeId : IXunitSerializable
     {
         public TypeId TypeId { get; private set; }
 
 
-        // parameterless constructor required by xunit
+        // parameterless constructor required by XUnit
         public XunitSerializableTypeId()
         { }
 
@@ -27,22 +27,48 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         {
             var namespaceName = info.GetValue<string>(nameof(TypeId.Namespace));
             var name = info.GetValue<string>(nameof(TypeId.Name));
+            var isNestedType = info.GetValue<bool>(nameof(TypeId.IsNestedType));
+            var declaringType = isNestedType
+                ? info.GetValue<XunitSerializableTypeId>(nameof(TypeId.DeclaringType)).TypeId
+                : null;
 
             var type = info.GetValue<string>("type");
             switch (type)
             {
-                case nameof(SimpleTypeId):
-                    TypeId = new SimpleTypeId(namespaceName, name);
+                case nameof(SimpleTypeId):                    
+                    if(isNestedType)
+                    {                        
+                        TypeId = new SimpleTypeId(declaringType, name);
+                    }
+                    else
+                    {
+                        TypeId = new SimpleTypeId(namespaceName, name);
+                    }
                     break;
 
                 case nameof(GenericTypeId):
                     var arity = info.GetValue<int>(nameof(GenericTypeId.Arity));
-                    TypeId = new GenericTypeId(namespaceName, name, arity);
+                    if(isNestedType)
+                    {
+                        TypeId = new GenericTypeId(declaringType, name, arity);
+                    }
+                    else
+                    {
+                        TypeId = new GenericTypeId(namespaceName, name, arity);
+                    }
                     break;
 
                 case nameof(GenericTypeInstanceId):
                     var typeArguments = info.GetValue<XunitSerializableTypeId[]>(nameof(GenericTypeInstanceId.TypeArguments));
-                    TypeId = new GenericTypeInstanceId(namespaceName, name, typeArguments.Select(x => x.TypeId).ToArray());
+                    if (isNestedType)
+                    {
+                        TypeId = new GenericTypeInstanceId(declaringType, name, typeArguments.Select(x => x.TypeId).ToArray());
+                    }
+                    else
+                    {
+                        TypeId = new GenericTypeInstanceId(namespaceName, name, typeArguments.Select(x => x.TypeId).ToArray());
+                    }
+                    
                     break;
 
                 case nameof(ArrayTypeId):
@@ -71,6 +97,11 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         {
             info.AddValue(nameof(TypeId.Namespace), TypeId.Namespace.Name);
             info.AddValue(nameof(TypeId.Name), TypeId.Name);
+            info.AddValue(nameof(TypeId.IsNestedType), TypeId.IsNestedType);
+            if (TypeId.IsNestedType)
+            {
+                info.AddValue(nameof(TypeId.DeclaringType), new XunitSerializableTypeId(TypeId.DeclaringType));
+            }
 
             switch (TypeId)
             {

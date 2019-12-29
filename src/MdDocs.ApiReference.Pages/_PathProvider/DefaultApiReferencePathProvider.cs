@@ -39,8 +39,15 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             {
                 dirName += "-" + genericType.Arity;
             }
-
-            return Path.Combine(GetNamespaceDirRelative(type.NamespaceDocumentation), dirName);
+            
+            if (type.IsNestedType)
+            {
+                return Path.Combine(GetTypeDirRelative(type.DeclaringType), dirName);
+            }
+            else
+            {
+                return Path.Combine(GetNamespaceDirRelative(type.NamespaceDocumentation), dirName);
+            }            
         }
 
         protected string GetNamespaceDirRelative(NamespaceDocumentation namespaceDocumentation) =>
