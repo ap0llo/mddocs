@@ -33,12 +33,21 @@ corresponding sub-pages:
 MdDocs is a .NET Core application and can be built using the .NET SDK 2.1
 
 ```ps1
-  dotnet restore .\src\MdDocs.sln
+dotnet restore .\src\MdDocs.sln
 
-  dotnet build .\src\MdDocs.sln
+dotnet build .\src\MdDocs.sln
 
-  dotnet pack .\src\MdDocs.sln
+dotnet pack .\src\MdDocs.sln
 ```
+
+## Issues
+
+If you run into any issues or if you are missing a feature, feel free
+to open an [issue](https://github.com/ap0llo/mddocs/issues).
+
+I'm also using issues as a backlog of things that come into my mind or
+things I plan to implement, so don't be surprised if many issues were
+created by me without anyone else being involved in the discussion.
 
 ## Acknowledgments
 
