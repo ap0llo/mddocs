@@ -1,6 +1,4 @@
-﻿#nullable disable
-
-using System;
+﻿using System;
 using Grynwald.MarkdownGenerator;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
@@ -11,16 +9,16 @@ namespace Grynwald.MdDocs.MSBuild
 {
     public abstract class TaskBase : Task
     {
-        private ILogger m_Logger;
+        private ILogger? m_Logger;
 
 
         [Required]
-        public ITaskItem Assembly { get; set; }
+        public ITaskItem Assembly { get; set; } = null!; // MSBuild ensures that value is set
 
         [Required]
-        public ITaskItem OutputDirectory { get; set; }
+        public ITaskItem OutputDirectory { get; set; } = null!; // MSBuild ensures that value is set
 
-        public string MarkdownPreset { get; set; }
+        public string? MarkdownPreset { get; set; }
 
         protected ILogger Logger
         {

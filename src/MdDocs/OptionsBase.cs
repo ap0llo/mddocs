@@ -1,6 +1,4 @@
-﻿#nullable disable
-
-using CommandLine;
+﻿using CommandLine;
 
 namespace Grynwald.MdDocs
 {
@@ -19,7 +17,7 @@ namespace Grynwald.MdDocs
             Required = true,
             HelpText = "Path of the directory to write the documentation to. If the output directory already exists, " +
                        "all files in the output directory will be deleted.")]
-        public string OutputDirectory { get; set; }
+        public string? OutputDirectory { get; set; }
 
         [Option("markdown-preset",
             Required = false,

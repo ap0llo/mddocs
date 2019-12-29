@@ -1,6 +1,4 @@
-﻿#nullable disable
-
-using CommandLine;
+﻿using CommandLine;
 using Grynwald.MdDocs.CommandLineHelp.Pages;
 
 namespace Grynwald.MdDocs
@@ -14,7 +12,7 @@ namespace Grynwald.MdDocs
         [Option('a', "assembly",
             Required = true,
             HelpText = "Path of the command line application assembly to generate documentation for.")]
-        public string AssemblyPath { get; set; }
+        public string? AssemblyPath { get; set; }
 
         [Option("no-version",
             Required = false,
