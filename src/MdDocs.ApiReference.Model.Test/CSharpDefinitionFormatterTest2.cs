@@ -95,7 +95,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.Test
             var nestedClass5 = class1.NestedTypes.Single(x => x.Name == "NestedClass5`2");
             var nestedClass6 = nestedClass5.NestedTypes.Single(x => x.Name == "NestedClass6`1");
 
-                        
+
             // ACT / ASSERT
             Assert.Equal("public class Class1.NestedClass1", CSharpDefinitionFormatter.GetDefinition(nestedClass1));
             Assert.Equal("public class Class1.NestedClass1.NestedClass2", CSharpDefinitionFormatter.GetDefinition(nestedClass2));
@@ -107,5 +107,125 @@ namespace Grynwald.MdDocs.ApiReference.Model.Test
 
         }
 
+        [Fact]
+        public void GetDefinition_returns_the_expected_definition_for_properties()
+        {
+            // ARRANGE
+            var cs = @"
+                using System;
+                using System.IO;
+                using System.Collections.Generic;
+
+                public class SampleAttribute : Attribute
+                {
+                    public string Property1 { get; set; }
+
+                    public SampleAttribute(int value)
+                    { }
+                }
+
+                public class Class1
+                {
+                    public int Property1 { get; set; }
+
+                    public byte Property2 { get; set; }
+
+                    public string Property3 { get; }
+
+                    public string Property4 { get; private set; }
+
+                    public string Property5 { private get; set; }
+
+                    public Stream Property6 { get; }
+
+                    public IEnumerable<string> Property7 { get; }
+
+                    public static IEnumerable<string> Property8 { get; }
+
+                    [Sample(1)]
+                    public static IEnumerable<string> Property9 { get; }
+                }
+            ";
+
+            using var assembly = Compile(cs);
+
+            var class1 = assembly.MainModule.Types.Single(x => x.Name == "Class1");
+            var property1 = class1.Properties.Single(x => x.Name == "Property1");
+            var property2 = class1.Properties.Single(x => x.Name == "Property2");
+            var property3 = class1.Properties.Single(x => x.Name == "Property3");
+            var property4 = class1.Properties.Single(x => x.Name == "Property4");
+            var property5 = class1.Properties.Single(x => x.Name == "Property5");
+            var property6 = class1.Properties.Single(x => x.Name == "Property6");
+            var property7 = class1.Properties.Single(x => x.Name == "Property7");
+            var property8 = class1.Properties.Single(x => x.Name == "Property8");
+            var property9 = class1.Properties.Single(x => x.Name == "Property9");
+
+            // ACT / ASSERT
+            Assert.Equal("public int Property1 { get; set; }", CSharpDefinitionFormatter.GetDefinition(property1));
+            Assert.Equal("public byte Property2 { get; set; }", CSharpDefinitionFormatter.GetDefinition(property2));
+            Assert.Equal("public string Property3 { get; }", CSharpDefinitionFormatter.GetDefinition(property3));
+            Assert.Equal("public string Property4 { get; }", CSharpDefinitionFormatter.GetDefinition(property4));
+            Assert.Equal("public string Property5 { set; }", CSharpDefinitionFormatter.GetDefinition(property5));
+            Assert.Equal("public Stream Property6 { get; }", CSharpDefinitionFormatter.GetDefinition(property6));
+            Assert.Equal("public IEnumerable<string> Property7 { get; }", CSharpDefinitionFormatter.GetDefinition(property7));
+            Assert.Equal("public static IEnumerable<string> Property8 { get; }", CSharpDefinitionFormatter.GetDefinition(property8));
+            Assert.Equal(
+                "[Sample(1)]\r\n" +
+                "public static IEnumerable<string> Property9 { get; }",
+                CSharpDefinitionFormatter.GetDefinition(property9)
+            );
+        }
+
+        [Fact]
+        public void GetDefinition_returns_the_expected_definition_for_fields()
+        {
+            // ARRANGE
+            var cs = @"
+                using System;
+                using System.IO;
+                using System.Collections.Generic;
+
+                public class SampleAttribute : Attribute
+                {
+                    public string Property1 { get; set; }
+
+                    public SampleAttribute(int value)
+                    { }
+                }
+
+                public class Class1
+                {
+                    public string Field1;
+
+                    public static string Field2;
+
+                    public const string Field3 = """";
+
+                    public static readonly int Field4;
+
+                    [Sample(1)]
+                    public static readonly int Field5;
+                }
+            ";
+
+            using var assembly = Compile(cs);
+
+            var class1 = assembly.MainModule.Types.Single(x => x.Name == "Class1");
+            var field1 = class1.Fields.Single(x => x.Name == "Field1");
+            var field2 = class1.Fields.Single(x => x.Name == "Field2");
+            var field3 = class1.Fields.Single(x => x.Name == "Field3");
+            var field4 = class1.Fields.Single(x => x.Name == "Field4");
+            var field5 = class1.Fields.Single(x => x.Name == "Field5");
+
+            // ACT / ASSERT
+            Assert.Equal("public string Field1;", CSharpDefinitionFormatter.GetDefinition(field1));
+            Assert.Equal("public static string Field2;", CSharpDefinitionFormatter.GetDefinition(field2));
+            Assert.Equal("public const string Field3;", CSharpDefinitionFormatter.GetDefinition(field3));
+            Assert.Equal("public static readonly int Field4;", CSharpDefinitionFormatter.GetDefinition(field4));
+            Assert.Equal(
+                "[Sample(1)]\r\n" +
+                "public static readonly int Field5;",
+                CSharpDefinitionFormatter.GetDefinition(field5));
+        }
     }
 }

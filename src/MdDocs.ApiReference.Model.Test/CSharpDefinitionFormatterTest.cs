@@ -12,35 +12,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
     /// Tests for <see cref="CSharpDefinitionFormatter"/>
     /// </summary>
     public class CSharpDefinitionFormatterTest : TestBase
-    {
-        [Theory]
-        [InlineData(typeof(TestClass_CSharpDefinition), nameof(TestClass_CSharpDefinition.Property1), @"public int Property1 { get; set; }")]
-        [InlineData(typeof(TestClass_CSharpDefinition), nameof(TestClass_CSharpDefinition.Property2), @"public byte Property2 { get; set; }")]
-        [InlineData(typeof(TestClass_CSharpDefinition), nameof(TestClass_CSharpDefinition.Property3), @"public string Property3 { get; }")]
-        [InlineData(typeof(TestClass_CSharpDefinition), nameof(TestClass_CSharpDefinition.Property4), @"public string Property4 { get; }")]
-        [InlineData(typeof(TestClass_CSharpDefinition), nameof(TestClass_CSharpDefinition.Property5), @"public string Property5 { set; }")]
-        [InlineData(typeof(TestClass_CSharpDefinition), nameof(TestClass_CSharpDefinition.Property6), @"public Stream Property6 { get; }")]
-        [InlineData(typeof(TestClass_CSharpDefinition), nameof(TestClass_CSharpDefinition.Property7), @"public IEnumerable<string> Property7 { get; }")]
-        [InlineData(typeof(TestClass_CSharpDefinition), nameof(TestClass_CSharpDefinition.Property8), @"public static IEnumerable<string> Property8 { get; }")]
-        [InlineData(
-            typeof(TestClass_CSharpDefinition),
-            nameof(TestClass_CSharpDefinition.Property9),
-            "[CSharpDefinitionTest1(1)]\r\n" +
-            "public static IEnumerable<string> Property9 { get; }")]
-        public void GetDefinition_returns_the_expected_definition_for_properties(Type declaringType, string propertyName, string expected)
-        {
-            // ARRANGE
-            var propertyDefinition = GetTypeDefinition(declaringType)
-                .Properties
-                .Single(p => p.Name == propertyName);
-
-            // ACT
-            var actual = CSharpDefinitionFormatter.GetDefinition(propertyDefinition);
-
-            // ASSERT
-            Assert.Equal(expected, actual);
-        }
-
+    {       
         [Theory]
         [InlineData(typeof(TestClass_CSharpDefinition), 1, @"public int this[object parameter] { get; }")]
         [InlineData(typeof(TestClass_CSharpDefinition), 2, @"public int this[object parameter1, Stream parameter2] { get; }")]
@@ -53,31 +25,6 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
 
             // ACT
             var actual = CSharpDefinitionFormatter.GetDefinition(propertyDefinition);
-
-            // ASSERT
-            Assert.Equal(expected, actual);
-        }
-
-        [Theory]
-        [InlineData(typeof(TestClass_CSharpDefinition), nameof(TestClass_CSharpDefinition.Field1), @"public string Field1;")]
-        [InlineData(typeof(TestClass_CSharpDefinition), nameof(TestClass_CSharpDefinition.Field2), @"public static string Field2;")]
-        [InlineData(typeof(TestClass_CSharpDefinition), nameof(TestClass_CSharpDefinition.Field3), @"public const string Field3;")]
-        [InlineData(typeof(TestClass_CSharpDefinition), nameof(TestClass_CSharpDefinition.Field4), @"public static readonly int Field4;")]
-        [InlineData(
-            typeof(TestClass_CSharpDefinition),
-            nameof(TestClass_CSharpDefinition.Field5),
-            "[CSharpDefinitionTest1(1)]\r\n" +
-            "public static readonly int Field5;"
-        )]
-        public void GetDefinition_returns_the_expected_definition_for_fields(Type declaringType, string fieldName, string expected)
-        {
-            // ARRANGE
-            var fieldDefinition = GetTypeDefinition(declaringType)
-                .Fields
-                .Single(p => p.Name == fieldName);
-
-            // ACT
-            var actual = CSharpDefinitionFormatter.GetDefinition(fieldDefinition);
 
             // ASSERT
             Assert.Equal(expected, actual);

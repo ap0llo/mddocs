@@ -171,18 +171,6 @@ namespace Grynwald.MdDocs.ApiReference.Test.TestData
 
     public class TestClass_CSharpDefinition
     {
-        public string Field1;
-
-        public static string Field2;
-
-        public const string Field3 = "";
-
-        public static readonly int Field4;
-
-        [CSharpDefinitionTest1(1)]
-        public static readonly int Field5;
-
-
         public event EventHandler<EventArgs> Event1;
 
         public static event EventHandler Event2;
@@ -191,24 +179,6 @@ namespace Grynwald.MdDocs.ApiReference.Test.TestData
         public static event EventHandler Event3;
 
 
-        public int Property1 { get; set; }
-
-        public byte Property2 { get; set; }
-
-        public string Property3 { get; }
-
-        public string Property4 { get; private set; }
-
-        public string Property5 { private get; set; }
-
-        public Stream Property6 { get; }
-
-        public IEnumerable<string> Property7 { get; }
-
-        public static IEnumerable<string> Property8 { get; }
-
-        [CSharpDefinitionTest1(1)]
-        public static IEnumerable<string> Property9 { get; }
 
         public int this[object parameter] { get { throw new NotImplementedException(); } }
 
