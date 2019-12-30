@@ -717,6 +717,12 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
             AppendCustomAttributes(definitionBuilder, parameter.GetCustomAttributes(), singleLine: true);
 
+            // add "params" prefix if method allows multiple values
+            if(parameter.CustomAttributes.Any(a => a.AttributeType.FullName == Constants.ParamArrayAttributeFullName))
+            {
+                definitionBuilder.Append("params ");
+            }
+
             // special handling for 'out' and 'ref' parameters
             // do not use the type's actual display name, but add the modified before the parameter
             // and use the by-reference type's element type,

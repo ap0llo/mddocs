@@ -13,6 +13,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// Returns all attributes except:
         /// <list type="bullet">
         ///     <item><c>IsReadOnlyAttribute</c> </item>
+        ///     <item><c>ParamArrayAttribute</c> </item>
         ///     <item>non-public Attribute types</item>
         /// </list>
         /// </returns>
@@ -22,6 +23,9 @@ namespace Grynwald.MdDocs.ApiReference.Model
                 .Where(attribute =>
                 {
                     if (attribute.AttributeType.FullName == Constants.IsReadOnlyAttributeFullName)
+                        return false;
+
+                    if (attribute.AttributeType.FullName == Constants.ParamArrayAttributeFullName)
                         return false;
 
                     if (!attribute.AttributeType.Resolve().IsPublic)

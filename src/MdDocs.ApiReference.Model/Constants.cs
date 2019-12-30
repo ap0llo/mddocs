@@ -12,5 +12,6 @@
         public const string DefaultMemberAttributeFullName = "System.Reflection.DefaultMemberAttribute";
         public const string IsReadOnlyAttributeFullName = "System.Runtime.CompilerServices.IsReadOnlyAttribute";
         public const string ObsoleteAttributeFullName = "System.ObsoleteAttribute";
+        public const string ParamArrayAttributeFullName = "System.ParamArrayAttribute";
     }
 }
