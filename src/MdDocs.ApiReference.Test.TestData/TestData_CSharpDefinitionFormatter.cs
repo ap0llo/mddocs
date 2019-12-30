@@ -316,32 +316,4 @@ namespace Grynwald.MdDocs.ApiReference.Test.TestData
         public static void Method1(this string param) => throw new NotImplementedException();
     }
 
-
-
-    public class TestClass_CSharpDefinition_NestedTypes
-    {
-        public class TestClass_CSharpDefinition_NestedClass1
-        {
-            public class TestClass_CSharpDefinition_NestedClass2
-            { }
-        }
-
-        public interface TestClass_CSharpDefinition_NestedInterface1
-        { }
-
-        public class TestClass_CSharpDefinition_NestedClass4<T>
-        {
-            public class NestedClass5
-            { }
-        }
-
-
-        public class NestedClass6<T1, T2>
-        {
-            public class NestedClass7<T3>
-            { }
-        }
-    }
-
-
 }

@@ -328,57 +328,6 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         }
 
 
-        [Theory]
-        [InlineData(
-            nameof(TestClass_CSharpDefinition_NestedTypes),
-            nameof(TestClass_CSharpDefinition_NestedTypes.TestClass_CSharpDefinition_NestedClass1),
-            "public class TestClass_CSharpDefinition_NestedTypes.TestClass_CSharpDefinition_NestedClass1"
-        )]
-        [InlineData(
-            nameof(TestClass_CSharpDefinition_NestedTypes),
-            nameof(TestClass_CSharpDefinition_NestedTypes.TestClass_CSharpDefinition_NestedInterface1),
-            "public interface TestClass_CSharpDefinition_NestedTypes.TestClass_CSharpDefinition_NestedInterface1"
-        )]
-        [InlineData(
-            nameof(TestClass_CSharpDefinition_NestedTypes),
-            "TestClass_CSharpDefinition_NestedClass4`1",
-            "public class TestClass_CSharpDefinition_NestedTypes.TestClass_CSharpDefinition_NestedClass4<T>"
-        )]
-        [InlineData(
-            nameof(TestClass_CSharpDefinition_NestedTypes),
-            nameof(TestClass_CSharpDefinition_NestedTypes.TestClass_CSharpDefinition_NestedClass1.TestClass_CSharpDefinition_NestedClass2),
-            "public class TestClass_CSharpDefinition_NestedTypes.TestClass_CSharpDefinition_NestedClass1.TestClass_CSharpDefinition_NestedClass2"
-        )]
-        [InlineData(
-            nameof(TestClass_CSharpDefinition_NestedTypes),
-            "NestedClass5",
-            "public class TestClass_CSharpDefinition_NestedTypes.TestClass_CSharpDefinition_NestedClass4<T>.NestedClass5"
-        )]
-        [InlineData(
-            nameof(TestClass_CSharpDefinition_NestedTypes),
-            "NestedClass7`1",   
-            "public class TestClass_CSharpDefinition_NestedTypes.NestedClass6<T1, T2>.NestedClass7<T3>"
-        )]
-        public void GetDefinition_returns_the_expected_definition_for_nested_types(string declaringTypeName, string typeName, string expected)
-        {
-            IEnumerable<TypeDefinition> GetNestedTypes(TypeDefinition type)
-            {
-                return type.NestedTypes.Union(type.NestedTypes.SelectMany(GetNestedTypes));
-            }
-
-            // ARRANGE
-            var declaringTypeDefinition = m_AssemblyDefinition.Value
-                .MainModule
-                .Types
-                .Single(p => p.Name == declaringTypeName);
-
-            var typeDefinition = GetNestedTypes(declaringTypeDefinition).Single(p => p.Name == typeName);
-
-            // ACT
-            var actual = CSharpDefinitionFormatter.GetDefinition(typeDefinition);
-
-            // ASSERT
-            Assert.Equal(expected, actual);
-        }
+        
     }
 }
