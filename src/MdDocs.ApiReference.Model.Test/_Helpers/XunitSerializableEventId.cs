@@ -38,6 +38,6 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             info.AddValue(nameof(EventId.Name), EventId.Name);
         }
 
-        public static implicit operator EventId(XunitSerializableEventId serializable) => serializable?.EventId ?? throw new InvalidOperationException();
+        public static implicit operator EventId(XunitSerializableEventId serializable) => serializable?.EventId!;
     }
 }

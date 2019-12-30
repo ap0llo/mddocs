@@ -36,6 +36,6 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             info.AddValue(nameof(NamespaceId.Name), NamespaceId.Name);
         }
 
-        public static implicit operator NamespaceId(XunitSerializableNamespaceId serializable) => serializable?.NamespaceId ?? throw new InvalidOperationException();
+        public static implicit operator NamespaceId(XunitSerializableNamespaceId serializable) => serializable?.NamespaceId!;
     }
 }

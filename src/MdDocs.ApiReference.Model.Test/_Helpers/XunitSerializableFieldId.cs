@@ -38,6 +38,6 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             info.AddValue(nameof(FieldId.Name), FieldId.Name);
         }
 
-        public static implicit operator FieldId(XunitSerializableFieldId serializable) => serializable?.FieldId ?? throw new InvalidOperationException();
+        public static implicit operator FieldId(XunitSerializableFieldId serializable) => serializable?.FieldId!;
     }
 }
