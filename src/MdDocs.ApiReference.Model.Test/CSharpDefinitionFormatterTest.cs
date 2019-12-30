@@ -27,7 +27,6 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             nameof(TestClass_CSharpDefinition.Property9),
             "[CSharpDefinitionTest1(1)]\r\n" +
             "public static IEnumerable<string> Property9 { get; }")]
-        [InlineData(typeof(TestClass_CSharpDefinition_InternalAttribues), nameof(TestClass_CSharpDefinition_InternalAttribues.Property1), @"public string Property1 { get; }")]  // internal attributes must not be included in the definition
         public void GetDefinition_returns_the_expected_definition_for_properties(Type declaringType, string propertyName, string expected)
         {
             // ARRANGE
@@ -45,7 +44,6 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         [Theory]
         [InlineData(typeof(TestClass_CSharpDefinition), 1, @"public int this[object parameter] { get; }")]
         [InlineData(typeof(TestClass_CSharpDefinition), 2, @"public int this[object parameter1, Stream parameter2] { get; }")]
-        [InlineData(typeof(TestClass_CSharpDefinition_InternalAttribues), 1, @"public string this[int index] { get; }")] // internal attributes must not be included in the definition
         public void GetDefinition_returns_the_expected_definition_for_indexers(Type declaringType, int parameterCount, string expected)
         {
             // ARRANGE
@@ -71,7 +69,6 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             "[CSharpDefinitionTest1(1)]\r\n" +
             "public static readonly int Field5;"
         )]
-        [InlineData(typeof(TestClass_CSharpDefinition_InternalAttribues), nameof(TestClass_CSharpDefinition_InternalAttribues.Field1), @"public int Field1;")] // internal attributes must not be included in the definition
         public void GetDefinition_returns_the_expected_definition_for_fields(Type declaringType, string fieldName, string expected)
         {
             // ARRANGE
@@ -95,7 +92,6 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             "[CSharpDefinitionTest1(1)]\r\n" +
             "public static event EventHandler Event3;"
         )]
-        [InlineData(typeof(TestClass_CSharpDefinition_InternalAttribues), nameof(TestClass_CSharpDefinition_InternalAttribues.Event1), @"public static event EventHandler Event1;")]  // internal attributes must not be included in the definition
         public void GetDefinition_returns_the_expected_definition_for_events(Type declaringType, string fieldName, string expected)
         {
             // ARRANGE
@@ -162,7 +158,6 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         [InlineData(typeof(TestClass_CSharpDefinition), nameof(TestClass_CSharpDefinition.Method21), "public void Method21(string stringParameter = \"default\");")]
         [InlineData(typeof(TestClass_CSharpDefinition), nameof(TestClass_CSharpDefinition.Method22), "public void Method22([CSharpDefinitionTest5]string parameter1);")]
         [InlineData(typeof(TestClass_CSharpDefinition), nameof(TestClass_CSharpDefinition.Method23), "public void Method23([CSharpDefinitionTest4(CSharpDefinitionTestEnum.Value2)][CSharpDefinitionTest5]string parameter1);")]
-        [InlineData(typeof(TestClass_CSharpDefinition_InternalAttribues), nameof(TestClass_CSharpDefinition_InternalAttribues.Method1), "public void Method1();")]
         [InlineData(typeof(TestClass_CSharpDefinition), nameof(TestClass_CSharpDefinition.Method24), "public void Method24(params string[] parameters);")]
         public void GetDefinition_returns_the_expected_definition_for_methods(Type declaringType, string methodName, string expected)
         {
@@ -317,7 +312,6 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             "[CSharpDefinitionTest6(CSharpDefinitionTestFlagsEnum2.Value1 | CSharpDefinitionTestFlagsEnum2.Value2)]\r\n" +
             "public class CSharpDefinitionTest_ClassWithAttribute3"
         )]
-        [InlineData(nameof(TestClass_CSharpDefinition_InternalAttribues), "public class TestClass_CSharpDefinition_InternalAttribues")]
         public void GetDefinition_returns_the_expected_definition_for_types(string typeName, string expected)
         {
             // ARRANGE
