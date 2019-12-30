@@ -465,6 +465,26 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             Assert.True(expectedAttributes.SequenceEqual(sut.Attributes));
         }
 
+        [Theory]
+        [InlineData(typeof(TestClass_Attributes_Internal))]
+        public void Attributes_does_not_include_internal_attributes(Type type)
+        {
+            // ARRANGE
+            var expectedAttributes = new[]
+            {                
+                new SimpleTypeId("Grynwald.MdDocs.ApiReference.Test.TestData", "TestAttribute")
+            };
+
+            // ACT
+            var sut = GetTypeDocumentation(type);
+
+            // ASSERT
+            Assert.NotNull(sut.Attributes);
+            Assert.Equal(expectedAttributes.Length, sut.Attributes.Count);
+            Assert.True(expectedAttributes.SequenceEqual(sut.Attributes));
+        }
+
+
         [Fact]
         public void TryGetDocumentation_returns_null_for_an_undocumented_type()
         {

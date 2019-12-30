@@ -14,6 +14,11 @@
             TestClass for attributes
             </summary>
         </member>
+        <member name="T:Grynwald.MdDocs.ApiReference.Test.TestData.TestClass_Attributes_Internal">
+            <summary>
+            TestClass for internal attributes
+            </summary>
+        </member>
         <member name="T:Grynwald.MdDocs.ApiReference.Test.TestData.TestClass_Constructors">
             <summary>
             Test class for constructors

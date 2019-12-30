@@ -26,7 +26,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         {
             var definitionBuilder = new StringBuilder();
 
-            AppendCustomAttributes(definitionBuilder, property.CustomAttributes);
+            AppendCustomAttributes(definitionBuilder, property.GetCustomAttributes());
 
             // "public"
             definitionBuilder.Append("public ");
@@ -90,7 +90,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         {
             var definitionBuilder = new StringBuilder();
 
-            AppendCustomAttributes(definitionBuilder, field.CustomAttributes);
+            AppendCustomAttributes(definitionBuilder, field.GetCustomAttributes());
 
             // "public"
             if (field.IsPublic)
@@ -162,9 +162,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
                     // remove number of type parameters from type name
                     methodName = methodName.Substring(0, methodName.LastIndexOf("`"));
                 }
-
-                //TODO: Support for nested types
-
+                
                 definitionBuilder.Append(methodName);
             }
             // non-constructor method
@@ -249,7 +247,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         {
             var definitionBuilder = new StringBuilder();
 
-            AppendCustomAttributes(definitionBuilder, @event.CustomAttributes);
+            AppendCustomAttributes(definitionBuilder, @event.GetCustomAttributes());
 
             // "public"
             if (@event.AddMethod?.IsPublic == true || @event.RemoveMethod?.IsPublic == true)
@@ -360,7 +358,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
         private static void AppendCustomAttributes(StringBuilder definitionBuilder, IEnumerable<CustomAttribute> customAttributes, bool singleLine = false)
         {
-            foreach (var attribute in customAttributes.Where(a => a.AttributeType.Resolve().IsPublic))
+            foreach (var attribute in customAttributes)
             {
                 var attributeName = GetDisplayName(attribute.AttributeType);
 
