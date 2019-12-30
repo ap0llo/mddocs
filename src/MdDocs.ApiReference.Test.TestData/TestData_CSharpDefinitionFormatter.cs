@@ -340,4 +340,28 @@ namespace Grynwald.MdDocs.ApiReference.Test.TestData
             { }
         }
     }
+
+    internal class TestClass_CSharpDefinition_InternalTestAttribute : Attribute
+    { }
+
+    [TestClass_CSharpDefinition_InternalTest]
+    public class TestClass_CSharpDefinition_InternalAttribues
+    {
+        [TestClass_CSharpDefinition_InternalTest]
+        public string Property1 { get; }
+
+        [TestClass_CSharpDefinition_InternalTest]
+        public string this[int index] => throw new NotImplementedException();
+
+
+        [TestClass_CSharpDefinition_InternalTest]
+        public int Field1;
+
+        [TestClass_CSharpDefinition_InternalTest]
+        public static event EventHandler Event1;
+
+        [TestClass_CSharpDefinition_InternalTest]
+        public void Method1() => throw new NotImplementedException();
+    }
+
 }

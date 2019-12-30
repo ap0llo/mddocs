@@ -54,7 +54,6 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             }
         }
 
-        public static implicit operator PropertyId(XunitSerializablePropertyId serializable) =>
-            serializable?.PropertyId ?? throw new InvalidOperationException();
+        public static implicit operator PropertyId(XunitSerializablePropertyId serializable) => serializable?.PropertyId!;
     }
 }

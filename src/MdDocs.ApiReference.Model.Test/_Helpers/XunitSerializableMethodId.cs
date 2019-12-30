@@ -66,6 +66,6 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             }
         }
 
-        public static implicit operator MethodId(XunitSerializableMethodId serializable) => serializable?.MethodId ?? throw new InvalidOperationException();
+        public static implicit operator MethodId(XunitSerializableMethodId serializable) => serializable?.MethodId!;
     }
 }

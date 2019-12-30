@@ -8,25 +8,30 @@ using Mono.Cecil;
 
 namespace Grynwald.MdDocs.ApiReference.Test.Model
 {
+    /// <summary>
+    /// Tests for <see cref="CSharpDefinitionFormatter"/>
+    /// </summary>
     public class CSharpDefinitionFormatterTest : TestBase
     {
         [Theory]
-        [InlineData(nameof(TestClass_CSharpDefinition.Property1), @"public int Property1 { get; set; }")]
-        [InlineData(nameof(TestClass_CSharpDefinition.Property2), @"public byte Property2 { get; set; }")]
-        [InlineData(nameof(TestClass_CSharpDefinition.Property3), @"public string Property3 { get; }")]
-        [InlineData(nameof(TestClass_CSharpDefinition.Property4), @"public string Property4 { get; }")]
-        [InlineData(nameof(TestClass_CSharpDefinition.Property5), @"public string Property5 { set; }")]
-        [InlineData(nameof(TestClass_CSharpDefinition.Property6), @"public Stream Property6 { get; }")]
-        [InlineData(nameof(TestClass_CSharpDefinition.Property7), @"public IEnumerable<string> Property7 { get; }")]
-        [InlineData(nameof(TestClass_CSharpDefinition.Property8), @"public static IEnumerable<string> Property8 { get; }")]
+        [InlineData(typeof(TestClass_CSharpDefinition), nameof(TestClass_CSharpDefinition.Property1), @"public int Property1 { get; set; }")]
+        [InlineData(typeof(TestClass_CSharpDefinition), nameof(TestClass_CSharpDefinition.Property2), @"public byte Property2 { get; set; }")]
+        [InlineData(typeof(TestClass_CSharpDefinition), nameof(TestClass_CSharpDefinition.Property3), @"public string Property3 { get; }")]
+        [InlineData(typeof(TestClass_CSharpDefinition), nameof(TestClass_CSharpDefinition.Property4), @"public string Property4 { get; }")]
+        [InlineData(typeof(TestClass_CSharpDefinition), nameof(TestClass_CSharpDefinition.Property5), @"public string Property5 { set; }")]
+        [InlineData(typeof(TestClass_CSharpDefinition), nameof(TestClass_CSharpDefinition.Property6), @"public Stream Property6 { get; }")]
+        [InlineData(typeof(TestClass_CSharpDefinition), nameof(TestClass_CSharpDefinition.Property7), @"public IEnumerable<string> Property7 { get; }")]
+        [InlineData(typeof(TestClass_CSharpDefinition), nameof(TestClass_CSharpDefinition.Property8), @"public static IEnumerable<string> Property8 { get; }")]
         [InlineData(
+            typeof(TestClass_CSharpDefinition),
             nameof(TestClass_CSharpDefinition.Property9),
             "[CSharpDefinitionTest1(1)]\r\n" +
             "public static IEnumerable<string> Property9 { get; }")]
-        public void GetDefinition_returns_the_expected_definition_for_properties(string propertyName, string expected)
+        [InlineData(typeof(TestClass_CSharpDefinition_InternalAttribues), nameof(TestClass_CSharpDefinition_InternalAttribues.Property1), @"public string Property1 { get; }")]  // internal attributes must not be included in the definition
+        public void GetDefinition_returns_the_expected_definition_for_properties(Type declaringType, string propertyName, string expected)
         {
             // ARRANGE
-            var propertyDefinition = GetTypeDefinition(typeof(TestClass_CSharpDefinition))
+            var propertyDefinition = GetTypeDefinition(declaringType)
                 .Properties
                 .Single(p => p.Name == propertyName);
 
@@ -38,12 +43,13 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         }
 
         [Theory]
-        [InlineData(1, @"public int this[object parameter] { get; }")]
-        [InlineData(2, @"public int this[object parameter1, Stream parameter2] { get; }")]
-        public void GetDefinition_returns_the_expected_definition_for_indexers(int parameterCount, string expected)
+        [InlineData(typeof(TestClass_CSharpDefinition), 1, @"public int this[object parameter] { get; }")]
+        [InlineData(typeof(TestClass_CSharpDefinition), 2, @"public int this[object parameter1, Stream parameter2] { get; }")]
+        [InlineData(typeof(TestClass_CSharpDefinition_InternalAttribues), 1, @"public string this[int index] { get; }")] // internal attributes must not be included in the definition
+        public void GetDefinition_returns_the_expected_definition_for_indexers(Type declaringType, int parameterCount, string expected)
         {
             // ARRANGE
-            var propertyDefinition = GetTypeDefinition(typeof(TestClass_CSharpDefinition))
+            var propertyDefinition = GetTypeDefinition(declaringType)
                 .Properties
                 .Single(p => p.Name == "Item" && p.Parameters.Count == parameterCount);
 
@@ -55,19 +61,21 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         }
 
         [Theory]
-        [InlineData(nameof(TestClass_CSharpDefinition.Field1), @"public string Field1;")]
-        [InlineData(nameof(TestClass_CSharpDefinition.Field2), @"public static string Field2;")]
-        [InlineData(nameof(TestClass_CSharpDefinition.Field3), @"public const string Field3;")]
-        [InlineData(nameof(TestClass_CSharpDefinition.Field4), @"public static readonly int Field4;")]
+        [InlineData(typeof(TestClass_CSharpDefinition), nameof(TestClass_CSharpDefinition.Field1), @"public string Field1;")]
+        [InlineData(typeof(TestClass_CSharpDefinition), nameof(TestClass_CSharpDefinition.Field2), @"public static string Field2;")]
+        [InlineData(typeof(TestClass_CSharpDefinition), nameof(TestClass_CSharpDefinition.Field3), @"public const string Field3;")]
+        [InlineData(typeof(TestClass_CSharpDefinition), nameof(TestClass_CSharpDefinition.Field4), @"public static readonly int Field4;")]
         [InlineData(
+            typeof(TestClass_CSharpDefinition),
             nameof(TestClass_CSharpDefinition.Field5),
             "[CSharpDefinitionTest1(1)]\r\n" +
             "public static readonly int Field5;"
         )]
-        public void GetDefinition_returns_the_expected_definition_for_fields(string fieldName, string expected)
+        [InlineData(typeof(TestClass_CSharpDefinition_InternalAttribues), nameof(TestClass_CSharpDefinition_InternalAttribues.Field1), @"public int Field1;")] // internal attributes must not be included in the definition
+        public void GetDefinition_returns_the_expected_definition_for_fields(Type declaringType, string fieldName, string expected)
         {
             // ARRANGE
-            var fieldDefinition = GetTypeDefinition(typeof(TestClass_CSharpDefinition))
+            var fieldDefinition = GetTypeDefinition(declaringType)
                 .Fields
                 .Single(p => p.Name == fieldName);
 
@@ -79,17 +87,19 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         }
 
         [Theory]
-        [InlineData(nameof(TestClass_CSharpDefinition.Event1), @"public event EventHandler<EventArgs> Event1;")]
-        [InlineData(nameof(TestClass_CSharpDefinition.Event2), @"public static event EventHandler Event2;")]
+        [InlineData(typeof(TestClass_CSharpDefinition), nameof(TestClass_CSharpDefinition.Event1), @"public event EventHandler<EventArgs> Event1;")]
+        [InlineData(typeof(TestClass_CSharpDefinition), nameof(TestClass_CSharpDefinition.Event2), @"public static event EventHandler Event2;")]
         [InlineData(
+            typeof(TestClass_CSharpDefinition),
             nameof(TestClass_CSharpDefinition.Event3),
             "[CSharpDefinitionTest1(1)]\r\n" +
             "public static event EventHandler Event3;"
         )]
-        public void GetDefinition_returns_the_expected_definition_for_events(string fieldName, string expected)
+        [InlineData(typeof(TestClass_CSharpDefinition_InternalAttribues), nameof(TestClass_CSharpDefinition_InternalAttribues.Event1), @"public static event EventHandler Event1;")]  // internal attributes must not be included in the definition
+        public void GetDefinition_returns_the_expected_definition_for_events(Type declaringType, string fieldName, string expected)
         {
             // ARRANGE
-            var eventDefinition = GetTypeDefinition(typeof(TestClass_CSharpDefinition))
+            var eventDefinition = GetTypeDefinition(declaringType)
                 .Events
                 .Single(p => p.Name == fieldName);
 
@@ -101,55 +111,62 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         }
 
         [Theory]
-        [InlineData(nameof(TestClass_CSharpDefinition.Method1), @"public void Method1();")]
-        [InlineData(nameof(TestClass_CSharpDefinition.Method2), @"public string Method2();")]
-        [InlineData(nameof(TestClass_CSharpDefinition.Method3), @"public string Method3(string param1, Stream param2);")]
-        [InlineData(nameof(TestClass_CSharpDefinition.Method4), @"public static string Method4(string param1, Stream param2);")]
-        [InlineData(nameof(TestClass_CSharpDefinition.Method5), @"public static string Method5<TParam>(TParam parameter);")]
+        [InlineData(typeof(TestClass_CSharpDefinition), nameof(TestClass_CSharpDefinition.Method1), @"public void Method1();")]
+        [InlineData(typeof(TestClass_CSharpDefinition), nameof(TestClass_CSharpDefinition.Method2), @"public string Method2();")]
+        [InlineData(typeof(TestClass_CSharpDefinition), nameof(TestClass_CSharpDefinition.Method3), @"public string Method3(string param1, Stream param2);")]
+        [InlineData(typeof(TestClass_CSharpDefinition), nameof(TestClass_CSharpDefinition.Method4), @"public static string Method4(string param1, Stream param2);")]
+        [InlineData(typeof(TestClass_CSharpDefinition), nameof(TestClass_CSharpDefinition.Method5), @"public static string Method5<TParam>(TParam parameter);")]
         [InlineData(
+            typeof(TestClass_CSharpDefinition),
             nameof(TestClass_CSharpDefinition.Method6),
             "[Obsolete]\r\n" +
             "public void Method6();")]
         [InlineData(
+            typeof(TestClass_CSharpDefinition),
             nameof(TestClass_CSharpDefinition.Method7),
             "[Obsolete(\"Use another method\")]\r\n" +
             "public void Method7();")]
         [InlineData(
+            typeof(TestClass_CSharpDefinition),
             nameof(TestClass_CSharpDefinition.Method8),
             "[CSharpDefinitionTest1(1, Property1 = \"Value\")]\r\n" +
             "public void Method8();"
         )]
         [InlineData(
+            typeof(TestClass_CSharpDefinition),
             nameof(TestClass_CSharpDefinition.Method9),
             "[CSharpDefinitionTest2(CSharpDefinitionTestFlagsEnum.Value1 | CSharpDefinitionTestFlagsEnum.Value2)]\r\n" +
             "public void Method9();"
         )]
         [InlineData(
+            typeof(TestClass_CSharpDefinition),
             nameof(TestClass_CSharpDefinition.Method10),
             "[CSharpDefinitionTest3(BindingFlags.NonPublic | BindingFlags.CreateInstance)]\r\n" +
             "public void Method10();"
         )]
         [InlineData(
+            typeof(TestClass_CSharpDefinition),
             nameof(TestClass_CSharpDefinition.Method11),
             "[CSharpDefinitionTest4(CSharpDefinitionTestEnum.Value2)]\r\n" +
             "public void Method11();"
         )]
-        [InlineData(nameof(TestClass_CSharpDefinition.Method12), "public void Method12(ref int value);")]
-        [InlineData(nameof(TestClass_CSharpDefinition.Method13), "public void Method13(out string value);")]
-        [InlineData(nameof(TestClass_CSharpDefinition.Method14), "public void Method14(object parameter1, out string value);")]
-        [InlineData(nameof(TestClass_CSharpDefinition.Method15), "public void Method15(out string[] value);")]
-        [InlineData(nameof(TestClass_CSharpDefinition.Method16), "public void Method16(in string value);")]
-        [InlineData(nameof(TestClass_CSharpDefinition.Method17), "public void Method17(string stringParameter = \"default\");")]
-        [InlineData(nameof(TestClass_CSharpDefinition.Method18), "public void Method18(string stringParameter = null, int intParameter = 23);")]
-        [InlineData(nameof(TestClass_CSharpDefinition.Method19), "public void Method19(CSharpDefinitionTestEnum parameter = CSharpDefinitionTestEnum.Value1);")]
-        [InlineData(nameof(TestClass_CSharpDefinition.Method20), "public void Method20([Optional]string stringParameter);")]
-        [InlineData(nameof(TestClass_CSharpDefinition.Method21), "public void Method21(string stringParameter = \"default\");")]
-        [InlineData(nameof(TestClass_CSharpDefinition.Method22), "public void Method22([CSharpDefinitionTest5]string parameter1);")]
-        [InlineData(nameof(TestClass_CSharpDefinition.Method23), "public void Method23([CSharpDefinitionTest4(CSharpDefinitionTestEnum.Value2)][CSharpDefinitionTest5]string parameter1);")]
-        public void GetDefinition_returns_the_expected_definition_for_methods(string methodName, string expected)
+        [InlineData(typeof(TestClass_CSharpDefinition), nameof(TestClass_CSharpDefinition.Method12), "public void Method12(ref int value);")]
+        [InlineData(typeof(TestClass_CSharpDefinition), nameof(TestClass_CSharpDefinition.Method13), "public void Method13(out string value);")]
+        [InlineData(typeof(TestClass_CSharpDefinition), nameof(TestClass_CSharpDefinition.Method14), "public void Method14(object parameter1, out string value);")]
+        [InlineData(typeof(TestClass_CSharpDefinition), nameof(TestClass_CSharpDefinition.Method15), "public void Method15(out string[] value);")]
+        [InlineData(typeof(TestClass_CSharpDefinition), nameof(TestClass_CSharpDefinition.Method16), "public void Method16(in string value);")]
+        [InlineData(typeof(TestClass_CSharpDefinition), nameof(TestClass_CSharpDefinition.Method17), "public void Method17(string stringParameter = \"default\");")]
+        [InlineData(typeof(TestClass_CSharpDefinition), nameof(TestClass_CSharpDefinition.Method18), "public void Method18(string stringParameter = null, int intParameter = 23);")]
+        [InlineData(typeof(TestClass_CSharpDefinition), nameof(TestClass_CSharpDefinition.Method19), "public void Method19(CSharpDefinitionTestEnum parameter = CSharpDefinitionTestEnum.Value1);")]
+        [InlineData(typeof(TestClass_CSharpDefinition), nameof(TestClass_CSharpDefinition.Method20), "public void Method20([Optional]string stringParameter);")]
+        [InlineData(typeof(TestClass_CSharpDefinition), nameof(TestClass_CSharpDefinition.Method21), "public void Method21(string stringParameter = \"default\");")]
+        [InlineData(typeof(TestClass_CSharpDefinition), nameof(TestClass_CSharpDefinition.Method22), "public void Method22([CSharpDefinitionTest5]string parameter1);")]
+        [InlineData(typeof(TestClass_CSharpDefinition), nameof(TestClass_CSharpDefinition.Method23), "public void Method23([CSharpDefinitionTest4(CSharpDefinitionTestEnum.Value2)][CSharpDefinitionTest5]string parameter1);")]
+        [InlineData(typeof(TestClass_CSharpDefinition_InternalAttribues), nameof(TestClass_CSharpDefinition_InternalAttribues.Method1), "public void Method1();")]
+        public void GetDefinition_returns_the_expected_definition_for_methods(Type declaringType, string methodName, string expected)
         {
             // ARRANGE
-            var fieldDefinition = GetTypeDefinition(typeof(TestClass_CSharpDefinition))
+            var fieldDefinition = GetTypeDefinition(declaringType)
                 .Methods
                 .Single(p => p.Name == methodName);
 
@@ -299,6 +316,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             "[CSharpDefinitionTest6(CSharpDefinitionTestFlagsEnum2.Value1 | CSharpDefinitionTestFlagsEnum2.Value2)]\r\n" +
             "public class CSharpDefinitionTest_ClassWithAttribute3"
         )]
+        [InlineData(nameof(TestClass_CSharpDefinition_InternalAttribues), "public class TestClass_CSharpDefinition_InternalAttribues")]
         public void GetDefinition_returns_the_expected_definition_for_types(string typeName, string expected)
         {
             // ARRANGE

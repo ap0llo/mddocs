@@ -98,6 +98,6 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             }
         }
 
-        public static implicit operator MemberId(XunitSerializableMemberId serializable) => serializable?.MemberId ?? throw new InvalidOperationException();
+        public static implicit operator MemberId(XunitSerializableMemberId serializable) => serializable?.MemberId!;
     }
 }

@@ -80,7 +80,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         }
 
         /// <summary>
-        /// Gets a type's custom attributes excluding attributes emitted by the C# compiler not relevant for the user.
+        /// Gets a type's public custom attributes excluding attributes emitted by the C# compiler not relevant for the user.
         /// </summary>
         /// <returns>
         /// Returns all attributes except:
@@ -88,6 +88,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         ///     <item><c>DefaultMemberAttribute</c> for classes.</item>
         ///     <item><c>ExtensionAttribute</c> (indicating that the class defines extension methods) for classes.</item>
         ///     <item><c>IsReadOnlyAttribute</c> for structs indicating that it is a <c>readonly struct</c>.</item>
+        ///     <item>non-public Attribute types</item>
         /// </list>
         /// </returns>
         public static IEnumerable<CustomAttribute> GetCustomAttributes(this TypeDefinition type)
@@ -105,6 +106,10 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
                     if (typeKind == TypeKind.Struct && attribute.AttributeType.FullName == Constants.IsReadOnlyAttributeFullName)
                         return false;
+
+                    if (!attribute.AttributeType.Resolve().IsPublic)
+                        return false;
+
 
                     return true;
                 });

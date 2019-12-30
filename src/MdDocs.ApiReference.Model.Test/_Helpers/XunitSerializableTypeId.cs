@@ -143,7 +143,6 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             }
         }
 
-        public static implicit operator TypeId(XunitSerializableTypeId serializable) =>
-            serializable?.TypeId ?? throw new InvalidOperationException();
+        public static implicit operator TypeId(XunitSerializableTypeId serializable) => serializable?.TypeId!;
     }
 }
