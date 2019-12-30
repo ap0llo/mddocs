@@ -28,7 +28,9 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
         {
             MdSpan GetLinkOrEmptySpan(string? text, string uri, bool italic = false)
             {
-                return String.IsNullOrEmpty(text) ? (MdSpan)MdEmptySpan.Instance : new MdLinkSpan(italic ? new MdEmphasisSpan(text) : (MdSpan)text, uri);
+                return (text == null || String.IsNullOrEmpty(text))
+                    ? (MdSpan)MdEmptySpan.Instance
+                    : new MdLinkSpan(italic ? new MdEmphasisSpan(text) : (MdSpan)text, uri);
             }
 
             // only include the "Name" column, if any option has a 'long' name

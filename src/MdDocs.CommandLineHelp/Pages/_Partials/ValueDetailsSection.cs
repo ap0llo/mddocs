@@ -23,7 +23,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
             m_Value = value ?? throw new ArgumentNullException(nameof(value));
 
 
-            if (!String.IsNullOrEmpty(m_Value.Name))
+            if (m_Value.Name!= null && !String.IsNullOrEmpty(m_Value.Name))
             {
                 Heading = new MdHeading(3, new MdCompositeSpan(new MdCodeSpan(m_Value.Name), $" Parameter (Position {m_Value.Index})"));
             }

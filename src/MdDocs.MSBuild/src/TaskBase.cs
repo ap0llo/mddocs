@@ -48,7 +48,7 @@ namespace Grynwald.MdDocs.MSBuild
 
         protected MdSerializationOptions GetSerializationOptions()
         {
-            if (String.IsNullOrEmpty(MarkdownPreset))
+            if (MarkdownPreset == null || String.IsNullOrEmpty(MarkdownPreset))
             {
                 return MdSerializationOptions.Presets.Default;
             }
