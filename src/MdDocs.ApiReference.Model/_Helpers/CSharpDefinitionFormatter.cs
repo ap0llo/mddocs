@@ -360,7 +360,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
         private static void AppendCustomAttributes(StringBuilder definitionBuilder, IEnumerable<CustomAttribute> customAttributes, bool singleLine = false)
         {
-            foreach (var attribute in customAttributes)
+            foreach (var attribute in customAttributes.Where(a => a.AttributeType.Resolve().IsPublic))
             {
                 var attributeName = GetDisplayName(attribute.AttributeType);
 
