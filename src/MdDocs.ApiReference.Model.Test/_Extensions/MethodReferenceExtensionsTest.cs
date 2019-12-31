@@ -1,36 +1,57 @@
 ﻿using System;
 using System.Linq;
-using Grynwald.MdDocs.ApiReference.Model;
-using Grynwald.MdDocs.ApiReference.Test.TestData;
 using Mono.Cecil;
 using Xunit;
 
-namespace Grynwald.MdDocs.ApiReference.Test.Model
+namespace Grynwald.MdDocs.ApiReference.Model.Test
 {
-    public class MethodReferenceExtensionsTest : TestBase
+    public class MethodReferenceExtensionsTest : DynamicCompilationTestBase, IDisposable
     {
-        private static readonly TypeId s_TestClass_Methods = new SimpleTypeId("Grynwald.MdDocs.ApiReference.Test.TestData", "TestClass_Methods");
-        private static readonly TypeId s_TestClass_Operators = new SimpleTypeId("Grynwald.MdDocs.ApiReference.Test.TestData", "TestClass_Operators");
-        private static readonly TypeId s_System_String = new SimpleTypeId("System", "String");
-        private static readonly TypeId s_System_Int32 = new SimpleTypeId("System", "Int32");
+        private static readonly TypeId s_TypeId_Class1 = new SimpleTypeId("Grynwald.MdDocs.ApiReference.Model.Test.TestData", "Class1");
+        private static readonly TypeId s_TypeId_String = new SimpleTypeId("System", "String");
+        private static readonly TypeId s_TypeId_Int32 = new SimpleTypeId("System", "Int32");
 
-        private MethodReference GetMethodReference(Type type, string methodName)
+        private const string s_SampleSourceCode = @"
+            using System;
+
+            namespace Grynwald.MdDocs.ApiReference.Model.Test.TestData
+            {
+                public class Class1
+                {
+                    public void Method1()
+                    { }
+
+                    public void Method2(string foo)
+                    { }
+
+                    public string Method3<T1, T2>(T1 foo, T2 bar) => throw new NotImplementedException();
+
+                    public static implicit operator string(Class1 instance) => throw new NotImplementedException();
+
+                    public static explicit operator int(Class1 instance) => throw new NotImplementedException();
+                }
+            }
+        ";
+
+        private AssemblyDefinition m_Assembly;
+        private TypeDefinition m_Class1;
+
+        public MethodReferenceExtensionsTest()
         {
-            return GetTypeDefinition(type)
-               .Methods
-               .Single(x => x.Name == methodName);
+            m_Assembly = Compile(s_SampleSourceCode);
+            m_Class1 = m_Assembly.MainModule.Types.Single(x => x.Name == "Class1");
         }
+
+        public void Dispose() => m_Assembly.Dispose();
 
 
         [Fact]
         public void ToMemberId_returns_the_expected_value_01()
         {
             // ARRANGE
-            var expectedMemberId = new MethodId(
-                s_TestClass_Methods,
-                nameof(TestClass_Methods.TestMethod1)
-            );
-            var methodReference = GetMethodReference(typeof(TestClass_Methods), expectedMemberId.Name);
+            var expectedMemberId = new MethodId(s_TypeId_Class1, "Method1");
+
+            var methodReference = m_Class1.Methods.Single(x => x.Name == "Method1");
 
             // ACT
             var actualMemberId = methodReference.ToMemberId();
@@ -38,17 +59,18 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             // ASSERT
             Assert.Equal(expectedMemberId, actualMemberId);
         }
+
 
         [Fact]
         public void ToMemberId_returns_the_expected_value_02()
         {
             // ARRANGE
             var expectedMemberId = new MethodId(
-                s_TestClass_Methods,
-                nameof(TestClass_Methods.TestMethod2),
-                new[] { s_System_String }
+                s_TypeId_Class1,
+                "Method2",
+                new[] { s_TypeId_String }
             );
-            var methodReference = GetMethodReference(typeof(TestClass_Methods), expectedMemberId.Name);
+            var methodReference = m_Class1.Methods.Single(x => x.Name == "Method2");
 
             // ACT
             var actualMemberId = methodReference.ToMemberId();
@@ -57,13 +79,14 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             Assert.Equal(expectedMemberId, actualMemberId);
         }
 
+
         [Fact]
         public void ToMemberId_returns_the_expected_value_03()
         {
             // ARRANGE
             var expectedMemberId = new MethodId(
-                s_TestClass_Methods,
-                nameof(TestClass_Methods.TestMethod7),
+                s_TypeId_Class1,
+                "Method3",
                 2,
                 new[]
                 {
@@ -71,7 +94,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
                     new GenericTypeParameterId(GenericTypeParameterId.MemberKind.Method, 1)
                 }
             );
-            var methodReference = GetMethodReference(typeof(TestClass_Methods), expectedMemberId.Name);
+            var methodReference = m_Class1.Methods.Single(x => x.Name == "Method3");
 
             // ACT
             var actualMemberId = methodReference.ToMemberId();
@@ -85,13 +108,14 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         {
             // ARRANGE
             var expectedMemberId = new MethodId(
-                s_TestClass_Operators,
+                s_TypeId_Class1,
                 "op_Implicit",
                 0,
-                new[] { s_TestClass_Operators },
-                s_System_String
+                new[] { s_TypeId_Class1 },
+                s_TypeId_String
             );
-            var methodReference = GetMethodReference(typeof(TestClass_Operators), expectedMemberId.Name);
+
+            var methodReference = m_Class1.Methods.Single(x => x.Name == "op_Implicit");
 
             // ACT
             var actualMemberId = methodReference.ToMemberId();
@@ -100,18 +124,20 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             Assert.Equal(expectedMemberId, actualMemberId);
         }
 
+
         [Fact]
         public void ToMemberId_returns_the_expected_value_05()
         {
             // ARRANGE
             var expectedMemberId = new MethodId(
-                s_TestClass_Operators,
+                s_TypeId_Class1,
                 "op_Explicit",
                 0,
-                new[] { s_TestClass_Operators },
-                s_System_Int32
+                new[] { s_TypeId_Class1 },
+                s_TypeId_Int32
             );
-            var methodReference = GetMethodReference(typeof(TestClass_Operators), expectedMemberId.Name);
+
+            var methodReference = m_Class1.Methods.Single(x => x.Name == "op_Explicit");
 
             // ACT
             var actualMemberId = methodReference.ToMemberId();
