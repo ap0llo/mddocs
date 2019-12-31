@@ -1,57 +1,67 @@
 ﻿using System.Linq;
-using Grynwald.MdDocs.ApiReference.Model;
-using Grynwald.MdDocs.ApiReference.Test.TestData;
-using Mono.Cecil;
 using Xunit;
 
-namespace Grynwald.MdDocs.ApiReference.Test.Model
+namespace Grynwald.MdDocs.ApiReference.Model.Test
 {
-    public class PropertyReferenceExtensionsTest : TestBase
+    public class PropertyReferenceExtensionsTest : DynamicCompilationTestBase
     {
-        private static readonly TypeId s_TestClass_Properties = new SimpleTypeId("Grynwald.MdDocs.ApiReference.Test.TestData", "TestClass_Properties");
-        private static readonly TypeId s_System_Int32 = new SimpleTypeId("System", "Int32");
-
-        private PropertyReference GetPropertyReference(string typeName, string propertyName)
-        {
-            return GetTypeDefinition(typeName, 0)
-               .Properties
-               .First(x => x.Name == propertyName);
-        }
-
-
         [Fact]
-        public void ToMemberId_returns_the_expected_value_01()
+        public void ToMemberId_returns_the_expected_value()
         {
             // ARRANGE
-            var expectedMemberId = new PropertyId(
-                s_TestClass_Properties,
-                nameof(TestClass_Properties.Property1)
-            );
-            var propertyReference = GetPropertyReference(expectedMemberId.DefiningType.Name, expectedMemberId.Name);
+            var cs = @"
+                using System;
 
-            // ACT
-            var actualMemberId = propertyReference.ToMemberId();
+                namespace Grynwald.MdDocs.ApiReference.Test.TestData
+                {
+                    public class Class1
+                    {
+                        public int Property1 { get; set; }
 
-            // ASSERT
-            Assert.Equal(expectedMemberId, actualMemberId);
+                        public int this[int foo] { get { throw new NotImplementedException(); } }
+
+                    }
+                }
+            ";
+
+
+            using var assembly = Compile(cs);
+
+            var class1 = assembly.MainModule.Types.Single(x => x.Name == "Class1");
+
+            // Property 1
+            {
+                var expectedMemberId = new PropertyId(
+                    class1.ToTypeId(),
+                    "Property1"
+                );
+
+                var propertyReference = class1.Properties.Single(p => p.Name == "Property1");
+
+                // ACT
+                var actualMemberId = propertyReference.ToMemberId();
+
+                // ASSERT
+                Assert.Equal(expectedMemberId, actualMemberId);
+            }
+
+            // Indexer
+            {
+                var expectedMemberId = new PropertyId(
+                    class1.ToTypeId(),
+                    "Item",
+                    new[] { new SimpleTypeId("System", "Int32") }
+                );
+
+                var propertyReference = class1.Properties.Single(p => p.Name == "Item");
+
+                // ACT
+                var actualMemberId = propertyReference.ToMemberId();
+
+                // ASSERT
+                Assert.Equal(expectedMemberId, actualMemberId);
+            }
         }
 
-        [Fact]
-        public void ToMemberId_returns_the_expected_value_02()
-        {
-            // ARRANGE
-            var expectedMemberId = new PropertyId(
-                s_TestClass_Properties,
-                "Item",
-                new[] { s_System_Int32 }
-            );
-            var propertyReference = GetPropertyReference(expectedMemberId.DefiningType.Name, expectedMemberId.Name);
-
-            // ACT
-            var actualMemberId = propertyReference.ToMemberId();
-
-            // ASSERT
-            Assert.Equal(expectedMemberId, actualMemberId);
-        }
     }
 }
