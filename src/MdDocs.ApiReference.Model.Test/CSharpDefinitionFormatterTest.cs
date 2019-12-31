@@ -13,45 +13,6 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
     /// </summary>
     public class CSharpDefinitionFormatterTest : TestBase
     {       
-        [Theory]
-        [InlineData(typeof(TestClass_CSharpDefinition), 1, @"public int this[object parameter] { get; }")]
-        [InlineData(typeof(TestClass_CSharpDefinition), 2, @"public int this[object parameter1, Stream parameter2] { get; }")]
-        public void GetDefinition_returns_the_expected_definition_for_indexers(Type declaringType, int parameterCount, string expected)
-        {
-            // ARRANGE
-            var propertyDefinition = GetTypeDefinition(declaringType)
-                .Properties
-                .Single(p => p.Name == "Item" && p.Parameters.Count == parameterCount);
-
-            // ACT
-            var actual = CSharpDefinitionFormatter.GetDefinition(propertyDefinition);
-
-            // ASSERT
-            Assert.Equal(expected, actual);
-        }
-
-        [Theory]
-        [InlineData(typeof(TestClass_CSharpDefinition), nameof(TestClass_CSharpDefinition.Event1), @"public event EventHandler<EventArgs> Event1;")]
-        [InlineData(typeof(TestClass_CSharpDefinition), nameof(TestClass_CSharpDefinition.Event2), @"public static event EventHandler Event2;")]
-        [InlineData(
-            typeof(TestClass_CSharpDefinition),
-            nameof(TestClass_CSharpDefinition.Event3),
-            "[CSharpDefinitionTest1(1)]\r\n" +
-            "public static event EventHandler Event3;"
-        )]
-        public void GetDefinition_returns_the_expected_definition_for_events(Type declaringType, string fieldName, string expected)
-        {
-            // ARRANGE
-            var eventDefinition = GetTypeDefinition(declaringType)
-                .Events
-                .Single(p => p.Name == fieldName);
-
-            // ACT
-            var actual = CSharpDefinitionFormatter.GetDefinition(eventDefinition);
-
-            // ASSERT
-            Assert.Equal(expected, actual);
-        }
 
         [Theory]
         [InlineData(typeof(TestClass_CSharpDefinition), nameof(TestClass_CSharpDefinition.Method1), @"public void Method1();")]
@@ -120,21 +81,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             Assert.Equal(expected, actual);
         }
 
-        [Theory]
-        [InlineData(nameof(TestClass_CSharpDefinition_ExtensionMethods.Method1), @"public static void Method1(this string param);")]
-        public void GetDefinition_returns_the_expected_definition_for_extension_methods(string methodName, string expected)
-        {
-            // ARRANGE
-            var fieldDefinition = GetTypeDefinition(typeof(TestClass_CSharpDefinition_ExtensionMethods))
-                .Methods
-                .Single(p => p.Name == methodName);
 
-            // ACT
-            var actual = CSharpDefinitionFormatter.GetDefinition(fieldDefinition);
-
-            // ASSERT
-            Assert.Equal(expected, actual);
-        }
 
         [Theory]
         [InlineData(typeof(TestClass_CSharpDefinition), 0, false, @"public TestClass_CSharpDefinition();")]

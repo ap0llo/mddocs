@@ -171,18 +171,8 @@ namespace Grynwald.MdDocs.ApiReference.Test.TestData
 
     public class TestClass_CSharpDefinition
     {
-        public event EventHandler<EventArgs> Event1;
-
-        public static event EventHandler Event2;
-
-        [CSharpDefinitionTest1(1)]
-        public static event EventHandler Event3;
 
 
-
-        public int this[object parameter] { get { throw new NotImplementedException(); } }
-
-        public int this[object parameter1, Stream parameter2] { get { throw new NotImplementedException(); } }
 
 
         public TestClass_CSharpDefinition()
@@ -281,9 +271,6 @@ namespace Grynwald.MdDocs.ApiReference.Test.TestData
 
     }
 
-    public static class TestClass_CSharpDefinition_ExtensionMethods
-    {
-        public static void Method1(this string param) => throw new NotImplementedException();
-    }
+    
 
 }

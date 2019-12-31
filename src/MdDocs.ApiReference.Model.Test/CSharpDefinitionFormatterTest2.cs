@@ -227,5 +227,102 @@ namespace Grynwald.MdDocs.ApiReference.Model.Test
                 "public static readonly int Field5;",
                 CSharpDefinitionFormatter.GetDefinition(field5));
         }
+
+        [Fact]
+        public void GetDefinition_returns_the_expected_definition_for_events()
+        {
+            // ARRANGE
+            var cs = @"
+                using System;
+
+                public class SampleAttribute : Attribute
+                {
+                    public string Property1 { get; set; }
+
+                    public SampleAttribute(int value)
+                    { }
+                }
+
+                public class Class1
+                {
+                    public event EventHandler<EventArgs> Event1;
+
+                    public static event EventHandler Event2;
+
+                    [Sample(1)]
+                    public static event EventHandler Event3;
+
+                }
+            ";
+
+            using var assembly = Compile(cs);
+
+            var class1 = assembly.MainModule.Types.Single(x => x.Name == "Class1");
+            var event1 = class1.Events.Single(x => x.Name == "Event1");
+            var event2 = class1.Events.Single(x => x.Name == "Event2");
+            var event3 = class1.Events.Single(x => x.Name == "Event3");
+
+            // ACT / ASSERT
+            Assert.Equal("public event EventHandler<EventArgs> Event1;", CSharpDefinitionFormatter.GetDefinition(event1));
+            Assert.Equal("public static event EventHandler Event2;", CSharpDefinitionFormatter.GetDefinition(event2));
+            Assert.Equal(
+                "[Sample(1)]\r\n" +
+                "public static event EventHandler Event3;",
+                CSharpDefinitionFormatter.GetDefinition(event3)
+            );
+
+        }
+
+        [Fact]
+        public void GetDefinition_returns_the_expected_definition_for_indexers()
+        {
+            // ARRANGE
+            var cs = @"
+                using System;
+                using System.IO;
+
+                public class Class1
+                {
+                    public int this[object parameter] { get { throw new NotImplementedException(); } }
+
+                    public int this[object parameter1, Stream parameter2] { get { throw new NotImplementedException(); } }
+                }
+            ";
+
+            using var assembly = Compile(cs);
+
+            var class1 = assembly.MainModule.Types.Single(x => x.Name == "Class1");
+            var indexer1 = class1.Properties.Single(p => p.Parameters.Count == 1);
+            var indexer2 = class1.Properties.Single(p => p.Parameters.Count == 2);
+
+            // ACT / ASSERT
+            Assert.Equal("public int this[object parameter] { get; }", CSharpDefinitionFormatter.GetDefinition(indexer1));
+            Assert.Equal("public int this[object parameter1, Stream parameter2] { get; }", CSharpDefinitionFormatter.GetDefinition(indexer2));
+
+        }
+
+        [Fact]
+        public void GetDefinition_returns_the_expected_definition_for_extension_methods()
+        {
+            // ARRANGE
+            // ARRANGE
+            var cs = @"
+                using System;
+                using System.IO;
+
+                public static class Class1
+                {
+                    public static void Method1(this string param) => throw new NotImplementedException();
+                }
+            ";
+
+            using var assembly = Compile(cs);
+
+            var class1 = assembly.MainModule.Types.Single(x => x.Name == "Class1");
+            var method1 = class1.Methods.Single(x => x.Name == "Method1");
+
+            // ACT / ASSERT
+            Assert.Equal("public static void Method1(this string param);", CSharpDefinitionFormatter.GetDefinition(method1));
+        }
     }
 }
