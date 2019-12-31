@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.IO;
 using System.Reflection;
-using System.Runtime.InteropServices;
 
 namespace Grynwald.MdDocs.ApiReference.Test.TestData
 {
@@ -55,9 +52,6 @@ namespace Grynwald.MdDocs.ApiReference.Test.TestData
         }
     }
 
-    public class CSharpDefinitionTest5Attribute : Attribute
-    {
-    }
 
 
     public class CSharpDefinitionTest6Attribute : Attribute
@@ -167,110 +161,10 @@ namespace Grynwald.MdDocs.ApiReference.Test.TestData
     public readonly struct CSharpDefinitionTest_ReadOnlyStruct
     { }
 
-
-
     public class TestClass_CSharpDefinition
     {
 
 
-
-
-        public TestClass_CSharpDefinition()
-        { }
-
-        public TestClass_CSharpDefinition(string parameter)
-        { }
-
-        static TestClass_CSharpDefinition()
-        {
-        }
-
-        public void Method1() => throw new NotImplementedException();
-
-        public string Method2() => throw new NotImplementedException();
-
-        public string Method3(string param1, Stream param2) => throw new NotImplementedException();
-
-        public static string Method4(string param1, Stream param2) => throw new NotImplementedException();
-
-        public static string Method5<TParam>(TParam parameter) => throw new NotImplementedException();
-
-        [Obsolete]
-        public void Method6() => throw new NotImplementedException();
-
-        [Obsolete("Use another method")]
-        public void Method7() => throw new NotImplementedException();
-
-        [CSharpDefinitionTest1(1, Property1 = "Value")]
-        public void Method8() => throw new NotImplementedException();
-
-        [CSharpDefinitionTest2(CSharpDefinitionTestFlagsEnum.Value1 | CSharpDefinitionTestFlagsEnum.Value2)]
-        public void Method9() => throw new NotImplementedException();
-
-        [CSharpDefinitionTest3(BindingFlags.CreateInstance | BindingFlags.NonPublic)]
-        public void Method10() => throw new NotImplementedException();
-
-        [CSharpDefinitionTest4(CSharpDefinitionTestEnum.Value2)]
-        public void Method11() => throw new NotImplementedException();
-
-        public void Method12(ref int value) => throw new NotImplementedException();
-
-        public void Method13(out string value) => throw new NotImplementedException();
-
-        public void Method14(object parameter1, out string value) => throw new NotImplementedException();
-
-        public void Method15(out string[] value) => throw new NotImplementedException();
-
-        public void Method16(in string value) => throw new NotImplementedException();
-
-        public void Method17(string stringParameter = "default") => throw new NotImplementedException();
-
-        public void Method18(string stringParameter = null, int intParameter = 23) => throw new NotImplementedException();
-
-        public void Method19(CSharpDefinitionTestEnum parameter = CSharpDefinitionTestEnum.Value1) => throw new NotImplementedException();
-
-        public void Method20([Optional]string stringParameter) => throw new NotImplementedException();
-
-        public void Method21([Optional][DefaultParameterValue("default")]string stringParameter) => throw new NotImplementedException();
-
-        public void Method22([CSharpDefinitionTest5]string parameter1) => throw new NotImplementedException();
-
-        public void Method23([CSharpDefinitionTest4(CSharpDefinitionTestEnum.Value2)][CSharpDefinitionTest5]string parameter1) => throw new NotImplementedException();
-
-        public void Method24(params string[] parameters) => throw new NotImplementedException();
-
-
-        public static TestClass_CSharpDefinition operator +(TestClass_CSharpDefinition other) => throw new NotImplementedException();
-        public static TestClass_CSharpDefinition operator +(TestClass_CSharpDefinition left, TestClass_CSharpDefinition right) => throw new NotImplementedException();
-        public static TestClass_CSharpDefinition operator -(TestClass_CSharpDefinition other) => throw new NotImplementedException();
-        public static TestClass_CSharpDefinition operator -(TestClass_CSharpDefinition left, TestClass_CSharpDefinition right) => throw new NotImplementedException();
-        public static TestClass_CSharpDefinition operator *(TestClass_CSharpDefinition left, TestClass_CSharpDefinition right) => throw new NotImplementedException();
-        public static TestClass_CSharpDefinition operator /(TestClass_CSharpDefinition left, TestClass_CSharpDefinition right) => throw new NotImplementedException();
-        public static TestClass_CSharpDefinition operator %(TestClass_CSharpDefinition left, TestClass_CSharpDefinition right) => throw new NotImplementedException();
-        public static TestClass_CSharpDefinition operator &(TestClass_CSharpDefinition left, TestClass_CSharpDefinition right) => throw new NotImplementedException();
-        public static TestClass_CSharpDefinition operator |(TestClass_CSharpDefinition left, TestClass_CSharpDefinition right) => throw new NotImplementedException();
-        public static TestClass_CSharpDefinition operator !(TestClass_CSharpDefinition left) => throw new NotImplementedException();
-        public static TestClass_CSharpDefinition operator ~(TestClass_CSharpDefinition left) => throw new NotImplementedException();
-        public static TestClass_CSharpDefinition operator ++(TestClass_CSharpDefinition left) => throw new NotImplementedException();
-        public static TestClass_CSharpDefinition operator --(TestClass_CSharpDefinition left) => throw new NotImplementedException();
-        public static bool operator true(TestClass_CSharpDefinition left) => throw new NotImplementedException();
-        public static bool operator false(TestClass_CSharpDefinition left) => throw new NotImplementedException();
-        public static TestClass_CSharpDefinition operator <<(TestClass_CSharpDefinition left, int right) => throw new NotImplementedException();
-        public static TestClass_CSharpDefinition operator >>(TestClass_CSharpDefinition left, int right) => throw new NotImplementedException();
-        public static TestClass_CSharpDefinition operator ^(TestClass_CSharpDefinition left, TestClass_CSharpDefinition right) => throw new NotImplementedException();
-        public static bool operator ==(TestClass_CSharpDefinition left, TestClass_CSharpDefinition right) => throw new NotImplementedException();
-        public static bool operator !=(TestClass_CSharpDefinition left, TestClass_CSharpDefinition right) => throw new NotImplementedException();
-        public static bool operator <(TestClass_CSharpDefinition left, TestClass_CSharpDefinition right) => throw new NotImplementedException();
-        public static bool operator >(TestClass_CSharpDefinition left, TestClass_CSharpDefinition right) => throw new NotImplementedException();
-        public static bool operator <=(TestClass_CSharpDefinition left, TestClass_CSharpDefinition right) => throw new NotImplementedException();
-        public static bool operator >=(TestClass_CSharpDefinition left, TestClass_CSharpDefinition right) => throw new NotImplementedException();
-
-        public static implicit operator string(TestClass_CSharpDefinition left) => throw new NotImplementedException();
-
-        public static explicit operator int(TestClass_CSharpDefinition left) => throw new NotImplementedException();
-
     }
-
-    
 
 }

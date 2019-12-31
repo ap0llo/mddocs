@@ -324,5 +324,388 @@ namespace Grynwald.MdDocs.ApiReference.Model.Test
             // ACT / ASSERT
             Assert.Equal("public static void Method1(this string param);", CSharpDefinitionFormatter.GetDefinition(method1));
         }
+
+        [Fact]
+        public void GetDefinition_returns_the_expected_definition_for_constructors()
+        {
+            // ARRANGE
+            var cs = @"
+                public class Class1
+                {
+                    public Class1()
+                    { }
+
+                    public Class1(string parameter)
+                    { }
+
+                    static Class1()
+                    {
+                    }
+                }
+
+                public class Class2<TParam>
+                {
+                }
+            ";
+
+            using var assembly = Compile(cs);
+
+            var class1 = assembly.MainModule.Types.Single(x => x.Name == "Class1");
+            var ctor11 = class1.Methods.Single(x => x.IsConstructor && !x.IsStatic && x.Parameters.Count == 0);
+            var ctor12 = class1.Methods.Single(x => x.IsConstructor && !x.IsStatic && x.Parameters.Count == 1);
+            var staticCtor = class1.Methods.Single(x => x.IsConstructor && x.IsStatic);
+            var class2 = assembly.MainModule.Types.Single(x => x.Name == "Class2`1");
+            var ctor21 = class2.Methods.Single(x => x.IsConstructor);
+
+            // ACT / ASSERT
+            Assert.Equal("public Class1();", CSharpDefinitionFormatter.GetDefinition(ctor11));
+            Assert.Equal("public Class1(string parameter);", CSharpDefinitionFormatter.GetDefinition(ctor12));
+            Assert.Equal("static Class1();", CSharpDefinitionFormatter.GetDefinition(staticCtor));
+            Assert.Equal("public Class2();", CSharpDefinitionFormatter.GetDefinition(ctor21));
+        }
+
+        [Theory]
+        [InlineData("op_UnaryPlus", "public static Class1 operator +(Class1 other);")]
+        [InlineData("op_Addition", "public static Class1 operator +(Class1 left, Class1 right);")]
+        [InlineData("op_UnaryNegation", "public static Class1 operator -(Class1 other);")]
+        [InlineData("op_Subtraction", "public static Class1 operator -(Class1 left, Class1 right);")]
+        [InlineData("op_Multiply", "public static Class1 operator *(Class1 left, Class1 right);")]
+        [InlineData("op_Division", "public static Class1 operator /(Class1 left, Class1 right);")]
+        [InlineData("op_Modulus", "public static Class1 operator %(Class1 left, Class1 right);")]
+        [InlineData("op_BitwiseAnd", "public static Class1 operator &(Class1 left, Class1 right);")]
+        [InlineData("op_BitwiseOr", "public static Class1 operator |(Class1 left, Class1 right);")]
+        [InlineData("op_LogicalNot", "public static Class1 operator !(Class1 left);")]
+        [InlineData("op_OnesComplement", "public static Class1 operator ~(Class1 left);")]
+        [InlineData("op_Increment", "public static Class1 operator ++(Class1 left);")]
+        [InlineData("op_Decrement", "public static Class1 operator --(Class1 left);")]
+        [InlineData("op_True", "public static bool operator true(Class1 left);")]
+        [InlineData("op_False", "public static bool operator false(Class1 left);")]
+        [InlineData("op_LeftShift", "public static Class1 operator <<(Class1 left, int right);")]
+        [InlineData("op_RightShift", "public static Class1 operator >>(Class1 left, int right);")]
+        [InlineData("op_ExclusiveOr", "public static Class1 operator ^(Class1 left, Class1 right);")]
+        [InlineData("op_Equality", "public static bool operator ==(Class1 left, Class1 right);")]
+        [InlineData("op_Inequality", "public static bool operator !=(Class1 left, Class1 right);")]
+        [InlineData("op_LessThan", "public static bool operator <(Class1 left, Class1 right);")]
+        [InlineData("op_GreaterThan", "public static bool operator >(Class1 left, Class1 right);")]
+        [InlineData("op_LessThanOrEqual", "public static bool operator <=(Class1 left, Class1 right);")]
+        [InlineData("op_GreaterThanOrEqual", "public static bool operator >=(Class1 left, Class1 right);")]
+        [InlineData("op_Implicit", "public static implicit operator string(Class1 left);")]
+        [InlineData("op_Explicit", "public static explicit operator int(Class1 left);")]
+        public void GetDefinition_returns_the_expected_definition_for_operators(string methodName, string expected)
+        {
+            // ARRANGE
+            var cs = @"
+                using System;
+
+                public class Class1
+                {
+                    public static Class1 operator +(Class1 other) => throw new NotImplementedException();
+
+                    public static Class1 operator +(Class1 left, Class1 right) => throw new NotImplementedException();
+
+                    public static Class1 operator -(Class1 other) => throw new NotImplementedException();
+
+                    public static Class1 operator -(Class1 left, Class1 right) => throw new NotImplementedException();
+
+                    public static Class1 operator *(Class1 left, Class1 right) => throw new NotImplementedException();
+
+                    public static Class1 operator /(Class1 left, Class1 right) => throw new NotImplementedException();
+
+                    public static Class1 operator %(Class1 left, Class1 right) => throw new NotImplementedException();
+
+                    public static Class1 operator &(Class1 left, Class1 right) => throw new NotImplementedException();
+
+                    public static Class1 operator |(Class1 left, Class1 right) => throw new NotImplementedException();
+
+                    public static Class1 operator !(Class1 left) => throw new NotImplementedException();
+
+                    public static Class1 operator ~(Class1 left) => throw new NotImplementedException();
+
+                    public static Class1 operator ++(Class1 left) => throw new NotImplementedException();
+
+                    public static Class1 operator --(Class1 left) => throw new NotImplementedException();
+
+                    public static bool operator true(Class1 left) => throw new NotImplementedException();
+
+                    public static bool operator false(Class1 left) => throw new NotImplementedException();
+
+                    public static Class1 operator <<(Class1 left, int right) => throw new NotImplementedException();
+
+                    public static Class1 operator >>(Class1 left, int right) => throw new NotImplementedException();
+
+                    public static Class1 operator ^(Class1 left, Class1 right) => throw new NotImplementedException();
+
+                    public static bool operator ==(Class1 left, Class1 right) => throw new NotImplementedException();
+
+                    public static bool operator !=(Class1 left, Class1 right) => throw new NotImplementedException();
+
+                    public static bool operator <(Class1 left, Class1 right) => throw new NotImplementedException();
+
+                    public static bool operator >(Class1 left, Class1 right) => throw new NotImplementedException();
+
+                    public static bool operator <=(Class1 left, Class1 right) => throw new NotImplementedException();
+
+                    public static bool operator >=(Class1 left, Class1 right) => throw new NotImplementedException();
+
+                    public static implicit operator string(Class1 left) => throw new NotImplementedException();
+
+                    public static explicit operator int(Class1 left) => throw new NotImplementedException();
+                }
+            ";
+
+            using var assembly = Compile(cs);
+
+            var class1 = assembly.MainModule.Types.Single(x => x.Name == "Class1");
+            var method = class1.Methods.Single(p => p.Name == methodName);
+                
+            // ACT
+            var actual = CSharpDefinitionFormatter.GetDefinition(method);
+
+            // ASSERT
+            Assert.Equal(expected, actual);
+        }
+
+
+        [Theory]
+        [InlineData("public void Method1();")]
+        [InlineData("public string Method2();")]
+        [InlineData("public string Method3(string param1, Stream param2);")]
+        [InlineData("public static string Method4(string param1, Stream param2);")]
+        [InlineData("public static string Method5<TParam>(TParam parameter);")]
+        public void GetDefinition_returns_the_expected_definition_for_methods(string expected)
+        {
+            // ARRANGE
+            var cs = @$"
+                using System;
+                using System.IO;
+                using System.Runtime.InteropServices;
+               
+                public class Class1
+                {{
+                    {expected.Trim(';')} => throw new NotImplementedException();
+                }}
+            ";
+
+            using var assembly = Compile(cs);
+
+            var class1 = assembly.MainModule.Types.Single(x => x.Name == "Class1");
+            var method = class1.Methods.Single(m => !m.IsConstructor);
+
+            // ACT
+            var actual = CSharpDefinitionFormatter.GetDefinition(method);
+
+            // ASSERT
+            Assert.Equal(expected, actual);
+        }
+
+        [Theory]
+        [InlineData("[Obsolete]\r\npublic void Method6();")]
+        [InlineData("[Obsolete(\"Use another method\")]\r\npublic void Method7();")]
+        [InlineData("[Test1(1, Property1 = \"Value\")]\r\npublic void Method8();")]
+        [InlineData("[Test2(TestEnum1.Value1 | TestEnum1.Value2)]\r\npublic void Method9();")]
+        [InlineData("[Test3(BindingFlags.NonPublic | BindingFlags.CreateInstance)]\r\npublic void Method10();")]
+        [InlineData("[Test4(TestEnum2.Value2)]\r\npublic void Method11();")]
+        public void GetDefinition_returns_the_expected_definition_for_methods_with_attributes(string expected)
+        {
+            // ARRANGE
+            var cs = @$"
+                using System;
+                using System.Reflection;
+
+                public class Test1Attribute : Attribute
+                {{
+	                public string Property1 {{ get; set; }}
+
+	                public Test1Attribute(int value)
+	                {{ }}
+                }}
+
+                public class Test2Attribute : Attribute
+                {{
+	                public Test2Attribute(TestEnum1 value)
+	                {{ }}
+                }}
+
+                public class Test3Attribute : Attribute
+                {{
+	                public Test3Attribute(BindingFlags value)
+	                {{ }}
+                }}
+
+
+                public class Test4Attribute : Attribute
+                {{
+	                public Test4Attribute(TestEnum2 value)
+	                {{ }}
+                }}
+
+                [Flags]
+                public enum TestEnum1 : short
+                {{
+	                Value1 = 0x01,
+	                Value2 = 0x01 << 1,
+	                Value3 = 0x01 << 2
+                }}
+
+                public enum TestEnum2
+                {{
+	                Value1 = 1,
+	                Value2 = 2,
+	                Value3 = 3,
+                }}
+
+
+                public class Class1
+                {{
+                    {expected.Trim(';')} => throw new NotImplementedException();
+                }}
+            ";
+
+            using var assembly = Compile(cs);
+
+            var class1 = assembly.MainModule.Types.Single(x => x.Name == "Class1");
+            var method = class1.Methods.Single(m => !m.IsConstructor);
+
+            // ACT
+            var actual = CSharpDefinitionFormatter.GetDefinition(method);
+
+            // ASSERT
+            Assert.Equal(expected, actual);
+        }
+
+        [Theory]
+        [InlineData("public void Method22([Test1]string parameter1);")]
+        [InlineData("public void Method23([Test2(TestEnum1.Value2)][Test1]string parameter1);")]
+        public void GetDefinition_returns_the_expected_definition_for_methods_with_parameter_attributes(string expected)
+        {
+            // ARRANGE
+            var cs = @$"
+                using System;               
+
+                public class Test1Attribute : Attribute
+                {{
+                }}
+
+                public class Test2Attribute : Attribute
+                {{
+	                public Test2Attribute(TestEnum1 value)
+	                {{ }}
+                }}
+
+                [Flags]
+                public enum TestEnum1 : short
+                {{
+	                Value1 = 0x01,
+	                Value2 = 0x01 << 1,
+	                Value3 = 0x01 << 2
+                }}
+
+                public class Class1
+                {{
+                    {expected.Trim(';')} => throw new NotImplementedException();
+                }}
+            ";
+
+            using var assembly = Compile(cs);
+
+            var class1 = assembly.MainModule.Types.Single(x => x.Name == "Class1");
+            var method = class1.Methods.Single(m => !m.IsConstructor);
+
+            // ACT
+            var actual = CSharpDefinitionFormatter.GetDefinition(method);
+
+            // ASSERT
+            Assert.Equal(expected, actual);
+        }
+
+        [Theory]
+        [InlineData("public void MethodName(ref int value);")]
+        [InlineData("public void MethodName(out string value);")]
+        [InlineData("public void MethodName(object parameter1, out string value);")]
+        [InlineData("public void MethodName(out string[] value);")]
+        [InlineData("public void MethodName(in string value);")]        
+        public void GetDefinition_returns_the_expected_definition_for_methods_with_ref_parameters(string expected)
+        {
+            // ARRANGE
+            var cs = $@"
+                using System;
+              
+                public class Class1
+                {{
+                    {expected.Trim(';')} => throw new NotImplementedException();
+                }}
+
+            ";
+
+            using var assembly = Compile(cs);
+
+            var class1 = assembly.MainModule.Types.Single(x => x.Name == "Class1");
+            var method = class1.Methods.Single(m => !m.IsConstructor);
+
+            // ACT
+            var actual = CSharpDefinitionFormatter.GetDefinition(method);
+
+            // ASSERT
+            Assert.Equal(expected, actual);
+        }
+
+        [Theory]
+        [InlineData("public void Method(string stringParameter = \"default\");")]
+        [InlineData("public void Method(string stringParameter = null, int intParameter = 23);")]
+        [InlineData("public void Method(Enum1 parameter = Enum1.Value1);")]
+        [InlineData("public void Method([Optional]string stringParameter);")]      
+        public void GetDefinition_returns_the_expected_definition_for_methods_with_optional_parameters(string expected)
+        {
+            // ARRANGE
+            var cs = @$"
+                using System;
+                using System.Runtime.InteropServices;
+               
+                public enum Enum1
+                {{
+                    Value1 = 1,
+                    Value2 = 2,
+                    Value3 = 3,
+                }}
+
+                public class Class1
+                {{
+                    {expected.Trim(';')} => throw new NotImplementedException();
+                }}
+            ";
+
+            using var assembly = Compile(cs);
+
+            var class1 = assembly.MainModule.Types.Single(x => x.Name == "Class1");
+            var method = class1.Methods.Single(m => !m.IsConstructor);
+
+            // ACT
+            var actual = CSharpDefinitionFormatter.GetDefinition(method);
+
+            // ASSERT
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void GetDefinition_returns_the_expected_definition_for_methods_using_params()
+        {
+            // ARRANGE
+            var cs = @"
+                using System;
+              
+                public class Class1
+                {                   
+                    public void Method1(params string[] parameters) => throw new NotImplementedException();
+                }
+            ";
+
+            using var assembly = Compile(cs);
+
+            var class1 = assembly.MainModule.Types.Single(x => x.Name == "Class1");
+            var method1 = class1.Methods.Single(p => p.Name == "Method1");
+
+            // ACT / ASSERT
+            Assert.Equal("public void Method1(params string[] parameters);", CSharpDefinitionFormatter.GetDefinition(method1));
+        }
     }
 }
