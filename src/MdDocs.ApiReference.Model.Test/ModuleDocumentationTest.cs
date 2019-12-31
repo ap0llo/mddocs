@@ -37,8 +37,6 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
                 typeof(TestStruct_Attributes),
                 typeof(TestInterface_Attributes),
                 typeof(TestEnum_Attributes),
-                typeof(TestClass_Obsolete),
-                typeof(TestClass_Obsolete2),
                 #pragma warning restore CS0618 // Type or member is obsolete
                 #pragma warning restore CS0612 // Type or member is obsolete
                 typeof(TestAttribute),

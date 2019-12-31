@@ -225,11 +225,6 @@
             </summary>
             <param name="parameter"></param>
         </member>
-        <member name="T:Grynwald.MdDocs.ApiReference.Test.TestData.TestClass_Obsolete">
-            <summary>
-            Test class for testing is obsolete attributes are processed correctly
-            </summary>
-        </member>
         <member name="T:Grynwald.MdDocs.ApiReference.Test.TestData.TestClass_Operators">
             <summary>
             Test class for operators

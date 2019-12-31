@@ -1,33 +1,65 @@
-﻿using System;
-using Grynwald.MdDocs.ApiReference.Model;
-using Grynwald.MdDocs.ApiReference.Test.TestData;
+﻿using System.Linq;
 using Xunit;
 
-#pragma warning disable CS0618 // Type or member is obsolete
-#pragma warning disable CS0612 // Type or member is obsolete
-
-namespace Grynwald.MdDocs.ApiReference.Test.Model
+namespace Grynwald.MdDocs.ApiReference.Model.Test
 {
-    public class CustomAttributeProviderExtensionsTest : TestBase
+    public class CustomAttributeProviderExtensionsTest : DynamicCompilationTestBase
     {
-        [Theory]
-        [InlineData(typeof(TestClass_Obsolete), true, "This type is obsolete")]
-        [InlineData(typeof(TestClass_Obsolete2), true, null)]
-        [InlineData(typeof(TestClass_Type), false, null)]
-        public void IsObsolete_returns_the_expected_value(Type type, bool expectedIsObsolete, string expectedMessage)
+        [Fact]
+        public void IsObsolete_returns_the_expected_value()
         {
             // ARRANGE
-            var typeDefinition = GetTypeDefinition(type);
+            var cs = @"
+                using System;
 
-            // ACT
-            var actualIsObsolete = typeDefinition.IsObsolete(out var actualMessage);
+                [Obsolete(""This type is obsolete"")]  
+                public class Class1
+                { }
+                
+                [Obsolete]  
+                public class Class2
+                { }
 
-            // ASSERT
-            Assert.Equal(expectedIsObsolete, actualIsObsolete);
-            Assert.Equal(expectedMessage, actualMessage);
+                public class Class3
+                {
+                }           
+            ";
+
+            using var assembly = Compile(cs);
+
+
+            var class1 = assembly.MainModule.Types.Single(x => x.Name == "Class1");
+            var class2 = assembly.MainModule.Types.Single(x => x.Name == "Class2");
+            var class3 = assembly.MainModule.Types.Single(x => x.Name == "Class3");
+
+            // obsolete attribute with message
+            {
+                // ACT
+                var actualIsObsolete = class1.IsObsolete(out var actualMessage);
+
+                // ASSERT
+                Assert.True(actualIsObsolete);
+                Assert.Equal("This type is obsolete", actualMessage);
+            }
+            // obsolete attribute without message
+            {
+                // ACT
+                var actualIsObsolete = class2.IsObsolete(out var actualMessage);
+
+                // ASSERT
+                Assert.True(actualIsObsolete);
+                Assert.Null(actualMessage);
+            }
+            // No obsolete attribute
+            {
+                // ACT
+                var actualIsObsolete = class3.IsObsolete(out var actualMessage);
+
+                // ASSERT
+                Assert.False(actualIsObsolete);
+                Assert.Null(actualMessage);
+            }
         }
     }
 }
 
-#pragma warning restore CS0612 // Type or member is obsolete
-#pragma warning restore CS0618 // Type or member is obsolete
