@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Linq;
-using Grynwald.MdDocs.ApiReference.Model;
 using Grynwald.MdDocs.ApiReference.Model.XmlDocs;
-using Grynwald.MdDocs.ApiReference.Test.TestData;
+using Microsoft.Extensions.Logging.Abstractions;
 using Xunit;
 
-namespace Grynwald.MdDocs.ApiReference.Test.Model
+namespace Grynwald.MdDocs.ApiReference.Model.Test
 {
     public class OperatorDocumentationTest : MemberDocumentationTest
     {
@@ -39,13 +38,79 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         public void Kind_returns_the_expected_value(string methodName, OperatorKind expectedKind)
         {
             // ARRANGE
-            var methodDefinition = GetTypeDefinition(typeof(TestClass_Operators))
+            var cs = @"
+                using System;
+
+                public class Class1
+                {
+                    public static Class1 operator +(Class1 other) => throw new NotImplementedException();
+
+                    public static Class1 operator +(Class1 left, Class1 right) => throw new NotImplementedException();
+
+                    public static Class1 operator -(Class1 other) => throw new NotImplementedException();
+
+                    public static Class1 operator -(Class1 left, Class1 right) => throw new NotImplementedException();
+
+                    public static Class1 operator *(Class1 left, Class1 right) => throw new NotImplementedException();
+
+                    public static Class1 operator /(Class1 left, Class1 right) => throw new NotImplementedException();
+
+                    public static Class1 operator %(Class1 left, Class1 right) => throw new NotImplementedException();
+
+                    public static Class1 operator &(Class1 left, Class1 right) => throw new NotImplementedException();
+
+                    public static Class1 operator |(Class1 left, Class1 right) => throw new NotImplementedException();
+
+                    public static Class1 operator !(Class1 left) => throw new NotImplementedException();
+
+                    public static Class1 operator ~(Class1 left) => throw new NotImplementedException();
+
+                    public static Class1 operator ++(Class1 left) => throw new NotImplementedException();
+
+                    public static Class1 operator --(Class1 left) => throw new NotImplementedException();
+
+                    public static bool operator true(Class1 left) => throw new NotImplementedException();
+
+                    public static bool operator false(Class1 left) => throw new NotImplementedException();
+
+                    public static Class1 operator <<(Class1 left, int right) => throw new NotImplementedException();
+
+                    public static Class1 operator >>(Class1 left, int right) => throw new NotImplementedException();
+
+                    public static Class1 operator ^(Class1 left, Class1 right) => throw new NotImplementedException();
+
+                    public static bool operator ==(Class1 left, Class1 right) => throw new NotImplementedException();
+
+                    public static bool operator !=(Class1 left, Class1 right) => throw new NotImplementedException();
+
+                    public static bool operator <(Class1 left, Class1 right) => throw new NotImplementedException();
+
+                    public static bool operator >(Class1 left, Class1 right) => throw new NotImplementedException();
+
+                    public static bool operator <=(Class1 left, Class1 right) => throw new NotImplementedException();
+
+                    public static bool operator >=(Class1 left, Class1 right) => throw new NotImplementedException();
+
+                    public static implicit operator string(Class1 left) => throw new NotImplementedException();
+
+                    public static explicit operator int(Class1 left) => throw new NotImplementedException();
+                }
+            ";
+
+            using var assembly = Compile(cs);
+
+            var methodDefinition = assembly.MainModule
+                .Types
+                .Single(x => x.Name == "Class1")
                 .Methods
                 .Single(m => m.Name == methodName);
 
+            using var assemblyDocumentaton = new AssemblyDocumentation(assembly, NullXmlDocsProvider.Instance, NullLogger.Instance);
+            var typeDocumentation = assemblyDocumentaton.MainModuleDocumentation.Types.Single();
+
             // ACT
             var operatorDocumentation = new OperatorDocumentation(
-                GetTypeDocumentation(typeof(TestClass_Operators)),
+                typeDocumentation,
                 new[] { methodDefinition },
                 NullXmlDocsProvider.Instance);
 
@@ -57,14 +122,31 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         public void Constructor_throw_ArgumentException_if_specified_method_is_not_an_operator_overload()
         {
             // ARRANGE
-            var method = GetTypeDefinition(typeof(TestClass_Methods))
+            var cs = @"
+                using System;
+
+                public class Class1
+                {
+                    public static Class1 Method1(Class1 other) => throw new NotImplementedException();
+
+                }
+            ";
+
+            using var assembly = Compile(cs);
+
+            var methodDefinition = assembly.MainModule
+                .Types
+                .Single(x => x.Name == "Class1")
                 .Methods
-                .Single(x => x.Name == nameof(TestClass_Methods.TestMethod1));
+                .Single(m => m.Name == "Method1");
+
+            using var assemblyDocumentaton = new AssemblyDocumentation(assembly, NullXmlDocsProvider.Instance, NullLogger.Instance);
+            var typeDocumentation = assemblyDocumentaton.MainModuleDocumentation.Types.Single();
 
             // ACT / ASSERT
             Assert.Throws<ArgumentException>(() => new OperatorDocumentation(
-                GetTypeDocumentation(typeof(TestClass_Methods)),
-                new[] { method },
+                typeDocumentation,
+                new[] { methodDefinition },
                 NullXmlDocsProvider.Instance)
             );
         }
@@ -73,22 +155,45 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         public void Constructor_throw_ArgumentException_if_overloads_of_different_operators_are_passed_in()
         {
             // ARRANGE
-            var methods = GetTypeDefinition(typeof(TestClass_Operators))
+            var cs = @"
+                using System;
+
+                public class Class1
+                {
+                    public static Class1 operator +(Class1 other) => throw new NotImplementedException();
+
+                    public static Class1 operator +(Class1 left, Class1 right) => throw new NotImplementedException();
+
+                    public static Class1 operator -(Class1 other) => throw new NotImplementedException();
+
+                    public static Class1 operator -(Class1 left, Class1 right) => throw new NotImplementedException();
+
+                }
+            ";
+
+            using var assembly = Compile(cs);
+
+            var methods = assembly.MainModule
+                .Types
+                .Single(x => x.Name == "Class1")
                 .Methods
                 .Where(x => x.GetOperatorKind() == OperatorKind.Subtraction || x.GetOperatorKind() == OperatorKind.Addition);
 
+            using var assemblyDocumentaton = new AssemblyDocumentation(assembly, NullXmlDocsProvider.Instance, NullLogger.Instance);
+            var typeDocumentation = assemblyDocumentaton.MainModuleDocumentation.Types.Single();
+
             // ACT / ASSERT
             Assert.Throws<ArgumentException>(() => new OperatorDocumentation(
-                GetTypeDocumentation(typeof(TestClass_Operators)),
+                typeDocumentation,
                 methods,
                 NullXmlDocsProvider.Instance)
             );
         }
 
 
-        protected override MemberDocumentation GetMemberDocumentationInstance()
+        protected override MemberDocumentation GetMemberDocumentationInstance(TypeDocumentation typeDocumentation)
         {
-            return GetTypeDocumentation(typeof(TestClass_Operators)).Operators.First();
+            return typeDocumentation.Operators.First();
         }
     }
 }
