@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using Grynwald.Utilities.Collections;
@@ -11,6 +12,17 @@ namespace Grynwald.MdDocs.ApiReference.Model.Test
 {
     public abstract class DynamicCompilationTestBase
     {
+        private static Lazy<MetadataReference[]> s_MetadataReferences = new Lazy<MetadataReference[]>(
+            () => new MetadataReference[]
+            {
+                MetadataReference.CreateFromFile(Assembly.Load("netstandard").Location),
+                MetadataReference.CreateFromFile(Assembly.Load("System.Runtime").Location),
+                MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
+            });
+
+        
+
+
         protected AssemblyDefinition Compile(string sourceCode)
         {
             var compilation = GetCompilation(sourceCode);
@@ -41,41 +53,10 @@ namespace Grynwald.MdDocs.ApiReference.Model.Test
             var compilation = CSharpCompilation.Create(
               assemblyName,
               new[] { syntaxTree },
-              GetMetadataReferences(),
+              s_MetadataReferences.Value,
               new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
 
-            AssertNoCompilationErrors(compilation);
-
             return compilation;
-        }
-
-
-        private static MetadataReference[] GetMetadataReferences()
-        {
-            return new MetadataReference[]
-            {
-                MetadataReference.CreateFromFile(Assembly.Load("netstandard").Location),
-                MetadataReference.CreateFromFile(Assembly.Load("System.Runtime").Location),
-                MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
-            };
-        }
-
-        private void AssertNoCompilationErrors(Compilation compilation)
-        {
-            var errors = compilation.GetDiagnostics()
-                .Where(d => d.Severity >= DiagnosticSeverity.Error || d.IsWarningAsError)
-                .ToArray();
-
-            if (errors.Length > 0)
-            {
-                throw new XunitException(
-                    "Compilation contains errors:\r\n" +
-                    errors
-                        .Select(d => d.GetMessage())
-                        .Select(x => "  " + x)
-                        .JoinToString("\r\n")
-                );
-            }
         }
     }
 }
