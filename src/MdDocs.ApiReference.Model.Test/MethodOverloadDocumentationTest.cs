@@ -1,7 +1,5 @@
 ﻿using System.Linq;
-using Grynwald.MdDocs.ApiReference.Model;
 using Grynwald.MdDocs.ApiReference.Model.XmlDocs;
-using Grynwald.MdDocs.ApiReference.Test.TestData;
 using Microsoft.Extensions.Logging.Abstractions;
 using Xunit;
 

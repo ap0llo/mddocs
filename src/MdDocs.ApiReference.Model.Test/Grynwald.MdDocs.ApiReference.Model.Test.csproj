@@ -16,7 +16,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MdDocs.ApiReference.Model\Grynwald.MdDocs.ApiReference.Model.csproj" />
-    <ProjectReference Include="..\MdDocs.ApiReference.Test.TestData\Grynwald.MdDocs.ApiReference.Test.TestData.csproj" />
   </ItemGroup>
 
 </Project>
