@@ -1,128 +1,156 @@
-﻿using System.Linq;
-using Grynwald.MdDocs.ApiReference.Model;
-using Grynwald.MdDocs.ApiReference.Test.TestData;
+﻿using Grynwald.MdDocs.ApiReference.Model.XmlDocs;
+using Microsoft.Extensions.Logging.Abstractions;
+using Mono.Cecil;
 using Xunit;
 
-namespace Grynwald.MdDocs.ApiReference.Test.Model
+namespace Grynwald.MdDocs.ApiReference.Model.Test
 {
-    public class ModuleDocumentationTest : TestBase
+    public class ModuleDocumentationTest : DynamicCompilationTestBase
     {
+        private AssemblyDocumentation GetAssemblyDocumentation(AssemblyDefinition assemblyDefinition)
+        {
+            return new AssemblyDocumentation(assemblyDefinition, NullXmlDocsProvider.Instance, NullLogger.Instance);
+        }
+
+
         [Fact]
         public void Types_includes_expected_types()
         {
-            //ARRANGE
-            var expectedTypes = (new[]
+            // ARRANGE
+            var cs = @"
+	            using System;
+
+	            public class Class1
+	            { }
+
+                public interface Interface1
+                { }
+
+                public enum Enum1
+                {
+                    Value1,
+                    Value2
+                }
+
+                public struct Struct1
+	            { }
+
+                public class Class2
+    	        {
+                    public class NestedClass1
+                    { }
+
+                    public class NestedClass2
+                    {
+                        public class NestedClass3
+                        { }
+                    }
+                }
+
+            ";
+
+            using var assembly = Compile(cs);
+            using var assemblyDocumentation = GetAssemblyDocumentation(assembly);
+
+            var sut = assemblyDocumentation.MainModuleDocumentation;
+
+            var expectedTypes = new[]
             {
-                typeof(TestClass_Constructors),
-                typeof(TestClass_Fields),
-                typeof(TestClass_Events),
-                typeof(TestClass_GenericType<>),
-                typeof(TestClass_Methods),
-                typeof(TestClass_Operators),
-                typeof(TestClass_Properties),
-                typeof(TestStruct_Properties),
-                typeof(TestStruct_Constructors),
-                typeof(TestInterface_Properties),
-                typeof(TestClass_Type),
-                typeof(TestStruct_Type),
-                typeof(TestInterface_Type),
-                typeof(TestEnum_Type),
-                typeof(TestClass_MethodOverloads),
-                typeof(TestInterface_Events),
-                typeof(TestClass_MultipleOperatorOverloads),
-                #pragma warning disable CS0612 // Type or member is obsolete
-                #pragma warning disable CS0618 // Type or member is obsolete
-                typeof(TestClass_Attributes),
-                typeof(TestClass_Attributes_ExtensionMethods),
-                typeof(TestStruct_Attributes),
-                typeof(TestInterface_Attributes),
-                typeof(TestEnum_Attributes),
-                #pragma warning restore CS0618 // Type or member is obsolete
-                #pragma warning restore CS0612 // Type or member is obsolete
-                typeof(TestAttribute),
-                typeof(TestClass_InterfaceImplementation),
-                typeof(TestStruct_InterfaceImplementation),
-                typeof(TestInterface_Inheritance),
-                typeof(TestClass_XmlDocs<,>),
-                typeof(TestClass_NoDocumentation),
-                typeof(TestClass_RefParameters),
-                typeof(TestClass_NestedTypes),
-                typeof(TestClass_NestedTypes.NestedClass1),
-                typeof(TestClass_NestedTypes.NestedClass1.NestedClass2),
-                typeof(TestClass_NestedTypes.NestedInterface1),
-                typeof(TestClass_NestedTypes.NestedClass4<>),
-                typeof(TestClass_NestedTypes<>),
-                typeof(TestClass_NestedTypes<>.NestedClass1),
-                typeof(TestClass_NestedTypes<>.NestedClass1.NestedClass2<>),
-                typeof(TestClass_Attributes_Internal)
-            })
-            .Distinct()
-            .Select(GetTypeDefinition)
-            .ToArray();
+                new SimpleTypeId(NamespaceId.GlobalNamespace, "Class1"),
+                new SimpleTypeId(NamespaceId.GlobalNamespace, "Interface1"),
+                new SimpleTypeId(NamespaceId.GlobalNamespace, "Enum1"),
+                new SimpleTypeId(NamespaceId.GlobalNamespace, "Struct1"),
+                new SimpleTypeId(NamespaceId.GlobalNamespace, "Class2"),
+                new SimpleTypeId(new SimpleTypeId(NamespaceId.GlobalNamespace, "Class2"), "NestedClass1"),
+                new SimpleTypeId(new SimpleTypeId(NamespaceId.GlobalNamespace, "Class2"), "NestedClass2"),
+                new SimpleTypeId(new SimpleTypeId(new SimpleTypeId(NamespaceId.GlobalNamespace, "Class2"), "NestedClass2"), "NestedClass3")
+            };
 
             // ACT
-            var sut = m_AssemblyDocumentation.Value.MainModuleDocumentation;
             var actualTypes = sut.Types;
 
             // ASSERT
             Assert.Equal(expectedTypes.Length, actualTypes.Count);
             Assert.All(
                 expectedTypes,
-                expectedType => Assert.Contains(actualTypes, x => x.Definition.Equals(expectedType))
+                expectedType => Assert.Contains(actualTypes, x => x.TypeId.Equals(expectedType))
             );
         }
 
         [Fact]
         public void Types_does_not_include_internal_types()
         {
-            //ARRANGE
-            var internalTypes = new[]
-            {
-                typeof(TestClass_InternalType)
-            }
-            .Select(GetTypeDefinition)
-            .ToArray();
+            // ARRANGE
+            var cs = @"
+	            using System;
 
-            // ACT
-            var sut = m_AssemblyDocumentation.Value.MainModuleDocumentation;
-            var actualTypes = sut.Types;
+	            public class Class1
+	            { }
 
-            // ASSERT            
-            Assert.All(
-                internalTypes,
-                internalType => Assert.DoesNotContain(actualTypes, x => x.Definition.Equals(internalType))
-            );
+                internal class Class2
+                { }
+       
+            ";
+
+            using var assembly = Compile(cs);
+            using var assemblyDocumentation = GetAssemblyDocumentation(assembly);
+
+            var sut = assemblyDocumentation.MainModuleDocumentation;
+
+            // ACT / ASSERT          
+            Assert.DoesNotContain(sut.Types, t => t.TypeId.Name == "Class2");
         }
-
 
         [Fact]
         public void Types_does_not_include_non_public_nested_types()
         {
-            //ARRANGE
-            var internalNestedTypes = new[]
-            {
-                typeof(TestClass_NestedTypes.NestedClass3)
-            }
-            .Select(GetTypeDefinition)
-            .ToArray();
+            // ARRANGE
+            var cs = @"
+	            using System;
 
-            // ACT
-            var sut = m_AssemblyDocumentation.Value.MainModuleDocumentation;
-            var actualTypes = sut.Types;
+	            public class Class1
+	            {
+                    internal class NestedClass1
+                    { }
 
-            // ASSERT            
-            Assert.All(
-                internalNestedTypes,
-                internalType => Assert.DoesNotContain(actualTypes, x => x.Definition.Equals(internalType))
-            );
+                    class NestedClass2
+                    { }
+                }
+            ";
+
+            using var assembly = Compile(cs);
+            using var assemblyDocumentation = GetAssemblyDocumentation(assembly);
+
+            var sut = assemblyDocumentation.MainModuleDocumentation;
+
+
+            // ACT / ASSERT          
+            Assert.DoesNotContain(sut.Types, t => t.TypeId.Name == "NestedClass1");
+            Assert.DoesNotContain(sut.Types, t => t.TypeId.Name == "NestedClass2");
         }
 
         [Fact]
         public void TryGetDocumentation_returns_null_for_an_undocumented_type()
         {
             // ARRANGE
-            var typeId = GetTypeId(typeof(TestClass_InternalType));
-            var sut = m_AssemblyDocumentation.Value.MainModuleDocumentation;
+            var cs = @"
+	            using System;
+
+	            public class Class1
+	            { }
+
+                internal class Class2
+                { }
+       
+            ";
+
+            using var assembly = Compile(cs);
+            using var assemblyDocumentation = GetAssemblyDocumentation(assembly);
+
+            var sut = assemblyDocumentation.MainModuleDocumentation;
+
+
+            var typeId = new SimpleTypeId(NamespaceId.GlobalNamespace, "Class2");
 
             // ACT
             var documentation = sut.TryGetDocumentation(typeId);
@@ -135,8 +163,24 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         public void TryGetDocumenation_returns_expected_documentation_item_for_an_documented_type()
         {
             // ARRANGE
-            var typeId = GetTypeId(typeof(TestClass_Type));
-            var sut = m_AssemblyDocumentation.Value.MainModuleDocumentation;
+            var cs = @"
+	            using System;
+
+	            public class Class1
+	            { }
+
+                public class Class2
+                { }
+       
+            ";
+
+            using var assembly = Compile(cs);
+            using var assemblyDocumentation = GetAssemblyDocumentation(assembly);
+
+            var sut = assemblyDocumentation.MainModuleDocumentation;
+
+
+            var typeId = new SimpleTypeId(NamespaceId.GlobalNamespace, "Class2");
 
             // ACT
             var documentation = sut.TryGetDocumentation(typeId);
