@@ -1,41 +1,37 @@
 ﻿using System.Linq;
 using Grynwald.MdDocs.CommandLineHelp.Model;
-using Grynwald.MdDocs.CommandLineHelp.TestData;
 using Microsoft.Extensions.Logging.Abstractions;
-using Mono.Cecil;
 using Xunit;
 
 namespace Grynwald.MdDocs.CommandLineHelp.Test.Model
 {
-    public class ValueDocumentationTest
+    public class ValueDocumentationTest : CommandLineDynamicCompilationTestBase
     {
-        private ValueDocumentation LoadDocumentation(string propertyName)
-        {
-            var assemblyPath = typeof(Command4Options).Assembly.Location;
-            var assemblyDefinition = AssemblyDefinition.ReadAssembly(assemblyPath);
-
-            var typeDefinition = assemblyDefinition
-                .MainModule
-                .Types
-                .Single(t => t.FullName == typeof(Command4Options).FullName);
-
-            var propertyDefinition = typeDefinition
-                .Properties
-                .Single(p => p.Name == propertyName);
-
-            return ValueDocumentation.FromPropertyDefinition(propertyDefinition, NullLogger.Instance);
-        }
-
         [Theory]
-        [InlineData(nameof(Command4Options.Value1), 0, false, null, null, false, null)]
-        [InlineData(nameof(Command4Options.Value2), 1, false, "Value2 name", null, false, null)]
-        [InlineData(nameof(Command4Options.Value3), 2, false, null, "Value 3 Help text", false, null)]
-        [InlineData(nameof(Command4Options.Value4), 3, true, null, null, true, null)]
-        [InlineData(nameof(Command4Options.Value5), 4, false, null, null, false, "Value 5 Default")]
-        public void Value_has_the_expected_properties(string propertyName, int index, bool required, string name, string helpText, bool hidden, object defaultValue)
+        [InlineData(@"[Value(0)]", 0, false, null, null, false, null)]
+        [InlineData(@"[Value(1, MetaName = ""Value2 name"")]", 1, false, "Value2 name", null, false, null)]
+        [InlineData(@"[Value(2, HelpText = ""Value 3 Help text"")]", 2, false, null, "Value 3 Help text", false, null)]
+        [InlineData(@"[Value(3, Hidden = true, Required = true)]", 3, true, null, null, true, null)]
+        [InlineData(@"[Value(4, Default = ""Value 5 Default"")]", 4, false, null, null, false, "Value 5 Default")]
+        public void Value_has_the_expected_properties(string valueAttribute, int index, bool required, string name, string helpText, bool hidden, object defaultValue)
         {
-            var sut = LoadDocumentation(propertyName);
+            // ARRANGE
+            var cs = $@"
+                using CommandLine;
+             
+                public class Options
+                {{
+                    {valueAttribute}
+                    public string Option1Property {{ get; set; }}
+                }}
+            ";
 
+            using var assembly = Compile(cs);
+
+            // ACT            
+            var sut = ValueDocumentation.FromPropertyDefinition(assembly.MainModule.Types.Single(x => x.Name == "Options").Properties.Single(), NullLogger.Instance);
+
+            // ASSERT
             Assert.Equal(index, sut.Index);
             Assert.Equal(name, sut.Name);
             Assert.Equal(required, sut.Required);
