@@ -17,7 +17,7 @@ namespace Grynwald.MdDocs.TestHelpers
     /// </summary>
     public abstract class DynamicCompilationTestBase
     {
-        private static readonly Lazy<IReadOnlyList<MetadataReference>> s_MetadataReferences = new Lazy<IReadOnlyList<MetadataReference>>(() =>
+        protected static readonly Lazy<IReadOnlyList<MetadataReference>> s_DefaultMetadataReferences = new Lazy<IReadOnlyList<MetadataReference>>(() =>
         {
             var paths = new HashSet<string>()
             {
@@ -70,10 +70,13 @@ namespace Grynwald.MdDocs.TestHelpers
             var compilation = CSharpCompilation.Create(
               assemblyName,
               new[] { syntaxTree },
-              s_MetadataReferences.Value,
+              GetMetadataReferences(),
               new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
 
             return compilation;
         }
+
+
+        protected virtual IReadOnlyList<MetadataReference> GetMetadataReferences() => s_DefaultMetadataReferences.Value;
     }
 }

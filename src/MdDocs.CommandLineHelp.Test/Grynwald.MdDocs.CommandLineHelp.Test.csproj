@@ -19,6 +19,7 @@
     <ProjectReference Include="..\MdDocs.CommandLineHelp.TestData.SingleCommandApp\Grynwald.MdDocs.CommandLineHelp.TestData.SingleCommandApp.csproj" />
     <ProjectReference Include="..\MdDocs.CommandLineHelp.TestData\Grynwald.MdDocs.CommandLineHelp.TestData.csproj" />
     <ProjectReference Include="..\MdDocs.CommandLineHelp\Grynwald.MdDocs.CommandLineHelp.csproj" />
+    <ProjectReference Include="..\MdDocs.TestHelpers\Grynwald.MdDocs.TestHelpers.csproj" />
   </ItemGroup>
 
 </Project>
