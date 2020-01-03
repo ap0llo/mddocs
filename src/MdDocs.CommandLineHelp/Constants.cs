@@ -10,6 +10,8 @@ namespace Grynwald.MdDocs.CommandLineHelp
 
         public const string AssemblyTitleAttributeFullName = "System.Reflection.AssemblyTitleAttribute";
         public const string AssemblyInformationalVersionAttribute = "System.Reflection.AssemblyInformationalVersionAttribute";
+
+        public const string BooleanFullName = "System.Boolean";
     }
 }
 #pragma warning restore IDE1006 // Naming Styles

@@ -10,7 +10,7 @@ Generate API reference documentation for a .NET assembly.
 mddocs apireference --assembly|-a <VALUE>
                     [--markdown-preset <VALUE>]
                     --outdir|-o <VALUE>
-                    [--verbose|-v <VALUE>]
+                    [--verbose|-v]
 ```
 
 ## Parameters
@@ -68,13 +68,13 @@ ___
 
 Show more detailed log output.
 
-|                |                   |
-| -------------- | ----------------- |
-| Name:          | verbose           |
-| Short name:    | v                 |
-| Position:      | *Named parameter* |
-| Required:      | No                |
-| Default value: | *None*            |
+|                |                       |
+| -------------- | --------------------- |
+| Name:          | verbose               |
+| Short name:    | v                     |
+| Position:      | *Named parameter*     |
+| Required:      | No (Switch parameter) |
+| Default value: | `False`               |
 
 ___
 

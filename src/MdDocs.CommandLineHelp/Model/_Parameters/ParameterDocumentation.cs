@@ -15,7 +15,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
         /// <summary>
         /// Gets whether the parameter is required.
         /// </summary>
-        public bool Required { get; }
+        public virtual bool Required { get; }
 
         /// <summary>
         /// Gets the parameter's help text.
@@ -32,7 +32,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
         /// Gets the parameter's default value
         /// </summary>
         /// <value>The parameter's default value or <c>null</c> is no default parameter was specified.</value>
-        public object? Default { get; }
+        public virtual object? Default { get; }
 
         /// <summary>
         /// Gets the parameter's meta value (a description of the parameter value)
@@ -73,7 +73,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
         public abstract bool HasName { get; }
 
 
-        public ParameterDocumentation(bool required, string? helpText, bool hidden, object? @default, string? metaValue, IReadOnlyList<string>? acceptedValues)
+        protected ParameterDocumentation(bool required, string? helpText, bool hidden, object? @default, string? metaValue, IReadOnlyList<string>? acceptedValues)
         {
             Required = required;
             HelpText = helpText;

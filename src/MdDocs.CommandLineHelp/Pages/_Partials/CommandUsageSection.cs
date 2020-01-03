@@ -61,11 +61,19 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
         {
             stringBuilder
                 .AppendIf(!option.Required, "[")
-                .Apply(AppendParameterName, option)
-                .Append(" ")
-                .Append("<")
-                .Append(option.MetaValue ?? "VALUE")
-                .Append(">")
+                .Apply(AppendParameterName, option);
+
+            // omit value for switch parameters
+            if(!option.IsSwitchParameter)
+            {
+                stringBuilder
+                    .Append(" ")
+                    .Append("<")
+                    .Append(option.MetaValue ?? "VALUE")
+                    .Append(">");
+            }
+
+            stringBuilder
                 .AppendIf(!option.Required, "]")
                 .AppendLine();
         }

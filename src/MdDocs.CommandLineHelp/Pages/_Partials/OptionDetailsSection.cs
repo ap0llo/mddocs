@@ -58,9 +58,9 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
 
             table.Add(new MdTableRow("Position:", new MdEmphasisSpan("Named parameter")));
 
-            table.Add(new MdTableRow("Required:", m_Option.Required ? "Yes" : "No"));
-            
-            if(m_Option.HasMetaValue)
+            table.Add(new MdTableRow("Required:", (m_Option.Required ? "Yes" : "No") + (m_Option.IsSwitchParameter ? " (Switch parameter)" : "")));
+
+            if (m_Option.HasMetaValue)
             {
                 table.Add(new MdTableRow("Value:", m_Option.MetaValue));
             }

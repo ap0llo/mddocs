@@ -230,7 +230,27 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
             Approve(model, new TestCommandLinePageOptions() { IncludeVersion = false });
         }
 
+        [Fact]
+        public void GetDocument_returns_expected_document_for_switch_parameters()
+        {
+            var model = new CommandDocumentation(
+                application: new TestAppDocumentation(),
+                name: "CommandName",
+                options: new[]
+                {
+                    new OptionDocumentation(
+                        name: "option1",
+                        shortName: 'a',
+                        helpText: "Description of parameter 1",
+                        @default: false,
+                        required: false,
+                        isSwitchParameter : true),
+                });
 
+            Approve(model);
+        }
+
+      
         private void Approve(CommandDocumentation model, ICommandLinePageOptions? options = null)
         {
             var pathProvider = new DefaultCommandLineHelpPathProvider();

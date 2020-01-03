@@ -9,9 +9,9 @@ Generate command line help for .NET console application implemented using the 'C
 ```
 mddocs commandlinehelp --assembly|-a <VALUE>
                        [--markdown-preset <VALUE>]
-                       [--no-version <VALUE>]
+                       [--no-version]
                        --outdir|-o <VALUE>
-                       [--verbose|-v <VALUE>]
+                       [--verbose|-v]
 ```
 
 ## Parameters
@@ -56,12 +56,12 @@ ___
 
 Do not include the application version in the generated documentation
 
-|                |                   |
-| -------------- | ----------------- |
-| Name:          | no\-version       |
-| Position:      | *Named parameter* |
-| Required:      | No                |
-| Default value: | *None*            |
+|                |                       |
+| -------------- | --------------------- |
+| Name:          | no\-version           |
+| Position:      | *Named parameter*     |
+| Required:      | No (Switch parameter) |
+| Default value: | `False`               |
 
 ___
 
@@ -83,13 +83,13 @@ ___
 
 Show more detailed log output.
 
-|                |                   |
-| -------------- | ----------------- |
-| Name:          | verbose           |
-| Short name:    | v                 |
-| Position:      | *Named parameter* |
-| Required:      | No                |
-| Default value: | *None*            |
+|                |                       |
+| -------------- | --------------------- |
+| Name:          | verbose               |
+| Short name:    | v                     |
+| Position:      | *Named parameter*     |
+| Required:      | No (Switch parameter) |
+| Default value: | `False`               |
 
 ___
 

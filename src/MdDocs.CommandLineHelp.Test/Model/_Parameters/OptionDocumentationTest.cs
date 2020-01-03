@@ -104,5 +104,37 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Model
             Assert.NotNull(sut.Default);
             Assert.Equal("SomeOtherValue", sut.Default);
         }
+
+        [Theory]
+        [InlineData(@"[Option(""option1"")]")]
+        [InlineData(@"[Option(""option1"", Required = false)]")]
+        [InlineData(@"[Option(""option1"", Required = true)]")]
+        [InlineData(@"[Option(""option1"", Default = false)]")]
+        [InlineData(@"[Option(""option1"", Default = true)]")]
+        public void Boolean_options_are_treated_as_switch_parameters(string optionAttribute)
+        {
+            // ARRANGE
+            var cs = $@"
+                using CommandLine;
+             
+                public class Options
+                {{
+                    {optionAttribute}
+                    public bool Option1Property {{ get; set; }}
+                }}
+            ";
+
+            using var assembly = Compile(cs);
+
+            // ACT            
+            var option = OptionDocumentation.FromPropertyDefinition(assembly.MainModule.Types.Single(x => x.Name == "Options").Properties.Single(), NullLogger.Instance);
+
+            // ASSERT
+            Assert.True(option.IsSwitchParameter);
+            Assert.False(option.Required);  // 'Required' is always false for switch parameters (regardless of the actual 'Required' value specified )
+            var defaultValue = Assert.IsType<bool>(option.Default);
+            Assert.False(defaultValue);   // 'Default' is always false for switch parameters (regardless of the actual 'Default' value specified )
+        }
+
     }
 }

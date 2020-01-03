@@ -19,7 +19,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
         public override bool HasName => !String.IsNullOrEmpty(Name);
 
 
-        public ValueDocumentation(
+        internal ValueDocumentation(
             int index, bool required = false, string? name = null, string? helpText = null, bool hidden = false,
             object? @default = null, string? metaValue = null, IReadOnlyList<string>? acceptedValues = null)
             : base(required: required, helpText: helpText, hidden: hidden, @default: @default, metaValue: metaValue, acceptedValues: acceptedValues)
