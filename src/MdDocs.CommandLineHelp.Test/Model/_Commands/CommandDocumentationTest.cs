@@ -1,7 +1,5 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Grynwald.MdDocs.CommandLineHelp.Model;
-using Grynwald.MdDocs.CommandLineHelp.TestData;
 using Microsoft.Extensions.Logging.Abstractions;
 using Mono.Cecil;
 using Xunit;
@@ -14,8 +12,8 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Model
         {
             return CommandDocumentation.FromTypeDefinition(new MultiCommandApplicationDocumentation("test"), typeDefinition, NullLogger.Instance);
         }
-        
-        [Fact]        
+
+        [Fact]
         public void Options_returns_expected_number_of_items_01()
         {
             // ARRANGE
@@ -151,7 +149,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Model
                 Assert.False(command.Hidden);
             }
 
-            
+
         }
 
         [Fact]

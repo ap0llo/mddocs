@@ -1,8 +1,6 @@
 ﻿using System.Linq;
 using Grynwald.MdDocs.CommandLineHelp.Model;
-using Grynwald.MdDocs.CommandLineHelp.TestData;
 using Microsoft.Extensions.Logging.Abstractions;
-using Mono.Cecil;
 using Xunit;
 
 namespace Grynwald.MdDocs.CommandLineHelp.Test.Model
@@ -15,7 +13,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Model
         [InlineData(@"[Option('y', ""option3"", Required = true)]", "option3", 'y', true, false, null, null)]
         [InlineData(@"[Option(""option4"", HelpText = ""Option 4 Help text"", Hidden = true, Default = ""DefaultValue"")]", "option4", null, false, true, "Option 4 Help text", "DefaultValue")]
         public void Option_has_the_expected_properties(string optionAttribute, string name, char? shortName, bool required, bool hidden, string helpText, object defaultValue)
-        {            
+        {
             // ARRANGE
             var cs = $@"
                 using CommandLine;
