@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Grynwald.MdDocs.ApiReference.Model.XmlDocs;
+using Grynwald.MdDocs.TestHelpers;
 using Microsoft.Extensions.Logging.Abstractions;
 using Mono.Cecil;
 using Xunit;

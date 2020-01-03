@@ -10,8 +10,11 @@ using Microsoft.CodeAnalysis.CSharp;
 using Mono.Cecil;
 using Xunit.Sdk;
 
-namespace Grynwald.MdDocs.ApiReference.Model.Test
+namespace Grynwald.MdDocs.TestHelpers
 {
+    /// <summary>
+    /// Test base class providing helper methods to dynamically compile C# code to an assembly using Roslyn.
+    /// </summary>
     public abstract class DynamicCompilationTestBase
     {
         private static readonly Lazy<IReadOnlyList<MetadataReference>> s_MetadataReferences = new Lazy<IReadOnlyList<MetadataReference>>(() =>

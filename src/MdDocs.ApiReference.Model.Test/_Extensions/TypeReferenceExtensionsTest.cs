@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Grynwald.MdDocs.TestHelpers;
 using Mono.Cecil;
 using Xunit;
 
