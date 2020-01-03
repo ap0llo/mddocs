@@ -21,7 +21,7 @@ dotnet tool install --global Grynwald.MdDocs
 
 ## Usage
 
-See also: [Command Line Reference](docs/commandline/index.md)
+See also: [Command Line Reference](./commandline/index.md)
 
 ### API Reference
 
