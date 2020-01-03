@@ -1,34 +1,43 @@
 ﻿using System.Linq;
-using Grynwald.MdDocs.ApiReference.Model;
 using Grynwald.MdDocs.ApiReference.Model.XmlDocs;
-using Grynwald.MdDocs.ApiReference.Test.TestData;
+using Microsoft.Extensions.Logging.Abstractions;
 using Xunit;
 
-namespace Grynwald.MdDocs.ApiReference.Test.Model
+namespace Grynwald.MdDocs.ApiReference.Model.Test
 {
     public class MethodDocumentationTest : MemberDocumentationTest
     {
         [Fact]
         public void Name_returns_the_expected_value_for_generic_overloads()
         {
-            var methodName = "TestMethod1";
+            // ARRANGE
+            var cs = @"
+                public class Classs1
+                {
+                    public void Method1() { }
 
-            // get methods, use StartsWith() as generic overloads are suffixed with the number
-            // of type parameters
-            var methodOverloads = GetTypeDefinition(typeof(TestClass_MethodOverloads))
-                .Methods
-                .Where(x => x.Name.StartsWith(methodName));
+                    public void Method1(string foo) { }
 
-            var sut = new MethodDocumentation(GetTypeDocumentation(typeof(TestClass_MethodOverloads)), methodOverloads, NullXmlDocsProvider.Instance);
+                    public void Method1<T>(T foo) { }
+                }";
 
-            Assert.Equal(methodName, sut.Name);
+            using var assembly = Compile(cs);
+            using var assemblyDocumentation = new AssemblyDocumentation(assembly, NullXmlDocsProvider.Instance, NullLogger.Instance);
+
+            // ACT
+            var methods = assemblyDocumentation.MainModuleDocumentation
+                .Types
+                .Single()
+                .Methods;
+
+            // ASSERT
+            var method = Assert.Single(methods, m => m.Name == "Method1");
+            Assert.Equal(3, method.Overloads.Count);
         }
 
-
-
-        protected override MemberDocumentation GetMemberDocumentationInstance()
+        protected override MemberDocumentation GetMemberDocumentationInstance(TypeDocumentation typeDocumentation)
         {
-            return GetTypeDocumentation(typeof(TestClass_Methods)).Methods.First();
+            return typeDocumentation.Methods.First();
         }
     }
 }

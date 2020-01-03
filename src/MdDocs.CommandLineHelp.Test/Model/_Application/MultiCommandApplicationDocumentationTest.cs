@@ -1,63 +1,144 @@
 ﻿using System.Linq;
-using System.Reflection;
 using Grynwald.MdDocs.CommandLineHelp.Model;
-using Grynwald.MdDocs.CommandLineHelp.TestData;
-using Grynwald.MdDocs.CommandLineHelp.TestData.SingleCommandApp;
-using Grynwald.MdDocs.Common.Model;
 using Microsoft.Extensions.Logging.Abstractions;
 using Xunit;
 
 namespace Grynwald.MdDocs.CommandLineHelp.Test.Model
 {
-    public class MultiCommandApplicationDocumentationTest
+    public class MultiCommandApplicationDocumentationTest : CommandLineDynamicCompilationTestBase
     {
-        private MultiCommandApplicationDocumentation LoadDocumentation(Assembly? assembly = null)
-        {
-            assembly ??= typeof(Command1Options).Assembly;
-
-            using (var definition = AssemblyReader.ReadFile(assembly.Location, NullLogger.Instance))
-            {
-                return MultiCommandApplicationDocumentation.FromAssemblyDefinition(definition, NullLogger.Instance);
-            }
-        }
-
-
         [Fact]
         public void Commands_returns_expected_number_of_commands()
         {
-            var sut = LoadDocumentation();
-            Assert.Equal(4, sut.Commands.Count);
+            // ARRANGE
+            var cs = @"
+                using CommandLine;
+
+                [Verb(""command1"")]
+                public class Command1Options
+                { }
+
+                [Verb(""command2"")]
+                public class Command2Options
+                { }
+            ";
+
+            using var assembly = Compile(cs);
+
+            // ACT
+            var sut = MultiCommandApplicationDocumentation.FromAssemblyDefinition(assembly, NullLogger.Instance);
+
+            // ASSERT
+            Assert.Equal(2, sut.Commands.Count);
         }
 
         [Fact]
         public void Abstract_types_are_ignored()
         {
-            var sut = LoadDocumentation();
-            Assert.DoesNotContain(sut.Commands, c => c.Name == "command5");
+            // ARRANGE
+            var cs = @"
+                using CommandLine;
+
+                [Verb(""command1"")]
+                public class Command1Options
+                { }
+
+                [Verb(""command2"")]
+                public class Command2Options
+                { }
+
+                [Verb(""command3"")]
+                public abstract class Command3Options
+                { }
+            ";
+
+            using var assembly = Compile(cs);
+
+            // ACT
+            var sut = MultiCommandApplicationDocumentation.FromAssemblyDefinition(assembly, NullLogger.Instance);
+
+            // ASSERT
+            Assert.DoesNotContain(sut.Commands, c => c.Name == "command3");
         }
 
-        [Theory]
-        [InlineData("command1")]
-        [InlineData("command2")]
-        [InlineData("command3")]
-        public void Expected_command_exists(string name)
+        [Fact]
+        public void Expected_command_exists()
         {
-            var sut = LoadDocumentation();
-            Assert.Contains(sut.Commands, c => c.Name == name);
+            // ARRANGE
+            var cs = @"
+                using CommandLine;
+
+                [Verb(""command1"")]
+                public class Command1Options
+                { }
+
+                [Verb(""command2"")]
+                public class Command2Options
+                { }
+
+                [Verb(""command3"")]
+                public class Command3Options
+                { }
+            ";
+
+            using var assembly = Compile(cs);
+
+            // ACT
+            var sut = MultiCommandApplicationDocumentation.FromAssemblyDefinition(assembly, NullLogger.Instance);
+
+            // ASSERT
+            Assert.Equal(3, sut.Commands.Count);
+            Assert.Contains(sut.Commands, c => c.Name == "command1");
+            Assert.Contains(sut.Commands, c => c.Name == "command2");
+            Assert.Contains(sut.Commands, c => c.Name == "command3");
         }
 
         [Fact]
         public void Name_returns_expected_value()
         {
-            var sut = LoadDocumentation();
+            // ARRANGE
+            var cs = @"
+                using System.Reflection;
+                using CommandLine;
+
+                [assembly: AssemblyTitle(""TestDataAssemblyTitle"")]
+
+                [Verb(""command1"")]
+                public class Command1Options
+                { }
+            ";
+
+            using var assembly = Compile(cs);
+
+            // ACT
+            var sut = MultiCommandApplicationDocumentation.FromAssemblyDefinition(assembly, NullLogger.Instance);
+
+            // ASSERT
             Assert.Equal("TestDataAssemblyTitle", sut.Name);
         }
 
         [Fact]
         public void Usage_returns_expected_values()
         {
-            var sut = LoadDocumentation();
+            // ARRANGE
+            var cs = @"
+                using System.Reflection;
+                using CommandLine;
+                using CommandLine.Text;
 
+                [assembly: AssemblyUsage(""AssemblyUsage Line 1"", ""AssemblyUsage Line 2"")]
+
+                [Verb(""command1"")]
+                public class Command1Options
+                { }
+            ";
+
+            using var assembly = Compile(cs);
+
+            // ACT
+            var sut = MultiCommandApplicationDocumentation.FromAssemblyDefinition(assembly, NullLogger.Instance);
+
+            // ASSERT
             Assert.NotNull(sut.Usage);
             Assert.Equal(2, sut.Usage.Count);
             Assert.Equal("AssemblyUsage Line 1", sut.Usage.First());
@@ -67,8 +148,22 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Model
         [Fact]
         public void Usage_is_empty_for_assemblies_without_usage_attribute()
         {
-            var sut = LoadDocumentation(typeof(Options).Assembly);
+            // ARRANGE
+            var cs = @"
+                using System.Reflection;
+                using CommandLine;
 
+                [Verb(""command1"")]
+                public class Command1Options
+                { }
+            ";
+
+            using var assembly = Compile(cs);
+
+            // ACT
+            var sut = MultiCommandApplicationDocumentation.FromAssemblyDefinition(assembly, NullLogger.Instance);
+
+            // ASSERT
             Assert.NotNull(sut.Usage);
             Assert.Empty(sut.Usage);
         }

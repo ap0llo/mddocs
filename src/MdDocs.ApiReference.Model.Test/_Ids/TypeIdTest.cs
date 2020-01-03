@@ -1,34 +1,46 @@
 ﻿using System.Linq;
-using Grynwald.MdDocs.ApiReference.Model;
-using Grynwald.MdDocs.ApiReference.Test.TestData;
+using Grynwald.MdDocs.TestHelpers;
 using Xunit;
 
-namespace Grynwald.MdDocs.ApiReference.Test.Model
+namespace Grynwald.MdDocs.ApiReference.Model.Test
 {
-    public class TypeIdTest : TestBase
+    public class TypeIdTest : DynamicCompilationTestBase
     {
         [Theory]
-        [InlineData(nameof(TestClass_TypeIdDisplayName.Property1), "int")]
-        [InlineData(nameof(TestClass_TypeIdDisplayName.Property2), "byte")]
-        [InlineData(nameof(TestClass_TypeIdDisplayName.Property3), "sbyte")]
-        [InlineData(nameof(TestClass_TypeIdDisplayName.Property4), "char")]
-        [InlineData(nameof(TestClass_TypeIdDisplayName.Property5), "decimal")]
-        [InlineData(nameof(TestClass_TypeIdDisplayName.Property6), "double")]
-        [InlineData(nameof(TestClass_TypeIdDisplayName.Property7), "float")]
-        [InlineData(nameof(TestClass_TypeIdDisplayName.Property8), "bool")]
-        [InlineData(nameof(TestClass_TypeIdDisplayName.Property9), "uint")]
-        [InlineData(nameof(TestClass_TypeIdDisplayName.Property10), "long")]
-        [InlineData(nameof(TestClass_TypeIdDisplayName.Property11), "ulong")]
-        [InlineData(nameof(TestClass_TypeIdDisplayName.Property12), "object")]
-        [InlineData(nameof(TestClass_TypeIdDisplayName.Property13), "short")]
-        [InlineData(nameof(TestClass_TypeIdDisplayName.Property14), "ushort")]
-        [InlineData(nameof(TestClass_TypeIdDisplayName.Property15), "string")]
-        public void DisplayName_returns_the_CSharp_type_name_for_built_in_types(string propertyName, string expectedTypeName)
+        [InlineData("int")]
+        [InlineData("byte")]
+        [InlineData("sbyte")]
+        [InlineData("char")]
+        [InlineData("decimal")]
+        [InlineData("double")]
+        [InlineData("float")]
+        [InlineData("bool")]
+        [InlineData("uint")]
+        [InlineData("long")]
+        [InlineData("ulong")]
+        [InlineData("object")]
+        [InlineData("short")]
+        [InlineData("ushort")]
+        [InlineData("string")]
+        public void DisplayName_returns_the_CSharp_type_name_for_built_in_types(string expectedTypeName)
         {
             // ARRANGE
-            var typeReference = GetTypeDefinition(typeof(TestClass_TypeIdDisplayName))
+            var cs = $@"
+                namespace Namespace1.Namespace2
+                {{
+                    public class Class1
+                    {{
+                        public {expectedTypeName} Property1 {{ get; set; }}
+                    }}
+                }}
+            ";
+
+            using var assembly = Compile(cs);
+
+            var typeReference = assembly.MainModule.Types
+                .Single(x => x.Name == "Class1")
                 .Properties
-                .Single(p => p.Name == propertyName)
+                .Single()
                 .PropertyType;
 
             // ACT
@@ -39,14 +51,28 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         }
 
         [Theory]
-        [InlineData(nameof(TestClass_TypeIdDisplayName.Property17), "string[]")]
-        [InlineData(nameof(TestClass_TypeIdDisplayName.Property18), "Stream[]")]
-        public void DisplayName_returns_the_expected_type_name_for_array_types(string propertyName, string expectedTypeName)
+        [InlineData("string[]")]
+        [InlineData("Stream[]")]
+        public void DisplayName_returns_the_expected_type_name_for_array_types(string expectedTypeName)
         {
-            // ARRANGE
-            var typeReference = GetTypeDefinition(typeof(TestClass_TypeIdDisplayName))
+            var cs = $@"
+                using System.IO;
+
+                namespace Namespace1.Namespace2
+                {{
+                    public class Class1
+                    {{
+                        public {expectedTypeName} Property1 {{ get; set; }}
+                    }}
+                }}
+            ";
+
+            using var assembly = Compile(cs);
+
+            var typeReference = assembly.MainModule.Types
+                .Single(x => x.Name == "Class1")
                 .Properties
-                .Single(p => p.Name == propertyName)
+                .Single()
                 .PropertyType;
 
             // ACT
@@ -57,15 +83,30 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         }
 
         [Theory]
-        [InlineData(nameof(TestClass_TypeIdDisplayName.Property19), "IEnumerable<string>")]
-        [InlineData(nameof(TestClass_TypeIdDisplayName.Property20), "IEnumerable<Stream>")]
-        [InlineData(nameof(TestClass_TypeIdDisplayName.Property21), "Dictionary<string, Stream>")]
-        public void DisplayName_returns_the_expected_type_name_for_generic_types_with_type_arguments(string propertyName, string expectedTypeName)
+        [InlineData("IEnumerable<string>")]
+        [InlineData("IEnumerable<Stream>")]
+        [InlineData("Dictionary<string, Stream>")]
+        public void DisplayName_returns_the_expected_type_name_for_generic_types_with_type_arguments(string expectedTypeName)
         {
-            // ARRANGE
-            var typeReference = GetTypeDefinition(typeof(TestClass_TypeIdDisplayName))
+            var cs = $@"
+                using System.IO;
+                using System.Collections.Generic;
+
+                namespace Namespace1.Namespace2
+                {{
+                    public class Class1
+                    {{
+                        public {expectedTypeName} Property1 {{ get; set; }}
+                    }}
+                }}
+            ";
+
+            using var assembly = Compile(cs);
+
+            var typeReference = assembly.MainModule.Types
+                .Single(x => x.Name == "Class1")
                 .Properties
-                .Single(p => p.Name == propertyName)
+                .Single()
                 .PropertyType;
 
             // ACT
@@ -76,16 +117,31 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         }
 
         [Theory]
-        [InlineData(nameof(TestClass_TypeIdDisplayName<object, object>.Method1), "IEnumerable<T1>")]
-        [InlineData(nameof(TestClass_TypeIdDisplayName<object, object>.Method2), "IEnumerable<T2>")]
-        [InlineData(nameof(TestClass_TypeIdDisplayName<object, object>.Method3), "Dictionary<T1, T2>")]
-        [InlineData(nameof(TestClass_TypeIdDisplayName<object, object>.Method4), "Dictionary<TKey, TValue>")]
-        public void DisplayName_returns_the_expected_type_name_for_generic_types_with_type_parameters(string propertyName, string expectedTypeName)
+        [InlineData("public IEnumerable<T1> Method1() => throw new NotImplementedException();", "IEnumerable<T1>")]
+        [InlineData("public IEnumerable<T2> Method1() => throw new NotImplementedException();", "IEnumerable<T2>")]
+        [InlineData("public Dictionary<T1, T2> Method1() => throw new NotImplementedException();", "Dictionary<T1, T2>")]
+        [InlineData("public Dictionary<TKey, TValue> Method1<TKey, TValue>() => throw new NotImplementedException();", "Dictionary<TKey, TValue>")]
+        public void DisplayName_returns_the_expected_type_name_for_generic_types_with_type_parameters(string methodDefinition, string expectedTypeName)
         {
-            // ARRANGE
-            var typeReference = GetTypeDefinition(typeof(TestClass_TypeIdDisplayName<,>))
+            var cs = $@"
+                using System;
+                using System.Collections.Generic;
+
+                namespace Namespace1.Namespace2
+                {{
+                    public class Class1<T1, T2>
+                    {{
+                        {methodDefinition}
+                    }}
+                }}
+            ";
+
+            using var assembly = Compile(cs);
+
+            var typeReference = assembly.MainModule.Types
+                .Single(x => x.Name == "Class1`2")
                 .Methods
-                .Single(p => p.Name == propertyName)
+                .Single(p => p.Name == "Method1")
                 .ReturnType;
 
             // ACT
@@ -97,13 +153,25 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
 
 
         [Theory]
-        [InlineData(nameof(TestClass_TypeIdDisplayName.Property22), "bool?")]        
-        public void DisplayName_returns_the_expected_type_name_for_nullable_types(string propertyName, string expectedTypeName)
+        [InlineData("bool?")]
+        public void DisplayName_returns_the_expected_type_name_for_nullable_types(string expectedTypeName)
         {
-            // ARRANGE
-            var typeReference = GetTypeDefinition(typeof(TestClass_TypeIdDisplayName))
+            var cs = $@"
+                namespace Namespace1.Namespace2
+                {{
+                    public class Class1
+                    {{
+                        public {expectedTypeName} Property1 {{ get; set; }}
+                    }}
+                }}
+            ";
+
+            using var assembly = Compile(cs);
+
+            var typeReference = assembly.MainModule.Types
+                .Single(x => x.Name == "Class1")
                 .Properties
-                .Single(p => p.Name == propertyName)
+                .Single()
                 .PropertyType;
 
             // ACT

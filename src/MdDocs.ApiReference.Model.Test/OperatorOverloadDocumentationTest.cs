@@ -1,14 +1,12 @@
 ﻿using System.Linq;
-using Grynwald.MdDocs.ApiReference.Model;
-using Grynwald.MdDocs.ApiReference.Test.TestData;
 
-namespace Grynwald.MdDocs.ApiReference.Test.Model
+namespace Grynwald.MdDocs.ApiReference.Model.Test
 {
     public class OperatorOverloadDocumentationTest : OverloadDocumentationTest
     {
-        protected override OverloadDocumentation GetOverloadDocumentationInstance()
+        protected override OverloadDocumentation GetOverloadDocumentationInstance(TypeDocumentation typeDocumentation)
         {
-            return GetTypeDocumentation(typeof(TestClass_Operators)).Operators.First().Overloads.First();
+            return typeDocumentation.Operators.First().Overloads.First();
         }
     }
 }

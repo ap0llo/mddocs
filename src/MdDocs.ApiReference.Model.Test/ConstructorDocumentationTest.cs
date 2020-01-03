@@ -1,13 +1,12 @@
-﻿using Grynwald.MdDocs.ApiReference.Model;
-using Grynwald.MdDocs.ApiReference.Test.TestData;
+﻿using System;
 
-namespace Grynwald.MdDocs.ApiReference.Test.Model
+namespace Grynwald.MdDocs.ApiReference.Model.Test
 {
-    public class ConstructorDocumentationTest : MemberDocumentationTest
+    public class ConstructorDocumentationTest : MemberDocumentationTest, IDisposable
     {
-        protected override MemberDocumentation GetMemberDocumentationInstance()
+        protected override MemberDocumentation GetMemberDocumentationInstance(TypeDocumentation typeDocumentation)
         {
-            return GetTypeDocumentation(typeof(TestClass_Constructors)).Constructors!;
+            return typeDocumentation.Constructors!;
         }
     }
 }

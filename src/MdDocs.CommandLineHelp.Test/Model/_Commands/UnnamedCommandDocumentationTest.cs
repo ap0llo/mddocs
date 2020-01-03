@@ -1,73 +1,147 @@
 ﻿using System;
 using System.Linq;
 using Grynwald.MdDocs.CommandLineHelp.Model;
-using Grynwald.MdDocs.CommandLineHelp.TestData;
-using Grynwald.MdDocs.CommandLineHelp.TestData.SingleCommandApp;
 using Microsoft.Extensions.Logging.Abstractions;
 using Mono.Cecil;
 using Xunit;
 
 namespace Grynwald.MdDocs.CommandLineHelp.Test.Model
 {
-    public class UnnamedCommandDocumentationTest
+    public class UnnamedCommandDocumentationTest : CommandLineDynamicCompilationTestBase
     {
-        private TypeDefinition GetTypeDefinition(Type optionsType)
+        private UnnamedCommandDocumentation GetUnnamedCommandDocumentation(TypeDefinition definition)
         {
-            var assemblyPath = optionsType.Assembly.Location;
-            var assemblyDefinition = AssemblyDefinition.ReadAssembly(assemblyPath);
-
-            return assemblyDefinition.MainModule.Types.Single(t => t.FullName == optionsType.FullName);
-        }
-
-        private UnnamedCommandDocumentation LoadDocumentation(Type optionsType)
-        {
-            var definition = GetTypeDefinition(optionsType);
             return UnnamedCommandDocumentation.FromTypeDefinition(new MultiCommandApplicationDocumentation("Test"), definition, NullLogger.Instance);
         }
-
 
         [Fact]
         public void FromTypeDefinition_throws_ArgumentException_for_type_definitions_with_Verb_attributes()
         {
-            var application = new MultiCommandApplicationDocumentation("Test");
-            var definition = GetTypeDefinition(typeof(Command1Options));
+            // ARRANGE
+            var cs = @"
+                using CommandLine;
+               
+                [Verb(""command"")]
+                public class CommandOptions
+                {
+                }
+            ";
 
+            using var assembly = Compile(cs);
+
+            var definition = assembly.MainModule.Types.Single(x => x.Name == "CommandOptions");
+
+            var application = new MultiCommandApplicationDocumentation("Test");
+
+            // ACT / ASSERT
             Assert.Throws<ArgumentException>(() => UnnamedCommandDocumentation.FromTypeDefinition(application, definition, NullLogger.Instance));
         }
 
-        [Theory]
-        [InlineData(typeof(Options), "option1")]
-        [InlineData(typeof(Options), "option2")]
-        public void Expected_option_name_exists(Type optionsType, string optionName)
+        [Fact]
+        public void Expected_option_name_exists()
         {
-            var command = LoadDocumentation(optionsType);
-            Assert.Contains(command.Options, o => o.Name == optionName);
+            // ARRANGE
+            var cs = @"
+                using CommandLine;
+                               
+                public class Options
+                {
+                    [Option(""option1"")]
+                    public string Option1 { get; set; }
+
+                    [Option(""option2"")]
+                    public int Option2 { get; set; }
+                }
+            ";
+
+            using var assembly = Compile(cs);
+
+            // ACT
+            var command = GetUnnamedCommandDocumentation(assembly.MainModule.Types.Single(x => x.Name == "Options"));
+
+            // ASSERT
+            Assert.Contains(command.Options, o => o.Name == "option1");
+            Assert.Contains(command.Options, o => o.Name == "option2");
         }
 
-        [Theory]
-        [InlineData(typeof(Options), "option3")]
-        public void Hiiden_options_are_ignored(Type optionsType, string optionName)
+        [Fact]
+        public void Hidden_options_are_ignored()
         {
-            var command = LoadDocumentation(optionsType);
-            Assert.DoesNotContain(command.Options, o => o.Name == optionName);
+            // ARRANGE
+            var cs = @"
+                using CommandLine;
+                               
+                public class Options
+                {
+                    [Option(""option1"")]
+                    public string Option1 { get; set; }
+
+                    [Option(""option2"", Hidden = true)]
+                    public int Option2 { get; set; }
+                }
+            ";
+
+            using var assembly = Compile(cs);
+
+            // ACT
+            var command = GetUnnamedCommandDocumentation(assembly.MainModule.Types.Single(x => x.Name == "Options"));
+
+            // ASSERT            
+            Assert.DoesNotContain(command.Options, o => o.Name == "option2");
         }
 
-        [Theory]
-        [InlineData(typeof(Options), 'x')]
-        [InlineData(typeof(Options), 'y')]
-        public void Expected_option_short_name_exists(Type optionsType, char shortName)
+        [Fact]
+        public void Expected_option_short_name_exists()
         {
-            var command = LoadDocumentation(optionsType);
-            Assert.Contains(command.Options, o => o.ShortName == shortName);
+            // ARRANGE
+            var cs = @"
+                using CommandLine;
+                               
+                public class Options
+                {
+                    [Option('x', ""option1"")]
+                    public string Option1 { get; set; }
+
+                    [Option('y', ""option2"")]
+                    public int Option2 { get; set; }
+                }
+            ";
+
+            using var assembly = Compile(cs);
+
+            // ACT
+            var command = GetUnnamedCommandDocumentation(assembly.MainModule.Types.Single(x => x.Name == "Options"));
+
+            // ASSERT
+            Assert.Contains(command.Options, o => o.ShortName == 'x');
+            Assert.Contains(command.Options, o => o.ShortName == 'y');
         }
 
-        [Theory]
-        [InlineData(typeof(Options), 0)]
-        [InlineData(typeof(Options), 1)]
-        public void Expected_value_exists(Type optionsType, int index)
+        [Fact]
+        public void Expected_value_exists()
         {
-            var command = LoadDocumentation(optionsType);
-            Assert.Contains(command.Values, o => o.Index == index);
+            // ARRANGE
+            var cs = @"
+                using CommandLine;
+                               
+                public class Options
+                {
+                     [Value(0)]
+                    public string Value1 { get; set; }
+
+                    [Value(1, MetaName = ""Value2 name"")]
+                    public string Value2 { get; set; }
+                }
+            ";
+
+            using var assembly = Compile(cs);
+
+            // ACT
+            var command = GetUnnamedCommandDocumentation(assembly.MainModule.Types.Single(x => x.Name == "Options"));
+
+            // ASSERT
+            Assert.Contains(command.Values, o => o.Index == 0);
+            Assert.Contains(command.Values, o => o.Index == 1);
         }
     }
 }

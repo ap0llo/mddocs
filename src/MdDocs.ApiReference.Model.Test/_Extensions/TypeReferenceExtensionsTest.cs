@@ -1,19 +1,30 @@
 ﻿using System.Linq;
-using Grynwald.MdDocs.ApiReference.Model;
-using Grynwald.MdDocs.ApiReference.Test.TestData;
+using Grynwald.MdDocs.TestHelpers;
 using Mono.Cecil;
 using Xunit;
 
-namespace Grynwald.MdDocs.ApiReference.Test.Model
+namespace Grynwald.MdDocs.ApiReference.Model.Test
 {
-    public class TypeReferenceExtensionsTest : TestBase
+    public class TypeReferenceExtensionsTest : DynamicCompilationTestBase
     {
         [Fact]
         public void ToMemberId_returns_expected_value_for_type_definitions_01()
         {
             // ARRANGE
-            var typeReference = GetTypeDefinition(typeof(TestClass_Type));
-            var expectedMemberId = new SimpleTypeId("Grynwald.MdDocs.ApiReference.Test.TestData", "TestClass_Type");
+            var cs = @"
+                namespace Namespace1.Namespace2
+                {
+                    public class Class1
+                    {
+                    }
+                }
+            ";
+
+            using var assembly = Compile(cs);
+
+
+            var typeReference = assembly.MainModule.Types.Single(x => x.Name == "Class1");
+            var expectedMemberId = new SimpleTypeId("Namespace1.Namespace2", "Class1");
 
             // ACT
             var actualMemberId = typeReference.ToMemberId();
@@ -27,8 +38,19 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         public void ToMemberId_returns_expected_value_for_type_definitions_02()
         {
             // ARRANGE
-            var typeReference = GetTypeDefinition(typeof(TestClass_GenericType<>));
-            var expectedMemberId = new GenericTypeId("Grynwald.MdDocs.ApiReference.Test.TestData", "TestClass_GenericType", 1);
+            var cs = @"
+                namespace Namespace1.Namespace2
+                {
+                    public class Class1<T1>
+                    {
+                    }
+                }
+            ";
+
+            using var assembly = Compile(cs);
+
+            var typeReference = assembly.MainModule.Types.Single(x => x.Name == "Class1`1");
+            var expectedMemberId = new GenericTypeId("Namespace1.Namespace2", "Class1", 1);
 
             // ACT
             var actualMemberId = typeReference.ToMemberId();
@@ -42,9 +64,25 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         public void ToMemberId_returns_expected_value_for_constructued_types_01()
         {
             // ARRANGE
-            var typeReference = GetTypeDefinition(typeof(TestClass_Methods))
+            var cs = @"
+                using System;
+                using System.Collections.Generic;
+
+                namespace Namespace1.Namespace2
+                {
+                    public class Class1
+                    {
+                        public string Method1(IEnumerable<string> bar) => throw new NotImplementedException();
+                    }
+                }
+            ";
+
+            using var assembly = Compile(cs);
+
+            var typeReference = assembly.MainModule.Types
+                .Single(x => x.Name == "Class1")
                 .Methods
-                .Single(x => x.Name == nameof(TestClass_Methods.TestMethod6))
+                .Single(x => x.Name == "Method1")
                 .Parameters
                 .Single()
                 .ParameterType;
@@ -67,9 +105,25 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         public void ToMemberId_returns_expected_value_for_constructued_types_02()
         {
             // ARRANGE
-            var typeReference = GetTypeDefinition(typeof(TestClass_Methods))
+            var cs = @"
+                using System;
+                using System.Collections.Generic;
+
+                namespace Namespace1.Namespace2
+                {
+                    public class Class1
+                    {
+                        public string Method1<T>(IEnumerable<ArraySegment<T>> bar) => throw new NotImplementedException();
+                    }
+                }
+            ";
+
+            using var assembly = Compile(cs);
+
+            var typeReference = assembly.MainModule.Types
+                .Single(x => x.Name == "Class1")
                 .Methods
-                .Single(x => x.Name == nameof(TestClass_Methods.TestMethod13))
+                .Single(x => x.Name == "Method1")
                 .Parameters
                 .Single()
                 .ParameterType;
@@ -98,9 +152,25 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         public void ToMemberId_returns_expected_value_for_array_types_01()
         {
             // ARRANGE
-            var typeReference = GetTypeDefinition(typeof(TestClass_Methods))
+            var cs = @"
+                using System;
+                using System.Collections.Generic;
+
+                namespace Namespace1.Namespace2
+                {
+                    public class Class1
+                    {
+                        public void Method1(string[] parameter) { }
+                    }
+                }
+            ";
+
+            using var assembly = Compile(cs);
+
+            var typeReference = assembly.MainModule.Types
+                .Single(x => x.Name == "Class1")
                 .Methods
-                .Single(x => x.Name == nameof(TestClass_Methods.TestMethod10))
+                .Single(x => x.Name == "Method1")
                 .Parameters
                 .Single()
                 .ParameterType;
@@ -119,9 +189,25 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         public void ToMemberId_returns_expected_value_for_array_types_02()
         {
             // ARRANGE
-            var typeReference = GetTypeDefinition(typeof(TestClass_Methods))
+            var cs = @"
+                using System;
+                using System.Collections.Generic;
+
+                namespace Namespace1.Namespace2
+                {
+                    public class Class1
+                    {
+                        public void Method1(string[][] parameter) { }
+                    }
+                }
+            ";
+
+            using var assembly = Compile(cs);
+
+            var typeReference = assembly.MainModule.Types
+                .Single(x => x.Name == "Class1")
                 .Methods
-                .Single(x => x.Name == nameof(TestClass_Methods.TestMethod11))
+                .Single(x => x.Name == "Method1")
                 .Parameters
                 .Single()
                 .ParameterType;
@@ -140,9 +226,25 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         public void ToMemberId_returns_expected_value_for_array_types_03()
         {
             // ARRANGE
-            var typeReference = GetTypeDefinition(typeof(TestClass_Methods))
+            var cs = @"
+                using System;
+                using System.Collections.Generic;
+
+                namespace Namespace1.Namespace2
+                {
+                    public class Class1
+                    {
+                        public void Method1(string[,] parameter) { }
+                    }
+                }
+            ";
+
+            using var assembly = Compile(cs);
+
+            var typeReference = assembly.MainModule.Types
+                .Single(x => x.Name == "Class1")
                 .Methods
-                .Single(x => x.Name == nameof(TestClass_Methods.TestMethod12))
+                .Single(x => x.Name == "Method1")
                 .Parameters
                 .Single()
                 .ParameterType;
@@ -161,9 +263,25 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         public void ToMemberId_returns_expected_value_for_generic_parameters_01()
         {
             // ARRANGE
-            var typeReference = GetTypeDefinition(typeof(TestClass_Methods))
+            var cs = @"
+                using System;
+                using System.Collections.Generic;
+
+                namespace Namespace1.Namespace2
+                {
+                    public class Class1
+                    {
+                        public T2 Method1<T1, T2>(T2 foo, T1 bar) => throw new NotImplementedException();
+                    }
+                }
+            ";
+
+            using var assembly = Compile(cs);
+
+            var typeReference = assembly.MainModule.Types
+                .Single(x => x.Name == "Class1")
                 .Methods
-                .Single(x => x.Name == nameof(TestClass_Methods.TestMethod9))
+                .Single(x => x.Name == "Method1")
                 .Parameters
                 .First()
                 .ParameterType;
@@ -182,9 +300,25 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         public void ToMemberId_returns_expected_value_for_generic_parameters_02()
         {
             // ARRANGE
-            var typeReference = GetTypeDefinition(typeof(TestClass_GenericType<>))
+            var cs = @"
+                using System;
+                using System.Collections.Generic;
+
+                namespace Namespace1.Namespace2
+                {
+                    public class Class1<T1>
+                    {
+                        public void Method1(T1 foo) => throw new NotImplementedException();
+                    }
+                }
+            ";
+
+            using var assembly = Compile(cs);
+
+            var typeReference = assembly.MainModule.Types
+                .Single(x => x.Name == "Class1`1")
                 .Methods
-                .Single(x => x.Name == nameof(TestClass_GenericType<object>.TestMethod1))
+                .Single(x => x.Name == "Method1")
                 .Parameters
                 .First()
                 .ParameterType;
@@ -203,9 +337,25 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         public void ToMemberId_returns_the_expected_value_for_ref_parameters_01()
         {
             // ARRANGE
-            var typeReference = GetTypeDefinition(typeof(TestClass_RefParameters))
+            var cs = @"
+                using System;
+                using System.Collections.Generic;
+
+                namespace Namespace1.Namespace2
+                {
+                    public class Class1
+                    {
+                        public bool Method1(ref string value) => throw new NotImplementedException();
+                    }
+                }
+            ";
+
+            using var assembly = Compile(cs);
+
+            var typeReference = assembly.MainModule.Types
+                .Single(x => x.Name == "Class1")
                 .Methods
-                .Single(x => x.Name == nameof(TestClass_RefParameters.Method2))
+                .Single(x => x.Name == "Method1")
                 .Parameters
                 .Single()
                 .ParameterType;
@@ -225,9 +375,25 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         public void ToMemberId_returns_the_expected_value_for_ref_parameters_02()
         {
             // ARRANGE
-            var typeReference = GetTypeDefinition(typeof(TestClass_RefParameters))
+            var cs = @"
+                using System;
+                using System.Collections.Generic;
+
+                namespace Namespace1.Namespace2
+                {
+                    public class Class1
+                    {
+                        public bool Method1(ref string[] value) => throw new NotImplementedException();
+                    }
+                }
+            ";
+
+            using var assembly = Compile(cs);
+
+            var typeReference = assembly.MainModule.Types
+                .Single(x => x.Name == "Class1")
                 .Methods
-                .Single(x => x.Name == nameof(TestClass_RefParameters.Method3))
+                .Single(x => x.Name == "Method1")
                 .Parameters
                 .Single()
                 .ParameterType;
@@ -247,11 +413,27 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         public void ToMemberId_returns_the_expected_value_for_out_parameters()
         {
             // ARRANGE
-            var parameter = GetTypeDefinition(typeof(TestClass_RefParameters))
+            var cs = @"
+                using System;
+                using System.Collections.Generic;
+
+                namespace Namespace1.Namespace2
+                {
+                    public class Class1
+                    {
+                        public bool Method1(out string value) => throw new NotImplementedException(); 
+                    }
+                }
+            ";
+
+            using var assembly = Compile(cs);
+
+            var parameter = assembly.MainModule.Types
+                .Single(x => x.Name == "Class1")
                 .Methods
-                .Single(x => x.Name == nameof(TestClass_RefParameters.Method1))
+                .Single(x => x.Name == "Method1")
                 .Parameters
-                .Single(); ;
+                .Single();
 
             var expectedMemberId = new ByReferenceTypeId(new SimpleTypeId("System", "String"));
 
@@ -268,11 +450,27 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         public void ToMemberId_returns_the_expected_value_for_in_parameters()
         {
             // ARRANGE
-            var parameter = GetTypeDefinition(typeof(TestClass_RefParameters))
+            var cs = @"
+                using System;
+                using System.Collections.Generic;
+
+                namespace Namespace1.Namespace2
+                {
+                    public class Class1
+                    {
+                        public bool Method1(in string value) => throw new NotImplementedException();
+                    }
+                }
+            ";
+
+            using var assembly = Compile(cs);
+
+            var parameter = assembly.MainModule.Types
+                .Single(x => x.Name == "Class1")
                 .Methods
-                .Single(x => x.Name == nameof(TestClass_RefParameters.Method4))
+                .Single(x => x.Name == "Method1")
                 .Parameters
-                .Single(); ;
+                .Single();
 
             var expectedMemberId = new ByReferenceTypeId(new SimpleTypeId("System", "String"));
 
@@ -289,10 +487,29 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         public void ToMemberId_returns_the_expected_value_for_nested_types_01()
         {
             // ARRANGE
-            var typeDefinition = GetTypeDefinition(typeof(TestClass_NestedTypes.NestedClass1));
+            var cs = @"
+                using System;
+                using System.Collections.Generic;
+
+                namespace Namespace1.Namespace2
+                {
+                    public class Class1
+                    {
+                        public class NestedClass1
+                        { }
+                    }
+                }
+            ";
+
+            using var assembly = Compile(cs);
+
+            var typeDefinition = assembly.MainModule.Types
+                .Single(x => x.Name == "Class1")
+                .NestedTypes
+                .Single(x => x.Name == "NestedClass1");
 
             var expectedId = new SimpleTypeId(
-                new SimpleTypeId("Grynwald.MdDocs.ApiReference.Test.TestData", "TestClass_NestedTypes"),
+                new SimpleTypeId("Namespace1.Namespace2", "Class1"),
                 "NestedClass1"
             );
 
@@ -308,11 +525,35 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         public void ToMemberId_returns_the_expected_value_for_nested_types_02()
         {
             // ARRANGE
-            var typeDefinition = GetTypeDefinition(typeof(TestClass_NestedTypes.NestedClass1.NestedClass2));
+            var cs = @"
+                using System;
+                using System.Collections.Generic;
+
+                namespace Namespace1.Namespace2
+                {
+                    public class Class1
+                    {
+                        public class NestedClass1
+                        {
+                            public class NestedClass2
+                            { }
+                        }
+                    }
+                }
+            ";
+
+            using var assembly = Compile(cs);
+
+            var typeDefinition = assembly.MainModule.Types
+                .Single(x => x.Name == "Class1")
+                .NestedTypes
+                .Single(x => x.Name == "NestedClass1")
+                .NestedTypes
+                .Single(x => x.Name == "NestedClass2");
 
             var expectedId = new SimpleTypeId(
                 new SimpleTypeId(
-                    new SimpleTypeId("Grynwald.MdDocs.ApiReference.Test.TestData", "TestClass_NestedTypes"),
+                    new SimpleTypeId("Namespace1.Namespace2", "Class1"),
                     "NestedClass1"),
                 "NestedClass2"
             );
@@ -329,10 +570,29 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         public void ToMemberId_returns_the_expected_value_for_nested_types_03()
         {
             // ARRANGE
-            var typeDefinition = GetTypeDefinition(typeof(TestClass_NestedTypes.NestedInterface1));
+            var cs = @"
+                using System;
+                using System.Collections.Generic;
+
+                namespace Namespace1.Namespace2
+                {
+                    public class Class1
+                    {
+                        public interface NestedInterface1
+                        { }
+                    }
+                }
+            ";
+
+            using var assembly = Compile(cs);
+
+            var typeDefinition = assembly.MainModule.Types
+                .Single(x => x.Name == "Class1")
+                .NestedTypes
+                .Single(x => x.Name == "NestedInterface1");
 
             var expectedId = new SimpleTypeId(
-                new SimpleTypeId("Grynwald.MdDocs.ApiReference.Test.TestData", "TestClass_NestedTypes"),
+                new SimpleTypeId("Namespace1.Namespace2", "Class1"),
                 "NestedInterface1"
             );
 
@@ -348,11 +608,30 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         public void ToMemberId_returns_the_expected_value_for_nested_types_04()
         {
             // ARRANGE
-            var typeDefinition = GetTypeDefinition(typeof(TestClass_NestedTypes.NestedClass4<>));
+            var cs = @"
+                using System;
+                using System.Collections.Generic;
+
+                namespace Namespace1.Namespace2
+                {
+                    public class Class1
+                    {
+                        public class NestedClass1<T>
+                        { }
+                    }
+                }
+            ";
+
+            using var assembly = Compile(cs);
+
+            var typeDefinition = assembly.MainModule.Types
+                .Single(x => x.Name == "Class1")
+                .NestedTypes
+                .Single();
 
             var expectedId = new GenericTypeId(
-                new SimpleTypeId("Grynwald.MdDocs.ApiReference.Test.TestData", "TestClass_NestedTypes"),
-                "NestedClass4",
+                new SimpleTypeId("Namespace1.Namespace2", "Class1"),
+                "NestedClass1",
                 1
             );
 
@@ -368,10 +647,29 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         public void ToMemberId_returns_the_expected_value_for_nested_types_05()
         {
             // ARRANGE
-            var typeDefinition = GetTypeDefinition(typeof(TestClass_NestedTypes<>.NestedClass1));
+            var cs = @"
+                using System;
+                using System.Collections.Generic;
+
+                namespace Namespace1.Namespace2
+                {
+                    public class Class1<T1>
+                    {
+                        public class NestedClass1
+                        { }
+                    }
+                }
+            ";
+
+            using var assembly = Compile(cs);
+
+            var typeDefinition = assembly.MainModule.Types
+                .Single(x => x.Name == "Class1`1")
+                .NestedTypes
+                .Single(x => x.Name == "NestedClass1");
 
             var expectedId = new SimpleTypeId(
-                new GenericTypeId("Grynwald.MdDocs.ApiReference.Test.TestData", "TestClass_NestedTypes", 1),
+                new GenericTypeId("Namespace1.Namespace2", "Class1", 1),
                 "NestedClass1"
             );
 
@@ -387,11 +685,35 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         public void ToMemberId_returns_the_expected_value_for_nested_types_06()
         {
             // ARRANGE
-            var typeDefinition = GetTypeDefinition(typeof(TestClass_NestedTypes<>.NestedClass1.NestedClass2<>));
+            var cs = @"
+                using System;
+                using System.Collections.Generic;
+
+                namespace Namespace1.Namespace2
+                {
+                    public class Class1<T1>
+                    {
+                        public class NestedClass1
+                        {
+                            public class NestedClass2<T2>
+                            { }
+                        }
+                    }
+                }
+            ";
+
+            using var assembly = Compile(cs);
+
+            var typeDefinition = assembly.MainModule.Types
+                .Single(x => x.Name == "Class1`1")
+                .NestedTypes
+                .Single()
+                .NestedTypes
+                .Single();
 
             var expectedId = new GenericTypeId(
                 new SimpleTypeId(
-                    new GenericTypeId("Grynwald.MdDocs.ApiReference.Test.TestData", "TestClass_NestedTypes", 1),
+                    new GenericTypeId("Namespace1.Namespace2", "Class1", 1),
                     "NestedClass1"),
                 "NestedClass2",
                 1
@@ -405,22 +727,46 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             Assert.Equal(expectedId, actualId);
         }
 
-
         [Fact]
         public void ToMemberId_returns_expected_value_for_nested_constructued_types_01()
         {
             // ARRANGE
-            var typeReference = GetTypeDefinition(typeof(TestClass_NestedTypes<>))
+            var cs = @"
+                using System;
+                using System.Collections.Generic;
+
+                namespace Namespace1.Namespace2
+                {
+                    public class Class1
+                    {
+                        public void Method1(Class2.NestedClass1<string> parameter) => throw new NotImplementedException();
+                    }
+
+                    public class Class2
+                    {
+                        public class NestedClass1<T2>
+                        { }
+                    }
+    
+                }
+
+            ";
+
+            using var assembly = Compile(cs);
+
+            var typeReference = assembly.MainModule.Types
+                .Single(x => x.Name == "Class1")
                 .Methods
-                .Single(x => x.Name == nameof(TestClass_NestedTypes<string>.Method1))
+                .Single(x => x.Name == "Method1")
                 .Parameters
                 .Single()
                 .ParameterType;
 
-            // type: TestClass_NestedTypes.NestedClass4<string> parameter
+
+            // type: Class2.NestedClass1<string>  parameter
             var expectedMemberId = new GenericTypeInstanceId(
-                new SimpleTypeId("Grynwald.MdDocs.ApiReference.Test.TestData", "TestClass_NestedTypes"),
-                "NestedClass4",
+                new SimpleTypeId("Namespace1.Namespace2", "Class2"),
+                "NestedClass1",
                 new[] { new SimpleTypeId("System", "String") }
             );
 
@@ -436,16 +782,38 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         public void ToMemberId_returns_expected_value_for_nested_constructued_types_02()
         {
             // ARRANGE
-            var typeReference = GetTypeDefinition(typeof(TestClass_NestedTypes<>))
+            var cs = @"
+                using System;
+                using System.Collections.Generic;
+
+                namespace Namespace1.Namespace2
+                {
+                    public class Class1
+                    {
+                        public void Method1(Class2<string>.NestedClass1 parameter) => throw new NotImplementedException();
+                    }
+
+                    public class Class2<T>
+                    {
+                        public class NestedClass1
+                        { }
+                    }
+                }
+            ";
+
+            using var assembly = Compile(cs);
+
+            var typeReference = assembly.MainModule.Types
+                .Single(x => x.Name == "Class1")
                 .Methods
-                .Single(x => x.Name == nameof(TestClass_NestedTypes<string>.Method2))
+                .Single(x => x.Name == "Method1")
                 .Parameters
                 .Single()
                 .ParameterType;
 
             // type: TestClass_NestedTypes<string>.NestedClass1
             var expectedMemberId = new SimpleTypeId(
-                new GenericTypeInstanceId("Grynwald.MdDocs.ApiReference.Test.TestData", "TestClass_NestedTypes",
+                new GenericTypeInstanceId("Namespace1.Namespace2", "Class2",
                     new[] { new SimpleTypeId("System", "String") }),
                 "NestedClass1"
             );
@@ -458,14 +826,38 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             Assert.Equal(expectedMemberId, actualMemberId);
         }
 
-
         [Fact]
         public void ToMemberId_returns_expected_value_for_nested_constructued_types_03()
         {
             // ARRANGE
-            var typeReference = GetTypeDefinition(typeof(TestClass_NestedTypes<>))
+            var cs = @"
+                using System;
+                using System.Collections.Generic;
+
+                namespace Namespace1.Namespace2
+                {
+                    public class Class1
+                    {
+                        public void Method1(Class2<string>.NestedClass1.NestedClass2<int> parameter) => throw new NotImplementedException();
+                    }
+
+                    public class Class2<T1>
+                    {
+                        public class NestedClass1
+                        {
+                            public class NestedClass2<T2>
+                            { }
+                        }
+                    }
+                }
+            ";
+
+            using var assembly = Compile(cs);
+
+            var typeReference = assembly.MainModule.Types
+                .Single(x => x.Name == "Class1")
                 .Methods
-                .Single(x => x.Name == nameof(TestClass_NestedTypes<string>.Method3))
+                .Single(x => x.Name == "Method1")
                 .Parameters
                 .Single()
                 .ParameterType;
@@ -474,8 +866,8 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             var expectedMemberId = new GenericTypeInstanceId(
                 new SimpleTypeId(
                     new GenericTypeInstanceId(
-                        "Grynwald.MdDocs.ApiReference.Test.TestData",
-                        "TestClass_NestedTypes",
+                        "Namespace1.Namespace2",
+                        "Class2",
                         new[] { new SimpleTypeId("System", "String") }),
                     "NestedClass1"),
                 "NestedClass2",

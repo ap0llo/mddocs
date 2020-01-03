@@ -17,12 +17,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MdDocs.ApiReference.Pages\Grynwald.MdDocs.ApiReference.Pages.csproj" />
-    <ProjectReference Include="..\MdDocs.ApiReference.Test.TestData\Grynwald.MdDocs.ApiReference.Test.TestData.csproj" />
   </ItemGroup>
-
-
-  <Target Name="CopyTestDataXmlDocs" AfterTargets="Build">
-    <Copy SourceFiles="$(OutputPath)..\..\Grynwald.MdDocs.ApiReference.Test.TestData\netstandard2.0\Grynwald.MdDocs.ApiReference.Test.TestData.xml" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" />
-  </Target>
 
 </Project>

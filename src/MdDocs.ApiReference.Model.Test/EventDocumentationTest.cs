@@ -1,14 +1,12 @@
 ﻿using System.Linq;
-using Grynwald.MdDocs.ApiReference.Model;
-using Grynwald.MdDocs.ApiReference.Test.TestData;
 
-namespace Grynwald.MdDocs.ApiReference.Test.Model
+namespace Grynwald.MdDocs.ApiReference.Model.Test
 {
     public class EventDocumentationTest : MemberDocumentationTest
     {
-        protected override MemberDocumentation GetMemberDocumentationInstance()
+        protected override MemberDocumentation GetMemberDocumentationInstance(TypeDocumentation typeDocumentation)
         {
-            return GetTypeDocumentation(typeof(TestClass_Events)).Events.First();
+            return typeDocumentation.Events.First();
         }
     }
 }

@@ -1,25 +1,42 @@
 ﻿using System.Linq;
-using Grynwald.MdDocs.ApiReference.Model;
-using Grynwald.MdDocs.ApiReference.Test.TestData;
+using Grynwald.MdDocs.ApiReference.Model.XmlDocs;
+using Microsoft.Extensions.Logging.Abstractions;
 using Xunit;
 
-namespace Grynwald.MdDocs.ApiReference.Test.Model
+namespace Grynwald.MdDocs.ApiReference.Model.Test
 {
     public class MethodOverloadDocumentationTest : OverloadDocumentationTest
     {
-        protected override OverloadDocumentation GetOverloadDocumentationInstance()
+        protected override OverloadDocumentation GetOverloadDocumentationInstance(TypeDocumentation typeDocumentation)
         {
-            return GetTypeDocumentation(typeof(TestClass_Methods)).Methods.First().Overloads.First();
+            return typeDocumentation.Methods.First().Overloads.First();
         }
 
 
         [Fact]
-        public void TypeParametes_is_empty_for_non_generic_method_01()
+        public void TypeParameters_is_empty_for_non_generic_method_01()
         {
-            // ARRANGE / ACT
-            var sut = GetTypeDocumentation(typeof(TestClass_GenericType<>))
+            // ARRANGE
+            var cs = @"
+                namespace Namespace1.Namespace2
+                {
+                    public class Class1<T1>
+                    {
+                        public void Method1(T1 parameter)
+                        { }
+                    }
+                }
+            ";
+
+            using var assembly = Compile(cs);
+            using var assemblyDocumentation = new AssemblyDocumentation(assembly, NullXmlDocsProvider.Instance, NullLogger.Instance);
+            var typeDocumentation = assemblyDocumentation.MainModuleDocumentation.Types.Single();
+
+
+            // ACT
+            var sut = typeDocumentation
                 .Methods
-                .Single(m => m.Name == "TestMethod1")
+                .Single()
                 .Overloads
                 .Single();
 
@@ -29,12 +46,28 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         }
 
         [Fact]
-        public void TypeParametes_is_empty_for_non_generic_method_02()
+        public void TypeParameters_is_empty_for_non_generic_method_02()
         {
-            // ARRANGE / ACT
-            var sut = GetTypeDocumentation(typeof(TestClass_Methods))
+            // ARRANGE
+            var cs = @"
+                namespace Namespace1.Namespace2
+                {
+                    public class Class1
+                    {
+                        public void Method1()
+                        { }
+                    }
+                }
+            ";
+
+            using var assembly = Compile(cs);
+            using var assemblyDocumentation = new AssemblyDocumentation(assembly, NullXmlDocsProvider.Instance, NullLogger.Instance);
+            var typeDocumentation = assemblyDocumentation.MainModuleDocumentation.Types.Single();
+
+            // ACT
+            var sut = typeDocumentation
                 .Methods
-                .Single(m => m.Name == "TestMethod1")
+                .Single(m => m.Name == "Method1")
                 .Overloads
                 .Single();
 
@@ -43,14 +76,30 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             Assert.Empty(sut.TypeParameters);
         }
 
-
         [Fact]
-        public void TypeParametes_returns_expected_parameters_for_generic_methods()
+        public void TypeParameters_returns_expected_parameters_for_generic_methods()
         {
+            // ARRANGE
+            var cs = @"
+                using System;
+
+                namespace Namespace1.Namespace2
+                {
+                    public class Class1
+                    {
+                        public T2 Method1<T1, T2>(T1 foo, T2 bar) => throw new NotImplementedException();                        
+                    }
+                }
+            ";
+
+            using var assembly = Compile(cs);
+            using var assemblyDocumentation = new AssemblyDocumentation(assembly, NullXmlDocsProvider.Instance, NullLogger.Instance);
+            var typeDocumentation = assemblyDocumentation.MainModuleDocumentation.Types.Single();
+
             // ARRANGE / ACT
-            var sut = GetTypeDocumentation(typeof(TestClass_Methods))
+            var sut = typeDocumentation
                 .Methods
-                .Single(m => m.Name == "TestMethod8")
+                .Single()
                 .Overloads
                 .Single();
 
