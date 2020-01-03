@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -12,17 +13,21 @@ namespace Grynwald.MdDocs.ApiReference.Model.Test
 {
     public abstract class DynamicCompilationTestBase
     {
-        private static Lazy<MetadataReference[]> s_MetadataReferences = new Lazy<MetadataReference[]>(
-            () => new MetadataReference[]
+        private static readonly Lazy<IReadOnlyList<MetadataReference>> s_MetadataReferences = new Lazy<IReadOnlyList<MetadataReference>>(() =>
+        {
+            var paths = new HashSet<string>()
             {
-                MetadataReference.CreateFromFile(Assembly.Load("netstandard").Location),
-                MetadataReference.CreateFromFile(Assembly.Load("System.Runtime").Location),
-                MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
-            });
+                Assembly.Load("netstandard").Location,
+                Assembly.Load("System.Runtime").Location,
+                typeof(object).Assembly.Location,
+                typeof(DirectoryInfo).Assembly.Location,
+                typeof(ConsoleColor).Assembly.Location,
+            };
+
+            return paths.Select(p => MetadataReference.CreateFromFile(p)).ToArray();
+        });
 
         
-
-
         protected AssemblyDefinition Compile(string sourceCode)
         {
             var compilation = GetCompilation(sourceCode);
