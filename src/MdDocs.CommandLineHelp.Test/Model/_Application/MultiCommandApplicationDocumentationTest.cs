@@ -167,5 +167,31 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Model
             Assert.NotNull(sut.Usage);
             Assert.Empty(sut.Usage);
         }
+
+        [Fact]
+        public void Hidden_option_classes_are_ignored()
+        {
+            // ARRANGE
+            var cs = @"
+                using CommandLine;
+
+                [Verb(""command1"")]
+                public class Command1Options
+                { }
+
+                [Verb(""command2"", Hidden = true)]
+                public class Command2Options
+                { }
+            ";
+
+            using var assembly = Compile(cs);
+
+            // ACT
+            var sut = MultiCommandApplicationDocumentation.FromAssemblyDefinition(assembly, NullLogger.Instance);
+
+            // ASSERT
+            var command = Assert.Single(sut.Commands);
+            Assert.Equal("command1", command.Name);
+        }
     }
 }

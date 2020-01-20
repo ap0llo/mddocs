@@ -43,6 +43,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
             return definition.MainModule.Types
                 .Where(x => !x.IsAbstract)
                 .WithAttribute(Constants.VerbAttributeFullName)
+                .Where(x => !x.GetAttribute(Constants.VerbAttributeFullName).GetPropertyValueOrDefault<bool>("Hidden"))
                 .Select(type => CommandDocumentation.FromTypeDefinition(this, type, logger))
                 .ToArray();
         }
