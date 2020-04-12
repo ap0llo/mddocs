@@ -8,6 +8,12 @@
         "nbgv"
       ]
     },
+    "grynwald.changelog": {
+      "version": "0.1.75",
+      "commands": [
+        "changelog"
+      ]
+    },
     "dotnet-format": {
       "version": "3.3.111304",
       "commands": [
