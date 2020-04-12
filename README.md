@@ -30,7 +30,7 @@ corresponding sub-pages:
 
 ## Building from source
 
-MdDocs is a .NET Core application and can be built using the .NET SDK 2.1
+MdDocs is a .NET Core application and can be built using the .NET SDK 3.1
 
 ```ps1
 dotnet restore .\src\MdDocs.sln
