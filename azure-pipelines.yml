@@ -1,5 +1,6 @@
 # Pipeline consists of 4 jobs
 # - Build_an_Test: 
+#   - Checks formatting
 #   - Builds the project
 #   - Runs all the tests
 #   - creates a NuGet package
@@ -72,6 +73,10 @@ jobs:
   - script: dotnet tool run nbgv cloud
     displayName: Set Version
 
+  # Check the formatting using dotnet-format
+  - script: dotnet format --folder ./src --check
+    displayName: Check code formatting
+  
   # Restore, Build, Test
   - task: CmdLine@2
     displayName: Restore NuGet packages
