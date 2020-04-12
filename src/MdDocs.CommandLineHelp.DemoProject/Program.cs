@@ -43,7 +43,7 @@ namespace MdDocs.CommandLineHelp.DemoProject
 
         [Value(1, HelpText = "If a parameter has a default value, it will be included in the documentation, too", Default = "MyDefaultValue")]
         public string Value2 { get; set; }
-        
+
     }
 
     [Verb("Command2", HelpText = "Documentation for the 'command2' subcommand. This command has no parameters.")]

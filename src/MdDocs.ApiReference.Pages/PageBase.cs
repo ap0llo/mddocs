@@ -124,7 +124,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
                 }
             }
             // <seealso /> references an external resource
-            else if(seeAlso.Target != null)
+            else if (seeAlso.Target != null)
             {
                 if (seeAlso.Text.IsEmpty)
                 {

@@ -73,7 +73,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
         public IReadOnlyList<MemberElement> Read()
         {
             XDocument document;
-            if(m_Document == null)
+            if (m_Document == null)
             {
                 if (!File.Exists(m_FileName))
                     throw new FileNotFoundException("Could not find documentation file to load.", m_FileName);
@@ -177,9 +177,9 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
                                     member.SeeAlso.Add(new SeeAlsoElement(memberId!, ReadTextBlock(element)));
                                 }
                             }
-                            else if(element.TryGetAttributeValue("href", out var href))
+                            else if (element.TryGetAttributeValue("href", out var href))
                             {
-                                if(Uri.TryCreate(href, UriKind.Absolute, out var target))
+                                if (Uri.TryCreate(href, UriKind.Absolute, out var target))
                                 {
                                     member.SeeAlso.Add(new SeeAlsoElement(target, ReadTextBlock(element)));
                                 }
@@ -288,14 +288,14 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
                                 //
                                 if (elementNode.TryGetAttributeValue("cref", out var cref))
                                 {
-                                    if(TryParseMemberId(cref, out var memberId))
+                                    if (TryParseMemberId(cref, out var memberId))
                                     {
                                         element = new SeeElement(memberId!, ReadTextBlock(elementNode));
                                     }
                                 }
-                                else if(elementNode.TryGetAttributeValue("href", out var href))
+                                else if (elementNode.TryGetAttributeValue("href", out var href))
                                 {
-                                    if(Uri.TryCreate(href, UriKind.Absolute, out var target))
+                                    if (Uri.TryCreate(href, UriKind.Absolute, out var target))
                                     {
                                         element = new SeeElement(target, ReadTextBlock(elementNode));
                                     }

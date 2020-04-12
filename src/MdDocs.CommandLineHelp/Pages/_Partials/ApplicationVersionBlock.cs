@@ -23,7 +23,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
             else
             {
                 return new MdParagraph(new MdStrongEmphasisSpan("Version:"), " ", m_Model.Version);
-            }            
+            }
         }
     }
 }

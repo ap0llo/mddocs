@@ -43,14 +43,14 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
 
             var table = new MdTable(new MdTableRow("", ""));
 
-            if(m_Option.HasName)
+            if (m_Option.HasName)
             {
                 table.Add(new MdTableRow("Name:", m_Option.Name));
             }
 
-            if(m_Option.HasShortName)
+            if (m_Option.HasShortName)
             {
-                if(!m_Option.HasName)
+                if (!m_Option.HasName)
                     table.Add(new MdTableRow("Name:", m_Option.ShortName.ToString()));
                 else
                     table.Add(new MdTableRow("Short name:", m_Option.ShortName.ToString()));
@@ -65,7 +65,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
                 table.Add(new MdTableRow("Value:", m_Option.MetaValue));
             }
 
-            if(m_Option.HasAcceptedValues)
+            if (m_Option.HasAcceptedValues)
             {
                 table.Add(new MdTableRow("Accepted values:", m_Option.AcceptedValues.Select(x => new MdCodeSpan(x)).Join(", ")));
             }

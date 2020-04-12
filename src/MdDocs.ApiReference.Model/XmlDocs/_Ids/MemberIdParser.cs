@@ -106,7 +106,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
             {
                 namespaceBuilder.AddNameSegment(MatchToken(MemberIdTokenKind.Name));
             }
-            
+
             // all tokens should be parsed now
             MatchToken(MemberIdTokenKind.Eof);
 
@@ -125,7 +125,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
                     .AddNameSegment(name)
                     .SetArity(arity);
 
-                if(m_OuterTypes.Contains(typeIdBuilder.ToTypeId()))
+                if (m_OuterTypes.Contains(typeIdBuilder.ToTypeId()))
                 {
                     typeIdBuilder = typeIdBuilder.BeginNestedType();
                 }
@@ -223,7 +223,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
 
             // all segments but the last are part of the name of the defining type
             nameSegments = nameSegments.Take(nameSegments.Count - 1).ToList();
-            
+
             var typeBuilder = TypeIdBuilder.Create();
             foreach (var (name, arity) in nameSegments)
             {

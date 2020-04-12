@@ -162,7 +162,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
                     // remove number of type parameters from type name
                     methodName = methodName.Substring(0, methodName.LastIndexOf("`"));
                 }
-                
+
                 definitionBuilder.Append(methodName);
             }
             // non-constructor method
@@ -279,7 +279,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// Gets the C# code defining the specified type.
         /// </summary>
         public static string GetDefinition(TypeDefinition type)
-        {                        
+        {
             var definitionBuilder = new StringBuilder();
             var typeKind = type.Kind();
 
@@ -718,7 +718,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
             AppendCustomAttributes(definitionBuilder, parameter.GetCustomAttributes(), singleLine: true);
 
             // add "params" prefix if method allows multiple values
-            if(parameter.CustomAttributes.Any(a => a.AttributeType.FullName == Constants.ParamArrayAttributeFullName))
+            if (parameter.CustomAttributes.Any(a => a.AttributeType.FullName == Constants.ParamArrayAttributeFullName))
             {
                 definitionBuilder.Append("params ");
             }

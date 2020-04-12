@@ -24,7 +24,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// <exception cref="ArgumentNullException">Thrown when one of the constructor arguments is null.</exception>
         internal ConstructorOverloadDocumentation(ConstructorDocumentation methodDocumentation, MethodDefinition definition, IXmlDocsProvider xmlDocsProvider) : base(definition, xmlDocsProvider)
         {
-            ConstructorDocumentation = methodDocumentation ?? throw new ArgumentNullException(nameof(methodDocumentation));            
+            ConstructorDocumentation = methodDocumentation ?? throw new ArgumentNullException(nameof(methodDocumentation));
         }
 
 

@@ -20,7 +20,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 
         public static MdSpan ConvertToSpan(TextBlock text, IMdSpanFactory spanFactory)
         {
-            if(text.IsEmpty)
+            if (text.IsEmpty)
             {
                 return MdEmptySpan.Instance;
             }

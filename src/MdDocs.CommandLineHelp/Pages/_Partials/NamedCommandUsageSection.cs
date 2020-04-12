@@ -34,7 +34,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
                 .Append(" ")
                 .Append(m_Command.Name)
                 .Append(" ");
-            
+
             AppendParameters(stringBuilder, stringBuilder.Length);
 
             return stringBuilder.ToString().Trim();

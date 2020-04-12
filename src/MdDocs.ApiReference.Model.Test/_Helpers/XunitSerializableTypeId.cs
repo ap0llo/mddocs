@@ -37,9 +37,9 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             var type = info.GetValue<string>("type");
             switch (type)
             {
-                case nameof(SimpleTypeId):                    
-                    if(isNestedType)
-                    {                        
+                case nameof(SimpleTypeId):
+                    if (isNestedType)
+                    {
                         TypeId = new SimpleTypeId(declaringType!, name);
                     }
                     else
@@ -50,7 +50,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
 
                 case nameof(GenericTypeId):
                     var arity = info.GetValue<int>(nameof(GenericTypeId.Arity));
-                    if(isNestedType)
+                    if (isNestedType)
                     {
                         TypeId = new GenericTypeId(declaringType!, name, arity);
                     }
@@ -70,7 +70,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
                     {
                         TypeId = new GenericTypeInstanceId(namespaceName, name, typeArguments.Select(x => x.TypeId).ToArray());
                     }
-                    
+
                     break;
 
                 case nameof(ArrayTypeId):
@@ -89,7 +89,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
                     var byReferenceElementType = info.GetValue<XunitSerializableTypeId>(nameof(ByReferenceTypeId.ElementType));
                     TypeId = new ByReferenceTypeId(byReferenceElementType);
                     break;
-                    
+
                 default:
                     throw new NotImplementedException();
             }

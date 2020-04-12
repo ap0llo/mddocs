@@ -93,7 +93,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
         {
             unchecked
             {
-                if(MemberId != null)
+                if (MemberId != null)
                 {
                     var hash = MemberId.GetHashCode() * 397;
                     hash ^= Target != null ? Target.GetHashCode() : 0;

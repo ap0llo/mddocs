@@ -259,7 +259,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.Test.XmlDocs
             var xml = @"<see cref=""T:SomeNamespace.SomeClass"">Lorem ipsum dolor sit amet.</see>";
             var expected = new SeeElement(
                 MemberId.Parse("T:SomeNamespace.SomeClass", Array.Empty<TypeId>()),
-                new TextBlock(new[] { new TextElement("Lorem ipsum dolor sit amet.") } ));
+                new TextBlock(new[] { new TextElement("Lorem ipsum dolor sit amet.") }));
 
             ReadTextBlock_correctly_reads_see_elements(xml, expected);
         }

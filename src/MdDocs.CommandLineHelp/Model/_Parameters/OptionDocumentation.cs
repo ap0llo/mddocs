@@ -61,7 +61,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
 
                 // switch parameters are always optional
                 Required = false;
-                if(base.Required)
+                if (base.Required)
                 {
                     // emit a warning if parameter was flagged as required
                     m_Logger.LogWarning($"Ignoring 'Required' flag of option '{Name}'. Boolean options are treated as switch parameter and cannot be required.");
@@ -69,7 +69,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
 
                 // default for switch parameters is always false
                 Default = false;
-                if(base.Default != null && (!(base.Default is bool) || (base.Default is bool defaultValue && defaultValue != false)))
+                if (base.Default != null && (!(base.Default is bool) || (base.Default is bool defaultValue && defaultValue != false)))
                 {
                     // emit a warning if a default value other than 'false' was required
                     m_Logger.LogWarning($"Ignoring default value '{base.Default}' of option '{Name}'. Boolean options are treated as switch parameter with a fixed default value 'false'");

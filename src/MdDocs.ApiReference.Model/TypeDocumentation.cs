@@ -57,7 +57,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// <summary>
         /// Gets the kind of the type (class, struct, interface ...)
         /// </summary>
-        public TypeKind Kind { get; }        
+        public TypeKind Kind { get; }
 
         /// <summary>
         /// Gets the type's fields.
@@ -185,7 +185,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
                                    TypeDocumentation? declaringType)
         {
             TypeId = definition.ToTypeId();
-            DeclaringType = declaringType;            
+            DeclaringType = declaringType;
 
             ModuleDocumentation = moduleDocumentation ?? throw new ArgumentNullException(nameof(moduleDocumentation));
             NamespaceDocumentation = namespaceDocumentation ?? throw new ArgumentNullException(nameof(namespaceDocumentation));

@@ -64,7 +64,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
                 .Apply(AppendParameterName, option);
 
             // omit value for switch parameters
-            if(!option.IsSwitchParameter)
+            if (!option.IsSwitchParameter)
             {
                 stringBuilder
                     .Append(" ")

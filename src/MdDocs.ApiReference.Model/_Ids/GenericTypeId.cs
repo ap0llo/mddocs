@@ -21,7 +21,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         {
             get
             {
-                if(!IsNestedType && Arity == 1 && Namespace.IsSystem && Name.Equals("Nullable"))
+                if (!IsNestedType && Arity == 1 && Namespace.IsSystem && Name.Equals("Nullable"))
                 {
                     return $"{m_TypeParameterDisplayNames.Single()}?";
                 }
@@ -70,7 +70,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         {
             Arity = arity;
             m_TypeParameterDisplayNames = arity == 1
-                ? new [] { "T" }
+                ? new[] { "T" }
                 : Enumerable.Range(1, arity).Select(x => "T" + x).ToArray();
         }
 

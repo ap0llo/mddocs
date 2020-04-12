@@ -73,7 +73,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         public static bool TryParse(string? value, IReadOnlyCollection<TypeId> outerTypes, out MemberId? memberId)
 #endif
         {
-            if(value == null)
+            if (value == null)
             {
                 memberId = default;
                 return false;

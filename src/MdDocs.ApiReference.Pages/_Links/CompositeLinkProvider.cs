@@ -14,7 +14,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             m_InnerProviders = innerProviders ?? throw new ArgumentNullException(nameof(innerProviders));
         }
 
-        
+
         public bool TryGetLink(IDocument from, MemberId id, out Link? link)
         {
             foreach (var provider in m_InnerProviders)

@@ -34,7 +34,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
                 }
 
                 //TODO: Support for nested types
-    
+
                 signatureBuilder.Append(name);
             }
             else if (operatorKind.HasValue)

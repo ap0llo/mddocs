@@ -23,7 +23,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
             m_Value = value ?? throw new ArgumentNullException(nameof(value));
 
 
-            if (m_Value.Name!= null && !String.IsNullOrEmpty(m_Value.Name))
+            if (m_Value.Name != null && !String.IsNullOrEmpty(m_Value.Name))
             {
                 Heading = new MdHeading(3, new MdCompositeSpan(new MdCodeSpan(m_Value.Name), $" Parameter (Position {m_Value.Index})"));
             }
@@ -43,7 +43,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
               .AddIf(true, GetDetailsTable());
         }
 
-        
+
         private MdTable GetDetailsTable()
         {
             // TODO: Type
@@ -54,11 +54,11 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
             {
                 table.Add(new MdTableRow(new MdEmphasisSpan("Name:"), m_Value.Name));
             }
-          
+
             table.Add(new MdTableRow("Position:", m_Value.Index.ToString()));
 
             table.Add(new MdTableRow("Required:", m_Value.Required ? "Yes" : "No"));
-            
+
             if (m_Value.HasMetaValue)
             {
                 table.Add(new MdTableRow("Value:", m_Value.MetaValue));

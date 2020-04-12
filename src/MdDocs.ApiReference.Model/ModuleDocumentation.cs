@@ -50,7 +50,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         {
             Definition = definition ?? throw new ArgumentNullException(nameof(definition));
             m_XmlDocsProvider = xmlDocsProvider ?? throw new ArgumentNullException(nameof(xmlDocsProvider));
-            m_Logger = logger ?? throw new ArgumentNullException(nameof(logger));            
+            m_Logger = logger ?? throw new ArgumentNullException(nameof(logger));
             AssemblyDocumentation = assemblyDocumentation ?? throw new ArgumentNullException(nameof(assemblyDocumentation));
 
             m_Types = new Dictionary<TypeId, TypeDocumentation>();
@@ -122,9 +122,9 @@ namespace Grynwald.MdDocs.ApiReference.Model
             m_Types.Add(typeDocumentation.TypeId, typeDocumentation);
             namespaceDocumentation.AddType(typeDocumentation);
 
-            if(typeDefinition.HasNestedTypes)
+            if (typeDefinition.HasNestedTypes)
             {
-                foreach(var nestedType in typeDefinition.NestedTypes.Where(x => x.IsNestedPublic))
+                foreach (var nestedType in typeDefinition.NestedTypes.Where(x => x.IsNestedPublic))
                 {
                     LoadTypeRecursively(nestedType, typeDocumentation);
                 }

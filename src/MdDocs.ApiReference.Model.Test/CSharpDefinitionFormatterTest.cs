@@ -461,7 +461,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.Test
 
             var class1 = assembly.MainModule.Types.Single(x => x.Name == "Class1");
             var method = class1.Methods.Single(p => p.Name == methodName);
-                
+
             // ACT
             var actual = CSharpDefinitionFormatter.GetDefinition(method);
 
@@ -627,7 +627,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.Test
         [InlineData("public void MethodName(out string value);")]
         [InlineData("public void MethodName(object parameter1, out string value);")]
         [InlineData("public void MethodName(out string[] value);")]
-        [InlineData("public void MethodName(in string value);")]        
+        [InlineData("public void MethodName(in string value);")]
         public void GetDefinition_returns_the_expected_definition_for_methods_with_ref_parameters(string expected)
         {
             // ARRANGE
@@ -657,7 +657,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.Test
         [InlineData("public void Method(string stringParameter = \"default\");")]
         [InlineData("public void Method(string stringParameter = null, int intParameter = 23);")]
         [InlineData("public void Method(Enum1 parameter = Enum1.Value1);")]
-        [InlineData("public void Method([Optional]string stringParameter);")]      
+        [InlineData("public void Method([Optional]string stringParameter);")]
         public void GetDefinition_returns_the_expected_definition_for_methods_with_optional_parameters(string expected)
         {
             // ARRANGE
@@ -823,11 +823,11 @@ namespace Grynwald.MdDocs.ApiReference.Model.Test
             using var assembly = Compile(cs);
 
             var extensionClass = assembly.MainModule.Types.Single(x => x.Name == "ExtensionClass");
-            
+
             // ACT / ASSERT
             // the C# compiler emits a "Extension" attribute for classes that contain extension methods
             // this attribute should not be included in the generated definition
-            Assert.Equal("public static class ExtensionClass", CSharpDefinitionFormatter.GetDefinition(extensionClass));            
+            Assert.Equal("public static class ExtensionClass", CSharpDefinitionFormatter.GetDefinition(extensionClass));
         }
 
         [Fact]
@@ -945,7 +945,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.Test
             Assert.Equal(
                 "[Flags]\r\n" +
                 "public enum Enum2 : short\r\n" +
-                "{\r\n" + 
+                "{\r\n" +
                 "    Value1 = 0x1,\r\n" +
                 "    Value2 = 0x2,\r\n" +
                 "    Value3 = 0x4,\r\n" +

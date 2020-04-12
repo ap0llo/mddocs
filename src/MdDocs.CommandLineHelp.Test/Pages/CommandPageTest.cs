@@ -115,7 +115,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
                         name: "parameter2",
                         helpText: "Description of parameter 2",
                         @default: 23,
-                        metaValue: "URI")                   
+                        metaValue: "URI")
                 },
                 values: new[]{
                     new ValueDocumentation(0),
@@ -250,7 +250,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
             Approve(model);
         }
 
-      
+
         private void Approve(CommandDocumentation model, ICommandLinePageOptions? options = null)
         {
             var pathProvider = new DefaultCommandLineHelpPathProvider();

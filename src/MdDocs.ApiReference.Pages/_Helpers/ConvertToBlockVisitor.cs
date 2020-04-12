@@ -72,7 +72,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             MdSpan span;
 
             // <seealso /> references another assembly member
-            if(element.MemberId != null)
+            if (element.MemberId != null)
             {
                 if (element.Text.IsEmpty)
                 {
@@ -86,7 +86,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 
             }
             // <seealso /> references an external resource
-            else if(element.Target != null)
+            else if (element.Target != null)
             {
                 if (element.Text.IsEmpty)
                 {
@@ -129,7 +129,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             {
                 MdTableRow CreateRow(ListItemElement? itemElement)
                 {
-                    if(itemElement == null)
+                    if (itemElement == null)
                     {
                         return new MdTableRow("", "");
                     }
@@ -184,11 +184,11 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             if (!element.Term.IsEmpty)
             {
                 var term = TextBlockToMarkdownConverter.ConvertToSpan(element.Term, m_SpanFactory);
-                
+
                 AddToCurrentParagraph(new MdStrongEmphasisSpan(term, ":"));
-                AddToCurrentParagraph(" ");                
+                AddToCurrentParagraph(" ");
             }
-            
+
             Visit(element.Description);
         }
 
