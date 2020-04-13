@@ -66,6 +66,7 @@ created by me without anyone else being involved in the discussion.
 - [Xunit.Combinatorial](https://github.com/AArnott/Xunit.Combinatorial)
 - [Moq](https://github.com/moq/moq4)
 - [ApprovalTests](https://github.com/approvals/ApprovalTests.Net)
+- [Microsoft.CodeAnalysis.CSharp](https://github.com/dotnet/roslyn)
 
 ## Versioning and Branching
 
