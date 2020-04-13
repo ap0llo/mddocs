@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using Mono.Cecil;
@@ -8,6 +9,7 @@ namespace Grynwald.MdDocs.CommandLineHelp
 {
     public static class CustomAttributeExtensions
     {
+        [return: MaybeNull]
         public static T GetPropertyValueOrDefault<T>(this CustomAttribute attribute, string name)
         {
             var value = attribute.Properties.SingleOrDefault(x => x.Name == name).Argument.Value;
