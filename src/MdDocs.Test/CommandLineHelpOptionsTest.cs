@@ -18,6 +18,7 @@ namespace Grynwald.MdDocs.Test
                 nameof(CommandLineHelpOptions.AssemblyPath) => false,
                 nameof(CommandLineHelpOptions.NoVersion) => false,
                 nameof(CommandLineHelpOptions.IncludeVersion) => true,
+                nameof(CommandLineHelpOptions.ConfigurationFilePath) => false,
                 _ => throw new NotImplementedException()
             };
         }
@@ -44,9 +45,6 @@ namespace Grynwald.MdDocs.Test
         [MemberData(nameof(ConfigurationProperties))]
         public void Configuration_Properties_have_a_configuration_value_attribute(string propertyName)
         {
-            // all properties in commandline parameter classes should have a ConfigurationValueAttribute
-            // so the value can be used in the configuration system.
-
             var property = typeof(CommandLineHelpOptions).GetProperty(propertyName)!;
 
             var attribute = property.GetCustomAttribute<ConfigurationValueAttribute>();
@@ -57,13 +55,19 @@ namespace Grynwald.MdDocs.Test
             Assert.NotEqual("mddocs:", attribute!.Key);
         }
 
+
+        [Theory]
+        [MemberData(nameof(ConfigurationProperties))]
+        public void Configuration_Properties_must_have_supported_types(string propertyName)
+        {
+            var property = typeof(CommandLineHelpOptions).GetProperty(propertyName)!;
+            Assert.True(ConfigurationBuilderExtensions.IsSupportedPropertyType(property.PropertyType));
+        }
+
         [Theory]
         [MemberData(nameof(NonConfigurationProperties))]
         public void Non_configuration_Properties_do_have_a_configuration_value_attribute(string propertyName)
         {
-            // all properties in commandline parameter classes should have a ConfigurationValueAttribute
-            // so the value can be used in the configuration system.
-
             var property = typeof(CommandLineHelpOptions).GetProperty(propertyName)!;
 
             var attribute = property.GetCustomAttribute<ConfigurationValueAttribute>();

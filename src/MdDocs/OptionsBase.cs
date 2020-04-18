@@ -24,5 +24,11 @@ namespace Grynwald.MdDocs
             Default = MarkdownPresetName.Default,
             HelpText = "Specifies the preset to use for generating Markdown files.")]
         public MarkdownPresetName MarkdownPreset { get; set; }
+
+        [Option('c', "configurationFilePath", Required = false, HelpText =
+            "The path of the configuration file to use. " +
+            "If no configuration file is specified, default settings are used.")]
+        public string? ConfigurationFilePath { get; set; }
+
     }
 }

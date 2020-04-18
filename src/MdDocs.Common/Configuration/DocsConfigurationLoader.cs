@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace Grynwald.MdDocs.Common.Configuration
 {
-    internal static class DocsConfigurationLoader
+    public static class DocsConfigurationLoader
     {
         public static DocsConfiguration GetConfiguation(string configurationFilePath, object? settingsObject = null)
         {
@@ -23,7 +23,7 @@ namespace Grynwald.MdDocs.Common.Configuration
 
         }
 
-        internal static DocsConfiguration GetDefaultConfiguration()
+        public static DocsConfiguration GetDefaultConfiguration()
         {
             using var defaultSettingsStream = GetDefaultSettingsStream();
 

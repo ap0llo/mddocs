@@ -1,9 +1,0 @@
-﻿using Grynwald.MdDocs.CommandLineHelp.Pages;
-
-namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
-{
-    class TestCommandLinePageOptions : ICommandLinePageOptions
-    {
-        public bool IncludeVersion { get; set; } = true;
-    }
-}

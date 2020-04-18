@@ -1,6 +1,7 @@
 ﻿using System;
 using Grynwald.MarkdownGenerator;
 using Grynwald.MdDocs.CommandLineHelp.Model;
+using Grynwald.MdDocs.Common.Configuration;
 using Grynwald.MdDocs.Common.Pages;
 
 namespace Grynwald.MdDocs.CommandLineHelp.Pages
@@ -20,14 +21,14 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
         private readonly DocumentSet<IDocument> m_DocumentSet;
         private readonly ICommandLineHelpPathProvider m_PathProvider;
         private readonly CommandDocumentation m_Command;
-        private readonly ICommandLinePageOptions m_Options;
+        private readonly CommandLineHelpConfiguration m_Conifguration;
 
-        public CommandPage(DocumentSet<IDocument> documentSet, ICommandLineHelpPathProvider pathProvider, CommandDocumentation model, ICommandLinePageOptions options)
+        public CommandPage(DocumentSet<IDocument> documentSet, ICommandLineHelpPathProvider pathProvider, CommandDocumentation model, CommandLineHelpConfiguration configuration)
         {
             m_DocumentSet = documentSet ?? throw new ArgumentNullException(nameof(documentSet));
             m_PathProvider = pathProvider ?? throw new ArgumentNullException(nameof(pathProvider));
             m_Command = model ?? throw new ArgumentNullException(nameof(model));
-            m_Options = options ?? throw new ArgumentNullException(nameof(options));
+            m_Conifguration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
 
 
@@ -66,7 +67,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
                 link
             };
 
-            if (m_Options.IncludeVersion && !String.IsNullOrEmpty(m_Command.Application.Version))
+            if (m_Conifguration.IncludeVersion && !String.IsNullOrEmpty(m_Command.Application.Version))
             {
                 span.Add(new MdRawMarkdownSpan("\r\n"));
                 span.Add(new MdStrongEmphasisSpan("Version:"));

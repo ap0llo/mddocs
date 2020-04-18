@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace Grynwald.MdDocs.Common.Configuration
 {
-    internal static class ConfigurationBuilderExtensions
+    public static class ConfigurationBuilderExtensions
     {
         public static IConfigurationBuilder AddObject(this IConfigurationBuilder builder, object? settingsObject)
         {
@@ -28,19 +28,30 @@ namespace Grynwald.MdDocs.Common.Configuration
                 if (String.IsNullOrEmpty(attribute.Key))
                     continue;
 
-                if (property.PropertyType != typeof(string))
-                    throw new InvalidOperationException($"Property '{property.Name}' must be of type string.");
+                if (!IsSupportedPropertyType(property.PropertyType))
+                    throw new InvalidOperationException($"Property type {property.PropertyType} of property '{property.Name}' is not supported");
 
                 if (property.GetMethod is null)
                     throw new InvalidOperationException($"Property '{property.Name}' does not have a getter");
 
-                var value = (string?)property.GetMethod.Invoke(settingsObject, Array.Empty<object>());
+                var value = property.GetMethod.Invoke(settingsObject, Array.Empty<object>());
 
-                if (value is string)
-                    settings.Add(attribute.Key, value);
+                if (value is object)
+                    settings.Add(attribute.Key, Convert.ToString(value));
             }
 
             return settings;
+        }
+
+        internal static bool IsSupportedPropertyType(Type propertyType)
+        {
+            if (propertyType == typeof(string))
+                return true;
+
+            if (propertyType == typeof(bool))
+                return true;
+
+            return false;
         }
     }
 }

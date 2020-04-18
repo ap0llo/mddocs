@@ -1,5 +1,4 @@
 ﻿using CommandLine;
-using Grynwald.MdDocs.CommandLineHelp.Pages;
 using Grynwald.MdDocs.Common.Configuration;
 
 namespace Grynwald.MdDocs
@@ -8,7 +7,7 @@ namespace Grynwald.MdDocs
     /// Options for the "commandlinehelp" command.
     /// </summary>
     [Verb("commandlinehelp", HelpText = "Generate command line help for .NET console application implemented using the 'CommandLineParser' package")]
-    internal class CommandLineHelpOptions : OptionsBase, ICommandLinePageOptions
+    internal class CommandLineHelpOptions : OptionsBase
     {
         [Option('a', "assembly",
             Required = true,

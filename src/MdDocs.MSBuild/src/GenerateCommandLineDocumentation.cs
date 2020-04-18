@@ -1,11 +1,13 @@
 ﻿using Grynwald.MdDocs.CommandLineHelp.Model;
 using Grynwald.MdDocs.CommandLineHelp.Pages;
 using Grynwald.MdDocs.Common;
+using Grynwald.MdDocs.Common.Configuration;
 
 namespace Grynwald.MdDocs.MSBuild
 {
-    public sealed class GenerateCommandLineDocumentation : TaskBase, ICommandLinePageOptions
+    public sealed class GenerateCommandLineDocumentation : TaskBase
     {
+        [ConfigurationValue("mddocs:commandlinehelp:includeVersion")]
         public bool IncludeVersion { get; set; } = true;
 
 
@@ -16,9 +18,12 @@ namespace Grynwald.MdDocs.MSBuild
 
             var serializationOptions = GetSerializationOptions();
 
+            //TODO: Load a configuration file
+            var configuration = DocsConfigurationLoader.GetConfiguation("", this);
+
             using (var model = ApplicationDocumentation.FromAssemblyFile(AssemblyPath, Logger))
             {
-                var pageFactory = new CommandLinePageFactory(model, this, new DefaultCommandLineHelpPathProvider(), Logger);
+                var pageFactory = new CommandLinePageFactory(model, configuration.CommandLineHelp, new DefaultCommandLineHelpPathProvider(), Logger);
                 pageFactory.GetPages().Save(OutputDirectoryPath, cleanOutputDirectory: true, markdownOptions: serializationOptions);
             }
 

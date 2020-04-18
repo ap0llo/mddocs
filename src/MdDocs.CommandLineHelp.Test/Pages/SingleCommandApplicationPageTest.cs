@@ -3,6 +3,7 @@ using ApprovalTests.Reporters;
 using Grynwald.MarkdownGenerator;
 using Grynwald.MdDocs.CommandLineHelp.Model;
 using Grynwald.MdDocs.CommandLineHelp.Pages;
+using Grynwald.MdDocs.Common.Configuration;
 using Xunit;
 
 namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
@@ -48,15 +49,17 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
 
             var application = new SingleCommandApplicationDocumentation(name: "ApplicationName", parameters, "1.2.3", new[] { "Usage line 1", "Usage line2" });
 
-            Approve(application, new TestCommandLinePageOptions() { IncludeVersion = false });
+            Approve(application, new CommandLineHelpConfiguration() { IncludeVersion = false });
         }
 
-        private void Approve(SingleCommandApplicationDocumentation model, ICommandLinePageOptions? options = null)
+        private void Approve(SingleCommandApplicationDocumentation model, CommandLineHelpConfiguration? configuration = null)
         {
             var pathProvider = new DefaultCommandLineHelpPathProvider();
             var documentSet = new DocumentSet<IDocument>();
 
-            var applicationPage = new SingleCommandApplicationPage(documentSet, pathProvider, model, options ?? new TestCommandLinePageOptions());
+            configuration ??= DocsConfigurationLoader.GetDefaultConfiguration().CommandLineHelp;
+
+            var applicationPage = new SingleCommandApplicationPage(documentSet, pathProvider, model, configuration);
             documentSet.Add(pathProvider.GetPath(model), applicationPage);
 
             var doc = applicationPage.GetDocument();

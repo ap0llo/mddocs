@@ -8,12 +8,13 @@ using Grynwald.MdDocs.ApiReference.Pages;
 using Grynwald.MdDocs.CommandLineHelp.Model;
 using Grynwald.MdDocs.CommandLineHelp.Pages;
 using Grynwald.MdDocs.Common;
+using Grynwald.MdDocs.Common.Configuration;
 using Grynwald.Utilities.Logging;
 using Microsoft.Extensions.Logging;
 
 namespace Grynwald.MdDocs
 {
-    internal class Program
+    internal static class Program
     {
         private static int Main(string[] args)
         {
@@ -92,9 +93,11 @@ namespace Grynwald.MdDocs
                 return -1;
             }
 
+            var configuration = LoadConfiguration(opts);
+
             using (var model = ApplicationDocumentation.FromAssemblyFile(opts.AssemblyPath, logger))
             {
-                var pageFactory = new CommandLinePageFactory(model, opts, new DefaultCommandLineHelpPathProvider(), logger);
+                var pageFactory = new CommandLinePageFactory(model, configuration.CommandLineHelp, new DefaultCommandLineHelpPathProvider(), logger);
                 pageFactory.GetPages().Save(
                     opts.OutputDirectory,
                     cleanOutputDirectory: true,
@@ -132,6 +135,10 @@ namespace Grynwald.MdDocs
             }
         }
 
+        private static DocsConfiguration LoadConfiguration(OptionsBase commandlineParameters)
+        {
+            return DocsConfigurationLoader.GetConfiguation(commandlineParameters.ConfigurationFilePath ?? "", commandlineParameters);
+        }
 
     }
 }

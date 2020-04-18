@@ -8,6 +8,7 @@ Generate command line help for .NET console application implemented using the 'C
 
 ```
 mddocs commandlinehelp --assembly|-a <VALUE>
+                       [--configurationFilePath|-c <VALUE>]
                        [--markdown-preset <VALUE>]
                        [--no-version]
                        --outdir|-o <VALUE>
@@ -16,13 +17,14 @@ mddocs commandlinehelp --assembly|-a <VALUE>
 
 ## Parameters
 
-| Name                                          | Short Name               | Required | Description                                                                                                                                     |
-| --------------------------------------------- | ------------------------ | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| [assembly](#assembly-parameter)               | [a](#assembly-parameter) | Yes      | Path of the command line application assembly to generate documentation for.                                                                    |
-| [markdown\-preset](#markdownpreset-parameter) |                          | No       | Specifies the preset to use for generating Markdown files.                                                                                      |
-| [no\-version](#noversion-parameter)           |                          | No       | Do not include the application version in the generated documentation                                                                           |
-| [outdir](#outdir-parameter)                   | [o](#outdir-parameter)   | Yes      | Path of the directory to write the documentation to. If the output directory already exists, all files in the output directory will be deleted. |
-| [verbose](#verbose-parameter)                 | [v](#verbose-parameter)  | No       | Show more detailed log output.                                                                                                                  |
+| Name                                                      | Short Name                            | Required | Description                                                                                                                                     |
+| --------------------------------------------------------- | ------------------------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| [assembly](#assembly-parameter)                           | [a](#assembly-parameter)              | Yes      | Path of the command line application assembly to generate documentation for.                                                                    |
+| [configurationFilePath](#configurationfilepath-parameter) | [c](#configurationfilepath-parameter) | No       | The path of the configuration file to use. If no configuration file is specified, default settings are used.                                    |
+| [markdown\-preset](#markdownpreset-parameter)             |                                       | No       | Specifies the preset to use for generating Markdown files.                                                                                      |
+| [no\-version](#noversion-parameter)                       |                                       | No       | Do not include the application version in the generated documentation                                                                           |
+| [outdir](#outdir-parameter)                               | [o](#outdir-parameter)                | Yes      | Path of the directory to write the documentation to. If the output directory already exists, all files in the output directory will be deleted. |
+| [verbose](#verbose-parameter)                             | [v](#verbose-parameter)               | No       | Show more detailed log output.                                                                                                                  |
 
 ### `assembly` Parameter
 
@@ -35,6 +37,20 @@ Path of the command line application assembly to generate documentation for.
 | Position:      | *Named parameter* |
 | Required:      | Yes               |
 | Default value: | *None*            |
+
+___
+
+### `configurationFilePath` Parameter
+
+The path of the configuration file to use. If no configuration file is specified, default settings are used.
+
+|                |                       |
+| -------------- | --------------------- |
+| Name:          | configurationFilePath |
+| Short name:    | c                     |
+| Position:      | *Named parameter*     |
+| Required:      | No                    |
+| Default value: | *None*                |
 
 ___
 

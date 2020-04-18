@@ -15,22 +15,31 @@ namespace Grynwald.MdDocs.Common.Test.Configuration
             public string? Setting1 { get; set; }
 
             public string? SomeProperty { get; set; }
+
+            [ConfigurationValue("root:Setting2")]
+            public bool Setting2 { get; set; }
         }
 
         [Fact]
         public void GetSettingsDictionary_returns_the_expected_configuration_values()
         {
             // ARRANGE
-            var settingsObject = new TestSettingsClass1() { Setting1 = "value1" };
+            var settingsObject = new TestSettingsClass1()
+            {
+                Setting1 = "value1",
+                Setting2 = true
+            };
 
             // ACT 
             var settingsDictionary = ConfigurationBuilderExtensions.GetSettingsDictionary(settingsObject);
 
             // ASSERT
             Assert.NotNull(settingsDictionary);
-            var kvp = Assert.Single(settingsDictionary);
-            Assert.Equal("root:Setting1", kvp.Key);
-            Assert.Equal("value1", kvp.Value);
+            Assert.Contains("root:Setting1", settingsDictionary.Keys);
+            Assert.Contains("root:Setting2", settingsDictionary.Keys);
+
+            Assert.Equal("value1", settingsDictionary["root:Setting1"]);
+            Assert.Equal("True", settingsDictionary["root:Setting2"]);
         }
 
         private class TestSettingsClass2
@@ -61,7 +70,7 @@ namespace Grynwald.MdDocs.Common.Test.Configuration
         }
 
         [Fact]
-        public void GetSettingsDictionary_throws_InvalidOperationException_is_property_type_is_not_string()
+        public void GetSettingsDictionary_throws_InvalidOperationException_is_property_type_is_not_string_or_bool()
         {
             // ARRANGE
             var settingsObject = new TestSettingsClass3();
@@ -86,11 +95,17 @@ namespace Grynwald.MdDocs.Common.Test.Configuration
             Assert.Throws<InvalidOperationException>(() => ConfigurationBuilderExtensions.GetSettingsDictionary(settingsObject));
         }
 
+        private class TestSettingsClass5
+        {
+            [ConfigurationValue("root:Setting1")]
+            public string? Setting1 { get; set; }
+        }
+
         [Fact]
         public void GetSettingsDictionary_ignores_properties_if_their_value_is_null()
         {
             // ARRANGE
-            var settingsObject = new TestSettingsClass1() { Setting1 = null };
+            var settingsObject = new TestSettingsClass5() { Setting1 = null };
 
             // ACT 
             var settingsDictionary = ConfigurationBuilderExtensions.GetSettingsDictionary(settingsObject);
@@ -101,13 +116,13 @@ namespace Grynwald.MdDocs.Common.Test.Configuration
         }
 
 
-        private class TestSettingsClass5
+        private class TestSettingsClass6
         {
             [ConfigurationValue("root:Setting1")]
             public string? Setting1 { get; }
 
 
-            public TestSettingsClass5(string setting1)
+            public TestSettingsClass6(string setting1)
             {
                 Setting1 = setting1;
             }
@@ -117,7 +132,7 @@ namespace Grynwald.MdDocs.Common.Test.Configuration
         public void GetSettingsDictionary_loads_values_from_readonly_properties()
         {
             // ARRANGE
-            var settingsObject = new TestSettingsClass5("value1");
+            var settingsObject = new TestSettingsClass6("value1");
 
             // ACT 
             var settingsDictionary = ConfigurationBuilderExtensions.GetSettingsDictionary(settingsObject);
@@ -128,5 +143,23 @@ namespace Grynwald.MdDocs.Common.Test.Configuration
             Assert.Equal("root:Setting1", kvp.Key);
             Assert.Equal("value1", kvp.Value);
         }
+
+
+        [Theory]
+        [InlineData(typeof(string))]
+        [InlineData(typeof(bool))]
+        public void IsSupportedPropertyType_returns_true_for_supported_property_types(Type type)
+        {
+            Assert.True(ConfigurationBuilderExtensions.IsSupportedPropertyType(type));
+        }
+
+        [Theory]
+        [InlineData(typeof(int))]
+        [InlineData(typeof(object))]
+        public void IsSupportedPropertyType_returns_false_for_unsupported_property_types(Type type)
+        {
+            Assert.False(ConfigurationBuilderExtensions.IsSupportedPropertyType(type));
+        }
+
     }
 }

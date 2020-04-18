@@ -17,6 +17,7 @@
     <ProjectReference Include="..\MdDocs.ApiReference.Model\Grynwald.MdDocs.ApiReference.Model.csproj" />
     <ProjectReference Include="..\MdDocs.ApiReference.Pages\Grynwald.MdDocs.ApiReference.Pages.csproj" />
     <ProjectReference Include="..\MdDocs.CommandLineHelp\Grynwald.MdDocs.CommandLineHelp.csproj" />
+    <ProjectReference Include="..\MdDocs.Common\Grynwald.MdDocs.Common.csproj" />
   </ItemGroup>
 
   <!-- Adjust NuGet package properties -->

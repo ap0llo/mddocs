@@ -112,6 +112,15 @@ namespace Grynwald.MdDocs.Common.Test.Configuration
         }
 
         [Theory]
+        [MemberData(nameof(DefaultConfigAssertions))]
+        public void GetConfiguration_returns_default_configuration_if_config_file_path_is_empty(Action<DocsConfiguration> assertion)
+        {
+            var config = DocsConfigurationLoader.GetConfiguation("");
+            assertion(config);
+        }
+
+
+        [Theory]
         [InlineData(true)]
         [InlineData(false)]
         public void CommandLineHelp_IncludeVersion_can_be_set_in_configuration_file(bool includeVersion)
@@ -130,7 +139,7 @@ namespace Grynwald.MdDocs.Common.Test.Configuration
         private class TestClass1
         {
             [ConfigurationValue("mddocs:commandlinehelp:includeversion")]
-            public string? IncludeVersion { get; set; }
+            public bool IncludeVersion { get; set; }
         }
 
         [Theory]
@@ -139,7 +148,7 @@ namespace Grynwald.MdDocs.Common.Test.Configuration
         public void CommandLineHelp_IncludeVersion_can_be_set_through_settings_object(bool includeVersion)
         {
             // ARRANGE            
-            var settings = new TestClass1() { IncludeVersion = includeVersion.ToString() };
+            var settings = new TestClass1() { IncludeVersion = includeVersion };
 
             // ACT
             var config = DocsConfigurationLoader.GetConfiguation(m_ConfigurationFilePath, settings);

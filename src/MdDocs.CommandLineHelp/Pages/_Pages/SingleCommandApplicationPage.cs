@@ -1,6 +1,7 @@
 ﻿using System;
 using Grynwald.MarkdownGenerator;
 using Grynwald.MdDocs.CommandLineHelp.Model;
+using Grynwald.MdDocs.Common.Configuration;
 using Grynwald.MdDocs.Common.Pages;
 
 namespace Grynwald.MdDocs.CommandLineHelp.Pages
@@ -20,7 +21,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
     public class SingleCommandApplicationPage : IMarkdownDocument
     {
         private readonly SingleCommandApplicationDocumentation m_Model;
-        private readonly ICommandLinePageOptions m_Options;
+        private readonly CommandLineHelpConfiguration m_Configuration;
         private readonly DocumentSet<IDocument> m_DocumentSet;
         private readonly ICommandLineHelpPathProvider m_PathProvider;
 
@@ -29,12 +30,12 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
             DocumentSet<IDocument> documentSet,
             ICommandLineHelpPathProvider pathProvider,
             SingleCommandApplicationDocumentation model,
-            ICommandLinePageOptions options)
+            CommandLineHelpConfiguration configuration)
         {
             m_DocumentSet = documentSet ?? throw new ArgumentNullException(nameof(documentSet));
             m_PathProvider = pathProvider ?? throw new ArgumentNullException(nameof(pathProvider));
             m_Model = model ?? throw new ArgumentNullException(nameof(model));
-            m_Options = options ?? throw new ArgumentNullException(nameof(options));
+            m_Configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
 
 
@@ -49,7 +50,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
 
                 // Application name and version
                 .Add(new MdHeading(1, $"{m_Model.Name} Command Line Reference"))
-                .AddIf(m_Options.IncludeVersion, new ApplicationVersionBlock(m_Model))
+                .AddIf(m_Configuration.IncludeVersion, new ApplicationVersionBlock(m_Model))
 
                 // Usage (data from ApplicationUsage attribute)
                 .AddIf(m_Model.Usage.Count > 0, new MdHeading(2, "Usage"))
