@@ -176,7 +176,7 @@ namespace Grynwald.MdDocs.Common.Test.Configuration
             Assert.Contains("setting1", settingsDictionary.Keys);
             Assert.Contains("setting2", settingsDictionary.Keys);
             Assert.DoesNotContain("setting3", settingsDictionary.Keys);
-                        
+
             Assert.Equal("True", settingsDictionary["setting1"]);
             Assert.Equal("False", settingsDictionary["setting2"]);
         }
