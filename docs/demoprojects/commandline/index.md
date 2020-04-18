@@ -1,7 +1,5 @@
 ﻿# DemoProject Command Line Reference
 
-**Version:** 1.2.3
-
 ## Usage
 
 An application to demonstrate how the generated command lien help looks like.  

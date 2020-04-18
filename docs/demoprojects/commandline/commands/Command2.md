@@ -1,7 +1,6 @@
 ﻿# `Command2` Command
 
-**Application:** [DemoProject](../index.md)  
-**Version:** 1.2.3
+**Application:** [DemoProject](../index.md)
 
 Documentation for the 'command2' subcommand. This command has no parameters.
 

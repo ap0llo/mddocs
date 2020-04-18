@@ -1,7 +1,6 @@
 ﻿# `Command1` Command
 
-**Application:** [DemoProject](../index.md)  
-**Version:** 1.2.3
+**Application:** [DemoProject](../index.md)
 
 Documentation for the 'command1' subcommand. For every subcommand, a separate page will be generated.  
 The command page includes the commands description (provided as 'HelpText' on the \[Verb\] attribute.)
