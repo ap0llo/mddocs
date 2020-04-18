@@ -26,6 +26,7 @@
     <ProjectReference Include="..\MdDocs.ApiReference.Model\Grynwald.MdDocs.ApiReference.Model.csproj" />
     <ProjectReference Include="..\MdDocs.ApiReference.Pages\Grynwald.MdDocs.ApiReference.Pages.csproj" />
     <ProjectReference Include="..\MdDocs.CommandLineHelp\Grynwald.MdDocs.CommandLineHelp.csproj" />
+    <ProjectReference Include="..\MdDocs.Common\Grynwald.MdDocs.Common.csproj" />
   </ItemGroup>
 
 
@@ -35,5 +36,12 @@
     </PropertyGroup>
     <Exec Command="dotnet &quot;@(TargetPathWithTargetPlatformMoniker->'%(FullPath)')&quot; commandlinehelp --assembly &quot;@(TargetPathWithTargetPlatformMoniker->'%(FullPath)')&quot; --outdir &quot;$(DocsDir)&quot; --no-version" />    
   </Target>
+
+
+  <ItemGroup Label="Assembly attributes">
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>$(MSBuildProjectName).Test</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
   
 </Project>

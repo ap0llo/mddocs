@@ -1,5 +1,6 @@
 ﻿using CommandLine;
 using Grynwald.MdDocs.CommandLineHelp.Pages;
+using Grynwald.MdDocs.Common.Configuration;
 
 namespace Grynwald.MdDocs
 {
@@ -19,7 +20,7 @@ namespace Grynwald.MdDocs
             HelpText = "Do not include the application version in the generated documentation")]
         public bool NoVersion { get; set; }
 
-
+        [ConfigurationValue("mddocs:commandlinehelp:includeVersion")]
         public bool IncludeVersion => !NoVersion;
     }
 }
