@@ -54,6 +54,9 @@ namespace Grynwald.MdDocs.Common.Configuration
             if (propertyType == typeof(bool?))
                 return true;
 
+            if (propertyType.IsEnum)
+                return true;
+
             return false;
         }
     }

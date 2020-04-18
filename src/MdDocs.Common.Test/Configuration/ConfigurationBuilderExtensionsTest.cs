@@ -9,6 +9,12 @@ namespace Grynwald.MdDocs.Common.Test.Configuration
     /// </summary>
     public class ConfigurationBuilderExtensionsTest
     {
+        private enum TestEnum1
+        {
+            Value1,
+            Value2
+        }
+
         private class TestSettingsClass1
         {
             [ConfigurationValue("root:Setting1")]
@@ -18,6 +24,9 @@ namespace Grynwald.MdDocs.Common.Test.Configuration
 
             [ConfigurationValue("root:Setting2")]
             public bool Setting2 { get; set; }
+
+            [ConfigurationValue("root:Setting3")]
+            public TestEnum2 Setting3 { get; set; }
         }
 
         [Fact]
@@ -27,7 +36,8 @@ namespace Grynwald.MdDocs.Common.Test.Configuration
             var settingsObject = new TestSettingsClass1()
             {
                 Setting1 = "value1",
-                Setting2 = true
+                Setting2 = true,
+                Setting3 = TestEnum2.Value2
             };
 
             // ACT 
@@ -37,9 +47,11 @@ namespace Grynwald.MdDocs.Common.Test.Configuration
             Assert.NotNull(settingsDictionary);
             Assert.Contains("root:Setting1", settingsDictionary.Keys);
             Assert.Contains("root:Setting2", settingsDictionary.Keys);
+            Assert.Contains("root:Setting3", settingsDictionary.Keys);
 
             Assert.Equal("value1", settingsDictionary["root:Setting1"]);
             Assert.Equal("True", settingsDictionary["root:Setting2"]);
+            Assert.Equal("Value2", settingsDictionary["root:Setting3"]);
         }
 
         private class TestSettingsClass2
@@ -182,10 +194,17 @@ namespace Grynwald.MdDocs.Common.Test.Configuration
         }
 
 
+        private enum TestEnum2
+        {
+            Value1,
+            Value2
+        }
+
         [Theory]
         [InlineData(typeof(string))]
         [InlineData(typeof(bool))]
         [InlineData(typeof(bool?))]
+        [InlineData(typeof(TestEnum2))]
         public void IsSupportedPropertyType_returns_true_for_supported_property_types(Type type)
         {
             Assert.True(ConfigurationBuilderExtensions.IsSupportedPropertyType(type));

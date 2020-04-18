@@ -2,8 +2,12 @@
   "mddocs": {
 
     "commandlinehelp": {
-      "includeVersion" : true
-    }
+      "includeVersion": true
+    },
 
+
+    "markdown": {
+      "preset": "default"
+    }
   }
 }

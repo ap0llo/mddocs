@@ -1,13 +1,8 @@
 ﻿using CommandLine;
+using Grynwald.MdDocs.Common.Configuration;
 
 namespace Grynwald.MdDocs
 {
-    internal enum MarkdownPresetName
-    {
-        Default,
-        MkDocs
-    }
-
     internal abstract class OptionsBase
     {
         [Option('v', "verbose", HelpText = "Show more detailed log output.")]
@@ -21,9 +16,10 @@ namespace Grynwald.MdDocs
 
         [Option("markdown-preset",
             Required = false,
-            Default = MarkdownPresetName.Default,
+            Default = MarkdownPreset.Default,
             HelpText = "Specifies the preset to use for generating Markdown files.")]
-        public MarkdownPresetName MarkdownPreset { get; set; }
+        [ConfigurationValue("mddocs:markdown:preset")]
+        public MarkdownPreset MarkdownPreset { get; set; }
 
         [Option('c', "configurationFilePath", Required = false, HelpText =
             "The path of the configuration file to use. " +

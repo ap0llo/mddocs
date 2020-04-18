@@ -14,7 +14,7 @@ namespace Grynwald.MdDocs.Test
             {
                 nameof(CommandLineHelpOptions.Verbose) => false,
                 nameof(CommandLineHelpOptions.OutputDirectory) => false,
-                nameof(CommandLineHelpOptions.MarkdownPreset) => false,
+                nameof(CommandLineHelpOptions.MarkdownPreset) => true,
                 nameof(CommandLineHelpOptions.AssemblyPath) => false,
                 nameof(CommandLineHelpOptions.NoVersion) => false,
                 nameof(CommandLineHelpOptions.IncludeVersion) => true,

@@ -53,8 +53,6 @@ namespace Grynwald.MdDocs
 
         private static int OnApiReferenceCommand(ILogger logger, ApiReferenceOptions opts)
         {
-            var serializationOptions = GetSerializationOptions(logger, opts);
-
             if (opts.AssemblyPath == null || String.IsNullOrWhiteSpace(opts.AssemblyPath))
             {
                 Console.Error.WriteLine($"Invalid assembly path '{opts.AssemblyPath}'");
@@ -65,6 +63,9 @@ namespace Grynwald.MdDocs
                 Console.Error.WriteLine($"Invalid output directory '{opts.OutputDirectory}'");
                 return -1;
             }
+
+            var configuration = LoadConfiguration(opts);
+            var serializationOptions = GetSerializationOptions(logger, configuration);
 
             using (var assemblyDocumentation = AssemblyDocumentation.FromAssemblyFile(opts.AssemblyPath, logger))
             {
@@ -80,8 +81,6 @@ namespace Grynwald.MdDocs
 
         private static int OnCommandLineHelpCommand(ILogger logger, CommandLineHelpOptions opts)
         {
-            var serializationOptions = GetSerializationOptions(logger, opts);
-
             if (opts.AssemblyPath == null || String.IsNullOrWhiteSpace(opts.AssemblyPath))
             {
                 Console.Error.WriteLine($"Invalid assembly path '{opts.AssemblyPath}'");
@@ -94,6 +93,7 @@ namespace Grynwald.MdDocs
             }
 
             var configuration = LoadConfiguration(opts);
+            var serializationOptions = GetSerializationOptions(logger, configuration);
 
             using (var model = ApplicationDocumentation.FromAssemblyFile(opts.AssemblyPath, logger))
             {
@@ -102,7 +102,6 @@ namespace Grynwald.MdDocs
                     opts.OutputDirectory,
                     cleanOutputDirectory: true,
                     markdownOptions: serializationOptions);
-
             }
 
             return 0;
@@ -118,9 +117,9 @@ namespace Grynwald.MdDocs
             return new SimpleConsoleLogger(loggerConfiguration, "");
         }
 
-        private static MdSerializationOptions GetSerializationOptions(ILogger logger, OptionsBase opts)
+        private static MdSerializationOptions GetSerializationOptions(ILogger logger, DocsConfiguration configuration)
         {
-            var presetName = opts.MarkdownPreset.ToString();
+            var presetName = configuration.Markdown.Preset.ToString();
 
             try
             {

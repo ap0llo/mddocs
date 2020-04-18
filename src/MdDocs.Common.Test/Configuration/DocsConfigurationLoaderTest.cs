@@ -79,6 +79,10 @@ namespace Grynwald.MdDocs.Common.Test.Configuration
             yield return TestCase(config => Assert.NotNull(config.CommandLineHelp));
             yield return TestCase(config => Assert.True(config.CommandLineHelp.IncludeVersion));
 
+            yield return TestCase(config => Assert.NotNull(config.ApiReference));
+
+            yield return TestCase(config => Assert.NotNull(config.Markdown));
+            yield return TestCase(config => Assert.Equal(MarkdownPreset.Default, config.Markdown.Preset));
         }
 
         [Theory]
@@ -156,6 +160,44 @@ namespace Grynwald.MdDocs.Common.Test.Configuration
             // ASSERT
             Assert.NotNull(config.CommandLineHelp);
             Assert.Equal(includeVersion, config.CommandLineHelp.IncludeVersion);
+        }
+
+
+
+        [Theory]
+        [CombinatorialData]
+        public void Markdown_preset_can_be_set_in_configuration_file(MarkdownPreset preset)
+        {
+            // ARRANGE            
+            PrepareConfiguration("markdown:preset", preset.ToString());
+
+            // ACT
+            var config = DocsConfigurationLoader.GetConfiguation(m_ConfigurationFilePath);
+
+            // ASSERT
+            Assert.NotNull(config.Markdown);
+            Assert.Equal(preset, config.Markdown.Preset);
+        }
+
+        private class TestClass2
+        {
+            [ConfigurationValue("mddocs:markdown:preset")]
+            public string? Preset { get; set; }
+        }
+
+        [Theory]
+        [CombinatorialData]
+        public void Markdown_preset_can_be_set_through_settings_object(MarkdownPreset preset)
+        {
+            // ARRANGE            
+            var settings = new TestClass2() { Preset = preset.ToString() };
+
+            // ACT
+            var config = DocsConfigurationLoader.GetConfiguation(m_ConfigurationFilePath, settings);
+
+            // ASSERT
+            Assert.NotNull(config.Markdown);
+            Assert.Equal(preset, config.Markdown.Preset);
         }
     }
 }
