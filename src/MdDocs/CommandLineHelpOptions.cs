@@ -20,6 +20,6 @@ namespace Grynwald.MdDocs
         public bool NoVersion { get; set; }
 
         [ConfigurationValue("mddocs:commandlinehelp:includeVersion")]
-        public bool IncludeVersion => !NoVersion;
+        public bool? IncludeVersion => NoVersion ? (bool?)true : null;
     }
 }

@@ -51,6 +51,9 @@ namespace Grynwald.MdDocs.Common.Configuration
             if (propertyType == typeof(bool))
                 return true;
 
+            if (propertyType == typeof(bool?))
+                return true;
+
             return false;
         }
     }

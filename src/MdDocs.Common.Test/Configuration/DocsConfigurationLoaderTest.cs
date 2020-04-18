@@ -139,7 +139,7 @@ namespace Grynwald.MdDocs.Common.Test.Configuration
         private class TestClass1
         {
             [ConfigurationValue("mddocs:commandlinehelp:includeversion")]
-            public bool IncludeVersion { get; set; }
+            public bool? IncludeVersion { get; set; }
         }
 
         [Theory]

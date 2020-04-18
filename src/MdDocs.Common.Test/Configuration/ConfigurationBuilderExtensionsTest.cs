@@ -144,10 +144,48 @@ namespace Grynwald.MdDocs.Common.Test.Configuration
             Assert.Equal("value1", kvp.Value);
         }
 
+        private class TestSettingsClass7
+        {
+            [ConfigurationValue("setting1")]
+            public bool? Setting1 { get; set; }
+
+            [ConfigurationValue("setting2")]
+            public bool? Setting2 { get; set; }
+
+            [ConfigurationValue("setting3")]
+            public bool? Setting3 { get; set; }
+        }
+
+
+        [Fact]
+        public void GetSettingsDictionary_correctly_handles_nullable_bools()
+        {
+            // ARRANGE
+            var settingsObject = new TestSettingsClass7()
+            {
+                Setting1 = true,
+                Setting2 = false,
+                Setting3 = null
+            };
+
+            // ACT 
+            var settingsDictionary = ConfigurationBuilderExtensions.GetSettingsDictionary(settingsObject);
+
+            // ASSERT
+            Assert.NotNull(settingsDictionary);
+            Assert.Contains("setting1", settingsDictionary.Keys);
+            Assert.Contains("setting2", settingsDictionary.Keys);
+            Assert.DoesNotContain("setting3", settingsDictionary.Keys);
+                        
+            Assert.Equal("True", settingsDictionary["setting1"]);
+            Assert.Equal("False", settingsDictionary["setting2"]);
+        }
+
 
         [Theory]
         [InlineData(typeof(string))]
         [InlineData(typeof(bool))]
+        [InlineData(typeof(bool?))]
         public void IsSupportedPropertyType_returns_true_for_supported_property_types(Type type)
         {
             Assert.True(ConfigurationBuilderExtensions.IsSupportedPropertyType(type));
@@ -160,6 +198,5 @@ namespace Grynwald.MdDocs.Common.Test.Configuration
         {
             Assert.False(ConfigurationBuilderExtensions.IsSupportedPropertyType(type));
         }
-
     }
 }
