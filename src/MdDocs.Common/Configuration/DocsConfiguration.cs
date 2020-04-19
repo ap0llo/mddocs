@@ -3,13 +3,15 @@
 
     public class CommandLineHelpConfiguration
     {
+        public string OutputPath { get; set; } = "";
+
         public bool IncludeVersion { get; set; }
 
     }
 
-
     public class ApiReferenceConfiguration
     {
+        public string OutputPath { get; set; } = "";
     }
 
     public enum MarkdownPreset
@@ -27,7 +29,6 @@
     {
 
         public CommandLineHelpConfiguration CommandLineHelp { get; set; } = new CommandLineHelpConfiguration();
-
 
         public ApiReferenceConfiguration ApiReference { get; set; } = new ApiReferenceConfiguration();
 

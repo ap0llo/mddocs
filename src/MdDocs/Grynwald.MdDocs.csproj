@@ -31,10 +31,7 @@
 
 
   <Target Name="UpdateDocs" AfterTargets="AfterBuild" DependsOnTargets="GetTargetPath" Condition="'$(BuildingForLiveUnitTesting)' != 'true' AND '$(TargetFramework)' == 'netcoreapp3.1' ">
-    <PropertyGroup>      
-      <DocsDir>$(MSBuildThisFileDirectory)..\..\docs\commandline</DocsDir>
-    </PropertyGroup>
-    <Exec Command="dotnet &quot;@(TargetPathWithTargetPlatformMoniker->'%(FullPath)')&quot; commandlinehelp --assembly &quot;@(TargetPathWithTargetPlatformMoniker->'%(FullPath)')&quot; --outdir &quot;$(DocsDir)&quot; --configurationFilepath &quot;$(MSBuildThisFileDirectory)../../mddocs.settings.json&quot;" />    
+    <Exec Command="dotnet &quot;@(TargetPathWithTargetPlatformMoniker->'%(FullPath)')&quot; commandlinehelp --assembly &quot;@(TargetPathWithTargetPlatformMoniker->'%(FullPath)')&quot; --configurationFilePath &quot;$(MSBuildThisFileDirectory)../../mddocs.settings.json&quot;" />    
   </Target>
 
 

@@ -2,7 +2,12 @@
   "mddocs": {
 
     "commandlinehelp": {
-      "includeVersion": true
+      "includeVersion": true,
+      "outputPath" :  null
+    },
+
+    "apireference": {
+      "outputPath": null
     },
 
 

@@ -10,7 +10,7 @@ Generate API reference documentation for a .NET assembly.
 mddocs apireference --assembly|-a <VALUE>
                     [--configurationFilePath|-c <VALUE>]
                     [--markdown-preset <VALUE>]
-                    --outdir|-o <VALUE>
+                    [--outdir|-o <VALUE>]
                     [--verbose|-v]
 ```
 
@@ -21,7 +21,7 @@ mddocs apireference --assembly|-a <VALUE>
 | [assembly](#assembly-parameter)                           | [a](#assembly-parameter)              | Yes      | Path of the assembly to generate documentation for.                                                                                             |
 | [configurationFilePath](#configurationfilepath-parameter) | [c](#configurationfilepath-parameter) | No       | The path of the configuration file to use. If no configuration file is specified, default settings are used.                                    |
 | [markdown\-preset](#markdownpreset-parameter)             |                                       | No       | Specifies the preset to use for generating Markdown files.                                                                                      |
-| [outdir](#outdir-parameter)                               | [o](#outdir-parameter)                | Yes      | Path of the directory to write the documentation to. If the output directory already exists, all files in the output directory will be deleted. |
+| [outdir](#outdir-parameter)                               | [o](#outdir-parameter)                | No       | Path of the directory to write the documentation to. If the output directory already exists, all files in the output directory will be deleted. |
 | [verbose](#verbose-parameter)                             | [v](#verbose-parameter)               | No       | Show more detailed log output.                                                                                                                  |
 
 ### `assembly` Parameter
@@ -75,7 +75,7 @@ Path of the directory to write the documentation to. If the output directory alr
 | Name:          | outdir            |
 | Short name:    | o                 |
 | Position:      | *Named parameter* |
-| Required:      | Yes               |
+| Required:      | No                |
 | Default value: | *None*            |
 
 ___

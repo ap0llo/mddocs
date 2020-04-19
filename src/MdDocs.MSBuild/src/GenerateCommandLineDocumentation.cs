@@ -19,7 +19,7 @@ namespace Grynwald.MdDocs.MSBuild
             var serializationOptions = GetSerializationOptions();
 
             //TODO: Load a configuration file
-            var configuration = DocsConfigurationLoader.GetConfiguation("", this);
+            var configuration = DocsConfigurationLoader.GetConfiguration("", this);
 
             using (var model = ApplicationDocumentation.FromAssemblyFile(AssemblyPath, Logger))
             {

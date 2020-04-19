@@ -21,5 +21,12 @@ namespace Grynwald.MdDocs
 
         [ConfigurationValue("mddocs:commandlinehelp:includeVersion")]
         public bool? IncludeVersion => NoVersion ? (bool?)true : null;
+
+        [ConfigurationValue("mddocs:commandlinehelp:outputPath")]
+        public override string? OutputDirectory
+        {
+            get => base.OutputDirectory;
+            set => base.OutputDirectory = value;
+        }
     }
 }

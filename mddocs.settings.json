@@ -2,7 +2,8 @@
   "mddocs": {
 
     "commandlinehelp": {
-      "includeVersion" : false
+      "includeVersion" : false,
+      "outputPath": "./docs/commandline"
     }
 
   }

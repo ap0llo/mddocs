@@ -1,4 +1,5 @@
 ﻿using CommandLine;
+using Grynwald.MdDocs.Common.Configuration;
 
 namespace Grynwald.MdDocs
 {
@@ -10,5 +11,12 @@ namespace Grynwald.MdDocs
     {
         [Option('a', "assembly", Required = true, HelpText = "Path of the assembly to generate documentation for.")]
         public string? AssemblyPath { get; set; }
+
+        [ConfigurationValue("mddocs:apireference:outputPath")]
+        public override string? OutputDirectory
+        {
+            get => base.OutputDirectory;
+            set => base.OutputDirectory = value;
+        }
     }
 }

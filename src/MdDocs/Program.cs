@@ -58,20 +58,21 @@ namespace Grynwald.MdDocs
                 Console.Error.WriteLine($"Invalid assembly path '{opts.AssemblyPath}'");
                 return -1;
             }
-            if (opts.OutputDirectory == null || String.IsNullOrWhiteSpace(opts.OutputDirectory))
-            {
-                Console.Error.WriteLine($"Invalid output directory '{opts.OutputDirectory}'");
-                return -1;
-            }
 
             var configuration = LoadConfiguration(opts);
             var serializationOptions = GetSerializationOptions(logger, configuration);
+
+            if (String.IsNullOrWhiteSpace(configuration.ApiReference.OutputPath))
+            {
+                Console.Error.WriteLine($"Invalid output directory '{configuration.ApiReference.OutputPath}'");
+                return -1;
+            }
 
             using (var assemblyDocumentation = AssemblyDocumentation.FromAssemblyFile(opts.AssemblyPath, logger))
             {
                 var pageFactory = new PageFactory(new DefaultApiReferencePathProvider(), assemblyDocumentation, logger);
                 pageFactory.GetPages().Save(
-                    opts.OutputDirectory,
+                    configuration.ApiReference.OutputPath,
                     cleanOutputDirectory: true,
                     markdownOptions: serializationOptions);
             }
@@ -86,20 +87,23 @@ namespace Grynwald.MdDocs
                 Console.Error.WriteLine($"Invalid assembly path '{opts.AssemblyPath}'");
                 return -1;
             }
-            if (opts.OutputDirectory == null || String.IsNullOrWhiteSpace(opts.OutputDirectory))
+
+            var configuration = LoadConfiguration(opts);
+
+            if (String.IsNullOrWhiteSpace(configuration.CommandLineHelp.OutputPath))
             {
-                Console.Error.WriteLine($"Invalid output directory '{opts.OutputDirectory}'");
+                Console.Error.WriteLine($"Invalid output directory '{configuration.CommandLineHelp.OutputPath}'");
                 return -1;
             }
 
-            var configuration = LoadConfiguration(opts);
+
             var serializationOptions = GetSerializationOptions(logger, configuration);
 
             using (var model = ApplicationDocumentation.FromAssemblyFile(opts.AssemblyPath, logger))
             {
                 var pageFactory = new CommandLinePageFactory(model, configuration.CommandLineHelp, new DefaultCommandLineHelpPathProvider(), logger);
                 pageFactory.GetPages().Save(
-                    opts.OutputDirectory,
+                    configuration.CommandLineHelp.OutputPath,
                     cleanOutputDirectory: true,
                     markdownOptions: serializationOptions);
             }
@@ -136,7 +140,7 @@ namespace Grynwald.MdDocs
 
         private static DocsConfiguration LoadConfiguration(OptionsBase commandlineParameters)
         {
-            return DocsConfigurationLoader.GetConfiguation(commandlineParameters.ConfigurationFilePath ?? "", commandlineParameters);
+            return DocsConfigurationLoader.GetConfiguration(commandlineParameters.ConfigurationFilePath ?? "", commandlineParameters);
         }
 
     }
