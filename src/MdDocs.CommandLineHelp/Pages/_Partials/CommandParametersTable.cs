@@ -12,11 +12,11 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
     internal class CommandParametersTable : MdPartial
     {
         private readonly CommandDocumentationBase m_Command;
-        private readonly Func<OptionDocumentation, string> m_GetOptionAnchor;
-        private readonly Func<ValueDocumentation, string> m_GetValueAnchor;
+        private readonly Func<OptionDocumentation, string?> m_GetOptionAnchor;
+        private readonly Func<ValueDocumentation, string?> m_GetValueAnchor;
 
 
-        public CommandParametersTable(CommandDocumentationBase command, Func<OptionDocumentation, string> getOptionAnchor, Func<ValueDocumentation, string> getValueAnchor)
+        public CommandParametersTable(CommandDocumentationBase command, Func<OptionDocumentation, string?> getOptionAnchor, Func<ValueDocumentation, string?> getValueAnchor)
         {
             m_Command = command ?? throw new ArgumentNullException(nameof(command));
             m_GetOptionAnchor = getOptionAnchor ?? throw new ArgumentNullException(nameof(getOptionAnchor));
