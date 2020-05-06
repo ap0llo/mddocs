@@ -45,7 +45,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
 
             var verbAttribute = definition.GetAttribute(Constants.VerbAttributeFullName);
 
-            var name = (string)verbAttribute.ConstructorArguments.Single().Value;
+            var name = (string)verbAttribute.ConstructorArguments.First(x => x.Type.FullName == "System.String").Value;
 
             var helpText = verbAttribute.GetPropertyValueOrDefault<string>("HelpText");
             var hidden = verbAttribute.GetPropertyValueOrDefault<bool>("Hidden");
