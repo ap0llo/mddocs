@@ -2,12 +2,20 @@
 using Grynwald.MdDocs.ApiReference.Model;
 using Grynwald.MdDocs.ApiReference.Pages;
 using Grynwald.MdDocs.Common;
+using Grynwald.Utilities.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace Grynwald.MdDocs.MSBuild
 {
     public sealed class GenerateApiReferenceDocumentation : TaskBase
     {
+        [ConfigurationValue("mddocs:apireference:assemblyPath")]
+        public string AssemblyPath => Assembly.GetFullPath();
+
+        [ConfigurationValue("mddocs:apireference:outputPath")]
+        public string OutputDirectoryPath => OutputDirectory?.GetFullPath() ?? "";
+
+
         public override bool Execute()
         {
             if (!ValidateParameters())
@@ -21,10 +29,15 @@ namespace Grynwald.MdDocs.MSBuild
 
             var serializationOptions = GetSerializationOptions();
 
+            var configuration = LoadConfiguration();
+
             using (var assemblyDocumentation = AssemblyDocumentation.FromAssemblyFile(AssemblyPath, Logger))
             {
                 var pageFactory = new PageFactory(new DefaultApiReferencePathProvider(), assemblyDocumentation, Logger);
-                pageFactory.GetPages().Save(OutputDirectoryPath, cleanOutputDirectory: true, markdownOptions: serializationOptions);
+                pageFactory.GetPages().Save(
+                    configuration.ApiReference.OutputPath,
+                    cleanOutputDirectory: true,
+                    markdownOptions: serializationOptions);
             }
 
             return Log.HasLoggedErrors == false;

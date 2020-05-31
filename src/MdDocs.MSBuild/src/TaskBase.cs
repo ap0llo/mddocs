@@ -1,5 +1,7 @@
 ﻿using System;
 using Grynwald.MarkdownGenerator;
+using Grynwald.MdDocs.Common.Configuration;
+using Grynwald.Utilities.Configuration;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 using Microsoft.Extensions.Logging;
@@ -15,10 +17,11 @@ namespace Grynwald.MdDocs.MSBuild
         [Required]
         public ITaskItem Assembly { get; set; } = null!; // MSBuild ensures that value is set
 
-        [Required]
-        public ITaskItem OutputDirectory { get; set; } = null!; // MSBuild ensures that value is set
+        public ITaskItem? OutputDirectory { get; set; } = null;
 
+        [ConfigurationValue("mddocs:markdown:preset")]
         public string? MarkdownPreset { get; set; }
+
 
         protected ILogger Logger
         {
@@ -29,23 +32,17 @@ namespace Grynwald.MdDocs.MSBuild
             }
         }
 
-        protected string AssemblyPath => Assembly.GetFullPath();
 
-        protected string OutputDirectoryPath => OutputDirectory.GetFullPath();
-
-
-        protected bool ValidateParameters()
+        // should be protected but is internal for testing
+        internal bool ValidateParameters()
         {
             if (Assembly is null)
                 Log.LogError($"Required task parameter '{nameof(Assembly)}' is null");
 
-            if (OutputDirectory is null)
-                Log.LogError($"Required task parameter '{nameof(OutputDirectory)}' is null");
-
             return Log.HasLoggedErrors == false;
         }
 
-
+        //[Obsolete]
         protected MdSerializationOptions GetSerializationOptions()
         {
             if (MarkdownPreset == null || String.IsNullOrEmpty(MarkdownPreset))
@@ -64,6 +61,15 @@ namespace Grynwald.MdDocs.MSBuild
                 Logger.LogInformation($"Preset '{MarkdownPreset}' not found. Using default serialization options");
                 return MdSerializationOptions.Presets.Default;
             }
+        }
+
+        // should be protected but is internal for testing
+        internal DocsConfiguration LoadConfiguration()
+        {
+            //TODO: Load a configuration file
+            var configuration = DocsConfigurationLoader.GetConfiguration("", this);
+
+            return configuration;
         }
     }
 }
