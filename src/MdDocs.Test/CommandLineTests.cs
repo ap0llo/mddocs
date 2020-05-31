@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using CommandLine;
 using Grynwald.MdDocs.Common.Configuration;
+using Grynwald.Utilities.Configuration;
 using Xunit;
 
 namespace Grynwald.MdDocs.Test

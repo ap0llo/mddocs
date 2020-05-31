@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Grynwald.Utilities.Configuration" Version="1.6.3-pre" />
     <PackageReference Include="Grynwald.MarkdownGenerator" Version="2.5.34" />
     <PackageReference Include="Mono.Cecil" Version="0.11.2" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.4" />

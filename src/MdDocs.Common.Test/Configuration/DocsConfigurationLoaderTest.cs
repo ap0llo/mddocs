@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Grynwald.MdDocs.Common.Configuration;
+using Grynwald.Utilities.Configuration;
 using Grynwald.Utilities.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;

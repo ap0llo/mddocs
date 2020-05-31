@@ -1,5 +1,6 @@
 ﻿using CommandLine;
 using Grynwald.MdDocs.Common.Configuration;
+using Grynwald.Utilities.Configuration;
 
 namespace Grynwald.MdDocs
 {

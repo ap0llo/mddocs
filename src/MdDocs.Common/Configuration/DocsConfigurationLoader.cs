@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Text;
 using Microsoft.Extensions.Configuration;
+using Grynwald.Utilities.Configuration;
 
 namespace Grynwald.MdDocs.Common.Configuration
 {
