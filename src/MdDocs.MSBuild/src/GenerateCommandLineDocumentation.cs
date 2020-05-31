@@ -1,6 +1,7 @@
 ﻿using Grynwald.MdDocs.CommandLineHelp.Model;
 using Grynwald.MdDocs.CommandLineHelp.Pages;
 using Grynwald.MdDocs.Common;
+using Grynwald.MdDocs.Common.Configuration;
 using Grynwald.Utilities.Configuration;
 
 namespace Grynwald.MdDocs.MSBuild
@@ -22,8 +23,6 @@ namespace Grynwald.MdDocs.MSBuild
             if (!ValidateParameters())
                 return false;
 
-            var serializationOptions = GetSerializationOptions();
-
             var configuration = LoadConfiguration();
 
             using (var model = ApplicationDocumentation.FromAssemblyFile(AssemblyPath, Logger))
@@ -32,7 +31,7 @@ namespace Grynwald.MdDocs.MSBuild
                 pageFactory.GetPages().Save(
                     configuration.CommandLineHelp.OutputPath,
                     cleanOutputDirectory: true,
-                    markdownOptions: serializationOptions
+                    markdownOptions: configuration.GetSerializationOptions(Logger)
                 );
             }
 

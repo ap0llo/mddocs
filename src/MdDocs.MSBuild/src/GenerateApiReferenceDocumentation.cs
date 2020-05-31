@@ -2,6 +2,7 @@
 using Grynwald.MdDocs.ApiReference.Model;
 using Grynwald.MdDocs.ApiReference.Pages;
 using Grynwald.MdDocs.Common;
+using Grynwald.MdDocs.Common.Configuration;
 using Grynwald.Utilities.Configuration;
 using Microsoft.Extensions.Logging;
 
@@ -27,7 +28,6 @@ namespace Grynwald.MdDocs.MSBuild
                 Directory.Delete(OutputDirectoryPath, true);
             }
 
-            var serializationOptions = GetSerializationOptions();
 
             var configuration = LoadConfiguration();
 
@@ -37,7 +37,7 @@ namespace Grynwald.MdDocs.MSBuild
                 pageFactory.GetPages().Save(
                     configuration.ApiReference.OutputPath,
                     cleanOutputDirectory: true,
-                    markdownOptions: serializationOptions);
+                    markdownOptions: configuration.GetSerializationOptions(Logger));
             }
 
             return Log.HasLoggedErrors == false;

@@ -45,27 +45,6 @@ namespace Grynwald.MdDocs.MSBuild
             return Log.HasLoggedErrors == false;
         }
 
-        //[Obsolete]
-        protected MdSerializationOptions GetSerializationOptions()
-        {
-            if (MarkdownPreset == null || String.IsNullOrEmpty(MarkdownPreset))
-            {
-                return MdSerializationOptions.Presets.Default;
-            }
-
-            try
-            {
-                var preset = MdSerializationOptions.Presets.Get(MarkdownPreset);
-                Logger.LogInformation($"Using preset '{MarkdownPreset}' for generating markdown");
-                return preset;
-            }
-            catch (PresetNotFoundException)
-            {
-                Logger.LogInformation($"Preset '{MarkdownPreset}' not found. Using default serialization options");
-                return MdSerializationOptions.Presets.Default;
-            }
-        }
-
         // should be protected but is internal for testing
         internal DocsConfiguration LoadConfiguration()
         {

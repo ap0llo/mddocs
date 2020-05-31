@@ -54,7 +54,6 @@ namespace Grynwald.MdDocs
         private static int OnApiReferenceCommand(ILogger logger, ApiReferenceOptions opts)
         {
             var configuration = LoadConfiguration(opts);
-            var serializationOptions = GetSerializationOptions(logger, configuration);
 
             if (String.IsNullOrWhiteSpace(configuration.ApiReference.OutputPath))
             {
@@ -74,7 +73,7 @@ namespace Grynwald.MdDocs
                 pageFactory.GetPages().Save(
                     configuration.ApiReference.OutputPath,
                     cleanOutputDirectory: true,
-                    markdownOptions: serializationOptions);
+                    markdownOptions: configuration.GetSerializationOptions(logger));
             }
 
             return 0;
@@ -97,16 +96,13 @@ namespace Grynwald.MdDocs
                 return -1;
             }
 
-
-            var serializationOptions = GetSerializationOptions(logger, configuration);
-
             using (var model = ApplicationDocumentation.FromAssemblyFile(configuration.CommandLineHelp.AssemblyPath, logger))
             {
                 var pageFactory = new CommandLinePageFactory(model, configuration.CommandLineHelp, new DefaultCommandLineHelpPathProvider(), logger);
                 pageFactory.GetPages().Save(
                     configuration.CommandLineHelp.OutputPath,
                     cleanOutputDirectory: true,
-                    markdownOptions: serializationOptions);
+                    markdownOptions: configuration.GetSerializationOptions(logger));
             }
 
             return 0;
@@ -122,27 +118,8 @@ namespace Grynwald.MdDocs
             return new SimpleConsoleLogger(loggerConfiguration, "");
         }
 
-        private static MdSerializationOptions GetSerializationOptions(ILogger logger, DocsConfiguration configuration)
-        {
-            var presetName = configuration.Markdown.Preset.ToString();
-
-            try
-            {
-                var preset = MdSerializationOptions.Presets.Get(presetName);
-                logger.LogInformation($"Using preset '{presetName}' for generating markdown");
-                return preset;
-            }
-            catch (PresetNotFoundException)
-            {
-                logger.LogInformation($"Preset '{presetName}' not found. Using default serialization options");
-                return MdSerializationOptions.Presets.Default;
-            }
-        }
-
-        private static DocsConfiguration LoadConfiguration(OptionsBase commandlineParameters)
-        {
-            return DocsConfigurationLoader.GetConfiguration(commandlineParameters.ConfigurationFilePath ?? "", commandlineParameters);
-        }
+        private static DocsConfiguration LoadConfiguration(OptionsBase commandlineParameters) =>
+            DocsConfigurationLoader.GetConfiguration(commandlineParameters.ConfigurationFilePath ?? "", commandlineParameters);
 
     }
 }
