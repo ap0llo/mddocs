@@ -7,11 +7,15 @@
 
         public bool IncludeVersion { get; set; }
 
+        public string AssemblyPath { get; set; } = "";
+
     }
 
     public class ApiReferenceConfiguration
     {
         public string OutputPath { get; set; } = "";
+
+        public string AssemblyPath { get; set; } = "";
     }
 
     public enum MarkdownPreset

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using CommandLine;
-using Grynwald.MdDocs.Common.Configuration;
 using Grynwald.Utilities.Configuration;
 using Xunit;
 
@@ -22,10 +21,10 @@ namespace Grynwald.MdDocs.Test
                 (_, nameof(OptionsBase.MarkdownPreset)) => true,
                 (_, nameof(OptionsBase.ConfigurationFilePath)) => false,
                 (nameof(CommandLineHelpOptions), nameof(OptionsBase.OutputDirectory)) => true,
-                (nameof(CommandLineHelpOptions), nameof(CommandLineHelpOptions.AssemblyPath)) => false,
+                (nameof(CommandLineHelpOptions), nameof(CommandLineHelpOptions.AssemblyPath)) => true,
                 (nameof(CommandLineHelpOptions), nameof(CommandLineHelpOptions.NoVersion)) => false,
                 (nameof(CommandLineHelpOptions), nameof(CommandLineHelpOptions.IncludeVersion)) => true,
-                (nameof(ApiReferenceOptions), nameof(CommandLineHelpOptions.AssemblyPath)) => false,
+                (nameof(ApiReferenceOptions), nameof(ApiReferenceOptions.AssemblyPath)) => true,
                 (nameof(ApiReferenceOptions), nameof(OptionsBase.OutputDirectory)) => true,
                 _ => throw new NotImplementedException()
             };

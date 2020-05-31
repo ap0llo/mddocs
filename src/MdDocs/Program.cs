@@ -53,12 +53,6 @@ namespace Grynwald.MdDocs
 
         private static int OnApiReferenceCommand(ILogger logger, ApiReferenceOptions opts)
         {
-            if (opts.AssemblyPath == null || String.IsNullOrWhiteSpace(opts.AssemblyPath))
-            {
-                Console.Error.WriteLine($"Invalid assembly path '{opts.AssemblyPath}'");
-                return -1;
-            }
-
             var configuration = LoadConfiguration(opts);
             var serializationOptions = GetSerializationOptions(logger, configuration);
 
@@ -68,7 +62,13 @@ namespace Grynwald.MdDocs
                 return -1;
             }
 
-            using (var assemblyDocumentation = AssemblyDocumentation.FromAssemblyFile(opts.AssemblyPath, logger))
+            if (String.IsNullOrWhiteSpace(configuration.ApiReference.AssemblyPath))
+            {
+                Console.Error.WriteLine($"Invalid assembly path '{configuration.ApiReference.AssemblyPath}'");
+                return -1;
+            }
+
+            using (var assemblyDocumentation = AssemblyDocumentation.FromAssemblyFile(configuration.ApiReference.AssemblyPath, logger))
             {
                 var pageFactory = new PageFactory(new DefaultApiReferencePathProvider(), assemblyDocumentation, logger);
                 pageFactory.GetPages().Save(
@@ -82,24 +82,25 @@ namespace Grynwald.MdDocs
 
         private static int OnCommandLineHelpCommand(ILogger logger, CommandLineHelpOptions opts)
         {
-            if (opts.AssemblyPath == null || String.IsNullOrWhiteSpace(opts.AssemblyPath))
-            {
-                Console.Error.WriteLine($"Invalid assembly path '{opts.AssemblyPath}'");
-                return -1;
-            }
-
             var configuration = LoadConfiguration(opts);
 
+            //TODO: move validation logic to separate class
             if (String.IsNullOrWhiteSpace(configuration.CommandLineHelp.OutputPath))
             {
                 Console.Error.WriteLine($"Invalid output directory '{configuration.CommandLineHelp.OutputPath}'");
                 return -1;
             }
 
+            if (String.IsNullOrWhiteSpace(configuration.CommandLineHelp.AssemblyPath))
+            {
+                Console.Error.WriteLine($"Invalid assembly path '{configuration.CommandLineHelp.AssemblyPath}'");
+                return -1;
+            }
+
 
             var serializationOptions = GetSerializationOptions(logger, configuration);
 
-            using (var model = ApplicationDocumentation.FromAssemblyFile(opts.AssemblyPath, logger))
+            using (var model = ApplicationDocumentation.FromAssemblyFile(configuration.CommandLineHelp.AssemblyPath, logger))
             {
                 var pageFactory = new CommandLinePageFactory(model, configuration.CommandLineHelp, new DefaultCommandLineHelpPathProvider(), logger);
                 pageFactory.GetPages().Save(

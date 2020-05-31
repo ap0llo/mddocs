@@ -32,7 +32,10 @@ namespace Grynwald.MdDocs.Common.Configuration
                 var baseDirectory = Path.GetDirectoryName(Path.GetFullPath(configurationFilePath));
 
                 config.ApiReference.OutputPath = GetFullPath(config.ApiReference.OutputPath, baseDirectory);
+                config.ApiReference.AssemblyPath = GetFullPath(config.ApiReference.AssemblyPath, baseDirectory);
+
                 config.CommandLineHelp.OutputPath = GetFullPath(config.CommandLineHelp.OutputPath, baseDirectory);
+                config.CommandLineHelp.AssemblyPath = GetFullPath(config.CommandLineHelp.AssemblyPath, baseDirectory);
             }
 
             return config;

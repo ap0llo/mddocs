@@ -83,9 +83,11 @@ namespace Grynwald.MdDocs.Common.Test.Configuration
             yield return TestCase(config => Assert.NotNull(config.CommandLineHelp));
             yield return TestCase(config => Assert.Empty(config.CommandLineHelp.OutputPath));
             yield return TestCase(config => Assert.True(config.CommandLineHelp.IncludeVersion));
+            yield return TestCase(config => Assert.Empty(config.CommandLineHelp.AssemblyPath));
 
             yield return TestCase(config => Assert.NotNull(config.ApiReference));
             yield return TestCase(config => Assert.Empty(config.ApiReference.OutputPath));
+            yield return TestCase(config => Assert.Empty(config.ApiReference.AssemblyPath));
 
             yield return TestCase(config => Assert.NotNull(config.Markdown));
             yield return TestCase(config => Assert.Equal(MarkdownPreset.Default, config.Markdown.Preset));
@@ -204,6 +206,40 @@ namespace Grynwald.MdDocs.Common.Test.Configuration
         }
 
         [Fact]
+        public void CommandLineHelp_AssemblyPath_can_be_set_in_configuration_file()
+        {
+            // ARRANGE            
+            PrepareConfiguration("commandlinehelp:assemblyPath", @"C:\some-path");
+
+            // ACT
+            var config = DocsConfigurationLoader.GetConfiguration(m_ConfigurationFilePath);
+
+            // ASSERT
+            Assert.NotNull(config.CommandLineHelp);
+            Assert.Equal(@"C:\some-path", config.CommandLineHelp.AssemblyPath);
+        }
+
+        private class TestClass3
+        {
+            [ConfigurationValue("mddocs:commandlinehelp:assemblyPath")]
+            public string? AssemblyPath { get; set; }
+        }
+
+        [Fact]
+        public void CommandLineHelp_AssemblyPath_can_be_set_through_settings_object()
+        {
+            // ARRANGE            
+            var settings = new TestClass3() { AssemblyPath = @"C:\some-path" };
+
+            // ACT
+            var config = DocsConfigurationLoader.GetConfiguration(m_ConfigurationFilePath, settings);
+
+            // ASSERT
+            Assert.NotNull(config.CommandLineHelp);
+            Assert.Equal(@"C:\some-path", config.CommandLineHelp.AssemblyPath);
+        }
+
+        [Fact]
         public void ApiReference_OutputPath_can_be_set_in_configuration_file()
         {
             // ARRANGE            
@@ -217,7 +253,7 @@ namespace Grynwald.MdDocs.Common.Test.Configuration
             Assert.Equal(@"C:\some-path", config.ApiReference.OutputPath);
         }
 
-        private class TestClass3
+        private class TestClass4
         {
             [ConfigurationValue("mddocs:apireference:outputpath")]
             public string? OutputPath { get; set; }
@@ -227,7 +263,7 @@ namespace Grynwald.MdDocs.Common.Test.Configuration
         public void ApiReference_OutputPath_can_be_set_through_settings_object()
         {
             // ARRANGE            
-            var settings = new TestClass3() { OutputPath = @"C:\some-path" };
+            var settings = new TestClass4() { OutputPath = @"C:\some-path" };
 
             // ACT
             var config = DocsConfigurationLoader.GetConfiguration(m_ConfigurationFilePath, settings);
@@ -235,6 +271,41 @@ namespace Grynwald.MdDocs.Common.Test.Configuration
             // ASSERT
             Assert.NotNull(config.CommandLineHelp);
             Assert.Equal(@"C:\some-path", config.ApiReference.OutputPath);
+        }
+
+
+        [Fact]
+        public void ApiReference_AssemblyPath_can_be_set_in_configuration_file()
+        {
+            // ARRANGE            
+            PrepareConfiguration("apireference:assemblyPath", @"C:\some-path");
+
+            // ACT
+            var config = DocsConfigurationLoader.GetConfiguration(m_ConfigurationFilePath);
+
+            // ASSERT
+            Assert.NotNull(config.CommandLineHelp);
+            Assert.Equal(@"C:\some-path", config.ApiReference.AssemblyPath);
+        }
+
+        private class TestClass5
+        {
+            [ConfigurationValue("mddocs:apireference:assemblyPath")]
+            public string? AssemblyPath { get; set; }
+        }
+
+        [Fact]
+        public void ApiReference_AssemblyPath_can_be_set_through_settings_object()
+        {
+            // ARRANGE            
+            var settings = new TestClass5() { AssemblyPath = @"C:\some-path" };
+
+            // ACT
+            var config = DocsConfigurationLoader.GetConfiguration(m_ConfigurationFilePath, settings);
+
+            // ASSERT
+            Assert.NotNull(config.CommandLineHelp);
+            Assert.Equal(@"C:\some-path", config.ApiReference.AssemblyPath);
         }
 
 
@@ -253,7 +324,7 @@ namespace Grynwald.MdDocs.Common.Test.Configuration
             Assert.Equal(preset, config.Markdown.Preset);
         }
 
-        private class TestClass4
+        private class TestClass6
         {
             [ConfigurationValue("mddocs:markdown:preset")]
             public string? Preset { get; set; }
@@ -264,7 +335,7 @@ namespace Grynwald.MdDocs.Common.Test.Configuration
         public void Markdown_preset_can_be_set_through_settings_object(MarkdownPreset preset)
         {
             // ARRANGE            
-            var settings = new TestClass4() { Preset = preset.ToString() };
+            var settings = new TestClass6() { Preset = preset.ToString() };
 
             // ACT
             var config = DocsConfigurationLoader.GetConfiguration(m_ConfigurationFilePath, settings);
@@ -333,6 +404,67 @@ namespace Grynwald.MdDocs.Common.Test.Configuration
 
             // ASSERT
             Assert.Equal(path, config.ApiReference.OutputPath);
+        }
+
+
+        [Fact]
+        public void GetConfiguration_converts_the_CommandLineHelp_assembly_path_to_a_full_path()
+        {
+            // ARRANGE
+            var relativePath = "../some-relative-path";
+            PrepareConfiguration("commandlinehelp:assemblyPath", relativePath);
+
+            var expectedPath = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(m_ConfigurationFilePath)!, relativePath));
+
+            // ACT
+            var config = DocsConfigurationLoader.GetConfiguration(m_ConfigurationFilePath);
+
+            // ASSERT
+            Assert.Equal(expectedPath, config.CommandLineHelp.AssemblyPath);
+        }
+
+        [Fact]
+        public void GetConfiguration_does_not_change_the_CommandLineHelp_assembly_path_if_value_is_a_rooted_path()
+        {
+            // ARRANGE
+            var path = @"C:\some-path";
+            PrepareConfiguration("commandlinehelp:assemblyPath", path);
+
+            // ACT
+            var config = DocsConfigurationLoader.GetConfiguration(m_ConfigurationFilePath);
+
+            // ASSERT
+            Assert.Equal(path, config.CommandLineHelp.AssemblyPath);
+        }
+
+        [Fact]
+        public void GetConfiguration_converts_the_ApiReference_assembly_path_to_a_full_path()
+        {
+            // ARRANGE
+            var relativePath = "../some-relative-path";
+            PrepareConfiguration("apireference:assemblyPath", relativePath);
+
+            var expectedPath = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(m_ConfigurationFilePath)!, relativePath));
+
+            // ACT
+            var config = DocsConfigurationLoader.GetConfiguration(m_ConfigurationFilePath);
+
+            // ASSERT
+            Assert.Equal(expectedPath, config.ApiReference.AssemblyPath);
+        }
+
+        [Fact]
+        public void GetConfiguration_does_not_change_the_ApiReference_assembly_path_if_value_is_a_rooted_path()
+        {
+            // ARRANGE
+            var path = @"C:\some-path";
+            PrepareConfiguration("apireference:assemblyPath", path);
+
+            // ACT
+            var config = DocsConfigurationLoader.GetConfiguration(m_ConfigurationFilePath);
+
+            // ASSERT
+            Assert.Equal(path, config.ApiReference.AssemblyPath);
         }
     }
 }

@@ -3,13 +3,14 @@
 
     "commandlinehelp": {
       "includeVersion": true,
-      "outputPath" :  null
+      "outputPath": null,
+      "assemblyPath" : null
     },
 
     "apireference": {
-      "outputPath": null
+      "outputPath": null,
+      "assemblyPath": null
     },
-
 
     "markdown": {
       "preset": "default"
