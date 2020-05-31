@@ -8,6 +8,7 @@ using Grynwald.MdDocs.ApiReference.Pages;
 using Grynwald.MdDocs.CommandLineHelp.Model;
 using Grynwald.MdDocs.CommandLineHelp.Pages;
 using Grynwald.MdDocs.Common;
+using Grynwald.Utilities.Logging;
 using Microsoft.Extensions.Logging;
 
 namespace Grynwald.MdDocs
@@ -104,7 +105,15 @@ namespace Grynwald.MdDocs
             return 0;
         }
 
-        private static ILogger GetLogger(OptionsBase opts) => new ColoredConsoleLogger(opts.Verbose ? LogLevel.Debug : LogLevel.Information);
+        private static ILogger GetLogger(OptionsBase opts)
+        {
+            var loggerConfiguration = new SimpleConsoleLoggerConfiguration(
+                minimumLogLevel: opts.Verbose ? LogLevel.Debug : LogLevel.Information,
+                showCategoryName: false,
+                enabledColoredOutput: true);
+
+            return new SimpleConsoleLogger(loggerConfiguration, "");
+        }
 
         private static MdSerializationOptions GetSerializationOptions(ILogger logger, OptionsBase opts)
         {

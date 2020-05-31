@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup Label="Package references">
-    <PackageReference Include="Grynwald.Utilities" Version="1.5.54" />
+    <PackageReference Include="Grynwald.Utilities" Version="1.6.11-pre" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.4" />
     <PackageReference Include="Mono.Cecil" Version="0.11.2" />
   </ItemGroup>
