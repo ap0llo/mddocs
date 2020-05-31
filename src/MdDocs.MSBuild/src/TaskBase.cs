@@ -19,6 +19,9 @@ namespace Grynwald.MdDocs.MSBuild
 
         public ITaskItem? OutputDirectory { get; set; } = null;
 
+        public ITaskItem? ConfigurationFile { get; set; } = null;
+
+
         [ConfigurationValue("mddocs:markdown:preset")]
         public string? MarkdownPreset { get; set; }
 
@@ -66,9 +69,7 @@ namespace Grynwald.MdDocs.MSBuild
         // should be protected but is internal for testing
         internal DocsConfiguration LoadConfiguration()
         {
-            //TODO: Load a configuration file
-            var configuration = DocsConfigurationLoader.GetConfiguration("", this);
-
+            var configuration = DocsConfigurationLoader.GetConfiguration(ConfigurationFile?.GetFullPath() ?? "", this);
             return configuration;
         }
     }
