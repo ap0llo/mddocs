@@ -1,8 +1,10 @@
 ﻿using ApprovalTests;
 using ApprovalTests.Reporters;
 using Grynwald.MarkdownGenerator;
+using Grynwald.MdDocs.CommandLineHelp.Configuration;
 using Grynwald.MdDocs.CommandLineHelp.Model;
 using Grynwald.MdDocs.CommandLineHelp.Pages;
+using Grynwald.MdDocs.Common.Configuration;
 using Xunit;
 
 namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
@@ -71,11 +73,11 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
                 usage: new[] { "usage line 1", "usage line 2", "usage line 3" },
                 version: "4.5.6");
 
-            Approve(model, new TestCommandLinePageOptions() { IncludeVersion = false });
+            Approve(model, new CommandLineHelpConfiguration() { IncludeVersion = false });
         }
 
 
-        private void Approve(MultiCommandApplicationDocumentation model, ICommandLinePageOptions? options = null)
+        private void Approve(MultiCommandApplicationDocumentation model, CommandLineHelpConfiguration? configuration = null)
         {
             var pathProvider = new DefaultCommandLineHelpPathProvider();
             var documentSet = new DocumentSet<IDocument>();
@@ -86,7 +88,9 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
                 documentSet.Add(pathProvider.GetPath(command), new TextDocument());
             }
 
-            var applicationPage = new MultiCommandApplicationPage(documentSet, pathProvider, model, options ?? new TestCommandLinePageOptions());
+            configuration ??= new ConfigurationProvider().GetDefaultCommandLineHelpConfiguration();
+
+            var applicationPage = new MultiCommandApplicationPage(documentSet, pathProvider, model, configuration);
             documentSet.Add(pathProvider.GetPath(model), applicationPage);
 
             var doc = applicationPage.GetDocument();

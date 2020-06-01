@@ -1,0 +1,10 @@
+{
+  "mddocs": {
+
+    "commandlinehelp": {
+      "includeVersion" : false,
+      "outputPath": "./docs/commandline"
+    }
+
+  }
+}

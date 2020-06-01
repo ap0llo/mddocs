@@ -1,8 +1,10 @@
 ﻿using ApprovalTests;
 using ApprovalTests.Reporters;
 using Grynwald.MarkdownGenerator;
+using Grynwald.MdDocs.CommandLineHelp.Configuration;
 using Grynwald.MdDocs.CommandLineHelp.Model;
 using Grynwald.MdDocs.CommandLineHelp.Pages;
+using Grynwald.MdDocs.Common.Configuration;
 using Xunit;
 
 namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
@@ -227,7 +229,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
                     new OptionDocumentation(shortName: 'a')
                 });
 
-            Approve(model, new TestCommandLinePageOptions() { IncludeVersion = false });
+            Approve(model, new CommandLineHelpConfiguration() { IncludeVersion = false });
         }
 
         [Fact]
@@ -251,12 +253,14 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
         }
 
 
-        private void Approve(CommandDocumentation model, ICommandLinePageOptions? options = null)
+        private void Approve(CommandDocumentation model, CommandLineHelpConfiguration? configuration = null)
         {
             var pathProvider = new DefaultCommandLineHelpPathProvider();
             var documentSet = new DocumentSet<IDocument>();
 
-            var commandPage = new CommandPage(documentSet, pathProvider, model, options ?? new TestCommandLinePageOptions());
+            configuration ??= new ConfigurationProvider().GetDefaultCommandLineHelpConfiguration();
+
+            var commandPage = new CommandPage(documentSet, pathProvider, model, configuration);
 
             // add dummy application page and command page itself to document set
             // because command page will create a link to the application page

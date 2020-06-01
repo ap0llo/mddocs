@@ -1,0 +1,17 @@
+{
+  "mddocs": {
+
+    "commandlinehelp": {
+      "assemblyPath": null,
+      "outputPath": null,
+      "includeVersion": true,
+      "markdownPreset": "default"
+    },
+
+    "apireference": {
+      "assemblyPath": null,
+      "outputPath": null,
+      "markdownPreset" :  "default"
+    }
+  }
+}

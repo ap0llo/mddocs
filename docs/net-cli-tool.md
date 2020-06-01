@@ -1,5 +1,7 @@
 # MdDocs .NET CLI tool
 
+**Applies to:** Version 0.4 an later
+
 ## Installation
 
 *MdDocs* is a distributed as NuGet packages.
@@ -31,14 +33,10 @@ To generate API reference documentation for a .NET assembly, run:
 mddocs apireference --assembly <PATH-TO-ASSEMBLY> --outdir <OUTPUT-DIRECTORY>
 ```
 
-**Note:** If the output directory already exists, all files in the output
-directory will be deleted.
+**⚠️ Note:** If the output directory already exists, all files in the output directory will be deleted.
 
-For an example of what the output looks like, have a look at the
-[demo project](./demoprojects/api/DemoProject/index.md).
-
-For a list of supported documentation tags, see
-[Supported documentation tags](./apireference/tags.md).
+- For an example of what the output looks like, have a look at the [demo project](./demoprojects/api/DemoProject/index.md).
+- For a list of supported documentation tags, see [Supported documentation tags](./apireference/tags.md).
 
 ### Command Line Help
 
@@ -50,8 +48,12 @@ run:
 mddocs commandlinehelp --assembly <PATH-TO-ASSEMBLY> --outdir <OUTPUT-DIRECTORY>
 ```
 
-**Note:** If the output directory already exists, all files in the output
-directory will be deleted.
+**⚠️ Note:** If the output directory already exists, all files in the output directory will be deleted.
 
-For an example of what the output looks like, have a look at the
-[demo project](./demoprojects/commandline/index.md).
+For an example of what the output looks like, have a look at the [demo project](./demoprojects/commandline/index.md).
+
+## See Also
+
+- [MdDocs MSBuild-integration](./msbuild-integration.md)
+- [Command Line Reference](./commandline/index.md)
+- [Configuration](./configuration/README.md)

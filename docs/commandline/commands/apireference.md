@@ -7,20 +7,22 @@ Generate API reference documentation for a .NET assembly.
 ## Usage
 
 ```
-mddocs apireference --assembly|-a <VALUE>
+mddocs apireference [--assembly|-a <VALUE>]
+                    [--configurationFilePath|-c <VALUE>]
                     [--markdown-preset <VALUE>]
-                    --outdir|-o <VALUE>
+                    [--outdir|-o <VALUE>]
                     [--verbose|-v]
 ```
 
 ## Parameters
 
-| Name                                          | Short Name               | Required | Description                                                                                                                                     |
-| --------------------------------------------- | ------------------------ | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| [assembly](#assembly-parameter)               | [a](#assembly-parameter) | Yes      | Path of the assembly to generate documentation for.                                                                                             |
-| [markdown\-preset](#markdownpreset-parameter) |                          | No       | Specifies the preset to use for generating Markdown files.                                                                                      |
-| [outdir](#outdir-parameter)                   | [o](#outdir-parameter)   | Yes      | Path of the directory to write the documentation to. If the output directory already exists, all files in the output directory will be deleted. |
-| [verbose](#verbose-parameter)                 | [v](#verbose-parameter)  | No       | Show more detailed log output.                                                                                                                  |
+| Name                                                      | Short Name                            | Description                                                                                                                                     |
+| --------------------------------------------------------- | ------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| [assembly](#assembly-parameter)                           | [a](#assembly-parameter)              | Path of the assembly to generate documentation for.                                                                                             |
+| [configurationFilePath](#configurationfilepath-parameter) | [c](#configurationfilepath-parameter) | The path of the configuration file to use. If no configuration file is specified, default settings are used.                                    |
+| [markdown\-preset](#markdownpreset-parameter)             |                                       | Specifies the preset to use for generating Markdown files.                                                                                      |
+| [outdir](#outdir-parameter)                               | [o](#outdir-parameter)                | Path of the directory to write the documentation to. If the output directory already exists, all files in the output directory will be deleted. |
+| [verbose](#verbose-parameter)                             | [v](#verbose-parameter)               | Show more detailed log output.                                                                                                                  |
 
 ### `assembly` Parameter
 
@@ -31,8 +33,22 @@ Path of the assembly to generate documentation for.
 | Name:          | assembly          |
 | Short name:    | a                 |
 | Position:      | *Named parameter* |
-| Required:      | Yes               |
+| Required:      | No                |
 | Default value: | *None*            |
+
+___
+
+### `configurationFilePath` Parameter
+
+The path of the configuration file to use. If no configuration file is specified, default settings are used.
+
+|                |                       |
+| -------------- | --------------------- |
+| Name:          | configurationFilePath |
+| Short name:    | c                     |
+| Position:      | *Named parameter*     |
+| Required:      | No                    |
+| Default value: | *None*                |
 
 ___
 
@@ -59,7 +75,7 @@ Path of the directory to write the documentation to. If the output directory alr
 | Name:          | outdir            |
 | Short name:    | o                 |
 | Position:      | *Named parameter* |
-| Required:      | Yes               |
+| Required:      | No                |
 | Default value: | *None*            |
 
 ___
