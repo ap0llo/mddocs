@@ -28,7 +28,7 @@
 
 The Assembly Path setting sets the path to the assembly to load in order to generate documentation.
 
-**ℹ️ Note:** When using [MdDocs MSBuild integration](../../msbuild-integration.md), setting the assembly path has **no effect** because the MSBuild always use targets use the target path of the current project.
+**ℹ️ Note:** When using [MdDocs MSBuild integration](../../msbuild-integration.md), setting the assembly path has **no effect** because the MSBuild targets use the target path of the current project.
 
 ## Output Path
 

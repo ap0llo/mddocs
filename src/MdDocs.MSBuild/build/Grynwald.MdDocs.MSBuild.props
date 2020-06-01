@@ -19,8 +19,9 @@
     <GenerateApiReferenceDocumentationOnBuild Condition="'$(GenerateApiReferenceDocumentationOnBuild)' == ''">false</GenerateApiReferenceDocumentationOnBuild>
     <GenerateCommandLineDocumentationOnBuild Condition="'$(GenerateCommandLineDocumentationOnBuild)' == ''">false</GenerateCommandLineDocumentationOnBuild>
     <MdDocsMarkdownPreset Condition="'$(MdDocsMarkdownPreset)' == ''"></MdDocsMarkdownPreset>
-    <!--TODO: Default value for MdDocsConfigurationFilePath-->
-    <MdDocsConfigurationFilePath Condition=" '$(MdDocsConfigurationFilePath)' == '' "></MdDocsConfigurationFilePath>
+
+    <!-- If configuration file path is not set, look for a file named 'mddocs.settings.json' in the project directory or a parent directory -->
+    <MdDocsConfigurationFilePath Condition=" '$(MdDocsConfigurationFilePath)' == '' AND '$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildProjectDirectory), mddocs.settings.json))' != ''">$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildProjectDirectory), mddocs.settings.json))\mddocs.settings.json</MdDocsConfigurationFilePath>
   </PropertyGroup>
   
 </Project>
