@@ -1,10 +1,7 @@
-﻿using System;
-using Grynwald.MarkdownGenerator;
-using Grynwald.MdDocs.Common.Configuration;
+﻿using Grynwald.MdDocs.Common.Configuration;
 using Grynwald.Utilities.Configuration;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
-using Microsoft.Extensions.Logging;
 using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Grynwald.MdDocs.MSBuild

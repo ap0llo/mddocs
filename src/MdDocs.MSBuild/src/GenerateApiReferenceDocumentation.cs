@@ -1,10 +1,5 @@
-﻿using System.IO;
-using Grynwald.MdDocs.ApiReference.Model;
-using Grynwald.MdDocs.ApiReference.Pages;
-using Grynwald.MdDocs.Common;
-using Grynwald.MdDocs.Common.Configuration;
+﻿using Grynwald.MdDocs.ApiReference.Commands;
 using Grynwald.Utilities.Configuration;
-using Microsoft.Extensions.Logging;
 
 namespace Grynwald.MdDocs.MSBuild
 {
@@ -22,25 +17,10 @@ namespace Grynwald.MdDocs.MSBuild
             if (!ValidateParameters())
                 return false;
 
-            if (Directory.Exists(OutputDirectoryPath))
-            {
-                Logger.LogInformation($"Cleaning output directory '{OutputDirectoryPath}'");
-                Directory.Delete(OutputDirectoryPath, true);
-            }
-
-
             var configuration = LoadConfiguration();
-
-            using (var assemblyDocumentation = AssemblyDocumentation.FromAssemblyFile(AssemblyPath, Logger))
-            {
-                var pageFactory = new PageFactory(new DefaultApiReferencePathProvider(), assemblyDocumentation, Logger);
-                pageFactory.GetPages().Save(
-                    configuration.ApiReference.OutputPath,
-                    cleanOutputDirectory: true,
-                    markdownOptions: configuration.GetSerializationOptions(Logger));
-            }
-
-            return Log.HasLoggedErrors == false;
+            var command = new ApiReferenceCommand(Logger, configuration);
+            var success = command.Execute();
+            return success && (Log.HasLoggedErrors == false);
         }
     }
 }

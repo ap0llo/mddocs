@@ -14,7 +14,7 @@ namespace Grynwald.MdDocs.Test
         public void IncludeVersion_returns_expected_value_based_on_the_no_version_flag(bool noVersion, bool? expected)
         {
             // ARRANGE
-            var sut = new CommandLineHelpOptions
+            var sut = new CommandLineHelpOptions()
             {
                 NoVersion = noVersion
             };
@@ -30,7 +30,7 @@ namespace Grynwald.MdDocs.Test
         public void OutputDirectory_converts_value_to_a_absolute_path()
         {
             // ARRANGE
-            var sut = new CommandLineHelpOptions
+            var sut = new CommandLineHelpOptions()
             {
                 OutputDirectory = "some-path"
             };
@@ -47,7 +47,7 @@ namespace Grynwald.MdDocs.Test
         public void OutputDirectory_does_not_convert_value_to_a_absolute_path_if_path_is_null_or_empty(string path)
         {
             // ARRANGE
-            var sut = new CommandLineHelpOptions
+            var sut = new CommandLineHelpOptions()
             {
                 OutputDirectory = path
             };
@@ -61,7 +61,7 @@ namespace Grynwald.MdDocs.Test
         public void AssemblyPath_converts_value_to_a_absolute_path()
         {
             // ARRANGE
-            var sut = new CommandLineHelpOptions
+            var sut = new CommandLineHelpOptions()
             {
                 AssemblyPath = "some-path"
             };
@@ -78,7 +78,7 @@ namespace Grynwald.MdDocs.Test
         public void AssemblyPath_does_not_convert_value_to_a_absolute_path_if_path_is_null_or_empty(string path)
         {
             // ARRANGE
-            var sut = new CommandLineHelpOptions
+            var sut = new CommandLineHelpOptions()
             {
                 AssemblyPath = path
             };

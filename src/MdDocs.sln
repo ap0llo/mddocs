@@ -40,9 +40,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grynwald.MdDocs.TestHelpers
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grynwald.MdDocs.Common.Test", "MdDocs.Common.Test\Grynwald.MdDocs.Common.Test.csproj", "{F1A978DC-EFA0-47D3-BD73-AE269543FC21}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grynwald.MdDocs.Test", "MdDocs.Test\Grynwald.MdDocs.Test.csproj", "{33878214-C315-4C90-ABEA-A3D2A4FDAC78}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grynwald.MdDocs.Test", "MdDocs.Test\Grynwald.MdDocs.Test.csproj", "{33878214-C315-4C90-ABEA-A3D2A4FDAC78}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grynwald.MdDocs.MSBuild.Test", "MdDocs.MSBuild.Test\Grynwald.MdDocs.MSBuild.Test.csproj", "{15EDB45F-5F29-4DE0-BA1C-F05880219224}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grynwald.MdDocs.MSBuild.Test", "MdDocs.MSBuild.Test\Grynwald.MdDocs.MSBuild.Test.csproj", "{15EDB45F-5F29-4DE0-BA1C-F05880219224}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

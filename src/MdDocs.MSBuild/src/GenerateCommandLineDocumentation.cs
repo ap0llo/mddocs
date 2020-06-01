@@ -1,7 +1,4 @@
-﻿using Grynwald.MdDocs.CommandLineHelp.Model;
-using Grynwald.MdDocs.CommandLineHelp.Pages;
-using Grynwald.MdDocs.Common;
-using Grynwald.MdDocs.Common.Configuration;
+﻿using Grynwald.MdDocs.CommandLineHelp.Commands;
 using Grynwald.Utilities.Configuration;
 
 namespace Grynwald.MdDocs.MSBuild
@@ -24,18 +21,9 @@ namespace Grynwald.MdDocs.MSBuild
                 return false;
 
             var configuration = LoadConfiguration();
-
-            using (var model = ApplicationDocumentation.FromAssemblyFile(AssemblyPath, Logger))
-            {
-                var pageFactory = new CommandLinePageFactory(model, configuration.CommandLineHelp, new DefaultCommandLineHelpPathProvider(), Logger);
-                pageFactory.GetPages().Save(
-                    configuration.CommandLineHelp.OutputPath,
-                    cleanOutputDirectory: true,
-                    markdownOptions: configuration.GetSerializationOptions(Logger)
-                );
-            }
-
-            return Log.HasLoggedErrors == false;
+            var command = new CommandLineHelpCommand(Logger, configuration);
+            var success = command.Execute();
+            return success && (Log.HasLoggedErrors == false);
         }
     }
 }
