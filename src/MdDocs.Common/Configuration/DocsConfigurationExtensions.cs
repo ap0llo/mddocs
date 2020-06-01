@@ -5,9 +5,9 @@ namespace Grynwald.MdDocs.Common.Configuration
 {
     public static class DocsConfigurationExtensions
     {
-        public static MdSerializationOptions GetSerializationOptions(this DocsConfiguration configuration, ILogger logger)
+        public static MdSerializationOptions GetSerializationOptions(this IConfigurationWithMarkdownPresetSetting configuration, ILogger logger)
         {
-            var presetName = configuration.Markdown.Preset.ToString();
+            var presetName = configuration.MarkdownPreset.ToString();
 
             try
             {

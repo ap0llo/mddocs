@@ -15,6 +15,9 @@ namespace Grynwald.MdDocs.MSBuild
         public bool IncludeVersion { get; set; } = true;
 
 
+        [ConfigurationValue("mddocs:commandlinehelp:markdownPreset")]
+        public string? MarkdownPreset { get; set; }
+
         public override bool Execute()
         {
             if (!ValidateParameters())

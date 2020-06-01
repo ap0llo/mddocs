@@ -11,6 +11,9 @@ namespace Grynwald.MdDocs.MSBuild
         [ConfigurationValue("mddocs:apireference:outputPath")]
         public string OutputDirectoryPath => OutputDirectory?.GetFullPath() ?? "";
 
+        [ConfigurationValue("mddocs:apireference:markdownPreset")]
+        public string? MarkdownPreset { get; set; }
+
 
         public override bool Execute()
         {

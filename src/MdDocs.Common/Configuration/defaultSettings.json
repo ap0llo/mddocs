@@ -4,16 +4,14 @@
     "commandlinehelp": {
       "includeVersion": true,
       "outputPath": null,
-      "assemblyPath" : null
+      "assemblyPath": null,
+      "markdownPreset": "default"
     },
 
     "apireference": {
       "outputPath": null,
-      "assemblyPath": null
-    },
-
-    "markdown": {
-      "preset": "default"
+      "assemblyPath": null,
+      "markdownPreset" :  "default"
     }
   }
 }

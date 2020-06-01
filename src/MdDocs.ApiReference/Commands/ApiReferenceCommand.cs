@@ -47,7 +47,7 @@ namespace Grynwald.MdDocs.ApiReference.Commands
                 pageFactory.GetPages().Save(
                     m_Configuration.ApiReference.OutputPath,
                     cleanOutputDirectory: true,
-                    markdownOptions: m_Configuration.GetSerializationOptions(m_Logger));
+                    markdownOptions: m_Configuration.ApiReference.GetSerializationOptions(m_Logger));
             }
 
             return true;

@@ -1,5 +1,6 @@
 ﻿using Grynwald.MdDocs.Common.Configuration;
 using Microsoft.Extensions.Logging.Abstractions;
+using Moq;
 using Xunit;
 
 namespace Grynwald.MdDocs.Common.Test.Configuration
@@ -8,19 +9,15 @@ namespace Grynwald.MdDocs.Common.Test.Configuration
     {
         [Theory]
         [CombinatorialData]
-        public void GetSerializationOptions_can_load_options_for_all_preset_names(MarkdownPreset presetName)
+        public void GetSerializationOptions_can_load_options_for_all_preset_names(MarkdownPreset preset)
         {
             // ARRANGE
-            var config = new DocsConfiguration()
-            {
-                Markdown = new MarkdownConfiguration()
-                {
-                    Preset = presetName
-                }
-            };
+
+            var configMock = new Mock<IConfigurationWithMarkdownPresetSetting>(MockBehavior.Strict);
+            configMock.Setup(x => x.MarkdownPreset).Returns(preset);
 
             // ACT
-            var serializationOptions = config.GetSerializationOptions(NullLogger.Instance);
+            var serializationOptions = configMock.Object.GetSerializationOptions(NullLogger.Instance);
 
             // ASSERT
             Assert.NotNull(serializationOptions);

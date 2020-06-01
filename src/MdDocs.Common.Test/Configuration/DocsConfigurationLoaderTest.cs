@@ -84,13 +84,13 @@ namespace Grynwald.MdDocs.Common.Test.Configuration
             yield return TestCase(config => Assert.Empty(config.CommandLineHelp.OutputPath));
             yield return TestCase(config => Assert.True(config.CommandLineHelp.IncludeVersion));
             yield return TestCase(config => Assert.Empty(config.CommandLineHelp.AssemblyPath));
+            yield return TestCase(config => Assert.Equal(MarkdownPreset.Default, config.CommandLineHelp.MarkdownPreset));
 
             yield return TestCase(config => Assert.NotNull(config.ApiReference));
             yield return TestCase(config => Assert.Empty(config.ApiReference.OutputPath));
             yield return TestCase(config => Assert.Empty(config.ApiReference.AssemblyPath));
+            yield return TestCase(config => Assert.Equal(MarkdownPreset.Default, config.ApiReference.MarkdownPreset));
 
-            yield return TestCase(config => Assert.NotNull(config.Markdown));
-            yield return TestCase(config => Assert.Equal(MarkdownPreset.Default, config.Markdown.Preset));
         }
 
         [Theory]
@@ -311,28 +311,28 @@ namespace Grynwald.MdDocs.Common.Test.Configuration
 
         [Theory]
         [CombinatorialData]
-        public void Markdown_preset_can_be_set_in_configuration_file(MarkdownPreset preset)
+        public void ApiReference_Markdown_preset_can_be_set_in_configuration_file(MarkdownPreset preset)
         {
             // ARRANGE            
-            PrepareConfiguration("markdown:preset", preset.ToString());
+            PrepareConfiguration("apireference:markdownPreset", preset.ToString());
 
             // ACT
             var config = DocsConfigurationLoader.GetConfiguration(m_ConfigurationFilePath);
 
             // ASSERT
-            Assert.NotNull(config.Markdown);
-            Assert.Equal(preset, config.Markdown.Preset);
+            Assert.NotNull(config.ApiReference);
+            Assert.Equal(preset, config.ApiReference.MarkdownPreset);
         }
 
         private class TestClass6
         {
-            [ConfigurationValue("mddocs:markdown:preset")]
+            [ConfigurationValue("mddocs:apireference:markdownPreset")]
             public string? Preset { get; set; }
         }
 
         [Theory]
         [CombinatorialData]
-        public void Markdown_preset_can_be_set_through_settings_object(MarkdownPreset preset)
+        public void ApiReference_Markdown_preset_can_be_set_through_settings_object(MarkdownPreset preset)
         {
             // ARRANGE            
             var settings = new TestClass6() { Preset = preset.ToString() };
@@ -341,10 +341,46 @@ namespace Grynwald.MdDocs.Common.Test.Configuration
             var config = DocsConfigurationLoader.GetConfiguration(m_ConfigurationFilePath, settings);
 
             // ASSERT
-            Assert.NotNull(config.Markdown);
-            Assert.Equal(preset, config.Markdown.Preset);
+            Assert.NotNull(config.ApiReference);
+            Assert.Equal(preset, config.ApiReference.MarkdownPreset);
         }
 
+
+        [Theory]
+        [CombinatorialData]
+        public void CommandLineHelp_Markdown_preset_can_be_set_in_configuration_file(MarkdownPreset preset)
+        {
+            // ARRANGE            
+            PrepareConfiguration("commandlinehelp:markdownPreset", preset.ToString());
+
+            // ACT
+            var config = DocsConfigurationLoader.GetConfiguration(m_ConfigurationFilePath);
+
+            // ASSERT
+            Assert.NotNull(config.CommandLineHelp);
+            Assert.Equal(preset, config.CommandLineHelp.MarkdownPreset);
+        }
+
+        private class TestClass7
+        {
+            [ConfigurationValue("mddocs:commandlinehelp:markdownPreset")]
+            public string? Preset { get; set; }
+        }
+
+        [Theory]
+        [CombinatorialData]
+        public void CommandLineHelp_Markdown_preset_can_be_set_through_settings_object(MarkdownPreset preset)
+        {
+            // ARRANGE            
+            var settings = new TestClass7() { Preset = preset.ToString() };
+
+            // ACT
+            var config = DocsConfigurationLoader.GetConfiguration(m_ConfigurationFilePath, settings);
+
+            // ASSERT
+            Assert.NotNull(config.CommandLineHelp);
+            Assert.Equal(preset, config.CommandLineHelp.MarkdownPreset);
+        }
 
         [Fact]
         public void GetConfiguration_converts_the_CommandLineHelp_output_path_to_a_full_path()

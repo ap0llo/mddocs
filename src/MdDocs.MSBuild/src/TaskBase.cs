@@ -19,10 +19,6 @@ namespace Grynwald.MdDocs.MSBuild
         public ITaskItem? ConfigurationFile { get; set; } = null;
 
 
-        [ConfigurationValue("mddocs:markdown:preset")]
-        public string? MarkdownPreset { get; set; }
-
-
         protected ILogger Logger
         {
             get

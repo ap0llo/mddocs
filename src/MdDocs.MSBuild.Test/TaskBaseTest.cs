@@ -70,54 +70,6 @@ namespace MdDocs.MSBuild.Test
             Assert.True(valid);
         }
 
-        [Theory]
-        [CombinatorialData]
-        public void MarkdownPreset_property_overrides_configuration_of_markdown_preset(MarkdownPreset preset)
-        {
-            // ARRANGE
-            var sut = new TestableTaskBase()
-            {
-                Assembly = new TaskItem("myAssembly.dll"),
-                BuildEngine = new BuildEngineMock(),
-                MarkdownPreset = preset.ToString()
-            };
 
-            // ACT 
-            var config = sut.LoadConfiguration();
-
-            // ASSERT
-            Assert.Equal(preset, config.Markdown.Preset);
-        }
-
-        [Theory]
-        [CombinatorialData]
-        public void LoadConfiguration_file_reads_configuration_file_if_path_is_specified(MarkdownPreset preset)
-        {
-            // ARRANGE
-            using var temporaryDirectory = new TemporaryDirectory();
-            var configPath = Path.Combine(temporaryDirectory, "config.json");
-            File.WriteAllText(configPath, $@"{{
-                ""mddocs"" : {{
-                    ""markdown"" : {{
-                        ""preset"" : ""{preset}""
-                    }}
-                }}
-            }}");
-
-            var sut = new TestableTaskBase()
-            {
-                Assembly = new TaskItem("myAssembly.dll"),
-                BuildEngine = new BuildEngineMock(),
-                OutputDirectory = new TaskItem("my-output-directory"),
-                ConfigurationFile = new TaskItem(configPath),
-                MarkdownPreset = null
-            };
-
-            // ACT 
-            var config = sut.LoadConfiguration();
-
-            // ASSERT
-            Assert.Equal(preset, config.Markdown.Preset);
-        }
     }
 }

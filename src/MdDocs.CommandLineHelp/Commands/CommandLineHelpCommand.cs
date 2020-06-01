@@ -51,7 +51,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Commands
                 pageFactory.GetPages().Save(
                     m_Configuration.CommandLineHelp.OutputPath,
                     cleanOutputDirectory: true,
-                    markdownOptions: m_Configuration.GetSerializationOptions(m_Logger));
+                    markdownOptions: m_Configuration.CommandLineHelp.GetSerializationOptions(m_Logger));
             }
 
             return true;
