@@ -21,26 +21,11 @@ namespace Grynwald.MdDocs.ApiReference.Commands
             m_Configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
 
+
         public bool Execute()
         {
-            if (String.IsNullOrWhiteSpace(m_Configuration.OutputPath))
-            {
-                m_Logger.LogError($"Invalid output directory '{m_Configuration.OutputPath}'");
+            if (!ValidateConfiguration())
                 return false;
-            }
-
-            if (String.IsNullOrWhiteSpace(m_Configuration.AssemblyPath))
-            {
-                m_Logger.LogError($"Invalid assembly path '{m_Configuration.AssemblyPath}'");
-                return false;
-            }
-
-            if (!File.Exists(m_Configuration.AssemblyPath))
-            {
-                m_Logger.LogError($"Assembly at '{m_Configuration.AssemblyPath}' does not exist.");
-                return false;
-            }
-
 
             using (var assemblyDocumentation = AssemblyDocumentation.FromAssemblyFile(m_Configuration.AssemblyPath, m_Logger))
             {
@@ -52,6 +37,31 @@ namespace Grynwald.MdDocs.ApiReference.Commands
             }
 
             return true;
+        }
+
+
+        private bool ValidateConfiguration()
+        {
+            var valid = true;
+
+            if (String.IsNullOrWhiteSpace(m_Configuration.OutputPath))
+            {
+                m_Logger.LogError($"Invalid output directory '{m_Configuration.OutputPath}'");
+                valid = false;
+            }
+
+            if (String.IsNullOrWhiteSpace(m_Configuration.AssemblyPath))
+            {
+                m_Logger.LogError($"Invalid assembly path '{m_Configuration.AssemblyPath}'");
+                valid = false;
+            }
+            else if (!File.Exists(m_Configuration.AssemblyPath))
+            {
+                m_Logger.LogError($"Assembly at '{m_Configuration.AssemblyPath}' does not exist.");
+                valid = false;
+            }
+
+            return valid;
         }
     }
 }

@@ -9,12 +9,16 @@ using Xunit;
 
 namespace Grynwald.MdDocs.CommandLineHelp.Test.Commands
 {
+    /// <summary>
+    /// Tests for <see cref="CommandLineHelpCommand"/>
+    /// </summary>
     public class CommandLineHelpCommandTest : CommandLineDynamicCompilationTestBase
     {
         private readonly ILogger m_Logger = NullLogger.Instance;
 
 
         [Theory]
+        [InlineData(null)]
         [InlineData("")]
         [InlineData("\t")]
         [InlineData("does-not-exists.dll")]
@@ -25,6 +29,33 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Commands
             {
                 AssemblyPath = assemblyPath,
                 OutputPath = "./some-output-path"
+            };
+
+            var sut = new CommandLineHelpCommand(m_Logger, configuration);
+
+            // ACT 
+            var success = sut.Execute();
+
+            // ASSERT
+            Assert.False(success);
+        }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("  ")]
+        [InlineData("\t")]
+        public void Execute_returns_false_if_OutputPath_is_invalid(string outputPath)
+        {
+            // ARRANGE
+            using var temporaryDirectory = new TemporaryDirectory();
+            var assemblyPath = Path.Combine(temporaryDirectory, "myAssembly.dll");
+            File.WriteAllText(assemblyPath, "");
+
+            var configuration = new CommandLineHelpConfiguration()
+            {
+                AssemblyPath = assemblyPath,
+                OutputPath = outputPath
             };
 
             var sut = new CommandLineHelpCommand(m_Logger, configuration);

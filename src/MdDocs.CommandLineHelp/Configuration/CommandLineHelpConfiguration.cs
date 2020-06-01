@@ -13,6 +13,5 @@ namespace Grynwald.MdDocs.CommandLineHelp.Configuration
         public string AssemblyPath { get; set; } = "";
 
         public MarkdownPreset MarkdownPreset { get; set; } = MarkdownPreset.Default;
-
     }
 }

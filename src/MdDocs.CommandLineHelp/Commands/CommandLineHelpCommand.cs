@@ -25,25 +25,8 @@ namespace Grynwald.MdDocs.CommandLineHelp.Commands
 
         public bool Execute()
         {
-            //TODO: move validation logic to separate class
-            if (String.IsNullOrWhiteSpace(m_Configuration.OutputPath))
-            {
-                m_Logger.LogError($"Invalid output directory '{m_Configuration.OutputPath}'");
+            if (!ValidateConfiguration())
                 return false;
-            }
-
-            if (String.IsNullOrWhiteSpace(m_Configuration.AssemblyPath))
-            {
-                m_Logger.LogError($"Invalid assembly path '{m_Configuration.AssemblyPath}'");
-                return false;
-            }
-
-            if (!File.Exists(m_Configuration.AssemblyPath))
-            {
-                m_Logger.LogError($"Assembly at '{m_Configuration.AssemblyPath}' does not exist.");
-                return false;
-            }
-
 
             using (var model = ApplicationDocumentation.FromAssemblyFile(m_Configuration.AssemblyPath, m_Logger))
             {
@@ -55,6 +38,31 @@ namespace Grynwald.MdDocs.CommandLineHelp.Commands
             }
 
             return true;
+        }
+
+
+        private bool ValidateConfiguration()
+        {
+            var valid = true;
+
+            if (String.IsNullOrWhiteSpace(m_Configuration.OutputPath))
+            {
+                m_Logger.LogError($"Invalid output directory '{m_Configuration.OutputPath}'");
+                valid = false;
+            }
+
+            if (String.IsNullOrWhiteSpace(m_Configuration.AssemblyPath))
+            {
+                m_Logger.LogError($"Invalid assembly path '{m_Configuration.AssemblyPath}'");
+                valid = false;
+            }
+            else if (!File.Exists(m_Configuration.AssemblyPath))
+            {
+                m_Logger.LogError($"Assembly at '{m_Configuration.AssemblyPath}' does not exist.");
+                valid = false;
+            }
+
+            return valid;
         }
     }
 }
