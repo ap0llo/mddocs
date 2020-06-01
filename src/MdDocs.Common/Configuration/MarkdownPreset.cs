@@ -3,6 +3,17 @@ using Microsoft.Extensions.Logging;
 
 namespace Grynwald.MdDocs.Common.Configuration
 {
+    public enum MarkdownPreset
+    {
+        Default,
+        MkDocs
+    }
+
+    public interface IConfigurationWithMarkdownPresetSetting
+    {
+        MarkdownPreset MarkdownPreset { get; }
+    }
+
     public static class DocsConfigurationExtensions
     {
         public static MdSerializationOptions GetSerializationOptions(this IConfigurationWithMarkdownPresetSetting configuration, ILogger logger)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using Grynwald.MdDocs.ApiReference.Configuration;
 using Grynwald.MdDocs.ApiReference.Model;
 using Grynwald.MdDocs.ApiReference.Pages;
 using Grynwald.MdDocs.Common;

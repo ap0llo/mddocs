@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using Grynwald.MdDocs.CommandLineHelp.Configuration;
 using Grynwald.MdDocs.CommandLineHelp.Model;
 using Grynwald.MdDocs.CommandLineHelp.Pages;
 using Grynwald.MdDocs.Common;

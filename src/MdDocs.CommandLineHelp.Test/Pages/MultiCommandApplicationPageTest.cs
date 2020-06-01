@@ -1,6 +1,7 @@
 ﻿using ApprovalTests;
 using ApprovalTests.Reporters;
 using Grynwald.MarkdownGenerator;
+using Grynwald.MdDocs.CommandLineHelp.Configuration;
 using Grynwald.MdDocs.CommandLineHelp.Model;
 using Grynwald.MdDocs.CommandLineHelp.Pages;
 using Grynwald.MdDocs.Common.Configuration;
@@ -87,7 +88,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
                 documentSet.Add(pathProvider.GetPath(command), new TextDocument());
             }
 
-            configuration ??= DocsConfigurationLoader.GetDefaultConfiguration().CommandLineHelp;
+            configuration ??= new ConfigurationProvider().GetDefaultCommandLineHelpConfiguration();
 
             var applicationPage = new MultiCommandApplicationPage(documentSet, pathProvider, model, configuration);
             documentSet.Add(pathProvider.GetPath(model), applicationPage);

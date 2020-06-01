@@ -1,4 +1,5 @@
 ﻿using Grynwald.MdDocs.CommandLineHelp.Commands;
+using Grynwald.MdDocs.CommandLineHelp.Configuration;
 using Grynwald.Utilities.Configuration;
 
 namespace Grynwald.MdDocs.MSBuild
@@ -23,8 +24,8 @@ namespace Grynwald.MdDocs.MSBuild
             if (!ValidateParameters())
                 return false;
 
-            var configuration = LoadConfiguration();
-            var command = new CommandLineHelpCommand(Logger, configuration.CommandLineHelp);
+            var configuration = GetConfigurationProvider().GetCommandLineHelpConfiguration();
+            var command = new CommandLineHelpCommand(Logger, configuration);
             var success = command.Execute();
             return success && (Log.HasLoggedErrors == false);
         }

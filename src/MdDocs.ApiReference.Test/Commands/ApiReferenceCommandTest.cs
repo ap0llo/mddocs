@@ -1,6 +1,6 @@
 ﻿using System.IO;
 using Grynwald.MdDocs.ApiReference.Commands;
-using Grynwald.MdDocs.Common.Configuration;
+using Grynwald.MdDocs.ApiReference.Configuration;
 using Grynwald.MdDocs.TestHelpers;
 using Grynwald.Utilities.IO;
 using Microsoft.Extensions.Logging;

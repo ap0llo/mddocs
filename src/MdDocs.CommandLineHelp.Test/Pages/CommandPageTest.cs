@@ -1,6 +1,7 @@
 ﻿using ApprovalTests;
 using ApprovalTests.Reporters;
 using Grynwald.MarkdownGenerator;
+using Grynwald.MdDocs.CommandLineHelp.Configuration;
 using Grynwald.MdDocs.CommandLineHelp.Model;
 using Grynwald.MdDocs.CommandLineHelp.Pages;
 using Grynwald.MdDocs.Common.Configuration;
@@ -257,7 +258,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
             var pathProvider = new DefaultCommandLineHelpPathProvider();
             var documentSet = new DocumentSet<IDocument>();
 
-            configuration ??= DocsConfigurationLoader.GetDefaultConfiguration().CommandLineHelp;
+            configuration ??= new ConfigurationProvider().GetDefaultCommandLineHelpConfiguration();
 
             var commandPage = new CommandPage(documentSet, pathProvider, model, configuration);
 

@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using Grynwald.MdDocs.ApiReference.Configuration;
 using Grynwald.MdDocs.Common.Configuration;
 using Grynwald.Utilities.IO;
 using Microsoft.Build.Utilities;
@@ -41,10 +42,10 @@ namespace Grynwald.MdDocs.MSBuild.Test
             var expectedPath = Path.GetFullPath("my-assembly.dll");
 
             // ACT 
-            var config = sut.LoadConfiguration();
+            var config = sut.GetConfigurationProvider().GetApiReferenceConfiguration();
 
             // ASSERT
-            Assert.Equal(expectedPath, config.ApiReference.AssemblyPath);
+            Assert.Equal(expectedPath, config.AssemblyPath);
         }
 
         [Fact]
@@ -80,10 +81,10 @@ namespace Grynwald.MdDocs.MSBuild.Test
             var expectedOutputPath = Path.GetFullPath("some-output-directory");
 
             // ACT
-            var config = sut.LoadConfiguration();
+            var config = sut.GetConfigurationProvider().GetApiReferenceConfiguration();
 
             // ASSERT            
-            Assert.Equal(expectedOutputPath, config.ApiReference.OutputPath);
+            Assert.Equal(expectedOutputPath, config.OutputPath);
         }
 
         [Theory]
@@ -99,10 +100,10 @@ namespace Grynwald.MdDocs.MSBuild.Test
             };
 
             // ACT 
-            var config = sut.LoadConfiguration();
+            var config = sut.GetConfigurationProvider().GetApiReferenceConfiguration();
 
             // ASSERT
-            Assert.Equal(preset, config.ApiReference.MarkdownPreset);
+            Assert.Equal(preset, config.MarkdownPreset);
         }
 
         [Theory]
@@ -130,10 +131,10 @@ namespace Grynwald.MdDocs.MSBuild.Test
             };
 
             // ACT 
-            var config = sut.LoadConfiguration();
+            var config = sut.GetConfigurationProvider().GetApiReferenceConfiguration();
 
             // ASSERT
-            Assert.Equal(preset, config.ApiReference.MarkdownPreset);
+            Assert.Equal(preset, config.MarkdownPreset);
         }
     }
 }

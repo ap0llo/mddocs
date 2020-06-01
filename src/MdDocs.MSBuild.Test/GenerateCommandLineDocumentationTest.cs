@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using Grynwald.MdDocs.CommandLineHelp.Configuration;
 using Grynwald.MdDocs.Common.Configuration;
 using Grynwald.Utilities.IO;
 using Microsoft.Build.Utilities;
@@ -41,10 +42,10 @@ namespace Grynwald.MdDocs.MSBuild.Test
             var expectedPath = Path.GetFullPath("my-assembly.dll");
 
             // ACT 
-            var config = sut.LoadConfiguration();
+            var config = sut.GetConfigurationProvider().GetCommandLineHelpConfiguration();
 
             // ASSERT
-            Assert.Equal(expectedPath, config.CommandLineHelp.AssemblyPath);
+            Assert.Equal(expectedPath, config.AssemblyPath);
         }
 
         [Fact]
@@ -80,10 +81,10 @@ namespace Grynwald.MdDocs.MSBuild.Test
             var expectedOutputPath = Path.GetFullPath("some-output-directory");
 
             // ACT
-            var config = sut.LoadConfiguration();
+            var config = sut.GetConfigurationProvider().GetCommandLineHelpConfiguration();
 
             // ASSERT            
-            Assert.Equal(expectedOutputPath, config.CommandLineHelp.OutputPath);
+            Assert.Equal(expectedOutputPath, config.OutputPath);
         }
 
         [Theory]
@@ -100,10 +101,10 @@ namespace Grynwald.MdDocs.MSBuild.Test
 
 
             // ACT
-            var config = sut.LoadConfiguration();
+            var config = sut.GetConfigurationProvider().GetCommandLineHelpConfiguration();
 
             // ASSERT            
-            Assert.Equal(includeVersion, config.CommandLineHelp.IncludeVersion);
+            Assert.Equal(includeVersion, config.IncludeVersion);
         }
 
 
@@ -120,10 +121,10 @@ namespace Grynwald.MdDocs.MSBuild.Test
             };
 
             // ACT 
-            var config = sut.LoadConfiguration();
+            var config = sut.GetConfigurationProvider().GetCommandLineHelpConfiguration();
 
             // ASSERT
-            Assert.Equal(preset, config.CommandLineHelp.MarkdownPreset);
+            Assert.Equal(preset, config.MarkdownPreset);
         }
 
         [Theory]
@@ -151,10 +152,10 @@ namespace Grynwald.MdDocs.MSBuild.Test
             };
 
             // ACT 
-            var config = sut.LoadConfiguration();
+            var config = sut.GetConfigurationProvider().GetCommandLineHelpConfiguration();
 
             // ASSERT
-            Assert.Equal(preset, config.CommandLineHelp.MarkdownPreset);
+            Assert.Equal(preset, config.MarkdownPreset);
         }
     }
 }

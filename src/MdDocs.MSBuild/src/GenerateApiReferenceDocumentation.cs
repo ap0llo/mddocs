@@ -1,4 +1,5 @@
 ﻿using Grynwald.MdDocs.ApiReference.Commands;
+using Grynwald.MdDocs.ApiReference.Configuration;
 using Grynwald.Utilities.Configuration;
 
 namespace Grynwald.MdDocs.MSBuild
@@ -20,8 +21,8 @@ namespace Grynwald.MdDocs.MSBuild
             if (!ValidateParameters())
                 return false;
 
-            var configuration = LoadConfiguration();
-            var command = new ApiReferenceCommand(Logger, configuration.ApiReference);
+            var configuration = GetConfigurationProvider().GetApiReferenceConfiguration();
+            var command = new ApiReferenceCommand(Logger, configuration);
             var success = command.Execute();
             return success && (Log.HasLoggedErrors == false);
         }

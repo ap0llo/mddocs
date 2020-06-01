@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using CommandLine;
 using Grynwald.MdDocs.ApiReference.Commands;
+using Grynwald.MdDocs.ApiReference.Configuration;
 using Grynwald.MdDocs.CommandLineHelp.Commands;
+using Grynwald.MdDocs.CommandLineHelp.Configuration;
 using Grynwald.MdDocs.Common.Configuration;
 using Grynwald.Utilities.Logging;
 using Microsoft.Extensions.Logging;
@@ -52,16 +54,16 @@ namespace Grynwald.MdDocs
 
         private static bool OnApiReferenceCommand(ILogger logger, ApiReferenceOptions opts)
         {
-            var configuration = LoadConfiguration(opts);
-            var command = new ApiReferenceCommand(logger, configuration.ApiReference);
+            var configurationProvider = GetConfigurationProvider(opts);
+            var command = new ApiReferenceCommand(logger, configurationProvider.GetApiReferenceConfiguration());
             return command.Execute();
 
         }
 
         private static bool OnCommandLineHelpCommand(ILogger logger, CommandLineHelpOptions opts)
         {
-            var configuration = LoadConfiguration(opts);
-            var command = new CommandLineHelpCommand(logger, configuration.CommandLineHelp);
+            var configurationProvider = GetConfigurationProvider(opts);
+            var command = new CommandLineHelpCommand(logger, configurationProvider.GetCommandLineHelpConfiguration());
             return command.Execute();
         }
 
@@ -75,8 +77,8 @@ namespace Grynwald.MdDocs
             return new SimpleConsoleLogger(loggerConfiguration, "");
         }
 
-        private static DocsConfiguration LoadConfiguration(OptionsBase commandlineParameters) =>
-            DocsConfigurationLoader.GetConfiguration(commandlineParameters.ConfigurationFilePath ?? "", commandlineParameters);
+        private static ConfigurationProvider GetConfigurationProvider(OptionsBase commandlineParameters) =>
+            new ConfigurationProvider(commandlineParameters.ConfigurationFilePath ?? "", commandlineParameters);
 
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Grynwald.MdDocs.Common.Configuration;
-using Grynwald.Utilities.Configuration;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 using ILogger = Microsoft.Extensions.Logging.ILogger;
@@ -39,10 +38,10 @@ namespace Grynwald.MdDocs.MSBuild
         }
 
         // should be protected but is internal for testing
-        internal DocsConfiguration LoadConfiguration()
+        internal ConfigurationProvider GetConfigurationProvider()
         {
-            var configuration = DocsConfigurationLoader.GetConfiguration(ConfigurationFile?.GetFullPath() ?? "", this);
-            return configuration;
+            var provider = new ConfigurationProvider(ConfigurationFile?.GetFullPath() ?? "", this);
+            return provider;
         }
     }
 }

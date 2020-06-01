@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using Grynwald.MdDocs.CommandLineHelp.Commands;
+using Grynwald.MdDocs.CommandLineHelp.Configuration;
 using Grynwald.MdDocs.CommandLineHelp.Test.Model;
-using Grynwald.MdDocs.Common.Configuration;
 using Grynwald.Utilities.IO;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
