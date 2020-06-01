@@ -21,7 +21,7 @@ namespace Grynwald.MdDocs.MSBuild
                 return false;
 
             var configuration = LoadConfiguration();
-            var command = new ApiReferenceCommand(Logger, configuration);
+            var command = new ApiReferenceCommand(Logger, configuration.ApiReference);
             var success = command.Execute();
             return success && (Log.HasLoggedErrors == false);
         }

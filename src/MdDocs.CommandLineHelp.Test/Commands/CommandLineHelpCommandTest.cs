@@ -21,13 +21,10 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Commands
         public void Execute_returns_false_if_AssemblyPath_is_invalid(string assemblyPath)
         {
             // ARRANGE
-            var configuration = new DocsConfiguration()
+            var configuration = new CommandLineHelpConfiguration()
             {
-                CommandLineHelp = new CommandLineHelpConfiguration()
-                {
-                    AssemblyPath = assemblyPath,
-                    OutputPath = "./some-output-path"
-                }
+                AssemblyPath = assemblyPath,
+                OutputPath = "./some-output-path"
             };
 
             var sut = new CommandLineHelpCommand(m_Logger, configuration);
@@ -65,13 +62,10 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Commands
                 }
             ", assemblyPath, xmlDocumentationPath);
 
-            var configuration = new DocsConfiguration()
+            var configuration = new CommandLineHelpConfiguration()
             {
-                CommandLineHelp = new CommandLineHelpConfiguration()
-                {
-                    AssemblyPath = assemblyPath,
-                    OutputPath = outputPath
-                }
+                AssemblyPath = assemblyPath,
+                OutputPath = outputPath
             };
 
             var sut = new CommandLineHelpCommand(m_Logger, configuration);

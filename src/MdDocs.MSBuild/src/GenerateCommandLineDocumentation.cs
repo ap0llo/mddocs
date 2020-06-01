@@ -24,7 +24,7 @@ namespace Grynwald.MdDocs.MSBuild
                 return false;
 
             var configuration = LoadConfiguration();
-            var command = new CommandLineHelpCommand(Logger, configuration);
+            var command = new CommandLineHelpCommand(Logger, configuration.CommandLineHelp);
             var success = command.Execute();
             return success && (Log.HasLoggedErrors == false);
         }

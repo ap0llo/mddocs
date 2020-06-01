@@ -9,14 +9,13 @@ using Microsoft.Extensions.Logging;
 
 namespace Grynwald.MdDocs.CommandLineHelp.Commands
 {
-    //TODO: Move to a separate assembly
     public class CommandLineHelpCommand : ICommand
     {
         private readonly ILogger m_Logger;
-        private readonly DocsConfiguration m_Configuration;
+        private readonly CommandLineHelpConfiguration m_Configuration;
 
 
-        public CommandLineHelpCommand(ILogger logger, DocsConfiguration configuration)
+        public CommandLineHelpCommand(ILogger logger, CommandLineHelpConfiguration configuration)
         {
             m_Logger = logger ?? throw new ArgumentNullException(nameof(logger));
             m_Configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
@@ -26,32 +25,32 @@ namespace Grynwald.MdDocs.CommandLineHelp.Commands
         public bool Execute()
         {
             //TODO: move validation logic to separate class
-            if (String.IsNullOrWhiteSpace(m_Configuration.CommandLineHelp.OutputPath))
+            if (String.IsNullOrWhiteSpace(m_Configuration.OutputPath))
             {
-                m_Logger.LogError($"Invalid output directory '{m_Configuration.CommandLineHelp.OutputPath}'");
+                m_Logger.LogError($"Invalid output directory '{m_Configuration.OutputPath}'");
                 return false;
             }
 
-            if (String.IsNullOrWhiteSpace(m_Configuration.CommandLineHelp.AssemblyPath))
+            if (String.IsNullOrWhiteSpace(m_Configuration.AssemblyPath))
             {
-                m_Logger.LogError($"Invalid assembly path '{m_Configuration.CommandLineHelp.AssemblyPath}'");
+                m_Logger.LogError($"Invalid assembly path '{m_Configuration.AssemblyPath}'");
                 return false;
             }
 
-            if (!File.Exists(m_Configuration.CommandLineHelp.AssemblyPath))
+            if (!File.Exists(m_Configuration.AssemblyPath))
             {
-                m_Logger.LogError($"Assembly at '{m_Configuration.ApiReference.AssemblyPath}' does not exist.");
+                m_Logger.LogError($"Assembly at '{m_Configuration.AssemblyPath}' does not exist.");
                 return false;
             }
 
 
-            using (var model = ApplicationDocumentation.FromAssemblyFile(m_Configuration.CommandLineHelp.AssemblyPath, m_Logger))
+            using (var model = ApplicationDocumentation.FromAssemblyFile(m_Configuration.AssemblyPath, m_Logger))
             {
-                var pageFactory = new CommandLinePageFactory(model, m_Configuration.CommandLineHelp, new DefaultCommandLineHelpPathProvider(), m_Logger);
+                var pageFactory = new CommandLinePageFactory(model, m_Configuration, new DefaultCommandLineHelpPathProvider(), m_Logger);
                 pageFactory.GetPages().Save(
-                    m_Configuration.CommandLineHelp.OutputPath,
+                    m_Configuration.OutputPath,
                     cleanOutputDirectory: true,
-                    markdownOptions: m_Configuration.CommandLineHelp.GetSerializationOptions(m_Logger));
+                    markdownOptions: m_Configuration.GetSerializationOptions(m_Logger));
             }
 
             return true;

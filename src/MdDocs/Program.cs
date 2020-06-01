@@ -53,7 +53,7 @@ namespace Grynwald.MdDocs
         private static bool OnApiReferenceCommand(ILogger logger, ApiReferenceOptions opts)
         {
             var configuration = LoadConfiguration(opts);
-            var command = new ApiReferenceCommand(logger, configuration);
+            var command = new ApiReferenceCommand(logger, configuration.ApiReference);
             return command.Execute();
 
         }
@@ -61,7 +61,7 @@ namespace Grynwald.MdDocs
         private static bool OnCommandLineHelpCommand(ILogger logger, CommandLineHelpOptions opts)
         {
             var configuration = LoadConfiguration(opts);
-            var command = new CommandLineHelpCommand(logger, configuration);
+            var command = new CommandLineHelpCommand(logger, configuration.CommandLineHelp);
             return command.Execute();
         }
 

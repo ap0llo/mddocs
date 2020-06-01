@@ -12,9 +12,9 @@ namespace Grynwald.MdDocs.ApiReference.Commands
     public class ApiReferenceCommand : ICommand
     {
         private readonly ILogger m_Logger;
-        private readonly DocsConfiguration m_Configuration;
+        private readonly ApiReferenceConfiguration m_Configuration;
 
-        public ApiReferenceCommand(ILogger logger, DocsConfiguration configuration)
+        public ApiReferenceCommand(ILogger logger, ApiReferenceConfiguration configuration)
         {
             m_Logger = logger ?? throw new ArgumentNullException(nameof(logger));
             m_Configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
@@ -22,32 +22,32 @@ namespace Grynwald.MdDocs.ApiReference.Commands
 
         public bool Execute()
         {
-            if (String.IsNullOrWhiteSpace(m_Configuration.ApiReference.OutputPath))
+            if (String.IsNullOrWhiteSpace(m_Configuration.OutputPath))
             {
-                m_Logger.LogError($"Invalid output directory '{m_Configuration.ApiReference.OutputPath}'");
+                m_Logger.LogError($"Invalid output directory '{m_Configuration.OutputPath}'");
                 return false;
             }
 
-            if (String.IsNullOrWhiteSpace(m_Configuration.ApiReference.AssemblyPath))
+            if (String.IsNullOrWhiteSpace(m_Configuration.AssemblyPath))
             {
-                m_Logger.LogError($"Invalid assembly path '{m_Configuration.ApiReference.AssemblyPath}'");
+                m_Logger.LogError($"Invalid assembly path '{m_Configuration.AssemblyPath}'");
                 return false;
             }
 
-            if (!File.Exists(m_Configuration.ApiReference.AssemblyPath))
+            if (!File.Exists(m_Configuration.AssemblyPath))
             {
-                m_Logger.LogError($"Assembly at '{m_Configuration.ApiReference.AssemblyPath}' does not exist.");
+                m_Logger.LogError($"Assembly at '{m_Configuration.AssemblyPath}' does not exist.");
                 return false;
             }
 
 
-            using (var assemblyDocumentation = AssemblyDocumentation.FromAssemblyFile(m_Configuration.ApiReference.AssemblyPath, m_Logger))
+            using (var assemblyDocumentation = AssemblyDocumentation.FromAssemblyFile(m_Configuration.AssemblyPath, m_Logger))
             {
                 var pageFactory = new PageFactory(new DefaultApiReferencePathProvider(), assemblyDocumentation, m_Logger);
                 pageFactory.GetPages().Save(
-                    m_Configuration.ApiReference.OutputPath,
+                    m_Configuration.OutputPath,
                     cleanOutputDirectory: true,
-                    markdownOptions: m_Configuration.ApiReference.GetSerializationOptions(m_Logger));
+                    markdownOptions: m_Configuration.GetSerializationOptions(m_Logger));
             }
 
             return true;

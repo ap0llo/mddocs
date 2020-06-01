@@ -21,13 +21,10 @@ namespace Grynwald.MdDocs.ApiReference.Test.Commands
         public void Execute_returns_false_if_AssemblyPath_is_invalid(string assemblyPath)
         {
             // ARRANGE
-            var configuration = new DocsConfiguration()
+            var configuration = new ApiReferenceConfiguration()
             {
-                ApiReference = new ApiReferenceConfiguration()
-                {
-                    AssemblyPath = assemblyPath,
-                    OutputPath = "./some-output-path"
-                }
+                AssemblyPath = assemblyPath,
+                OutputPath = "./some-output-path"
             };
 
             var sut = new ApiReferenceCommand(m_Logger, configuration);
@@ -59,13 +56,10 @@ namespace Grynwald.MdDocs.ApiReference.Test.Commands
                 }
             ", assemblyPath, xmlDocumentationPath);
 
-            var configuration = new DocsConfiguration()
+            var configuration = new ApiReferenceConfiguration()
             {
-                ApiReference = new ApiReferenceConfiguration()
-                {
-                    AssemblyPath = assemblyPath,
-                    OutputPath = outputPath
-                }
+                AssemblyPath = assemblyPath,
+                OutputPath = outputPath
             };
 
             var sut = new ApiReferenceCommand(m_Logger, configuration);
