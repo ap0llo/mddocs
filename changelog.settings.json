@@ -5,6 +5,10 @@
         },
         "integrations": {
             "provider": "GitHub"
-        }
+        },
+        "scopes" : [
+            { "name":  "apireference", "displayName":  "API Reference" },
+            { "name":  "commandlinehelp", "displayName":  "Command Line Help" }
+        ]
     }
 }
