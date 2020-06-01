@@ -2,15 +2,15 @@
   "mddocs": {
 
     "commandlinehelp": {
-      "includeVersion": true,
-      "outputPath": null,
       "assemblyPath": null,
+      "outputPath": null,
+      "includeVersion": true,
       "markdownPreset": "default"
     },
 
     "apireference": {
-      "outputPath": null,
       "assemblyPath": null,
+      "outputPath": null,
       "markdownPreset" :  "default"
     }
   }

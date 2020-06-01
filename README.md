@@ -20,13 +20,14 @@ It currently supports:
   
 For an example of what the output looks like, have a look at the [demoprojects](docs/demoprojects) directory.
 
-## Installation & Usage
+## Documentation
 
 For documentation on installation and usage, please refer to the
 corresponding sub-pages:
 
 - [MdDocs .NET CLI Tool](./docs/net-cli-tool.md)
 - [MdDocs MSBuild Integration](./docs/msbuild-integration.md)
+- [Configuration](./docs/configuration/README.md)
 
 ## Building from source
 

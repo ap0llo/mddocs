@@ -18,7 +18,7 @@
   <PropertyGroup>
     <GenerateApiReferenceDocumentationOnBuild Condition="'$(GenerateApiReferenceDocumentationOnBuild)' == ''">false</GenerateApiReferenceDocumentationOnBuild>
     <GenerateCommandLineDocumentationOnBuild Condition="'$(GenerateCommandLineDocumentationOnBuild)' == ''">false</GenerateCommandLineDocumentationOnBuild>
-    <MdDocsMarkdownPreset Condition="'$(MdDocsMarkdownPreset)' == ''">Default</MdDocsMarkdownPreset>
+    <MdDocsMarkdownPreset Condition="'$(MdDocsMarkdownPreset)' == ''"></MdDocsMarkdownPreset>
     <!--TODO: Default value for MdDocsConfigurationFilePath-->
     <MdDocsConfigurationFilePath Condition=" '$(MdDocsConfigurationFilePath)' == '' "></MdDocsConfigurationFilePath>
   </PropertyGroup>

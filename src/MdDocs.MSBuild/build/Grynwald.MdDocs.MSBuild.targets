@@ -9,11 +9,6 @@
           DependsOnTargets="GetTargetPath"
           Condition=" '$(TargetFramework)' != ''">  <!-- Only run in the "inner" build -->
 
-    <PropertyGroup>
-      <ApiReferenceDocumentationOutputPath Condition=" '$(ApiReferenceDocumentationOutputPath)' == '' ">$(OutputPath)docs/api/</ApiReferenceDocumentationOutputPath>
-    </PropertyGroup>
-    
-    <Message Text="Saving API Reference documentation to '$(ApiReferenceDocumentationOutputPath)'" />
     <GenerateApiReferenceDocumentation Assembly="@(TargetPathWithTargetPlatformMoniker->'%(FullPath)')" 
                                        OutputDirectory="$(ApiReferenceDocumentationOutputPath)"
                                        MarkdownPreset="$(MdDocsMarkdownPreset)"
@@ -43,11 +38,6 @@
           DependsOnTargets="GetTargetPath"
           Condition=" '$(TargetFramework)' != ''">  <!-- Only run in the "inner" build -->
 
-    <PropertyGroup>
-      <CommandLineDocumentationOutputPath Condition=" '$(CommandLineDocumentationOutputPath)' == '' ">$(OutputPath)docs/commandline/</CommandLineDocumentationOutputPath>
-    </PropertyGroup>
-
-    <Message Text="Saving command line documentation to '$(CommandLineDocumentationOutputPath)'" />
     <GenerateCommandLineDocumentation Assembly="@(TargetPathWithTargetPlatformMoniker->'%(FullPath)')"
                                       OutputDirectory="$(CommandLineDocumentationOutputPath)"
                                       MarkdownPreset="$(MdDocsMarkdownPreset)"
