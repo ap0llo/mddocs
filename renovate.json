@@ -12,6 +12,14 @@
     {
       "packagePatterns": [ "^Microsoft\\.Extensions\\.Configuration.*" ],
       "groupName": "Microsoft.Extensions.Configuration"
+    },
+    {
+      "packagePatterns": [ "^xunit.*" ],
+      "groupName": "xunit"
+    },    
+    {
+      "packagePatterns": [ "^Nerdbank.GitVersioning$", "^nbgv$" ],
+      "groupName": "Nerdbank.GitVersioning"
     }
   ]
 }
