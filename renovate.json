@@ -22,8 +22,8 @@
       "groupName": "Nerdbank.GitVersioning"
     },
      {
-      "packageNames": ["^Microsoft\\.Build.*"],
-      "allowedVersions": "< 16.0"
+      "packageNames": [ "^Microsoft\\.Build.*" ],
+      "allowedVersions": "< 16.0."
     }
   ]
 }
