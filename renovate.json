@@ -1,0 +1,32 @@
+{
+  "extends": [
+    "config:base",
+    ":semanticCommits",
+    ":semanticCommitTypeAll(build)"
+  ],
+  "packageRules": [
+    {
+      "packagePatterns": [ "^Microsoft\\.Extensions\\.Logging.*" ],
+      "groupName": "Microsoft.Extensions.Logging"
+    },
+    {
+      "packagePatterns": [ "^Microsoft\\.Extensions\\.Configuration.*" ],
+      "groupName": "Microsoft.Extensions.Configuration"
+    },
+    {
+      "packagePatterns": [ "^xunit.*" ],
+      "groupName": "xunit"
+    },    
+    {
+      "packagePatterns": [ "^Nerdbank.GitVersioning$", "^nbgv$" ],
+      "groupName": "Nerdbank.GitVersioning"
+    },
+     {
+      "packagePatterns": [ "^Microsoft\\.Build.*" ],
+      "allowedVersions": "< 16.0"
+    }
+  ],
+   "labels": [
+     "dependencies"
+  ]
+}
