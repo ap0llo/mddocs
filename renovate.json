@@ -1,25 +1,17 @@
 {
   "extends": [
-     ":separateMajorReleases",
-    ":combinePatchMinorReleases",
-    ":ignoreUnstable",
-    ":prImmediately",
-    ":semanticPrefixFixDepsChoreOthers",
-    ":updateNotScheduled",
-    ":automergeDisabled",
-    ":ignoreModulesAndTests",
-    ":autodetectPinVersions",
-    ":prHourlyLimit2",
-    ":prConcurrentLimit20",
-    "group:recommended",
-    "helpers:disableTypesNodeMajor",
+    "config:base",
     ":semanticCommits",
     ":semanticCommitTypeAll(build)"
   ],
   "packageRules": [
     {
-      "packagePatterns": [ "Microsoft.Extensions.Logging" ],
+      "packagePatterns": [ "^Microsoft\.Extensions\.Logging.*" ],
       "groupName": "Microsoft.Extensions.Logging"
+    },
+    {
+      "packagePatterns": [ "^Microsoft\.Extensions\.Configuration.*" ],
+      "groupName": "Microsoft.Extensions.Configuration"
     }
   ]
 }
