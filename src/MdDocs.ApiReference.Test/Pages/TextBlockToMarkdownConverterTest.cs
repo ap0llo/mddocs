@@ -24,7 +24,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Pages
         }
 
         [Theory, CombinatorialData]
-        public void ConvertToBlock_returns_expected_result_for_for_lists([CombinatorialValues(ListType.Bullet, ListType.None, ListType.Number)]ListType listType)
+        public void ConvertToBlock_returns_expected_result_for_for_lists([CombinatorialValues(ListType.Bullet, ListType.None, ListType.Number)] ListType listType)
         {
             // ARRANGE
             var input = CreateList(
@@ -54,7 +54,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Pages
         }
 
         [Theory, CombinatorialData]
-        public void ConvertToBlock_returns_expected_result_for_lists_02([CombinatorialValues(1, 2, 10)]int numberOfListItems)
+        public void ConvertToBlock_returns_expected_result_for_lists_02([CombinatorialValues(1, 2, 10)] int numberOfListItems)
         {
             // ARRANGE
             var input = CreateList(

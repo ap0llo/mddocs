@@ -1,10 +1,10 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
-using Microsoft.Extensions.Configuration;
 using Grynwald.Utilities.Configuration;
-using System.Linq;
+using Microsoft.Extensions.Configuration;
 
 namespace Grynwald.MdDocs.Common.Configuration
 {
