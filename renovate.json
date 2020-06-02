@@ -20,6 +20,10 @@
     {
       "packagePatterns": [ "^Nerdbank.GitVersioning$", "^nbgv$" ],
       "groupName": "Nerdbank.GitVersioning"
+    },
+     {
+      "packageNames": ["^Microsoft\\.Build.*"],
+      "allowedVersions": "< 16.0"
     }
   ]
 }
