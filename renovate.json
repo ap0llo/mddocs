@@ -6,11 +6,11 @@
   ],
   "packageRules": [
     {
-      "packagePatterns": [ "^Microsoft\.Extensions\.Logging.*" ],
+      "packagePatterns": [ "^Microsoft\\.Extensions\\.Logging.*" ],
       "groupName": "Microsoft.Extensions.Logging"
     },
     {
-      "packagePatterns": [ "^Microsoft\.Extensions\.Configuration.*" ],
+      "packagePatterns": [ "^Microsoft\\.Extensions\\.Configuration.*" ],
       "groupName": "Microsoft.Extensions.Configuration"
     }
   ]
