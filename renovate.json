@@ -22,7 +22,7 @@
       "groupName": "Nerdbank.GitVersioning"
     },
      {
-      "packageNames": [ "^Microsoft\\.Build.*" ],
+      "packagePatterns": [ "^Microsoft\\.Build.*" ],
       "allowedVersions": "< 16.0"
     }
   ],
