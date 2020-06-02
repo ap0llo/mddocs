@@ -23,7 +23,7 @@
     },
      {
       "packageNames": [ "^Microsoft\\.Build.*" ],
-      "allowedVersions": "< 16.0."
+      "allowedVersions": "< 16.0"
     }
   ],
    "labels": [
