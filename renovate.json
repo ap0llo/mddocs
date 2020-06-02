@@ -1,6 +1,18 @@
 {
   "extends": [
-    "config:base",
+     ":separateMajorReleases",
+    ":combinePatchMinorReleases",
+    ":ignoreUnstable",
+    ":prImmediately",
+    ":semanticPrefixFixDepsChoreOthers",
+    ":updateNotScheduled",
+    ":automergeDisabled",
+    ":ignoreModulesAndTests",
+    ":autodetectPinVersions",
+    ":prHourlyLimit2",
+    ":prConcurrentLimit20",
+    "group:recommended",
+    "helpers:disableTypesNodeMajor",
     ":semanticCommits",
     ":semanticCommitTypeAll(build)"
   ],
