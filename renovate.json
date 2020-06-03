@@ -21,12 +21,12 @@
       "packagePatterns": [ "^Nerdbank.GitVersioning$", "^nbgv$" ],
       "groupName": "Nerdbank.GitVersioning"
     },
-     {
+    {
       "packagePatterns": [ "^Microsoft\\.Build.*" ],
       "allowedVersions": "< 16.0"
     }
   ],
-   "labels": [
-     "dependencies"
+  "labels": [
+    "dependencies"
   ]
 }

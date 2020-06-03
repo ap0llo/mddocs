@@ -1,41 +1,50 @@
 <Project>
 
-  <PropertyGroup>
-    <LangVersion>8.0</LangVersion>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+		<!-- Output paths -->
+		<BaseOutputPath Condition="'$(BUILD_BINARIESDIRECTORY)' != '' ">$(BUILD_BINARIESDIRECTORY)</BaseOutputPath>
+		<BaseOutputPath Condition="'$(BaseOutputPath)' == '' ">$(MSBuildThisFileDirectory)..\Build\</BaseOutputPath>
+		<BaseOutputPath Condition="!HasTrailingSlash('BaseOutputPath')">$(BaseOutputPath)\</BaseOutputPath>
+		<BaseIntermediateOutputPath>$(BaseOutputPath)intermediate\$(MSBuildProjectName)\</BaseIntermediateOutputPath>
+		<OutputPath>$(BaseOutputPath)$(Configuration)\$(MSBuildProjectName)\</OutputPath>
+		<PackageOutputPath>$(BaseOutputPath)$(Configuration)\packages\</PackageOutputPath>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    		<!--
+    		   Suppressed warnings:
+    		     - NU5125: "The 'licenseUrl' element will be deprecated. Consider using the 'license' element instead"
+    		-->
+    		<NoWarn>NU5125</NoWarn>
+    		<!-- Make NuGet packaging opt-in instead of opt-out. -->
+    		<IsPackable>false</IsPackable>
+	</PropertyGroup>
 
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <BaseOutputPath Condition="'$(BUILD_BINARIESDIRECTORY)' != '' ">$(BUILD_BINARIESDIRECTORY)</BaseOutputPath>
-    <BaseOutputPath Condition="'$(BaseOutputPath)' == '' ">$(MSBuildThisFileDirectory)..\Build\</BaseOutputPath>
-    <BaseOutputPath Condition="!HasTrailingSlash('BaseOutputPath')">$(BaseOutputPath)\</BaseOutputPath>
-    <BaseIntermediateOutputPath>$(BaseOutputPath)intermediate\$(MSBuildProjectName)\</BaseIntermediateOutputPath>
-    <OutputPath>$(BaseOutputPath)$(Configuration)\$(MSBuildProjectName)\</OutputPath>
-    <PackageOutputPath>$(BaseOutputPath)$(Configuration)\packages\</PackageOutputPath>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <!--
-       Suppressed warnings:
-         - NU5125: "The 'licenseUrl' element will be deprecated. Consider using the 'license' element instead"
-    -->
-    <NoWarn>NU5125</NoWarn>
-    <!-- Make NuGet packaging opt-in instead of opt-out. -->
-    <IsPackable>false</IsPackable>
-  </PropertyGroup>
-  
-  <ItemGroup>
-    <PackageReference Include="Nerdbank.GitVersioning" Version="3.1.91" />
-    <PackageReference Include="Microsoft.DotNet.Analyzers.Compatibility" Version="0.2.12-alpha" PrivateAssets="all" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Nerdbank.GitVersioning" Version="3.1.91" PrivateAssets="all" />
+    		<PackageReference Include="Microsoft.DotNet.Analyzers.Compatibility" Version="0.2.12-alpha" PrivateAssets="all" />
+	</ItemGroup>
+	
+	
+	<PropertyGroup>
+		<LangVersion>8.0</LangVersion>
+		<Nullable>enable</Nullable>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+	</PropertyGroup>
 
-  <!--NuGet package properties -->
+	<!-- Disable nullable support on .Net Core 2.1 -->
+	<PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.1' ">
+		<Nullable>disable</Nullable>
+		<NoWarn>8632</NoWarn>  <!-- Suppress warning about nullable annotation in the source code although nullable is disabled-->
+	</PropertyGroup>
+	
+	<!--NuGet package properties -->
 	<PropertyGroup>
 		<Authors>Andreas Gruenwald</Authors>
 		<PackageProjectUrl>https://github.com/ap0llo/mddocs</PackageProjectUrl>
 		<PackageLicenseUrl>https://github.com/ap0llo/mddocs/blob/master/LICENSE</PackageLicenseUrl>
 		<Description>A tool to generate documentaton as Markdown</Description>        
-    <Copyright>Copyright (c) 2018-2019, Andreas Gruenwald</Copyright>
-    <PackageTags>markdown dotnet api documentation</PackageTags>
+		<Copyright>Copyright (c) 2018-2019, Andreas Gruenwald</Copyright>
+		<PackageTags>markdown dotnet api documentation</PackageTags>
 	</PropertyGroup>
 
 
