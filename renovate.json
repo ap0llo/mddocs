@@ -16,7 +16,11 @@
     {
       "packagePatterns": [ "^xunit.*" ],
       "groupName": "xunit"
-    },    
+    },
+    {
+      "packagePatterns": [ "^NuGet\\..*" ],
+      "groupName": "NuGet"
+    },
     {
       "packagePatterns": [ "^Nerdbank.GitVersioning$", "^nbgv$" ],
       "groupName": "Nerdbank.GitVersioning"
