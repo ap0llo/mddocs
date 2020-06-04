@@ -43,7 +43,7 @@
 		<PackageProjectUrl>https://github.com/ap0llo/mddocs</PackageProjectUrl>
 		<PackageLicenseUrl>https://github.com/ap0llo/mddocs/blob/master/LICENSE</PackageLicenseUrl>
 		<Description>A tool to generate documentaton as Markdown</Description>        
-		<Copyright>Copyright (c) 2018-2019, Andreas Gruenwald</Copyright>
+		<Copyright>Copyright (c) 2018-2020, Andreas Gruenwald</Copyright>
 		<PackageTags>markdown dotnet api documentation</PackageTags>
 	</PropertyGroup>
 
