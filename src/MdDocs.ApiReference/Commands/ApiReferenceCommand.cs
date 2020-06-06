@@ -29,7 +29,7 @@ namespace Grynwald.MdDocs.ApiReference.Commands
 
             using (var assemblyDocumentation = AssemblyDocumentation.FromAssemblyFile(m_Configuration.AssemblyPath, m_Logger))
             {
-                var pageFactory = new PageFactory(new DefaultApiReferencePathProvider(), assemblyDocumentation, m_Logger);
+                var pageFactory = new PageFactory(new DefaultApiReferencePathProvider(), m_Configuration, assemblyDocumentation, m_Logger);
                 pageFactory.GetPages().Save(
                     m_Configuration.OutputPath,
                     cleanOutputDirectory: true,

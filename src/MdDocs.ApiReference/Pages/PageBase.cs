@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Grynwald.MarkdownGenerator;
+using Grynwald.MdDocs.ApiReference.Configuration;
 using Grynwald.MdDocs.ApiReference.Model;
 using Grynwald.MdDocs.ApiReference.Model.XmlDocs;
 
@@ -9,22 +10,26 @@ namespace Grynwald.MdDocs.ApiReference.Pages
     public abstract class PageBase<TModel> : IMdSpanFactory, IPage where TModel : class, IDocumentation
     {
         private readonly ILinkProvider m_LinkProvider;
-
+        protected readonly ApiReferenceConfiguration m_Configuration;
 
         public TModel Model { get; }
 
 
-        internal PageBase(ILinkProvider linkProvider, TModel model)
+        internal PageBase(ILinkProvider linkProvider, ApiReferenceConfiguration configuration, TModel model)
         {
             Model = model ?? throw new ArgumentNullException(nameof(model));
 
             m_LinkProvider = linkProvider ?? throw new ArgumentNullException(nameof(linkProvider));
+            m_Configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
 
 
         public abstract void Save(string path);
 
         public abstract void Save(string path, MdSerializationOptions options);
+
+
+        internal abstract MdDocument GetDocument();
 
 
         public MdParagraph GetMdParagraph(MemberId id) => new MdParagraph(GetMdSpan(id, false));

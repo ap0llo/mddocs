@@ -342,4 +342,3 @@ MigrationBackup/
 /src/MdDoc/Properties/launchSettings.json
 /src/MdDoc.Test.TestData/MdDoc.Test.TestData.xml
 /src/MdDocs/Properties/launchSettings.json
-src/MdDocs.CommandLineHelp.Test/Pages/_referenceResults/*.received.txt

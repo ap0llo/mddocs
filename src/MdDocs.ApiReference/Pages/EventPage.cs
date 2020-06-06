@@ -1,4 +1,5 @@
 ﻿using Grynwald.MarkdownGenerator;
+using Grynwald.MdDocs.ApiReference.Configuration;
 using Grynwald.MdDocs.ApiReference.Model;
 using Microsoft.Extensions.Logging;
 
@@ -6,8 +7,8 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 {
     public sealed class EventPage : SimpleMemberPage<EventDocumentation>
     {
-        internal EventPage(ILinkProvider linkProvider, EventDocumentation model, ILogger logger)
-            : base(linkProvider, model, logger)
+        internal EventPage(ILinkProvider linkProvider, ApiReferenceConfiguration configuration, EventDocumentation model, ILogger logger)
+            : base(linkProvider, configuration, model, logger)
         { }
 
 
