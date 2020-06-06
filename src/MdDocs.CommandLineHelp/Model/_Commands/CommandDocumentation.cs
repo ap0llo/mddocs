@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Grynwald.MdDocs.Common;
 using Microsoft.Extensions.Logging;
 using Mono.Cecil;
 
@@ -43,7 +44,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
             if (definition is null)
                 throw new ArgumentNullException(nameof(definition));
 
-            var verbAttribute = definition.GetAttribute(Constants.VerbAttributeFullName);
+            var verbAttribute = definition.GetAttribute(CommandLineParserTypeNames.VerbAttributeFullName);
 
             var name = (string)verbAttribute.ConstructorArguments.First(x => x.Type.FullName == "System.String").Value;
 

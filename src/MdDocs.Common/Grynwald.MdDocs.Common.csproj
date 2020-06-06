@@ -29,5 +29,9 @@
       <_Parameter1>Grynwald.MdDocs.Test</_Parameter1>
     </AssemblyAttribute>
   </ItemGroup>
-
+    
+  <ItemGroup>
+    <Compile Include="../shared/Nullable.cs" />
+  </ItemGroup>
+    
 </Project>

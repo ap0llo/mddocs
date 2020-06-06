@@ -2,12 +2,12 @@
 using System.Linq;
 using Mono.Cecil;
 
-namespace Grynwald.MdDocs.ApiReference.Model
+namespace Grynwald.MdDocs.Common
 {
-    public static class PropertyDefinitionExtensions
+    public static class EventDefinitionExtensions
     {
         /// <summary>
-        /// Gets a property's public custom attributes excluding attributes emitted by the C# compiler not relevant for the user.
+        /// Gets a events's public custom attributes excluding attributes emitted by the C# compiler not relevant for the user.
         /// </summary>
         /// <returns>
         /// Returns all attributes except:
@@ -15,7 +15,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         ///     <item>non-public Attribute types</item>
         /// </list>
         /// </returns>
-        public static IEnumerable<CustomAttribute> GetCustomAttributes(this PropertyDefinition parameter)
+        public static IEnumerable<CustomAttribute> GetCustomAttributes(this EventDefinition parameter)
         {
             return parameter.CustomAttributes
                 .Where(attribute =>

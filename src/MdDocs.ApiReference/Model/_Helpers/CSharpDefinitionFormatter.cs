@@ -463,7 +463,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
                     break;
 
                 case TypeKind.Struct:
-                    if (type.CustomAttributes.Any(a => a.AttributeType.FullName == Constants.IsReadOnlyAttributeFullName))
+                    if (type.CustomAttributes.Any(a => a.AttributeType.FullName == SystemTypeNames.IsReadOnlyAttributeFullName))
                     {
                         definitionBuilder.Append("readonly ");
                     }
@@ -477,7 +477,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
             if (typeKind == TypeKind.Enum)
             {
                 var underlyingType = type.Fields.Single(f => f.Name == "value__").FieldType;
-                if (underlyingType.FullName != Constants.Int32FullName)
+                if (underlyingType.FullName != SystemTypeNames.Int32FullName)
                 {
                     definitionBuilder.Append(" : ");
                     definitionBuilder.Append(GetDisplayName(underlyingType));
@@ -488,8 +488,8 @@ namespace Grynwald.MdDocs.ApiReference.Model
                 // get the default (implicit) base type: "object" for classes, "System.ValueType" for structs
                 // if the base type is the default type, the base type will not be explicitly included in the definition
                 var defaultBaseType = typeKind == TypeKind.Struct
-                    ? Constants.ValueTypeFullName
-                    : (typeKind == TypeKind.Class ? Constants.ObjectFullName : "");
+                    ? SystemTypeNames.ValueTypeFullName
+                    : (typeKind == TypeKind.Class ? SystemTypeNames.ObjectFullName : "");
 
                 if (type.HasInterfaces)
                 {
@@ -594,7 +594,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
             var typeDefinition = typeReference.Resolve();
 
             // string => put in quotation marks
-            if (typeReference.FullName == Constants.StringFullName)
+            if (typeReference.FullName == SystemTypeNames.StringFullName)
             {
                 if (value is null)
                 {
@@ -694,7 +694,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
             }
         }
 
-        private static bool IsFlagsEnum(TypeDefinition type) => type.CustomAttributes.Any(a => a.AttributeType.FullName == Constants.FlagsAttributeFullName);
+        private static bool IsFlagsEnum(TypeDefinition type) => type.CustomAttributes.Any(a => a.AttributeType.FullName == SystemTypeNames.FlagsAttributeFullName);
 
         private static string GetDisplayName(TypeReference typeReference)
         {
@@ -718,7 +718,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
             AppendCustomAttributes(definitionBuilder, parameter.GetCustomAttributes(), singleLine: true);
 
             // add "params" prefix if method allows multiple values
-            if (parameter.CustomAttributes.Any(a => a.AttributeType.FullName == Constants.ParamArrayAttributeFullName))
+            if (parameter.CustomAttributes.Any(a => a.AttributeType.FullName == SystemTypeNames.ParamArrayAttributeFullName))
             {
                 definitionBuilder.Append("params ");
             }

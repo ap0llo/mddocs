@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Grynwald.MdDocs.ApiReference.Model.XmlDocs;
+using Grynwald.MdDocs.Common;
 using Mono.Cecil;
 
 namespace Grynwald.MdDocs.ApiReference.Model

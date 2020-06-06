@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Grynwald.MdDocs.Common;
 using Grynwald.MdDocs.Common.Model;
 using Microsoft.Extensions.Logging;
 using Mono.Cecil;
@@ -36,14 +37,14 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
             {
                 var types = definition.MainModule.Types.Where(x => !x.IsAbstract);
 
-                if (types.Any(x => x.HasAttribute(Constants.VerbAttributeFullName)))
+                if (types.Any(x => x.HasAttribute(CommandLineParserTypeNames.VerbAttributeFullName)))
                 {
-                    logger.LogInformation($"Found a class attributed with '{Constants.VerbAttributeFullName}'. Assuming application has sub-commands");
+                    logger.LogInformation($"Found a class attributed with '{CommandLineParserTypeNames.VerbAttributeFullName}'. Assuming application has sub-commands");
                     return MultiCommandApplicationDocumentation.FromAssemblyDefinition(definition, logger);
                 }
                 else
                 {
-                    logger.LogInformation($"Found *no* class attributed with '{Constants.VerbAttributeFullName}'. Assuming application without sub-commands");
+                    logger.LogInformation($"Found *no* class attributed with '{CommandLineParserTypeNames.VerbAttributeFullName}'. Assuming application without sub-commands");
                     return SingleCommandApplicationDocumentation.FromAssemblyDefinition(definition, logger);
                 }
             }
@@ -53,7 +54,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
         protected static string LoadApplicationName(AssemblyDefinition definition)
         {
             var name = definition
-                .GetAttributeOrDefault(Constants.AssemblyTitleAttributeFullName)
+                .GetAttributeOrDefault(SystemTypeNames.AssemblyTitleAttributeFullName)
                 ?.ConstructorArguments?.Single().Value as string;
 
             if (name == null || String.IsNullOrEmpty(name))
@@ -68,7 +69,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
         protected static string? LoadApplicationVersion(AssemblyDefinition definition)
         {
             var version = definition
-              .GetAttributeOrDefault(Constants.AssemblyInformationalVersionAttribute)
+              .GetAttributeOrDefault(SystemTypeNames.AssemblyInformationalVersionAttribute)
               ?.ConstructorArguments.Single().Value as string;
 
             if (String.IsNullOrEmpty(version))
@@ -82,7 +83,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
 
         protected static IReadOnlyList<string> LoadAssemblyUsage(AssemblyDefinition definition)
         {
-            var assemblyUsageAttribute = definition.GetAttributeOrDefault(Constants.AssemblyUsageAttributeFullName);
+            var assemblyUsageAttribute = definition.GetAttributeOrDefault(CommandLineParserTypeNames.AssemblyUsageAttributeFullName);
 
             return assemblyUsageAttribute == null
                 ? Array.Empty<string>()
