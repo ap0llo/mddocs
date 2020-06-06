@@ -1,4 +1,5 @@
 ﻿using Grynwald.MarkdownGenerator;
+using Grynwald.MdDocs.ApiReference.Configuration;
 using Grynwald.MdDocs.ApiReference.Model;
 using Microsoft.Extensions.Logging;
 
@@ -6,8 +7,8 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 {
     public sealed class ConstructorsPage : OverloadableMemberPage<ConstructorDocumentation, ConstructorOverloadDocumentation>
     {
-        internal ConstructorsPage(ILinkProvider linkProvider, ConstructorDocumentation model, ILogger logger)
-            : base(linkProvider, model, logger)
+        internal ConstructorsPage(ILinkProvider linkProvider, ApiReferenceConfiguration configuration, ConstructorDocumentation model, ILogger logger)
+            : base(linkProvider, configuration, model, logger)
         { }
 
 

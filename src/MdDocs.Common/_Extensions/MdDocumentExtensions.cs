@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Grynwald.MarkdownGenerator;
 
-namespace Grynwald.MdDocs.CommandLineHelp
+namespace Grynwald.MdDocs.Common
 {
-    internal static class MdDocumentExtensions
+    public static class MdDocumentExtensions
     {
         public static MdDocument Add(this MdDocument document, MdBlock block)
         {

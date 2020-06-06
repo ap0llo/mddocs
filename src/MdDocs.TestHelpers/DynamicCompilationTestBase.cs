@@ -56,7 +56,7 @@ namespace Grynwald.MdDocs.TestHelpers
 
         protected void CompileToFile(string sourceCode, string assemblyOutputPath, string xmlDocumenationOutputPath)
         {
-            var compilation = GetCompilation(sourceCode);
+            var compilation = GetCompilation(sourceCode, Path.GetFileNameWithoutExtension(assemblyOutputPath));
 
             using var assemblyStream = File.Open(assemblyOutputPath, FileMode.Create, FileAccess.Write);
             using var xmlDocumentationStream = File.Open(xmlDocumenationOutputPath, FileMode.Create, FileAccess.Write);
@@ -65,11 +65,9 @@ namespace Grynwald.MdDocs.TestHelpers
             EnsureCompilationSucccess(emitResult);
         }
 
-        protected Compilation GetCompilation(string sourceCode)
+        protected Compilation GetCompilation(string sourceCode, string assemblyName = "DynamicTestAssembly")
         {
             var syntaxTree = CSharpSyntaxTree.ParseText(sourceCode);
-
-            var assemblyName = "Compilation_" + Path.GetRandomFileName();
 
             var compilation = CSharpCompilation.Create(
               assemblyName,

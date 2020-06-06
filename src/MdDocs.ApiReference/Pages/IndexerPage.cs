@@ -1,4 +1,5 @@
 ﻿using Grynwald.MarkdownGenerator;
+using Grynwald.MdDocs.ApiReference.Configuration;
 using Grynwald.MdDocs.ApiReference.Model;
 using Microsoft.Extensions.Logging;
 
@@ -6,8 +7,8 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 {
     public sealed class IndexerPage : OverloadableMemberPage<IndexerDocumentation, IndexerOverloadDocumentation>
     {
-        internal IndexerPage(ILinkProvider linkProvider, IndexerDocumentation model, ILogger logger)
-            : base(linkProvider, model, logger)
+        internal IndexerPage(ILinkProvider linkProvider, ApiReferenceConfiguration configuration, IndexerDocumentation model, ILogger logger)
+            : base(linkProvider, configuration, model, logger)
         { }
 
 
