@@ -7,7 +7,7 @@ namespace Grynwald.MdDocs.ApiReference.Pages
     /// Default implementation of <see cref="ILinkProvider"/>.
     /// Returns <c>false</c> for all <see cref="ILinkProvider.TryGetLink"/> calls.
     /// </summary>
-    public class NullLinkProvider : ILinkProvider
+    internal class NullLinkProvider : ILinkProvider
     {
         /// <summary>
         /// The singleton instance of <see cref="NullLinkProvider"/>
