@@ -688,7 +688,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
                 }
             }
             // for boolean values, return value as lower-case string (e.g. C# uses "true" but 'true.ToString()' yields "True")
-            else if(typeReference.FullName == SystemTypeNames.BooleanFullName)
+            else if (typeReference.FullName == SystemTypeNames.BooleanFullName)
             {
                 return value.ToString().ToLowerInvariant();
             }
