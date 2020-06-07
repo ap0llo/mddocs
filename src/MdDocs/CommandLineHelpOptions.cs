@@ -24,7 +24,7 @@ namespace Grynwald.MdDocs
             set => m_AssemblyPath = value;
         }
 
-        [Option("no-version", Required = false, HelpText = "Do not include the application version in the generated documentation")]
+        [Option("no-version", Required = false, HelpText = "Do not include the application version in the generated documentation.")]
         public bool NoVersion { get; set; }
 
         [ConfigurationValue("mddocs:commandlinehelp:includeVersion")]

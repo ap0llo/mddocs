@@ -38,7 +38,6 @@ namespace Grynwald.MdDocs.Test
             Assert.Equal(path, sut.OutputDirectory);
         }
 
-
         [Fact]
         public void AssemblyPath_converts_value_to_a_absolute_path()
         {
@@ -67,6 +66,24 @@ namespace Grynwald.MdDocs.Test
 
             // ACT / ASSERT
             Assert.Equal(path, sut.AssemblyPath);
+        }
+
+        [Theory]
+        [InlineData(true, true)]
+        [InlineData(false, null)]
+        public void IncludeVersion_returns_expected_value_based_on_the_no_version_flag(bool noVersion, bool? expected)
+        {
+            // ARRANGE
+            var sut = new ApiReferenceOptions()
+            {
+                NoVersion = noVersion
+            };
+
+            // ACT 
+            var actual = sut.IncludeVersion;
+
+            // ASSERT
+            Assert.Equal(expected, actual);
         }
     }
 }
