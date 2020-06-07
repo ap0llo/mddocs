@@ -2,9 +2,9 @@
 using System.Linq;
 using Mono.Cecil;
 
-namespace Grynwald.MdDocs.ApiReference.Model
+namespace Grynwald.MdDocs.Common
 {
-    internal static class ParameterDefinitionExtensions
+    public static class ParameterDefinitionExtensions
     {
         /// <summary>
         /// Gets a parameter's custom attributes excluding attributes emitted by the C# compiler not relevant for the user.
@@ -22,10 +22,10 @@ namespace Grynwald.MdDocs.ApiReference.Model
             return parameter.CustomAttributes
                 .Where(attribute =>
                 {
-                    if (attribute.AttributeType.FullName == Constants.IsReadOnlyAttributeFullName)
+                    if (attribute.AttributeType.FullName == SystemTypeNames.IsReadOnlyAttributeFullName)
                         return false;
 
-                    if (attribute.AttributeType.FullName == Constants.ParamArrayAttributeFullName)
+                    if (attribute.AttributeType.FullName == SystemTypeNames.ParamArrayAttributeFullName)
                         return false;
 
                     if (!attribute.AttributeType.Resolve().IsPublic)

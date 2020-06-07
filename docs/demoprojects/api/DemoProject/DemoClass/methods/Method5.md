@@ -8,7 +8,9 @@
 
 # DemoClass.Method5 Method
 
-**Declaring Type:** [DemoClass](../index.md)
+**Declaring Type:** [DemoClass](../index.md)  
+**Namespace:** [DemoProject](../../index.md)  
+**Assembly:** DemoProject
 
 Example of an method with a `out` parameter.
 

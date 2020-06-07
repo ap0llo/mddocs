@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Grynwald.MdDocs.Common;
 using Microsoft.Extensions.Logging;
 using Mono.Cecil;
 
@@ -23,7 +24,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
         private SingleCommandApplicationDocumentation(AssemblyDefinition definition, ILogger logger)
             : base(
                 name: LoadApplicationName(definition ?? throw new ArgumentNullException(nameof(definition))),
-                version: LoadApplicationVersion(definition ?? throw new ArgumentNullException(nameof(definition))),
+                version: (definition ?? throw new ArgumentNullException(nameof(definition))).GetInformationalVersionOrVersion(),
                 usage: LoadAssemblyUsage(definition))
         {
             Command = LoadCommand(definition, logger);
@@ -38,7 +39,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
         {
             bool IsCommandLineParameter(PropertyDefinition property)
             {
-                return property.HasAttribute(Constants.OptionAttributeFullName) || property.HasAttribute(Constants.ValueAttributeFullName);
+                return property.HasAttribute(CommandLineParserTypeNames.OptionAttributeFullName) || property.HasAttribute(CommandLineParserTypeNames.ValueAttributeFullName);
             }
 
             // get all types with at least one property attributed as either [Option] or [Value]

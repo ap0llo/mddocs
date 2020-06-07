@@ -8,7 +8,9 @@
 
 # NestedTypesDemo Constructors
 
-**Declaring Type:** [NestedTypesDemo](../index.md)
+**Declaring Type:** [NestedTypesDemo](../index.md)  
+**Namespace:** [DemoProject](../../index.md)  
+**Assembly:** DemoProject
 
 ```csharp
 public NestedTypesDemo();

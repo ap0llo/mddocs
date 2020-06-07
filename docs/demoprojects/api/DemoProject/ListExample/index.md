@@ -8,8 +8,7 @@
 
 # ListExample Class
 
-**Namespace:** [DemoProject](../index.md)
-
+**Namespace:** [DemoProject](../index.md)  
 **Assembly:** DemoProject
 
 Example class to showcase the different supported list formats.

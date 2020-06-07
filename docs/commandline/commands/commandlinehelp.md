@@ -30,7 +30,7 @@ mddocs commandlinehelp [--assembly|-a <VALUE>]
 | [assembly](#assembly-parameter)                           | [a](#assembly-parameter)              | Path of the command line application assembly to generate documentation for.                                                                    |
 | [configurationFilePath](#configurationfilepath-parameter) | [c](#configurationfilepath-parameter) | The path of the configuration file to use. If no configuration file is specified, default settings are used.                                    |
 | [markdown\-preset](#markdownpreset-parameter)             |                                       | Specifies the preset to use for generating Markdown files.                                                                                      |
-| [no\-version](#noversion-parameter)                       |                                       | Do not include the application version in the generated documentation                                                                           |
+| [no\-version](#noversion-parameter)                       |                                       | Do not include the application version in the generated documentation.                                                                          |
 | [outdir](#outdir-parameter)                               | [o](#outdir-parameter)                | Path of the directory to write the documentation to. If the output directory already exists, all files in the output directory will be deleted. |
 | [verbose](#verbose-parameter)                             | [v](#verbose-parameter)               | Show more detailed log output.                                                                                                                  |
 
@@ -78,7 +78,7 @@ ___
 
 ### `no-version` Parameter
 
-Do not include the application version in the generated documentation
+Do not include the application version in the generated documentation.
 
 |                |                       |
 | -------------- | --------------------- |

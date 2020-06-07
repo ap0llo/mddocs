@@ -22,5 +22,8 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
         /// <inheritdoc />
         public abstract IDocumentation? TryGetDocumentation(MemberId id);
+
+        /// <inheritdoc />
+        public AssemblyDocumentation GetAssemblyDocumentation() => TypeDocumentation.GetAssemblyDocumentation();
     }
 }

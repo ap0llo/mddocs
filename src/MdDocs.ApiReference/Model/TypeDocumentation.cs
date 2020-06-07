@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Grynwald.MdDocs.ApiReference.Model.XmlDocs;
+using Grynwald.MdDocs.Common;
 using Grynwald.Utilities.Collections;
 using Microsoft.Extensions.Logging;
 using Mono.Cecil;
@@ -324,6 +325,9 @@ namespace Grynwald.MdDocs.ApiReference.Model
                     return ModuleDocumentation.TryGetDocumentation(id);
             }
         }
+
+        /// <inheritdoc />
+        public AssemblyDocumentation GetAssemblyDocumentation() => ModuleDocumentation.GetAssemblyDocumentation();
 
 
         internal void AddNestedType(TypeDocumentation nestedType)

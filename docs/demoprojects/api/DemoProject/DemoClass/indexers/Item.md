@@ -8,7 +8,9 @@
 
 # DemoClass.Item Indexer
 
-**Declaring Type:** [DemoClass](../index.md)
+**Declaring Type:** [DemoClass](../index.md)  
+**Namespace:** [DemoProject](../../index.md)  
+**Assembly:** DemoProject
 
 ## Overloads
 

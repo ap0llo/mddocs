@@ -1,6 +1,9 @@
 # Class1.Method1 Method
 
-**Declaring Type:** Class1
+**Declaring Type:** Class1  
+**Namespace:** MyNamespace  
+**Assembly:** DynamicTestAssembly  
+**Assembly Version:** 0.0.0.0
 
 ```csharp
 public void Method1();

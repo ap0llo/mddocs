@@ -8,8 +8,7 @@
 
 # IDemoInterface Interface
 
-**Namespace:** [DemoProject](../index.md)
-
+**Namespace:** [DemoProject](../index.md)  
 **Assembly:** DemoProject
 
 A interface meant to demonstrate how the generated documentation for interfaces looks like.

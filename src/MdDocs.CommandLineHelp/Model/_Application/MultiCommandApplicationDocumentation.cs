@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Grynwald.MdDocs.Common;
 using Microsoft.Extensions.Logging;
 using Mono.Cecil;
 
@@ -23,7 +24,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
         private MultiCommandApplicationDocumentation(AssemblyDefinition definition, ILogger logger)
             : base(
                   name: LoadApplicationName(definition ?? throw new ArgumentNullException(nameof(definition))),
-                  version: LoadApplicationVersion(definition ?? throw new ArgumentNullException(nameof(definition))),
+                  version: (definition ?? throw new ArgumentNullException(nameof(definition))).GetInformationalVersionOrVersion(),
                   usage: LoadAssemblyUsage(definition))
         {
             if (logger is null)
@@ -42,8 +43,8 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
         {
             return definition.MainModule.Types
                 .Where(x => !x.IsAbstract)
-                .WithAttribute(Constants.VerbAttributeFullName)
-                .Where(x => !x.GetAttribute(Constants.VerbAttributeFullName).GetPropertyValueOrDefault<bool>("Hidden"))
+                .WithAttribute(CommandLineParserTypeNames.VerbAttributeFullName)
+                .Where(x => !x.GetAttribute(CommandLineParserTypeNames.VerbAttributeFullName).GetPropertyValueOrDefault<bool>("Hidden"))
                 .Select(type => CommandDocumentation.FromTypeDefinition(this, type, logger))
                 .ToArray();
         }

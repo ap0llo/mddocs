@@ -8,10 +8,8 @@
 
 # NestedTypesDemo.NestedClass1 Class
 
-**Declaring Type:** [NestedTypesDemo](../index.md)
-
-**Namespace:** [DemoProject](../../index.md)
-
+**Declaring Type:** [NestedTypesDemo](../index.md)  
+**Namespace:** [DemoProject](../../index.md)  
 **Assembly:** DemoProject
 
 This is an example of a nested class

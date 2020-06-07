@@ -8,7 +8,9 @@
 
 # ObsoleteDemoClass Constructors
 
-**Declaring Type:** [ObsoleteDemoClass](../index.md)
+**Declaring Type:** [ObsoleteDemoClass](../index.md)  
+**Namespace:** [DemoProject](../../index.md)  
+**Assembly:** DemoProject
 
 ```csharp
 public ObsoleteDemoClass();

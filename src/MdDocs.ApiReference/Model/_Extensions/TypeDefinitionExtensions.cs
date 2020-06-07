@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Grynwald.MdDocs.Common;
 using Grynwald.Utilities.Collections;
 using Mono.Cecil;
 
@@ -98,13 +99,13 @@ namespace Grynwald.MdDocs.ApiReference.Model
             return type.CustomAttributes
                 .Where(attribute =>
                 {
-                    if (typeKind == TypeKind.Class && attribute.AttributeType.FullName == Constants.DefaultMemberAttributeFullName)
+                    if (typeKind == TypeKind.Class && attribute.AttributeType.FullName == SystemTypeNames.DefaultMemberAttributeFullName)
                         return false;
 
-                    if (typeKind == TypeKind.Class && attribute.AttributeType.FullName == Constants.ExtensionAttributeFullName)
+                    if (typeKind == TypeKind.Class && attribute.AttributeType.FullName == SystemTypeNames.ExtensionAttributeFullName)
                         return false;
 
-                    if (typeKind == TypeKind.Struct && attribute.AttributeType.FullName == Constants.IsReadOnlyAttributeFullName)
+                    if (typeKind == TypeKind.Struct && attribute.AttributeType.FullName == SystemTypeNames.IsReadOnlyAttributeFullName)
                         return false;
 
                     if (!attribute.AttributeType.Resolve().IsPublic)

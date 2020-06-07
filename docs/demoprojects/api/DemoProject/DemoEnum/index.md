@@ -8,8 +8,7 @@
 
 # DemoEnum Enum
 
-**Namespace:** [DemoProject](../index.md)
-
+**Namespace:** [DemoProject](../index.md)  
 **Assembly:** DemoProject
 
 An example of an user\-defined enum meant

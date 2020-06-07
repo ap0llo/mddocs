@@ -10,8 +10,7 @@
 
 ⚠️ **Warning:** This class is obsolete. Use DemoClass instead.
 
-**Namespace:** [DemoProject](../index.md)
-
+**Namespace:** [DemoProject](../index.md)  
 **Assembly:** DemoProject
 
 A class meant to demonstrate how the generated documentation for a deprecated class looks like.

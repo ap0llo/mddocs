@@ -8,7 +8,9 @@
 
 # DemoClass.Subtraction Operator
 
-**Declaring Type:** [DemoClass](../index.md)
+**Declaring Type:** [DemoClass](../index.md)  
+**Namespace:** [DemoProject](../../index.md)  
+**Assembly:** DemoProject
 
 Example of an overload of the binary \- operator.
 

@@ -77,23 +77,27 @@ namespace Grynwald.MdDocs.ApiReference.Pages
 
         private void AddDefinitionSection(MdContainerBlock block)
         {
-            // Add declaring type
+            var infoParagraph = new MdParagraph();
+            block.Add(infoParagraph);
+
+            // Add declaring type if the type is a nested type
             if (Model.IsNestedType)
             {
-                block.Add(
-                    new MdParagraph(new MdStrongEmphasisSpan("Declaring Type:"), " ", GetMdSpan(Model.DeclaringType!.TypeId))
-                );
+                infoParagraph.Add(new MdCompositeSpan(new MdStrongEmphasisSpan("Declaring Type:"), " ", GetMdSpan(Model.DeclaringType!.TypeId)));
+                infoParagraph.Add("\r\n");
             }
 
-            // Add Namespace            
-            block.Add(
-                new MdParagraph(new MdStrongEmphasisSpan("Namespace:"), " ", GetMdSpan(Model.NamespaceDocumentation.NamespaceId))
-            );
+            // add namespace and assembly names
+            infoParagraph.Add(new MdCompositeSpan(new MdStrongEmphasisSpan("Namespace:"), " ", GetMdSpan(Model.NamespaceDocumentation.NamespaceId)));
+            infoParagraph.Add("\r\n");
+            infoParagraph.Add(new MdCompositeSpan(new MdStrongEmphasisSpan("Assembly:"), " " + Model.GetAssemblyDocumentation().Name));
 
-            // Add Assembly
-            block.Add(
-                new MdParagraph(new MdStrongEmphasisSpan("Assembly:"), " " + Model.AssemblyName)
-            );
+            // add assembly version
+            if (m_Configuration.IncludeVersion)
+            {
+                infoParagraph.Add("\r\n");
+                infoParagraph.Add(new MdCompositeSpan(new MdStrongEmphasisSpan("Assembly Version:"), " " + Model.GetAssemblyDocumentation().Version));
+            }
 
             if (!Model.Summary.IsEmpty)
             {

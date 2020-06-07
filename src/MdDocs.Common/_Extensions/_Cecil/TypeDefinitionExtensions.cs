@@ -1,11 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Mono.Cecil;
 
-namespace Grynwald.MdDocs.CommandLineHelp
+namespace Grynwald.MdDocs.Common
 {
-    internal static class TypeDefinitionExtensions
+    public static class TypeDefinitionExtensions
     {
+        public static (string name, long value)[] GetEnumValues(this TypeDefinition type)
+        {
+            if (!type.IsEnum)
+                throw new InvalidOperationException($"Type '{type.FullName}' is not a enum");
+
+            return type.Fields
+                .Where(f => f.IsPublic && !f.IsSpecialName)
+                .Select(f => (f.Name, Convert.ToInt64(f.Constant)))
+                .ToArray();
+        }
+
+
         /// <summary>
         /// Gets all the type's properties including the properties defined in base classes.
         /// </summary>

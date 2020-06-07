@@ -85,6 +85,8 @@ namespace Grynwald.MdDocs.ApiReference.Model
             }
         }
 
+        /// <inheritdoc />
+        public AssemblyDocumentation GetAssemblyDocumentation() => AssemblyDocumentation;
 
         private NamespaceDocumentation GetNamespaceDocumentation(string namespaceName)
         {

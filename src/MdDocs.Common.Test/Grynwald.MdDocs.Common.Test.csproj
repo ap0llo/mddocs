@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MdDocs.Common\Grynwald.MdDocs.Common.csproj" />
+    <ProjectReference Include="..\MdDocs.TestHelpers\Grynwald.MdDocs.TestHelpers.csproj" />
   </ItemGroup>
 
 </Project>

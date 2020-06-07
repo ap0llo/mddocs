@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Grynwald.MdDocs.Common;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Mono.Cecil;
@@ -46,7 +47,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
         }
 
         private OptionDocumentation(PropertyDefinition definition, ILogger logger)
-            : base(definition, definition.GetAttribute(Constants.OptionAttributeFullName))
+            : base(definition, definition.GetAttribute(CommandLineParserTypeNames.OptionAttributeFullName))
         {
             m_Logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
@@ -55,7 +56,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
             // special handling for bool options:
             // bool options are treated as "switch" parameters that do not require a value to be passed in,
             // e.g. the option is set using "--option" not "--option true"
-            if (definition.PropertyType.FullName == Constants.BooleanFullName)
+            if (definition.PropertyType.FullName == SystemTypeNames.BooleanFullName)
             {
                 IsSwitchParameter = true;
 
@@ -92,7 +93,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
         {
             string? name = default;
             char? shortName = default;
-            foreach (var arg in definition.GetAttribute(Constants.OptionAttributeFullName).ConstructorArguments)
+            foreach (var arg in definition.GetAttribute(CommandLineParserTypeNames.OptionAttributeFullName).ConstructorArguments)
             {
                 if (arg.Type.FullName == typeof(string).FullName)
                 {

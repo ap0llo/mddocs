@@ -18,6 +18,7 @@ Generate API reference documentation for a .NET assembly.
 mddocs apireference [--assembly|-a <VALUE>]
                     [--configurationFilePath|-c <VALUE>]
                     [--markdown-preset <VALUE>]
+                    [--no-version]
                     [--outdir|-o <VALUE>]
                     [--verbose|-v]
 ```
@@ -29,6 +30,7 @@ mddocs apireference [--assembly|-a <VALUE>]
 | [assembly](#assembly-parameter)                           | [a](#assembly-parameter)              | Path of the assembly to generate documentation for.                                                                                             |
 | [configurationFilePath](#configurationfilepath-parameter) | [c](#configurationfilepath-parameter) | The path of the configuration file to use. If no configuration file is specified, default settings are used.                                    |
 | [markdown\-preset](#markdownpreset-parameter)             |                                       | Specifies the preset to use for generating Markdown files.                                                                                      |
+| [no\-version](#noversion-parameter)                       |                                       | Do not include the assembly version in the generated documentation.                                                                             |
 | [outdir](#outdir-parameter)                               | [o](#outdir-parameter)                | Path of the directory to write the documentation to. If the output directory already exists, all files in the output directory will be deleted. |
 | [verbose](#verbose-parameter)                             | [v](#verbose-parameter)               | Show more detailed log output.                                                                                                                  |
 
@@ -71,6 +73,19 @@ Specifies the preset to use for generating Markdown files.
 | Required:        | No                  |
 | Accepted values: | `Default`, `MkDocs` |
 | Default value:   | `Default`           |
+
+___
+
+### `no-version` Parameter
+
+Do not include the assembly version in the generated documentation.
+
+|                |                       |
+| -------------- | --------------------- |
+| Name:          | no\-version           |
+| Position:      | *Named parameter*     |
+| Required:      | No (Switch parameter) |
+| Default value: | `False`               |
 
 ___
 

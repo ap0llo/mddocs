@@ -1,9 +1,8 @@
 ﻿using System.Linq;
-using Grynwald.MdDocs.ApiReference.Model;
 using Grynwald.MdDocs.TestHelpers;
 using Xunit;
 
-namespace Grynwald.MdDocs.ApiReference.Test.Model
+namespace Grynwald.MdDocs.Common.Test
 {
     public class CustomAttributeProviderExtensionsTest : DynamicCompilationTestBase
     {

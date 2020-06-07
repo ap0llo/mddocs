@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Grynwald.MdDocs.Common;
 using Microsoft.Extensions.Logging;
 using Mono.Cecil;
 
@@ -26,7 +27,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
                 throw new ArgumentNullException(nameof(definition));
 
             // unnamed commands must not have a "verb" attribute
-            if (definition.HasAttribute(Constants.VerbAttributeFullName))
+            if (definition.HasAttribute(CommandLineParserTypeNames.VerbAttributeFullName))
                 throw new ArgumentException("Cannot create unnamed command from type definition annotated with a Verb attribute", nameof(definition));
 
             return new UnnamedCommandDocumentation(application, LoadOptions(definition, logger), LoadValues(definition, logger));

@@ -16,7 +16,6 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
         // private protected constructor => prevent implementation outside of this assembly
         private protected OverloadableMemberDocumentation(TypeDocumentation typeDocumentation) : base(typeDocumentation)
-        {
-        }
+        { }
     }
 }

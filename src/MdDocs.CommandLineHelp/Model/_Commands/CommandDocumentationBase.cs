@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Grynwald.MdDocs.Common;
 using Microsoft.Extensions.Logging;
 using Mono.Cecil;
 
@@ -53,7 +54,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
         protected static IReadOnlyList<OptionDocumentation> LoadOptions(TypeDefinition definition, ILogger logger)
         {
             return definition.GetAllProperties()
-                .WithAttribute(Constants.OptionAttributeFullName)
+                .WithAttribute(CommandLineParserTypeNames.OptionAttributeFullName)
                 .Select(property => OptionDocumentation.FromPropertyDefinition(property, logger))
                 .Where(option => !option.Hidden)
                 .ToArray();
@@ -62,7 +63,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
         protected static IReadOnlyList<ValueDocumentation> LoadValues(TypeDefinition definition, ILogger logger)
         {
             return definition.GetAllProperties()
-                .WithAttribute(Constants.ValueAttributeFullName)
+                .WithAttribute(CommandLineParserTypeNames.ValueAttributeFullName)
                 .Select(property => ValueDocumentation.FromPropertyDefinition(property, logger))
                 .Where(value => !value.Hidden)
                 .ToArray();

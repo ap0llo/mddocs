@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Grynwald.MdDocs.Common;
 using Microsoft.Extensions.Logging;
 using Mono.Cecil;
 
@@ -28,9 +29,9 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
             Name = name;
         }
 
-        private ValueDocumentation(PropertyDefinition property) : base(property, property.GetAttribute(Constants.ValueAttributeFullName))
+        private ValueDocumentation(PropertyDefinition property) : base(property, property.GetAttribute(CommandLineParserTypeNames.ValueAttributeFullName))
         {
-            var valueAttribute = property.GetAttribute(Constants.ValueAttributeFullName);
+            var valueAttribute = property.GetAttribute(CommandLineParserTypeNames.ValueAttributeFullName);
 
             Index = (int)valueAttribute.ConstructorArguments.Single().Value;
             Name = valueAttribute.GetPropertyValueOrDefault<string>("MetaName");

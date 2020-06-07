@@ -56,7 +56,6 @@ namespace Grynwald.MdDocs.Test
             Assert.Equal(path, sut.OutputDirectory);
         }
 
-
         [Fact]
         public void AssemblyPath_converts_value_to_a_absolute_path()
         {

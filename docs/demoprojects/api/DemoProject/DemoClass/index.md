@@ -8,8 +8,7 @@
 
 # DemoClass Class
 
-**Namespace:** [DemoProject](../index.md)
-
+**Namespace:** [DemoProject](../index.md)  
 **Assembly:** DemoProject
 
 A class meant to demonstrate how the generated documentation looks like.

@@ -8,7 +8,9 @@
 
 # DemoClass\<T1, T2\> Constructors
 
-**Declaring Type:** [DemoClass\<T1, T2\>](../index.md)
+**Declaring Type:** [DemoClass\<T1, T2\>](../index.md)  
+**Namespace:** [DemoProject](../../index.md)  
+**Assembly:** DemoProject
 
 ```csharp
 public DemoClass();

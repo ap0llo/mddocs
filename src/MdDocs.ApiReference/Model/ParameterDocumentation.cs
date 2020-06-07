@@ -58,5 +58,8 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// <inheritdoc />
         public IDocumentation? TryGetDocumentation(MemberId id) =>
             OverloadDocumentation.TryGetDocumentation(id);
+
+        /// <inheritdoc />
+        public AssemblyDocumentation GetAssemblyDocumentation() => OverloadDocumentation.GetAssemblyDocumentation();
     }
 }

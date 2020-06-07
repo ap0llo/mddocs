@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using Grynwald.MdDocs.ApiReference.Model.XmlDocs;
+using Grynwald.MdDocs.Common;
 using Grynwald.MdDocs.Common.Model;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -15,6 +16,11 @@ namespace Grynwald.MdDocs.ApiReference.Model
     {
         private readonly IXmlDocsProvider m_XmlDocsProvider;
         private readonly ILogger m_Logger;
+
+
+        public string Name { get; }
+
+        public string? Version { get; }
 
         /// <summary>
         /// Gets the assembly's definition.
@@ -39,6 +45,8 @@ namespace Grynwald.MdDocs.ApiReference.Model
             m_XmlDocsProvider = xmlDocsProvider ?? throw new ArgumentNullException(nameof(xmlDocsProvider));
             m_Logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
+            Name = definition.Name.Name;
+            Version = definition.GetInformationalVersionOrVersion();
             MainModuleDocumentation = new ModuleDocumentation(this, definition.MainModule, m_XmlDocsProvider, m_Logger);
         }
 
@@ -48,6 +56,9 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// <inheritdoc />
         public IDocumentation? TryGetDocumentation(MemberId member) =>
             MainModuleDocumentation.TryGetDocumentation(member);
+
+        /// <inheritdoc />
+        public AssemblyDocumentation GetAssemblyDocumentation() => this;
 
         /// <summary>
         /// Loads the documentation model from an assembly file.
