@@ -1,6 +1,9 @@
 # Class1.Subtraction Operator
 
-**Declaring Type:** Class1
+**Declaring Type:** Class1  
+**Namespace:** MyNamespace  
+**Assembly:** DynamicTestAssembly  
+**Assembly Version:** 0.0.0.0
 
 ```csharp
 public static int operator -(Class1 a, Class1 b);

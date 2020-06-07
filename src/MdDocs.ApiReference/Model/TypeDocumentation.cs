@@ -326,6 +326,9 @@ namespace Grynwald.MdDocs.ApiReference.Model
             }
         }
 
+        /// <inheritdoc />
+        public AssemblyDocumentation GetAssemblyDocumentation() => ModuleDocumentation.GetAssemblyDocumentation();
+
 
         internal void AddNestedType(TypeDocumentation nestedType)
         {

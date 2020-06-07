@@ -8,7 +8,9 @@
 
 # NestedTypesDemo.NestedClass2.NestedClass3 Constructors
 
-**Declaring Type:** [NestedTypesDemo.NestedClass2.NestedClass3](../index.md)
+**Declaring Type:** [NestedTypesDemo.NestedClass2.NestedClass3](../index.md)  
+**Namespace:** [DemoProject](../../../../index.md)  
+**Assembly:** DemoProject
 
 ```csharp
 public NestedClass3();

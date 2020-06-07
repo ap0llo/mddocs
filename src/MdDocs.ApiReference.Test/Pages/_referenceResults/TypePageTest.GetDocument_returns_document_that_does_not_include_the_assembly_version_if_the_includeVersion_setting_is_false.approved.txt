@@ -6,20 +6,22 @@
  =================================================================   
 -->
 
-# Class1.Property1 Property
+# Class1 Class
 
-**Declaring Type:** Class1  
 **Namespace:** MyNamespace  
-**Assembly:** DynamicTestAssembly  
-**Assembly Version:** 0.0.0.0
+**Assembly:** DynamicTestAssembly
 
 ```csharp
-public int Property1 { get; set; }
+public class Class1
 ```
 
-## Property Value
+**Inheritance:** object → Class1
 
-int
+## Constructors
+
+| Name     | Description |
+| -------- | ----------- |
+| Class1() |             |
 
 ___
 

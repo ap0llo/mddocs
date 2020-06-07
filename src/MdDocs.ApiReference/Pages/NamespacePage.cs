@@ -36,8 +36,9 @@ namespace Grynwald.MdDocs.ApiReference.Pages
             if (Model.ParentNamespaceDocumentation != null)
             {
                 document.Root.Add(
-                    new MdParagraph(new MdStrongEmphasisSpan("Namespace:"), " ", GetMdSpan(Model.ParentNamespaceDocumentation.NamespaceId))
-                );
+                    new MdParagraph(
+                        new MdStrongEmphasisSpan("Namespace:"), " ", GetMdSpan(Model.ParentNamespaceDocumentation.NamespaceId), "  "
+                ));
             }
 
             AddNamespacesList(document.Root);

@@ -4,6 +4,10 @@
     "commandlinehelp": {
       "includeVersion" : false,
       "outputPath": "./docs/commandline"
+    },
+    
+    "apireference" : {
+      "includeVersion" : false
     }
 
   }

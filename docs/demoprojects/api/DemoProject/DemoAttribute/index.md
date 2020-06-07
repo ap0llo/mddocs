@@ -8,8 +8,7 @@
 
 # DemoAttribute Class
 
-**Namespace:** [DemoProject](../index.md)
-
+**Namespace:** [DemoProject](../index.md)  
 **Assembly:** DemoProject
 
 An example of an custom attribute class for methods

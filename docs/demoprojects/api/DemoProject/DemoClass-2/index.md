@@ -8,8 +8,7 @@
 
 # DemoClass\<T1, T2\> Class
 
-**Namespace:** [DemoProject](../index.md)
-
+**Namespace:** [DemoProject](../index.md)  
 **Assembly:** DemoProject
 
 An example of an generic class.

@@ -31,5 +31,10 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// <inheritdoc />
         public override IDocumentation? TryGetDocumentation(MemberId id) =>
             MemberId.Equals(id) ? this : MethodDocumentation.TryGetDocumentation(id);
+
+
+        /// <inheritdoc />
+        public override AssemblyDocumentation GetAssemblyDocumentation() =>
+            MethodDocumentation.GetAssemblyDocumentation();
     }
 }

@@ -8,8 +8,7 @@
 
 # DemoStruct Struct
 
-**Namespace:** [DemoProject](../index.md)
-
+**Namespace:** [DemoProject](../index.md)  
 **Assembly:** DemoProject
 
 A struct meant to demonstrate how the generated documentation for structs looks like.

@@ -8,7 +8,9 @@
 
 # DemoClass.Method4 Method
 
-**Declaring Type:** [DemoClass](../index.md)
+**Declaring Type:** [DemoClass](../index.md)  
+**Namespace:** [DemoProject](../../index.md)  
+**Assembly:** DemoProject
 
 ⚠️ **Warning:** This API is obsolete.
 

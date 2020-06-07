@@ -8,7 +8,9 @@
 
 # DemoClass.Property2 Property
 
-**Declaring Type:** [DemoClass](../index.md)
+**Declaring Type:** [DemoClass](../index.md)  
+**Namespace:** [DemoProject](../../index.md)  
+**Assembly:** DemoProject
 
 An example of a read\/write property annotated with a custom attribute
 

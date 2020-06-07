@@ -8,7 +8,9 @@
 
 # DemoClass.Field2 Field
 
-**Declaring Type:** [DemoClass](../index.md)
+**Declaring Type:** [DemoClass](../index.md)  
+**Namespace:** [DemoProject](../../index.md)  
+**Assembly:** DemoProject
 
 An example of a public field.
 

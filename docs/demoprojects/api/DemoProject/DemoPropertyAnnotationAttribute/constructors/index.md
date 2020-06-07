@@ -8,7 +8,9 @@
 
 # DemoPropertyAnnotationAttribute Constructors
 
-**Declaring Type:** [DemoPropertyAnnotationAttribute](../index.md)
+**Declaring Type:** [DemoPropertyAnnotationAttribute](../index.md)  
+**Namespace:** [DemoProject](../../index.md)  
+**Assembly:** DemoProject
 
 Initializes a new instance of [DemoPropertyAnnotationAttribute](../index.md)
 

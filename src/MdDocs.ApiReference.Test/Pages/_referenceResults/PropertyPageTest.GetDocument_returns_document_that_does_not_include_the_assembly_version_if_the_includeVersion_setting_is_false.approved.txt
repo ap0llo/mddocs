@@ -10,8 +10,7 @@
 
 **Declaring Type:** Class1  
 **Namespace:** MyNamespace  
-**Assembly:** DynamicTestAssembly  
-**Assembly Version:** 0.0.0.0
+**Assembly:** DynamicTestAssembly
 
 ```csharp
 public int Property1 { get; set; }

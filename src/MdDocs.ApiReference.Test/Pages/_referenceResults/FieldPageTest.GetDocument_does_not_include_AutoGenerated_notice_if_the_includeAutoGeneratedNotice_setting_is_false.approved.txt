@@ -1,6 +1,9 @@
 # Class1.Field1 Field
 
-**Declaring Type:** Class1
+**Declaring Type:** Class1  
+**Namespace:** MyNamespace  
+**Assembly:** DynamicTestAssembly  
+**Assembly Version:** 0.0.0.0
 
 ```csharp
 public int Field1;

@@ -8,9 +8,9 @@
 
 # Class1 Class
 
-**Namespace:** MyNamespace
-
-**Assembly:** DynamicTestAssembly
+**Namespace:** MyNamespace  
+**Assembly:** DynamicTestAssembly  
+**Assembly Version:** 0.0.0.0
 
 ```csharp
 public class Class1

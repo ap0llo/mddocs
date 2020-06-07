@@ -6,20 +6,13 @@
  =================================================================   
 -->
 
-# Class1.Property1 Property
+# MyNamespace Namespace
 
-**Declaring Type:** Class1  
-**Namespace:** MyNamespace  
-**Assembly:** DynamicTestAssembly  
-**Assembly Version:** 0.0.0.0
+## Classes
 
-```csharp
-public int Property1 { get; set; }
-```
-
-## Property Value
-
-int
+| Name   | Description |
+| ------ | ----------- |
+| Class1 |             |
 
 ___
 

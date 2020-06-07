@@ -92,5 +92,9 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// <inheritdoc />
         public override IDocumentation? TryGetDocumentation(MemberId id) =>
             MemberId.Equals(id) ? this : IndexerDocumentation.TryGetDocumentation(id);
+
+        /// <inheritdoc />
+        public override AssemblyDocumentation GetAssemblyDocumentation() =>
+            IndexerDocumentation.GetAssemblyDocumentation();
     }
 }

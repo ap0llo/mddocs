@@ -8,7 +8,9 @@
 
 # DemoAttribute Constructors
 
-**Declaring Type:** [DemoAttribute](../index.md)
+**Declaring Type:** [DemoAttribute](../index.md)  
+**Namespace:** [DemoProject](../../index.md)  
+**Assembly:** DemoProject
 
 ```csharp
 public DemoAttribute();

@@ -8,8 +8,7 @@
 
 # NestedTypesDemo Class
 
-**Namespace:** [DemoProject](../index.md)
-
+**Namespace:** [DemoProject](../index.md)  
 **Assembly:** DemoProject
 
 This class shows an example of how the documentation for nested types looks.

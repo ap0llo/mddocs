@@ -24,7 +24,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
         private MultiCommandApplicationDocumentation(AssemblyDefinition definition, ILogger logger)
             : base(
                   name: LoadApplicationName(definition ?? throw new ArgumentNullException(nameof(definition))),
-                  version: LoadApplicationVersion(definition ?? throw new ArgumentNullException(nameof(definition))),
+                  version: (definition ?? throw new ArgumentNullException(nameof(definition))).GetInformationalVersionOrVersion(),
                   usage: LoadAssemblyUsage(definition))
         {
             if (logger is null)
