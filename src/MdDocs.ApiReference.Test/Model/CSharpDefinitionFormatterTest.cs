@@ -876,6 +876,13 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
                 [Test2(TestEnum1.Value1 | TestEnum1.Value2)]
 		        public class Class4
                 { }
+
+                [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
+                public class Test4Attribute : Attribute
+                {
+                    public Test4Attribute()
+                    { }
+                }
             ";
 
             using var assembly = Compile(cs);
@@ -884,12 +891,17 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             var class2 = assembly.MainModule.Types.Single(x => x.Name == "Class2");
             var class3 = assembly.MainModule.Types.Single(x => x.Name == "Class3");
             var class4 = assembly.MainModule.Types.Single(x => x.Name == "Class4");
+            var attribute4Class = assembly.MainModule.Types.Single(x => x.Name == "Test4Attribute");
 
             // ACT / ASSERT
             Assert.Equal("[Test1(1)]\r\npublic sealed class Class1", CSharpDefinitionFormatter.GetDefinition(class1));
             Assert.Equal("[Test2(TestEnum1.All)]\r\npublic class Class2", CSharpDefinitionFormatter.GetDefinition(class2));
             Assert.Equal("[Test2(TestEnum1.All)]\r\npublic class Class3", CSharpDefinitionFormatter.GetDefinition(class3));
             Assert.Equal("[Test2(TestEnum1.Value1 | TestEnum1.Value2)]\r\npublic class Class4", CSharpDefinitionFormatter.GetDefinition(class4));
+            Assert.Equal(
+                "[AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]\r\n" +
+                "public class Test4Attribute : Attribute",
+                CSharpDefinitionFormatter.GetDefinition(attribute4Class));
         }
 
         [Fact]
