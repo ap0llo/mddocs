@@ -53,7 +53,7 @@ jobs:
 
 # Main Build and test job: Builds the projects and runs all tests
 - job: Build_and_Test
-  displayName: Build and Test
+  displayName: 🛠 Build and Test
   pool: Hosted VS2017
   steps:
 
@@ -66,7 +66,7 @@ jobs:
 
   # Restore local .NET Core tools
   - task: DotNetCoreCLI@2
-    displayName: Restore local tools
+    displayName: ⬇️ Restore local tools
     inputs:
       command: custom
       custom: tool
@@ -78,15 +78,15 @@ jobs:
 
   # Check the formatting using dotnet-format
   - script: dotnet format ./src --folder --check
-    displayName: Check code formatting
+    displayName: 🕵️ Check code formatting
   
   # Restore, Build, Test
   - task: CmdLine@2
-    displayName: Restore NuGet packages
+    displayName: ⬇️ Restore NuGet packages
     inputs:
       script: dotnet restore $(solutionPath) /warnaserror
   - task: DotNetCoreCLI@2
-    displayName: Build
+    displayName: 🏗 Build
     inputs:
       command: build
       projects: $(solutionPath)
@@ -100,7 +100,7 @@ jobs:
   
   # Create NuGet Package and  publish as build artifact
   - task: DotNetCoreCLI@2
-    displayName: Pack NuGet package
+    displayName: 📦 Pack NuGet package
     inputs:
       command: pack
       projects: $(solutionPath)
@@ -112,7 +112,7 @@ jobs:
 
   # Generate changelog and publish as build artifact
   - task: CmdLine@2
-    displayName: Generate Change Log
+    displayName: 📝 Generate Change Log
     inputs:
       script: >-
         dotnet tool run changelog
@@ -133,7 +133,7 @@ jobs:
 
 # Job to push package to MyGet.org after build
 - job: Publish_to_MyGet
-  displayName: Publish to MyGet
+  displayName: 🚚 Publish to MyGet
   pool: Hosted VS2017
   # Only run after main build job and only if the current branch is master or a release branch
   dependsOn: Build_and_Test
@@ -157,7 +157,7 @@ jobs:
 
 # Job to push package to NuGet.org after build (only for builds of release branches)
 - job: Publish_to_NuGet_org
-  displayName: Publish to NuGet.org
+  displayName: 🚚 Publish to NuGet.org
   pool: Hosted VS2017
   # Only run after main build job and only if the current branch is a release branch
   dependsOn: Build_and_Test
@@ -198,7 +198,7 @@ jobs:
 
 # Job to create a GitHub release (only if a package was uploaded to NuGet.org)
 - job: Create_GitHub_Release
-  displayName: Create GitHub Release
+  displayName: 🔖 Create GitHub Release
   pool: Hosted VS2017
   # Only run if build was successful and a package was uploaded to nuget.org
   dependsOn: 
@@ -216,7 +216,7 @@ jobs:
 
   # Restore local .NET Core tools
   - task: DotNetCoreCLI@2
-    displayName: Restore local tools
+    displayName: ⬇️ Restore local tools
     inputs:
       command: custom
       custom: tool
