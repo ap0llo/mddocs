@@ -162,6 +162,84 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Loaders
         }
 
         [Fact]
+        public void Application_usage_is_loaded_correctly_for_single_command_applications()
+        {
+            // ARRANGE
+            using var assembly = Compile($@"
+                using System;
+                using CommandLine.Text;
+
+                [assembly: AssemblyUsage(""usage line 1"", ""usage line 2"")]
+
+                public class MyOptionClass
+                {{ }}
+            ");
+
+            var sut = new CommandLineParserLoader(m_Logger);
+
+            // ACT
+            var application = sut.Load(assembly);
+
+            // ASSERT
+            Assert.NotNull(application);
+            Assert.NotNull(application.Usage);
+            Assert.Collection(application.Usage,
+                line => Assert.Equal("usage line 1", line),
+                line => Assert.Equal("usage line 2", line));
+        }
+
+        [Fact]
+        public void Application_usage_is_loaded_correctly_for_multi_command_applications()
+        {
+            // ARRANGE
+            using var assembly = Compile($@"
+                using System;
+                using CommandLine;
+                using CommandLine.Text;
+
+                [assembly: AssemblyUsage(""usage line 1"", ""usage line 2"")]
+
+                [Verb(""command"")]
+                public class MyOptionClass
+                {{ }}
+            ");
+
+            var sut = new CommandLineParserLoader(m_Logger);
+
+            // ACT
+            var application = sut.Load(assembly);
+
+            // ASSERT
+            Assert.NotNull(application);
+            Assert.NotNull(application.Usage);
+            Assert.Collection(application.Usage,
+                line => Assert.Equal("usage line 1", line),
+                line => Assert.Equal("usage line 2", line));
+        }
+        [Fact]
+        public void Application_usage_is_null_if_assembly_does_not_have_a_AssemblyUsage_attribute()
+        {
+            // ARRANGE
+            using var assembly = Compile($@"
+                using System;
+                using CommandLine;
+
+                [Verb(""command"")]
+                public class MyOptionClass
+                {{ }}
+            ");
+
+            var sut = new CommandLineParserLoader(m_Logger);
+
+            // ACT
+            var application = sut.Load(assembly);
+
+            // ASSERT
+            Assert.NotNull(application);
+            Assert.Null(application.Usage);
+        }
+
+        [Fact]
         public void Commands_are_loaded_correctly()
         {
             // ARRANGE

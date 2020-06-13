@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Grynwald.MdDocs.CommandLineHelp.Model2
 {
@@ -7,8 +8,6 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model2
     /// </summary>
     public abstract class ApplicationDocumentation
     {
-        //TODO: Usage
-
         /// <summary>
         /// Gets the name of the application.
         /// </summary>
@@ -18,6 +17,11 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model2
         /// Gets the version of the application.
         /// </summary>
         public string? Version { get; }
+
+        /// <summary>
+        /// Gets or sets usage information/examples for the application.
+        /// </summary>
+        public IReadOnlyList<string>? Usage { get; set; }
 
 
         /// <summary>

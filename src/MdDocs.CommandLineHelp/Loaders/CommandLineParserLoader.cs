@@ -28,17 +28,21 @@ namespace Grynwald.MdDocs.CommandLineHelp.Loaders
         {
             var types = assembly.MainModule.Types.Where(x => !x.IsAbstract);
 
+            ApplicationDocumentation applicationDocumentation;
             if (types.Any(x => x.HasAttribute(CommandLineParserTypeNames.VerbAttributeFullName)))
             {
                 m_Logger.LogInformation($"Found a class attributed with '{CommandLineParserTypeNames.VerbAttributeFullName}'. Assuming application has sub-commands");
-                return LoadMultiCommandApplication(assembly);
+                applicationDocumentation = LoadMultiCommandApplication(assembly);
             }
             else
             {
                 m_Logger.LogInformation($"Found *no* class attributed with '{CommandLineParserTypeNames.VerbAttributeFullName}'. Assuming application without sub-commands");
-                return LoadSingleCommandApplication(assembly);
+                applicationDocumentation = LoadSingleCommandApplication(assembly);
             }
 
+            LoadAssemblyUsage(applicationDocumentation, assembly);
+
+            return applicationDocumentation;
         }
 
 
@@ -103,22 +107,22 @@ namespace Grynwald.MdDocs.CommandLineHelp.Loaders
             return application;
         }
 
-        private string GetApplicationName(AssemblyDefinition definition)
+        private string GetApplicationName(AssemblyDefinition assembly)
         {
-            var name = definition
+            var name = assembly
                 .GetAttributeOrDefault(SystemTypeNames.AssemblyTitleAttributeFullName)
                 ?.ConstructorArguments?.Single().Value as string;
 
             if (name == null || String.IsNullOrEmpty(name))
             {
                 // no AssemblyTitle specified => return assembly name
-                return definition.Name.Name;
+                return assembly.Name.Name;
             }
 
             return name;
         }
 
-        private void LoadCommands(MultiCommandApplicationDocumentation application, AssemblyDefinition assembly)
+        private void LoadCommands(MultiCommandApplicationDocumentation applicationDocumentation, AssemblyDefinition assembly)
         {
             var commandTypes = assembly.MainModule.Types
                 .Where(x => !x.IsAbstract)
@@ -132,7 +136,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Loaders
 
                 var name = (string)verbAttribute.ConstructorArguments.First(x => x.Type.FullName == SystemTypeNames.StringFullName).Value;
 
-                var commandDocumentation = application.AddCommand(name);
+                var commandDocumentation = applicationDocumentation.AddCommand(name);
                 commandDocumentation.Description = verbAttribute.GetPropertyValueOrDefault<string>(s_HelpText);
 
                 LoadOptions(commandDocumentation, commandType);
@@ -202,6 +206,17 @@ namespace Grynwald.MdDocs.CommandLineHelp.Loaders
 
                 _ = parameterCollection.AddPositionalParameter(position);
             }
+        }
+
+        private void LoadAssemblyUsage(ApplicationDocumentation applicationDocumentation, AssemblyDefinition assembly)
+        {
+            var assemblyUsageAttribute = assembly.GetAttributeOrDefault(CommandLineParserTypeNames.AssemblyUsageAttributeFullName);
+
+            if (assemblyUsageAttribute != null)
+            {
+                applicationDocumentation.Usage = assemblyUsageAttribute.ConstructorArguments.Select(x => x.Value).Cast<string>().ToArray();
+            }
+
         }
     }
 }
