@@ -217,6 +217,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Loaders
                 line => Assert.Equal("usage line 1", line),
                 line => Assert.Equal("usage line 2", line));
         }
+
         [Fact]
         public void Application_usage_is_null_if_assembly_does_not_have_a_AssemblyUsage_attribute()
         {
@@ -367,7 +368,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Loaders
                     [Option(""option4"", Hidden = true)]
                     public string Option4Property { get; set; }
 
-                    [Option(""option5"")]
+                    [Option(""option5"", Required = true)]
                     public SomeEnum Option5Property { get; set; }
 
                     [Option('z', ""option6"")]
@@ -395,26 +396,35 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Loaders
                     Assert.Equal("option1", param.Name);
                     Assert.Null(param.ShortName);
                     Assert.Equal("some help text", param.Description);
+                    Assert.False(param.Required);
                 },
                 param =>
                 {
                     Assert.Null(param.Name);
                     Assert.Equal("x", param.ShortName);
+                    Assert.Null(param.Description);
+                    Assert.False(param.Required);
                 },
                 param =>
                 {
                     Assert.Null(param.Name);
                     Assert.Equal("y", param.ShortName);
+                    Assert.Null(param.Description);
+                    Assert.False(param.Required);
                 },
                 param =>
                 {
                     Assert.Equal("option5", param.Name);
                     Assert.Null(param.ShortName);
+                    Assert.Null(param.Description);
+                    Assert.True(param.Required);
                 },
                 param =>
                 {
                     Assert.Equal("option6", param.Name);
                     Assert.Equal("z", param.ShortName);
+                    Assert.Null(param.Description);
+                    Assert.False(param.Required);
                 });
 
             // Hidden parameters must be skipped
@@ -522,19 +532,23 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Loaders
                 {
                     Assert.Equal(0, param.Position);
                     Assert.Equal("some help text", param.Description);
+                    Assert.False(param.Required);
                 },
                 param =>
                 {
                     Assert.Equal(1, param.Position);
+                    Assert.Null(param.Description);
+                    Assert.False(param.Required);
                 },
                 param =>
                 {
                     Assert.Equal(2, param.Position);
+                    Assert.Null(param.Description);
+                    Assert.True(param.Required);
                 });
 
             Assert.DoesNotContain(command.PositionalParameters, param => param.Position == 3);
         }
-
 
         [Fact]
         public void A_applications_named_parameters_are_loaded_correctly()
@@ -554,7 +568,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Loaders
                 public class Command1Options
                 {
 
-                    [Option(""option1"")]
+                    [Option(""option1"", HelpText = ""some help text"")]
                     public string Option1Property { get; set; }
 
                     [Option('x')]
@@ -566,7 +580,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Loaders
                     [Option(""option4"", Hidden = true)]
                     public string Option4Property { get; set; }
 
-                    [Option(""option5"")]
+                    [Option(""option5"", Required = true)]
                     public SomeEnum Option5Property { get; set; }
 
                     [Option('z', ""option6"")]
@@ -592,26 +606,36 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Loaders
                 {
                     Assert.Equal("option1", param.Name);
                     Assert.Null(param.ShortName);
+                    Assert.Equal("some help text", param.Description);
+                    Assert.False(param.Required);
                 },
                 param =>
                 {
                     Assert.Null(param.Name);
                     Assert.Equal("x", param.ShortName);
+                    Assert.Null(param.Description);
+                    Assert.False(param.Required);
                 },
                 param =>
                 {
                     Assert.Null(param.Name);
                     Assert.Equal("y", param.ShortName);
+                    Assert.Null(param.Description);
+                    Assert.False(param.Required);
                 },
                 param =>
                 {
                     Assert.Equal("option5", param.Name);
                     Assert.Null(param.ShortName);
+                    Assert.Null(param.Description);
+                    Assert.True(param.Required);
                 },
                 param =>
                 {
                     Assert.Equal("option6", param.Name);
                     Assert.Equal("z", param.ShortName);
+                    Assert.Null(param.Description);
+                    Assert.False(param.Required);
                 });
 
             // Hidden parameters must be skipped
@@ -628,7 +652,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Loaders
 
                 public class Command1Options
                 {
-                    [Option(""option1"")]
+                    [Option(""option1"", HelpText = ""some help text"")]
                     public bool Option1Property { get; set; }
 
                     [Option('x')]
@@ -660,6 +684,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Loaders
                 {
                     Assert.Equal("option1", param.Name);
                     Assert.Null(param.ShortName);
+                    Assert.Equal("some help text", param.Description);
                 },
                 param =>
                 {
@@ -685,7 +710,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Loaders
                
                 public class CommandOptions
                 {
-                    [Value(0)]
+                    [Value(0, HelpText = ""some help text"")]
                     public string Value1 { get; set; }
 
                     [Value(1, MetaName = ""Value2 name"")]
@@ -713,14 +738,20 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Loaders
                 param =>
                 {
                     Assert.Equal(0, param.Position);
+                    Assert.Equal("some help text", param.Description);
+                    Assert.False(param.Required);
                 },
                 param =>
                 {
                     Assert.Equal(1, param.Position);
+                    Assert.Null(param.Description);
+                    Assert.False(param.Required);
                 },
                 param =>
                 {
                     Assert.Equal(2, param.Position);
+                    Assert.Null(param.Description);
+                    Assert.True(param.Required);
                 });
 
             Assert.DoesNotContain(singleCommandApplication.PositionalParameters, param => param.Position == 3);

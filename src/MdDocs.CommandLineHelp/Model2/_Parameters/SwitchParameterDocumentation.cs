@@ -18,8 +18,6 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model2
         public string? ShortName { get; }
 
 
-        //TODO: Short Name
-
         /// <summary>
         /// Initializes a new instance of <see cref="SwitchParameterDocumentation" />
         /// </summary>

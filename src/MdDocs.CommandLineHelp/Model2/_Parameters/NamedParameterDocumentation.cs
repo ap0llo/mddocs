@@ -16,10 +16,12 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model2
         /// </summary>
         public string? ShortName { get; }
 
+        /// <summary>
+        /// Gets or sets whether the parameter is mandatory
+        /// </summary>
+        public bool Required { get; set; } = false;
 
         //TODO: Default
-        //TODO: Required
-        //TODO: HelpText
         //TODO: Accepted values
 
         /// <summary>

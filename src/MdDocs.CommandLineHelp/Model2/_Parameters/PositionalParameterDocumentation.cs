@@ -12,6 +12,13 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model2
         /// </summary>
         public int Position { get; }
 
+        /// <summary>
+        /// Gets or sets whether the parameter is mandatory
+        /// </summary>
+        public bool Required { get; set; } = false;
+
+        //TODO: Default
+        //TODO: Accepted values
 
         /// <summary>
         /// Initializes a new instance of <see cref="PositionalParameterDocumentation"/>

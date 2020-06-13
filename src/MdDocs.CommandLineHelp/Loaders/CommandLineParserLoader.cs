@@ -14,6 +14,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Loaders
     {
         private const string s_Hidden = "Hidden";
         private const string s_HelpText = "HelpText";
+        private const string s_Required = "Required";
 
         private readonly ILogger m_Logger;
 
@@ -168,6 +169,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Loaders
                 {
                     var parameter = parameterCollection.AddNamedParameter(name, shortName?.ToString());
                     parameter.Description = optionAttribute.GetPropertyValueOrDefault<string>(s_HelpText);
+                    parameter.Required = optionAttribute.GetPropertyValueOrDefault<bool>(s_Required);
                 }
             }
 
@@ -209,6 +211,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Loaders
 
                 var parameter = parameterCollection.AddPositionalParameter(position);
                 parameter.Description = valueAttribute.GetPropertyValueOrDefault<string>(s_HelpText);
+                parameter.Required = valueAttribute.GetPropertyValueOrDefault<bool>(s_Required);
             }
         }
 
