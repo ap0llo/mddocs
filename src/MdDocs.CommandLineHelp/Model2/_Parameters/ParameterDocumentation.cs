@@ -10,7 +10,6 @@
         /// </summary>
         public ApplicationDocumentation Application { get; }
 
-
         /// <summary>
         /// Gets the command the parameter belong to.
         /// </summary>
@@ -18,6 +17,11 @@
         /// The command that defines the parameter or <c>null</c> if the parameter is defined by a single-command application
         /// </value>
         public CommandDocumentation? Command { get; }
+
+        /// <summary>
+        /// Gets the parameters's description if it has any.
+        /// </summary>
+        public string? Description { get; set; }
 
 
         /// <summary>

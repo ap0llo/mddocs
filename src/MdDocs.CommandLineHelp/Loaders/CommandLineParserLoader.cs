@@ -153,18 +153,21 @@ namespace Grynwald.MdDocs.CommandLineHelp.Loaders
 
             foreach (var property in optionProperties)
             {
+                var optionAttribute = property.GetAttribute(CommandLineParserTypeNames.OptionAttributeFullName);
                 var (name, shortName) = GetOptionNames(property);
 
                 // boolean parameters are treated as switch parameters
                 if (property.PropertyType.FullName == SystemTypeNames.BooleanFullName)
                 {
-                    _ = parameterCollection.AddSwitchParameter(name, shortName?.ToString());
+                    var parameter = parameterCollection.AddSwitchParameter(name, shortName?.ToString());
+                    parameter.Description = optionAttribute.GetPropertyValueOrDefault<string>(s_HelpText);
 
                     //TODO: Warning if Required = false, or Default != false
                 }
                 else
                 {
-                    _ = parameterCollection.AddNamedParameter(name, shortName?.ToString());
+                    var parameter = parameterCollection.AddNamedParameter(name, shortName?.ToString());
+                    parameter.Description = optionAttribute.GetPropertyValueOrDefault<string>(s_HelpText);
                 }
             }
 
@@ -204,7 +207,8 @@ namespace Grynwald.MdDocs.CommandLineHelp.Loaders
                 var valueAttribute = property.GetAttribute(CommandLineParserTypeNames.ValueAttributeFullName);
                 var position = (int)valueAttribute.ConstructorArguments.Single().Value;
 
-                _ = parameterCollection.AddPositionalParameter(position);
+                var parameter = parameterCollection.AddPositionalParameter(position);
+                parameter.Description = valueAttribute.GetPropertyValueOrDefault<string>(s_HelpText);
             }
         }
 

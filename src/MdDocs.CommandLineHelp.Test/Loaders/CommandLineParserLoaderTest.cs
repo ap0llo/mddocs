@@ -1,4 +1,5 @@
 ﻿using System;
+using ApprovalUtilities.Reflection;
 using Grynwald.MdDocs.CommandLineHelp.Loaders;
 using Grynwald.MdDocs.CommandLineHelp.Model2;
 using Grynwald.MdDocs.CommandLineHelp.Test.Model;
@@ -354,7 +355,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Loaders
                 public class Command1Options
                 {
 
-                    [Option(""option1"")]
+                    [Option(""option1"", HelpText = ""some help text"")]
                     public string Option1Property { get; set; }
 
                     [Option('x')]
@@ -393,6 +394,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Loaders
                 {
                     Assert.Equal("option1", param.Name);
                     Assert.Null(param.ShortName);
+                    Assert.Equal("some help text", param.Description);
                 },
                 param =>
                 {
@@ -430,7 +432,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Loaders
                 [Verb(""command1"")]
                 public class Command1Options
                 {
-                    [Option(""option1"")]
+                    [Option(""option1"", HelpText = ""some help text"")]
                     public bool Option1Property { get; set; }
 
                     [Option('x')]
@@ -463,6 +465,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Loaders
                 {
                     Assert.Equal("option1", param.Name);
                     Assert.Null(param.ShortName);
+                    Assert.Equal("some help text", param.Description);
                 },
                 param =>
                 {
@@ -489,7 +492,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Loaders
                 [Verb(""command"")]
                 public class CommandOptions
                 {
-                    [Value(0)]
+                    [Value(0, HelpText = ""some help text"")]
                     public string Value1 { get; set; }
 
                     [Value(1, MetaName = ""Value2 name"")]
@@ -518,6 +521,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Loaders
                 param =>
                 {
                     Assert.Equal(0, param.Position);
+                    Assert.Equal("some help text", param.Description);
                 },
                 param =>
                 {
