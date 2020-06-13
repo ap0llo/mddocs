@@ -6,7 +6,7 @@ using Xunit.Sdk;
 
 namespace Grynwald.MdDocs.CommandLineHelp.Test
 {
-
+    //TODO: Move to Loaders namespace
     /// <summary>
     /// Test class that verifies assumptions about the CommandLineParser library MdDocs makes are true
     /// </summary>
@@ -49,6 +49,8 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test
             Assert.Equal(expected, parsed.Parameter1);
         }
 
+
+        //TODO: Handling of bool? parameters
 
         private T Parse<T>(string[] args)
         {

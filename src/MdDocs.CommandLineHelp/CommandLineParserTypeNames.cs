@@ -4,6 +4,7 @@ namespace Grynwald.MdDocs.CommandLineHelp
     /// <summary>
     /// Defines constants for names of type names defined by the "CommandLineParser" library
     /// </summary>
+    //TODO: Move to Loaders namespace
     internal static class CommandLineParserTypeNames
     {
         public const string VerbAttributeFullName = "CommandLine.VerbAttribute";
