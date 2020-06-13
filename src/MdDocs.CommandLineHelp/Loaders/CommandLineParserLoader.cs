@@ -164,7 +164,18 @@ namespace Grynwald.MdDocs.CommandLineHelp.Loaders
                     var parameter = parameterCollection.AddSwitchParameter(name, shortName?.ToString());
                     parameter.Description = optionAttribute.GetPropertyValueOrDefault<string>(s_HelpText);
 
-                    //TODO: Warning if Required = false, or Default != false
+                    // emit a warning if parameter was flagged as required
+                    if (optionAttribute.GetPropertyValueOrDefault<bool>(s_Required))
+                    {
+                        m_Logger.LogWarning($"Ignoring 'Required' flag of option '{name}'. Boolean options are treated as switch parameter and cannot be marked as required.");
+                    }
+
+                    // emit a warning if a default value other than 'false' was required
+                    var defaultValue = GetDefaultValue(optionAttribute);
+                    if (defaultValue != null && defaultValue != "false")
+                    {
+                        m_Logger.LogWarning($"Ignoring default value '{defaultValue}' of option '{name}'. Boolean options are treated as switch parameter with a fixed default value of 'false'");
+                    }
                 }
                 else
                 {
