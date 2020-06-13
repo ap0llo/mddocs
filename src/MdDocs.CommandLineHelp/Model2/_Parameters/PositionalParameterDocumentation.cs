@@ -17,7 +17,15 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model2
         /// </summary>
         public bool Required { get; set; } = false;
 
-        //TODO: Default
+        /// <summary>
+        /// Gets of sets the parameter's default value.
+        /// </summary>
+        /// <value>
+        /// The string-representation of the default value or <c>null</c> if the parameter does not have a default value.
+        /// </value>
+        public string? DefaultValue { get; set; } = null;
+
+
         //TODO: Accepted values
 
         /// <summary>
