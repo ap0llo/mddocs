@@ -39,7 +39,6 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test
             Assert.Equal(expected, parsed.Parameter1);
         }
 
-
         [Theory]
         [InlineData(new[] { "--parameter1" }, true)]
         [InlineData(new[] { "-x" }, true)]
@@ -49,8 +48,42 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test
             Assert.Equal(expected, parsed.Parameter1);
         }
 
+        private class Options3
+        {
+            [Option("parameter1")]
+            public bool? Parameter1 { get; set; }
+        }
 
-        //TODO: Handling of bool? parameters
+        [Theory]
+        [InlineData(new string[0], null)]
+        [InlineData(new[] { "--parameter1", "true" }, true)]
+        [InlineData(new[] { "--parameter1", "false" }, false)]
+        public void Nullable_boolean_options_are_not_treated_as_switch_parameters(string[] args, bool? expected)
+        {
+            // ARRANGE / ACT
+            var parsed = Parse<Options3>(args);
+
+            // ASSERT
+            Assert.Equal(expected, parsed.Parameter1);
+        }
+
+
+        private class Options4
+        {
+            [Value(0, Default = "my-default")]
+            public string? Parameter1 { get; set; }
+        }
+
+        [Fact]
+        public void Values_can_have_default_values()
+        {
+            // ARRANGE / ACT
+            var parsed = Parse<Options4>(Array.Empty<string>());
+
+            // ASSERT
+            Assert.Equal("my-default", parsed.Parameter1);
+        }
+
 
         private T Parse<T>(string[] args)
         {
