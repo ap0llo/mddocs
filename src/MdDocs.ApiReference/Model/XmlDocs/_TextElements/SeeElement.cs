@@ -112,7 +112,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
         }
 
         /// <inheritdoc />
-        public override bool Equals(object obj) => Equals(obj as SeeElement);
+        public override bool Equals(object? obj) => Equals(obj as SeeElement);
 
         /// <inheritdoc />
         public bool Equals(SeeElement? other)

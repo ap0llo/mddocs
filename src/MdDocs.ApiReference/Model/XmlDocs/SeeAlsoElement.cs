@@ -110,7 +110,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
             }
         }
 
-        public override bool Equals(object obj) => Equals(obj as SeeAlsoElement);
+        public override bool Equals(object? obj) => Equals(obj as SeeAlsoElement);
 
         public bool Equals(SeeAlsoElement? other)
         {

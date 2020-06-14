@@ -18,6 +18,6 @@
         public abstract override int GetHashCode();
 
         /// <inheritdoc />
-        public abstract override bool Equals(object obj);
+        public abstract override bool Equals(object? obj);
     }
 }

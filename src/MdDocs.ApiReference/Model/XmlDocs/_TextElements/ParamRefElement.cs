@@ -44,6 +44,6 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
         public override int GetHashCode() => StringComparer.Ordinal.GetHashCode(Name);
 
         /// <inheritdoc />
-        public override bool Equals(object obj) => Equals(obj as ParamRefElement);
+        public override bool Equals(object? obj) => Equals(obj as ParamRefElement);
     }
 }

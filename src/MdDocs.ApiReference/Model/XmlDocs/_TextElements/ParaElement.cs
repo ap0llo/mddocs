@@ -38,7 +38,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
         public override int GetHashCode() => Text.GetHashCode();
 
         /// <inheritdoc />
-        public override bool Equals(object obj) => Equals(obj as ParaElement);
+        public override bool Equals(object? obj) => Equals(obj as ParaElement);
 
         /// <inheritdoc />
         public bool Equals(ParaElement? other) => other != null && Text.Equals(other.Text);

@@ -65,6 +65,6 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
         }
 
         /// <inheritdoc />
-        public override bool Equals(object obj) => Equals(obj as CodeElement);
+        public override bool Equals(object? obj) => Equals(obj as CodeElement);
     }
 }

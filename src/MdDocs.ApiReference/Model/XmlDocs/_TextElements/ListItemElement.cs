@@ -53,7 +53,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
         }
 
         /// <inheritdoc />
-        public override bool Equals(object obj) => Equals(obj as ListItemElement);
+        public override bool Equals(object? obj) => Equals(obj as ListItemElement);
 
         /// <inheritdoc />
         public bool Equals(ListItemElement? other)

@@ -23,7 +23,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
             m_Option = option ?? throw new ArgumentNullException(nameof(option));
 
             var name = option.Name ?? option.ShortName.ToString();
-            Heading = new MdHeading(3, new MdCompositeSpan(new MdCodeSpan(name), " Parameter"));
+            Heading = new MdHeading(3, new MdCompositeSpan(new MdCodeSpan(name!), " Parameter"));
         }
 
 
@@ -72,7 +72,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
 
             if (m_Option.HasDefault)
             {
-                table.Add(new MdTableRow("Default value:", new MdCodeSpan(Convert.ToString(m_Option.Default))));
+                table.Add(new MdTableRow("Default value:", new MdCodeSpan(Convert.ToString(m_Option.Default!)!)));
             }
             else
             {

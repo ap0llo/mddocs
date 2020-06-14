@@ -250,7 +250,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Loaders
             }
             else if (defaultValue is bool)
             {
-                return Convert.ToString(defaultValue).ToLower();
+                return Convert.ToString(defaultValue)?.ToLower();
             }
             else
             {

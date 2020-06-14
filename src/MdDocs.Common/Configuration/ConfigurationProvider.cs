@@ -41,7 +41,7 @@ namespace Grynwald.MdDocs.Common.Configuration
 
             if (configFileLoaded)
             {
-                var baseDirectory = Path.GetDirectoryName(Path.GetFullPath(m_ConfigurationFilePath));
+                var baseDirectory = Path.GetDirectoryName(Path.GetFullPath(m_ConfigurationFilePath))!;
                 ResolveRelativePaths(config, baseDirectory);
             }
 
@@ -92,22 +92,30 @@ namespace Grynwald.MdDocs.Common.Configuration
         {
             foreach (var property in configurationObject.GetType().GetProperties().Where(x => x.GetIndexParameters().Length == 0))
             {
+                if (property == null)
+                    throw new InvalidOperationException();
+
+                var propertyValue = property.GetValue(configurationObject);
+
+                if (propertyValue is null)
+                    continue;
+
                 if (property.PropertyType == typeof(string) && property.GetCustomAttribute<ConvertToFullPathAttribute>() != null)
                 {
                     // convert the value of string properties with a ConvertToFullPath attribute to absolute paths
-                    var value = (string)property.GetValue(configurationObject);
+                    var value = (string)propertyValue;
                     var absolutePath = GetFullPath(value, baseDirectory);
                     property.SetValue(configurationObject, absolutePath);
                 }
-                else if (property.PropertyType.Namespace.StartsWith("System.") || property.PropertyType.Namespace == "System")
+                else if (property.PropertyType?.Namespace?.StartsWith("System.") == true || property.PropertyType?.Namespace == "System")
                 {
                     // ignore properties of "System" types
                     continue;
                 }
                 else
                 {
-                    // recursively check all properties for ConvertToFullPath attributes
-                    ResolveRelativePaths(property.GetValue(configurationObject), baseDirectory);
+                    // recursively check all properties for ConvertToFullPath attributes                    
+                    ResolveRelativePaths(propertyValue, baseDirectory);
                 }
             }
         }
