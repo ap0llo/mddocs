@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace Grynwald.MdDocs.CommandLineHelp.Model2
 {
@@ -14,6 +14,10 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model2
         private readonly HashSet<string> m_ParameterNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         private readonly HashSet<string> m_ParameterShortNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
+
+        /// <inheritdoc />
+        public IEnumerable<ParameterDocumentation> AllParameters =>
+            PositionalParameters.Concat(SwitchParameters.Concat(NamedParameters.Cast<ParameterDocumentation>()));
 
         /// <inheritdoc />
         public IEnumerable<NamedParameterDocumentation> NamedParameters => m_NamedParameters;

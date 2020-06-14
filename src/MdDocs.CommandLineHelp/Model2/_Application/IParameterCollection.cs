@@ -5,6 +5,11 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model2
     public interface IParameterCollection
     {
         /// <summary>
+        /// Gets all the collections's parameters (named, positional and switch-parameters)
+        /// </summary>
+        IEnumerable<ParameterDocumentation> AllParameters { get; }
+
+        /// <summary>
         /// Gets the collection's named parameters
         /// </summary>
         IEnumerable<NamedParameterDocumentation> NamedParameters { get; }

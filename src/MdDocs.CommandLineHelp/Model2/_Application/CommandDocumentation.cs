@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using Grynwald.Utilities.Collections;
 
 namespace Grynwald.MdDocs.CommandLineHelp.Model2
 {
@@ -42,6 +44,11 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model2
         /// Gets the command's switch-parameters
         /// </summary>
         public IEnumerable<SwitchParameterDocumentation> SwitchParameters => m_Parameters.SwitchParameters;
+
+        /// <summary>
+        /// Gets all the commands's parameters (named, positional and switch-parameters)
+        /// </summary>
+        public IEnumerable<ParameterDocumentation> AllParameters => m_Parameters.AllParameters;
 
 
         /// <summary>

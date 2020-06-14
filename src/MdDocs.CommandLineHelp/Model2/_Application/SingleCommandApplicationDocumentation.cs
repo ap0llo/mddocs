@@ -10,6 +10,11 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model2
 
 
         /// <summary>
+        /// Gets all the application's parameters (named, positional and switch-parameters)
+        /// </summary>
+        public IEnumerable<ParameterDocumentation> AllParameters => m_Parameters.AllParameters;
+
+        /// <summary>
         /// Gets the application's named parameters
         /// </summary>
         public IEnumerable<NamedParameterDocumentation> NamedParameters => m_Parameters.NamedParameters;
