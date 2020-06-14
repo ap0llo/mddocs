@@ -21,7 +21,7 @@
 	<!-- Nerdbank.GitVersioning -->	
 	<ItemGroup>
 		<PackageReference Include="Nerdbank.GitVersioning" Version="3.1.91" PrivateAssets="all" />
-    		<PackageReference Include="Microsoft.DotNet.Analyzers.Compatibility" Version="0.2.12-alpha" PrivateAssets="all" />
+		<PackageReference Include="Microsoft.DotNet.Analyzers.Compatibility" Version="0.2.12-alpha" PrivateAssets="all" />
 	</ItemGroup>
 
 	<!-- Compiler settings-->
@@ -47,8 +47,12 @@
 	</ItemGroup>
 
 	
-	<!-- Disable nullable support on .Net Core 2.1 -->
-	<PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.1' ">
+	<!-- 
+		Disable nullable support on .NET Core 2.1, .NET Standard 2.0 and .NET Framework 
+		becuase the BCL on these frameworks does not have nullable annotations
+		leading to false-positives in the nullable analysis
+	-->
+	<PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.1' OR '$(TargetFramework)' == 'netstandard2.0' OR '$(TargetFrameworkIdentifier)' == '.NETFramework' ">
 		<Nullable>disable</Nullable>
 		<NoWarn>8632</NoWarn>  <!-- Suppress warning about nullable annotation in the source code although nullable is disabled-->
 	</PropertyGroup>
