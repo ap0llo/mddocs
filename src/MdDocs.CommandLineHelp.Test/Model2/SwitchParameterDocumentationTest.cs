@@ -4,6 +4,9 @@ using Xunit;
 
 namespace Grynwald.MdDocs.CommandLineHelp.Test.Model2
 {
+    /// <summary>
+    /// Tests for <see cref="SwitchParameterDocumentation"/>
+    /// </summary>
     public class SwitchParameterDocumentationTest
     {
         [Theory]

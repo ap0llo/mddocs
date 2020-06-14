@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Runtime.InteropServices;
-using System.Text;
 using Grynwald.MdDocs.CommandLineHelp.Model2;
 using Xunit;
 
 namespace Grynwald.MdDocs.CommandLineHelp.Test.Model2
 {
+    /// <summary>
+    /// Tests for <see cref="NamedParameterDocumentation"/>
+    /// </summary>
     public class NamedParameterDocumentationTest
     {
         [Theory]
@@ -23,9 +22,6 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Model2
 
             // ACT / ASSERT
             Assert.Throws<ArgumentException>(() => new NamedParameterDocumentation(application, command, invalidName, invalidName));
-
         }
-
-
     }
 }

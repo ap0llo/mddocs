@@ -8,8 +8,8 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Model2
     /// </summary>
     public class ParameterCollectionTest
     {
-
         private readonly ApplicationDocumentation m_ApplicationDocumentation = new SingleCommandApplicationDocumentation("app", "1.0");
+
 
         [Theory]
         [InlineData(null, null)]

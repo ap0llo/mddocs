@@ -7,6 +7,9 @@ using Xunit;
 
 namespace Grynwald.MdDocs.CommandLineHelp.Test.Loaders
 {
+    /// <summary>
+    /// Tests for <see cref="CommandLineParserLoaderTest"/>
+    /// </summary>
     public class CommandLineParserLoaderTest : CommandLineDynamicCompilationTestBase
     {
         private readonly ILogger m_Logger = NullLogger.Instance;

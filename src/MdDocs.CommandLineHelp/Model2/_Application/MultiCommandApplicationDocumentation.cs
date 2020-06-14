@@ -9,12 +9,12 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model2
     /// </summary>
     public class MultiCommandApplicationDocumentation : ApplicationDocumentation
     {
-        private readonly List<CommandDocumentation> m_Commands = new List<CommandDocumentation>();
+        private readonly Dictionary<string, CommandDocumentation> m_Commands = new Dictionary<string, CommandDocumentation>(StringComparer.OrdinalIgnoreCase);
 
         /// <summary>
         /// Gets the application's commands
         /// </summary>
-        public IEnumerable<CommandDocumentation> Commands => m_Commands.OrderBy(x => x.Name);
+        public IEnumerable<CommandDocumentation> Commands => m_Commands.Values.OrderBy(x => x.Name);
 
 
         /// <summary>
@@ -27,15 +27,15 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model2
         public CommandDocumentation AddCommand(string name)
         {
             if (String.IsNullOrWhiteSpace(name))
-                throw new ArgumentException("Value must not be null or whitespace", nameof(name));
+                throw new InvalidModelException("Command names must not be null or whitespace");
 
-            //TODO: Check if a command with the specified name already exists
+            if (m_Commands.ContainsKey(name))
+                throw new InvalidModelException($"Cannot add command '{name}' because a command with the same name already exists");
 
             var command = new CommandDocumentation(this, name);
-            m_Commands.Add(command);
+            m_Commands.Add(name, command);
 
             return command;
-
         }
     }
 }
