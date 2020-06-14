@@ -18,6 +18,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Loaders
         private const string s_Required = "Required";
         private const string s_Default = "Default";
         private const string s_MetaName = "MetaName";
+        private const string s_MetaValue = "MetaValue";
 
         private readonly ILogger m_Logger;
 
@@ -186,6 +187,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Loaders
                     parameter.Required = optionAttribute.GetPropertyValueOrDefault<bool>(s_Required);
                     parameter.DefaultValue = GetDefaultValue(optionAttribute);
                     parameter.AcceptedValues = GetAcceptedValues(property);
+                    parameter.ValuePlaceHolderName = optionAttribute.GetPropertyValueOrDefault<string?>(s_MetaValue);
                 }
             }
 
@@ -231,6 +233,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Loaders
                 parameter.DefaultValue = GetDefaultValue(valueAttribute);
                 parameter.AcceptedValues = GetAcceptedValues(property);
                 parameter.InformationalName = valueAttribute.GetPropertyValueOrDefault<string?>(s_MetaName);
+                parameter.ValuePlaceHolderName = valueAttribute.GetPropertyValueOrDefault<string?>(s_MetaValue);
             }
         }
 

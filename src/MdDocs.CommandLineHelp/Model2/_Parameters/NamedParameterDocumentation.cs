@@ -55,6 +55,11 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model2
         /// <seealso cref="HasShortName"/>.
         public bool HasShortName => !String.IsNullOrWhiteSpace(ShortName);
 
+        /// <summary>
+        /// Gets or sets the name to use a placeholder for the parameter's name in documentation.
+        /// </summary>
+        public string? ValuePlaceHolderName { get; set; }
+
 
         /// <summary>
         /// Initializes a new instance of <see cref="NamedParameterDocumentation"/>.
