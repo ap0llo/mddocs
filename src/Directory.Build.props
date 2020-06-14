@@ -6,7 +6,7 @@
 		<BaseOutputPath Condition="'$(BUILD_BINARIESDIRECTORY)' != '' ">$(BUILD_BINARIESDIRECTORY)</BaseOutputPath>
 		<BaseOutputPath Condition="'$(BaseOutputPath)' == '' ">$(MSBuildThisFileDirectory)..\Build\</BaseOutputPath>
 		<BaseOutputPath Condition="!HasTrailingSlash('BaseOutputPath')">$(BaseOutputPath)\</BaseOutputPath>
-		<OutputPath>$(BaseOutputPath)$(Configuration)\$(MSBuildProjectName)\</OutputPath>	
+		<OutputPath>$(BaseOutputPath)$(Configuration)\$(MSBuildProjectName)\</OutputPath>
 		<PackageOutputPath>$(BaseOutputPath)$(Configuration)\packages\</PackageOutputPath>
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     		<!--
@@ -18,7 +18,7 @@
     		<IsPackable>false</IsPackable>
 	</PropertyGroup>
 
-	<!-- Nerdbank.GitVersioning -->	
+	<!-- Nerdbank.GitVersioning -->
 	<ItemGroup>
 		<PackageReference Include="Nerdbank.GitVersioning" Version="3.1.91" PrivateAssets="all" />
 		<PackageReference Include="Microsoft.DotNet.Analyzers.Compatibility" Version="0.2.12-alpha" PrivateAssets="all" />
@@ -38,7 +38,7 @@
 	</PropertyGroup>
 	<!-- SourceLink  (https://github.com/dotnet/sourcelink) -->
 	<PropertyGroup>
-		<PublishRepositoryUrl>true</PublishRepositoryUrl>    
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
 		<AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
 		<EmbedUntrackedSources>true</EmbedUntrackedSources>
 	</PropertyGroup>
@@ -46,27 +46,15 @@
 		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
 	</ItemGroup>
 
-	
-	<!-- 
-		Disable nullable support on .NET Core 2.1, .NET Standard 2.0 and .NET Framework 
-		becuase the BCL on these frameworks does not have nullable annotations
-		leading to false-positives in the nullable analysis
-	-->
-	<PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.1' OR '$(TargetFramework)' == 'netstandard2.0' OR '$(TargetFrameworkIdentifier)' == '.NETFramework' ">
-		<Nullable>disable</Nullable>
-		<NoWarn>8632</NoWarn>  <!-- Suppress warning about nullable annotation in the source code although nullable is disabled-->
-	</PropertyGroup>
-
 	<!--NuGet package properties -->
 	<PropertyGroup>
 		<Authors>Andreas Gruenwald</Authors>
 		<PackageProjectUrl>https://github.com/ap0llo/mddocs</PackageProjectUrl>
 		<PackageLicenseUrl>https://github.com/ap0llo/mddocs/blob/master/LICENSE</PackageLicenseUrl>
-		<Description>A tool to generate documentaton as Markdown</Description>        
+		<Description>A tool to generate documentaton as Markdown</Description>
 		<Copyright>Copyright (c) 2018-2020, Andreas Gruenwald</Copyright>
 		<PackageTags>markdown dotnet api documentation</PackageTags>
 		<Product>MdDocs</Product>
 	</PropertyGroup>
-
 
 </Project>
