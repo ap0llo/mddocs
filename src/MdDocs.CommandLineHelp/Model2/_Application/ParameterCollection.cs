@@ -9,14 +9,17 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model2
         private readonly ApplicationDocumentation m_Application;
         private readonly CommandDocumentation? m_Command;
         private readonly List<NamedParameterDocumentation> m_NamedParameters = new List<NamedParameterDocumentation>();
-        private readonly List<PositionalParameterDocumentation> m_PositionalParameters = new List<PositionalParameterDocumentation>();
+        private readonly IDictionary<int, PositionalParameterDocumentation> m_PositionalParameters = new Dictionary<int, PositionalParameterDocumentation>();
         private readonly List<SwitchParameterDocumentation> m_SwitchParameters = new List<SwitchParameterDocumentation>();
+        private readonly HashSet<string> m_ParameterNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        private readonly HashSet<string> m_ParameterShortNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
 
         /// <inheritdoc />
         public IEnumerable<NamedParameterDocumentation> NamedParameters => m_NamedParameters;
 
         /// <inheritdoc />
-        public IEnumerable<PositionalParameterDocumentation> PositionalParameters => m_PositionalParameters;
+        public IEnumerable<PositionalParameterDocumentation> PositionalParameters => m_PositionalParameters.Values;
 
         /// <inheritdoc />
         public IEnumerable<SwitchParameterDocumentation> SwitchParameters => m_SwitchParameters;
@@ -37,11 +40,9 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model2
         /// <inheritdoc />
         public NamedParameterDocumentation AddNamedParameter(string? name, string? shortName)
         {
-            if (String.IsNullOrWhiteSpace(name) && String.IsNullOrWhiteSpace(shortName))
-                throw new ArgumentException($"{nameof(name)} and {nameof(shortName)} must not both be empty");
+            AssertCanAddParameter(name, shortName);
 
-            //TODO: Check if a parameter with that name already exists
-            //TODO: Check for conflicts with switch parameters
+            AddParameterName(name, shortName);
 
             var parameter = new NamedParameterDocumentation(m_Application, m_Command, name, shortName);
             m_NamedParameters.Add(parameter);
@@ -52,10 +53,10 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model2
         /// <inheritdoc />
         public PositionalParameterDocumentation AddPositionalParameter(int position)
         {
-            //TODO: Check if a parameter with that position
+            AssertCanAddParameter(position);
 
             var parameter = new PositionalParameterDocumentation(m_Application, m_Command, position);
-            m_PositionalParameters.Add(parameter);
+            m_PositionalParameters.Add(position, parameter);
 
             return parameter;
         }
@@ -63,16 +64,52 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model2
         /// <inheritdoc />
         public SwitchParameterDocumentation AddSwitchParameter(string? name, string? shortName)
         {
-            if (String.IsNullOrWhiteSpace(name) && String.IsNullOrWhiteSpace(shortName))
-                throw new ArgumentException($"{nameof(name)} and {nameof(shortName)} must not both be empty");
+            AssertCanAddParameter(name, shortName);
 
-            //TODO: Check if a parameter with that name already exists
-            //TODO: Check for conflicts with named parameters
+            AddParameterName(name, shortName);
 
             var parameter = new SwitchParameterDocumentation(m_Application, m_Command, name, shortName);
             m_SwitchParameters.Add(parameter);
 
             return parameter;
         }
+
+
+
+        private void AssertCanAddParameter(string? name, string? shortName)
+        {
+            if (String.IsNullOrWhiteSpace(name) && String.IsNullOrWhiteSpace(shortName))
+                throw new InvalidModelException("A parameter's name and short name must not both be empty.");
+
+
+            if (!String.IsNullOrWhiteSpace(name) && m_ParameterNames.Contains(name))
+            {
+                throw new InvalidModelException($"Cannot add named parameter because a parameter named '{name}' already exists.");
+            }
+
+            if (!String.IsNullOrWhiteSpace(shortName) && m_ParameterShortNames.Contains(shortName))
+            {
+                throw new InvalidModelException($"Cannot add named parameter because a parameter with a short name of '{shortName}' already exists.");
+            }
+        }
+
+        private void AssertCanAddParameter(int position)
+        {
+            if (position < 0)
+                throw new InvalidModelException("A positional parameter's position must not be negative.");
+
+            if (m_PositionalParameters.ContainsKey(position))
+                throw new InvalidModelException($"Cannot add positional parameter because a parameter at position {position} already exists.");
+        }
+
+        private void AddParameterName(string? name, string? shortName)
+        {
+            if (!String.IsNullOrWhiteSpace(name))
+                m_ParameterNames.Add(name);
+
+            if (!String.IsNullOrWhiteSpace(shortName))
+                m_ParameterShortNames.Add(shortName);
+        }
+
     }
 }
