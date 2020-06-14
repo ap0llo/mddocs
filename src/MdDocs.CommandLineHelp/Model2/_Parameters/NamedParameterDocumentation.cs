@@ -6,7 +6,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model2
     /// <summary>
     /// Represents a command line parameter identified by name.
     /// </summary>
-    public class NamedParameterDocumentation : ParameterDocumentation
+    public class NamedParameterDocumentation : ParameterDocumentation, INamedParameterDocumentation
     {
         /// <summary>
         /// Gets the parameter's name
@@ -36,6 +36,24 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model2
         /// </summary>
         /// <value>The possible values for the parameter of <c>null</c> is the accepted values are unknown.</value>
         public IReadOnlyList<string>? AcceptedValues { get; set; } = null;
+
+        /// <summary>
+        /// Gets whether the parameter has a name
+        /// </summary>
+        /// <remarks>
+        /// A parameter can have a name (<see cref="Name"/>), a short name (<see cref="ShortName"/>) or both.
+        /// </remarks>
+        /// <seealso cref="HasShortName"/>.
+        public bool HasName => !String.IsNullOrWhiteSpace(Name);
+
+        /// <summary>
+        /// Gets whether the parameter has a short name
+        /// </summary>
+        /// <remarks>
+        /// A parameter can have a name (<see cref="Name"/>), a short name (<see cref="ShortName"/>) or both.
+        /// </remarks>
+        /// <seealso cref="HasShortName"/>.
+        public bool HasShortName => !String.IsNullOrWhiteSpace(ShortName);
 
 
         /// <summary>

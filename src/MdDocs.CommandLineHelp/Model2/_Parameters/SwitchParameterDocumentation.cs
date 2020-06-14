@@ -5,7 +5,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model2
     /// <summary>
     /// Represents a "switch" commandline parameter (parameter without a value)
     /// </summary>
-    public class SwitchParameterDocumentation : ParameterDocumentation
+    public class SwitchParameterDocumentation : ParameterDocumentation, INamedParameterDocumentation
     {
         /// <summary>
         /// Gets the parameter's name
@@ -16,6 +16,24 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model2
         /// Gets the parameter's short name
         /// </summary>
         public string? ShortName { get; }
+
+        /// <summary>
+        /// Gets whether the parameter has a name
+        /// </summary>
+        /// <remarks>
+        /// A parameter can have a name (<see cref="Name"/>), a short name (<see cref="ShortName"/>) or both.
+        /// </remarks>
+        /// <seealso cref="HasShortName"/>.
+        public bool HasName => !String.IsNullOrWhiteSpace(Name);
+
+        /// <summary>
+        /// Gets whether the parameter has a short name
+        /// </summary>
+        /// <remarks>
+        /// A parameter can have a name (<see cref="Name"/>), a short name (<see cref="ShortName"/>) or both.
+        /// </remarks>
+        /// <seealso cref="HasShortName"/>.
+        public bool HasShortName => !String.IsNullOrWhiteSpace(ShortName);
 
 
         /// <summary>
