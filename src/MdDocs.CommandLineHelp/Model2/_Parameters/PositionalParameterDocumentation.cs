@@ -32,6 +32,12 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model2
         /// <value>The possible values for the parameter of <c>null</c> is the accepted values are unknown.</value>
         public IReadOnlyList<string>? AcceptedValues { get; set; } = null;
 
+        /// <summary>
+        /// Gets or sets the parameter's "informational" name.
+        /// The informational name the name by which the parameter is referred to but has no influence on parsing.
+        /// </summary>
+        public string? InformationalName { get; set; }
+
 
         /// <summary>
         /// Initializes a new instance of <see cref="PositionalParameterDocumentation"/>

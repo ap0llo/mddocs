@@ -17,6 +17,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Loaders
         private const string s_HelpText = "HelpText";
         private const string s_Required = "Required";
         private const string s_Default = "Default";
+        private const string s_MetaName = "MetaName";
 
         private readonly ILogger m_Logger;
 
@@ -225,10 +226,11 @@ namespace Grynwald.MdDocs.CommandLineHelp.Loaders
                 var position = (int)valueAttribute.ConstructorArguments.Single().Value;
 
                 var parameter = parameterCollection.AddPositionalParameter(position);
-                parameter.Description = valueAttribute.GetPropertyValueOrDefault<string>(s_HelpText);
+                parameter.Description = valueAttribute.GetPropertyValueOrDefault<string?>(s_HelpText);
                 parameter.Required = valueAttribute.GetPropertyValueOrDefault<bool>(s_Required);
                 parameter.DefaultValue = GetDefaultValue(valueAttribute);
                 parameter.AcceptedValues = GetAcceptedValues(property);
+                parameter.InformationalName = valueAttribute.GetPropertyValueOrDefault<string?>(s_MetaName);
             }
         }
 
