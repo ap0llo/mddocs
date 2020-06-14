@@ -28,31 +28,39 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Model2
         }
 
         [Theory]
-        [InlineData("parameter1", null)]
-        [InlineData("parameter1", "x")]
-        [InlineData(null, "x")]
-        public void AddNamedParameter_throws_InvalidModelException_if_parameter_with_the_same_name_already_exists(string parameterName, string parameterShortName)
+        [InlineData("parameter1", null, "parameter1", null)]
+        [InlineData("parameter1", "x", "parameter1", "x")]
+        [InlineData(null, "x", null, "x")]
+        // parameter names must be treated case-insensitive
+        [InlineData("parameter1", null, "PARAMETER1", null)]
+        [InlineData("parameter1", "x", "PARAMETER2", "X")]
+        [InlineData(null, "x", null, "X")]
+        public void AddNamedParameter_throws_InvalidModelException_if_parameter_with_the_same_name_already_exists(string parameterName1, string parameterShortName1, string parameterName2, string parameterShortName2)
         {
             // ARRANGE
             var sut = new ParameterCollection(m_ApplicationDocumentation, null);
-            _ = sut.AddNamedParameter(parameterName, parameterShortName);
+            _ = sut.AddNamedParameter(parameterName1, parameterShortName1);
 
             // ACT / ASSERT
-            Assert.Throws<InvalidModelException>(() => sut.AddNamedParameter(parameterName, parameterShortName));
+            Assert.Throws<InvalidModelException>(() => sut.AddNamedParameter(parameterName2, parameterShortName2));
         }
 
         [Theory]
-        [InlineData("parameter1", null)]
-        [InlineData("parameter1", "x")]
-        [InlineData(null, "x")]
-        public void AddNamedParameter_throws_InvalidModelException_if_a_switch_parameter_with_the_same_name_already_exists(string parameterName, string parameterShortName)
+        [InlineData("parameter1", null, "parameter1", null)]
+        [InlineData("parameter1", "x", "parameter1", "x")]
+        [InlineData(null, "x", null, "x")]
+        // parameter names must be treated case-insensitive
+        [InlineData("parameter1", null, "PARAMETER1", null)]
+        [InlineData("parameter1", "x", "PARAMETER2", "X")]
+        [InlineData(null, "x", null, "X")]
+        public void AddNamedParameter_throws_InvalidModelException_if_a_switch_parameter_with_the_same_name_already_exists(string parameterName1, string parameterShortName1, string parameterName2, string parameterShortName2)
         {
             // ARRANGE
             var sut = new ParameterCollection(m_ApplicationDocumentation, null);
-            _ = sut.AddSwitchParameter(parameterName, parameterShortName);
+            _ = sut.AddSwitchParameter(parameterName1, parameterShortName1);
 
             // ACT / ASSERT
-            Assert.Throws<InvalidModelException>(() => sut.AddNamedParameter(parameterName, parameterShortName));
+            Assert.Throws<InvalidModelException>(() => sut.AddNamedParameter(parameterName2, parameterShortName2));
         }
 
         [Theory]
@@ -72,31 +80,39 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Model2
         }
 
         [Theory]
-        [InlineData("parameter1", null)]
-        [InlineData("parameter1", "x")]
-        [InlineData(null, "x")]
-        public void AddSwitchParameter_throws_InvalidModelException_if_parameter_with_the_same_name_already_exists(string parameterName, string parameterShortName)
+        [InlineData("parameter1", null, "parameter1", null)]
+        [InlineData("parameter1", "x", "parameter1", "x")]
+        [InlineData(null, "x", null, "x")]
+        // parameter names must be treated case-insensitive
+        [InlineData("parameter1", null, "PARAMETER1", null)]
+        [InlineData("parameter1", "x", "PARAMETER2", "X")]
+        [InlineData(null, "x", null, "X")]
+        public void AddSwitchParameter_throws_InvalidModelException_if_parameter_with_the_same_name_already_exists(string parameterName1, string parameterShortName1, string parameterName2, string parameterShortName2)
         {
             // ARRANGE
             var sut = new ParameterCollection(m_ApplicationDocumentation, null);
-            _ = sut.AddSwitchParameter(parameterName, parameterShortName);
+            _ = sut.AddSwitchParameter(parameterName1, parameterShortName1);
 
             // ACT / ASSERT
-            Assert.Throws<InvalidModelException>(() => sut.AddSwitchParameter(parameterName, parameterShortName));
+            Assert.Throws<InvalidModelException>(() => sut.AddSwitchParameter(parameterName2, parameterShortName2));
         }
 
         [Theory]
-        [InlineData("parameter1", null)]
-        [InlineData("parameter1", "x")]
-        [InlineData(null, "x")]
-        public void AddSwitchParameter_throws_InvalidModelException_if_a_named_parameter_with_the_same_name_already_exists(string parameterName, string parameterShortName)
+        [InlineData("parameter1", null, "parameter1", null)]
+        [InlineData("parameter1", "x", "parameter1", "x")]
+        [InlineData(null, "x", null, "x")]
+        // parameter names must be treated case-insensitive
+        [InlineData("parameter1", null, "PARAMETER1", null)]
+        [InlineData("parameter1", "x", "PARAMETER2", "X")]
+        [InlineData(null, "x", null, "X")]
+        public void AddSwitchParameter_throws_InvalidModelException_if_a_named_parameter_with_the_same_name_already_exists(string parameterName1, string parameterShortName1, string parameterName2, string parameterShortName2)
         {
             // ARRANGE
             var sut = new ParameterCollection(m_ApplicationDocumentation, null);
-            _ = sut.AddNamedParameter(parameterName, parameterShortName);
+            _ = sut.AddNamedParameter(parameterName1, parameterShortName1);
 
             // ACT / ASSERT
-            Assert.Throws<InvalidModelException>(() => sut.AddSwitchParameter(parameterName, parameterShortName));
+            Assert.Throws<InvalidModelException>(() => sut.AddSwitchParameter(parameterName2, parameterShortName2));
         }
 
         [Fact]
