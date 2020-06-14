@@ -1,6 +1,4 @@
-﻿using System;
-using ApprovalUtilities.Reflection;
-using Grynwald.MdDocs.CommandLineHelp.Loaders;
+﻿using Grynwald.MdDocs.CommandLineHelp.Loaders;
 using Grynwald.MdDocs.CommandLineHelp.Model2;
 using Grynwald.MdDocs.CommandLineHelp.Test.Model;
 using Microsoft.Extensions.Logging;
@@ -369,7 +367,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Loaders
                     public string Option4Property { get; set; }
 
                     [Option(""option5"", Required = true)]
-                    public SomeEnum Option5Property { get; set; }
+                    public string Option5Property { get; set; }
 
                     [Option('z', ""option6"")]
                     public SomeEnum Option6Property { get; set; }
@@ -398,6 +396,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Loaders
                     Assert.Equal("some help text", param.Description);
                     Assert.False(param.Required);
                     Assert.Equal("some default", param.DefaultValue);
+                    Assert.Null(param.AcceptedValues);
                 },
                 param =>
                 {
@@ -406,6 +405,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Loaders
                     Assert.Null(param.Description);
                     Assert.False(param.Required);
                     Assert.Equal("23", param.DefaultValue);
+                    Assert.Null(param.AcceptedValues);
                 },
                 param =>
                 {
@@ -414,6 +414,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Loaders
                     Assert.Null(param.Description);
                     Assert.False(param.Required);
                     Assert.Equal("true", param.DefaultValue);
+                    Assert.Null(param.AcceptedValues);
                 },
                 param =>
                 {
@@ -422,6 +423,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Loaders
                     Assert.Null(param.Description);
                     Assert.True(param.Required);
                     Assert.Null(param.DefaultValue);
+                    Assert.Null(param.AcceptedValues);
                 },
                 param =>
                 {
@@ -430,6 +432,12 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Loaders
                     Assert.Null(param.Description);
                     Assert.False(param.Required);
                     Assert.Null(param.DefaultValue);
+
+                    Assert.NotNull(param.AcceptedValues);
+                    Assert.Equal(3, param.AcceptedValues!.Count);
+                    Assert.Contains("Value1", param.AcceptedValues);
+                    Assert.Contains("Value2", param.AcceptedValues);
+                    Assert.Contains("SomeOtherValue", param.AcceptedValues);
                 });
 
             // Hidden parameters must be skipped
@@ -503,7 +511,13 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Loaders
             // ARRANGE            
             using var assembly = Compile(@"
                 using CommandLine;
-               
+
+                public enum SomeEnum
+                {
+                    Value1,
+                    Value2
+                }
+
                 [Verb(""command"")]
                 public class CommandOptions
                 {
@@ -514,7 +528,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Loaders
                     public string Value2 { get; set; }
 
                     [Value(2, Required = true)]
-                    public string Value3 { get; set; }
+                    public SomeEnum Value3 { get; set; }
 
                     [Value(3, Hidden = true)]
                     public string Value4 { get; set; }
@@ -539,6 +553,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Loaders
                     Assert.Equal("some help text", param.Description);
                     Assert.False(param.Required);
                     Assert.Null(param.DefaultValue);
+                    Assert.Null(param.AcceptedValues);
                 },
                 param =>
                 {
@@ -546,6 +561,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Loaders
                     Assert.Null(param.Description);
                     Assert.False(param.Required);
                     Assert.Equal("some default", param.DefaultValue);
+                    Assert.Null(param.AcceptedValues);
                 },
                 param =>
                 {
@@ -553,6 +569,10 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Loaders
                     Assert.Null(param.Description);
                     Assert.True(param.Required);
                     Assert.Null(param.DefaultValue);
+                    Assert.NotNull(param.AcceptedValues);
+                    Assert.Collection(param.AcceptedValues,
+                        str => Assert.Equal("Value1", str),
+                        str => Assert.Equal("Value2", str));
                 });
 
             Assert.DoesNotContain(command.PositionalParameters, param => param.Position == 3);
@@ -589,7 +609,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Loaders
                     public string Option4Property { get; set; }
 
                     [Option(""option5"", Required = true)]
-                    public SomeEnum Option5Property { get; set; }
+                    public string Option5Property { get; set; }
 
                     [Option('z', ""option6"")]
                     public SomeEnum Option6Property { get; set; }
@@ -617,6 +637,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Loaders
                     Assert.Equal("some help text", param.Description);
                     Assert.False(param.Required);
                     Assert.Equal("some default", param.DefaultValue);
+                    Assert.Null(param.AcceptedValues);
                 },
                 param =>
                 {
@@ -625,6 +646,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Loaders
                     Assert.Null(param.Description);
                     Assert.False(param.Required);
                     Assert.Equal("23", param.DefaultValue);
+                    Assert.Null(param.AcceptedValues);
                 },
                 param =>
                 {
@@ -633,6 +655,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Loaders
                     Assert.Null(param.Description);
                     Assert.False(param.Required);
                     Assert.Equal("true", param.DefaultValue);
+                    Assert.Null(param.AcceptedValues);
                 },
                 param =>
                 {
@@ -641,6 +664,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Loaders
                     Assert.Null(param.Description);
                     Assert.True(param.Required);
                     Assert.Null(param.DefaultValue);
+                    Assert.Null(param.AcceptedValues);
                 },
                 param =>
                 {
@@ -649,6 +673,12 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Loaders
                     Assert.Null(param.Description);
                     Assert.False(param.Required);
                     Assert.Null(param.DefaultValue);
+
+                    Assert.NotNull(param.AcceptedValues);
+                    Assert.Equal(3, param.AcceptedValues!.Count);
+                    Assert.Contains("Value1", param.AcceptedValues);
+                    Assert.Contains("Value2", param.AcceptedValues);
+                    Assert.Contains("SomeOtherValue", param.AcceptedValues);
                 });
 
             // Hidden parameters must be skipped
@@ -720,7 +750,13 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Loaders
             // ARRANGE            
             using var assembly = Compile(@"
                 using CommandLine;
-               
+
+                public enum SomeEnum
+                {
+                    Value1,
+                    Value2
+                }
+
                 public class CommandOptions
                 {
                     [Value(0, HelpText = ""some help text"")]
@@ -730,7 +766,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Loaders
                     public string Value2 { get; set; }
 
                     [Value(2, Required = true)]
-                    public string Value3 { get; set; }
+                    public SomeEnum Value3 { get; set; }
 
                     [Value(3, Hidden = true)]
                     public string Value4 { get; set; }
@@ -754,6 +790,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Loaders
                     Assert.Equal("some help text", param.Description);
                     Assert.False(param.Required);
                     Assert.Null(param.DefaultValue);
+                    Assert.Null(param.AcceptedValues);
                 },
                 param =>
                 {
@@ -761,6 +798,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Loaders
                     Assert.Null(param.Description);
                     Assert.False(param.Required);
                     Assert.Equal("some default", param.DefaultValue);
+                    Assert.Null(param.AcceptedValues);
                 },
                 param =>
                 {
@@ -768,6 +806,10 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Loaders
                     Assert.Null(param.Description);
                     Assert.True(param.Required);
                     Assert.Null(param.DefaultValue);
+                    Assert.NotNull(param.AcceptedValues);
+                    Assert.Collection(param.AcceptedValues,
+                        str => Assert.Equal("Value1", str),
+                        str => Assert.Equal("Value2", str));
                 });
 
             Assert.DoesNotContain(singleCommandApplication.PositionalParameters, param => param.Position == 3);

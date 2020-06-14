@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Grynwald.MdDocs.CommandLineHelp.Model2;
 using Grynwald.MdDocs.Common;
@@ -183,6 +184,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Loaders
                     parameter.Description = optionAttribute.GetPropertyValueOrDefault<string>(s_HelpText);
                     parameter.Required = optionAttribute.GetPropertyValueOrDefault<bool>(s_Required);
                     parameter.DefaultValue = GetDefaultValue(optionAttribute);
+                    parameter.AcceptedValues = GetAcceptedValues(property);
                 }
             }
 
@@ -226,6 +228,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Loaders
                 parameter.Description = valueAttribute.GetPropertyValueOrDefault<string>(s_HelpText);
                 parameter.Required = valueAttribute.GetPropertyValueOrDefault<bool>(s_Required);
                 parameter.DefaultValue = GetDefaultValue(valueAttribute);
+                parameter.AcceptedValues = GetAcceptedValues(property);
             }
         }
 
@@ -256,6 +259,25 @@ namespace Grynwald.MdDocs.CommandLineHelp.Loaders
             {
                 return Convert.ToString(defaultValue);
             }
+        }
+
+        private IReadOnlyList<string>? GetAcceptedValues(PropertyDefinition property)
+        {
+            var type = property.PropertyType.Resolve();
+
+            if (type == null)
+                return null;
+
+            if (type.IsEnum)
+            {
+                return type.Fields
+                    .Where(f => f.IsPublic && !f.IsSpecialName)
+                    .Select(f => f.Name)
+                    .ToArray();
+
+            }
+
+            return null;
         }
     }
 }

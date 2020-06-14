@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Grynwald.MdDocs.CommandLineHelp.Model2
 {
@@ -25,8 +26,12 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model2
         /// </value>
         public string? DefaultValue { get; set; } = null;
 
+        /// <summary>
+        /// Gets or sets the parameter's allowed values.
+        /// </summary>
+        /// <value>The possible values for the parameter of <c>null</c> is the accepted values are unknown.</value>
+        public IReadOnlyList<string>? AcceptedValues { get; set; } = null;
 
-        //TODO: Accepted values
 
         /// <summary>
         /// Initializes a new instance of <see cref="PositionalParameterDocumentation"/>
