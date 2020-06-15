@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Grynwald.MdDocs.CommandLineHelp.Model;
+﻿using Grynwald.MdDocs.CommandLineHelp.Model;
 using Mono.Cecil;
 
 namespace Grynwald.MdDocs.CommandLineHelp.Loaders
 {
-    interface IDocumentationLoader
+    internal interface IDocumentationLoader
     {
         ApplicationDocumentation Load(AssemblyDefinition assembly);
     }

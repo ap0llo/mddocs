@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using Grynwald.MdDocs.CommandLineHelp.Configuration;
-using Grynwald.MdDocs.CommandLineHelp.Loaders;
+using Grynwald.MdDocs.CommandLineHelp.Loaders.CommandLineParser;
 using Grynwald.MdDocs.CommandLineHelp.Pages;
 using Grynwald.MdDocs.Common;
 using Grynwald.MdDocs.Common.Commands;

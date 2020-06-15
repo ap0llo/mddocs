@@ -6,7 +6,7 @@ using Grynwald.MdDocs.Common;
 using Microsoft.Extensions.Logging;
 using Mono.Cecil;
 
-namespace Grynwald.MdDocs.CommandLineHelp.Loaders
+namespace Grynwald.MdDocs.CommandLineHelp.Loaders.CommandLineParser
 {
     /// <summary>
     /// Loader for applications based on the <see href="https://www.nuget.org/packages/CommandLineParser/">CommandLineParser</see> package.

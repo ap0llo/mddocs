@@ -1,12 +1,11 @@
 ﻿using System;
-using Grynwald.MdDocs.CommandLineHelp.Loaders;
+using Grynwald.MdDocs.CommandLineHelp.Loaders.CommandLineParser;
 using Grynwald.MdDocs.CommandLineHelp.Model;
-using Grynwald.MdDocs.CommandLineHelp.Test.Model;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Xunit;
 
-namespace Grynwald.MdDocs.CommandLineHelp.Test.Loaders
+namespace Grynwald.MdDocs.CommandLineHelp.Test.Loaders.CommandLineParser
 {
     /// <summary>
     /// Tests for <see cref="CommandLineParserLoader"/>
