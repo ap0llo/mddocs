@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Grynwald.MdDocs.CommandLineHelp.Model2
+namespace Grynwald.MdDocs.CommandLineHelp.Model
 {
     public class InvalidModelException : Exception
     {

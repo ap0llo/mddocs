@@ -1,8 +1,8 @@
 ﻿using System;
-using Grynwald.MdDocs.CommandLineHelp.Model2;
+using Grynwald.MdDocs.CommandLineHelp.Model;
 using Xunit;
 
-namespace Grynwald.MdDocs.CommandLineHelp.Test.Model2
+namespace Grynwald.MdDocs.CommandLineHelp.Test.Model
 {
     /// <summary>
     /// Tests for <see cref="SwitchParameterDocumentation"/>

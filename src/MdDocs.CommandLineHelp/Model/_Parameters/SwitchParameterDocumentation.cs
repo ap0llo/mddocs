@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 
-namespace Grynwald.MdDocs.CommandLineHelp.Model2
+namespace Grynwald.MdDocs.CommandLineHelp.Model
 {
     /// <summary>
     /// Represents a "switch" commandline parameter (parameter without a value)

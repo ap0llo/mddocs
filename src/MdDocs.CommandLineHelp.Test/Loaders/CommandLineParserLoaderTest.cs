@@ -1,6 +1,6 @@
 ﻿using System;
 using Grynwald.MdDocs.CommandLineHelp.Loaders;
-using Grynwald.MdDocs.CommandLineHelp.Model2;
+using Grynwald.MdDocs.CommandLineHelp.Model;
 using Grynwald.MdDocs.CommandLineHelp.Test.Model;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;

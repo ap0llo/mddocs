@@ -5,9 +5,8 @@ using CommandLine;
 using Grynwald.MdDocs.TestHelpers;
 using Microsoft.CodeAnalysis;
 
-namespace Grynwald.MdDocs.CommandLineHelp.Test.Model
+namespace Grynwald.MdDocs.CommandLineHelp.Test
 {
-    //TODO: Move to Loaders namespace when the Model namespace if free of Mono.Cecil references
     public abstract class CommandLineDynamicCompilationTestBase : DynamicCompilationTestBase
     {
         private static readonly Lazy<IReadOnlyList<MetadataReference>> s_MetadataReferences = new Lazy<IReadOnlyList<MetadataReference>>(() =>

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Grynwald.MdDocs.CommandLineHelp.Model2
+namespace Grynwald.MdDocs.CommandLineHelp.Model
 {
     /// <summary>
     /// Represents documentation about any command line application.

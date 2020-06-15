@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Grynwald.MdDocs.CommandLineHelp.Model2
+namespace Grynwald.MdDocs.CommandLineHelp.Model
 {
     /// <summary>
     /// Represents a command line parameter identified by name.

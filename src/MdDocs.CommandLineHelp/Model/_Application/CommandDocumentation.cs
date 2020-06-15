@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using Grynwald.Utilities.Collections;
 
-namespace Grynwald.MdDocs.CommandLineHelp.Model2
+namespace Grynwald.MdDocs.CommandLineHelp.Model
 {
 
     /// <summary>

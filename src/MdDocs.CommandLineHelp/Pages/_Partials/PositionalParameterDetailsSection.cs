@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Grynwald.MarkdownGenerator;
-using Grynwald.MdDocs.CommandLineHelp.Model2;
+using Grynwald.MdDocs.CommandLineHelp.Model;
 
 namespace Grynwald.MdDocs.CommandLineHelp.Pages
 {

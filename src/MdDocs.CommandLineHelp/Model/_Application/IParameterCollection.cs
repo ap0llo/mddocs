@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Grynwald.MdDocs.CommandLineHelp.Model2
+namespace Grynwald.MdDocs.CommandLineHelp.Model
 {
     public interface IParameterCollection
     {

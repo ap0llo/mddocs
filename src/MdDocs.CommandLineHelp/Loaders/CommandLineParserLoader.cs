@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Grynwald.MdDocs.CommandLineHelp.Model2;
+using Grynwald.MdDocs.CommandLineHelp.Model;
 using Grynwald.MdDocs.Common;
 using Microsoft.Extensions.Logging;
 using Mono.Cecil;
