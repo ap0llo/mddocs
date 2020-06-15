@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace Grynwald.MdDocs.CommandLineHelp.Model2
 {
     /// <summary>
     /// Represents a "switch" commandline parameter (parameter without a value)
     /// </summary>
+    [DebuggerDisplay("SwitchParameter ({Name}|{ShortName})")]
     public class SwitchParameterDocumentation : ParameterDocumentation, INamedParameterDocumentation
     {
         /// <summary>

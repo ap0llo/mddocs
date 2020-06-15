@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Grynwald.MdDocs.CommandLineHelp.Model2
 {
     /// <summary>
     /// Represents a commandline parameter identified by it's position.
     /// </summary>
+    [DebuggerDisplay("PositionalParameter ({Position})")]
     public class PositionalParameterDocumentation : ParameterDocumentation
     {
         /// <summary>

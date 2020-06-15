@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace Grynwald.MdDocs.CommandLineHelp.Model2
 {
@@ -17,16 +18,23 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model2
 
         /// <inheritdoc />
         public IEnumerable<ParameterDocumentation> AllParameters =>
-            PositionalParameters.Concat(SwitchParameters.Concat(NamedParameters.Cast<ParameterDocumentation>()));
+            PositionalParameters.Concat(NamedParameters.Concat(SwitchParameters.Cast<INamedParameterDocumentation>()).OrderBy(x => x.Name).Cast<ParameterDocumentation>());
 
         /// <inheritdoc />
-        public IEnumerable<NamedParameterDocumentation> NamedParameters => m_NamedParameters;
+        public IEnumerable<NamedParameterDocumentation> NamedParameters =>
+            Enumerable.Concat(
+                m_NamedParameters.Where(p => p.HasName).OrderBy(x => x.Name),
+                m_NamedParameters.Where(x => !x.HasName).OrderBy(x => x.ShortName));
+
 
         /// <inheritdoc />
-        public IEnumerable<PositionalParameterDocumentation> PositionalParameters => m_PositionalParameters.Values;
+        public IEnumerable<PositionalParameterDocumentation> PositionalParameters => m_PositionalParameters.Values.OrderBy(x => x.Position);
 
         /// <inheritdoc />
-        public IEnumerable<SwitchParameterDocumentation> SwitchParameters => m_SwitchParameters;
+        public IEnumerable<SwitchParameterDocumentation> SwitchParameters =>
+            Enumerable.Concat(
+                m_SwitchParameters.Where(x => x.HasName).OrderBy(x => x.Name),
+                m_SwitchParameters.Where(x => !x.HasName).OrderBy(x => x.ShortName));
 
 
         /// <summary>

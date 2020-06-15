@@ -1,4 +1,5 @@
-﻿using Grynwald.MdDocs.CommandLineHelp.Loaders;
+﻿using System;
+using Grynwald.MdDocs.CommandLineHelp.Loaders;
 using Grynwald.MdDocs.CommandLineHelp.Model2;
 using Grynwald.MdDocs.CommandLineHelp.Test.Model;
 using Microsoft.Extensions.Logging;
@@ -12,7 +13,47 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Loaders
     /// </summary>
     public class CommandLineParserLoaderTest : CommandLineDynamicCompilationTestBase
     {
+        public enum ApplicationType
+        {
+            SingleCommand,
+            MultiCommand
+        }
+
+
         private readonly ILogger m_Logger = NullLogger.Instance;
+
+
+        private string GetClassAttributes(ApplicationType type)
+        {
+            switch (type)
+            {
+                case ApplicationType.SingleCommand:
+                    return "";
+
+                case ApplicationType.MultiCommand:
+                    return @"[Verb(""command1"")]";
+
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
+        private IParameterCollection GetParameterCollection(ApplicationDocumentation application, ApplicationType applicationType)
+        {
+            switch (applicationType)
+            {
+                case ApplicationType.SingleCommand:
+                    return Assert.IsType<SingleCommandApplicationDocumentation>(application);
+
+                case ApplicationType.MultiCommand:
+                    var mutliCommandApplication = Assert.IsType<MultiCommandApplicationDocumentation>(application);
+                    return Assert.Single(mutliCommandApplication.Commands);
+
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
 
         [Fact]
         public void Load_returns_an_instance_of_SingleCommandApplication_when_assembly_only_has_a_single_options_class()
@@ -338,44 +379,44 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Loaders
                 command => Assert.Equal("command1", command.Name));
         }
 
-        [Fact]
-        public void A_commands_named_parameters_are_loaded_correctly()
+        [Theory]
+        [CombinatorialData]
+        public void Named_parameters_are_loaded_correctly(ApplicationType applicationType)
         {
             // ARRANGE
-            using var assembly = Compile(@"
+            using var assembly = Compile($@"
                 using System;
                 using CommandLine;
 
                 public enum SomeEnum
-                {
+                {{
                     Value1,
                     Value2,
                     SomeOtherValue
-                }
+                }}
 
-                [Verb(""command1"")]
+                {GetClassAttributes(applicationType)}
                 public class Command1Options
-                {
+                {{
 
                     [Option(""option1"", HelpText = ""some help text"", Default = ""some default"")]
-                    public string Option1Property { get; set; }
+                    public string Option1Property {{ get; set; }}
 
                     [Option('x', Default = 23)]
-                    public int Option2Property { get; set; }
+                    public int Option2Property {{ get; set; }}
 
                     [Option('y', Default = true)]
-                    public bool? Option3Property { get; set; }
+                    public bool? Option3Property {{ get; set; }}
 
                     [Option(""option4"", Hidden = true)]
-                    public string Option4Property { get; set; }
+                    public string Option4Property {{ get; set; }}
 
                     [Option(""option5"", Required = true, MetaValue = ""PATH"")]
-                    public string Option5Property { get; set; }
+                    public string Option5Property {{ get; set; }}
 
                     [Option('z', ""option6"")]
-                    public SomeEnum Option6Property { get; set; }
-                }
-
+                    public SomeEnum Option6Property {{ get; set; }}
+                }}
             ");
 
             // ACT
@@ -386,12 +427,11 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Loaders
 
             // ASSERT
             Assert.NotNull(application);
-            var multiCommandApplication = Assert.IsType<MultiCommandApplicationDocumentation>(application);
-            var command = Assert.Single(multiCommandApplication.Commands);
+            var parameterCollection = GetParameterCollection(application, applicationType);
 
-            Assert.Empty(command.SwitchParameters);
-            Assert.Empty(command.PositionalParameters);
-            Assert.Collection(command.NamedParameters,
+            Assert.Empty(parameterCollection.SwitchParameters);
+            Assert.Empty(parameterCollection.PositionalParameters);
+            Assert.Collection(parameterCollection.NamedParameters,
                 param =>
                 {
                     Assert.Equal("option1", param.Name);
@@ -399,26 +439,6 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Loaders
                     Assert.Equal("some help text", param.Description);
                     Assert.False(param.Required);
                     Assert.Equal("some default", param.DefaultValue);
-                    Assert.Null(param.AcceptedValues);
-                    Assert.Null(param.ValuePlaceHolderName);
-                },
-                param =>
-                {
-                    Assert.Null(param.Name);
-                    Assert.Equal("x", param.ShortName);
-                    Assert.Null(param.Description);
-                    Assert.False(param.Required);
-                    Assert.Equal("23", param.DefaultValue);
-                    Assert.Null(param.AcceptedValues);
-                    Assert.Null(param.ValuePlaceHolderName);
-                },
-                param =>
-                {
-                    Assert.Null(param.Name);
-                    Assert.Equal("y", param.ShortName);
-                    Assert.Null(param.Description);
-                    Assert.False(param.Required);
-                    Assert.Equal("true", param.DefaultValue);
                     Assert.Null(param.AcceptedValues);
                     Assert.Null(param.ValuePlaceHolderName);
                 },
@@ -445,35 +465,56 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Loaders
                     Assert.Contains("Value2", param.AcceptedValues);
                     Assert.Contains("SomeOtherValue", param.AcceptedValues);
                     Assert.Null(param.ValuePlaceHolderName);
+                },
+                param =>
+                {
+                    Assert.Null(param.Name);
+                    Assert.Equal("x", param.ShortName);
+                    Assert.Null(param.Description);
+                    Assert.False(param.Required);
+                    Assert.Equal("23", param.DefaultValue);
+                    Assert.Null(param.AcceptedValues);
+                    Assert.Null(param.ValuePlaceHolderName);
+                },
+                param =>
+                {
+                    Assert.Null(param.Name);
+                    Assert.Equal("y", param.ShortName);
+                    Assert.Null(param.Description);
+                    Assert.False(param.Required);
+                    Assert.Equal("true", param.DefaultValue);
+                    Assert.Null(param.AcceptedValues);
+                    Assert.Null(param.ValuePlaceHolderName);
                 });
 
             // Hidden parameters must be skipped
-            Assert.DoesNotContain(command.NamedParameters, param => param.Name == "option4");
+            Assert.DoesNotContain(parameterCollection.NamedParameters, param => param.Name == "option4");
         }
 
-        [Fact]
-        public void A_commands_switch_parameters_are_loaded_correctly()
+        [Theory]
+        [CombinatorialData]
+        public void Switch_parameters_are_loaded_correctly(ApplicationType applicationType)
         {
             // ARRANGE
-            using var assembly = Compile(@"
+            using var assembly = Compile($@"
                 using System;
                 using CommandLine;
 
-                [Verb(""command1"")]
+                {GetClassAttributes(applicationType)}
                 public class Command1Options
-                {
+                {{
                     [Option(""option1"", HelpText = ""some help text"")]
-                    public bool Option1Property { get; set; }
+                    public bool Option1Property {{ get; set; }}
 
                     [Option('x')]
-                    public bool Option2Property { get; set; }
+                    public bool Option2Property {{ get; set; }}
 
                     [Option(""option3"", Hidden = true)]
-                    public bool Option3Property { get; set; }
+                    public bool Option3Property {{ get; set; }}
 
                     [Option('y', ""option4"")]
-                    public bool Option4Property { get; set; }
-                }
+                    public bool Option4Property {{ get; set; }}
+                }}
 
             ");
 
@@ -485,12 +526,11 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Loaders
 
             // ASSERT
             Assert.NotNull(application);
-            var multiCommandApplication = Assert.IsType<MultiCommandApplicationDocumentation>(application);
-            var command = Assert.Single(multiCommandApplication.Commands);
+            var parameterCollection = GetParameterCollection(application, applicationType);
 
-            Assert.Empty(command.NamedParameters);
-            Assert.Empty(command.PositionalParameters);
-            Assert.Collection(command.SwitchParameters,
+            Assert.Empty(parameterCollection.NamedParameters);
+            Assert.Empty(parameterCollection.PositionalParameters);
+            Assert.Collection(parameterCollection.SwitchParameters,
                 param =>
                 {
                     Assert.Equal("option1", param.Name);
@@ -499,47 +539,48 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Loaders
                 },
                 param =>
                 {
-                    Assert.Null(param.Name);
-                    Assert.Equal("x", param.ShortName);
+                    Assert.Equal("option4", param.Name);
+                    Assert.Equal("y", param.ShortName);
                 },
                 param =>
                 {
-                    Assert.Equal("option4", param.Name);
-                    Assert.Equal("y", param.ShortName);
+                    Assert.Null(param.Name);
+                    Assert.Equal("x", param.ShortName);
                 });
 
             // Hidden parameters must be skipped
-            Assert.DoesNotContain(command.NamedParameters, param => param.Name == "option3");
+            Assert.DoesNotContain(parameterCollection.NamedParameters, param => param.Name == "option3");
         }
 
-        [Fact]
-        public void A_commands_positional_parameters_are_loaded_correctly()
+        [Theory]
+        [CombinatorialData]
+        public void Positional_parameters_are_loaded_correctly(ApplicationType applicationType)
         {
             // ARRANGE            
-            using var assembly = Compile(@"
+            using var assembly = Compile($@"
                 using CommandLine;
 
                 public enum SomeEnum
-                {
+                {{
                     Value1,
                     Value2
-                }
-
-                [Verb(""command"")]
+                }}
+    
+                {GetClassAttributes(applicationType)}
                 public class CommandOptions
-                {
+                {{
                     [Value(0, HelpText = ""some help text"")]
-                    public string Value1 { get; set; }
+                    public string Value1 {{ get; set; }}
 
                     [Value(1, Default = ""some default"")]
-                    public string Value2 { get; set; }
+                    public string Value2 {{ get; set; }}
 
                     [Value(2, Required = true, MetaName = ""Informational Name"", MetaValue = ""PATH"")]
-                    public SomeEnum Value3 { get; set; }
+                    public SomeEnum Value3 {{ get; set; }}
 
                     [Value(3, Hidden = true)]
-                    public string Value4 { get; set; }
-                }
+                    public string Value4 {{ get; set; }}
+                }}
             ");
 
             // ACT
@@ -547,13 +588,12 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Loaders
 
             // ACT
             var application = sut.Load(assembly);
-            var multiCommandApplication = Assert.IsType<MultiCommandApplicationDocumentation>(application);
-            var command = Assert.Single(multiCommandApplication.Commands);
+            var parameterCollection = GetParameterCollection(application, applicationType);
 
             // ASSERT
-            Assert.Empty(command.NamedParameters);
-            Assert.Empty(command.SwitchParameters);
-            Assert.Collection(command.PositionalParameters,
+            Assert.Empty(parameterCollection.NamedParameters);
+            Assert.Empty(parameterCollection.SwitchParameters);
+            Assert.Collection(parameterCollection.PositionalParameters,
                 param =>
                 {
                     Assert.Equal(0, param.Position);
@@ -588,259 +628,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Loaders
                     Assert.Equal("PATH", param.ValuePlaceHolderName);
                 });
 
-            Assert.DoesNotContain(command.PositionalParameters, param => param.Position == 3);
+            Assert.DoesNotContain(parameterCollection.PositionalParameters, param => param.Position == 3);
         }
-
-        [Fact]
-        public void A_applications_named_parameters_are_loaded_correctly()
-        {
-            // ARRANGE
-            using var assembly = Compile(@"
-                using System;
-                using CommandLine;
-
-                public enum SomeEnum
-                {
-                    Value1,
-                    Value2,
-                    SomeOtherValue
-                }
-
-                public class Command1Options
-                {
-
-                    [Option(""option1"", HelpText = ""some help text"", Default = ""some default"")]
-                    public string Option1Property { get; set; }
-
-                    [Option('x', Default = 23)]
-                    public int Option2Property { get; set; }
-
-                    [Option('y', Default = true)]
-                    public bool? Option3Property { get; set; }
-
-                    [Option(""option4"", Hidden = true)]
-                    public string Option4Property { get; set; }
-
-                    [Option(""option5"", Required = true, MetaValue = ""PATH"")]
-                    public string Option5Property { get; set; }
-
-                    [Option('z', ""option6"")]
-                    public SomeEnum Option6Property { get; set; }
-                }
-
-            ");
-
-            // ACT
-            var sut = new CommandLineParserLoader(m_Logger);
-
-            // ACT
-            var application = sut.Load(assembly);
-
-            // ASSERT
-            Assert.NotNull(application);
-            var singleCommandApplication = Assert.IsType<SingleCommandApplicationDocumentation>(application);
-
-            Assert.Empty(singleCommandApplication.SwitchParameters);
-            Assert.Empty(singleCommandApplication.PositionalParameters);
-            Assert.Collection(singleCommandApplication.NamedParameters,
-                param =>
-                {
-                    Assert.Equal("option1", param.Name);
-                    Assert.Null(param.ShortName);
-                    Assert.Equal("some help text", param.Description);
-                    Assert.False(param.Required);
-                    Assert.Equal("some default", param.DefaultValue);
-                    Assert.Null(param.AcceptedValues);
-                    Assert.Null(param.ValuePlaceHolderName);
-                },
-                param =>
-                {
-                    Assert.Null(param.Name);
-                    Assert.Equal("x", param.ShortName);
-                    Assert.Null(param.Description);
-                    Assert.False(param.Required);
-                    Assert.Equal("23", param.DefaultValue);
-                    Assert.Null(param.AcceptedValues);
-                    Assert.Null(param.ValuePlaceHolderName);
-                },
-                param =>
-                {
-                    Assert.Null(param.Name);
-                    Assert.Equal("y", param.ShortName);
-                    Assert.Null(param.Description);
-                    Assert.False(param.Required);
-                    Assert.Equal("true", param.DefaultValue);
-                    Assert.Null(param.AcceptedValues);
-                    Assert.Null(param.ValuePlaceHolderName);
-                },
-                param =>
-                {
-                    Assert.Equal("option5", param.Name);
-                    Assert.Null(param.ShortName);
-                    Assert.Null(param.Description);
-                    Assert.True(param.Required);
-                    Assert.Null(param.DefaultValue);
-                    Assert.Null(param.AcceptedValues);
-                    Assert.Equal("PATH", param.ValuePlaceHolderName);
-                },
-                param =>
-                {
-                    Assert.Equal("option6", param.Name);
-                    Assert.Equal("z", param.ShortName);
-                    Assert.Null(param.Description);
-                    Assert.False(param.Required);
-                    Assert.Null(param.DefaultValue);
-                    Assert.NotNull(param.AcceptedValues);
-                    Assert.Equal(3, param.AcceptedValues!.Count);
-                    Assert.Contains("Value1", param.AcceptedValues);
-                    Assert.Contains("Value2", param.AcceptedValues);
-                    Assert.Contains("SomeOtherValue", param.AcceptedValues);
-                    Assert.Null(param.ValuePlaceHolderName);
-                });
-
-            // Hidden parameters must be skipped
-            Assert.DoesNotContain(singleCommandApplication.NamedParameters, param => param.Name == "option4");
-        }
-
-        [Fact]
-        public void A_applications_switch_parameters_are_loaded_correctly()
-        {
-            // ARRANGE
-            using var assembly = Compile(@"
-                using System;
-                using CommandLine;
-
-                public class Command1Options
-                {
-                    [Option(""option1"", HelpText = ""some help text"")]
-                    public bool Option1Property { get; set; }
-
-                    [Option('x')]
-                    public bool Option2Property { get; set; }
-
-                    [Option(""option3"", Hidden = true)]
-                    public bool Option3Property { get; set; }
-
-                    [Option('y', ""option4"")]
-                    public bool Option4Property { get; set; }
-                }
-
-            ");
-
-            // ACT
-            var sut = new CommandLineParserLoader(m_Logger);
-
-            // ACT
-            var application = sut.Load(assembly);
-
-            // ASSERT
-            Assert.NotNull(application);
-            var singleCommandApplication = Assert.IsType<SingleCommandApplicationDocumentation>(application);
-
-            Assert.Empty(singleCommandApplication.NamedParameters);
-            Assert.Empty(singleCommandApplication.PositionalParameters);
-            Assert.Collection(singleCommandApplication.SwitchParameters,
-                param =>
-                {
-                    Assert.Equal("option1", param.Name);
-                    Assert.Null(param.ShortName);
-                    Assert.Equal("some help text", param.Description);
-                },
-                param =>
-                {
-                    Assert.Null(param.Name);
-                    Assert.Equal("x", param.ShortName);
-                },
-                param =>
-                {
-                    Assert.Equal("option4", param.Name);
-                    Assert.Equal("y", param.ShortName);
-                });
-
-            // Hidden parameters must be skipped
-            Assert.DoesNotContain(singleCommandApplication.NamedParameters, param => param.Name == "option3");
-        }
-
-        [Fact]
-        public void A_applications_positional_parameters_are_loaded_correctly()
-        {
-            // ARRANGE            
-            using var assembly = Compile(@"
-                using CommandLine;
-
-                public enum SomeEnum
-                {
-                    Value1,
-                    Value2
-                }
-
-                public class CommandOptions
-                {
-                    [Value(0, HelpText = ""some help text"")]
-                    public string Value1 { get; set; }
-
-                    [Value(1, Default = ""some default"")]
-                    public string Value2 { get; set; }
-
-                    [Value(2, Required = true, MetaName = ""Informational Name"", MetaValue = ""PATH"")]
-                    public SomeEnum Value3 { get; set; }
-
-                    [Value(3, Hidden = true)]
-                    public string Value4 { get; set; }
-                }
-            ");
-
-            // ACT
-            var sut = new CommandLineParserLoader(m_Logger);
-
-            // ACT
-            var application = sut.Load(assembly);
-            var singleCommandApplication = Assert.IsType<SingleCommandApplicationDocumentation>(application);
-
-            // ASSERT
-            Assert.Empty(singleCommandApplication.NamedParameters);
-            Assert.Empty(singleCommandApplication.SwitchParameters);
-            Assert.Collection(singleCommandApplication.PositionalParameters,
-                param =>
-                {
-                    Assert.Equal(0, param.Position);
-                    Assert.Equal("some help text", param.Description);
-                    Assert.False(param.Required);
-                    Assert.Null(param.DefaultValue);
-                    Assert.Null(param.AcceptedValues);
-                    Assert.Null(param.InformationalName);
-                    Assert.Null(param.ValuePlaceHolderName);
-                },
-                param =>
-                {
-                    Assert.Equal(1, param.Position);
-                    Assert.Null(param.Description);
-                    Assert.False(param.Required);
-                    Assert.Equal("some default", param.DefaultValue);
-                    Assert.Null(param.AcceptedValues);
-                    Assert.Null(param.InformationalName);
-                    Assert.Null(param.ValuePlaceHolderName);
-                },
-                param =>
-                {
-                    Assert.Equal(2, param.Position);
-                    Assert.Null(param.Description);
-                    Assert.True(param.Required);
-                    Assert.Null(param.DefaultValue);
-                    Assert.NotNull(param.AcceptedValues);
-                    Assert.Collection(param.AcceptedValues,
-                        str => Assert.Equal("Value1", str),
-                        str => Assert.Equal("Value2", str));
-                    Assert.Equal("Informational Name", param.InformationalName);
-                    Assert.Equal("PATH", param.ValuePlaceHolderName);
-                });
-
-            Assert.DoesNotContain(singleCommandApplication.PositionalParameters, param => param.Position == 3);
-        }
-
-
-        //TODO: bool? parameters are named parameters, bool parameters are switch parameters
-
-        //TODO: Load ignore abstract types
     }
 }
