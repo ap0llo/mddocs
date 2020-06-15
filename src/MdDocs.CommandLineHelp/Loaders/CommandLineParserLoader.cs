@@ -174,7 +174,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Loaders
                     }
 
                     // emit a warning if a default value other than 'false' was required
-                    var defaultValue = GetDefaultValue(optionAttribute);
+                    var defaultValue = GetDefaultValue(property, optionAttribute);
                     if (defaultValue != null && defaultValue != "false")
                     {
                         m_Logger.LogWarning($"Ignoring default value '{defaultValue}' of option '{name}'. Boolean options are treated as switch parameter with a fixed default value of 'false'");
@@ -185,7 +185,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Loaders
                     var parameter = parameterCollection.AddNamedParameter(name, shortName?.ToString());
                     parameter.Description = optionAttribute.GetPropertyValueOrDefault<string>(s_HelpText);
                     parameter.Required = optionAttribute.GetPropertyValueOrDefault<bool>(s_Required);
-                    parameter.DefaultValue = GetDefaultValue(optionAttribute);
+                    parameter.DefaultValue = GetDefaultValue(property, optionAttribute);
                     parameter.AcceptedValues = GetAcceptedValues(property);
                     parameter.ValuePlaceHolderName = optionAttribute.GetPropertyValueOrDefault<string?>(s_MetaValue);
                 }
@@ -230,7 +230,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Loaders
                 var parameter = parameterCollection.AddPositionalParameter(position);
                 parameter.Description = valueAttribute.GetPropertyValueOrDefault<string?>(s_HelpText);
                 parameter.Required = valueAttribute.GetPropertyValueOrDefault<bool>(s_Required);
-                parameter.DefaultValue = GetDefaultValue(valueAttribute);
+                parameter.DefaultValue = GetDefaultValue(property, valueAttribute);
                 parameter.AcceptedValues = GetAcceptedValues(property);
                 parameter.InformationalName = valueAttribute.GetPropertyValueOrDefault<string?>(s_MetaName);
                 parameter.ValuePlaceHolderName = valueAttribute.GetPropertyValueOrDefault<string?>(s_MetaValue);
@@ -248,9 +248,10 @@ namespace Grynwald.MdDocs.CommandLineHelp.Loaders
 
         }
 
-        private string? GetDefaultValue(CustomAttribute optionOrValueAttribute)
+        private string? GetDefaultValue(PropertyDefinition optionProperty, CustomAttribute optionOrValueAttribute)
         {
             var defaultValue = optionOrValueAttribute.GetPropertyValueOrDefault<object>(s_Default);
+            var type = optionProperty.PropertyType.Resolve();
 
             if (defaultValue is null)
             {
@@ -260,10 +261,17 @@ namespace Grynwald.MdDocs.CommandLineHelp.Loaders
             {
                 return Convert.ToString(defaultValue)?.ToLower();
             }
+            else if (defaultValue != null && type?.IsEnum == true)
+            {
+                var enumValues = type.GetEnumValues();
+                var longValue = Convert.ToInt64(defaultValue);
+
+                return enumValues.FirstOrDefault(x => x.value == longValue).name;
+            }
             else
             {
                 return Convert.ToString(defaultValue);
-            }
+            }           
         }
 
         private IReadOnlyList<string>? GetAcceptedValues(PropertyDefinition property)

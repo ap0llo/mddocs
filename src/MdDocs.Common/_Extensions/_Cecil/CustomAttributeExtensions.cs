@@ -16,17 +16,7 @@ namespace Grynwald.MdDocs.Common
             // another CustomAttributeArgument in some cases
             if (value is CustomAttributeArgument customAttributeArgumentValue)
             {
-                var type = customAttributeArgumentValue.Type.Resolve();
-                if(type?.IsEnum == true)
-                {
-                    var enumValue = Convert.ToInt64(customAttributeArgumentValue.Value);
-
-                    value = type.GetEnumValues().SingleOrDefault(x => x.value == enumValue).name;
-                }
-                else
-                {
-                    value = customAttributeArgumentValue.Value;
-                }
+                value = customAttributeArgumentValue.Value;
             }
 
             return (value == null) ? default : (T)value;
