@@ -74,7 +74,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
 
         }
 
-        protected void AppendUsage(StringBuilder stringBuilder, NamedParameterDocumentation parameter)
+        protected void AppendUsage(StringBuilder stringBuilder, NamedValuedParameterDocumentation parameter)
         {
             stringBuilder
                 .AppendIf(!parameter.Required, "[")

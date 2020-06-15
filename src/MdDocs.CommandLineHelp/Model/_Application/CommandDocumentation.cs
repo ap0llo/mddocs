@@ -31,7 +31,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
         /// <summary>
         /// Gets the command's named parameters
         /// </summary>
-        public IEnumerable<NamedParameterDocumentation> NamedParameters => m_Parameters.NamedParameters;
+        public IEnumerable<NamedValuedParameterDocumentation> NamedParameters => m_Parameters.NamedParameters;
 
         /// <summary>
         /// Gets the command's positional parameters
@@ -66,7 +66,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
         /// <summary>
         /// Adds a new named parameter to this command
         /// </summary>
-        public NamedParameterDocumentation AddNamedParameter(string? name, string? shortName) => m_Parameters.AddNamedParameter(name, shortName);
+        public NamedValuedParameterDocumentation AddNamedParameter(string? name, string? shortName) => m_Parameters.AddNamedParameter(name, shortName);
 
         /// <summary>
         /// Adds a new positional parameter to this command

@@ -2,6 +2,7 @@
 {
     /// <summary>
     /// Represents a command line parameter.
+    /// Base class for all parameter classes.
     /// </summary>
     public abstract class ParameterDocumentation
     {

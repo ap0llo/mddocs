@@ -5,9 +5,9 @@ using Xunit;
 namespace Grynwald.MdDocs.CommandLineHelp.Test.Model
 {
     /// <summary>
-    /// Tests for <see cref="NamedParameterDocumentation"/>
+    /// Tests for <see cref="NamedValuedParameterDocumentation"/>
     /// </summary>
-    public class NamedParameterDocumentationTest
+    public class NamedValuedParameterDocumentationTest
     {
         [Theory]
         [InlineData(null)]
@@ -21,7 +21,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Model
             var command = application.AddCommand("command");
 
             // ACT / ASSERT
-            Assert.Throws<ArgumentException>(() => new NamedParameterDocumentation(application, command, invalidName, invalidName));
+            Assert.Throws<ArgumentException>(() => new NamedValuedParameterDocumentation(application, command, invalidName, invalidName));
         }
     }
 }

@@ -10,7 +10,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
     /// </summary>
     internal class NamedParameterDetailsSection : ParameterDetailsSection
     {
-        private readonly NamedParameterDocumentation m_Model;
+        private readonly NamedValuedParameterDocumentation m_Model;
 
 
         public override MdHeading Heading { get; }
@@ -18,7 +18,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
         public override ParameterDocumentation Parameter => m_Model;
 
 
-        public NamedParameterDetailsSection(NamedParameterDocumentation model)
+        public NamedParameterDetailsSection(NamedValuedParameterDocumentation model)
         {
             m_Model = model ?? throw new ArgumentNullException(nameof(model));
 

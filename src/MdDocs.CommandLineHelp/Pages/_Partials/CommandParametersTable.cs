@@ -12,14 +12,14 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
     internal class CommandParametersTable : MdPartial
     {
         private readonly IParameterCollection m_Model;
-        private readonly Func<NamedParameterDocumentation, string?> m_GetNamedParameterAnchor;
+        private readonly Func<NamedValuedParameterDocumentation, string?> m_GetNamedParameterAnchor;
         private readonly Func<SwitchParameterDocumentation, string?> m_GetSwitchParameterAnchor;
         private readonly Func<PositionalParameterDocumentation, string?> m_GetPositionalParameterAnchor;
 
 
         public CommandParametersTable(
             IParameterCollection model,
-            Func<NamedParameterDocumentation, string?> getNamedParameterAnchor,
+            Func<NamedValuedParameterDocumentation, string?> getNamedParameterAnchor,
             Func<SwitchParameterDocumentation, string?> getSwitchParameterAnchor,
             Func<PositionalParameterDocumentation, string?> getPositionalParameterAnchor)
         {

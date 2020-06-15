@@ -4,37 +4,24 @@ using System.Diagnostics;
 namespace Grynwald.MdDocs.CommandLineHelp.Model
 {
     /// <summary>
-    /// Represents a "switch" commandline parameter (parameter without a value)
+    /// Represents a "switch" commandline parameter 
     /// </summary>
+    /// <remarks>
+    /// Switch parameters represent commandline "switched" and do not accept a value (their are either present or not)
+    /// </remarks>
     [DebuggerDisplay("SwitchParameter ({Name}|{ShortName})")]
     public class SwitchParameterDocumentation : ParameterDocumentation, INamedParameterDocumentation
     {
-        /// <summary>
-        /// Gets the parameter's name
-        /// </summary>
+        /// <inheritdoc />
         public string? Name { get; }
 
-        /// <summary>
-        /// Gets the parameter's short name
-        /// </summary>
+        /// <inheritdoc />
         public string? ShortName { get; }
 
-        /// <summary>
-        /// Gets whether the parameter has a name
-        /// </summary>
-        /// <remarks>
-        /// A parameter can have a name (<see cref="Name"/>), a short name (<see cref="ShortName"/>) or both.
-        /// </remarks>
-        /// <seealso cref="HasShortName"/>.
+        /// <inheritdoc />
         public bool HasName => !String.IsNullOrWhiteSpace(Name);
 
-        /// <summary>
-        /// Gets whether the parameter has a short name
-        /// </summary>
-        /// <remarks>
-        /// A parameter can have a name (<see cref="Name"/>), a short name (<see cref="ShortName"/>) or both.
-        /// </remarks>
-        /// <seealso cref="HasShortName"/>.
+        /// <inheritdoc />
         public bool HasShortName => !String.IsNullOrWhiteSpace(ShortName);
 
 

@@ -9,7 +9,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
     {
         private readonly ApplicationDocumentation m_Application;
         private readonly CommandDocumentation? m_Command;
-        private readonly List<NamedParameterDocumentation> m_NamedParameters = new List<NamedParameterDocumentation>();
+        private readonly List<NamedValuedParameterDocumentation> m_NamedParameters = new List<NamedValuedParameterDocumentation>();
         private readonly IDictionary<int, PositionalParameterDocumentation> m_PositionalParameters = new Dictionary<int, PositionalParameterDocumentation>();
         private readonly List<SwitchParameterDocumentation> m_SwitchParameters = new List<SwitchParameterDocumentation>();
         private readonly HashSet<string> m_ParameterNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
@@ -21,7 +21,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
             PositionalParameters.Concat(NamedParameters.Concat(SwitchParameters.Cast<INamedParameterDocumentation>()).OrderBy(x => x.Name).Cast<ParameterDocumentation>());
 
         /// <inheritdoc />
-        public IEnumerable<NamedParameterDocumentation> NamedParameters =>
+        public IEnumerable<NamedValuedParameterDocumentation> NamedParameters =>
             Enumerable.Concat(
                 m_NamedParameters.Where(p => p.HasName).OrderBy(x => x.Name),
                 m_NamedParameters.Where(x => !x.HasName).OrderBy(x => x.ShortName));
@@ -50,13 +50,13 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
 
 
         /// <inheritdoc />
-        public NamedParameterDocumentation AddNamedParameter(string? name, string? shortName)
+        public NamedValuedParameterDocumentation AddNamedParameter(string? name, string? shortName)
         {
             AssertCanAddParameter(name, shortName);
 
             AddParameterName(name, shortName);
 
-            var parameter = new NamedParameterDocumentation(m_Application, m_Command, name, shortName);
+            var parameter = new NamedValuedParameterDocumentation(m_Application, m_Command, name, shortName);
             m_NamedParameters.Add(parameter);
 
             return parameter;

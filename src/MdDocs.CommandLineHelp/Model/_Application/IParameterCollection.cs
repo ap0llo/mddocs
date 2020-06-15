@@ -12,7 +12,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
         /// <summary>
         /// Gets the collection's named parameters
         /// </summary>
-        IEnumerable<NamedParameterDocumentation> NamedParameters { get; }
+        IEnumerable<NamedValuedParameterDocumentation> NamedParameters { get; }
 
         /// <summary>
         /// Gets the collection's positional parameters
@@ -28,7 +28,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
         /// <summary>
         /// Adds a new named parameter to the collection
         /// </summary>
-        NamedParameterDocumentation AddNamedParameter(string? name, string? shortName);
+        NamedValuedParameterDocumentation AddNamedParameter(string? name, string? shortName);
 
         /// <summary>
         /// Adds a new positional parameter to the collection
