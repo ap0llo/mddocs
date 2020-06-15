@@ -416,6 +416,9 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Loaders
 
                     [Option('z', ""option6"")]
                     public SomeEnum Option6Property {{ get; set; }}
+
+                    [Option(""option7"", Default = SomeEnum.SomeOtherValue)]
+                    public SomeEnum Option7Property {{ get; set; }}
                 }}
             ");
 
@@ -466,6 +469,21 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Loaders
                     Assert.Contains("SomeOtherValue", param.AcceptedValues);
                     Assert.Null(param.ValuePlaceHolderName);
                 },
+                param =>
+                {
+                    Assert.Equal("option7", param.Name);
+                    Assert.Null(param.ShortName);
+                    Assert.Null(param.Description);
+                    Assert.False(param.Required);
+                    Assert.Equal("SomeOtherValue", param.DefaultValue);
+                    Assert.NotNull(param.AcceptedValues);
+                    Assert.Equal(3, param.AcceptedValues!.Count);
+                    Assert.Contains("Value1", param.AcceptedValues);
+                    Assert.Contains("Value2", param.AcceptedValues);
+                    Assert.Contains("SomeOtherValue", param.AcceptedValues);
+                    Assert.Null(param.ValuePlaceHolderName);
+                },
+
                 param =>
                 {
                     Assert.Null(param.Name);
