@@ -99,4 +99,4 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
             Approvals.Verify(writer, new ApprovalNamer(), Approvals.GetReporter());
         }
     }
-}   
+}

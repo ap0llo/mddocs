@@ -271,7 +271,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Loaders
             else
             {
                 return Convert.ToString(defaultValue);
-            }           
+            }
         }
 
         private IReadOnlyList<string>? GetAcceptedValues(PropertyDefinition property)
