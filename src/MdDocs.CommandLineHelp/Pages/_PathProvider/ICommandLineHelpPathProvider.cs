@@ -1,4 +1,4 @@
-﻿using Grynwald.MdDocs.CommandLineHelp.Model;
+﻿using Grynwald.MdDocs.CommandLineHelp.Model2;
 
 namespace Grynwald.MdDocs.CommandLineHelp.Pages
 {

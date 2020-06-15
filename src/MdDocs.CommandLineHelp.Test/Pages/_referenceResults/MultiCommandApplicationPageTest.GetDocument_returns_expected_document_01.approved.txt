@@ -5,7 +5,7 @@
   </auto-generated>   
 -->
 
-# ApplicationName Command Line Reference
+# TestApp Command Line Reference
 
 ___
 

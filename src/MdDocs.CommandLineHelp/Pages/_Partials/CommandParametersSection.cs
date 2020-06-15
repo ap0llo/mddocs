@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Grynwald.MarkdownGenerator;
-using Grynwald.MdDocs.CommandLineHelp.Model;
+using Grynwald.MdDocs.CommandLineHelp.Model2;
 using Grynwald.MdDocs.Common.Pages;
 
 namespace Grynwald.MdDocs.CommandLineHelp.Pages
@@ -17,21 +17,22 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
     /// </summary>
     internal class CommandParametersSection : MdPartial
     {
-        private readonly CommandDocumentationBase m_Command;
+        private readonly IParameterCollection m_Model;
 
 
-        public CommandParametersSection(CommandDocumentationBase command)
+        public CommandParametersSection(IParameterCollection command)
         {
-            m_Command = command ?? throw new ArgumentNullException(nameof(command));
+            m_Model = command ?? throw new ArgumentNullException(nameof(command));
         }
 
 
         protected override MdBlock ConvertToBlock()
         {
-            var detailSections = Enumerable.Concat(
-                m_Command.Values.Select(v => new ValueDetailsSection(v)).Cast<ParameterDetailsSection>(),
-                m_Command.Options.Select(o => new OptionDetailsSection(o)).Cast<ParameterDetailsSection>()
-            ).ToArray();
+            var detailSections = Enumerable.Empty<ParameterDetailsSection>()
+                .Concat(m_Model.PositionalParameters.Select(v => new PositionalParameterDetailsSection(v)).Cast<ParameterDetailsSection>())
+                .Concat(m_Model.NamedParameters.Select(o => new NamedParameterDetailsSection(o)).Cast<ParameterDetailsSection>())
+                .Concat(m_Model.SwitchParameters.Select(o => new SwitchParameterDetailsSection(o)).Cast<ParameterDetailsSection>())
+                .ToArray();
 
 
             var anchors = detailSections.ToDictionary(x => x.Parameter, x => x.Heading.Anchor);
@@ -39,7 +40,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
             var block = new MdContainerBlock()
             {
                 new MdHeading(2, "Parameters"),
-                new CommandParametersTable(m_Command, option => anchors[option], value => anchors[value])
+                new CommandParametersTable(m_Model, parameter => anchors[parameter], parameter => anchors[parameter], parameter => anchors[parameter])
             };
 
             var first = true;

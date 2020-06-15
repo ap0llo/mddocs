@@ -1,7 +1,7 @@
 ﻿using System;
 using Grynwald.MarkdownGenerator;
 using Grynwald.MdDocs.CommandLineHelp.Configuration;
-using Grynwald.MdDocs.CommandLineHelp.Model;
+using Grynwald.MdDocs.CommandLineHelp.Model2;
 using Microsoft.Extensions.Logging;
 
 namespace Grynwald.MdDocs.CommandLineHelp.Pages

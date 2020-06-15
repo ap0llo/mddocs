@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Linq;
 using Grynwald.MarkdownGenerator;
 using Grynwald.MdDocs.CommandLineHelp.Configuration;
-using Grynwald.MdDocs.CommandLineHelp.Model;
+using Grynwald.MdDocs.CommandLineHelp.Model2;
 using Grynwald.MdDocs.Common;
 using Grynwald.MdDocs.Common.Pages;
 
@@ -15,7 +16,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
     ///     <item>Application version</item>
     ///     <item>Application usage (if the assembly has a AssemblyUsage attribute)</item>
     ///     <item>Command help text</item>
-    ///     <item>Usage of the command (see <see cref="UnnamedCommandUsageSection"/>).</item>
+    ///     <item>Usage of the command (see <see cref="SingleCommandApplicationUsageSection"/>).</item>
     ///     <item>Information about the command's parameters (see <see cref="CommandParametersSection"/>).</item>
     /// </list>
     /// </summary>
@@ -55,14 +56,14 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
                 .AddIf(m_Configuration.IncludeVersion, new ApplicationVersionBlock(m_Model))
 
                 // Usage (data from ApplicationUsage attribute)
-                .AddIf(m_Model.Usage.Count > 0, new MdHeading(2, "Usage"))
-                .AddIf(m_Model.Usage.Count > 0, new MdParagraph(String.Join(Environment.NewLine, m_Model.Usage)))
+                .AddIf(m_Model.Usage != null && m_Model.Usage.Count > 0, new MdHeading(2, "Usage"))
+                .AddIf(m_Model.Usage != null && m_Model.Usage.Count > 0, m_Model.Usage != null ? (MdBlock)new MdParagraph(String.Join(Environment.NewLine, m_Model.Usage!)) : MdEmptyBlock.Instance)
 
                 // Usage / example call
-                .Add(new UnnamedCommandUsageSection(m_Model.Command))
+                .Add(new SingleCommandApplicationUsageSection(m_Model))
 
                 // Parameters
-                .AddIf(m_Model.Command.Parameters.Count > 0, () => new CommandParametersSection(m_Model.Command))
+                .AddIf(m_Model.AllParameters.Any(), () => new CommandParametersSection(m_Model))
 
                 // Footer
                 .Add(new PageFooter());

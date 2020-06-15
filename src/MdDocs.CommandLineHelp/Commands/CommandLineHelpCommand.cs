@@ -1,11 +1,12 @@
 ﻿using System;
 using System.IO;
 using Grynwald.MdDocs.CommandLineHelp.Configuration;
-using Grynwald.MdDocs.CommandLineHelp.Model;
+using Grynwald.MdDocs.CommandLineHelp.Loaders;
 using Grynwald.MdDocs.CommandLineHelp.Pages;
 using Grynwald.MdDocs.Common;
 using Grynwald.MdDocs.Common.Commands;
 using Grynwald.MdDocs.Common.Configuration;
+using Grynwald.MdDocs.Common.Model;
 using Microsoft.Extensions.Logging;
 
 namespace Grynwald.MdDocs.CommandLineHelp.Commands
@@ -28,14 +29,17 @@ namespace Grynwald.MdDocs.CommandLineHelp.Commands
             if (!ValidateConfiguration())
                 return false;
 
-            using (var model = ApplicationDocumentation.FromAssemblyFile(m_Configuration.AssemblyPath, m_Logger))
-            {
-                var pageFactory = new CommandLinePageFactory(model, m_Configuration, new DefaultCommandLineHelpPathProvider(), m_Logger);
-                pageFactory.GetPages().Save(
-                    m_Configuration.OutputPath,
-                    cleanOutputDirectory: true,
-                    markdownOptions: m_Configuration.GetSerializationOptions(m_Logger));
-            }
+            using var assembly = AssemblyReader.ReadFile(m_Configuration.AssemblyPath, m_Logger);
+
+            var loader = new CommandLineParserLoader(m_Logger);
+
+            var model = loader.Load(assembly);
+
+            var pageFactory = new CommandLinePageFactory(model, m_Configuration, new DefaultCommandLineHelpPathProvider(), m_Logger);
+            pageFactory.GetPages().Save(
+                m_Configuration.OutputPath,
+                cleanOutputDirectory: true,
+                markdownOptions: m_Configuration.GetSerializationOptions(m_Logger));
 
             return true;
         }

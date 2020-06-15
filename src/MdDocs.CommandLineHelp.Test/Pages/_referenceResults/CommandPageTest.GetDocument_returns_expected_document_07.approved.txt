@@ -53,13 +53,13 @@ ___
 
 ### `Value3` Parameter (Position 2)
 
-|                |        |
-| -------------- | ------ |
-| *Name:*        | Value3 |
-| Position:      | 2      |
-| Required:      | No     |
-| Value:         | STRING |
-| Default value: | *None* |
+|                     |        |
+| ------------------- | ------ |
+| Informational Name: | Value3 |
+| Position:           | 2      |
+| Required:           | No     |
+| Value:              | STRING |
+| Default value:      | *None* |
 
 ___
 

@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Linq;
 using Grynwald.MarkdownGenerator;
 using Grynwald.MdDocs.CommandLineHelp.Configuration;
-using Grynwald.MdDocs.CommandLineHelp.Model;
+using Grynwald.MdDocs.CommandLineHelp.Model2;
 using Grynwald.MdDocs.Common;
 using Grynwald.MdDocs.Common.Pages;
 
@@ -53,12 +54,12 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
                 .AddIf(m_Configuration.IncludeVersion, new ApplicationVersionBlock(m_Model))
 
                 // Usage (data from ApplicationUsage attribute)
-                .AddIf(m_Model.Usage.Count > 0, new MdHeading(2, "Usage"))
-                .AddIf(m_Model.Usage.Count > 0, new MdParagraph(String.Join(Environment.NewLine, m_Model.Usage)))
+                .AddIf(m_Model.Usage?.Count > 0, new MdHeading(2, "Usage"))
+                .AddIf(m_Model.Usage?.Count > 0, m_Model.Usage != null ? (MdBlock)new MdParagraph(String.Join(Environment.NewLine, m_Model.Usage)) : MdEmptyBlock.Instance)
 
                 // table of the applications sub-commands
-                .AddIf(m_Model.Commands.Count > 0, new MdHeading(2, "Commands"))
-                .AddIf(m_Model.Commands.Count > 0, GetCommandsTable())
+                .AddIf(m_Model.Commands.Any(), new MdHeading(2, "Commands"))
+                .AddIf(m_Model.Commands.Any(), GetCommandsTable())
 
                 // footer
                 .Add(new PageFooter());
@@ -74,7 +75,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
 
                 var link = m_DocumentSet.GetLink(this, commandPage, command.Name);
 
-                table.Add(new MdTableRow(link, command.HelpText ?? ""));
+                table.Add(new MdTableRow(link, command.Description ?? ""));
             }
             return table;
         }

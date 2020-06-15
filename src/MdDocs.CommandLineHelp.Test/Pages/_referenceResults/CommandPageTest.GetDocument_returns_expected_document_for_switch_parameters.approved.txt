@@ -26,13 +26,13 @@ TestApp CommandName [--option1|-a]
 
 Description of parameter 1
 
-|                |                       |
-| -------------- | --------------------- |
-| Name:          | option1               |
-| Short name:    | a                     |
-| Position:      | *Named parameter*     |
-| Required:      | No (Switch parameter) |
-| Default value: | `False`               |
+|                |                           |
+| -------------- | ------------------------- |
+| Name:          | option1                   |
+| Short name:    | a                         |
+| Position:      | *None (Switch Parameter)* |
+| Required:      | *No (Switch Parameter)*   |
+| Default value: | `false`                   |
 
 ___
 
