@@ -418,6 +418,10 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Loaders.CommandLineParser
 
                     [Option(""option7"", Default = SomeEnum.SomeOtherValue)]
                     public SomeEnum Option7Property {{ get; set; }}
+
+                    [Option(""option8"", Default = true)]
+                    public bool? Option8Property {{ get; set; }}
+
                 }}
             ");
 
@@ -482,7 +486,19 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Loaders.CommandLineParser
                     Assert.Contains("SomeOtherValue", param.AcceptedValues);
                     Assert.Null(param.ValuePlaceHolderName);
                 },
-
+                param =>
+                {
+                    Assert.Equal("option8", param.Name);
+                    Assert.Null(param.ShortName);
+                    Assert.Null(param.Description);
+                    Assert.False(param.Required);
+                    Assert.Equal("true", param.DefaultValue);
+                    Assert.NotNull(param.AcceptedValues);
+                    Assert.Collection(param.AcceptedValues,
+                        value => Assert.Equal("true", value),
+                        value => Assert.Equal("false", value));
+                    Assert.Null(param.ValuePlaceHolderName);
+                },
                 param =>
                 {
                     Assert.Null(param.Name);
@@ -500,7 +516,10 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Loaders.CommandLineParser
                     Assert.Null(param.Description);
                     Assert.False(param.Required);
                     Assert.Equal("true", param.DefaultValue);
-                    Assert.Null(param.AcceptedValues);
+                    Assert.NotNull(param.AcceptedValues);
+                    Assert.Collection(param.AcceptedValues,
+                            value => Assert.Equal("true", value),
+                            value => Assert.Equal("false", value));
                     Assert.Null(param.ValuePlaceHolderName);
                 });
 

@@ -14,6 +14,7 @@ namespace Grynwald.MdDocs.Common
         public const string EnumFullName = "System.Enum";
         public const string Int32FullName = "System.Int32";
         public const string BooleanFullName = "System.Boolean";
+        public const string NullableFullName = "System.Nullable`1";
 
         // Common Attribute types
         public const string ExtensionAttributeFullName = "System.Runtime.CompilerServices.ExtensionAttribute";

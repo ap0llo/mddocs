@@ -20,6 +20,8 @@ namespace Grynwald.MdDocs.CommandLineHelp.Loaders.CommandLineParser
         private const string s_MetaName = "MetaName";
         private const string s_MetaValue = "MetaValue";
 
+        private static readonly IReadOnlyList<string> s_BooleanAcceptedValues = new[] { "true", "false" };
+
         private readonly ILogger m_Logger;
 
 
@@ -288,6 +290,14 @@ namespace Grynwald.MdDocs.CommandLineHelp.Loaders.CommandLineParser
                     .Select(f => f.Name)
                     .ToArray();
 
+            }
+            else if (type.FullName == SystemTypeNames.NullableFullName)
+            {
+                var genericInstanceType = (property.PropertyType as GenericInstanceType);
+                if (genericInstanceType?.GenericArguments?.SingleOrDefault()?.FullName == SystemTypeNames.BooleanFullName)
+                {
+                    return s_BooleanAcceptedValues;
+                }
             }
 
             return null;
