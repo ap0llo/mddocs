@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Mono.Cecil;
 
@@ -13,9 +14,9 @@ namespace Grynwald.MdDocs.Common
 
             // no idea why the CustomAttributeArgument.Value returns the value wrapped in
             // another CustomAttributeArgument in some cases
-            if (value is CustomAttributeArgument)
+            if (value is CustomAttributeArgument customAttributeArgumentValue)
             {
-                value = ((CustomAttributeArgument)value).Value;
+                value = customAttributeArgumentValue.Value;
             }
 
             return (value == null) ? default : (T)value;

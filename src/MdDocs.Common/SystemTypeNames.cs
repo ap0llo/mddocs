@@ -8,6 +8,7 @@ namespace Grynwald.MdDocs.Common
     {
         // Built-in types / types with special meaning in C#
         public const string StringFullName = "System.String";
+        public const string CharFullName = "System.Char";
         public const string ValueTypeFullName = "System.ValueType";
         public const string ObjectFullName = "System.Object";
         public const string EnumFullName = "System.Enum";

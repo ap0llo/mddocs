@@ -1,4 +1,4 @@
-﻿# ApplicationName Command Line Reference
+﻿# TestApp Command Line Reference
 
 **Version:** 1.2.3
 

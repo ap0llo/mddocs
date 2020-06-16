@@ -18,6 +18,8 @@ namespace Grynwald.MdDocs.TestHelpers
     /// </summary>
     public abstract class DynamicCompilationTestBase
     {
+        private const string s_DefaultAssemblyName = "DynamicTestAssembly";
+
         protected static readonly Lazy<IReadOnlyList<MetadataReference>> s_DefaultMetadataReferences = new Lazy<IReadOnlyList<MetadataReference>>(() =>
         {
             var paths = new HashSet<string>()
@@ -33,11 +35,11 @@ namespace Grynwald.MdDocs.TestHelpers
         });
 
 
-        protected AssemblyDefinition Compile(string sourceCode) => Compile(sourceCode, out _);
+        protected AssemblyDefinition Compile(string sourceCode, string assemblyName = s_DefaultAssemblyName) => Compile(sourceCode, out _, assemblyName);
 
-        protected AssemblyDefinition Compile(string sourceCode, out XDocument xmlDocumentation)
+        protected AssemblyDefinition Compile(string sourceCode, out XDocument xmlDocumentation, string assemblyName = s_DefaultAssemblyName)
         {
-            var compilation = GetCompilation(sourceCode);
+            var compilation = GetCompilation(sourceCode, assemblyName);
 
             using var assemblyStream = new MemoryStream();
             using var xmlDocumentationStream = new MemoryStream();
@@ -65,7 +67,7 @@ namespace Grynwald.MdDocs.TestHelpers
             EnsureCompilationSucccess(emitResult);
         }
 
-        protected Compilation GetCompilation(string sourceCode, string assemblyName = "DynamicTestAssembly")
+        protected Compilation GetCompilation(string sourceCode, string assemblyName = s_DefaultAssemblyName)
         {
             var syntaxTree = CSharpSyntaxTree.ParseText(sourceCode);
 

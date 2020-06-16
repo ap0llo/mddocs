@@ -14,7 +14,7 @@
 
 ```
 TestApp CommandName [<PositionalParameter1>]
-                    [--paramter1 <VALUE>]
+                    [--parameter1 <VALUE>]
 ```
 
 ## Parameters
@@ -22,27 +22,27 @@ TestApp CommandName [<PositionalParameter1>]
 | Position                                        | Name                                                                 | Description                |
 | ----------------------------------------------- | -------------------------------------------------------------------- | -------------------------- |
 | [0](#positionalparameter1-parameter-position-0) | [*PositionalParameter1*](#positionalparameter1-parameter-position-0) |                            |
-|                                                 | [paramter1](#paramter1-parameter)                                    | Description of parameter 1 |
+|                                                 | [parameter1](#parameter1-parameter)                                  | Description of parameter 1 |
 
 ### `PositionalParameter1` Parameter (Position 0)
 
-|                  |                      |
-| ---------------- | -------------------- |
-| *Name:*          | PositionalParameter1 |
-| Position:        | 0                    |
-| Required:        | No                   |
-| Accepted values: | `Value1`, `Value2`   |
-| Default value:   | *None*               |
+|                     |                      |
+| ------------------- | -------------------- |
+| Informational Name: | PositionalParameter1 |
+| Position:           | 0                    |
+| Required:           | No                   |
+| Accepted values:    | `Value1`, `Value2`   |
+| Default value:      | *None*               |
 
 ___
 
-### `paramter1` Parameter
+### `parameter1` Parameter
 
 Description of parameter 1
 
 |                  |                           |
 | ---------------- | ------------------------- |
-| Name:            | paramter1                 |
+| Name:            | parameter1                |
 | Position:        | *Named parameter*         |
 | Required:        | No                        |
 | Accepted values: | `Value1`, `Another Value` |

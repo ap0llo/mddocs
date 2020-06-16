@@ -6,7 +6,7 @@ using Xunit.Sdk;
 
 namespace Grynwald.MdDocs.CommandLineHelp.Test
 {
-
+    //TODO: Move to Loaders namespace
     /// <summary>
     /// Test class that verifies assumptions about the CommandLineParser library MdDocs makes are true
     /// </summary>
@@ -39,7 +39,6 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test
             Assert.Equal(expected, parsed.Parameter1);
         }
 
-
         [Theory]
         [InlineData(new[] { "--parameter1" }, true)]
         [InlineData(new[] { "-x" }, true)]
@@ -47,6 +46,42 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test
         {
             var parsed = Parse<Options2>(args);
             Assert.Equal(expected, parsed.Parameter1);
+        }
+
+        private class Options3
+        {
+            [Option("parameter1")]
+            public bool? Parameter1 { get; set; }
+        }
+
+        [Theory]
+        [InlineData(new string[0], null)]
+        [InlineData(new[] { "--parameter1", "true" }, true)]
+        [InlineData(new[] { "--parameter1", "false" }, false)]
+        public void Nullable_boolean_options_are_not_treated_as_switch_parameters(string[] args, bool? expected)
+        {
+            // ARRANGE / ACT
+            var parsed = Parse<Options3>(args);
+
+            // ASSERT
+            Assert.Equal(expected, parsed.Parameter1);
+        }
+
+
+        private class Options4
+        {
+            [Value(0, Default = "my-default")]
+            public string? Parameter1 { get; set; }
+        }
+
+        [Fact]
+        public void Values_can_have_default_values()
+        {
+            // ARRANGE / ACT
+            var parsed = Parse<Options4>(Array.Empty<string>());
+
+            // ASSERT
+            Assert.Equal("my-default", parsed.Parameter1);
         }
 
 

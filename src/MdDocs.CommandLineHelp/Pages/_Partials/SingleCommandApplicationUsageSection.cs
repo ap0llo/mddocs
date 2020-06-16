@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Linq;
 using System.Text;
-using Grynwald.MarkdownGenerator;
 using Grynwald.MdDocs.CommandLineHelp.Model;
-using Grynwald.MdDocs.Common.Pages;
 
 namespace Grynwald.MdDocs.CommandLineHelp.Pages
 {
@@ -15,20 +12,20 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
     ///     <item>A code block containing the usage for the command.</item>
     /// </list>
     /// </summary>
-    internal class UnnamedCommandUsageSection : CommandUsageSection
+    internal class SingleCommandApplicationUsageSection : CommandUsageSection
     {
-        private readonly UnnamedCommandDocumentation m_Command;
+        private readonly SingleCommandApplicationDocumentation m_Model;
 
 
-        public UnnamedCommandUsageSection(UnnamedCommandDocumentation command) : base(command)
+        public SingleCommandApplicationUsageSection(SingleCommandApplicationDocumentation command) : base(command)
         {
-            m_Command = command ?? throw new ArgumentNullException(nameof(command));
+            m_Model = command ?? throw new ArgumentNullException(nameof(command));
         }
 
         protected override string GetUsage()
         {
             var stringBuilder = new StringBuilder()
-                .Append(m_Command.Application.Name)
+                .Append(m_Model.Name)
                 .Append(" ");
 
             AppendParameters(stringBuilder, stringBuilder.Length);

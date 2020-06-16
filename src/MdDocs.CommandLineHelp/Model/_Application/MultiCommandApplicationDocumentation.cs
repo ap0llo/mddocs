@@ -1,52 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Grynwald.MdDocs.Common;
-using Microsoft.Extensions.Logging;
-using Mono.Cecil;
 
 namespace Grynwald.MdDocs.CommandLineHelp.Model
 {
     /// <summary>
-    /// Represents a application with multiple subcommands.
-    /// </summary>   
-    public sealed class MultiCommandApplicationDocumentation : ApplicationDocumentation
+    /// Encapsulates information about a command line application that provides multiple sub-commands.
+    /// </summary>
+    public class MultiCommandApplicationDocumentation : ApplicationDocumentation
     {
-        public IReadOnlyList<CommandDocumentation> Commands { get; }
+        private readonly Dictionary<string, CommandDocumentation> m_Commands = new Dictionary<string, CommandDocumentation>(StringComparer.OrdinalIgnoreCase);
+
+        /// <summary>
+        /// Gets the application's commands
+        /// </summary>
+        public IEnumerable<CommandDocumentation> Commands => m_Commands.Values.OrderBy(x => x.Name);
 
 
-        public MultiCommandApplicationDocumentation(string name, string? version = null, IEnumerable<CommandDocumentation>? commands = null, IEnumerable<string>? usage = null)
-            : base(name, version, usage)
+        /// <summary>
+        /// Initializes a new instance of <see cref="MultiCommandApplicationDocumentation"/>.
+        /// </summary>
+        public MultiCommandApplicationDocumentation(string name, string? version) : base(name, version)
+        { }
+
+
+        public CommandDocumentation AddCommand(string name)
         {
-            Commands = commands?.OrderBy(x => x.Name)?.ToArray() ?? Array.Empty<CommandDocumentation>();
-        }
+            if (String.IsNullOrWhiteSpace(name))
+                throw new InvalidModelException("Command names must not be null or whitespace");
 
-        private MultiCommandApplicationDocumentation(AssemblyDefinition definition, ILogger logger)
-            : base(
-                  name: LoadApplicationName(definition ?? throw new ArgumentNullException(nameof(definition))),
-                  version: (definition ?? throw new ArgumentNullException(nameof(definition))).GetInformationalVersionOrVersion(),
-                  usage: LoadAssemblyUsage(definition))
-        {
-            if (logger is null)
-                throw new ArgumentNullException(nameof(logger));
+            if (m_Commands.ContainsKey(name))
+                throw new InvalidModelException($"Cannot add command '{name}' because a command with the same name already exists");
 
-            Commands = LoadCommands(definition, logger);
-        }
+            var command = new CommandDocumentation(this, name);
+            m_Commands.Add(name, command);
 
-
-
-        public static MultiCommandApplicationDocumentation FromAssemblyDefinition(AssemblyDefinition definition, ILogger logger) =>
-            new MultiCommandApplicationDocumentation(definition, logger);
-
-
-        private IReadOnlyList<CommandDocumentation> LoadCommands(AssemblyDefinition definition, ILogger logger)
-        {
-            return definition.MainModule.Types
-                .Where(x => !x.IsAbstract)
-                .WithAttribute(CommandLineParserTypeNames.VerbAttributeFullName)
-                .Where(x => !x.GetAttribute(CommandLineParserTypeNames.VerbAttributeFullName).GetPropertyValueOrDefault<bool>("Hidden"))
-                .Select(type => CommandDocumentation.FromTypeDefinition(this, type, logger))
-                .ToArray();
+            return command;
         }
     }
 }

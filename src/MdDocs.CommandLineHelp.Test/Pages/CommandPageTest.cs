@@ -17,10 +17,13 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
     [UseReporter(typeof(DiffReporter))]
     public class CommandPageTest
     {
+        private readonly MultiCommandApplicationDocumentation m_ApplicationDocumentation = new MultiCommandApplicationDocumentation("TestApp", "1.2.3");
+
+
         [Fact]
         public void GetDocument_returns_expected_document_01()
         {
-            var model = new CommandDocumentation(new TestAppDocumentation(), "Command1");
+            var model = m_ApplicationDocumentation.AddCommand("Command1");
 
             Approve(model);
         }
@@ -28,11 +31,8 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
         [Fact]
         public void GetDocument_returns_expected_document_02()
         {
-            var model = new CommandDocumentation(
-                application: new TestAppDocumentation(),
-                name: "Command2",
-                helpText: "This is the help text of command 2"
-            );
+            var model = m_ApplicationDocumentation.AddCommand("Command2");
+            model.Description = "This is the help text of command 2";
 
             Approve(model);
         }
@@ -40,13 +40,9 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
         [Fact]
         public void GetDocument_returns_expected_document_03()
         {
-            var model = new CommandDocumentation(
-                application: new TestAppDocumentation(),
-                name: "Command2",
-                options: new[]
-                {
-                    new OptionDocumentation("parameter1", helpText: "Help text for parameter 1")
-                });
+            var model = m_ApplicationDocumentation.AddCommand("Command2");
+            var parameter = model.AddNamedParameter("parameter1", null);
+            parameter.Description = "Help text for parameter 1";
 
             Approve(model);
         }
@@ -54,17 +50,12 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
         [Fact]
         public void GetDocument_returns_expected_document_04()
         {
-            var model = new CommandDocumentation(
-                application: new TestAppDocumentation(),
-                name: "Command2",
-                options: new[]
-                {
-                    new OptionDocumentation("parameter1", required: true),
-                    new OptionDocumentation("parameter2"),
-                    new OptionDocumentation("parameter3", 'x'),
-                    new OptionDocumentation(null, 'y'),
-                    new OptionDocumentation("parameter4", hidden: true),
-                });
+            var model = m_ApplicationDocumentation
+                .AddCommand("Command2")
+                    .WithNamedParameter("parameter1", required: true)
+                    .WithNamedParameter("parameter2")
+                    .WithNamedParameter("parameter3", "x")
+                    .WithNamedParameter(shortName: "y");
 
             Approve(model);
         }
@@ -72,14 +63,10 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
         [Fact]
         public void GetDocument_returns_expected_document_05()
         {
-            var model = new CommandDocumentation(
-                application: new TestAppDocumentation(),
-                name: "Command2",
-                options: new[]
-                {
-                    new OptionDocumentation(null, 'x'),
-                    new OptionDocumentation(null, 'y'),
-                });
+            var model = m_ApplicationDocumentation
+                .AddCommand("Command2")
+                    .WithNamedParameter(shortName: "x")
+                    .WithNamedParameter(shortName: "y");
 
             Approve(model);
         }
@@ -87,20 +74,16 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
         [Fact]
         public void GetDocument_returns_expected_document_06()
         {
-            var model = new CommandDocumentation(
-                application: new TestAppDocumentation(),
-                name: "Command2",
-                options: new[]
-                {
-                    new OptionDocumentation(
+            var model = m_ApplicationDocumentation
+                .AddCommand("Command2")
+                    .WithNamedParameter(
                         name: "parameter1",
-                        helpText: "Description of parameter 1",
-                        @default: "some String"),
-                    new OptionDocumentation(
+                        description: "Description of parameter 1",
+                        defaultValue: "some String")
+                    .WithNamedParameter(
                         name: "parameter2",
-                        helpText: "Description of parameter 2",
-                        @default: 23),
-                });
+                        description: "Description of parameter 2",
+                        defaultValue: "23");
 
             Approve(model);
         }
@@ -108,26 +91,20 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
         [Fact]
         public void GetDocument_returns_expected_document_07()
         {
-            var model = new CommandDocumentation(
-                application: new TestAppDocumentation(),
-                name: "CommandName",
-                options: new[]
-                {
-                    new OptionDocumentation(
+            var model = m_ApplicationDocumentation
+                .AddCommand("CommandName")
+                    .WithNamedParameter(
                         name: "parameter1",
-                        helpText: "Description of parameter 1",
-                        @default: "some String"),
-                    new OptionDocumentation(
+                        description: "Description of parameter 1",
+                        defaultValue: "some String")
+                    .WithNamedParameter(
                         name: "parameter2",
-                        helpText: "Description of parameter 2",
-                        @default: 23,
-                        metaValue: "URI")
-                },
-                values: new[]{
-                    new ValueDocumentation(0),
-                    new ValueDocumentation(1, metaValue: "INTEGER"),
-                    new ValueDocumentation(2, name: "Value3", metaValue: "STRING"),
-                });
+                        description: "Description of parameter 2",
+                        defaultValue: "23",
+                        valuePlaceHolderName: "URI")
+                    .WithPositionalParameter(0)
+                    .WithPositionalParameter(1, valuePlaceHolderName: "INTEGER")
+                    .WithPositionalParameter(2, informationalName: "Value3", valuePlaceHolderName: "STRING");
 
             Approve(model);
         }
@@ -135,48 +112,34 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
         [Fact]
         public void GetDocument_returns_expected_document_08()
         {
-            var model = new CommandDocumentation(
-                application: new TestAppDocumentation(),
-                name: "CommandName",
-                options: new[]
-                {
-                    new OptionDocumentation(
-                        shortName: 'a',
-                        helpText: "Description of parameter 1",
-                        @default: "some String"),
-                    new OptionDocumentation(
-                        shortName: 'b',
-                        helpText: "Description of parameter 2",
-                        @default: 23)
-                },
-                values: new[]{
-                    new ValueDocumentation(0),
-                    new ValueDocumentation(1, name: "Value2", required: true),
-                    new ValueDocumentation(2, name: "Value3", helpText: "Help text for value 3"),
-                    new ValueDocumentation(3, name: "Value4", hidden: true),
-                });
+            var model = m_ApplicationDocumentation
+                .AddCommand("CommandName")
+                    .WithNamedParameter(
+                        shortName: "a",
+                        description: "Description of parameter 1",
+                        defaultValue: "some String")
+                    .WithNamedParameter(
+                        shortName: "b",
+                        description: "Description of parameter 2",
+                        defaultValue: "23")
+                    .WithPositionalParameter(0)
+                    .WithPositionalParameter(1, informationalName: "Value2", required: true)
+                    .WithPositionalParameter(2, informationalName: "Value3", description: "Help text for value 3");
 
             Approve(model);
         }
 
-
         [Fact]
         public void GetDocument_returns_expected_document_09()
         {
-            var model = new CommandDocumentation(
-                application: new TestAppDocumentation(),
-                name: "CommandName",
-                options: new[]
-                {
-                    new OptionDocumentation(
-                        name: "paramter1",
-                        helpText: "Description of parameter 1",
-                        @default: "some String",
-                        acceptedValues: new[] { "Value1", "Another Value"})
-                },
-                values: new[]{
-                    new ValueDocumentation(0, name: "PositionalParameter1", acceptedValues: new[] { "Value1", "Value2"})
-                });
+            var model = m_ApplicationDocumentation
+                .AddCommand("CommandName")
+                    .WithNamedParameter(
+                        name: "parameter1",
+                        description: "Description of parameter 1",
+                        defaultValue: "some String",
+                        acceptedValues: new[] { "Value1", "Another Value" })
+                    .WithPositionalParameter(0, informationalName: "PositionalParameter1", acceptedValues: new[] { "Value1", "Value2" });
 
             Approve(model);
         }
@@ -184,22 +147,16 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
         [Fact]
         public void GetDocument_returns_expected_document_10()
         {
-            var model = new CommandDocumentation(
-                application: new TestAppDocumentation(),
-                name: "CommandName",
-                options: new[]
-                {
-                    new OptionDocumentation(
-                        shortName: 'a',
-                        acceptedValues: new[] { "Value1", "Another Value"}),
-                    new OptionDocumentation(
-                        shortName: 'b',
-                        acceptedValues: new[] { "Value1", "Another Value"})
-                },
-                values: new[]{
-                    new ValueDocumentation(0, acceptedValues: new[] { "Value1", "Value2"}),
-                    new ValueDocumentation(1, acceptedValues: new[] { "Value1", "Value2"})
-                });
+            var model = m_ApplicationDocumentation
+                .AddCommand("CommandName")
+                    .WithNamedParameter(
+                        shortName: "a",
+                        acceptedValues: new[] { "Value1", "Another Value" })
+                    .WithNamedParameter(
+                        shortName: "b",
+                        acceptedValues: new[] { "Value1", "Another Value" })
+                    .WithPositionalParameter(0, acceptedValues: new[] { "Value1", "Value2" })
+                    .WithPositionalParameter(1, acceptedValues: new[] { "Value1", "Value2" });
 
             Approve(model);
         }
@@ -208,14 +165,10 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
         public void GetDocument_returns_expected_document_11()
         {
             // parameters must be ordered by name / short name
-            var model = new CommandDocumentation(
-                application: new TestAppDocumentation(),
-                name: "CommandName",
-                options: new[]
-                {
-                    new OptionDocumentation(name: "xyz"),
-                    new OptionDocumentation(shortName: 'a')
-                });
+            var model = m_ApplicationDocumentation
+                .AddCommand("CommandName")
+                    .WithNamedParameter(name: "xyz")
+                    .WithNamedParameter(shortName: "a");
 
             Approve(model);
         }
@@ -224,14 +177,10 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
         public void GetDocument_returns_expected_document_12()
         {
             // parameters must be ordered by name / short name
-            var model = new CommandDocumentation(
-                application: new TestAppDocumentation(),
-                name: "CommandName",
-                options: new[]
-                {
-                    new OptionDocumentation(name: "xyz"),
-                    new OptionDocumentation(shortName: 'a')
-                });
+            var model = m_ApplicationDocumentation
+                .AddCommand("CommandName")
+                    .WithNamedParameter(name: "xyz")
+                    .WithNamedParameter(shortName: "a");
 
             var configuration = new ConfigurationProvider().GetDefaultCommandLineHelpConfiguration();
             configuration.IncludeVersion = false;
@@ -242,19 +191,12 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
         [Fact]
         public void GetDocument_returns_expected_document_for_switch_parameters()
         {
-            var model = new CommandDocumentation(
-                application: new TestAppDocumentation(),
-                name: "CommandName",
-                options: new[]
-                {
-                    new OptionDocumentation(
+            var model = m_ApplicationDocumentation
+                .AddCommand("CommandName")
+                    .WithSwitchParameter(
                         name: "option1",
-                        shortName: 'a',
-                        helpText: "Description of parameter 1",
-                        @default: false,
-                        required: false,
-                        isSwitchParameter : true),
-                });
+                        shortName: "a",
+                        description: "Description of parameter 1");
 
             Approve(model);
         }
@@ -264,19 +206,12 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
         {
             var configuration = new ConfigurationProvider().GetDefaultCommandLineHelpConfiguration();
 
-            var model = new CommandDocumentation(
-                application: new TestAppDocumentation(),
-                name: "CommandName",
-                options: new[]
-                {
-                    new OptionDocumentation(
+            var model = m_ApplicationDocumentation
+                .AddCommand("CommandName")
+                    .WithSwitchParameter(
                         name: "option1",
-                        shortName: 'a',
-                        helpText: "Description of parameter 1",
-                        @default: false,
-                        required: false,
-                        isSwitchParameter : true),
-                });
+                        shortName: "a",
+                        description: "Description of parameter 1");
 
             Approve(model, configuration);
         }
@@ -287,19 +222,12 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Pages
             var configuration = new ConfigurationProvider().GetDefaultCommandLineHelpConfiguration();
             configuration.IncludeAutoGeneratedNotice = false;
 
-            var model = new CommandDocumentation(
-                application: new TestAppDocumentation(),
-                name: "CommandName",
-                options: new[]
-                {
-                    new OptionDocumentation(
+            var model = m_ApplicationDocumentation
+                .AddCommand("CommandName")
+                    .WithSwitchParameter(
                         name: "option1",
-                        shortName: 'a',
-                        helpText: "Description of parameter 1",
-                        @default: false,
-                        required: false,
-                        isSwitchParameter : true),
-                });
+                        shortName: "a",
+                        description: "Description of parameter 1");
 
             Approve(model, configuration);
         }

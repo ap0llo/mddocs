@@ -13,33 +13,33 @@
 ## Usage
 
 ```
-TestApp CommandName [-a <VALUE>]
-                    [--xyz <VALUE>]
+TestApp CommandName [--xyz <VALUE>]
+                    [-a <VALUE>]
 ```
 
 ## Parameters
 
 | Name                  | Short Name        | Description |
 | --------------------- | ----------------- | ----------- |
-|                       | [a](#a-parameter) |             |
 | [xyz](#xyz-parameter) |                   |             |
-
-### `a` Parameter
-
-|                |                   |
-| -------------- | ----------------- |
-| Name:          | a                 |
-| Position:      | *Named parameter* |
-| Required:      | No                |
-| Default value: | *None*            |
-
-___
+|                       | [a](#a-parameter) |             |
 
 ### `xyz` Parameter
 
 |                |                   |
 | -------------- | ----------------- |
 | Name:          | xyz               |
+| Position:      | *Named parameter* |
+| Required:      | No                |
+| Default value: | *None*            |
+
+___
+
+### `a` Parameter
+
+|                |                   |
+| -------------- | ----------------- |
+| Name:          | a                 |
 | Position:      | *Named parameter* |
 | Required:      | No                |
 | Default value: | *None*            |

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Grynwald.MarkdownGenerator;
 using Grynwald.MdDocs.CommandLineHelp.Configuration;
 using Grynwald.MdDocs.CommandLineHelp.Model;
@@ -47,11 +48,11 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
                 // add application info
                 .Add(GetApplicationInfo())
                 // Help text
-                .AddIf(!String.IsNullOrEmpty(m_Command.HelpText), () => new MdParagraph(m_Command.HelpText))
+                .AddIf(!String.IsNullOrEmpty(m_Command.Description), () => new MdParagraph(m_Command.Description))
                 // Usage
                 .Add(new NamedCommandUsageSection(m_Command))
                 // Parameters
-                .AddIf(m_Command.Parameters.Count > 0, () => new CommandParametersSection(m_Command))
+                .AddIf(m_Command.AllParameters.Any(), () => new CommandParametersSection(m_Command))
                 // Footer
                 .Add(new PageFooter());
         }

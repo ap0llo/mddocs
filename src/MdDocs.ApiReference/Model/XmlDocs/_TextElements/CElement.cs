@@ -31,7 +31,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
         public override void Accept(IVisitor visitor) => visitor.Visit(this);
 
         /// <inheritdoc />
-        public override bool Equals(object obj) => Equals(obj as CElement);
+        public override bool Equals(object? obj) => Equals(obj as CElement);
 
         /// <inheritdoc />
         public override int GetHashCode() => StringComparer.Ordinal.GetHashCode(Content);

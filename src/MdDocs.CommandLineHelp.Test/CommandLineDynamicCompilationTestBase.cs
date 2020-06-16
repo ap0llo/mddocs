@@ -5,7 +5,7 @@ using CommandLine;
 using Grynwald.MdDocs.TestHelpers;
 using Microsoft.CodeAnalysis;
 
-namespace Grynwald.MdDocs.CommandLineHelp.Test.Model
+namespace Grynwald.MdDocs.CommandLineHelp.Test
 {
     public abstract class CommandLineDynamicCompilationTestBase : DynamicCompilationTestBase
     {

@@ -1,77 +1,57 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using Grynwald.MdDocs.Common;
-using Microsoft.Extensions.Logging;
-using Mono.Cecil;
+using System.Text;
 
 namespace Grynwald.MdDocs.CommandLineHelp.Model
 {
-    /// <summary>
-    /// Represents a application without any-subcommands.
-    /// </summary>
-    public class SingleCommandApplicationDocumentation : ApplicationDocumentation
+    public class SingleCommandApplicationDocumentation : ApplicationDocumentation, IParameterCollection
     {
-        public UnnamedCommandDocumentation Command { get; }
+        private readonly IParameterCollection m_Parameters;
 
 
-        public SingleCommandApplicationDocumentation(string name, UnnamedCommandDocumentation parameters, string? version = null, IEnumerable<string>? usage = null)
-            : base(name, version, usage)
+        /// <summary>
+        /// Gets all the application's parameters (named, positional and switch-parameters)
+        /// </summary>
+        public IEnumerable<ParameterDocumentation> AllParameters => m_Parameters.AllParameters;
+
+        /// <summary>
+        /// Gets the application's named parameters
+        /// </summary>
+        public IEnumerable<NamedValuedParameterDocumentation> NamedParameters => m_Parameters.NamedParameters;
+
+        /// <summary>
+        /// Gets the application's positional parameters
+        /// </summary>
+        public IEnumerable<PositionalParameterDocumentation> PositionalParameters => m_Parameters.PositionalParameters;
+
+        /// <summary>
+        /// Gets the application's switch-parameters
+        /// </summary>
+        public IEnumerable<SwitchParameterDocumentation> SwitchParameters => m_Parameters.SwitchParameters;
+
+
+        /// <summary>
+        /// Initializes a new instance <see cref="SingleCommandApplicationDocumentation"/>
+        /// </summary>
+        public SingleCommandApplicationDocumentation(string name, string? version) : base(name, version)
         {
-            Command = parameters ?? throw new ArgumentNullException(nameof(parameters));
+            m_Parameters = new ParameterCollection(this, null);
         }
 
-        private SingleCommandApplicationDocumentation(AssemblyDefinition definition, ILogger logger)
-            : base(
-                name: LoadApplicationName(definition ?? throw new ArgumentNullException(nameof(definition))),
-                version: (definition ?? throw new ArgumentNullException(nameof(definition))).GetInformationalVersionOrVersion(),
-                usage: LoadAssemblyUsage(definition))
-        {
-            Command = LoadCommand(definition, logger);
-        }
 
+        /// <summary>
+        /// Adds a new named parameter to the application
+        /// </summary>
+        public NamedValuedParameterDocumentation AddNamedParameter(string? name, string? shortName) => m_Parameters.AddNamedParameter(name, shortName);
 
-        public static SingleCommandApplicationDocumentation FromAssemblyDefinition(AssemblyDefinition definition, ILogger logger) =>
-            new SingleCommandApplicationDocumentation(definition, logger ?? throw new ArgumentNullException(nameof(logger)));
+        /// <summary>
+        /// Adds a new positional parameter to the application
+        /// </summary>
+        public PositionalParameterDocumentation AddPositionalParameter(int position) => m_Parameters.AddPositionalParameter(position);
 
-
-        private UnnamedCommandDocumentation LoadCommand(AssemblyDefinition definition, ILogger logger)
-        {
-            bool IsCommandLineParameter(PropertyDefinition property)
-            {
-                return property.HasAttribute(CommandLineParserTypeNames.OptionAttributeFullName) || property.HasAttribute(CommandLineParserTypeNames.ValueAttributeFullName);
-            }
-
-            // get all types with at least one property attributed as either [Option] or [Value]
-            var optionTypes = definition.MainModule.Types
-                .Where(x => !x.IsAbstract)
-                .Where(type => type.Properties.Any(IsCommandLineParameter))
-                .ToArray();
-
-            TypeDefinition optionType;
-
-            // no option classes found => return "empty" command (unnamed command without options or values)
-            if (optionTypes.Length == 0)
-            {
-                logger.LogWarning("No option classes found.");
-                return new UnnamedCommandDocumentation(this);
-            }
-            // use the first option class if multiple candidates were found but log a warning
-            else if (optionTypes.Length > 1)
-            {
-                optionType = optionTypes[0];
-                var ignoredTypeNames = optionTypes.Skip(1).Select(x => x.FullName);
-                logger.LogWarning(
-                    $"Multiple option classes found. Generating documentation for type {optionType.FullName}. " +
-                    $"Ignored types: {String.Join(", ", ignoredTypeNames)}");
-            }
-            // single option class found
-            else
-            {
-                optionType = optionTypes[0];
-            }
-
-            return UnnamedCommandDocumentation.FromTypeDefinition(this, optionType, logger);
-        }
+        /// <summary>
+        /// Adds a new switch-parameter to the application
+        /// </summary>
+        public SwitchParameterDocumentation AddSwitchParameter(string? name, string? shortName) => m_Parameters.AddSwitchParameter(name, shortName);
     }
 }

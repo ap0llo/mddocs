@@ -54,7 +54,7 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
         }
 
         /// <inheritdoc />
-        public override bool Equals(object obj) => Equals(obj as TextBlock);
+        public override bool Equals(object? obj) => Equals(obj as TextBlock);
 
         /// <inheritdoc />
         public bool Equals(TextBlock? other) => other != null && Elements.SequenceEqual(other.Elements);

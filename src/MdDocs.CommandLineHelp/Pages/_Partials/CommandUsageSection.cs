@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Grynwald.MarkdownGenerator;
@@ -10,11 +9,11 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
 {
     internal abstract class CommandUsageSection : MdPartial
     {
-        private readonly CommandDocumentationBase m_Command;
+        private readonly IParameterCollection m_Model;
 
-        public CommandUsageSection(CommandDocumentationBase command)
+        public CommandUsageSection(IParameterCollection model)
         {
-            m_Command = command ?? throw new ArgumentNullException(nameof(command));
+            m_Model = model ?? throw new ArgumentNullException(nameof(model));
         }
 
 
@@ -30,61 +29,75 @@ namespace Grynwald.MdDocs.CommandLineHelp.Pages
 
         protected void AppendParameters(StringBuilder stringBuilder, int indent)
         {
-            foreach (var value in m_Command.Values.OrderBy(x => x.Index))
+            foreach (var value in m_Model.PositionalParameters.OrderBy(x => x.Position))
             {
                 stringBuilder
                     .Apply(AppendUsage, value)
                     .Append(' ', indent);
             }
 
-            foreach (var option in m_Command.Options)
+            foreach (var option in m_Model.NamedParameters)
             {
                 stringBuilder
                     .Apply(AppendUsage, option)
                     .Append(' ', indent);
             }
-        }
 
-        protected void AppendUsage(StringBuilder stringBuilder, ValueDocumentation value)
-        {
-            stringBuilder
-                .AppendIf(!value.Required, "[")
-                .Append("<")
-                .Append(value.Name ?? "VALUE")
-                .AppendIf(!String.IsNullOrEmpty(value.MetaValue), ":", value.MetaValue)
-                .Append(">")
-                .AppendIf(!value.Required, "]")
-                .AppendLine();
-        }
-
-        protected void AppendUsage(StringBuilder stringBuilder, OptionDocumentation option)
-        {
-            stringBuilder
-                .AppendIf(!option.Required, "[")
-                .Apply(AppendParameterName, option);
-
-            // omit value for switch parameters
-            if (!option.IsSwitchParameter)
+            foreach (var option in m_Model.SwitchParameters)
             {
                 stringBuilder
-                    .Append(" ")
-                    .Append("<")
-                    .Append(option.MetaValue ?? "VALUE")
-                    .Append(">");
+                    .Apply(AppendUsage, option)
+                    .Append(' ', indent);
             }
 
+        }
+
+        protected void AppendUsage(StringBuilder stringBuilder, PositionalParameterDocumentation parameter)
+        {
             stringBuilder
-                .AppendIf(!option.Required, "]")
+                .AppendIf(!parameter.Required, "[")
+                .Append("<")
+                .Append(String.IsNullOrWhiteSpace(parameter.InformationalName) ? "VALUE" : parameter.InformationalName)
+                .AppendIf(!String.IsNullOrEmpty(parameter.ValuePlaceHolderName), ":", parameter.ValuePlaceHolderName)
+                .Append(">")
+                .AppendIf(!parameter.Required, "]")
                 .AppendLine();
         }
 
-        protected void AppendParameterName(StringBuilder stringBuilder, OptionDocumentation option)
+        protected void AppendUsage(StringBuilder stringBuilder, SwitchParameterDocumentation parameter)
         {
             stringBuilder
-                .AppendIf(!String.IsNullOrEmpty(option.Name), "--", option.Name)
-                .AppendIf(!String.IsNullOrEmpty(option.Name) && option.ShortName != null, '|')
-                .AppendIf(option.ShortName != null, "-")
-                .AppendIf(option.ShortName != null, option.ShortName.GetValueOrDefault());
+                .Append("[")
+                .Apply(AppendParameterName, parameter)
+                .Append("]")
+                .AppendLine();
+
+        }
+
+        protected void AppendUsage(StringBuilder stringBuilder, NamedValuedParameterDocumentation parameter)
+        {
+            stringBuilder
+                .AppendIf(!parameter.Required, "[")
+                .Apply(AppendParameterName, parameter);
+
+            stringBuilder
+                .Append(" ")
+                .Append("<")
+                .Append(String.IsNullOrWhiteSpace(parameter.ValuePlaceHolderName) ? "VALUE" : parameter.ValuePlaceHolderName)
+                .Append(">");
+
+            stringBuilder
+                .AppendIf(!parameter.Required, "]")
+                .AppendLine();
+        }
+
+        protected void AppendParameterName(StringBuilder stringBuilder, INamedParameterDocumentation parameter)
+        {
+            stringBuilder
+                .AppendIf(parameter.HasName, "--", parameter.Name!)
+                .AppendIf(parameter.HasName && parameter.HasShortName, '|')
+                .AppendIf(parameter.HasShortName, "-")
+                .AppendIf(parameter.HasShortName, parameter.ShortName!);
         }
     }
 }

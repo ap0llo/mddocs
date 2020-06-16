@@ -42,12 +42,12 @@ ___
 
 ### `Value2` Parameter (Position 1)
 
-|                |        |
-| -------------- | ------ |
-| *Name:*        | Value2 |
-| Position:      | 1      |
-| Required:      | Yes    |
-| Default value: | *None* |
+|                     |        |
+| ------------------- | ------ |
+| Informational Name: | Value2 |
+| Position:           | 1      |
+| Required:           | Yes    |
+| Default value:      | *None* |
 
 ___
 
@@ -55,12 +55,12 @@ ___
 
 Help text for value 3
 
-|                |        |
-| -------------- | ------ |
-| *Name:*        | Value3 |
-| Position:      | 2      |
-| Required:      | No     |
-| Default value: | *None* |
+|                     |        |
+| ------------------- | ------ |
+| Informational Name: | Value3 |
+| Position:           | 2      |
+| Required:           | No     |
+| Default value:      | *None* |
 
 ___
 

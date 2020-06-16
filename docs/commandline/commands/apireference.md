@@ -17,8 +17,8 @@ Generate API reference documentation for a .NET assembly.
 mddocs apireference [--assembly|-a <VALUE>]
                     [--configurationFilePath|-c <VALUE>]
                     [--markdown-preset <VALUE>]
-                    [--no-version]
                     [--outdir|-o <VALUE>]
+                    [--no-version]
                     [--verbose|-v]
 ```
 
@@ -29,8 +29,8 @@ mddocs apireference [--assembly|-a <VALUE>]
 | [assembly](#assembly-parameter)                           | [a](#assembly-parameter)              | Path of the assembly to generate documentation for.                                                                                             |
 | [configurationFilePath](#configurationfilepath-parameter) | [c](#configurationfilepath-parameter) | The path of the configuration file to use. If no configuration file is specified, default settings are used.                                    |
 | [markdown\-preset](#markdownpreset-parameter)             |                                       | Specifies the preset to use for generating Markdown files.                                                                                      |
-| [no\-version](#noversion-parameter)                       |                                       | Do not include the assembly version in the generated documentation.                                                                             |
 | [outdir](#outdir-parameter)                               | [o](#outdir-parameter)                | Path of the directory to write the documentation to. If the output directory already exists, all files in the output directory will be deleted. |
+| [no\-version](#noversion-parameter)                       |                                       | Do not include the assembly version in the generated documentation.                                                                             |
 | [verbose](#verbose-parameter)                             | [v](#verbose-parameter)               | Show more detailed log output.                                                                                                                  |
 
 ### `assembly` Parameter
@@ -75,19 +75,6 @@ Specifies the preset to use for generating Markdown files.
 
 ___
 
-### `no-version` Parameter
-
-Do not include the assembly version in the generated documentation.
-
-|                |                       |
-| -------------- | --------------------- |
-| Name:          | no\-version           |
-| Position:      | *Named parameter*     |
-| Required:      | No (Switch parameter) |
-| Default value: | `False`               |
-
-___
-
 ### `outdir` Parameter
 
 Path of the directory to write the documentation to. If the output directory already exists, all files in the output directory will be deleted.
@@ -102,17 +89,30 @@ Path of the directory to write the documentation to. If the output directory alr
 
 ___
 
+### `no-version` Parameter
+
+Do not include the assembly version in the generated documentation.
+
+|                |                           |
+| -------------- | ------------------------- |
+| Name:          | no\-version               |
+| Position:      | *None (Switch Parameter)* |
+| Required:      | *No (Switch Parameter)*   |
+| Default value: | `false`                   |
+
+___
+
 ### `verbose` Parameter
 
 Show more detailed log output.
 
-|                |                       |
-| -------------- | --------------------- |
-| Name:          | verbose               |
-| Short name:    | v                     |
-| Position:      | *Named parameter*     |
-| Required:      | No (Switch parameter) |
-| Default value: | `False`               |
+|                |                           |
+| -------------- | ------------------------- |
+| Name:          | verbose                   |
+| Short name:    | v                         |
+| Position:      | *None (Switch Parameter)* |
+| Required:      | *No (Switch Parameter)*   |
+| Default value: | `false`                   |
 
 ___
 
