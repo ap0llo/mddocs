@@ -98,6 +98,38 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Loaders.CommandLineParser
             Assert.IsType<MultiCommandApplicationDocumentation>(application);
         }
 
+        [Theory]
+        [CombinatorialData]
+        public void Option_classes_can_be_inner_classes(ApplicationType applicationType)
+        {
+            // ARRANGE
+            using var assembly = Compile($@"
+                using System;
+                using CommandLine;
+
+                public class OuterClass
+                {{
+                    {GetClassAttributes(applicationType)}
+                    public class InnerClass
+                    {{
+                        [Option(""parameter1"")]
+                        public string Option1 {{ get; set; }}
+                    }}
+                }}
+            ");
+
+            var sut = new CommandLineParserLoader(m_Logger);
+
+            // ACT
+            var application = sut.Load(assembly);
+
+            // ASSERT
+            Assert.NotNull(application);
+            var parameterCollection = GetParameterCollection(application, applicationType);
+            var parameter = Assert.Single(parameterCollection.NamedParameters);
+            Assert.Equal("parameter1", parameter.Name);
+        }
+
         [Fact]
         public void Application_name_is_loaded_from_AssemblyTitleAttribute_if_it_exists()
         {

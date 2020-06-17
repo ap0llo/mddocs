@@ -5,6 +5,7 @@ using Grynwald.MdDocs.CommandLineHelp.Model;
 using Grynwald.MdDocs.Common;
 using Microsoft.Extensions.Logging;
 using Mono.Cecil;
+using Mono.Cecil.Rocks;
 
 namespace Grynwald.MdDocs.CommandLineHelp.Loaders.CommandLineParser
 {
@@ -33,7 +34,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Loaders.CommandLineParser
 
         public ApplicationDocumentation Load(AssemblyDefinition assembly)
         {
-            var types = assembly.MainModule.Types.Where(x => !x.IsAbstract);
+            var types = assembly.MainModule.GetAllTypes().Where(x => !x.IsAbstract);
 
             ApplicationDocumentation applicationDocumentation;
             if (types.Any(x => x.HasAttribute(CommandLineParserTypeNames.VerbAttributeFullName)))
@@ -76,7 +77,8 @@ namespace Grynwald.MdDocs.CommandLineHelp.Loaders.CommandLineParser
             }
 
             // get all types with at least one property attributed as either [Option] or [Value]
-            var optionTypes = assembly.MainModule.Types
+            var optionTypes = assembly.MainModule
+                .GetAllTypes()
                 .Where(x => !x.IsAbstract)
                 .Where(type => type.Properties.Any(IsCommandLineParameter))
                 .ToArray();
@@ -131,7 +133,8 @@ namespace Grynwald.MdDocs.CommandLineHelp.Loaders.CommandLineParser
 
         private void LoadCommands(MultiCommandApplicationDocumentation applicationDocumentation, AssemblyDefinition assembly)
         {
-            var commandTypes = assembly.MainModule.Types
+            var commandTypes = assembly.MainModule
+                .GetAllTypes()
                 .Where(x => !x.IsAbstract)
                 .WithAttribute(CommandLineParserTypeNames.VerbAttributeFullName)
                 .Where(x => !x.GetAttribute(CommandLineParserTypeNames.VerbAttributeFullName).GetPropertyValueOrDefault<bool>(s_Hidden));
