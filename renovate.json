@@ -1,9 +1,10 @@
 {
   "extends": [
-    "config:base",
-    ":semanticCommits",
-    ":semanticCommitTypeAll(build)"
+    "config:base"
   ],
+  "semanticCommits": false,
+  "commitMessagePrefix" : "build(deps): ",
+  "commitMessageExtra" : "to {{#if isMajor}}version {{{newMajor}}}{{else}}{{#if isSingleVersion}}version {{{toVersion}}}{{else}}{{{newValue}}}{{/if}}{{/if}}",
   "packageRules": [
     {
       "packagePatterns": [ "^Microsoft\\.Extensions\\.Logging.*" ],
