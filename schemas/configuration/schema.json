@@ -14,6 +14,7 @@
             "additionalProperties": true
         },
         "mddocsConfiguration": {
+            "type": "object",
             "properties": {
                 "apireference": {
                     "$ref": "#/definitions/apireferenceConfiguration",
@@ -26,6 +27,7 @@
             }
         },
         "commandlinehelpConfiguration": {
+            "type": "object",
             "properties": {
                 "assemblyPath": {
                     "type": [
@@ -65,10 +67,35 @@
                     ],
                     "title": "Command Line Help: Markdown Preset",
                     "description": "Customizes serialization of Markdown."
+                },
+                "template": {
+                    "$ref": "#/definitions/commandlinehelpTemplateConfiguration",
+                    "description": "Specifies settings for templates."
                 }
             }
         },
+        "commandlinehelpTemplateConfiguration": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "enum": [
+                        "Default"
+                    ],
+                    "default": "Default"
+                },
+                "default": {
+                    "$ref": "#/definitions/commandlinehelpDefaultTemplateConfiguration",
+                    "title": "Command Line Help: Default Template Settings",
+                    "description": "Defines settings for the default template"
+                }
+            }
+        },
+        "commandlinehelpDefaultTemplateConfiguration": {
+            "type": "object"
+        },
         "apireferenceConfiguration": {
+            "type": "object",
             "properties": {
                 "assemblyPath": {
                     "type": [
@@ -108,8 +135,32 @@
                     ],
                     "title": "API Reference: Markdown Preset",
                     "description": "Customizes serialization of Markdown."
+                },
+                "template": {
+                    "$ref": "#/definitions/apireferenceTemplateConfiguration",
+                    "description": "Specifies settings for templates."
                 }
             }
+        },
+        "apireferenceTemplateConfiguration": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "enum": [
+                        "Default"
+                    ],
+                    "default": "Default"
+                },
+                "default": {
+                    "$ref": "#/definitions/apireferenceDefaultTemplateConfiguration",
+                    "title": "API Reference: Default Template Settings",
+                    "description": "Defines settings for the default template"
+                }
+            }
+        },
+        "apireferenceDefaultTemplateConfiguration": {
+            "type": "object"
         }
     }
 }
