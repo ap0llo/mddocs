@@ -1,5 +1,37 @@
 {
   "extends": [
-      "github>ap0llo/renovate-config"
+    "config:base"
+  ],
+  "semanticCommits": false,
+  "commitMessagePrefix" : "build(deps): ",
+  "commitMessageExtra" : "to {{#if isMajor}}version {{{newMajor}}}{{else}}{{#if isSingleVersion}}version {{{toVersion}}}{{else}}{{{newValue}}}{{/if}}{{/if}}",
+  "packageRules": [
+    {
+      "packagePatterns": [ "^Microsoft\\.Extensions\\.Logging.*" ],
+      "groupName": "Microsoft.Extensions.Logging"
+    },
+    {
+      "packagePatterns": [ "^Microsoft\\.Extensions\\.Configuration.*" ],
+      "groupName": "Microsoft.Extensions.Configuration"
+    },
+    {
+      "packagePatterns": [ "^xunit.*" ],
+      "groupName": "xunit"
+    },
+    {
+      "packagePatterns": [ "^NuGet\\..*" ],
+      "groupName": "NuGet"
+    },
+    {
+      "packagePatterns": [ "^Nerdbank.GitVersioning$", "^nbgv$" ],
+      "groupName": "Nerdbank.GitVersioning"
+    },
+    {
+      "packagePatterns": [ "^Microsoft\\.Build.*" ],
+      "allowedVersions": "< 16.0"
+    }
+  ],
+  "labels": [
+    "dependencies"
   ]
 }
