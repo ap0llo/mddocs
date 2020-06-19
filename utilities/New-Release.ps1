@@ -19,9 +19,37 @@ function checkoutAndPush($branchName) {
     exec "git push --set-upstream origin `"$branchName`"" | Write-Host
 }
 
+function copySchema {
+    Push-Location (Get-RepositoryRoot)
+    try {
+
+        # determine the major/minor version being released
+        $semanticVersion = New-Object -TypeName "System.Management.Automation.SemanticVersion" -ArgumentList ((Get-Version).SemVer2)
+        $majorMinor = "$($semanticVersion.Major).$($semanticVersion.Minor)"
+
+        # Get current configuration schema
+        $latestSchemaPath = "./schemas/configuration/schema.json"
+
+        # Copy current schema to version-specific schema path
+        $versionSpecificSchemaDirectory = "./schemas/configuration/v$majorMinor/"
+        New-Item -ItemType Directory -Path $versionSpecificSchemaDirectory  | Out-Null
+        Copy-Item -Path $latestSchemaPath  -Destination $versionSpecificSchemaDirectory
+                
+        # Commit changes
+        exec "git add `"$versionSpecificSchemaDirectory`""
+        exec "git commit -m `"Add v$majorMinor configuration schema`" "
+    }
+    finally {
+        Pop-Location
+    }    
+}
+
+
 # Main script
 Push-Location (Get-RepositoryRoot)
 try {
+
+    copySchema
 
     # Ensure we're on the master branch
     $currentBranch = exec "git rev-parse --abbrev-ref HEAD"

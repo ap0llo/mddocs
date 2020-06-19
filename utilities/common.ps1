@@ -20,3 +20,12 @@ function Get-RepositoryRoot {
     $root = (exec "git rev-parse --show-toplevel" | Resolve-Path).Path
     return $root
 }
+
+function Get-Version {
+    log "Restoring tools"
+    exec "dotnet tool restore"
+
+    log "Running nbgv"
+    $versionInfo = exec "nbgv get-version --format json" | ConvertFrom-Json
+    return $versionInfo
+}
