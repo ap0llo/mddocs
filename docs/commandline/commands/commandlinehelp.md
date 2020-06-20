@@ -16,9 +16,7 @@ Generate command line help for .NET console application implemented using the 'C
 ```
 mddocs commandlinehelp [--assembly|-a <VALUE>]
                        [--configurationFilePath|-c <VALUE>]
-                       [--markdown-preset <VALUE>]
                        [--outdir|-o <VALUE>]
-                       [--no-version]
                        [--verbose|-v]
 ```
 
@@ -28,9 +26,7 @@ mddocs commandlinehelp [--assembly|-a <VALUE>]
 | --------------------------------------------------------- | ------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
 | [assembly](#assembly-parameter)                           | [a](#assembly-parameter)              | Path of the command line application assembly to generate documentation for.                                                                    |
 | [configurationFilePath](#configurationfilepath-parameter) | [c](#configurationfilepath-parameter) | The path of the configuration file to use. If no configuration file is specified, default settings are used.                                    |
-| [markdown\-preset](#markdownpreset-parameter)             |                                       | Specifies the preset to use for generating Markdown files.                                                                                      |
 | [outdir](#outdir-parameter)                               | [o](#outdir-parameter)                | Path of the directory to write the documentation to. If the output directory already exists, all files in the output directory will be deleted. |
-| [no\-version](#noversion-parameter)                       |                                       | Do not include the application version in the generated documentation.                                                                          |
 | [verbose](#verbose-parameter)                             | [v](#verbose-parameter)               | Show more detailed log output.                                                                                                                  |
 
 ### `assembly` Parameter
@@ -61,20 +57,6 @@ The path of the configuration file to use. If no configuration file is specified
 
 ___
 
-### `markdown-preset` Parameter
-
-Specifies the preset to use for generating Markdown files.
-
-|                  |                     |
-| ---------------- | ------------------- |
-| Name:            | markdown\-preset    |
-| Position:        | *Named parameter*   |
-| Required:        | No                  |
-| Accepted values: | `Default`, `MkDocs` |
-| Default value:   | `Default`           |
-
-___
-
 ### `outdir` Parameter
 
 Path of the directory to write the documentation to. If the output directory already exists, all files in the output directory will be deleted.
@@ -86,19 +68,6 @@ Path of the directory to write the documentation to. If the output directory alr
 | Position:      | *Named parameter* |
 | Required:      | No                |
 | Default value: | *None*            |
-
-___
-
-### `no-version` Parameter
-
-Do not include the application version in the generated documentation.
-
-|                |                           |
-| -------------- | ------------------------- |
-| Name:          | no\-version               |
-| Position:      | *None (Switch Parameter)* |
-| Required:      | *No (Switch Parameter)*   |
-| Default value: | `false`                   |
 
 ___
 

@@ -89,46 +89,6 @@ namespace Grynwald.MdDocs.MSBuild.Test
 
         [Theory]
         [CombinatorialData]
-        public void IncludeVersion_overrides_include_version_setting(bool includeVersion)
-        {
-            // ARRANGE
-            var sut = new GenerateCommandLineDocumentation()
-            {
-                Assembly = new TaskItem("my-assembly.dll"),
-                BuildEngine = new BuildEngineMock(),
-                IncludeVersion = includeVersion
-            };
-
-
-            // ACT
-            var config = sut.GetConfigurationProvider().GetCommandLineHelpConfiguration();
-
-            // ASSERT            
-            Assert.Equal(includeVersion, config.IncludeVersion);
-        }
-
-
-        [Theory]
-        [CombinatorialData]
-        public void MarkdownPreset_property_overrides_configuration_of_markdown_preset(MarkdownPreset preset)
-        {
-            // ARRANGE
-            var sut = new GenerateCommandLineDocumentation()
-            {
-                Assembly = new TaskItem("myAssembly.dll"),
-                BuildEngine = new BuildEngineMock(),
-                MarkdownPreset = preset.ToString()
-            };
-
-            // ACT 
-            var config = sut.GetConfigurationProvider().GetCommandLineHelpConfiguration();
-
-            // ASSERT
-            Assert.Equal(preset, config.Template.Default.MarkdownPreset);
-        }
-
-        [Theory]
-        [CombinatorialData]
         public void LoadConfiguration_file_reads_configuration_file_if_path_is_specified(MarkdownPreset preset)
         {
             // ARRANGE
@@ -151,8 +111,7 @@ namespace Grynwald.MdDocs.MSBuild.Test
                 Assembly = new TaskItem("myAssembly.dll"),
                 BuildEngine = new BuildEngineMock(),
                 OutputDirectory = new TaskItem("my-output-directory"),
-                ConfigurationFile = new TaskItem(configPath),
-                MarkdownPreset = null
+                ConfigurationFile = new TaskItem(configPath)
             };
 
             // ACT 

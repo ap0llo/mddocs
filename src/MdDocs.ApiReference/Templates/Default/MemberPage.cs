@@ -21,7 +21,7 @@ namespace Grynwald.MdDocs.ApiReference.Templates.Default
                 new MdStrongEmphasisSpan("Assembly:"), " " + Model.GetAssemblyDocumentation().Name
             );
 
-            if (m_Configuration.IncludeVersion)
+            if (m_Configuration.Template.Default.IncludeVersion)
             {
                 paragraph.Add("\r\n");
                 paragraph.Add(new MdCompositeSpan(
