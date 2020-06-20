@@ -124,7 +124,7 @@ namespace Grynwald.MdDocs.MSBuild.Test
             var config = sut.GetConfigurationProvider().GetCommandLineHelpConfiguration();
 
             // ASSERT
-            Assert.Equal(preset, config.MarkdownPreset);
+            Assert.Equal(preset, config.Template.Default.MarkdownPreset);
         }
 
         [Theory]
@@ -135,9 +135,13 @@ namespace Grynwald.MdDocs.MSBuild.Test
             using var temporaryDirectory = new TemporaryDirectory();
             var configPath = Path.Combine(temporaryDirectory, "config.json");
             File.WriteAllText(configPath, $@"{{
-                ""mddocs"" : {{
+                ""mddocs"" : {{                    
                     ""commandlineHelp"" : {{
-                        ""markdownPreset"" : ""{preset}""
+                        ""template"" : {{
+                            ""default"" : {{
+                                ""markdownPreset"" : ""{preset}""
+                            }}
+                        }}
                     }}
                 }}
             }}");
@@ -155,7 +159,7 @@ namespace Grynwald.MdDocs.MSBuild.Test
             var config = sut.GetConfigurationProvider().GetCommandLineHelpConfiguration();
 
             // ASSERT
-            Assert.Equal(preset, config.MarkdownPreset);
+            Assert.Equal(preset, config.Template.Default.MarkdownPreset);
         }
     }
 }

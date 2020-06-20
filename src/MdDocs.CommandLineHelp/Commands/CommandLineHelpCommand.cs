@@ -39,7 +39,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Commands
             pageFactory.GetPages().Save(
                 m_Configuration.OutputPath,
                 cleanOutputDirectory: true,
-                markdownOptions: m_Configuration.GetSerializationOptions(m_Logger));
+                markdownOptions: m_Configuration.Template.Default.GetSerializationOptions(m_Logger));
 
             return true;
         }

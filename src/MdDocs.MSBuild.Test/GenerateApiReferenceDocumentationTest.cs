@@ -103,7 +103,7 @@ namespace Grynwald.MdDocs.MSBuild.Test
             var config = sut.GetConfigurationProvider().GetApiReferenceConfiguration();
 
             // ASSERT
-            Assert.Equal(preset, config.MarkdownPreset);
+            Assert.Equal(preset, config.Template.Default.MarkdownPreset);
         }
 
         [Theory]
@@ -116,7 +116,11 @@ namespace Grynwald.MdDocs.MSBuild.Test
             File.WriteAllText(configPath, $@"{{
                 ""mddocs"" : {{
                     ""apireference"" : {{
-                        ""markdownPreset"" : ""{preset}""
+                        ""template"" : {{
+                            ""default"" : {{
+                                ""markdownPreset"" : ""{preset}""
+                            }}
+                        }}
                     }}
                 }}
             }}");
@@ -134,7 +138,7 @@ namespace Grynwald.MdDocs.MSBuild.Test
             var config = sut.GetConfigurationProvider().GetApiReferenceConfiguration();
 
             // ASSERT
-            Assert.Equal(preset, config.MarkdownPreset);
+            Assert.Equal(preset, config.Template.Default.MarkdownPreset);
         }
     }
 }
