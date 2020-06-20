@@ -1,14 +1,22 @@
 {
+  "$schema": "./schemas/configuration/schema.json",
   "mddocs": {
 
     "commandlinehelp": {
-      "includeVersion" : false,
-      "outputPath": "./docs/commandline"
+      "outputPath": "./docs/commandline",
+      "template": {
+        "default": {          
+          "includeVersion" : false
+        }
+      }
     },
     
     "apireference" : {
-      "includeVersion" : false
+      "template": {
+        "default": {
+          "includeVersion" : false
+        }
+      }
     }
-
   }
 }

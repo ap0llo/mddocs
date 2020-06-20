@@ -67,23 +67,5 @@ namespace Grynwald.MdDocs.Test
             // ACT / ASSERT
             Assert.Equal(path, sut.AssemblyPath);
         }
-
-        [Theory]
-        [InlineData(true, true)]
-        [InlineData(false, null)]
-        public void IncludeVersion_returns_expected_value_based_on_the_no_version_flag(bool noVersion, bool? expected)
-        {
-            // ARRANGE
-            var sut = new ApiReferenceOptions()
-            {
-                NoVersion = noVersion
-            };
-
-            // ACT 
-            var actual = sut.IncludeVersion;
-
-            // ASSERT
-            Assert.Equal(expected, actual);
-        }
     }
 }

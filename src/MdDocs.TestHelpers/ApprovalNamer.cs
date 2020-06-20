@@ -6,8 +6,9 @@ namespace Grynwald.MdDocs.TestHelpers
     public class ApprovalNamer : UnitTestFrameworkNamer
     {
         private readonly string? m_TypeName;
+        private readonly string m_RelativeOutputDirectory;
 
-        public override string Subdirectory => Path.Combine(base.Subdirectory, "_referenceResults");
+        public override string Subdirectory => Path.Combine(base.Subdirectory, m_RelativeOutputDirectory);
 
         public override string Name
         {
@@ -30,9 +31,10 @@ namespace Grynwald.MdDocs.TestHelpers
         }
 
 
-        public ApprovalNamer(string? typeName = null)
+        public ApprovalNamer(string? typeName = null, string relativeOutputDirectory = "_referenceResults")
         {
             m_TypeName = typeName;
+            m_RelativeOutputDirectory = relativeOutputDirectory;
         }
     }
 }

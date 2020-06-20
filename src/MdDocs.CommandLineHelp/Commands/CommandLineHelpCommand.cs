@@ -2,7 +2,7 @@
 using System.IO;
 using Grynwald.MdDocs.CommandLineHelp.Configuration;
 using Grynwald.MdDocs.CommandLineHelp.Loaders.CommandLineParser;
-using Grynwald.MdDocs.CommandLineHelp.Pages;
+using Grynwald.MdDocs.CommandLineHelp.Templates;
 using Grynwald.MdDocs.Common;
 using Grynwald.MdDocs.Common.Commands;
 using Grynwald.MdDocs.Common.Configuration;
@@ -31,15 +31,16 @@ namespace Grynwald.MdDocs.CommandLineHelp.Commands
 
             using var assembly = AssemblyReader.ReadFile(m_Configuration.AssemblyPath, m_Logger);
 
-            var loader = new CommandLineParserLoader(m_Logger);
+            var model = new CommandLineParserLoader(m_Logger).Load(assembly);
 
-            var model = loader.Load(assembly);
-
-            var pageFactory = new CommandLinePageFactory(model, m_Configuration, new DefaultCommandLineHelpPathProvider(), m_Logger);
-            pageFactory.GetPages().Save(
-                m_Configuration.OutputPath,
-                cleanOutputDirectory: true,
-                markdownOptions: m_Configuration.GetSerializationOptions(m_Logger));
+            CommandLineHelpTemplateProvider
+                .GetTemplate(m_Logger, m_Configuration)
+                .Render(model)
+                .Save(
+                    m_Configuration.OutputPath,
+                    cleanOutputDirectory: true,
+                    markdownOptions: m_Configuration.Template.Default.GetSerializationOptions(m_Logger)
+                );
 
             return true;
         }

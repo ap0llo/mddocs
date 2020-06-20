@@ -8,24 +8,6 @@ namespace Grynwald.MdDocs.Test
     /// </summary>
     public class CommandLineHelpOptionsTest
     {
-        [Theory]
-        [InlineData(true, true)]
-        [InlineData(false, null)]
-        public void IncludeVersion_returns_expected_value_based_on_the_no_version_flag(bool noVersion, bool? expected)
-        {
-            // ARRANGE
-            var sut = new CommandLineHelpOptions()
-            {
-                NoVersion = noVersion
-            };
-
-            // ACT 
-            var actual = sut.IncludeVersion;
-
-            // ASSERT
-            Assert.Equal(expected, actual);
-        }
-
         [Fact]
         public void OutputDirectory_converts_value_to_a_absolute_path()
         {

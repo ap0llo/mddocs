@@ -26,12 +26,6 @@ namespace Grynwald.MdDocs
             set => m_OutputDirectory = value;
         }
 
-        [Option("markdown-preset",
-            Required = false,
-            Default = MarkdownPreset.Default,
-            HelpText = "Specifies the preset to use for generating Markdown files.")]
-        [ConfigurationValue("mddocs:markdown:preset")]
-        public MarkdownPreset MarkdownPreset { get; set; }
 
         [Option('c', "configurationFilePath", Required = false, HelpText =
             "The path of the configuration file to use. " +

@@ -2,7 +2,7 @@
 using System.IO;
 using Grynwald.MdDocs.ApiReference.Configuration;
 using Grynwald.MdDocs.ApiReference.Model;
-using Grynwald.MdDocs.ApiReference.Pages;
+using Grynwald.MdDocs.ApiReference.Templates;
 using Grynwald.MdDocs.Common;
 using Grynwald.MdDocs.Common.Commands;
 using Grynwald.MdDocs.Common.Configuration;
@@ -29,11 +29,14 @@ namespace Grynwald.MdDocs.ApiReference.Commands
 
             using (var assemblyDocumentation = AssemblyDocumentation.FromAssemblyFile(m_Configuration.AssemblyPath, m_Logger))
             {
-                var pageFactory = new PageFactory(new DefaultApiReferencePathProvider(), m_Configuration, assemblyDocumentation, m_Logger);
-                pageFactory.GetPages().Save(
-                    m_Configuration.OutputPath,
-                    cleanOutputDirectory: true,
-                    markdownOptions: m_Configuration.GetSerializationOptions(m_Logger));
+                ApiReferenceTemplateProvider
+                    .GetTemplate(m_Logger, m_Configuration)
+                    .Render(assemblyDocumentation)
+                    .Save(
+                        m_Configuration.OutputPath,
+                        cleanOutputDirectory: true,
+                        markdownOptions: m_Configuration.Template.Default.GetSerializationOptions(m_Logger)
+                    );
             }
 
             return true;

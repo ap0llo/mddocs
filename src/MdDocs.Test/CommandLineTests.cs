@@ -18,16 +18,11 @@ namespace Grynwald.MdDocs.Test
             return (type.Name, propertyName) switch
             {
                 (_, nameof(OptionsBase.Verbose)) => false,
-                (_, nameof(OptionsBase.MarkdownPreset)) => true,
                 (_, nameof(OptionsBase.ConfigurationFilePath)) => false,
                 (nameof(CommandLineHelpOptions), nameof(OptionsBase.OutputDirectory)) => true,
                 (nameof(CommandLineHelpOptions), nameof(CommandLineHelpOptions.AssemblyPath)) => true,
-                (nameof(CommandLineHelpOptions), nameof(CommandLineHelpOptions.NoVersion)) => false,
-                (nameof(CommandLineHelpOptions), nameof(CommandLineHelpOptions.IncludeVersion)) => true,
                 (nameof(ApiReferenceOptions), nameof(ApiReferenceOptions.AssemblyPath)) => true,
                 (nameof(ApiReferenceOptions), nameof(OptionsBase.OutputDirectory)) => true,
-                (nameof(ApiReferenceOptions), nameof(CommandLineHelpOptions.NoVersion)) => false,
-                (nameof(ApiReferenceOptions), nameof(CommandLineHelpOptions.IncludeVersion)) => true,
                 _ => throw new NotImplementedException()
             };
         }
