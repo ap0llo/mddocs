@@ -25,7 +25,7 @@ function Get-Version {
     log "Restoring tools"
     exec "dotnet tool restore"
 
-    log "Running nbgv"
-    $versionInfo = exec "nbgv get-version --format json" | ConvertFrom-Json
+    log "Running nbgv --get-version"
+    $versionInfo = exec "dotnet tool run nbgv -- get-version --format json" | ConvertFrom-Json
     return $versionInfo
 }
