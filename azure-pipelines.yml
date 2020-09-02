@@ -273,3 +273,58 @@ jobs:
       releaseNotesFile: $(Build.ArtifactStagingDirectory)/$(artifactsName_ChangeLog)/changelog.md
       assets: $(Build.ArtifactStagingDirectory)/$(artifactsName_Binaries)/*.nupkg
       addChangeLog: false
+
+# Job to create a GitHub *DRAFT* release (only if a package was uploaded to myget.org)
+- job: Create_GitHub_Draft_Release
+  displayName: 🔖 Create GitHub DRAFT Release
+  pool: Hosted VS2017
+  # Only run if build was successful and a package was uploaded to nuget.org
+  dependsOn:
+  - Build_and_Test
+  - Publish_to_MyGet
+  condition: succeeded('Publish_to_MyGet')
+  steps:
+
+  # Install .NET Core SDK and runtime (version specified in global.json)
+  - task: UseDotNet@2
+    displayName: 'Install .NET Core SDK'
+    inputs:
+      packageType: sdk
+      useGlobalJson: true
+
+  # Restore local .NET Core tools
+  - task: DotNetCoreCLI@2
+    displayName: Restore local tools
+    inputs:
+      command: custom
+      custom: tool
+      arguments: restore
+
+  # Set the build number using Nerdbank.GitVersioning
+  - script: dotnet tool run nbgv cloud --all-vars
+    displayName: Set Version
+
+  # Get artifacts (changelog)
+  - task: DownloadBuildArtifacts@0
+    displayName: 'Download Artifacts: $(artifactsName_ChangeLog)'
+    inputs:
+      buildType: current
+      downloadType: single
+      artifactName: $(artifactsName_ChangeLog)
+      downloadPath: $(Build.ArtifactStagingDirectory)
+
+  # Create GitHub *DRAFT* release
+  - task: GithubRelease@0
+    displayName: Create GitHub Release
+    inputs:
+      gitHubConnection: $(github_ServiceConnectionName)
+      repositoryName: $(github_repositoryName)
+      action: 'edit'
+      target: '$(Build.SourceVersion)'
+      tagSource: manual
+      tag: vNext
+      title: v$(NBGV_NuGetPackageVersion)
+      releaseNotesSource: file
+      releaseNotesFile: $(Build.ArtifactStagingDirectory)/$(artifactsName_ChangeLog)/changelog.md
+      addChangeLog: false
+      isDraft: true
