@@ -8,6 +8,7 @@
 		<BaseOutputPath Condition="!HasTrailingSlash('BaseOutputPath')">$(BaseOutputPath)\</BaseOutputPath>
 		<OutputPath>$(BaseOutputPath)$(Configuration)\$(MSBuildProjectName)\</OutputPath>
 		<PackageOutputPath>$(BaseOutputPath)$(Configuration)\packages\</PackageOutputPath>
+		<VSTestResultsDirectory>$(BaseOutputPath)TestResults/</VSTestResultsDirectory>
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     		<!--
     		   Suppressed warnings:
@@ -18,7 +19,7 @@
     		<IsPackable>false</IsPackable>
 	</PropertyGroup>
 
-	<!-- Nerdbank.GitVersioning -->
+	<!-- Nerdbank.GitVersioning -->	
 	<ItemGroup>
 		<PackageReference Include="Nerdbank.GitVersioning" Version="3.2.31" PrivateAssets="all" />
 		<PackageReference Include="Microsoft.DotNet.Analyzers.Compatibility" Version="0.2.12-alpha" PrivateAssets="all" />

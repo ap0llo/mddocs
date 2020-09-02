@@ -19,6 +19,12 @@
       "commands": [
         "dotnet-format"
       ]
+    },
+    "dotnet-reportgenerator-globaltool": {
+      "version": "4.6.5",
+      "commands": [
+        "reportgenerator"
+      ]
     }
   }
 }

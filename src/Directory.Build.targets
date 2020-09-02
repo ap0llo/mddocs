@@ -6,14 +6,31 @@
         leading to false-positives in the nullable analysis.
 
         Note: this is implemented as target instead of a plain property group in Directory.Build.props
-        becasue teh condition requires $(TargetFrameworkIdentifier) to be set which it is not
+        becasue the condition requires $(TargetFrameworkIdentifier) to be set which it is not
         at the time properties are evaluated
     -->
     <Target Name="DisableNullableSupportOnUnsupportedPlatforms" BeforeTargets="CoreCompile">
-	    <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.1' OR '$(TargetFramework)' == 'netstandard2.0' OR '$(TargetFrameworkIdentifier)' == '.NETFramework' ">
-		    <Nullable>disable</Nullable>
-		    <NoWarn>8632</NoWarn>  <!-- Suppress warning about nullable annotation in the source code although nullable is disabled-->
-	    </PropertyGroup>
+        <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.1' OR '$(TargetFramework)' == 'netstandard2.0' OR '$(TargetFrameworkIdentifier)' == '.NETFramework' ">
+            <Nullable>disable</Nullable>
+            <NoWarn>8632</NoWarn>  <!-- Suppress warning about nullable annotation in the source code although nullable is disabled-->
+        </PropertyGroup>
+
     </Target>
+
+    <!-- 
+      Target required to make coverlet work with deterministic builds.
+      For details, see https://github.com/coverlet-coverage/coverlet/blob/master/Documentation/DeterministicBuild.md
+    -->
+    <Target Name="CoverletGetPathMap"
+            DependsOnTargets="InitializeSourceRootMappedPaths"
+            Returns="@(_LocalTopLevelSourceRoot)"
+            Condition="'$(DeterministicSourcePaths)' == 'true'">
+
+        <ItemGroup>
+            <_LocalTopLevelSourceRoot Include="@(SourceRoot)" Condition="'%(SourceRoot.NestedRoot)' == ''"/>
+        </ItemGroup>
+
+    </Target>
+
 
 </Project>
