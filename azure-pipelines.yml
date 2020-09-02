@@ -14,10 +14,6 @@
 #   - Assumes a Service Connection for NuGet was set up in the Team project running the pipeline
 #   - The name of the service connection is stored in the variable nuget_org_ServiceConnectionName (defined below)
 #   - The variable nuget_org_PackageName defines which package is produced by the pipeline
-#   - Whether this step runs can be controlled by the variable 'Settings.PublishToNuGetOrg' (modify at queue time when necessary):
-#     - 'auto' or empty: Run when building a release branch
-#     - 'false': Do not run
-#     - 'true': Run regardless of the current branch
 # - Create_GitHub_Release
 #   - Creates a GitHub release for the build
 #   - Only runs if the build was published to NuGet.org
@@ -181,19 +177,7 @@ jobs:
     and
     (
       succeeded('Build_and_Test'),
-      not(eq(variables['Settings.PublishToNuGetOrg'], 'false')),
-      or(
-        eq(variables['Settings.PublishToNuGetOrg'], 'true'),
-        and
-        (
-          startsWith(variables['Build.SourceBranch'], 'refs/heads/release/'),
-          or
-          (
-            eq(variables['Settings.PublishToNuGetOrg'], ''),
-            eq(variables['Settings.PublishToNuGetOrg'], 'auto')
-          )
-        )
-      )
+      startsWith(variables['Build.SourceBranch'], 'refs/heads/release/')
     )
   steps:
   # Get artifacts
@@ -220,7 +204,12 @@ jobs:
   dependsOn:
   - Build_and_Test
   - Publish_to_NuGet_org
-  condition: succeeded('Publish_to_NuGet_org')
+  condition: |
+    and
+    (
+      succeeded('Publish_to_NuGet_org'),
+      startsWith(variables['Build.SourceBranch'], 'refs/heads/release/')
+    )
   steps:
 
   # Install .NET Core SDK and runtime (version specified in global.json)
@@ -281,8 +270,7 @@ jobs:
   # Only run if build was successful and a package was uploaded to nuget.org
   dependsOn:
   - Build_and_Test
-  - Publish_to_MyGet
-  condition: succeeded('Publish_to_MyGet')
+  condition: eq(variables['build.sourceBranch'], 'refs/heads/master')
   steps:
 
   # Install .NET Core SDK and runtime (version specified in global.json)
