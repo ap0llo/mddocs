@@ -1,16 +1,16 @@
 # Pipeline consists of 4 jobs
-# - Build_an_Test: 
+# - Build_an_Test:
 #   - Checks formatting
 #   - Builds the project
 #   - Runs all the tests
 #   - Creates a NuGet package
-# - Publish_to_MyGet: 
+# - Publish_to_MyGet:
 #   - Pushes the NuGet package to MyGet
 #   - Assumes a Service Connection for MyGet was set up in the Team project running the pipeline
 #   - The name of the service connection is stored in the variable myget_ServiceConnectionName (defined below)
 #   - Only runs when building a release branch or the master branch
 # - Publish_to_NuGet_org
-#   - Pushes the NuGet package to NuGet.org 
+#   - Pushes the NuGet package to NuGet.org
 #   - Assumes a Service Connection for NuGet was set up in the Team project running the pipeline
 #   - The name of the service connection is stored in the variable nuget_org_ServiceConnectionName (defined below)
 #   - The variable nuget_org_PackageName defines which package is produced by the pipeline
@@ -38,7 +38,7 @@ variables:
   artifactsName_Binaries: Binaries
   artifactsName_ChangeLog: ChangeLog
 
-  # MyGet.org settings   
+  # MyGet.org settings
   myget_ServiceConnectionName: 'MyGet - ap0llo-mddocs'      # the name of the Azure DevOps service connection to use for MyGet.org
 
   # NuGet.org settings
@@ -46,8 +46,9 @@ variables:
   nuget_org_PackageName: 'Grynwald.MdDocs'                  # the name of the package being published
 
   # GitHub settings
+  github_createRelease: true                          # enable creation of GitHub releases when a package was uploaded to NuGet.org
   github_ServiceConnectionName: 'GitHub: ap0llo'      # the name of the Azure DevOps service connection to use for creating GitHub releases
-  github_repositoryName: 'ap0llo/mddocs'              # the name of the github repo to create the release in  
+  github_repositoryName: 'ap0llo/mddocs'              # the name of the github repo to create the release in
 
 jobs:
 
@@ -57,7 +58,7 @@ jobs:
   pool: Hosted VS2017
   steps:
 
-  # Install .NET Core SDK and runtime (version specified in the variables section)
+  # Install .NET Core SDK and runtime (version specified in global.json)
   - task: UseDotNet@2
     displayName: ⚙ Install .NET Core SDK
     inputs:
@@ -79,7 +80,7 @@ jobs:
   # Check the formatting using dotnet-format
   - script: dotnet format ./src --folder --check
     displayName: 🕵️ Check code formatting
-  
+
   # Restore, Build, Test
   - task: CmdLine@2
     displayName: 📥 Restore NuGet packages
@@ -90,21 +91,36 @@ jobs:
     inputs:
       command: build
       projects: $(solutionPath)
-      arguments: '--configuration $(configuration) --no-restore /warnaserror'  
+      arguments: '--configuration $(configuration) --no-restore /warnaserror'
   - task: DotNetCoreCLI@2
     displayName: 🧪 Test
     inputs:
       command: test
       projects: $(solutionPath)
-      arguments: '--configuration $(configuration) --no-build'
-  
+      arguments: '--configuration $(configuration) --no-build --collect:"XPlat Code Coverage"'
+  # The PublishCodeCoverageResults task only supports publishing a single coverage result file,
+  # so the results are merged into a single cobertura file using "ReportGenerator"
+  # The dotnet test task redirects test results to $(Agent.TempDirectory) so coverage reports will be written there, too
+  - script: >-
+      dotnet tool run reportgenerator
+      -reports:$(Agent.TempDirectory)/**/coverage.cobertura.xml
+      -targetdir:$(Agent.TempDirectory)/TestResults/Coverage
+      -reporttypes:cobertura
+    displayName: Merge Code Coverage Results
+  - task: PublishCodeCoverageResults@1
+    displayName: Publish Code Coverage results
+    inputs:
+      codeCoverageTool: cobertura
+      summaryFileLocation: $(Agent.TempDirectory)/TestResults/Coverage/Cobertura.xml
+      failIfCoverageEmpty: true
+
   # Create NuGet Package and  publish as build artifact
   - task: DotNetCoreCLI@2
     displayName: 📦 Pack NuGet package
     inputs:
       command: pack
       projects: $(solutionPath)
-      arguments: '--configuration $(configuration) --output $(Build.ArtifactStagingDirectory) --no-build /warnaserror'  
+      arguments: '--configuration $(configuration) --output $(Build.ArtifactStagingDirectory) --no-build /warnaserror'
   - task: PublishBuildArtifacts@1
     displayName: '📤 Publish Artifacts: $(artifactsName_Binaries)'
     inputs:
@@ -117,7 +133,7 @@ jobs:
       script: >-
         dotnet tool run changelog
         --repository $(Build.SourcesDirectory)
-        --currentVersion $(NBGV_NuGetPackageVersion) 
+        --currentVersion $(NBGV_NuGetPackageVersion)
         --versionRange [$(NBGV_NuGetPackageVersion)]
         --outputpath $(Build.StagingDirectory)/changelog.md
         --template GitHubRelease
@@ -142,7 +158,7 @@ jobs:
   # Get artifacts
   - task: DownloadBuildArtifacts@0
     displayName: '📥 Download Artifacts: $(artifactsName_Binaries)'
-    inputs: 
+    inputs:
       buildType: current
       downloadType: single
       artifactName: $(artifactsName_Binaries)
@@ -164,7 +180,7 @@ jobs:
   condition: |
     and
     (
-      succeeded('Build_and_Test'), 
+      succeeded('Build_and_Test'),
       not(eq(variables['Settings.PublishToNuGetOrg'], 'false')),
       or(
         eq(variables['Settings.PublishToNuGetOrg'], 'true'),
@@ -183,7 +199,7 @@ jobs:
   # Get artifacts
   - task: DownloadBuildArtifacts@0
     displayName: '📥 Download Artifacts: $(artifactsName_Binaries)'
-    inputs: 
+    inputs:
       buildType: current
       downloadType: single
       artifactName: $(artifactsName_Binaries)
@@ -201,13 +217,13 @@ jobs:
   displayName: 🔖 Create GitHub Release
   pool: Hosted VS2017
   # Only run if build was successful and a package was uploaded to nuget.org
-  dependsOn: 
+  dependsOn:
   - Build_and_Test
   - Publish_to_NuGet_org
   condition: succeeded('Publish_to_NuGet_org')
   steps:
 
-  # Install .NET Core SDK and runtime (version specified in the variables section)
+  # Install .NET Core SDK and runtime (version specified in global.json)
   - task: UseDotNet@2
     displayName: ⚙ Install .NET Core SDK
     inputs:
@@ -226,17 +242,17 @@ jobs:
   - script: dotnet tool run nbgv cloud --all-vars
     displayName: Set Version
 
-  # Get artifacts 
+  # Get artifacts
   - task: DownloadBuildArtifacts@0
     displayName: '📥 Download Artifacts: $(artifactsName_Binaries)'
-    inputs: 
+    inputs:
       buildType: current
       downloadType: single
       artifactName: $(artifactsName_Binaries)
       downloadPath: $(Build.ArtifactStagingDirectory)
   - task: DownloadBuildArtifacts@0
     displayName: '📥  Download Artifacts: $(artifactsName_ChangeLog)'
-    inputs: 
+    inputs:
       buildType: current
       downloadType: single
       artifactName: $(artifactsName_ChangeLog)
