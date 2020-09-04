@@ -33,7 +33,9 @@ corresponding sub-pages:
 
 ## Building from source
 
-MdDocs is a .NET Core application and can be built using the .NET SDK 3.1
+ℹ This repository uses git submodules. Use `git clone --recursive` to check out submodules as well.
+
+MdDocs is a .NET Core application and can be built using the .NET SDK 3.1 (see [global.json](./global.json))
 
 ```ps1
 dotnet restore .\src\MdDocs.sln
@@ -41,6 +43,13 @@ dotnet restore .\src\MdDocs.sln
 dotnet build .\src\MdDocs.sln
 
 dotnet pack .\src\MdDocs.sln
+```
+
+To run tests, the .NET SK 2.1 (version 2.1.800) and a installation of Visual Studio 2019 is requried as well.
+(this only applies to the `MdDocs.MSBuild.IntegrationTest` project, all other test project should be executable with only the .NET Core 3.1 SDK).
+
+```ps1
+dotnet test .\src\MdDocs.sln
 ```
 
 ## Issues
@@ -64,12 +73,17 @@ created by me without anyone else being involved in the discussion.
 - [CommandLineParser](https://github.com/gsscoder/commandline)
 - [Nerdbank.GitVersioning](https://github.com/AArnott/Nerdbank.GitVersioning/)
 - [Microsoft.Extensions.Logging](https://github.com/aspnet/Extensions)
+- [Microsoft.Extensions.Configuration](https://github.com/aspnet/Extensions)
 - [Microsoft.DotNet.Analyzers.Compatibility](https://github.com/dotnet/platform-compat)
 - [xUnit](http://xunit.github.io/)
 - [Xunit.Combinatorial](https://github.com/AArnott/Xunit.Combinatorial)
 - [Moq](https://github.com/moq/moq4)
 - [ApprovalTests](https://github.com/approvals/ApprovalTests.Net)
 - [Microsoft.CodeAnalysis.CSharp](https://github.com/dotnet/roslyn)
+- [Coverlet](https://github.com/tonerdo/coverlet)
+- [MSBuild](https://github.com/dotnet/msbuild/)
+- [SourceLink](https://github.com/dotnet/sourcelink)
+- [NuGet](https://github.com/NuGet/NuGet.Client)
 
 ## Versioning and Branching
 
