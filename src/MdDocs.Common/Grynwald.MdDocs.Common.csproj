@@ -11,7 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Grynwald.Utilities.Configuration" Version="1.6.11-pre" />
     <PackageReference Include="Grynwald.MarkdownGenerator" Version="2.5.34" />
     <PackageReference Include="Mono.Cecil" Version="0.11.2" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.7" />
@@ -41,6 +40,20 @@
     
   <ItemGroup>
     <Compile Include="../shared/Nullable.cs" />
+  </ItemGroup>
+  
+  <!--
+    Include Grynwald.Utilities.Configuration as source instead of using the NuGet package.
+    
+    Utilities.Configuration depends on a different version of Microsoft.Extensions.Configuration than this project.
+    Because Microsoft.Extension.Configuration assemblies are strong-named, this can lead to assembly load errors
+    on .NET Framework. Usually this can be solved using assembly binding redirects, however through MdDocs.MSBuild, 
+    the assemblies are loaded into a process for which the binding redirects cannot be changed (MSBuild).
+    To resolve this, the library is included as source, making it possible to build 
+    everything against the same version of Microsoft.Extensions.Configuration.
+  -->
+  <ItemGroup>
+    <Compile Include="..\..\deps\utilities\src\Utilities.Configuration\**\*.cs" />
   </ItemGroup>
     
 </Project>
