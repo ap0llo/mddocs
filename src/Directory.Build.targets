@@ -42,15 +42,15 @@
             <Using Namespace="System.IO" />
             <Code Type="Fragment" Language="cs">
                 <![CDATA[
-         var dir = new DirectoryInfo(Directory);
-         foreach(var file in dir.EnumerateFiles()) 
-         {
-           if(file.LastWriteTime.Year == 1980) 
-           {
-                file.LastWriteTime = file.CreationTime;
-           }
-         }
-      ]]>
+                    var dir = new DirectoryInfo(Directory);
+                    foreach(var file in dir.EnumerateFiles()) 
+                    {
+                        if(file.Name.StartsWith("Microsoft.Extensions.") && file.LastWriteTime.Year == 1980) 
+                        {
+                                file.LastWriteTime = file.CreationTime;
+                        }
+                    }
+                ]]>
             </Code>
         </Task>
     </UsingTask>
