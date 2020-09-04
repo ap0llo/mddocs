@@ -24,7 +24,7 @@ trigger:
 
 pr:
   - master
-  - releases/*
+  - release/*
 
 variables:
   # Build settings
