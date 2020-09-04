@@ -46,12 +46,16 @@ variables:
   github_ServiceConnectionName: 'GitHub: ap0llo'      # the name of the Azure DevOps service connection to use for creating GitHub releases
   github_repositoryName: 'ap0llo/mddocs'              # the name of the github repo to create the release in
 
+  # Azure DevOps agent settings
+  azuredevops_vmimage: windows-latest
+
 jobs:
 
 # Main Build and test job: Builds the projects and runs all tests
 - job: Build_and_Test
   displayName: 🛠 Build and Test
-  pool: Hosted VS2017
+  pool: 
+    vmImage: $(azuredevops_vmimage)
   steps:
 
   # Install .NET Core SDK and runtime (version specified in global.json)
@@ -153,7 +157,8 @@ jobs:
 # Job to push package to MyGet.org after build
 - job: Publish_to_MyGet
   displayName: 🚚 Publish to MyGet
-  pool: Hosted VS2017
+  pool: 
+    vmImage: $(azuredevops_vmimage)
   # Only run after main build job and only if the current branch is master or a release branch
   dependsOn: Build_and_Test
   condition: and(succeeded('Build_and_Test'), or(eq(variables['build.sourceBranch'], 'refs/heads/master'), startsWith(variables['Build.SourceBranch'], 'refs/heads/release/') ))
@@ -177,7 +182,8 @@ jobs:
 # Job to push package to NuGet.org after build (only for builds of release branches)
 - job: Publish_to_NuGet_org
   displayName: 🚚 Publish to NuGet.org
-  pool: Hosted VS2017
+  pool: 
+    vmImage: $(azuredevops_vmimage)
   # Only run after main build job and only if the current branch is a release branch
   dependsOn: Build_and_Test
   condition: |
@@ -206,7 +212,8 @@ jobs:
 # Job to create a GitHub release (only if a package was uploaded to NuGet.org)
 - job: Create_GitHub_Release
   displayName: 🔖 Create GitHub Release
-  pool: Hosted VS2017
+  pool: 
+    vmImage: $(azuredevops_vmimage)
   # Only run if build was successful and a package was uploaded to nuget.org
   dependsOn:
   - Build_and_Test
@@ -273,7 +280,8 @@ jobs:
 # Job to create a GitHub *DRAFT* release (only if a package was uploaded to myget.org)
 - job: Create_GitHub_Draft_Release
   displayName: 🔖 Create GitHub DRAFT Release
-  pool: Hosted VS2017
+  pool: 
+    vmImage: $(azuredevops_vmimage)
   # Only run if build was successful and a package was uploaded to nuget.org
   dependsOn:
   - Build_and_Test
