@@ -57,6 +57,9 @@ jobs:
     vmImage: $(azuredevops_vmimage)
   steps:
 
+  - checkout: self
+    submodules: true
+
   # Install .NET Core SDK and runtime (version specified in global.json)
   - task: UseDotNet@2
     displayName: ⚙ Install .NET Core SDK
