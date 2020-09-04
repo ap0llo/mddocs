@@ -155,6 +155,19 @@ namespace Grynwald.MdDocs.MSBuild.IntegrationTest
                 RedirectStandardError = true
             };
 
+            // The build process inherits the environment variables of the test process.
+            // Because the test process is itself running on .NET,
+            // some of the inherited environment varibales cause errors,
+            // especially when the test uses a different .NET Core SDK than the test process.
+            // To avoid these errors, remove environment variables that are not set
+            // when a process is started from the commandline from the child process.
+            startInfo.EnvironmentVariables.Remove("DOTNET_CLI_TELEMETRY_SESSIONID");
+            startInfo.EnvironmentVariables.Remove("DOTNET_HOST_PATH");
+            startInfo.EnvironmentVariables.Remove("MSBUILDENSURESTDOUTFORTASKPROCESSES");
+            startInfo.EnvironmentVariables.Remove("MSBuildExtensionsPath");
+            startInfo.EnvironmentVariables.Remove("MSBuildLoadMicrosoftTargetsReadOnly");
+            startInfo.EnvironmentVariables.Remove("MSBuildSDKsPath");
+
             var process = Process.Start(startInfo);
 
             process.OutputDataReceived += (s, e) => m_OutputHelper.WriteLine(e?.Data ?? "");
