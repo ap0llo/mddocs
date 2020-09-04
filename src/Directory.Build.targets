@@ -32,28 +32,6 @@
 
     </Target>
     
-    <UsingTask TaskName="FixModifiedTime"
-               TaskFactory="RoslynCodeTaskFactory"
-                AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll" >
-        <ParameterGroup>
-            <Directory Required="true" />
-        </ParameterGroup>
-        <Task>
-            <Using Namespace="System.IO" />
-            <Code Type="Fragment" Language="cs">
-                <![CDATA[
-                    var dir = new DirectoryInfo(Directory);
-                    foreach(var file in dir.EnumerateFiles()) 
-                    {
-                        if(file.Name.StartsWith("Microsoft.Extensions.") && file.LastWriteTime.Year == 1980) 
-                        {
-                                file.LastWriteTime = file.CreationTime;
-                        }
-                    }
-                ]]>
-            </Code>
-        </Task>
-    </UsingTask>
 
     <!-- 
         Some projects reference Microsoft.Extensions.* packages in version 3.1.0 
@@ -68,10 +46,40 @@
         3.1.0 because later versions cause file load errros when loaded by MSBuild breaking the MSBuild tasks
         https://github.com/ap0llo/mddocs/issues/75
     -->
-    <Target Name="FixFileTimestamps" AfterTargets="AfterBuild">
-        <Message Importance="high" Text="Fixing timestamps in $(OutputPath)" />
-        <FixModifiedTime Directory="$(OutputPath)" />
+    <Target Name="FixFileTimestampsInOutputPath" AfterTargets="AfterBuild">
+        <ItemGroup>
+            <_FixModifiedFile Include="$(OutputPath)/Microsoft.Extensions*" />
+        </ItemGroup>
+        <FixModifiedTime Files="@(_FixModifiedFile)" />
     </Target>
 
+    <Target Name="FixFileTimestampsOnPackageFiles" BeforeTargets="GenerateNuspec">
+        <FixModifiedTime Files="@(_PackageFiles)" />
+    </Target>
+
+    <UsingTask TaskName="FixModifiedTime"
+               TaskFactory="RoslynCodeTaskFactory"
+                AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll" >
+        <ParameterGroup>
+            <Files ParameterType="Microsoft.Build.Framework.ITaskItem[]" Required="true" />
+        </ParameterGroup>
+        <Task>
+            <Using Namespace="System.IO" />
+            <Code Type="Fragment" Language="cs">
+                <![CDATA[
+                    foreach(var fileItem in Files) 
+                    {
+                        var fullPath = fileItem.GetMetadata("FullPath");
+                        var fileInfo = new FileInfo(fullPath);
+                        if(fileInfo.LastWriteTime.Year == 1980) 
+                        {
+                            Log.LogMessage($"Fixing timestamp of file '{fullPath}'");
+                            fileInfo.LastWriteTime = fileInfo.CreationTime;
+                        }
+                    }
+                ]]>
+            </Code>
+        </Task>
+    </UsingTask>
 
 </Project>
