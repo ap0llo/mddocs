@@ -24,7 +24,7 @@ trigger:
 
 pr:
   - master
-  - releases/*
+  - release/*
 
 variables:
   # Build settings
@@ -42,17 +42,23 @@ variables:
   nuget_org_PackageName: 'Grynwald.MdDocs'                  # the name of the package being published
 
   # GitHub settings
-  github_createRelease: true                          # enable creation of GitHub releases when a package was uploaded to NuGet.org
   github_ServiceConnectionName: 'GitHub: ap0llo'      # the name of the Azure DevOps service connection to use for creating GitHub releases
   github_repositoryName: 'ap0llo/mddocs'              # the name of the github repo to create the release in
+
+  # Azure DevOps agent settings
+  azuredevops_vmimage: windows-latest
 
 jobs:
 
 # Main Build and test job: Builds the projects and runs all tests
 - job: Build_and_Test
   displayName: 🛠 Build and Test
-  pool: Hosted VS2017
+  pool: 
+    vmImage: $(azuredevops_vmimage)
   steps:
+
+  - checkout: self
+    submodules: true
 
   # Install .NET Core SDK and runtime (version specified in global.json)
   - task: UseDotNet@2
@@ -60,6 +66,13 @@ jobs:
     inputs:
       packageType: sdk
       useGlobalJson: true
+
+  # Also install .NET Core 2.1 SDK because MSBuild integration tests run with both .NET Core 3.1 and 2.1
+  - task: UseDotNet@2
+    displayName: 'Install .NET Core 2.1 SDK'
+    inputs:
+      packageType: sdk
+      version: 2.1.809
 
   # Restore local .NET Core tools
   - task: DotNetCoreCLI@2
@@ -111,12 +124,15 @@ jobs:
       failIfCoverageEmpty: true
 
   # Create NuGet Package and  publish as build artifact
-  - task: DotNetCoreCLI@2
+  - task: CmdLine@2
     displayName: 📦 Pack NuGet package
     inputs:
-      command: pack
-      projects: $(solutionPath)
-      arguments: '--configuration $(configuration) --output $(Build.ArtifactStagingDirectory) --no-build /warnaserror'
+      script: >-
+        dotnet pack $(solutionPath) 
+        --configuration $(configuration) 
+        --output $(Build.ArtifactStagingDirectory) 
+        --no-build 
+        /warnaserror        
   - task: PublishBuildArtifacts@1
     displayName: '📤 Publish Artifacts: $(artifactsName_Binaries)'
     inputs:
@@ -146,7 +162,8 @@ jobs:
 # Job to push package to MyGet.org after build
 - job: Publish_to_MyGet
   displayName: 🚚 Publish to MyGet
-  pool: Hosted VS2017
+  pool: 
+    vmImage: $(azuredevops_vmimage)
   # Only run after main build job and only if the current branch is master or a release branch
   dependsOn: Build_and_Test
   condition: and(succeeded('Build_and_Test'), or(eq(variables['build.sourceBranch'], 'refs/heads/master'), startsWith(variables['Build.SourceBranch'], 'refs/heads/release/') ))
@@ -170,7 +187,8 @@ jobs:
 # Job to push package to NuGet.org after build (only for builds of release branches)
 - job: Publish_to_NuGet_org
   displayName: 🚚 Publish to NuGet.org
-  pool: Hosted VS2017
+  pool: 
+    vmImage: $(azuredevops_vmimage)
   # Only run after main build job and only if the current branch is a release branch
   dependsOn: Build_and_Test
   condition: |
@@ -199,7 +217,8 @@ jobs:
 # Job to create a GitHub release (only if a package was uploaded to NuGet.org)
 - job: Create_GitHub_Release
   displayName: 🔖 Create GitHub Release
-  pool: Hosted VS2017
+  pool: 
+    vmImage: $(azuredevops_vmimage)
   # Only run if build was successful and a package was uploaded to nuget.org
   dependsOn:
   - Build_and_Test
@@ -266,7 +285,8 @@ jobs:
 # Job to create a GitHub *DRAFT* release (only if a package was uploaded to myget.org)
 - job: Create_GitHub_Draft_Release
   displayName: 🔖 Create GitHub DRAFT Release
-  pool: Hosted VS2017
+  pool: 
+    vmImage: $(azuredevops_vmimage)
   # Only run if build was successful and a package was uploaded to nuget.org
   dependsOn:
   - Build_and_Test

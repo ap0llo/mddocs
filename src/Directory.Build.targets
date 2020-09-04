@@ -31,6 +31,55 @@
         </ItemGroup>
 
     </Target>
+    
 
+    <!-- 
+        Some projects reference Microsoft.Extensions.* packages in version 3.1.0 
+        which shipped with broken timestamps for the files in the NuGet package
+        (see https://github.com/dotnet/extensions/issues/2750).
+
+        This makes it impossible to repack the files in a NuGet package 
+        (which is required for both tools packages as well as the MSBuild package).
+        To work around this, set a valid "modified" date on all assemblies in the output.
+
+        Note: Package versions after 3.1.0 fix this issue, but we need to reference
+        3.1.0 because later versions cause file load errros when loaded by MSBuild breaking the MSBuild tasks
+        https://github.com/ap0llo/mddocs/issues/75
+    -->
+    <Target Name="FixFileTimestampsInOutputPath" AfterTargets="AfterBuild">
+        <ItemGroup>
+            <_FixModifiedFile Include="$(OutputPath)/Microsoft.Extensions*" />
+        </ItemGroup>
+        <FixModifiedTime Files="@(_FixModifiedFile)" />
+    </Target>
+
+    <Target Name="FixFileTimestampsOnPackageFiles" BeforeTargets="GenerateNuspec">
+        <FixModifiedTime Files="@(_PackageFiles)" />
+    </Target>
+
+    <UsingTask TaskName="FixModifiedTime"
+               TaskFactory="RoslynCodeTaskFactory"
+                AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll" >
+        <ParameterGroup>
+            <Files ParameterType="Microsoft.Build.Framework.ITaskItem[]" Required="true" />
+        </ParameterGroup>
+        <Task>
+            <Using Namespace="System.IO" />
+            <Code Type="Fragment" Language="cs">
+                <![CDATA[
+                    foreach(var fileItem in Files) 
+                    {
+                        var fullPath = fileItem.GetMetadata("FullPath");
+                        var fileInfo = new FileInfo(fullPath);
+                        if(fileInfo.LastWriteTime.Year == 1980) 
+                        {
+                            Log.LogMessage($"Fixing timestamp of file '{fullPath}'");
+                            fileInfo.LastWriteTime = fileInfo.CreationTime;
+                        }
+                    }
+                ]]>
+            </Code>
+        </Task>
+    </UsingTask>
 
 </Project>
