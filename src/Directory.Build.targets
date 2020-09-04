@@ -31,6 +31,47 @@
         </ItemGroup>
 
     </Target>
+    
+    <UsingTask TaskName="FixModifiedTime"
+               TaskFactory="RoslynCodeTaskFactory"
+                AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll" >
+        <ParameterGroup>
+            <Directory Required="true" />
+        </ParameterGroup>
+        <Task>
+            <Using Namespace="System.IO" />
+            <Code Type="Fragment" Language="cs">
+                <![CDATA[
+         var dir = new DirectoryInfo(Directory);
+         foreach(var file in dir.EnumerateFiles()) 
+         {
+           if(file.LastWriteTime.Year == 1980) 
+           {
+                file.LastWriteTime = file.CreationTime;
+           }
+         }
+      ]]>
+            </Code>
+        </Task>
+    </UsingTask>
+
+    <!-- 
+        Some projects reference Microsoft.Extensions.* packages in version 3.1.0 
+        which shipped with broken timestamps for the files in the NuGet package
+        (see https://github.com/dotnet/extensions/issues/2750).
+
+        This makes it impossible to repack the files in a NuGet package 
+        (which is required for both tools packages as well as the MSBuild package).
+        To work around this, set a valid "modified" date on all assemblies in the output.
+
+        Note: Package versions after 3.1.0 fix this issue, but we need to reference
+        3.1.0 because later versions cause file load errros when loaded by MSBuild breaking the MSBuild tasks
+        https://github.com/ap0llo/mddocs/issues/75
+    -->
+    <Target Name="FixFileTimestamps" AfterTargets="AfterBuild">
+        <Message Importance="high" Text="Fixing timestamps in $(OutputPath)" />
+        <FixModifiedTime Directory="$(OutputPath)" />
+    </Target>
 
 
 </Project>

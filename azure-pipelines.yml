@@ -42,7 +42,6 @@ variables:
   nuget_org_PackageName: 'Grynwald.MdDocs'                  # the name of the package being published
 
   # GitHub settings
-  github_createRelease: true                          # enable creation of GitHub releases when a package was uploaded to NuGet.org
   github_ServiceConnectionName: 'GitHub: ap0llo'      # the name of the Azure DevOps service connection to use for creating GitHub releases
   github_repositoryName: 'ap0llo/mddocs'              # the name of the github repo to create the release in
 
