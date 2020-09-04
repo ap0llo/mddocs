@@ -124,12 +124,15 @@ jobs:
       failIfCoverageEmpty: true
 
   # Create NuGet Package and  publish as build artifact
-  - task: DotNetCoreCLI@2
+  - task: CmdLine@2
     displayName: 📦 Pack NuGet package
     inputs:
-      command: pack
-      projects: $(solutionPath)
-      arguments: '--configuration $(configuration) --output $(Build.ArtifactStagingDirectory) --no-build /warnaserror'
+      script: >-
+        dotnet pack $(solutionPath) 
+        --configuration $(configuration) 
+        --output $(Build.ArtifactStagingDirectory) 
+        --no-build 
+        /warnaserror        
   - task: PublishBuildArtifacts@1
     displayName: '📤 Publish Artifacts: $(artifactsName_Binaries)'
     inputs:
