@@ -43,7 +43,6 @@ The behaviour of the target can be customized by setting the following MSBuild p
 | `GenerateApiReferenceDocumentationOnBuild` | `false`                              | Set the to `true` to automatically generate API documentation when the project is built.  |
 | `MdDocsConfigurationFilePath`              | `mddocs.settings.json` <sup>1</sup>  | Specifies the path of the configuration file to use. See [Configuration](./configuration/README.md) for details .|
 | `ApiReferenceDocumentationOutputPath`      | -                                    | The directory to save the generated documetation to. Overwrites the [Output Path setting](./configuration/apireference/README.md#output-path) |
-| `MdDocsMarkdownPreset`                     | -                                    | Specify the "preset" to use for the generated markdown. Overwrites the [Markdown Preset setting](./configuration/apireference/README.md#markdown-preset) |
 
 <sup>1)</sup> When `MdDocsConfigurationFilePath` is not set, the MSBuild targets look for a file named `mddocs.settings.json` in the project directory or any parent directory of the project.
 
@@ -67,7 +66,6 @@ The behaviour of the target can be customized by setting the following MSBuild p
 | `GenerateCommandLineDocumentationOnBuild` | `false`                              | Set to `true` to automatically generate command line documentation when the project is built. |
 | `MdDocsConfigurationFilePath`             | `mddocs.settings.json` <sup>1</sup>  | Specifies the path of the configuration file to use. See [Configuration](./configuration/README.md) for details .|
 | `CommandLineDocumentationOutputPath`      | -                                    | The directory to save the generated documetation to. Overwrites the [Output Path setting](./configuration/commandlinehelp/README.md#output-path) |
-| `MdDocsMarkdownPreset`                    | -                                    | Specify the "preset" to use for the generated markdown. Overwrites the [Markdown Preset setting](./configuration/commandlinehelp/README.md#markdown-preset) |
 
 <sup>1)</sup> When `MdDocsConfigurationFilePath` is not set, the MSBuild targets look for a file named `mddocs.settings.json` in the project directory or any parent directory of the project.
 
