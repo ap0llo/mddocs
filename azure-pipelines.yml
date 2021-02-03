@@ -72,13 +72,13 @@ jobs:
     displayName: 'Install .NET Core 2.1 SDK'
     inputs:
       packageType: sdk
-      version: 2.1.809
+      version: 2.1.812
 
   - task: UseDotNet@2
     displayName: 'Install .NET Core 3.1 SDK'
     inputs:
       packageType: sdk
-      version: 3.1.100
+      version: 3.1.405
 
   # Restore local .NET Core tools
   - task: DotNetCoreCLI@2
