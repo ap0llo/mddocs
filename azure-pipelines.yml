@@ -53,7 +53,7 @@ jobs:
 # Main Build and test job: Builds the projects and runs all tests
 - job: Build_and_Test
   displayName: 🛠 Build and Test
-  pool: 
+  pool:
     vmImage: $(azuredevops_vmimage)
   steps:
 
@@ -67,12 +67,18 @@ jobs:
       packageType: sdk
       useGlobalJson: true
 
-  # Also install .NET Core 2.1 SDK because MSBuild integration tests run with both .NET Core 3.1 and 2.1
+  # Also install the .NET Core 2.1 and 3.1 SDKs because MSBuild integration tests run on multiple .NET SDKs
   - task: UseDotNet@2
     displayName: 'Install .NET Core 2.1 SDK'
     inputs:
       packageType: sdk
       version: 2.1.809
+
+  - task: UseDotNet@2
+    displayName: 'Install .NET Core 3.1 SDK'
+    inputs:
+      packageType: sdk
+      version: 3.1.100
 
   # Restore local .NET Core tools
   - task: DotNetCoreCLI@2
@@ -128,11 +134,11 @@ jobs:
     displayName: 📦 Pack NuGet package
     inputs:
       script: >-
-        dotnet pack $(solutionPath) 
-        --configuration $(configuration) 
-        --output $(Build.ArtifactStagingDirectory) 
-        --no-build 
-        /warnaserror        
+        dotnet pack $(solutionPath)
+        --configuration $(configuration)
+        --output $(Build.ArtifactStagingDirectory)
+        --no-build
+        /warnaserror
   - task: PublishBuildArtifacts@1
     displayName: '📤 Publish Artifacts: $(artifactsName_Binaries)'
     inputs:
@@ -162,7 +168,7 @@ jobs:
 # Job to push package to MyGet.org after build
 - job: Publish_to_MyGet
   displayName: 🚚 Publish to MyGet
-  pool: 
+  pool:
     vmImage: $(azuredevops_vmimage)
   # Only run after main build job and only if the current branch is master or a release branch
   dependsOn: Build_and_Test
@@ -187,7 +193,7 @@ jobs:
 # Job to push package to NuGet.org after build (only for builds of release branches)
 - job: Publish_to_NuGet_org
   displayName: 🚚 Publish to NuGet.org
-  pool: 
+  pool:
     vmImage: $(azuredevops_vmimage)
   # Only run after main build job and only if the current branch is a release branch
   dependsOn: Build_and_Test
@@ -217,7 +223,7 @@ jobs:
 # Job to create a GitHub release (only if a package was uploaded to NuGet.org)
 - job: Create_GitHub_Release
   displayName: 🔖 Create GitHub Release
-  pool: 
+  pool:
     vmImage: $(azuredevops_vmimage)
   # Only run if build was successful and a package was uploaded to nuget.org
   dependsOn:
@@ -285,7 +291,7 @@ jobs:
 # Job to create a GitHub *DRAFT* release (only if a package was uploaded to myget.org)
 - job: Create_GitHub_Draft_Release
   displayName: 🔖 Create GitHub DRAFT Release
-  pool: 
+  pool:
     vmImage: $(azuredevops_vmimage)
   # Only run if build was successful and a package was uploaded to nuget.org
   dependsOn:
