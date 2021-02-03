@@ -170,6 +170,9 @@ namespace Grynwald.MdDocs.MSBuild.IntegrationTest
 
             var process = Process.Start(startInfo);
 
+            if (process is null)
+                throw new Exception($"Failed to start '{startInfo.FileName}'");
+
             process.OutputDataReceived += (s, e) => m_OutputHelper.WriteLine(e?.Data ?? "");
             process.ErrorDataReceived += (s, e) => m_OutputHelper.WriteLine(e?.Data ?? "");
 

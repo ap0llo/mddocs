@@ -38,7 +38,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Configuration
             var currentConfigObject = new JObject();
             configRoot.Add(new JProperty("mddocs", currentConfigObject));
 
-            var keySegments = key.Split(":");
+            var keySegments = key.Split(':');
             for (var i = 0; i < keySegments.Length; i++)
             {
                 // last fragment => add value

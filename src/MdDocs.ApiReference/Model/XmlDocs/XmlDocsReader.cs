@@ -80,19 +80,24 @@ namespace Grynwald.MdDocs.ApiReference.Model.XmlDocs
 
                 m_Logger.LogInformation($"Reading XML documentation comments from '{m_FileName}'");
 
-                document = XDocument.Load(m_FileName, LoadOptions.SetBaseUri | LoadOptions.SetLineInfo);
+                document = XDocument.Load(m_FileName!, LoadOptions.SetBaseUri | LoadOptions.SetLineInfo);
             }
             else
             {
                 document = m_Document;
             }
 
-            return document.Root.Element("members")
-                .Elements("member")
-                .Where(element => element.Attribute("name") != null)
-                .Select(element => TryReadMember(element))
-                .Where(x => x != null)
-                .ToList()!;
+            IReadOnlyList<MemberElement>? members = document.Root
+                ?.Element("members")
+                ?.Elements("member")
+                ?.Where(element => element.Attribute("name") != null)
+                ?.Select(element => TryReadMember(element))
+                ?.Where(x => x != null)
+                ?.Select(x => x!)
+                ?.ToList();
+
+            return members ?? Array.Empty<MemberElement>();
+
         }
 
 
