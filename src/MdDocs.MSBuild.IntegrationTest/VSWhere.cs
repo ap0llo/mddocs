@@ -64,6 +64,10 @@ namespace Grynwald.MdDocs.MSBuild.IntegrationTest
             var stdOutBuilder = new StringBuilder();
 
             var process = Process.Start(startInfo);
+            if (process is null)
+                throw new VSWhereException("Failed to launch vswhere.exe process");
+
+
 
             process.OutputDataReceived += (s, e) => stdOutBuilder.AppendLine(e.Data ?? "");
 

@@ -40,7 +40,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
                 for (int i = 0; i < tokenCount; i++)
                 {
 
-                    var kind = Enum.Parse<MemberIdTokenKind>(info.GetValue<string>($"tokenKind{i}"));
+                    var kind = (MemberIdTokenKind)Enum.Parse(typeof(MemberIdTokenKind), info.GetValue<string>($"tokenKind{i}"));
                     var value = info.GetValue<string>($"tokenValue{i}");
                     tokens.Add(new MemberIdToken(kind, value));
                 }

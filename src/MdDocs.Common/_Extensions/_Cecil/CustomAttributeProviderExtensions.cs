@@ -47,7 +47,7 @@ namespace Grynwald.MdDocs.Common
                     .Single(a => a.AttributeType.FullName == name);
         }
 
-        public static CustomAttribute GetAttributeOrDefault(this ICustomAttributeProvider definition, string name)
+        public static CustomAttribute? GetAttributeOrDefault(this ICustomAttributeProvider definition, string name)
         {
             return definition
                     .CustomAttributes

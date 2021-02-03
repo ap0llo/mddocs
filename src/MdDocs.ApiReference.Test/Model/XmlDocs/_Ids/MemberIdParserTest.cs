@@ -41,7 +41,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model.XmlDocs
             {
                 Input = info.GetValue<string>(nameof(Input));
                 ExpectedMemberId = info.GetValue<XunitSerializableMemberId>(nameof(ExpectedMemberId));
-                OuterTypes = info.GetValue<XunitSerializableTypeId[]>(nameof(OuterTypes)).Select(x => x.TypeId).ToHashSet();
+                OuterTypes = new HashSet<TypeId>(info.GetValue<XunitSerializableTypeId[]>(nameof(OuterTypes)).Select(x => x.TypeId));
             }
 
             public void Serialize(IXunitSerializationInfo info)
