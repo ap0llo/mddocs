@@ -31,8 +31,9 @@ namespace Grynwald.MdDocs.MSBuild.IntegrationTest
         {
             get
             {
-                yield return new MSBuildRuntimeInfo(MSBuildRuntimeType.Core, Version.Parse("3.1.100"));
                 yield return new MSBuildRuntimeInfo(MSBuildRuntimeType.Core, Version.Parse("2.1.800"));
+                yield return new MSBuildRuntimeInfo(MSBuildRuntimeType.Core, Version.Parse("3.1.100"));
+                yield return new MSBuildRuntimeInfo(MSBuildRuntimeType.Core, Version.Parse("5.0.100"));
                 yield return new MSBuildRuntimeInfo(MSBuildRuntimeType.Full, Version.Parse("16.0"));
             }
         }
