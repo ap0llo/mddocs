@@ -67,7 +67,7 @@ created by me without anyone else being involved in the discussion.
 .NET Core and .NET Standard). Thanks to all the people contribution to these projects:
 
 - Parts of this program are based on code from the [NuDoq project](https://github.com/kzu/NuDoq/),
-  licensed under the Apache License 2.0.  
+  licensed under the Apache License 2.0.
   See [`XmlDocsReader.cs`](src/MdDoc/Model/XmlDocs/XmlDocsReader.cs) for details
 - [Mono.Cecil](https://github.com/jbevain/cecil/)
 - [CommandLineParser](https://github.com/gsscoder/commandline)
@@ -84,6 +84,7 @@ created by me without anyone else being involved in the discussion.
 - [MSBuild](https://github.com/dotnet/msbuild/)
 - [SourceLink](https://github.com/dotnet/sourcelink)
 - [NuGet](https://github.com/NuGet/NuGet.Client)
+- [Newtonsoft.Json](https://www.newtonsoft.com/json)
 
 ## Versioning and Branching
 
