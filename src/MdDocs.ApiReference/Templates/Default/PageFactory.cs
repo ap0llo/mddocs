@@ -64,14 +64,14 @@ namespace Grynwald.MdDocs.ApiReference.Templates.Default
 
             m_Logger.LogInformation("Loading pages");
 
-            foreach (var @namespace in m_Model.MainModuleDocumentation.Namespaces)
+            foreach (var @namespace in m_Model.Namespaces)
             {
                 var page = new NamespacePage(linkProvider, m_Configuration, @namespace, m_Logger);
                 m_PagesByModel.Add(@namespace, page);
                 m_DocumentSet.Add(m_PathProvider.GetPath(page), page);
             }
 
-            foreach (var type in m_Model.MainModuleDocumentation.Types)
+            foreach (var type in m_Model.Types)
             {
                 var typePage = new TypePage(linkProvider, m_Configuration, type, m_Logger);
                 m_PagesByModel.Add(type, typePage);

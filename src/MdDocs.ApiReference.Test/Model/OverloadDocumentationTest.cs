@@ -56,7 +56,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         {
             // ARRANGE
             var typeId = new SimpleTypeId("Namespace1.Namespace2", "InternalClass1");
-            var sut = GetOverloadDocumentationInstance(m_AssemblyDocumentation.MainModuleDocumentation.Types.Single());
+            var sut = GetOverloadDocumentationInstance(m_AssemblyDocumentation.Types.Single());
 
             // ACT
             var documentation = sut.TryGetDocumentation(typeId);
@@ -71,7 +71,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         {
             // ARRANGE
             var typeId = new SimpleTypeId("Namespace1.Namespace2", "Class1");
-            var sut = GetOverloadDocumentationInstance(m_AssemblyDocumentation.MainModuleDocumentation.Types.Single());
+            var sut = GetOverloadDocumentationInstance(m_AssemblyDocumentation.Types.Single());
 
             // ACT
             var documentation = sut.TryGetDocumentation(typeId);

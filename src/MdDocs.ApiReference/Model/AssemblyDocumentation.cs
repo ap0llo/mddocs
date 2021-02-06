@@ -81,8 +81,23 @@ namespace Grynwald.MdDocs.ApiReference.Model
         public void Dispose() => Definition.Dispose();
 
         /// <inheritdoc />
-        public IDocumentation? TryGetDocumentation(MemberId member) =>
-            MainModuleDocumentation.TryGetDocumentation(member);
+        public IDocumentation? TryGetDocumentation(MemberId member)
+        {
+            switch (member)
+            {
+                case TypeId typeId:
+                    return m_Types.GetValueOrDefault(typeId);
+
+                case TypeMemberId typeMemberId:
+                    return m_Types.GetValueOrDefault(typeMemberId.DefiningType)?.TryGetDocumentation(member);
+
+                case NamespaceId namespaceId:
+                    return m_Namespaces.GetValueOrDefault(namespaceId);
+
+                default:
+                    return null;
+            }
+        }
 
         /// <inheritdoc />
         public AssemblyDocumentation GetAssemblyDocumentation() => this;

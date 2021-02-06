@@ -327,7 +327,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
                     return null;
 
                 default:
-                    return ModuleDocumentation.TryGetDocumentation(id);
+                    return AssemblyDocumentation.TryGetDocumentation(id);
             }
         }
 
