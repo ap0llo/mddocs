@@ -23,8 +23,14 @@ namespace Grynwald.MdDocs.ApiReference.Model
         private readonly ILogger m_Logger;
 
 
+        /// <summary>
+        /// The name of the assembly
+        /// </summary>
         public string Name { get; }
 
+        /// <summary>
+        /// The version of the assembly
+        /// </summary>
         public string? Version { get; }
 
         /// <summary>
