@@ -32,10 +32,6 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// </summary>
         internal AssemblyDefinition Definition { get; }
 
-        /// <summary>
-        /// Gets the documentation model for the assembly's main module
-        /// </summary>
-        public ModuleDocumentation MainModuleDocumentation { get; }
 
         /// <summary>
         /// Gets the types defined in this assembly.
@@ -62,8 +58,6 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
             Name = definition.Name.Name;
             Version = definition.GetInformationalVersionOrVersion();
-            MainModuleDocumentation = new ModuleDocumentation(this, definition.MainModule, m_XmlDocsProvider, m_Logger);
-
 
             m_Types = new Dictionary<TypeId, TypeDocumentation>();
             m_Namespaces = new Dictionary<NamespaceId, NamespaceDocumentation>();

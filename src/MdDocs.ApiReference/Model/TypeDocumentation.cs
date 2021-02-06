@@ -41,11 +41,6 @@ namespace Grynwald.MdDocs.ApiReference.Model
         public AssemblyDocumentation AssemblyDocumentation { get; }
 
         /// <summary>
-        /// Gets the documentation model of the module that defines this type.
-        /// </summary>
-        public ModuleDocumentation ModuleDocumentation => AssemblyDocumentation.MainModuleDocumentation;
-
-        /// <summary>
         /// Gets the documentation model of this type's namespace.
         /// </summary>
         public NamespaceDocumentation NamespaceDocumentation { get; }
