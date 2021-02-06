@@ -13,7 +13,7 @@
   <ItemGroup>
     <PackageReference Include="Grynwald.MarkdownGenerator" Version="2.5.34" />
     <PackageReference Include="Mono.Cecil" Version="0.11.3" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.10" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.11" />
 
     <!--
       Important: Keep version at 3.1.0, do not upgrade to newer versions of the 3.1.* line.
