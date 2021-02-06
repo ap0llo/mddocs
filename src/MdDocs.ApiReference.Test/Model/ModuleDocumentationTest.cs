@@ -1,4 +1,5 @@
-﻿using Grynwald.MdDocs.ApiReference.Model;
+﻿using System;
+using Grynwald.MdDocs.ApiReference.Model;
 using Grynwald.MdDocs.ApiReference.Model.XmlDocs;
 using Grynwald.MdDocs.TestHelpers;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -16,6 +17,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
 
 
         [Fact]
+        [Obsolete]
         public void Types_includes_expected_types()
         {
             // ARRANGE
@@ -80,6 +82,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         }
 
         [Fact]
+        [Obsolete]
         public void Types_does_not_include_internal_types()
         {
             // ARRANGE
@@ -104,6 +107,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         }
 
         [Fact]
+        [Obsolete]
         public void Types_does_not_include_non_public_nested_types()
         {
             // ARRANGE

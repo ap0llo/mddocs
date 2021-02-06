@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Grynwald.MdDocs.ApiReference.Model.XmlDocs;
 using Grynwald.MdDocs.Common;
 using Grynwald.MdDocs.Common.Model;
+using Grynwald.Utilities.Collections;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Mono.Cecil;
@@ -14,6 +17,8 @@ namespace Grynwald.MdDocs.ApiReference.Model
     /// </summary>
     public sealed class AssemblyDocumentation : IDisposable, IDocumentation
     {
+        private readonly IDictionary<TypeId, TypeDocumentation> m_Types;
+        private readonly IDictionary<NamespaceId, NamespaceDocumentation> m_Namespaces;
         private readonly IXmlDocsProvider m_XmlDocsProvider;
         private readonly ILogger m_Logger;
 
@@ -32,6 +37,16 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// </summary>
         public ModuleDocumentation MainModuleDocumentation { get; }
 
+        /// <summary>
+        /// Gets the types defined in this assembly.
+        /// </summary>
+        public IReadOnlyCollection<TypeDocumentation> Types { get; }
+
+        /// <summary>
+        /// Gets the namespaces defined in this assembly.
+        /// </summary>
+        public IReadOnlyCollection<NamespaceDocumentation> Namespaces { get; }
+
 
         /// <summary>
         /// Initializes a new instance of <see cref="AssemblyDocumentation"/>.
@@ -48,6 +63,18 @@ namespace Grynwald.MdDocs.ApiReference.Model
             Name = definition.Name.Name;
             Version = definition.GetInformationalVersionOrVersion();
             MainModuleDocumentation = new ModuleDocumentation(this, definition.MainModule, m_XmlDocsProvider, m_Logger);
+
+
+            m_Types = new Dictionary<TypeId, TypeDocumentation>();
+            m_Namespaces = new Dictionary<NamespaceId, NamespaceDocumentation>();
+
+            foreach (var typeDefinition in Definition.MainModule.Types.Where(t => t.IsPublic))
+            {
+                LoadTypeRecursively(typeDefinition, declaringType: null);
+            }
+
+            Types = ReadOnlyCollectionAdapter.Create(m_Types.Values);
+            Namespaces = ReadOnlyCollectionAdapter.Create(m_Namespaces.Values);
         }
 
 
@@ -93,5 +120,54 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
             return new AssemblyDocumentation(assemblyDefinition, xmlDocsProvider, logger);
         }
+
+
+        private void LoadTypeRecursively(TypeDefinition typeDefinition, TypeDocumentation? declaringType)
+        {
+            var typeId = typeDefinition.ToTypeId();
+            var namespaceDocumentation = GetNamespaceDocumentation(typeId.Namespace.Name);
+
+            //TODO:
+            //var typeDocumentation = new TypeDocumentation(this, namespaceDocumentation, typeDefinition, m_XmlDocsProvider, m_Logger, declaringType);
+            var typeDocumentation = new TypeDocumentation(MainModuleDocumentation, namespaceDocumentation, typeDefinition, m_XmlDocsProvider, m_Logger, declaringType);
+            declaringType?.AddNestedType(typeDocumentation);
+
+            m_Types.Add(typeDocumentation.TypeId, typeDocumentation);
+            namespaceDocumentation.AddType(typeDocumentation);
+
+            if (typeDefinition.HasNestedTypes)
+            {
+                foreach (var nestedType in typeDefinition.NestedTypes.Where(x => x.IsNestedPublic))
+                {
+                    LoadTypeRecursively(nestedType, typeDocumentation);
+                }
+            }
+        }
+
+        private NamespaceDocumentation GetNamespaceDocumentation(string namespaceName)
+        {
+            var namespaceId = new NamespaceId(namespaceName);
+
+            if (m_Namespaces.ContainsKey(namespaceId))
+            {
+                return m_Namespaces[namespaceId];
+            }
+
+            var names = namespaceName.Split('.');
+
+            var parentNamespace = names.Length > 1
+                ? GetNamespaceDocumentation(names.Take(names.Length - 1).JoinToString("."))
+                : null;
+
+            //TODO
+            //var newNamespace = new NamespaceDocumentation(this, parentNamespace, namespaceId, m_Logger);
+            var newNamespace = new NamespaceDocumentation(MainModuleDocumentation, parentNamespace, namespaceId, m_Logger);
+            m_Namespaces.Add(namespaceId, newNamespace);
+
+            parentNamespace?.AddNamespace(newNamespace);
+
+            return newNamespace;
+        }
+
     }
 }
