@@ -23,10 +23,12 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
                 }";
 
             using var assembly = Compile(cs);
-            using var assemblyDocumentation = new AssemblyDocumentation(assembly, NullXmlDocsProvider.Instance, NullLogger.Instance);
+            using var assemblySetDocumentation = AssemblySetDocumentation.FromAssemblyDefinitions(assembly);
 
             // ACT
-            var methods = assemblyDocumentation
+            var methods = assemblySetDocumentation
+                .Assemblies
+                .Single()
                 .Types
                 .Single()
                 .Methods;

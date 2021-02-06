@@ -105,7 +105,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
             return new AssemblySetDocumentation(assemblyDefinitions, xmlDocsProviders, logger);
         }
 
-        public static AssemblySetDocumentation FromAssemblyDefinitions(IReadOnlyList<AssemblyDefinition> assemblyDefinitions) =>
+        public static AssemblySetDocumentation FromAssemblyDefinitions(params AssemblyDefinition[] assemblyDefinitions) =>
             FromAssemblyDefinitions(assemblyDefinitions, NullLogger.Instance);
 
         public static AssemblySetDocumentation FromAssemblyDefinitions(IReadOnlyList<AssemblyDefinition> assemblyDefinitions, ILogger logger)
@@ -125,7 +125,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
             foreach (var (index, assemblyDefinition) in assemblyDefinitions.WithIndex())
             {
-                var assemblyDocumentation = new AssemblyDocumentation(assemblyDefinition, xmlDocsProviders[index], m_Logger);
+                var assemblyDocumentation = new AssemblyDocumentation(this, assemblyDefinition, xmlDocsProviders[index], m_Logger);
 
                 if (m_Assemblies.ContainsKey(assemblyDocumentation.Name))
                 {

@@ -13,7 +13,8 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
     {
         private AssemblyDocumentation GetAssemblyDocumentation(AssemblyDefinition assemblyDefinition)
         {
-            return new AssemblyDocumentation(assemblyDefinition, NullXmlDocsProvider.Instance, NullLogger.Instance);
+            using var assemblySetDocumentation = AssemblySetDocumentation.FromAssemblyDefinitions(assemblyDefinition);
+            return assemblySetDocumentation.Assemblies.Single();
         }
 
         [Theory]

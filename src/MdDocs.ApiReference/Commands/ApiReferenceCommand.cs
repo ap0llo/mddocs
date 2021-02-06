@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using Grynwald.MdDocs.ApiReference.Configuration;
 using Grynwald.MdDocs.ApiReference.Model;
 using Grynwald.MdDocs.ApiReference.Templates;
@@ -27,11 +28,14 @@ namespace Grynwald.MdDocs.ApiReference.Commands
             if (!ValidateConfiguration())
                 return false;
 
-            using (var assemblyDocumentation = AssemblyDocumentation.FromAssemblyFile(m_Configuration.AssemblyPath, m_Logger))
+            using (var assemblySet = AssemblySetDocumentation.FromAssemblyFiles(new[] { m_Configuration.AssemblyPath }, m_Logger))
             {
+                //TODO: Support multiple assemblies
+                var assembly = assemblySet.Assemblies.Single();
+
                 ApiReferenceTemplateProvider
                     .GetTemplate(m_Logger, m_Configuration)
-                    .Render(assemblyDocumentation)
+                    .Render(assembly)
                     .Save(
                         m_Configuration.OutputPath,
                         cleanOutputDirectory: true,

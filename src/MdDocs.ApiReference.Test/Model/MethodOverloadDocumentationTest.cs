@@ -30,7 +30,8 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             ";
 
             using var assembly = Compile(cs);
-            using var assemblyDocumentation = new AssemblyDocumentation(assembly, NullXmlDocsProvider.Instance, NullLogger.Instance);
+            using var assemblySetDocumentation = AssemblySetDocumentation.FromAssemblyDefinitions(assembly);
+            var assemblyDocumentation = assemblySetDocumentation.Assemblies.Single();
             var typeDocumentation = assemblyDocumentation.Types.Single();
 
 
@@ -62,7 +63,8 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             ";
 
             using var assembly = Compile(cs);
-            using var assemblyDocumentation = new AssemblyDocumentation(assembly, NullXmlDocsProvider.Instance, NullLogger.Instance);
+            using var assemblySetDocumentation = AssemblySetDocumentation.FromAssemblyDefinitions(assembly);
+            var assemblyDocumentation = assemblySetDocumentation.Assemblies.Single();
             var typeDocumentation = assemblyDocumentation.Types.Single();
 
             // ACT
@@ -94,7 +96,8 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             ";
 
             using var assembly = Compile(cs);
-            using var assemblyDocumentation = new AssemblyDocumentation(assembly, NullXmlDocsProvider.Instance, NullLogger.Instance);
+            using var assemblySetDocumentation = AssemblySetDocumentation.FromAssemblyDefinitions(assembly);
+            var assemblyDocumentation = assemblySetDocumentation.Assemblies.Single();
             var typeDocumentation = assemblyDocumentation.Types.Single();
 
             // ARRANGE / ACT
