@@ -103,7 +103,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
                 ? GetNamespaceDocumentation(names.Take(names.Length - 1).JoinToString("."))
                 : null;
 
-            var newNamespace = new NamespaceDocumentation(this, parentNamespace, namespaceId, m_Logger);
+            var newNamespace = new NamespaceDocumentation(AssemblyDocumentation, parentNamespace, namespaceId, m_Logger);
             m_Namespaces.Add(namespaceId, newNamespace);
 
             parentNamespace?.AddNamespace(newNamespace);
@@ -118,7 +118,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
             var typeId = typeDefinition.ToTypeId();
             var namespaceDocumentation = GetNamespaceDocumentation(typeId.Namespace.Name);
 
-            var typeDocumentation = new TypeDocumentation(this, namespaceDocumentation, typeDefinition, m_XmlDocsProvider, m_Logger, declaringType);
+            var typeDocumentation = new TypeDocumentation(AssemblyDocumentation, namespaceDocumentation, typeDefinition, m_XmlDocsProvider, m_Logger, declaringType);
             declaringType?.AddNestedType(typeDocumentation);
 
             m_Types.Add(typeDocumentation.TypeId, typeDocumentation);
