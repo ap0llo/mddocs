@@ -5,7 +5,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
     /// <summary>
     /// Base documentation model for all type members (field, events, methods...)
     /// </summary>
-    public abstract class MemberDocumentation : IDocumentation
+    public abstract class MemberDocumentation : IAssemblyMemberDocumentation
     {
         /// <summary>
         /// Gets the documentation model for the type defining the member.

@@ -75,9 +75,6 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// <inheritdoc />
         public IDocumentation? TryGetDocumentation(MemberId member) => m_AssemblyDocumentation.TryGetDocumentation(member);
 
-        /// <inheritdoc />
-        public AssemblyDocumentation GetAssemblyDocumentation() => m_AssemblyDocumentation.GetAssemblyDocumentation();
-
         /// <summary>
         /// Adds the specified type to the namespace's type list.
         /// </summary>

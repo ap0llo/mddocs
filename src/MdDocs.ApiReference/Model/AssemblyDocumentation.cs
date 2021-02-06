@@ -93,8 +93,6 @@ namespace Grynwald.MdDocs.ApiReference.Model
             }
         }
 
-        /// <inheritdoc />
-        public AssemblyDocumentation GetAssemblyDocumentation() => this;
 
         /// <summary>
         /// Loads the documentation model from an assembly file.

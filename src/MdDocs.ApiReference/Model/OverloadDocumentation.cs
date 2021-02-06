@@ -8,7 +8,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
     /// <summary>
     /// Base class for the documentation model of an overload.
     /// </summary>
-    public abstract class OverloadDocumentation : IDocumentation, IObsoleteableDocumentation
+    public abstract class OverloadDocumentation : IAssemblyMemberDocumentation, IObsoleteableDocumentation
     {
         /// <summary>
         /// Gets the id of the overload.

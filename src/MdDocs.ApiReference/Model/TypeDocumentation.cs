@@ -12,7 +12,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
     /// <summary>
     /// Documentation model of a type.
     /// </summary>
-    public sealed class TypeDocumentation : IDocumentation, IObsoleteableDocumentation
+    public sealed class TypeDocumentation : IAssemblyMemberDocumentation, IObsoleteableDocumentation
     {
         private readonly IXmlDocsProvider m_XmlDocsProvider;
         private readonly ILogger m_Logger;

@@ -8,7 +8,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
     /// <summary>
     /// Documentation model of a method or indexer parameter.
     /// </summary>
-    public sealed class ParameterDocumentation : IDocumentation
+    public sealed class ParameterDocumentation : IAssemblyMemberDocumentation
     {
         /// <summary>
         /// Gets the name of the parameter.

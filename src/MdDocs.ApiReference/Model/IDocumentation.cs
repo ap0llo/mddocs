@@ -11,9 +11,5 @@
         /// <returns>Returns documentation for the specified member or null if it is unknown or not documented</returns>
         IDocumentation? TryGetDocumentation(MemberId member);
 
-        /// <summary>
-        /// Gets the documentation object for the assembly
-        /// </summary>
-        AssemblyDocumentation GetAssemblyDocumentation();
     }
 }

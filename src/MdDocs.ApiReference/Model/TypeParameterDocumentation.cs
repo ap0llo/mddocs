@@ -8,9 +8,9 @@ namespace Grynwald.MdDocs.ApiReference.Model
     /// <summary>
     /// Documentation model for a type's or method's generic type parameter.
     /// </summary>
-    public sealed class TypeParameterDocumentation : IDocumentation
+    public sealed class TypeParameterDocumentation : IAssemblyMemberDocumentation
     {
-        private readonly IDocumentation m_Parent;
+        private readonly IAssemblyMemberDocumentation m_Parent;
 
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// <param name="parentId">The if of the parent documentation model (the type of method that defines the type parameter).</param>
         /// <param name="definition">The underlying Mono.Cecil definition of the type parameter.</param>
         /// <param name="xmlDocsProvider">The XML documentation provider to use for loading XML documentation comments.</param>
-        internal TypeParameterDocumentation(IDocumentation parent, MemberId parentId, GenericParameter definition, IXmlDocsProvider xmlDocsProvider)
+        internal TypeParameterDocumentation(IAssemblyMemberDocumentation parent, MemberId parentId, GenericParameter definition, IXmlDocsProvider xmlDocsProvider)
         {
             m_Parent = parent;
             parentId = parentId ?? throw new ArgumentNullException(nameof(parentId));
