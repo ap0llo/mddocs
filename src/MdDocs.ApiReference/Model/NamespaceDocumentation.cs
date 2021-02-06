@@ -10,7 +10,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
     /// </summary>
     public sealed class NamespaceDocumentation : IDocumentation
     {
-        private readonly ModuleDocumentation m_ModuleDocumentation;
+        private readonly AssemblyDocumentation m_AssemblyDocumentation;
         private readonly ILogger m_Logger;
         private readonly IDictionary<TypeId, TypeDocumentation> m_Types = new Dictionary<TypeId, TypeDocumentation>();
         private readonly IDictionary<NamespaceId, NamespaceDocumentation> m_Namespaces = new Dictionary<NamespaceId, NamespaceDocumentation>();
@@ -53,13 +53,13 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// <summary>
         /// Initializes a new instance of <see cref="NamespaceDocumentation"/>.
         /// </summary>
-        /// <param name="moduleDocumentation">The documentation model of the module this namespace is defined in.</param>
+        /// <param name="assemblyDocumentation">The documentation model of the assembly this namespace is defined in.</param>
         /// <param name="parentNamespaceDocumentation">The documentation model of the namespace that contains this namespace.</param>
         /// <param name="namespaceId">The id of the namespace.</param>
         /// <param name="logger">The logger to use.</param>
-        internal NamespaceDocumentation(ModuleDocumentation moduleDocumentation, NamespaceDocumentation? parentNamespaceDocumentation, NamespaceId namespaceId, ILogger logger)
+        internal NamespaceDocumentation(AssemblyDocumentation assemblyDocumentation, NamespaceDocumentation? parentNamespaceDocumentation, NamespaceId namespaceId, ILogger logger)
         {
-            m_ModuleDocumentation = moduleDocumentation ?? throw new ArgumentNullException(nameof(moduleDocumentation));
+            m_AssemblyDocumentation = assemblyDocumentation ?? throw new ArgumentNullException(nameof(assemblyDocumentation));
             ParentNamespaceDocumentation = parentNamespaceDocumentation;
             NamespaceId = namespaceId ?? throw new ArgumentNullException(nameof(namespaceId));
             m_Logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -73,10 +73,10 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
 
         /// <inheritdoc />
-        public IDocumentation? TryGetDocumentation(MemberId member) => m_ModuleDocumentation.TryGetDocumentation(member);
+        public IDocumentation? TryGetDocumentation(MemberId member) => m_AssemblyDocumentation.TryGetDocumentation(member);
 
         /// <inheritdoc />
-        public AssemblyDocumentation GetAssemblyDocumentation() => m_ModuleDocumentation.GetAssemblyDocumentation();
+        public AssemblyDocumentation GetAssemblyDocumentation() => m_AssemblyDocumentation.GetAssemblyDocumentation();
 
         /// <summary>
         /// Adds the specified type to the namespace's type list.

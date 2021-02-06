@@ -24,7 +24,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Templates.Default
             ");
 
             var assemblyDocumentation = new AssemblyDocumentation(assembly, NullXmlDocsProvider.Instance, NullLogger.Instance);
-            return assemblyDocumentation.MainModuleDocumentation.Types.Single();
+            return assemblyDocumentation.Types.Single();
         }
 
         protected override TypePage CreatePage(TypeDocumentation model, ApiReferenceConfiguration configuration)

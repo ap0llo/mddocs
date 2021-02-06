@@ -31,7 +31,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
 
             using var assembly = Compile(cs);
             using var assemblyDocumentation = new AssemblyDocumentation(assembly, NullXmlDocsProvider.Instance, NullLogger.Instance);
-            var typeDocumentation = assemblyDocumentation.MainModuleDocumentation.Types.Single();
+            var typeDocumentation = assemblyDocumentation.Types.Single();
 
 
             // ACT
@@ -63,7 +63,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
 
             using var assembly = Compile(cs);
             using var assemblyDocumentation = new AssemblyDocumentation(assembly, NullXmlDocsProvider.Instance, NullLogger.Instance);
-            var typeDocumentation = assemblyDocumentation.MainModuleDocumentation.Types.Single();
+            var typeDocumentation = assemblyDocumentation.Types.Single();
 
             // ACT
             var sut = typeDocumentation
@@ -95,7 +95,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
 
             using var assembly = Compile(cs);
             using var assemblyDocumentation = new AssemblyDocumentation(assembly, NullXmlDocsProvider.Instance, NullLogger.Instance);
-            var typeDocumentation = assemblyDocumentation.MainModuleDocumentation.Types.Single();
+            var typeDocumentation = assemblyDocumentation.Types.Single();
 
             // ARRANGE / ACT
             var sut = typeDocumentation

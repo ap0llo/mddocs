@@ -26,7 +26,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             using var assemblyDocumentation = new AssemblyDocumentation(assembly, NullXmlDocsProvider.Instance, NullLogger.Instance);
 
             // ACT
-            var methods = assemblyDocumentation.MainModuleDocumentation
+            var methods = assemblyDocumentation
                 .Types
                 .Single()
                 .Methods;

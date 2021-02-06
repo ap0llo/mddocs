@@ -36,9 +36,9 @@ namespace Grynwald.MdDocs.ApiReference.Model
         public TypeId TypeId { get; }
 
         /// <summary>
-        /// Gets the documentation model of the module that defines this type.
+        /// Gets the documentation model of the Assembly that defines this type.
         /// </summary>
-        public ModuleDocumentation ModuleDocumentation { get; }
+        public AssemblyDocumentation AssemblyDocumentation { get; }
 
         /// <summary>
         /// Gets the documentation model of this type's namespace.
@@ -173,12 +173,12 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// <summary>
         /// Initializes a new instance of <see cref="TypeDocumentation"/>.
         /// </summary>
-        /// <param name="moduleDocumentation">The documentation model of the module that defines the type.</param>
+        /// <param name="assemblyDocumentation">The documentation model of the assembly that defines the type.</param>
         /// <param name="namespaceDocumentation">The documentation model of the type's namespace.</param>
         /// <param name="definition">The type's underlying Mono.Cecil definition.</param>
         /// <param name="xmlDocsProvider">The XML documentation provider to use for loading XML documentation comments.</param>
         /// <param name="logger">The logger to use.</param>
-        internal TypeDocumentation(ModuleDocumentation moduleDocumentation,
+        internal TypeDocumentation(AssemblyDocumentation assemblyDocumentation,
                                    NamespaceDocumentation namespaceDocumentation,
                                    TypeDefinition definition,
                                    IXmlDocsProvider xmlDocsProvider,
@@ -188,7 +188,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
             TypeId = definition.ToTypeId();
             DeclaringType = declaringType;
 
-            ModuleDocumentation = moduleDocumentation ?? throw new ArgumentNullException(nameof(moduleDocumentation));
+            AssemblyDocumentation = assemblyDocumentation ?? throw new ArgumentNullException(nameof(assemblyDocumentation));
             NamespaceDocumentation = namespaceDocumentation ?? throw new ArgumentNullException(nameof(namespaceDocumentation));
             Definition = definition ?? throw new ArgumentNullException(nameof(definition));
             m_XmlDocsProvider = xmlDocsProvider ?? throw new ArgumentNullException(nameof(xmlDocsProvider));
@@ -322,12 +322,12 @@ namespace Grynwald.MdDocs.ApiReference.Model
                     return null;
 
                 default:
-                    return ModuleDocumentation.TryGetDocumentation(id);
+                    return AssemblyDocumentation.TryGetDocumentation(id);
             }
         }
 
         /// <inheritdoc />
-        public AssemblyDocumentation GetAssemblyDocumentation() => ModuleDocumentation.GetAssemblyDocumentation();
+        public AssemblyDocumentation GetAssemblyDocumentation() => AssemblyDocumentation;
 
 
         internal void AddNestedType(TypeDocumentation nestedType)

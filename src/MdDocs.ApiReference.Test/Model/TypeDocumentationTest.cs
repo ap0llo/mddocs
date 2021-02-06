@@ -34,7 +34,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             using var assembly = Compile(cs);
             using var assemblyDocumentation = GetAssemblyDocumentation(assembly);
 
-            var sut = assemblyDocumentation.MainModuleDocumentation.Types.Single();
+            var sut = assemblyDocumentation.Types.Single();
 
             // ACT
             var actualKind = sut.Kind;
@@ -57,7 +57,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             using var assembly = Compile(cs);
             using var assemblyDocumentation = GetAssemblyDocumentation(assembly);
 
-            var sut = assemblyDocumentation.MainModuleDocumentation.Types.Single();
+            var sut = assemblyDocumentation.Types.Single();
 
             // Act / ASSERT
             Assert.Equal(assembly.Name.Name, sut.AssemblyName);
@@ -79,7 +79,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             using var assembly = Compile(cs);
             using var assemblyDocumentation = GetAssemblyDocumentation(assembly);
 
-            var sut = assemblyDocumentation.MainModuleDocumentation.Types.Single();
+            var sut = assemblyDocumentation.Types.Single();
 
             // ACT / ASSERT
             Assert.Single(sut.Fields);
@@ -103,7 +103,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             using var assembly = Compile(cs);
             using var assemblyDocumentation = GetAssemblyDocumentation(assembly);
 
-            var sut = assemblyDocumentation.MainModuleDocumentation.Types.Single();
+            var sut = assemblyDocumentation.Types.Single();
 
             // ACT / ASSERT
             Assert.Equal(2, sut.Fields.Count);
@@ -134,7 +134,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             using var assembly = Compile(cs);
             using var assemblyDocumentation = GetAssemblyDocumentation(assembly);
 
-            var sut = assemblyDocumentation.MainModuleDocumentation.Types.Single();
+            var sut = assemblyDocumentation.Types.Single();
 
             // ACT / ASSERT
             Assert.Equal(3, sut.Events.Count);
@@ -163,7 +163,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             using var assembly = Compile(cs);
             using var assemblyDocumentation = GetAssemblyDocumentation(assembly);
 
-            var sut = assemblyDocumentation.MainModuleDocumentation.Types.Single();
+            var sut = assemblyDocumentation.Types.Single();
 
             // ACT / ASSERT
             Assert.Equal(3, sut.Events.Count);
@@ -189,7 +189,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             using var assembly = Compile(cs);
             using var assemblyDocumentation = GetAssemblyDocumentation(assembly);
 
-            var sut = assemblyDocumentation.MainModuleDocumentation.Types.Single();
+            var sut = assemblyDocumentation.Types.Single();
 
             // ACT / ASSERT
             Assert.NotNull(sut.Events);
@@ -222,7 +222,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             using var assembly = Compile(cs);
             using var assemblyDocumentation = GetAssemblyDocumentation(assembly);
 
-            var sut = assemblyDocumentation.MainModuleDocumentation.Types.Single();
+            var sut = assemblyDocumentation.Types.Single();
 
             // ACT
             var properties = sut.Properties;
@@ -258,7 +258,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             using var assembly = Compile(cs);
             using var assemblyDocumentation = GetAssemblyDocumentation(assembly);
 
-            var sut = assemblyDocumentation.MainModuleDocumentation.Types.Single();
+            var sut = assemblyDocumentation.Types.Single();
 
             // ACT
             var properties = sut.Properties;
@@ -296,7 +296,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             using var assembly = Compile(cs);
             using var assemblyDocumentation = GetAssemblyDocumentation(assembly);
 
-            var sut = assemblyDocumentation.MainModuleDocumentation.Types.Single();
+            var sut = assemblyDocumentation.Types.Single();
 
             // ARRANGE / ACT
             var properties = sut.Properties;
@@ -334,7 +334,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             using var assembly = Compile(cs);
             using var assemblyDocumentation = GetAssemblyDocumentation(assembly);
 
-            var sut = assemblyDocumentation.MainModuleDocumentation.Types.Single();
+            var sut = assemblyDocumentation.Types.Single();
 
             // ACT
             var indexers = sut.Indexers;
@@ -366,7 +366,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             using var assembly = Compile(cs);
             using var assemblyDocumentation = GetAssemblyDocumentation(assembly);
 
-            var sut = assemblyDocumentation.MainModuleDocumentation.Types.Single();
+            var sut = assemblyDocumentation.Types.Single();
 
             // ARRANGE / ACT
             var indexers = sut.Indexers;
@@ -402,7 +402,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             using var assembly = Compile(cs);
             using var assemblyDocumentation = GetAssemblyDocumentation(assembly);
 
-            var sut = assemblyDocumentation.MainModuleDocumentation.Types.Single();
+            var sut = assemblyDocumentation.Types.Single();
 
             // ARRANGE / ACT
             var indexers = sut.Indexers;
@@ -429,7 +429,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             using var assembly = Compile(cs);
             using var assemblyDocumentation = GetAssemblyDocumentation(assembly);
 
-            var sut = assemblyDocumentation.MainModuleDocumentation.Types.Single();
+            var sut = assemblyDocumentation.Types.Single();
 
             // ACT / ASSERT
             Assert.NotNull(sut.Properties);
@@ -458,7 +458,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             using var assembly = Compile(cs);
             using var assemblyDocumentation = GetAssemblyDocumentation(assembly);
 
-            var sut = assemblyDocumentation.MainModuleDocumentation.Types.Single();
+            var sut = assemblyDocumentation.Types.Single();
 
             // ACT / ASSERT
             Assert.Equal(4, sut.Methods.Count);
@@ -490,7 +490,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             using var assembly = Compile(cs);
             using var assemblyDocumentation = GetAssemblyDocumentation(assembly);
 
-            var sut = assemblyDocumentation.MainModuleDocumentation.Types.Single();
+            var sut = assemblyDocumentation.Types.Single();
 
             // ACT / ASSERT
             Assert.NotNull(sut.Methods);
@@ -517,7 +517,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             using var assembly = Compile(cs);
             using var assemblyDocumentation = GetAssemblyDocumentation(assembly);
 
-            var sut = assemblyDocumentation.MainModuleDocumentation.Types.Single();
+            var sut = assemblyDocumentation.Types.Single();
 
             // ACT / ASSERT
             var method = Assert.Single(sut.Methods);
@@ -543,7 +543,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             using var assembly = Compile(cs);
             using var assemblyDocumentation = GetAssemblyDocumentation(assembly);
 
-            var sut = assemblyDocumentation.MainModuleDocumentation.Types.Single();
+            var sut = assemblyDocumentation.Types.Single();
 
             // ACT / ASSERT
             Assert.NotNull(sut.Methods);
@@ -576,7 +576,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             using var assembly = Compile(cs);
             using var assemblyDocumentation = GetAssemblyDocumentation(assembly);
 
-            var sut = assemblyDocumentation.MainModuleDocumentation.Types.Single();
+            var sut = assemblyDocumentation.Types.Single();
 
             // ACT / ASSERT
             Assert.NotNull(sut.Methods);
@@ -607,7 +607,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             using var assembly = Compile(cs);
             using var assemblyDocumentation = GetAssemblyDocumentation(assembly);
 
-            var sut = assemblyDocumentation.MainModuleDocumentation.Types.Single();
+            var sut = assemblyDocumentation.Types.Single();
 
             // ACT / ASSERT
             Assert.NotNull(sut.Methods);
@@ -629,7 +629,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             using var assembly = Compile(cs);
             using var assemblyDocumentation = GetAssemblyDocumentation(assembly);
 
-            var sut = assemblyDocumentation.MainModuleDocumentation.Types.Single();
+            var sut = assemblyDocumentation.Types.Single();
 
             // ACT / ASSERT
             Assert.NotNull(sut.Constructors);
@@ -657,7 +657,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             using var assembly = Compile(cs);
             using var assemblyDocumentation = GetAssemblyDocumentation(assembly);
 
-            var sut = assemblyDocumentation.MainModuleDocumentation.Types.Single();
+            var sut = assemblyDocumentation.Types.Single();
 
             // ACT / ASSERT
             Assert.NotNull(sut.Constructors);
@@ -678,7 +678,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             using var assembly = Compile(cs);
             using var assemblyDocumentation = GetAssemblyDocumentation(assembly);
 
-            var sut = assemblyDocumentation.MainModuleDocumentation.Types.Single();
+            var sut = assemblyDocumentation.Types.Single();
 
             // ACT / ASSERT
             Assert.Null(sut.Constructors);
@@ -706,7 +706,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             using var assembly = Compile(cs);
             using var assemblyDocumentation = GetAssemblyDocumentation(assembly);
 
-            var sut = assemblyDocumentation.MainModuleDocumentation.Types.Single();
+            var sut = assemblyDocumentation.Types.Single();
 
 
             // ACT / ASSERT
@@ -728,7 +728,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             using var assembly = Compile(cs);
             using var assemblyDocumentation = GetAssemblyDocumentation(assembly);
 
-            var sut = assemblyDocumentation.MainModuleDocumentation.Types.Single();
+            var sut = assemblyDocumentation.Types.Single();
 
             // ACT / ASSERT
             Assert.Null(sut.Constructors);
@@ -751,7 +751,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             using var assembly = Compile(cs);
             using var assemblyDocumentation = GetAssemblyDocumentation(assembly);
 
-            var sut = assemblyDocumentation.MainModuleDocumentation.Types.Single();
+            var sut = assemblyDocumentation.Types.Single();
 
             // ACT / ASSERT
             Assert.Null(sut.Constructors);
@@ -824,7 +824,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             using var assembly = Compile(cs);
             using var assemblyDocumentation = GetAssemblyDocumentation(assembly);
 
-            var sut = assemblyDocumentation.MainModuleDocumentation.Types.Single();
+            var sut = assemblyDocumentation.Types.Single();
 
             // ACT / ASSERT
             Assert.NotNull(sut.Operators);
@@ -849,7 +849,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             using var assembly = Compile(cs);
             using var assemblyDocumentation = GetAssemblyDocumentation(assembly);
 
-            var sut = assemblyDocumentation.MainModuleDocumentation.Types.Single();
+            var sut = assemblyDocumentation.Types.Single();
 
             // ACT / ASSERT
             Assert.NotNull(sut.Operators);
@@ -871,7 +871,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             using var assembly = Compile(cs);
             using var assemblyDocumentation = GetAssemblyDocumentation(assembly);
 
-            var sut = assemblyDocumentation.MainModuleDocumentation.Types.Single();
+            var sut = assemblyDocumentation.Types.Single();
 
             var expectedSequence = new[]
             {
@@ -899,7 +899,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             using var assembly = Compile(cs);
             using var assemblyDocumentation = GetAssemblyDocumentation(assembly);
 
-            var sut = assemblyDocumentation.MainModuleDocumentation.Types.Single();
+            var sut = assemblyDocumentation.Types.Single();
 
             var expectedSequence = new[]
             {
@@ -931,7 +931,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             using var assembly = Compile(cs);
             using var assemblyDocumentation = GetAssemblyDocumentation(assembly);
 
-            var sut = assemblyDocumentation.MainModuleDocumentation.Types.Single();
+            var sut = assemblyDocumentation.Types.Single();
 
             var expectedSequence = new[]
             {
@@ -962,7 +962,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             using var assembly = Compile(cs);
             using var assemblyDocumentation = GetAssemblyDocumentation(assembly);
 
-            var sut = assemblyDocumentation.MainModuleDocumentation.Types.Single();
+            var sut = assemblyDocumentation.Types.Single();
 
             // ACT / ASSERT
             Assert.NotNull(sut.InheritanceHierarchy);
@@ -983,7 +983,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             using var assembly = Compile(cs);
             using var assemblyDocumentation = GetAssemblyDocumentation(assembly);
 
-            var sut = assemblyDocumentation.MainModuleDocumentation.Types.Single();
+            var sut = assemblyDocumentation.Types.Single();
 
             // ACT / ASSERT
             Assert.NotNull(sut.InheritanceHierarchy);
@@ -1047,7 +1047,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             using var assembly = Compile(cs);
             using var assemblyDocumentation = GetAssemblyDocumentation(assembly);
 
-            var types = assemblyDocumentation.MainModuleDocumentation.Types.Where(x => x.TypeId.Name != "TestAttribute");
+            var types = assemblyDocumentation.Types.Where(x => x.TypeId.Name != "TestAttribute");
 
             var expectedAttributes = new[]
             {
@@ -1085,7 +1085,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             using var assembly = Compile(cs);
             using var assemblyDocumentation = GetAssemblyDocumentation(assembly);
 
-            var sut = assemblyDocumentation.MainModuleDocumentation.Types.Single(x => x.TypeId.Name == "Class1");
+            var sut = assemblyDocumentation.Types.Single(x => x.TypeId.Name == "Class1");
 
             var expectedAttributes = new[]
             {
@@ -1115,7 +1115,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             using var assembly = Compile(cs);
             using var assemblyDocumentation = GetAssemblyDocumentation(assembly);
 
-            var sut = assemblyDocumentation.MainModuleDocumentation.Types.Single(x => x.TypeId.Name == "Class1");
+            var sut = assemblyDocumentation.Types.Single(x => x.TypeId.Name == "Class1");
 
             var typeId = new SimpleTypeId(NamespaceId.GlobalNamespace, "Class2");
 
@@ -1143,7 +1143,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             using var assembly = Compile(cs);
             using var assemblyDocumentation = GetAssemblyDocumentation(assembly);
 
-            var sut = assemblyDocumentation.MainModuleDocumentation.Types.Single(x => x.TypeId.Name == "Class1");
+            var sut = assemblyDocumentation.Types.Single(x => x.TypeId.Name == "Class1");
 
             // ARRANGE
             var typeId = new SimpleTypeId(NamespaceId.GlobalNamespace, "Class2");
@@ -1171,7 +1171,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             using var assembly = Compile(cs);
             using var assemblyDocumentation = GetAssemblyDocumentation(assembly);
 
-            var sut = assemblyDocumentation.MainModuleDocumentation.Types.Single();
+            var sut = assemblyDocumentation.Types.Single();
 
             // ACT / ASSERT
             Assert.NotNull(sut.ImplementedInterfaces);
@@ -1192,7 +1192,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             using var assembly = Compile(cs);
             using var assemblyDocumentation = GetAssemblyDocumentation(assembly);
 
-            var sut = assemblyDocumentation.MainModuleDocumentation.Types.Single();
+            var sut = assemblyDocumentation.Types.Single();
 
             // ACT / ASSERT
             Assert.NotNull(sut.ImplementedInterfaces);
@@ -1217,7 +1217,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             using var assembly = Compile(cs);
             using var assemblyDocumentation = GetAssemblyDocumentation(assembly);
 
-            var sut = assemblyDocumentation.MainModuleDocumentation.Types.Single();
+            var sut = assemblyDocumentation.Types.Single();
 
             // ACT / ASSERT
             Assert.NotNull(sut.ImplementedInterfaces);
@@ -1244,7 +1244,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             using var assembly = Compile(cs);
             using var assemblyDocumentation = GetAssemblyDocumentation(assembly);
 
-            var sut = assemblyDocumentation.MainModuleDocumentation.Types.Single(x => x.TypeId.Name == "Class1");
+            var sut = assemblyDocumentation.Types.Single(x => x.TypeId.Name == "Class1");
 
 
             // ACT / ASSERT
@@ -1268,7 +1268,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             using var assembly = Compile(cs);
             using var assemblyDocumentation = GetAssemblyDocumentation(assembly);
 
-            var sut = assemblyDocumentation.MainModuleDocumentation.Types.Single();
+            var sut = assemblyDocumentation.Types.Single();
 
             // ACT / ASSERT
             Assert.NotNull(sut.ImplementedInterfaces);
@@ -1295,7 +1295,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             using var assembly = Compile(cs);
             using var assemblyDocumentation = GetAssemblyDocumentation(assembly);
 
-            var sut = assemblyDocumentation.MainModuleDocumentation.Types.Single(x => x.TypeId.Name == "Struct1");
+            var sut = assemblyDocumentation.Types.Single(x => x.TypeId.Name == "Struct1");
 
             // ACT / ASSERT
             Assert.NotNull(sut.ImplementedInterfaces);
@@ -1319,7 +1319,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             using var assembly = Compile(cs);
             using var assemblyDocumentation = GetAssemblyDocumentation(assembly);
 
-            var sut = assemblyDocumentation.MainModuleDocumentation.Types.Single();
+            var sut = assemblyDocumentation.Types.Single();
 
             // ACT / ASSERT
             Assert.NotNull(sut.ImplementedInterfaces);
@@ -1340,7 +1340,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             using var assembly = Compile(cs);
             using var assemblyDocumentation = GetAssemblyDocumentation(assembly);
 
-            var sut = assemblyDocumentation.MainModuleDocumentation.Types.Single();
+            var sut = assemblyDocumentation.Types.Single();
 
             // ACT / ASSERT
             Assert.NotNull(sut.TypeParameters);
@@ -1361,7 +1361,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             using var assembly = Compile(cs);
             using var assemblyDocumentation = GetAssemblyDocumentation(assembly);
 
-            var sut = assemblyDocumentation.MainModuleDocumentation.Types.Single();
+            var sut = assemblyDocumentation.Types.Single();
 
             // ACT / ASSERT
             Assert.NotNull(sut.TypeParameters);

@@ -64,7 +64,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             // ARRANGE
             var typeId = new SimpleTypeId("Namespace1.Namespace2", "InternalClass1");
 
-            var typeDocumentation = m_AssemblyDocumentation.MainModuleDocumentation.Types.Single();
+            var typeDocumentation = m_AssemblyDocumentation.Types.Single();
             var sut = GetMemberDocumentationInstance(typeDocumentation);
 
             // ACT
@@ -79,7 +79,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         {
             // ARRANGE
             var typeId = new SimpleTypeId("Namespace1.Namespace2", "Class1");
-            var sut = GetMemberDocumentationInstance(m_AssemblyDocumentation.MainModuleDocumentation.Types.Single());
+            var sut = GetMemberDocumentationInstance(m_AssemblyDocumentation.Types.Single());
 
             // ACT
             var documentation = sut.TryGetDocumentation(typeId);

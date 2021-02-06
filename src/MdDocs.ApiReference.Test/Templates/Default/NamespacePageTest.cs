@@ -23,7 +23,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Templates.Default
             ");
 
             var assemblyDocumentation = new AssemblyDocumentation(assembly, NullXmlDocsProvider.Instance, NullLogger.Instance);
-            return assemblyDocumentation.MainModuleDocumentation.Namespaces.Single();
+            return assemblyDocumentation.Namespaces.Single();
         }
 
         protected override NamespacePage CreatePage(NamespaceDocumentation model, ApiReferenceConfiguration configuration)

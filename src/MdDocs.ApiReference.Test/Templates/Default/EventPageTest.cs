@@ -32,7 +32,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Templates.Default
             ");
 
             var assemblyDocumentation = new AssemblyDocumentation(assembly, NullXmlDocsProvider.Instance, NullLogger.Instance);
-            return assemblyDocumentation.MainModuleDocumentation.Types.Single().Events.Single();
+            return assemblyDocumentation.Types.Single().Events.Single();
         }
     }
 }
