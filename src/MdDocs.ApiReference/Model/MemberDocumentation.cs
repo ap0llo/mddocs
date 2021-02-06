@@ -12,6 +12,9 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// </summary>
         public TypeDocumentation TypeDocumentation { get; }
 
+        /// <inheritdoc />
+        public AssemblyDocumentation AssemblyDocumentation => TypeDocumentation.GetAssemblyDocumentation();
+
 
         // private protected constructor => prevent implementation outside of this assembly
         private protected MemberDocumentation(TypeDocumentation typeDocumentation)
@@ -22,8 +25,5 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
         /// <inheritdoc />
         public abstract IDocumentation? TryGetDocumentation(MemberId id);
-
-        /// <inheritdoc />
-        public AssemblyDocumentation GetAssemblyDocumentation() => TypeDocumentation.GetAssemblyDocumentation();
     }
 }

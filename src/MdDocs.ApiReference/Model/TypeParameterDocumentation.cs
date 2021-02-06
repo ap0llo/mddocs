@@ -24,6 +24,9 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// <value>The documentation as provided by the user or <c>null</c> if no description was specified.</value>
         public TextBlock? Description { get; }
 
+        /// <inheritdoc />
+        public AssemblyDocumentation AssemblyDocumentation => m_Parent.AssemblyDocumentation;
+
 
         /// <summary>
         /// Gets the underlying Mono.Cecil definition of the type parameter.
@@ -51,8 +54,5 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
         /// <inheritdoc />
         public IDocumentation? TryGetDocumentation(MemberId member) => m_Parent.TryGetDocumentation(member);
-
-        /// <inheritdoc />
-        public AssemblyDocumentation GetAssemblyDocumentation() => m_Parent.GetAssemblyDocumentation();
     }
 }

@@ -6,8 +6,8 @@
     public interface IAssemblyMemberDocumentation : IDocumentation
     {
         /// <summary>
-        /// Gets the documentation object for the assembly
+        /// Gets the documentation object for the assembly the current item is defined in.
         /// </summary>
-        AssemblyDocumentation GetAssemblyDocumentation();
+        AssemblyDocumentation AssemblyDocumentation { get; }
     }
 }

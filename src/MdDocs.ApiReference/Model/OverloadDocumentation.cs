@@ -76,6 +76,9 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// <inheritdoc />
         public abstract string? ObsoleteMessage { get; }
 
+        /// <inheritdoc />
+        public abstract AssemblyDocumentation AssemblyDocumentation { get; }
+
 
         // private protected constructor => prevent implementation outside of this assembly
         private protected OverloadDocumentation(MemberId memberId, IXmlDocsProvider xmlDocsProvider)
@@ -94,8 +97,5 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
         /// <inheritdoc />
         public abstract IDocumentation? TryGetDocumentation(MemberId id);
-
-        /// <inheritdoc />
-        public abstract AssemblyDocumentation GetAssemblyDocumentation();
     }
 }

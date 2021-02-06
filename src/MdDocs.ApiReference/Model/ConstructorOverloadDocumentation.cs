@@ -14,6 +14,10 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// </summary>
         public ConstructorDocumentation ConstructorDocumentation { get; }
 
+        /// <inheritdoc />
+        public override AssemblyDocumentation AssemblyDocumentation =>
+            ConstructorDocumentation.AssemblyDocumentation;
+
 
         /// <summary>
         /// Initializes a new instance of <see cref="ConstructorOverloadDocumentation"/>
@@ -31,10 +35,5 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// <inheritdoc />
         public override IDocumentation? TryGetDocumentation(MemberId id) =>
             MemberId.Equals(id) ? this : ConstructorDocumentation.TryGetDocumentation(id);
-
-
-        /// <inheritdoc />
-        public override AssemblyDocumentation GetAssemblyDocumentation() =>
-            ConstructorDocumentation.GetAssemblyDocumentation();
     }
 }

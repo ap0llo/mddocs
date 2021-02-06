@@ -31,6 +31,10 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// <value>Gets the documentation for the parameter (specified using the <c>param</c> tag) or <c>null</c> if no documentation is available</value>
         public TextBlock? Description { get; }
 
+        /// <inheritdoc />
+        public AssemblyDocumentation AssemblyDocumentation => OverloadDocumentation.AssemblyDocumentation;
+
+
         /// <summary>
         /// Gets the underlying Mono.Cecil definition of the parameter.
         /// </summary>
@@ -58,8 +62,5 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// <inheritdoc />
         public IDocumentation? TryGetDocumentation(MemberId id) =>
             OverloadDocumentation.TryGetDocumentation(id);
-
-        /// <inheritdoc />
-        public AssemblyDocumentation GetAssemblyDocumentation() => OverloadDocumentation.GetAssemblyDocumentation();
     }
 }

@@ -18,14 +18,14 @@ namespace Grynwald.MdDocs.ApiReference.Templates.Default
                 "\r\n",
                 new MdStrongEmphasisSpan("Namespace:"), " ", GetMdSpan(Model.TypeDocumentation.NamespaceDocumentation.NamespaceId),
                 "\r\n",
-                new MdStrongEmphasisSpan("Assembly:"), " " + Model.GetAssemblyDocumentation().Name
+                new MdStrongEmphasisSpan("Assembly:"), " " + Model.AssemblyDocumentation.Name
             );
 
             if (m_Configuration.Template.Default.IncludeVersion)
             {
                 paragraph.Add("\r\n");
                 paragraph.Add(new MdCompositeSpan(
-                    new MdStrongEmphasisSpan("Assembly Version:"), " " + Model.GetAssemblyDocumentation().Version)
+                    new MdStrongEmphasisSpan("Assembly Version:"), " " + Model.AssemblyDocumentation.Version)
                 );
             }
 

@@ -54,6 +54,11 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// <inheritdoc />
         public override string? ObsoleteMessage { get; }
 
+        /// <inheritdoc />
+        public override AssemblyDocumentation AssemblyDocumentation =>
+            IndexerDocumentation.AssemblyDocumentation;
+
+
         /// <summary>
         /// Gets the underlying Mono.Cecil definition of the indexer.
         /// </summary>
@@ -92,9 +97,5 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// <inheritdoc />
         public override IDocumentation? TryGetDocumentation(MemberId id) =>
             MemberId.Equals(id) ? this : IndexerDocumentation.TryGetDocumentation(id);
-
-        /// <inheritdoc />
-        public override AssemblyDocumentation GetAssemblyDocumentation() =>
-            IndexerDocumentation.GetAssemblyDocumentation();
     }
 }
