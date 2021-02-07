@@ -84,14 +84,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// <summary>
         /// Adds the specified type to the namespace's type list.
         /// </summary>
-        internal void AddType(TypeDocumentation typeDocumentation)
-        {
-            if (m_Types.ContainsKey(typeDocumentation.TypeId))
-            {
-                throw new DuplicateTypeException(typeDocumentation.Definition.FullName, $"Type '{typeDocumentation.Definition.FullName}' already exists");
-            }
-            m_Types.Add(typeDocumentation.TypeId, typeDocumentation);
-        }
+        internal void AddType(TypeDocumentation typeDocumentation) => m_Types.Add(typeDocumentation.TypeId, typeDocumentation);
 
         /// <summary>
         /// Adds the specified namespace to the namespace's namespace list.

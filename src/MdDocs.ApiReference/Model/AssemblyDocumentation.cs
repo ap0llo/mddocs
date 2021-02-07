@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using Grynwald.MdDocs.ApiReference.Model.XmlDocs;
 using Grynwald.MdDocs.Common;
 using Grynwald.Utilities.Collections;
-using Microsoft.Extensions.Logging;
 using Mono.Cecil;
 
 namespace Grynwald.MdDocs.ApiReference.Model
@@ -15,8 +12,6 @@ namespace Grynwald.MdDocs.ApiReference.Model
     public sealed class AssemblyDocumentation : IDisposable, IDocumentation
     {
         private readonly IDictionary<TypeId, TypeDocumentation> m_Types;
-        private readonly IXmlDocsProvider m_XmlDocsProvider;
-        private readonly ILogger m_Logger;
 
         /// <summary>
         /// The set of all assemblies documentation is being generated for.
@@ -51,23 +46,15 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// <param name="definition">The definition of the assembly.</param>
         /// <param name="xmlDocsProvider">The XML documentation provider to use for loading XML documentation comments.</param>
         /// <param name="logger">The logger to use.</param>
-        internal AssemblyDocumentation(AssemblySetDocumentation assemblySet, AssemblyDefinition definition, IXmlDocsProvider xmlDocsProvider, ILogger logger)
+        internal AssemblyDocumentation(AssemblySetDocumentation assemblySet, AssemblyDefinition definition)
         {
             AssemblySet = assemblySet ?? throw new ArgumentNullException(nameof(assemblySet));
             Definition = definition ?? throw new ArgumentNullException(nameof(definition));
-            m_XmlDocsProvider = xmlDocsProvider ?? throw new ArgumentNullException(nameof(xmlDocsProvider));
-            m_Logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
             Name = definition.Name.Name;
             Version = definition.GetInformationalVersionOrVersion();
 
             m_Types = new Dictionary<TypeId, TypeDocumentation>();
-
-            foreach (var typeDefinition in Definition.MainModule.Types.Where(t => t.IsPublic))
-            {
-                LoadTypeRecursively(typeDefinition, declaringType: null);
-            }
-
             Types = ReadOnlyCollectionAdapter.Create(m_Types.Values);
         }
 
@@ -77,50 +64,25 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// <inheritdoc />
         public IDocumentation? TryGetDocumentation(MemberId member)
         {
-            switch (member)
+            if (member is TypeId typeId && m_Types.TryGetValue(typeId, out var typeDocumentation))
             {
-                case TypeId typeId:
-                    if (m_Types.TryGetValue(typeId, out var typeDocumentation))
-                    {
-                        return typeDocumentation;
-                    }
-                    break;
-
-                case TypeMemberId typeMemberId:
-                    if (m_Types.TryGetValue(typeMemberId.DefiningType, out var definingTypeDocumentation))
-                    {
-                        return definingTypeDocumentation.TryGetDocumentation(member);
-                    }
-                    break;
-
-                default:
-                    break;
+                return typeDocumentation;
             }
-
-            return AssemblySet.TryGetDocumentation(member);
-        }
-
-
-        private void LoadTypeRecursively(TypeDefinition typeDefinition, TypeDocumentation? declaringType)
-        {
-            var typeId = typeDefinition.ToTypeId();
-            var namespaceDocumentation = AssemblySet.GetOrAddNamespace(typeId.Namespace.Name);
-
-            var typeDocumentation = new TypeDocumentation(this, namespaceDocumentation, typeDefinition, m_XmlDocsProvider, m_Logger, declaringType);
-            declaringType?.AddNestedType(typeDocumentation);
-
-            m_Types.Add(typeDocumentation.TypeId, typeDocumentation);
-            namespaceDocumentation.AddType(typeDocumentation);
-
-            if (typeDefinition.HasNestedTypes)
+            else if (member is TypeMemberId typeMemberId && m_Types.TryGetValue(typeMemberId.DefiningType, out var definingTypeDocumentation))
             {
-                foreach (var nestedType in typeDefinition.NestedTypes.Where(x => x.IsNestedPublic))
-                {
-                    LoadTypeRecursively(nestedType, typeDocumentation);
-                }
+                return definingTypeDocumentation.TryGetDocumentation(member);
+            }
+            else
+            {
+                return AssemblySet.TryGetDocumentation(member);
             }
         }
 
+
+        /// <summary>
+        /// Adds the specified type to the namespace's type list.
+        /// </summary>
+        internal void AddType(TypeDocumentation typeDocumentation) => m_Types.Add(typeDocumentation.TypeId, typeDocumentation);
 
     }
 }

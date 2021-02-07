@@ -17,8 +17,8 @@ namespace Grynwald.MdDocs.ApiReference.Model
     public sealed class AssemblySetDocumentation : IDocumentation, IDisposable
     {
         private readonly IDictionary<string, AssemblyDocumentation> m_Assemblies;
-        private readonly IDictionary<TypeId, AssemblyDocumentation> m_AssembliesByType;
         private readonly IDictionary<NamespaceId, NamespaceDocumentation> m_Namespaces;
+        private readonly IDictionary<TypeId, TypeDocumentation> m_Types;
         private readonly ILogger m_Logger;
 
 
@@ -32,6 +32,11 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// </summary>
         public IReadOnlyCollection<NamespaceDocumentation> Namespaces { get; }
 
+        /// <summary>
+        /// Gets all the types defined in any assembly in the assembly set.
+        /// </summary>
+        public IReadOnlyCollection<TypeDocumentation> Types { get; }
+
 
         /// <summary>
         /// Initializes a new instance of <see cref="AssemblySetDocumentation"/>
@@ -44,12 +49,12 @@ namespace Grynwald.MdDocs.ApiReference.Model
             m_Logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
             m_Assemblies = new Dictionary<string, AssemblyDocumentation>(StringComparer.OrdinalIgnoreCase);
-            m_AssembliesByType = new Dictionary<TypeId, AssemblyDocumentation>();
             m_Namespaces = new Dictionary<NamespaceId, NamespaceDocumentation>();
-
+            m_Types = new Dictionary<TypeId, TypeDocumentation>();
 
             Assemblies = ReadOnlyCollectionAdapter.Create(m_Assemblies.Values);
             Namespaces = ReadOnlyCollectionAdapter.Create(m_Namespaces.Values);
+            Types = ReadOnlyCollectionAdapter.Create(m_Types.Values);
 
             LoadAssemblies(assemblyDefinitions, xmlDocsProviders);
         }
@@ -69,8 +74,8 @@ namespace Grynwald.MdDocs.ApiReference.Model
         {
             return member switch
             {
-                TypeId typeId => m_AssembliesByType.GetValueOrDefault(typeId)?.TryGetDocumentation(member),
-                TypeMemberId typeMemberId => m_AssembliesByType.GetValueOrDefault(typeMemberId.DefiningType)?.TryGetDocumentation(member),
+                TypeId typeId => m_Types.GetValueOrDefault(typeId)?.TryGetDocumentation(member),
+                TypeMemberId typeMemberId => m_Types.GetValueOrDefault(typeMemberId.DefiningType)?.TryGetDocumentation(member),
                 NamespaceId namespaceId => m_Namespaces.GetValueOrDefault(namespaceId),
                 _ => null
             };
@@ -125,7 +130,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         }
 
 
-        internal NamespaceDocumentation GetOrAddNamespace(string namespaceName)
+        private NamespaceDocumentation GetOrAddNamespace(string namespaceName)
         {
             var namespaceId = new NamespaceId(namespaceName);
 
@@ -155,35 +160,48 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
             foreach (var (index, assemblyDefinition) in assemblyDefinitions.WithIndex())
             {
-                AssemblyDocumentation assemblyDocumentation;
-                try
+                var assemblyName = assemblyDefinition.Name.Name;
+                if (m_Assemblies.ContainsKey(assemblyName))
                 {
-                    assemblyDocumentation = new AssemblyDocumentation(this, assemblyDefinition, xmlDocsProviders[index], m_Logger);
-                }
-                catch (DuplicateTypeException ex)
-                {
-                    throw new InvalidAssemblySetException($"Type '{ex.TypeName}' exists in multiple assemblies.");
+                    throw new InvalidAssemblySetException($"Assembly set contains multiple assemblies named '{assemblyName}'");
                 }
 
-                if (m_Assemblies.ContainsKey(assemblyDocumentation.Name))
-                {
-                    throw new InvalidAssemblySetException($"Assembly set contains multiple assemblies named '{assemblyDocumentation.Name}'");
-                }
+                var assemblyDocumentation = new AssemblyDocumentation(this, assemblyDefinition);
+                m_Assemblies.Add(assemblyName, assemblyDocumentation);
 
-                foreach (var type in assemblyDocumentation.Types)
+                foreach (var typeDefinition in assemblyDefinition.MainModule.Types.Where(t => t.IsPublic))
                 {
-                    if (m_AssembliesByType.ContainsKey(type.TypeId))
-                    {
-                        throw new InvalidAssemblySetException($"Type '{type.Definition.FullName}' exists in multiple assemblies.");
-                    }
-                }
-
-                m_Assemblies.Add(assemblyDocumentation.Name, assemblyDocumentation);
-                foreach (var type in assemblyDocumentation.Types)
-                {
-                    m_AssembliesByType.Add(type.TypeId, assemblyDocumentation);
+                    LoadTypeRecursively(assemblyDocumentation, xmlDocsProviders[index], typeDefinition, declaringType: null);
                 }
             }
         }
+
+        private void LoadTypeRecursively(AssemblyDocumentation assemblyDocumentation, IXmlDocsProvider xmlDocsProvider, TypeDefinition typeDefinition, TypeDocumentation? declaringType)
+        {
+            var typeId = typeDefinition.ToTypeId();
+            if (m_Types.ContainsKey(typeId))
+            {
+                throw new InvalidAssemblySetException($"Type '{typeDefinition.FullName}' exists in multiple assemblies.");
+            }
+
+            var namespaceDocumentation = GetOrAddNamespace(typeId.Namespace.Name);
+
+            var typeDocumentation = new TypeDocumentation(assemblyDocumentation, namespaceDocumentation, typeDefinition, xmlDocsProvider, m_Logger, declaringType);
+            declaringType?.AddNestedType(typeDocumentation);
+
+            m_Types.Add(typeId, typeDocumentation);
+
+            namespaceDocumentation.AddType(typeDocumentation);
+            assemblyDocumentation.AddType(typeDocumentation);
+
+            if (typeDefinition.HasNestedTypes)
+            {
+                foreach (var nestedType in typeDefinition.NestedTypes.Where(x => x.IsNestedPublic))
+                {
+                    LoadTypeRecursively(assemblyDocumentation, xmlDocsProvider, nestedType, typeDocumentation);
+                }
+            }
+        }
+
     }
 }
