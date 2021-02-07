@@ -288,5 +288,96 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
                 expectedNamespace => Assert.Contains(actualNamespaces, x => x.NamespaceId.Equals(expectedNamespace))
             );
         }
+
+        [Fact]
+        public void TryGetDocumentation_returns_null_for_an_undocumented_type()
+        {
+            // ARRANGE
+            var cs1 = @"
+                namespace Namespace1.Namespace2
+                {
+                    internal class InternalClass1
+                    { }
+                }
+            ";
+            var cs2 = @"
+                namespace Namespace1.Namespace2
+                {
+                    internal class InternalClass2
+                    { }
+                }
+            ";
+
+            using var assembly1 = Compile(cs1, "Assembly1");
+            using var assembly2 = Compile(cs2, "Assembly2");
+
+            var typeId1 = assembly1.MainModule.Types.Single(x => x.Name == "InternalClass1").ToTypeId();
+            var typeId2 = assembly2.MainModule.Types.Single(x => x.Name == "InternalClass2").ToTypeId();
+
+            using var sut = AssemblySetDocumentation.FromAssemblyDefinitions(assembly1, assembly2);
+
+            // ACT
+            var documentation1 = sut.TryGetDocumentation(typeId1);
+            var documentation2 = sut.TryGetDocumentation(typeId2);
+
+            // ASSERT
+            Assert.Null(documentation1);
+            Assert.Null(documentation2);
+        }
+
+        [Fact]
+        public void TryGetDocumentation_returns_expected_documentation_item_for_an_documented_type()
+        {
+            // ARRANGE
+            var cs1 = @"
+                namespace Namespace1.Namespace2
+                {
+                    public class Class1
+                    { }
+                }
+            ";
+            var cs2 = @"
+                namespace Namespace3
+                {
+                    public class Class2
+                    { }
+                }
+            ";
+
+            var assembly1 = Compile(cs1, "Assembly1");
+            var assembly2 = Compile(cs2, "Assembly2");
+
+            var typeId1 = assembly1.MainModule.Types.Single(x => x.Name == "Class1").ToTypeId();
+            var typeId2 = assembly2.MainModule.Types.Single(x => x.Name == "Class2").ToTypeId();
+            var namespaceId1 = new NamespaceId("Namespace1.Namespace2");
+            var namespaceId2 = new NamespaceId("Namespace3");
+
+            using var sut = AssemblySetDocumentation.FromAssemblyDefinitions(assembly1, assembly2);
+
+            // ACT
+            var documentation1 = sut.TryGetDocumentation(typeId1);
+            var documentation2 = sut.TryGetDocumentation(typeId2);
+            var documentation3 = sut.TryGetDocumentation(namespaceId1);
+            var documentation4 = sut.TryGetDocumentation(namespaceId2);
+
+            // ASSERT
+            Assert.NotNull(documentation1);
+            var typeDocumentation1 = Assert.IsType<TypeDocumentation>(documentation1);
+            Assert.Equal(typeId1, typeDocumentation1.TypeId);
+
+            Assert.NotNull(documentation2);
+            var typeDocumentation2 = Assert.IsType<TypeDocumentation>(documentation2);
+            Assert.Equal(typeId2, typeDocumentation2.TypeId);
+
+            Assert.NotNull(documentation3);
+            var namespaceDocumentation1 = Assert.IsType<NamespaceDocumentation>(documentation3);
+            Assert.Equal(namespaceId1, namespaceDocumentation1.NamespaceId);
+
+            Assert.NotNull(documentation4);
+            var namespaceDocumentation2 = Assert.IsType<NamespaceDocumentation>(documentation4);
+            Assert.Equal(namespaceId2, namespaceDocumentation2.NamespaceId);
+
+        }
+
     }
 }

@@ -80,17 +80,24 @@ namespace Grynwald.MdDocs.ApiReference.Model
             switch (member)
             {
                 case TypeId typeId:
-                    return m_Types.GetValueOrDefault(typeId);
+                    if (m_Types.TryGetValue(typeId, out var typeDocumentation))
+                    {
+                        return typeDocumentation;
+                    }
+                    break;
 
                 case TypeMemberId typeMemberId:
-                    return m_Types.GetValueOrDefault(typeMemberId.DefiningType)?.TryGetDocumentation(member);
-
-                case NamespaceId namespaceId:
-                    return AssemblySet.TryGetDocumentation(namespaceId);
+                    if (m_Types.TryGetValue(typeMemberId.DefiningType, out var definingTypeDocumentation))
+                    {
+                        return definingTypeDocumentation.TryGetDocumentation(member);
+                    }
+                    break;
 
                 default:
-                    return null;
+                    break;
             }
+
+            return AssemblySet.TryGetDocumentation(member);
         }
 
 

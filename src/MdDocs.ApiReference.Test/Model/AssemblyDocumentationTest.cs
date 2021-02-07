@@ -68,6 +68,43 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         }
 
         [Fact]
+        public void TryGetDocumentation_returns_expected_documentation_item_for_an_documented_type_in_a_different_assembly_of_the_same_set()
+        {
+            // ARRANGE
+            var cs1 = @"
+                namespace Namespace1.Namespace2
+                {
+                    public class Class1
+                    { }
+                }
+            ";
+            var cs2 = @"
+                namespace Namespace3
+                {
+                    public class Class2
+                    { }
+                }
+            ";
+
+            var assembly1 = Compile(cs1, "Assembly1");
+            var assembly2 = Compile(cs2, "Assembly2");
+
+            var typeId = assembly1.MainModule.Types.Single(x => x.Name == "Class1").ToTypeId();
+            using var assemblySet = AssemblySetDocumentation.FromAssemblyDefinitions(assembly1, assembly2);
+
+            using var sut = assemblySet.Assemblies.Single(x => x.Name == "Assembly2");
+
+            // ACT
+            var documentation = sut.TryGetDocumentation(typeId);
+
+            // ASSERT
+            Assert.NotNull(documentation);
+            var typeDocumentation = Assert.IsType<TypeDocumentation>(documentation);
+            Assert.Equal(typeId, typeDocumentation.TypeId);
+        }
+
+
+        [Fact]
         public void Types_includes_expected_types()
         {
             // ARRANGE

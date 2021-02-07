@@ -17,7 +17,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
     public sealed class AssemblySetDocumentation : IDocumentation, IDisposable
     {
         private readonly IDictionary<string, AssemblyDocumentation> m_Assemblies;
-        private readonly IDictionary<TypeId, AssemblyDocumentation> m_Types;
+        private readonly IDictionary<TypeId, AssemblyDocumentation> m_AssembliesByType;
         private readonly IDictionary<NamespaceId, NamespaceDocumentation> m_Namespaces;
         private readonly ILogger m_Logger;
 
@@ -44,7 +44,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
             m_Logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
             m_Assemblies = new Dictionary<string, AssemblyDocumentation>(StringComparer.OrdinalIgnoreCase);
-            m_Types = new Dictionary<TypeId, AssemblyDocumentation>();
+            m_AssembliesByType = new Dictionary<TypeId, AssemblyDocumentation>();
             m_Namespaces = new Dictionary<NamespaceId, NamespaceDocumentation>();
 
 
@@ -67,20 +67,13 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// <inheritdoc />
         public IDocumentation? TryGetDocumentation(MemberId member)
         {
-            if (member is NamespaceId namespaceId)
+            return member switch
             {
-                return m_Namespaces.GetValueOrDefault(namespaceId);
-            }
-
-
-            foreach (var assembly in Assemblies)
-            {
-                var resolved = assembly.TryGetDocumentation(member);
-                if (resolved is not null)
-                    return resolved;
-            }
-
-            return null;
+                TypeId typeId => m_AssembliesByType.GetValueOrDefault(typeId)?.TryGetDocumentation(member),
+                TypeMemberId typeMemberId => m_AssembliesByType.GetValueOrDefault(typeMemberId.DefiningType)?.TryGetDocumentation(member),
+                NamespaceId namespaceId => m_Namespaces.GetValueOrDefault(namespaceId),
+                _ => null
+            };
         }
 
 
@@ -179,7 +172,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
                 foreach (var type in assemblyDocumentation.Types)
                 {
-                    if (m_Types.ContainsKey(type.TypeId))
+                    if (m_AssembliesByType.ContainsKey(type.TypeId))
                     {
                         throw new InvalidAssemblySetException($"Type '{type.Definition.FullName}' exists in multiple assemblies.");
                     }
@@ -188,7 +181,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
                 m_Assemblies.Add(assemblyDocumentation.Name, assemblyDocumentation);
                 foreach (var type in assemblyDocumentation.Types)
                 {
-                    m_Types.Add(type.TypeId, assemblyDocumentation);
+                    m_AssembliesByType.Add(type.TypeId, assemblyDocumentation);
                 }
             }
         }
