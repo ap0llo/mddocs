@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using Grynwald.MarkdownGenerator;
 using Grynwald.MdDocs.ApiReference.Configuration;
 using Grynwald.MdDocs.ApiReference.Model;
 using Grynwald.MdDocs.Common.Templates;
-using Grynwald.Utilities.Collections;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Grynwald.MdDocs.ApiReference.Templates.Default
 {
-    public class ApiReferenceDefaultTemplate : ITemplate<AssemblyDocumentation>
+    public class ApiReferenceDefaultTemplate : ITemplate<AssemblySetDocumentation>
     {
         private readonly ApiReferenceConfiguration m_Configuration;
 
@@ -20,7 +16,7 @@ namespace Grynwald.MdDocs.ApiReference.Templates.Default
         }
 
 
-        public DocumentSet<IDocument> Render(AssemblyDocumentation model)
+        public DocumentSet<IDocument> Render(AssemblySetDocumentation model)
         {
             var pageFactory = new PageFactory(new DefaultApiReferencePathProvider(), m_Configuration, model);
             return pageFactory.GetPages();

@@ -1,162 +1,179 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="Grynwald.MdDocs.ApiReference.Model.AssemblyDocumentation" Collapsed="true">
-    <Position X="0.75" Y="1.5" Width="2" />
+  <Class Name="Grynwald.MdDocs.ApiReference.Model.AssemblyDocumentation">
+    <Position X="4" Y="1.5" Width="2" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAACAAGAAAAAAgAAAAAAAAABAEAAAAAAAAAAA=</HashCode>
-      <FileName>AssemblyDocumentation.cs</FileName>
+      <HashCode>IgAAAAAQACAAGAAAAAAgAAQIAAAAAAgAAAQAAAAAAAA=</HashCode>
+      <FileName>Model\AssemblyDocumentation.cs</FileName>
     </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Types" />
+    </ShowAsCollectionAssociation>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="Grynwald.MdDocs.ApiReference.Model.ModuleDocumentation" Collapsed="true">
-    <Position X="3" Y="1.5" Width="2" />
-    <TypeIdentifier>
-      <HashCode>AgAAAAEQAAAAGAAgAAAgAAAAAAAAAAAAEAAAAAAAAAA=</HashCode>
-      <FileName>ModuleDocumentation.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Position="0.2" />
-  </Class>
-  <Class Name="Grynwald.MdDocs.ApiReference.Model.TypeDocumentation" Collapsed="true">
-    <Position X="5.25" Y="1.5" Width="1.75" />
+  <Class Name="Grynwald.MdDocs.ApiReference.Model.TypeDocumentation">
+    <Position X="8" Y="1.5" Width="1.75" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
       <Compartment Name="Properties" Collapsed="true" />
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>ABCAEkEAEKBAGACAABIiIQASAgAABgAgAAAAACBGoUQ=</HashCode>
-      <FileName>TypeDocumentation.cs</FileName>
+      <HashCode>ABCAEkEAGKBAHACAABIiI4ASAgAABgggEAAAAChGoUQ=</HashCode>
+      <FileName>Model\TypeDocumentation.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Grynwald.MdDocs.ApiReference.Model.PropertyDocumentation">
-    <Position X="10.25" Y="6.75" Width="2" />
+    <Position X="16.25" Y="6.75" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAACAAAAAAAAAQAAAAAAIAAAQAgAABAAAA=</HashCode>
-      <FileName>PropertyDocumentation.cs</FileName>
+      <FileName>Model\PropertyDocumentation.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Grynwald.MdDocs.ApiReference.Model.OperatorDocumentation">
-    <Position X="18.25" Y="6.75" Width="2" />
+    <Position X="24.25" Y="6.75" Width="2" />
     <Members>
       <Property Name="Overloads" Hidden="true" />
     </Members>
     <TypeIdentifier>
       <HashCode>IAAAAAAAAABAEAAAAAAAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
-      <FileName>OperatorDocumentation.cs</FileName>
+      <FileName>Model\OperatorDocumentation.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Overloads" />
     </ShowAsAssociation>
   </Class>
   <Class Name="Grynwald.MdDocs.ApiReference.Model.FieldDocumentation">
-    <Position X="5.5" Y="6.75" Width="1.75" />
+    <Position X="11.5" Y="6.75" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAACAAAAAAAAAQAAAAAAAAAAQAgAABAAAA=</HashCode>
-      <FileName>FieldDocumentation.cs</FileName>
+      <FileName>Model\FieldDocumentation.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Grynwald.MdDocs.ApiReference.Model.EventDocumentation">
-    <Position X="7.5" Y="6.75" Width="2.5" />
+    <Position X="13.5" Y="6.75" Width="2.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAACAAAAAAAAAQAAAAAAAAAAQAAAABAAAA=</HashCode>
-      <FileName>EventDocumentation.cs</FileName>
+      <FileName>Model\EventDocumentation.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Grynwald.MdDocs.ApiReference.Model.ConstructorDocumentation">
-    <Position X="12.75" Y="6.75" Width="2.25" />
+    <Position X="18.75" Y="6.75" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>IAAAAAAAAAAAEAAAAAAAAAQAAAAAAAAAAAAAAAEAAAA=</HashCode>
-      <FileName>ConstructorDocumentation.cs</FileName>
+      <HashCode>MAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Model\ConstructorDocumentation.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Grynwald.MdDocs.ApiReference.Model.OperatorOverloadDocumentation">
-    <Position X="29.5" Y="8.25" Width="2.5" />
+    <Position X="39.5" Y="12" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAEAAAAAAAAAAABAQAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>OperatorOverloadDocumentation.cs</FileName>
+      <HashCode>AAAAAAAAAAAAEAAAAAAAAAAABAQAAAAAEAAAAAAAAAA=</HashCode>
+      <FileName>Model\OperatorOverloadDocumentation.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Grynwald.MdDocs.ApiReference.Model.MethodDocumentation">
-    <Position X="15.5" Y="6.75" Width="2.25" />
+    <Position X="21.5" Y="6.75" Width="2.25" />
     <Members>
       <Property Name="Overloads" Hidden="true" />
     </Members>
     <TypeIdentifier>
       <HashCode>IAAAAAAAAAAAEAAAAAAAAAQAAAAAAAAAAAAAAAEAAAA=</HashCode>
-      <FileName>MethodDocumentation.cs</FileName>
+      <FileName>Model\MethodDocumentation.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Overloads" />
     </ShowAsAssociation>
   </Class>
   <Class Name="Grynwald.MdDocs.ApiReference.Model.MemberDocumentation">
-    <Position X="11.75" Y="0.5" Width="1.75" />
+    <Position X="17.75" Y="0.5" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAIAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>MemberDocumentation.cs</FileName>
+      <HashCode>AAAAAAAAAAIAEAAAAAAAAAAAAAAAAAAAEAAAAAAAAAA=</HashCode>
+      <FileName>Model\MemberDocumentation.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Grynwald.MdDocs.ApiReference.Model.ConstructorOverloadDocumentation">
-    <Position X="23.5" Y="8.25" Width="2.75" />
+    <Position X="34.25" Y="12.25" Width="2.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAEAAAACAAAAAAAAAAAAAAAAACAAAAAAA=</HashCode>
-      <FileName>ConstructorOverloadDocumentation.cs</FileName>
+      <HashCode>AAAAAAAAAAAAEAAAACAAAAAAAAAAAAAAEAAAAAAAAAA=</HashCode>
+      <FileName>Model\ConstructorOverloadDocumentation.cs</FileName>
       <NewMemberFileName>Model\MethodOverloadDocumentation.cs</NewMemberFileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Grynwald.MdDocs.ApiReference.Model.OverloadableMemberDocumentation&lt;TOverload&gt;">
-    <Position X="15" Y="3.5" Width="3.25" />
+    <Position X="21" Y="3.5" Width="3.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
-      <FileName>OverloadableMemberDocumentation.cs</FileName>
+      <FileName>Model\OverloadableMemberDocumentation.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Grynwald.MdDocs.ApiReference.Model.OverloadDocumentation">
-    <Position X="24.25" Y="0.75" Width="2.5" />
+    <Position X="32.25" Y="0.75" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>AACAAgAAAKAAEAAAABIAAQAAAAAAAoAAAYgAAABAAAE=</HashCode>
-      <FileName>OverloadDocumentation.cs</FileName>
+      <HashCode>AACAAgAAAKAAEAAAABIAAQAAAAAAAoAAEYgAAABAAAE=</HashCode>
+      <FileName>Model\OverloadDocumentation.cs</FileName>
       <NewMemberFileName>Model\MethodOverloadDocumentation.cs</NewMemberFileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Grynwald.MdDocs.ApiReference.Model.SimpleMemberDocumentation" Collapsed="true">
-    <Position X="7.5" Y="3.5" Width="2.5" />
+    <Position X="13.5" Y="3.5" Width="2.5" />
     <TypeIdentifier>
       <HashCode>AACAAgAAAIAAEAAAABIAAQQAAAAAAgAAAQAAAABAAAA=</HashCode>
-      <FileName>SimpleMemberDocumentation.cs</FileName>
+      <FileName>Model\SimpleMemberDocumentation.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Grynwald.MdDocs.ApiReference.Model.MethodLikeOverloadDocumentation">
-    <Position X="26.5" Y="5.5" Width="2.5" />
+    <Position X="36.5" Y="7.25" Width="2.5" />
     <TypeIdentifier>
       <HashCode>AAAAAgAAACAACAAAAAAgAAAAAAAAAgAAAYAAAABEAAE=</HashCode>
-      <FileName>MethodLikeOverloadDocumentation.cs</FileName>
+      <FileName>Model\MethodLikeOverloadDocumentation.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Grynwald.MdDocs.ApiReference.Model.MethodOverloadDocumentation">
-    <Position X="26.5" Y="8.25" Width="2.5" />
+    <Position X="32.5" Y="8.25" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAACAAAAIAA=</HashCode>
-      <FileName>MethodOverloadDocumentation.cs</FileName>
+      <HashCode>AAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAEAAAAAAAIAA=</HashCode>
+      <FileName>Model\MethodOverloadDocumentation.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Grynwald.MdDocs.ApiReference.Model.IndexerOverloadDocumentation">
-    <Position X="22.5" Y="5.5" Width="1.5" />
+    <Position X="29.25" Y="7.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAgAAACAAGAAAAAAAAAYAAAAAAgAAAYAgAABAAAE=</HashCode>
-      <FileName>IndexerOverloadDocumentation.cs</FileName>
+      <HashCode>AAAAAgAAACAAGAAAAAAAAAIAAAAAAgAAEYAgAABAAAE=</HashCode>
+      <FileName>Model\IndexerOverloadDocumentation.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Grynwald.MdDocs.ApiReference.Model.NamespaceDocumentation" Collapsed="true">
-    <Position X="7.75" Y="1.5" Width="2.25" />
+  <Class Name="Grynwald.MdDocs.ApiReference.Model.NamespaceDocumentation">
+    <Position X="3.75" Y="5.25" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AgQAAAAQAAAAEAAAAAAAAAQAAAAAAAgAACAAAAAAAAA=</HashCode>
-      <FileName>NamespaceDocumentation.cs</FileName>
+      <HashCode>AgQAAAEQAAAAEAggAAAIAAQAAAAAAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\NamespaceDocumentation.cs</FileName>
     </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Types" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Grynwald.MdDocs.ApiReference.Model.AssemblySetDocumentation">
+    <Position X="1" Y="1.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAEYACAEEAQhAAAAAAAABAAAAAgAAAAAACAAAAA=</HashCode>
+      <FileName>Model\AssemblySetDocumentation.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Assemblies" />
+      <Property Name="Namespaces" />
+    </ShowAsCollectionAssociation>
     <Lollipop Position="0.2" />
   </Class>
   <Font Name="Segoe UI" Size="9" />

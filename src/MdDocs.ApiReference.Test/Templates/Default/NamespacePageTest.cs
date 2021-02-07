@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using Grynwald.MdDocs.ApiReference.Configuration;
 using Grynwald.MdDocs.ApiReference.Model;
-using Grynwald.MdDocs.ApiReference.Model.XmlDocs;
 using Grynwald.MdDocs.ApiReference.Templates.Default;
 using Microsoft.Extensions.Logging.Abstractions;
 
@@ -23,8 +22,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Templates.Default
             ");
 
             using var assemblySetDocumentation = AssemblySetDocumentation.FromAssemblyDefinitions(assembly);
-            var assemblyDocumentation = assemblySetDocumentation.Assemblies.Single();
-            return assemblyDocumentation.Namespaces.Single();
+            return assemblySetDocumentation.Namespaces.Single();
         }
 
         protected override NamespacePage CreatePage(NamespaceDocumentation model, ApiReferenceConfiguration configuration)

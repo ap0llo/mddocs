@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Grynwald.MdDocs.ApiReference.Model.XmlDocs;
 using Grynwald.MdDocs.Common;
 using Grynwald.Utilities.Collections;
@@ -18,8 +16,9 @@ namespace Grynwald.MdDocs.ApiReference.Model
     /// </summary>
     public sealed class AssemblySetDocumentation : IDocumentation, IDisposable
     {
-        private readonly Dictionary<string, AssemblyDocumentation> m_Assemblies;
-        private readonly Dictionary<TypeId, AssemblyDocumentation> m_Types;
+        private readonly IDictionary<string, AssemblyDocumentation> m_Assemblies;
+        private readonly IDictionary<TypeId, AssemblyDocumentation> m_Types;
+        private readonly IDictionary<NamespaceId, NamespaceDocumentation> m_Namespaces;
         private readonly ILogger m_Logger;
 
 
@@ -27,6 +26,11 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// Gets the assemblies in the assembly set
         /// </summary>
         public IReadOnlyCollection<AssemblyDocumentation> Assemblies { get; }
+
+        /// <summary>
+        /// Gets the namespaces defined in any of the assemblies in the assembly set.
+        /// </summary>
+        public IReadOnlyCollection<NamespaceDocumentation> Namespaces { get; }
 
 
         /// <summary>
@@ -37,11 +41,15 @@ namespace Grynwald.MdDocs.ApiReference.Model
             if (assemblyDefinitions is null)
                 throw new ArgumentNullException(nameof(assemblyDefinitions));
 
-            m_Assemblies = new(StringComparer.OrdinalIgnoreCase);
-            m_Types = new();
+            m_Logger = logger ?? throw new ArgumentNullException(nameof(logger));
+
+            m_Assemblies = new Dictionary<string, AssemblyDocumentation>(StringComparer.OrdinalIgnoreCase);
+            m_Types = new Dictionary<TypeId, AssemblyDocumentation>();
+            m_Namespaces = new Dictionary<NamespaceId, NamespaceDocumentation>();
+
 
             Assemblies = ReadOnlyCollectionAdapter.Create(m_Assemblies.Values);
-            m_Logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            Namespaces = ReadOnlyCollectionAdapter.Create(m_Namespaces.Values);
 
             LoadAssemblies(assemblyDefinitions, xmlDocsProviders);
         }
@@ -59,6 +67,12 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// <inheritdoc />
         public IDocumentation? TryGetDocumentation(MemberId member)
         {
+            if (member is NamespaceId namespaceId)
+            {
+                return m_Namespaces.GetValueOrDefault(namespaceId);
+            }
+
+
             foreach (var assembly in Assemblies)
             {
                 var resolved = assembly.TryGetDocumentation(member);
@@ -118,6 +132,29 @@ namespace Grynwald.MdDocs.ApiReference.Model
         }
 
 
+        internal NamespaceDocumentation GetOrAddNamespace(string namespaceName)
+        {
+            var namespaceId = new NamespaceId(namespaceName);
+
+            if (m_Namespaces.ContainsKey(namespaceId))
+            {
+                return m_Namespaces[namespaceId];
+            }
+
+            var names = namespaceName.Split('.');
+
+            var parentNamespace = names.Length > 1
+                ? GetOrAddNamespace(names.Take(names.Length - 1).JoinToString("."))
+                : null;
+
+            var newNamespace = new NamespaceDocumentation(this, parentNamespace, namespaceId, m_Logger);
+            m_Namespaces.Add(namespaceId, newNamespace);
+
+            parentNamespace?.AddNamespace(newNamespace);
+
+            return newNamespace;
+        }
+
         private void LoadAssemblies(IReadOnlyList<AssemblyDefinition> assemblyDefinitions, IReadOnlyList<IXmlDocsProvider> xmlDocsProviders)
         {
             if (assemblyDefinitions.Count != xmlDocsProviders.Count)
@@ -125,7 +162,15 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
             foreach (var (index, assemblyDefinition) in assemblyDefinitions.WithIndex())
             {
-                var assemblyDocumentation = new AssemblyDocumentation(this, assemblyDefinition, xmlDocsProviders[index], m_Logger);
+                AssemblyDocumentation assemblyDocumentation;
+                try
+                {
+                    assemblyDocumentation = new AssemblyDocumentation(this, assemblyDefinition, xmlDocsProviders[index], m_Logger);
+                }
+                catch (DuplicateTypeException ex)
+                {
+                    throw new InvalidAssemblySetException($"Type '{ex.TypeName}' exists in multiple assemblies.");
+                }
 
                 if (m_Assemblies.ContainsKey(assemblyDocumentation.Name))
                 {

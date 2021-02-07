@@ -1,8 +1,6 @@
 ﻿using System.Linq;
 using Grynwald.MdDocs.ApiReference.Model;
-using Grynwald.MdDocs.ApiReference.Model.XmlDocs;
 using Grynwald.MdDocs.TestHelpers;
-using Microsoft.Extensions.Logging.Abstractions;
 using Xunit;
 
 namespace Grynwald.MdDocs.ApiReference.Test.Model
@@ -165,6 +163,130 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
 
             // ASSERT
             Assert.Null(documentation);
+        }
+
+        [Fact]
+        public void Namespaces_includes_expected_namespaces()
+        {
+            // ARRANGE
+            var cs1 = @"
+	            using System;
+
+                namespace Namespace1
+                {
+	                public class Class1
+	                { }
+                }
+
+                namespace Namespace1.Namespace2
+                {
+	                public class Class2
+	                { }
+                }
+
+                namespace Namespace3
+                {
+	                public class Class3
+	                { }
+                }           
+            ";
+
+            var cs2 = @"
+	            using System;
+
+                namespace Namespace1
+                {
+	                public class Class4
+	                { }
+                }
+
+                namespace Namespace4
+                {
+	                public class Class4
+	                { }
+                }           
+            ";
+
+            var assembly1 = Compile(cs1, "Assembly1");
+            var assembly2 = Compile(cs2, "Assembly2");
+            using var sut = AssemblySetDocumentation.FromAssemblyDefinitions(assembly1, assembly2);
+
+            var expectedNamespaces = new[]
+            {
+                new NamespaceId("Namespace1"),
+                new NamespaceId("Namespace1.Namespace2"),
+                new NamespaceId("Namespace3"),
+                new NamespaceId("Namespace4")
+            };
+
+            // ACT
+            var actualNamespaces = sut.Namespaces;
+
+            // ASSERT
+            Assert.Equal(expectedNamespaces.Length, actualNamespaces.Count);
+            Assert.All(
+                expectedNamespaces,
+                expectedNamespace => Assert.Contains(actualNamespaces, x => x.NamespaceId.Equals(expectedNamespace))
+            );
+
+            var namespace1 = Assert.Single(actualNamespaces.Where(x => x.Name == "Namespace1"));
+            Assert.Contains(namespace1.Types, t => t.TypeId.Name == "Class1");
+            Assert.Contains(namespace1.Types, t => t.TypeId.Name == "Class4");
+        }
+
+        [Fact]
+        public void Namespaces_does_include_namespaces_that_contain_only_internal_types()
+        {
+            // ARRANGE
+            var cs1 = @"
+	            using System;
+
+                namespace Namespace1
+                {
+	                public class Class1
+	                { }
+                }
+
+                namespace Namespace2
+                {
+	                internal class Class2
+	                { }
+                }           
+            ";
+            var cs2 = @"
+	            using System;
+
+                namespace Namespace1
+                {
+	                public class Class3
+	                { }
+                }
+
+                namespace Namespace3
+                {
+	                internal class Class4
+	                { }
+                }           
+            ";
+
+            var assembly1 = Compile(cs1, "Assembly1");
+            var assembly2 = Compile(cs2, "Assembly2");
+            using var sut = AssemblySetDocumentation.FromAssemblyDefinitions(assembly1, assembly2);
+
+            var expectedNamespaces = new[]
+            {
+                new NamespaceId("Namespace1")
+            };
+
+            // ACT
+            var actualNamespaces = sut.Namespaces;
+
+            // ASSERT
+            Assert.Equal(expectedNamespaces.Length, actualNamespaces.Count);
+            Assert.All(
+                expectedNamespaces,
+                expectedNamespace => Assert.Contains(actualNamespaces, x => x.NamespaceId.Equals(expectedNamespace))
+            );
         }
     }
 }

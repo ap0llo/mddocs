@@ -30,12 +30,9 @@ namespace Grynwald.MdDocs.ApiReference.Commands
 
             using (var assemblySet = AssemblySetDocumentation.FromAssemblyFiles(new[] { m_Configuration.AssemblyPath }, m_Logger))
             {
-                //TODO: Support multiple assemblies
-                var assembly = assemblySet.Assemblies.Single();
-
                 ApiReferenceTemplateProvider
                     .GetTemplate(m_Logger, m_Configuration)
-                    .Render(assembly)
+                    .Render(assemblySet)
                     .Save(
                         m_Configuration.OutputPath,
                         cleanOutputDirectory: true,
