@@ -19,6 +19,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         private readonly IDictionary<string, AssemblyDocumentation> m_Assemblies;
         private readonly IDictionary<NamespaceId, NamespaceDocumentation> m_Namespaces;
         private readonly IDictionary<TypeId, TypeDocumentation> m_Types;
+        private readonly IXmlDocsProvider m_XmlDocsProvider;
         private readonly ILogger m_Logger;
 
 
@@ -41,11 +42,12 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// <summary>
         /// Initializes a new instance of <see cref="AssemblySetDocumentation"/>
         /// </summary>
-        private AssemblySetDocumentation(IReadOnlyList<AssemblyDefinition> assemblyDefinitions, IReadOnlyList<IXmlDocsProvider> xmlDocsProviders, ILogger logger)
+        private AssemblySetDocumentation(IReadOnlyList<AssemblyDefinition> assemblyDefinitions, IXmlDocsProvider xmlDocsProvider, ILogger logger)
         {
             if (assemblyDefinitions is null)
                 throw new ArgumentNullException(nameof(assemblyDefinitions));
 
+            m_XmlDocsProvider = xmlDocsProvider ?? throw new ArgumentNullException(nameof(xmlDocsProvider));
             m_Logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
             m_Assemblies = new Dictionary<string, AssemblyDocumentation>(StringComparer.OrdinalIgnoreCase);
@@ -56,7 +58,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
             Namespaces = ReadOnlyCollectionAdapter.Create(m_Namespaces.Values);
             Types = ReadOnlyCollectionAdapter.Create(m_Types.Values);
 
-            LoadAssemblies(assemblyDefinitions, xmlDocsProviders);
+            LoadAssemblies(assemblyDefinitions);
         }
 
 
@@ -91,7 +93,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         public static AssemblySetDocumentation FromAssemblyFiles(IEnumerable<string> filePaths, ILogger logger)
         {
             var assemblyDefinitions = new List<AssemblyDefinition>();
-            var xmlDocsProviders = new List<IXmlDocsProvider>();
+            var xmlDocsProvider = new CompositeXmlDocsProvider();
 
             foreach (var filePath in filePaths)
             {
@@ -99,22 +101,19 @@ namespace Grynwald.MdDocs.ApiReference.Model
                 assemblyDefinitions.Add(assemblyDefinition);
 
                 // loads XML documentation comments if the documentation file exists
-                IXmlDocsProvider docs;
                 var docsFilePath = Path.ChangeExtension(filePath, ".xml");
                 if (File.Exists(docsFilePath))
                 {
-                    docs = new XmlDocsProvider(assemblyDefinition, docsFilePath, logger);
+                    var currentAssemblyDocsProvider = new XmlDocsProvider(assemblyDefinition, docsFilePath, logger);
+                    xmlDocsProvider.Add(currentAssemblyDocsProvider);
                 }
                 else
                 {
                     logger.LogWarning($"No XML documentation file for assembly found. (Expected at '{docsFilePath}')");
-                    docs = NullXmlDocsProvider.Instance;
                 }
-
-                xmlDocsProviders.Add(docs);
             }
 
-            return new AssemblySetDocumentation(assemblyDefinitions, xmlDocsProviders, logger);
+            return new AssemblySetDocumentation(assemblyDefinitions, xmlDocsProvider, logger);
         }
 
         public static AssemblySetDocumentation FromAssemblyDefinitions(params AssemblyDefinition[] assemblyDefinitions) =>
@@ -124,7 +123,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         {
             return new AssemblySetDocumentation(
                 assemblyDefinitions,
-                assemblyDefinitions.Select(x => NullXmlDocsProvider.Instance).ToList(),
+                NullXmlDocsProvider.Instance,
                 logger
             );
         }
@@ -153,12 +152,9 @@ namespace Grynwald.MdDocs.ApiReference.Model
             return newNamespace;
         }
 
-        private void LoadAssemblies(IReadOnlyList<AssemblyDefinition> assemblyDefinitions, IReadOnlyList<IXmlDocsProvider> xmlDocsProviders)
+        private void LoadAssemblies(IReadOnlyList<AssemblyDefinition> assemblyDefinitions)
         {
-            if (assemblyDefinitions.Count != xmlDocsProviders.Count)
-                throw new ArgumentException("Mismatch between number of assembly definitions and XML docs providers");
-
-            foreach (var (index, assemblyDefinition) in assemblyDefinitions.WithIndex())
+            foreach (var assemblyDefinition in assemblyDefinitions)
             {
                 var assemblyName = assemblyDefinition.Name.Name;
                 if (m_Assemblies.ContainsKey(assemblyName))
@@ -171,7 +167,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
                 foreach (var typeDefinition in assemblyDefinition.MainModule.Types.Where(t => t.IsPublic))
                 {
-                    LoadTypeRecursively(assemblyDocumentation, xmlDocsProviders[index], typeDefinition, declaringType: null);
+                    LoadTypeRecursively(assemblyDocumentation, m_XmlDocsProvider, typeDefinition, declaringType: null);
                 }
             }
         }
