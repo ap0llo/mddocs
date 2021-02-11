@@ -18,7 +18,7 @@
 <table>
     <tr>
         <td><b>Setting</b></td>
-        <td><code>mddocs:apireference:outputPath</code></td>
+        <td><code>mddocs:apireference:assemblPath</code></td>
     </tr>
     <tr>
         <td><b>Commandline Parameter</b></td>

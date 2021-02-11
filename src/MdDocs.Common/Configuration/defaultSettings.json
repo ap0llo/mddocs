@@ -16,7 +16,7 @@
     },
 
     "apireference" : {
-      "assemblyPath" : null,
+      "assemblyPaths" : null,
       "outputPath": null,
       "template": {
         "name": "Default",

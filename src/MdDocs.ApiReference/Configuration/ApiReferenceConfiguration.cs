@@ -1,4 +1,6 @@
-﻿using Grynwald.MdDocs.Common.Configuration;
+﻿using System;
+using System.Collections.Generic;
+using Grynwald.MdDocs.Common.Configuration;
 
 namespace Grynwald.MdDocs.ApiReference.Configuration
 {
@@ -30,7 +32,7 @@ namespace Grynwald.MdDocs.ApiReference.Configuration
         public string OutputPath { get; set; } = "";
 
         [ConvertToFullPath]
-        public string AssemblyPath { get; set; } = "";
+        public string[] AssemblyPaths { get; set; } = Array.Empty<string>();
 
         public TemplateConfiguration Template { get; set; } = new TemplateConfiguration();
     }

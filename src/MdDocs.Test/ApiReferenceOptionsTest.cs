@@ -39,33 +39,42 @@ namespace Grynwald.MdDocs.Test
         }
 
         [Fact]
-        public void AssemblyPath_converts_value_to_a_absolute_path()
+        public void AssemblyPaths_converts_values_to_a_absolute_paths_01()
         {
             // ARRANGE
             var sut = new ApiReferenceOptions()
             {
-                AssemblyPath = "some-path"
+                AssemblyPaths = new[] { "some-path" }
             };
 
             // ACT / ASSERT
-            Assert.True(Path.IsPathRooted(sut.AssemblyPath));
+            Assert.All(sut.AssemblyPaths, path => Assert.True(Path.IsPathRooted(path)));
         }
 
-        [Theory]
-        [InlineData(null)]
-        [InlineData("")]
-        [InlineData(" ")]
-        [InlineData("\t")]
-        public void AssemblyPath_does_not_convert_value_to_a_absolute_path_if_path_is_null_or_empty(string path)
+        [Fact]
+        public void AssemblyPaths_converts_values_to_a_absolute_paths_02()
         {
             // ARRANGE
             var sut = new ApiReferenceOptions()
             {
-                AssemblyPath = path
+                AssemblyPaths = new[] { "some-path", "some-other-path" }
             };
 
             // ACT / ASSERT
-            Assert.Equal(path, sut.AssemblyPath);
+            Assert.All(sut.AssemblyPaths, path => Assert.True(Path.IsPathRooted(path)));
+        }
+
+        [Fact]
+        public void AssemblyPaths_does_not_convert_value_to_a_absolute_path_if_value_is_null()
+        {
+            // ARRANGE
+            var sut = new ApiReferenceOptions()
+            {
+                AssemblyPaths = null
+            };
+
+            // ACT / ASSERT
+            Assert.Null(sut.AssemblyPaths);
         }
     }
 }

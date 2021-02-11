@@ -14,7 +14,7 @@ Generate API reference documentation for a .NET assembly.
 ## Usage
 
 ```
-mddocs apireference [--assembly|-a <VALUE>]
+mddocs apireference [--assemblies|-a <VALUE>]
                     [--configurationFilePath|-c <VALUE>]
                     [--outdir|-o <VALUE>]
                     [--verbose|-v]
@@ -24,18 +24,18 @@ mddocs apireference [--assembly|-a <VALUE>]
 
 | Name                                                      | Short Name                            | Description                                                                                                                                     |
 | --------------------------------------------------------- | ------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| [assembly](#assembly-parameter)                           | [a](#assembly-parameter)              | Path of the assembly to generate documentation for.                                                                                             |
+| [assemblies](#assemblies-parameter)                       | [a](#assemblies-parameter)            | Path of the assembly to generate documentation for.                                                                                             |
 | [configurationFilePath](#configurationfilepath-parameter) | [c](#configurationfilepath-parameter) | The path of the configuration file to use. If no configuration file is specified, default settings are used.                                    |
 | [outdir](#outdir-parameter)                               | [o](#outdir-parameter)                | Path of the directory to write the documentation to. If the output directory already exists, all files in the output directory will be deleted. |
 | [verbose](#verbose-parameter)                             | [v](#verbose-parameter)               | Show more detailed log output.                                                                                                                  |
 
-### `assembly` Parameter
+### `assemblies` Parameter
 
 Path of the assembly to generate documentation for.
 
 |                |                   |
 | -------------- | ----------------- |
-| Name:          | assembly          |
+| Name:          | assemblies        |
 | Short name:    | a                 |
 | Position:      | *Named parameter* |
 | Required:      | No                |

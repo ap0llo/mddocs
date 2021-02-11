@@ -1,5 +1,6 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using CommandLine;
 using Grynwald.Utilities.Configuration;
 
@@ -11,17 +12,23 @@ namespace Grynwald.MdDocs
     [Verb("apireference", HelpText = "Generate API reference documentation for a .NET assembly.")]
     internal class ApiReferenceOptions : OptionsBase
     {
-        private string? m_AssemblyPath;
+        private IEnumerable<string>? m_AssemblyPaths;
 
-        [Option('a', "assembly", Required = false, HelpText = "Path of the assembly to generate documentation for.")]
-        [ConfigurationValue("mddocs:apireference:assemblyPath")]
-        public string? AssemblyPath
+        [Option('a', "assemblies", Required = false, HelpText = "Path of the assemblies to generate documentation for (at least one assembly must be specified).", Min = 1)]
+        [ConfigurationValue("mddocs:apireference:assemblyPaths")]
+        public IEnumerable<string>? AssemblyPaths
         {
-            // If output directory has a value, convert it to a full path.
+            // If assembly paths have a value, convert it to a full path.
             // Otherwise, a relative path will be interpreted to be relative to the
             // configuration file path by the configuration system
-            get => String.IsNullOrWhiteSpace(m_AssemblyPath) ? m_AssemblyPath : Path.GetFullPath(m_AssemblyPath);
-            set => m_AssemblyPath = value;
+            get
+            {
+                if (m_AssemblyPaths is null)
+                    return m_AssemblyPaths;
+
+                return m_AssemblyPaths.Select(Path.GetFullPath);
+            }
+            set => m_AssemblyPaths = value;
         }
 
         [ConfigurationValue("mddocs:apireference:outputPath")]

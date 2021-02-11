@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -100,12 +101,21 @@ namespace Grynwald.MdDocs.Common.Configuration
                 if (propertyValue is null)
                     continue;
 
-                if (property.PropertyType == typeof(string) && property.GetCustomAttribute<ConvertToFullPathAttribute>() != null)
+                // convert the value of string properties with a ConvertToFullPath attribute to absolute paths
+                if (property.PropertyType is not null && property.GetCustomAttribute<ConvertToFullPathAttribute>() is not null)
                 {
-                    // convert the value of string properties with a ConvertToFullPath attribute to absolute paths
-                    var value = (string)propertyValue;
-                    var absolutePath = GetFullPath(value, baseDirectory);
-                    property.SetValue(configurationObject, absolutePath);
+                    if (property.PropertyType == typeof(string))
+                    {
+                        var value = (string)propertyValue;
+                        var absolutePath = GetFullPath(value, baseDirectory);
+                        property.SetValue(configurationObject, absolutePath);
+                    }
+                    else if (property.PropertyType.IsArray && property.PropertyType.GetArrayRank() == 1 && property.PropertyType.GetElementType() == typeof(string))
+                    {
+                        var value = (string[])propertyValue;
+                        var absolutePaths = value.Select(x => GetFullPath(x, baseDirectory)).ToArray();
+                        property.SetValue(configurationObject, absolutePaths);
+                    }
                 }
                 else if (property.PropertyType?.Namespace?.StartsWith("System.") == true || property.PropertyType?.Namespace == "System")
                 {

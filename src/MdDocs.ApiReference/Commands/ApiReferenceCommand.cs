@@ -28,7 +28,7 @@ namespace Grynwald.MdDocs.ApiReference.Commands
             if (!ValidateConfiguration())
                 return false;
 
-            using (var assemblySet = AssemblySetDocumentation.FromAssemblyFiles(new[] { m_Configuration.AssemblyPath }, m_Logger))
+            using (var assemblySet = AssemblySetDocumentation.FromAssemblyFiles(m_Configuration.AssemblyPaths, m_Logger))
             {
                 ApiReferenceTemplateProvider
                     .GetTemplate(m_Logger, m_Configuration)
@@ -54,16 +54,28 @@ namespace Grynwald.MdDocs.ApiReference.Commands
                 valid = false;
             }
 
-            if (String.IsNullOrWhiteSpace(m_Configuration.AssemblyPath))
+            if (m_Configuration.AssemblyPaths is null || !m_Configuration.AssemblyPaths.Any())
             {
-                m_Logger.LogError($"Invalid assembly path '{m_Configuration.AssemblyPath}'");
+                m_Logger.LogError($"No assembly paths specified.");
                 valid = false;
             }
-            else if (!File.Exists(m_Configuration.AssemblyPath))
+            else
             {
-                m_Logger.LogError($"Assembly at '{m_Configuration.AssemblyPath}' does not exist.");
-                valid = false;
+                foreach (var assemblyPath in m_Configuration.AssemblyPaths)
+                {
+                    if (String.IsNullOrWhiteSpace(assemblyPath))
+                    {
+                        m_Logger.LogError($"Invalid assembly path '{assemblyPath}'");
+                        valid = false;
+                    }
+                    else if (!File.Exists(assemblyPath))
+                    {
+                        m_Logger.LogError($"Assembly at '{assemblyPath}' does not exist.");
+                        valid = false;
+                    }
+                }
             }
+
 
             return valid;
         }

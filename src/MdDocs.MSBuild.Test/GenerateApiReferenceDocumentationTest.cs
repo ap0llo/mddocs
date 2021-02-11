@@ -10,7 +10,7 @@ namespace Grynwald.MdDocs.MSBuild.Test
     public class GenerateApiReferenceDocumentationTest
     {
         [Fact]
-        public void AssemblyPath_returns_full_path()
+        public void AssemblyPaths_returns_full_paths()
         {
             // ARRANGE
             var sut = new GenerateApiReferenceDocumentation()
@@ -21,16 +21,14 @@ namespace Grynwald.MdDocs.MSBuild.Test
 
             var expectedPath = Path.GetFullPath("my-assembly.dll");
 
-            // ACT 
-            var actualPath = sut.AssemblyPath;
-
-            // ASSERT
+            // ACT / ASSERT
+            var actualPath = Assert.Single(sut.AssemblyPaths);
             Assert.True(Path.IsPathRooted(actualPath));
             Assert.Equal(expectedPath, actualPath);
         }
 
         [Fact]
-        public void AssemblyPath_overrides_assembly_path_setting()
+        public void AssemblyPath_overrides_assembly_paths_setting()
         {
             // ARRANGE
             var sut = new GenerateApiReferenceDocumentation()
@@ -45,7 +43,8 @@ namespace Grynwald.MdDocs.MSBuild.Test
             var config = sut.GetConfigurationProvider().GetApiReferenceConfiguration();
 
             // ASSERT
-            Assert.Equal(expectedPath, config.AssemblyPath);
+            var actualPath = Assert.Single(config.AssemblyPaths);
+            Assert.Equal(expectedPath, actualPath);
         }
 
         [Fact]
