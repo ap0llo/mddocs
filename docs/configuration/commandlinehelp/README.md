@@ -18,7 +18,7 @@
 <table>
     <tr>
         <td><b>Setting</b></td>
-        <td><code>mddocs:commandlinehelp:outputPath</code></td>
+        <td><code>mddocs:commandlinehelp:assemblyPath</code></td>
     </tr>
     <tr>
         <td><b>Commandline Parameter</b></td>
@@ -29,6 +29,7 @@
         <td>Determined automatically</td>
     </tr>
 </table>
+<br>
 
 The *Assembly Path* setting sets the path to the assembly to load in order to generate documentation.
 
@@ -50,6 +51,7 @@ The *Assembly Path* setting sets the path to the assembly to load in order to ge
         <td><code>CommandLineDocumentationOutputPath</code></td>
     </tr>
 </table>
+<br>
 
 The *Output Path* setting defines the path of the directory the generated documentation is written to.
 
@@ -77,6 +79,7 @@ The *Output Path* setting defines the path of the directory the generated docume
         </td>
     </tr>
 </table>
+<br>
 
 The *Template Name* setting defines the template to use for generating Markdown.
 Currently, the only supported template is the default template (template name `Default`).

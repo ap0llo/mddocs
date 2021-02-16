@@ -1,6 +1,6 @@
 # Configuration
 
-**Applies to:** Version 0.4 an later
+**Applies to:** Version 0.5 an later
 
 The behaviour of MdDocs can be customized by changing the configuration.
 Most settings are optional and MdDocs aims to use sensible default values or all of them.
@@ -9,7 +9,7 @@ Most settings are optional and MdDocs aims to use sensible default values or all
 
 Settings are loaded from a number of *setting sources*:
 
-1. Default settings 
+1. Default settings
 1. Configuration file
 1. Execution parameters
    - Commandline parameters in the case of the [MdDocs .NET CLI Tool](../net-cli-tool.md)
@@ -49,7 +49,7 @@ For example setting `key:subkey` to `value` would need to be specified in the co
 ## Available Settings
 
 - [API Reference](./apireference/README.md)
-  - [Assembly Path](./apireference/README.md#assembly-path)
+  - [Assembly Paths](./apireference/README.md#assembly-paths)
   - [Output Path](./apireference/README.md#output-path)
   - [Markdown Preset](./apireference/README.md#markdown-preset)
   - Templates

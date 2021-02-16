@@ -24,14 +24,14 @@ mddocs apireference [--assemblies|-a <VALUE>]
 
 | Name                                                      | Short Name                            | Description                                                                                                                                     |
 | --------------------------------------------------------- | ------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| [assemblies](#assemblies-parameter)                       | [a](#assemblies-parameter)            | Path of the assembly to generate documentation for.                                                                                             |
+| [assemblies](#assemblies-parameter)                       | [a](#assemblies-parameter)            | Path of the assemblies to generate documentation for (at least one assembly must be specified).                                                 |
 | [configurationFilePath](#configurationfilepath-parameter) | [c](#configurationfilepath-parameter) | The path of the configuration file to use. If no configuration file is specified, default settings are used.                                    |
 | [outdir](#outdir-parameter)                               | [o](#outdir-parameter)                | Path of the directory to write the documentation to. If the output directory already exists, all files in the output directory will be deleted. |
 | [verbose](#verbose-parameter)                             | [v](#verbose-parameter)               | Show more detailed log output.                                                                                                                  |
 
 ### `assemblies` Parameter
 
-Path of the assembly to generate documentation for.
+Path of the assemblies to generate documentation for (at least one assembly must be specified).
 
 |                |                   |
 | -------------- | ----------------- |
