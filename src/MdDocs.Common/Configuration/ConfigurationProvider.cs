@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -39,6 +40,35 @@ namespace Grynwald.MdDocs.Common.Configuration
                 .AddJsonStream(configurationFileStream)
                 .AddObject(m_SettingsObject)
                 .Load<T>(GetFullSectionName(sectionName));
+
+
+
+            // By default, ConfigurationBuilder combines lists from different configuration sources.
+            // For example, assuming the is a string[] property named "MyArray" in T
+            // If the JSON file is { "MyArray" : [ "a", "b", "c"] } and the settings object defines a value
+            // for the "MyArray" setting of ["d", "e"], the values for the settings object would just overwrite
+            // the fist two elements of the array and the combined configuration value would be ["d", "e", "c" ]
+            //
+            // This is not the desired behavior here.
+            // Instead, if the settings object defines and value for "MyArray", this value should replace
+            // the value for the array from the JSON file - thus resulting in an configuration value of ["d", "e"].
+            // (for example, it must be possible override the assembly paths configured in the JSON configuration file using command line parameters)
+            //
+            // To achieve this, a configuration object is constructed from *just* the settings object.
+            // For all properties in T where the configuration constructed from just the settings object has a non-empty array,
+            // replace the value in the configuration with the value from the settings object.
+
+            var settingsObjectConfigOnly = new ConfigurationBuilder()
+                .AddObject(m_SettingsObject)
+                .Load<T>(GetFullSectionName(sectionName));
+
+            foreach (var property in config.GetType().GetProperties().Where(x => x.PropertyType.IsArray))
+            {
+                if (property.GetValue(settingsObjectConfigOnly) is IEnumerable<object> enumerableValue && enumerableValue.Any())
+                {
+                    property.SetValue(config, enumerableValue);
+                }
+            }
 
             if (configFileLoaded)
             {
@@ -136,5 +166,6 @@ namespace Grynwald.MdDocs.Common.Configuration
                 ? s_RootSectionName
                 : $"{s_RootSectionName}:{sectionName}";
         }
+
     }
 }
