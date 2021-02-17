@@ -1,12 +1,12 @@
 {
+    "$schema": "https://raw.githubusercontent.com/ap0llo/changelog/release/v0.3/schemas/configuration/schema.json",
     "changelog": {
-    
         "integrations": {
             "provider": "GitHub"
         },
-        "scopes" : [
-            { "name":  "apireference", "displayName":  "API Reference" },
-            { "name":  "commandlinehelp", "displayName":  "Command Line Help" }
-        ]
+        "scopes" : {
+            "apireference" : { "displayName":  "API Reference" },
+            "commandlinehelp": {"displayName":  "Command Line Help" }
+        }
     }
 }
