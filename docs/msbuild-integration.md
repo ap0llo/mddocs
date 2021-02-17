@@ -1,6 +1,6 @@
 # MdDocs MSBuild Integration
 
-**Applies to:** Version 0.4 an later
+**Applies to:** Version 0.4 and later
 
 ## Installation
 

@@ -106,8 +106,9 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
                 .Methods
                 .Single(m => m.Name == methodName);
 
-            using var assemblyDocumentaton = new AssemblyDocumentation(assembly, NullXmlDocsProvider.Instance, NullLogger.Instance);
-            var typeDocumentation = assemblyDocumentaton.Types.Single();
+            using var assemblySetDocumentation = AssemblySetDocumentation.FromAssemblyDefinitions(assembly);
+            var assemblyDocumentation = assemblySetDocumentation.Assemblies.Single();
+            var typeDocumentation = assemblyDocumentation.Types.Single();
 
             // ACT
             var operatorDocumentation = new OperatorDocumentation(
@@ -141,8 +142,9 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
                 .Methods
                 .Single(m => m.Name == "Method1");
 
-            using var assemblyDocumentaton = new AssemblyDocumentation(assembly, NullXmlDocsProvider.Instance, NullLogger.Instance);
-            var typeDocumentation = assemblyDocumentaton.Types.Single();
+            using var assemblySetDocumentation = AssemblySetDocumentation.FromAssemblyDefinitions(assembly);
+            var assemblyDocumentation = assemblySetDocumentation.Assemblies.Single();
+            var typeDocumentation = assemblyDocumentation.Types.Single();
 
             // ACT / ASSERT
             Assert.Throws<ArgumentException>(() => new OperatorDocumentation(
@@ -180,8 +182,9 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
                 .Methods
                 .Where(x => x.GetOperatorKind() == OperatorKind.Subtraction || x.GetOperatorKind() == OperatorKind.Addition);
 
-            using var assemblyDocumentaton = new AssemblyDocumentation(assembly, NullXmlDocsProvider.Instance, NullLogger.Instance);
-            var typeDocumentation = assemblyDocumentaton.Types.Single();
+            using var assemblySetDocumentation = AssemblySetDocumentation.FromAssemblyDefinitions(assembly);
+            var assemblyDocumentation = assemblySetDocumentation.Assemblies.Single();
+            var typeDocumentation = assemblyDocumentation.Types.Single();
 
             // ACT / ASSERT
             Assert.Throws<ArgumentException>(() => new OperatorDocumentation(

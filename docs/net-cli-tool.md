@@ -1,6 +1,6 @@
 # MdDocs .NET CLI tool
 
-**Applies to:** Version 0.4 an later
+**Applies to:** Version 0.5 and later
 
 ## Installation
 
@@ -27,10 +27,10 @@ See also: [Command Line Reference](./commandline/index.md)
 
 ### API Reference
 
-To generate API reference documentation for a .NET assembly, run:
+To generate API reference documentation for one or more .NET assemblies, run:
 
-```ps1
-mddocs apireference --assembly <PATH-TO-ASSEMBLY> --outdir <OUTPUT-DIRECTORY>
+```txt
+mddocs apireference --assemblies <PATH-TO-ASSEMBLY-1> <PATH-TO-ASSEMBLY-2> --outdir <OUTPUT-DIRECTORY>
 ```
 
 **⚠️ Note:** If the output directory already exists, all files in the output directory will be deleted.
@@ -44,7 +44,7 @@ To generate command line help for .NET console application implemented using
 the [CommandLineParser package](https://www.nuget.org/packages/CommandLineParser/),
 run:
 
-```ps1
+```txt
 mddocs commandlinehelp --assembly <PATH-TO-ASSEMBLY> --outdir <OUTPUT-DIRECTORY>
 ```
 

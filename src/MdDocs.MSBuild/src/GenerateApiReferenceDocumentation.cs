@@ -6,8 +6,8 @@ namespace Grynwald.MdDocs.MSBuild
 {
     public sealed class GenerateApiReferenceDocumentation : TaskBase
     {
-        [ConfigurationValue("mddocs:apireference:assemblyPath")]
-        public string AssemblyPath => Assembly.GetFullPath();
+        [ConfigurationValue("mddocs:apireference:assemblyPaths")]
+        public string[] AssemblyPaths => new[] { Assembly.GetFullPath() };
 
         [ConfigurationValue("mddocs:apireference:outputPath")]
         public string OutputDirectoryPath => OutputDirectory?.GetFullPath() ?? "";

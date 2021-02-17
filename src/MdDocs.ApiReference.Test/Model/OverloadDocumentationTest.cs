@@ -40,7 +40,8 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
 
             m_Assembly = Compile(cs);
 
-            m_AssemblyDocumentation = new AssemblyDocumentation(m_Assembly, NullXmlDocsProvider.Instance, NullLogger.Instance);
+            using var assemblySetDocumentation = AssemblySetDocumentation.FromAssemblyDefinitions(m_Assembly);
+            m_AssemblyDocumentation = assemblySetDocumentation.Assemblies.Single();
         }
 
         public void Dispose()

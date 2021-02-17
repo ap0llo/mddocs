@@ -8,7 +8,7 @@ namespace Grynwald.MdDocs.ApiReference.Templates
 {
     public static class ApiReferenceTemplateProvider
     {
-        public static ITemplate<AssemblyDocumentation> GetTemplate(ILogger logger, ApiReferenceConfiguration configuration)
+        public static ITemplate<AssemblySetDocumentation> GetTemplate(ILogger logger, ApiReferenceConfiguration configuration)
         {
             switch (configuration.Template.Name)
             {

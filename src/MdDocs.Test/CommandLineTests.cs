@@ -21,7 +21,7 @@ namespace Grynwald.MdDocs.Test
                 (_, nameof(OptionsBase.ConfigurationFilePath)) => false,
                 (nameof(CommandLineHelpOptions), nameof(OptionsBase.OutputDirectory)) => true,
                 (nameof(CommandLineHelpOptions), nameof(CommandLineHelpOptions.AssemblyPath)) => true,
-                (nameof(ApiReferenceOptions), nameof(ApiReferenceOptions.AssemblyPath)) => true,
+                (nameof(ApiReferenceOptions), nameof(ApiReferenceOptions.AssemblyPaths)) => true,
                 (nameof(ApiReferenceOptions), nameof(OptionsBase.OutputDirectory)) => true,
                 _ => throw new NotImplementedException()
             };

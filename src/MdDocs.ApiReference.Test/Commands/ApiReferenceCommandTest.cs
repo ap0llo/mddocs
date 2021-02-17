@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using Grynwald.MdDocs.ApiReference.Commands;
 using Grynwald.MdDocs.ApiReference.Configuration;
 using Grynwald.MdDocs.TestHelpers;
@@ -17,17 +18,36 @@ namespace Grynwald.MdDocs.ApiReference.Test.Commands
         private readonly ILogger m_Logger = NullLogger.Instance;
 
 
+        [Fact]
+        public void Execute_returns_false_if_AssemblyPaths_is_empty()
+        {
+            // ARRANGE
+            var configuration = new ApiReferenceConfiguration()
+            {
+                AssemblyPaths = Array.Empty<string>(),
+                OutputPath = "./some-output-path"
+            };
+
+            var sut = new ApiReferenceCommand(m_Logger, configuration);
+
+            // ACT 
+            var success = sut.Execute();
+
+            // ASSERT
+            Assert.False(success);
+        }
+
         [Theory]
         [InlineData(null)]
         [InlineData("")]
         [InlineData("\t")]
         [InlineData("does-not-exists.dll")]
-        public void Execute_returns_false_if_AssemblyPath_is_invalid(string assemblyPath)
+        public void Execute_returns_false_if_AssemblyPaths_is_invalid(string assemblyPath)
         {
             // ARRANGE
             var configuration = new ApiReferenceConfiguration()
             {
-                AssemblyPath = assemblyPath,
+                AssemblyPaths = new[] { assemblyPath },
                 OutputPath = "./some-output-path"
             };
 
@@ -54,7 +74,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Commands
 
             var configuration = new ApiReferenceConfiguration()
             {
-                AssemblyPath = assemblyPath,
+                AssemblyPaths = new[] { assemblyPath },
                 OutputPath = outputPath
             };
 
@@ -89,7 +109,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Commands
 
             var configuration = new ApiReferenceConfiguration()
             {
-                AssemblyPath = assemblyPath,
+                AssemblyPaths = new[] { assemblyPath },
                 OutputPath = outputPath
             };
 

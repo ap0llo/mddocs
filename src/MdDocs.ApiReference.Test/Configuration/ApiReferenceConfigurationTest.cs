@@ -78,7 +78,8 @@ namespace Grynwald.MdDocs.ApiReference.Test.Configuration
 
             yield return TestCase(config => Assert.NotNull(config));
             yield return TestCase(config => Assert.Empty(config.OutputPath));
-            yield return TestCase(config => Assert.Empty(config.AssemblyPath));
+            yield return TestCase(config => Assert.NotNull(config.AssemblyPaths));
+            yield return TestCase(config => Assert.Empty(config.AssemblyPaths));
             yield return TestCase(config => Assert.NotNull(config.Template));
             yield return TestCase(config => Assert.Equal(ApiReferenceConfiguration.TemplateName.Default, config.Template.Name));
             yield return TestCase(config => Assert.NotNull(config.Template.Default));
@@ -165,10 +166,10 @@ namespace Grynwald.MdDocs.ApiReference.Test.Configuration
 
 
         [Fact]
-        public void AssemblyPath_can_be_set_in_configuration_file()
+        public void AssemblyPaths_can_be_set_in_configuration_file()
         {
             // ARRANGE            
-            PrepareConfiguration("apireference:assemblyPath", @"C:\some-path");
+            PrepareConfiguration("apireference:assemblyPaths", new[] { @"C:\some-path", @"C:\some-other-path" });
 
             // ACT
             var provider = new ConfigurationProvider(m_ConfigurationFilePath);
@@ -176,28 +177,84 @@ namespace Grynwald.MdDocs.ApiReference.Test.Configuration
 
             // ASSERT
             Assert.NotNull(config);
-            Assert.Equal(@"C:\some-path", config.AssemblyPath);
+            Assert.Contains(@"C:\some-path", config.AssemblyPaths);
+            Assert.Contains(@"C:\some-other-path", config.AssemblyPaths);
         }
 
         private class TestClass2
         {
-            [ConfigurationValue("mddocs:apireference:assemblyPath")]
-            public string? AssemblyPath { get; set; }
+            [ConfigurationValue("mddocs:apireference:assemblyPaths")]
+            public IEnumerable<string>? AssemblyPaths { get; set; }
         }
 
         [Fact]
-        public void AssemblyPath_can_be_set_through_settings_object()
+        public void AssemblyPaths_can_be_set_through_settings_object()
         {
             // ARRANGE            
-            var settings = new TestClass2() { AssemblyPath = @"C:\some-path" };
+            var settings = new TestClass2() { AssemblyPaths = new[] { @"C:\some-path", @"C:\some-other-path" } };
 
             // ACT
             var provider = new ConfigurationProvider(m_ConfigurationFilePath, settings);
             var config = provider.GetApiReferenceConfiguration();
 
             // ASSERT
-            Assert.Equal(@"C:\some-path", config.AssemblyPath);
+            Assert.Contains(@"C:\some-path", config.AssemblyPaths);
+            Assert.Contains(@"C:\some-other-path", config.AssemblyPaths);
         }
+
+        private class TestClass3
+        {
+            [ConfigurationValue("mddocs:apireference:assemblyPaths")]
+            public IEnumerable<string>? AssemblyPaths { get; set; }
+        }
+
+        [Fact]
+        public void AssemblyPaths_from_settings_object_override_assembly_paths_from_configuration_file()
+        {
+            // ARRANGE
+            PrepareConfiguration("apireference:assemblyPaths", new[] { @"C:\path1", @"C:\path2", @"C:\path3" });
+
+            var settingsObject = new TestClass3() { AssemblyPaths = new[] { @"C:\path4", @"C:\path5" } };
+
+            // ACT
+            var provider = new ConfigurationProvider(m_ConfigurationFilePath, settingsObject);
+            var config = provider.GetApiReferenceConfiguration();
+
+            // ASSERT
+            Assert.Collection(
+                config.AssemblyPaths,
+                path => Assert.Equal(@"C:\path4", path),
+                path => Assert.Equal(@"C:\path5", path)
+            );
+        }
+
+        private class TestClass4
+        {
+            [ConfigurationValue("mddocs:apireference:assemblyPaths")]
+            public IEnumerable<string>? AssemblyPaths { get; set; }
+        }
+
+        [Fact]
+        public void Empty_AssemblyPaths_from_settings_object_do_not_override_assembly_paths_from_configuration()
+        {
+            // ARRANGE
+            PrepareConfiguration("apireference:assemblyPaths", new[] { @"C:\path1", @"C:\path2", @"C:\path3" });
+
+            var settingsObject = new TestClass3() { AssemblyPaths = Array.Empty<string>() };
+
+            // ACT
+            var provider = new ConfigurationProvider(m_ConfigurationFilePath, settingsObject);
+            var config = provider.GetApiReferenceConfiguration();
+
+            // ASSERT
+            Assert.Collection(
+                config.AssemblyPaths,
+                path => Assert.Equal(@"C:\path1", path),
+                path => Assert.Equal(@"C:\path2", path),
+                path => Assert.Equal(@"C:\path3", path)
+            );
+        }
+
 
         [Theory]
         [CombinatorialData]
@@ -215,7 +272,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Configuration
             Assert.Equal(preset, config.Template.Default.MarkdownPreset);
         }
 
-        private class TestClass3
+        private class TestClass5
         {
             [ConfigurationValue("mddocs:apireference:template:default:markdownPreset")]
             public string? Preset { get; set; }
@@ -226,7 +283,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Configuration
         public void Markdown_preset_can_be_set_through_settings_object(MarkdownPreset preset)
         {
             // ARRANGE            
-            var settings = new TestClass3() { Preset = preset.ToString() };
+            var settings = new TestClass5() { Preset = preset.ToString() };
 
             // ACT
             var provider = new ConfigurationProvider(m_ConfigurationFilePath, settings);
@@ -272,13 +329,15 @@ namespace Grynwald.MdDocs.ApiReference.Test.Configuration
         }
 
         [Fact]
-        public void GetConfiguration_converts_the_assembly_path_to_a_full_path()
+        public void GetConfiguration_converts_the_assembly_paths_to_a_full_path()
         {
             // ARRANGE
-            var relativePath = "../some-relative-path";
-            PrepareConfiguration("apireference:assemblyPath", relativePath);
+            var relativePath1 = "../some-relative-path";
+            var relativePath2 = "../some-other-relative-path";
+            PrepareConfiguration("apireference:assemblyPaths", new[] { relativePath1, relativePath2 });
 
-            var expectedPath = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(m_ConfigurationFilePath)!, relativePath));
+            var expectedPath1 = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(m_ConfigurationFilePath)!, relativePath1));
+            var expectedPath2 = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(m_ConfigurationFilePath)!, relativePath2));
 
             // ACT
             var provider = new ConfigurationProvider(m_ConfigurationFilePath);
@@ -286,15 +345,16 @@ namespace Grynwald.MdDocs.ApiReference.Test.Configuration
 
             // ASSERT
             Assert.NotNull(config);
-            Assert.Equal(expectedPath, config.AssemblyPath);
+            Assert.Contains(expectedPath1, config.AssemblyPaths);
+            Assert.Contains(expectedPath2, config.AssemblyPaths);
         }
 
         [Fact]
-        public void GetConfiguration_does_not_change_the_assembly_path_if_value_is_a_rooted_path()
+        public void GetConfiguration_does_not_change_the_assembly_paths_if_value_is_a_rooted_path()
         {
             // ARRANGE
             var path = @"C:\some-path";
-            PrepareConfiguration("apireference:assemblyPath", path);
+            PrepareConfiguration("apireference:assemblyPaths", new[] { path });
 
             // ACT
             var provider = new ConfigurationProvider(m_ConfigurationFilePath);
@@ -302,7 +362,8 @@ namespace Grynwald.MdDocs.ApiReference.Test.Configuration
 
             // ASSERT
             Assert.NotNull(config);
-            Assert.Equal(path, config.AssemblyPath);
+            var actualPath = Assert.Single(config.AssemblyPaths);
+            Assert.Equal(actualPath, path);
         }
 
 
@@ -322,7 +383,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Configuration
             Assert.Equal(includeAutoGeneratedNotice, config.Template.Default.IncludeAutoGeneratedNotice);
         }
 
-        private class TestClass4
+        private class TestClass6
         {
             [ConfigurationValue("mddocs:apireference:template:default:includeAutoGeneratedNotice")]
             public bool IncludeAutoGeneratedNotice { get; set; }
@@ -333,7 +394,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Configuration
         public void IncludeAutoGeneratedNotice_can_be_set_through_settings_object(bool includeAutoGeneratedNotice)
         {
             // ARRANGE            
-            var settings = new TestClass4() { IncludeAutoGeneratedNotice = includeAutoGeneratedNotice };
+            var settings = new TestClass6() { IncludeAutoGeneratedNotice = includeAutoGeneratedNotice };
 
             // ACT
             var provider = new ConfigurationProvider(m_ConfigurationFilePath, settings);

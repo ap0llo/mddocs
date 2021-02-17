@@ -12,7 +12,8 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
     {
         private AssemblyDocumentation GetAssemblyDocumentation(AssemblyDefinition assembly)
         {
-            return new AssemblyDocumentation(assembly, NullXmlDocsProvider.Instance, NullLogger.Instance);
+            using var assemblySetDocumentation = AssemblySetDocumentation.FromAssemblyDefinitions(assembly);
+            return assemblySetDocumentation.Assemblies.Single();
         }
 
 
@@ -65,6 +66,43 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             var typeDocumentation = Assert.IsType<TypeDocumentation>(documentation);
             Assert.Equal(typeId, typeDocumentation.TypeId);
         }
+
+        [Fact]
+        public void TryGetDocumentation_returns_expected_documentation_item_for_an_documented_type_in_a_different_assembly_of_the_same_set()
+        {
+            // ARRANGE
+            var cs1 = @"
+                namespace Namespace1.Namespace2
+                {
+                    public class Class1
+                    { }
+                }
+            ";
+            var cs2 = @"
+                namespace Namespace3
+                {
+                    public class Class2
+                    { }
+                }
+            ";
+
+            var assembly1 = Compile(cs1, "Assembly1");
+            var assembly2 = Compile(cs2, "Assembly2");
+
+            var typeId = assembly1.MainModule.Types.Single(x => x.Name == "Class1").ToTypeId();
+            using var assemblySet = AssemblySetDocumentation.FromAssemblyDefinitions(assembly1, assembly2);
+
+            using var sut = assemblySet.Assemblies.Single(x => x.Name == "Assembly2");
+
+            // ACT
+            var documentation = sut.TryGetDocumentation(typeId);
+
+            // ASSERT
+            Assert.NotNull(documentation);
+            var typeDocumentation = Assert.IsType<TypeDocumentation>(documentation);
+            Assert.Equal(typeId, typeDocumentation.TypeId);
+        }
+
 
         [Fact]
         public void Types_includes_expected_types()
@@ -173,92 +211,6 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             // ACT / ASSERT          
             Assert.DoesNotContain(sut.Types, t => t.TypeId.Name == "NestedClass1");
             Assert.DoesNotContain(sut.Types, t => t.TypeId.Name == "NestedClass2");
-        }
-
-        [Fact]
-        public void Namespaces_includes_expected_namespaces()
-        {
-            // ARRANGE
-            var cs = @"
-	            using System;
-
-                namespace Namespace1
-                {
-	                public class Class1
-	                { }
-                }
-
-                namespace Namespace1.Namespace2
-                {
-	                public class Class3
-	                { }
-                }
-
-                namespace Namespace3
-                {
-	                public class Class3
-	                { }
-                }           
-            ";
-
-            using var assembly = Compile(cs);
-            using var sut = GetAssemblyDocumentation(assembly);
-
-            var expectedNamespaces = new[]
-            {
-                new NamespaceId("Namespace1"),
-                new NamespaceId("Namespace1.Namespace2"),
-                new NamespaceId("Namespace3")
-            };
-
-            // ACT
-            var actualNamespaces = sut.Namespaces;
-
-            // ASSERT
-            Assert.Equal(expectedNamespaces.Length, actualNamespaces.Count);
-            Assert.All(
-                expectedNamespaces,
-                expectedNamespace => Assert.Contains(actualNamespaces, x => x.NamespaceId.Equals(expectedNamespace))
-            );
-        }
-
-        [Fact]
-        public void Namespaces_does_include_namesapces_that_contain_only_internal_types()
-        {
-            // ARRANGE
-            var cs = @"
-	            using System;
-
-                namespace Namespace1
-                {
-	                public class Class1
-	                { }
-                }
-
-                namespace Namespace2
-                {
-	                internal class Class2
-	                { }
-                }           
-            ";
-
-            using var assembly = Compile(cs);
-            using var sut = GetAssemblyDocumentation(assembly);
-
-            var expectedNamespaces = new[]
-            {
-                new NamespaceId("Namespace1")
-            };
-
-            // ACT
-            var actualNamespaces = sut.Namespaces;
-
-            // ASSERT
-            Assert.Equal(expectedNamespaces.Length, actualNamespaces.Count);
-            Assert.All(
-                expectedNamespaces,
-                expectedNamespace => Assert.Contains(actualNamespaces, x => x.NamespaceId.Equals(expectedNamespace))
-            );
         }
     }
 }
