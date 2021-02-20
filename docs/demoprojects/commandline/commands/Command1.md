@@ -17,9 +17,9 @@ The command page includes the commands description (provided as 'HelpText' on th
 ```txt
 DemoProject Command1 [<VALUE>]
                      [<VALUE>]
+                     --parameter4 <VALUE>
                      [--parameter1 <VALUE>]
                      [--parameter2|-x <VALUE>]
-                     --parameter4 <VALUE>
                      [--parameter5 <VALUE>]
                      [-y <VALUE>]
 ```

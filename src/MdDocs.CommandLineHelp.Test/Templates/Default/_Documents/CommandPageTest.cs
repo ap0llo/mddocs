@@ -232,6 +232,28 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Templates.Default
             Approve(model, configuration);
         }
 
+        [Fact]
+        public void Command_parameters_are_ordered()
+        {
+            // Expected parameter order:
+            // - Unnamed parameters (ordered by position)
+            // - Required Named parameters (ordered by name)
+            // - Optional Named parameters (ordered by name)
+            // - Switch parameters (ordered by name)            
+
+            var model = m_ApplicationDocumentation
+                .AddCommand("CommandName")
+                    .WithSwitchParameter("B")
+                    .WithSwitchParameter(null, "A")
+                    .WithNamedParameter("paramD", required: true)
+                    .WithNamedParameter("paramA", required: false)
+                    .WithNamedParameter("paramC", required: true)
+                    .WithNamedParameter("paramB", required: false)
+                    .WithPositionalParameter(position: 2)
+                    .WithPositionalParameter(position: 1);
+
+            Approve(model);
+        }
 
         private void Approve(CommandDocumentation model, CommandLineHelpConfiguration? configuration = null)
         {

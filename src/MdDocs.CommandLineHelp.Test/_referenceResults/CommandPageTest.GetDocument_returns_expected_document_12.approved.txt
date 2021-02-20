@@ -12,8 +12,8 @@
 ## Usage
 
 ```txt
-TestApp CommandName [--xyz <VALUE>]
-                    [-a <VALUE>]
+TestApp CommandName [-a <VALUE>]
+                    [--xyz <VALUE>]
 ```
 
 ## Parameters

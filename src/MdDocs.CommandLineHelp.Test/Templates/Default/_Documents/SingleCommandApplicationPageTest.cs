@@ -81,6 +81,33 @@ namespace Grynwald.MdDocs.CommandLineHelp.Test.Templates.Default
             Approve(application, configuration);
         }
 
+        [Fact]
+        public void Command_parameters_are_ordered()
+        {
+            // Expected parameter order:
+            // - Unnamed parameters (ordered by position)
+            // - Required Named parameters (ordered by name)
+            // - Optional Named parameters (ordered by name)
+            // - Switch parameters (ordered by name)            
+
+            var application = new SingleCommandApplicationDocumentation(name: "TestApp", "1.2.3")
+            {
+                Usage = new[] { "Usage line 1", "Usage line2" }
+            };
+
+            application = application
+                .WithSwitchParameter("B")
+                .WithSwitchParameter(null, "A")
+                .WithNamedParameter("paramD", required: true)
+                .WithNamedParameter("paramA", required: false)
+                .WithNamedParameter("paramC", required: true)
+                .WithNamedParameter("paramB", required: false)
+                .WithPositionalParameter(position: 2)
+                .WithPositionalParameter(position: 1);
+
+            Approve(application);
+        }
+
 
         private void Approve(SingleCommandApplicationDocumentation model, CommandLineHelpConfiguration? configuration = null)
         {
