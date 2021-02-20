@@ -12,7 +12,7 @@
 
 ## Usage
 
-```
+```txt
 TestApp CommandName [--option1|-a]
 ```
 

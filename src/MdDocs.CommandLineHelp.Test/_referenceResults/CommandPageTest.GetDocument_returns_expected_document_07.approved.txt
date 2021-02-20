@@ -12,7 +12,7 @@
 
 ## Usage
 
-```
+```txt
 TestApp CommandName [<VALUE>]
                     [<VALUE:INTEGER>]
                     [<Value3:STRING>]

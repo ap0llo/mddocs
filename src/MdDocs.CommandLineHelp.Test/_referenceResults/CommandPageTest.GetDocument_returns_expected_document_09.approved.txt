@@ -12,7 +12,7 @@
 
 ## Usage
 
-```
+```txt
 TestApp CommandName [<PositionalParameter1>]
                     [--parameter1 <VALUE>]
 ```

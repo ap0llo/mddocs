@@ -13,7 +13,7 @@ Generate API reference documentation for a .NET assembly.
 
 ## Usage
 
-```
+```txt
 mddocs apireference [--assemblies|-a <VALUE>]
                     [--configurationFilePath|-c <VALUE>]
                     [--outdir|-o <VALUE>]

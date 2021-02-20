@@ -12,7 +12,7 @@
 
 ## Usage
 
-```
+```txt
 TestApp Command1
 ```
 ___

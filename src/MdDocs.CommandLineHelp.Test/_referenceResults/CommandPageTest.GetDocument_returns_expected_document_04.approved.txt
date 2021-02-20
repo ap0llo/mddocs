@@ -12,7 +12,7 @@
 
 ## Usage
 
-```
+```txt
 TestApp Command2 --parameter1 <VALUE>
                  [--parameter2 <VALUE>]
                  [--parameter3|-x <VALUE>]

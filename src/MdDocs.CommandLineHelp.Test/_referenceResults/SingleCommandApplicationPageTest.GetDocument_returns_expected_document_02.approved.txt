@@ -14,7 +14,7 @@ Usage line2
 
 ## Usage
 
-```
+```txt
 TestApp --parameter1 <VALUE>
 ```
 

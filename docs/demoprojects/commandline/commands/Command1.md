@@ -14,7 +14,7 @@ The command page includes the commands description (provided as 'HelpText' on th
 
 ## Usage
 
-```
+```txt
 DemoProject Command1 [<VALUE>]
                      [<VALUE>]
                      [--parameter1 <VALUE>]

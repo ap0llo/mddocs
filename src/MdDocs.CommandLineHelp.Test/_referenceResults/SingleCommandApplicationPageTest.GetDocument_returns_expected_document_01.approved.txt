@@ -16,7 +16,7 @@ Usage line2
 
 ## Usage
 
-```
+```txt
 TestApp [<VALUE>]
         <Value2>
         [<Value3>]

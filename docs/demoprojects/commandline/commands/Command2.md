@@ -13,7 +13,7 @@ Documentation for the 'command2' subcommand. This command has no parameters.
 
 ## Usage
 
-```
+```txt
 DemoProject Command2
 ```
 ___

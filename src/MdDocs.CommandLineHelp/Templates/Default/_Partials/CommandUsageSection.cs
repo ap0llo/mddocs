@@ -21,7 +21,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Templates.Default
         {
             return new MdContainerBlock(
                 new MdHeading(2, "Usage"),
-                new MdCodeBlock(GetUsage())
+                new MdCodeBlock(GetUsage(), "txt")
             );
         }
 

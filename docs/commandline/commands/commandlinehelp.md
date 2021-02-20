@@ -13,7 +13,7 @@ Generate command line help for .NET console application implemented using the 'C
 
 ## Usage
 
-```
+```txt
 mddocs commandlinehelp [--assembly|-a <VALUE>]
                        [--configurationFilePath|-c <VALUE>]
                        [--outdir|-o <VALUE>]
