@@ -9,7 +9,7 @@
     <PackageReference Include="Grynwald.MarkdownGenerator" Version="2.5.34" />
     <PackageReference Include="Grynwald.Utilities" Version="1.6.11-pre" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
-    <PackageReference Include="Mono.Cecil" Version="0.11.3" />
+    <PackageReference Include="Mono.Cecil" Version="0.11.4" />
   </ItemGroup>
 
   <ItemGroup>
