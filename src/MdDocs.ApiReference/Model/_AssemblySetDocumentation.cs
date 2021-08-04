@@ -35,7 +35,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// <summary>
         /// Initializes a new instance of <see cref="AssemblySetDocumentation"/>
         /// </summary>
-        public _AssemblySetDocumentation(IEnumerable<_AssemblyDocumentation> assemblies, IEnumerable<_NamespaceDocumentation> namespaces, IEnumerable<_TypeDocumentation> types)
+        internal _AssemblySetDocumentation(IEnumerable<_AssemblyDocumentation> assemblies, IEnumerable<_NamespaceDocumentation> namespaces, IEnumerable<_TypeDocumentation> types)
         {
             if (assemblies is null)
                 throw new ArgumentNullException(nameof(assemblies));

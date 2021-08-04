@@ -81,9 +81,9 @@ namespace Grynwald.MdDocs.ApiReference.Model
             //TODO: Support XML docs for namespaces
         }
 
+
         /// <inheritdoc />
         public override string ToString() => $"Namespace({NamespaceId})";
-
 
 
         /// <summary>
