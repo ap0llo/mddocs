@@ -12,7 +12,7 @@ namespace Grynwald.MdDocs.ApiReference.Loaders
     {
         public _AssemblySetDocumentation Load(IEnumerable<AssemblyDefinition> assemblyDefinitions)
         {
-            var builder = new AssemblySetDocumentationBuilder();
+            var builder = new ApiReferenceBuilder();
 
             foreach (var assemblyDefinition in assemblyDefinitions)
             {
@@ -28,7 +28,7 @@ namespace Grynwald.MdDocs.ApiReference.Loaders
         }
 
 
-        private void LoadTypeRecursively(AssemblySetDocumentationBuilder builder, TypeDefinition typeDefinition, TypeDocumentation? declaringType)
+        private void LoadTypeRecursively(ApiReferenceBuilder builder, TypeDefinition typeDefinition, TypeDocumentation? declaringType)
         {
             var typeId = typeDefinition.ToTypeId();
             var type = builder.AddType(typeDefinition.Module.Assembly.Name.Name, typeId);

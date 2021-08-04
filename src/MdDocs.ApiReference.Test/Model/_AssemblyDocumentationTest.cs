@@ -38,10 +38,13 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
                 // ARRANGE
                 var sut = new _AssemblyDocumentation("Assembly", "1.0.0");
 
-                var namespaceBuilder = new NamespaceDocumentationBuilder();
+                var builder1 = new ApiReferenceBuilder();
+                _ = builder1.AddAssembly("Assembly", "1.0.0");
+                var class1 = builder1.AddType("Assembly", new SimpleTypeId("Namespace1", "Class1"));
 
-                var class1 = new TypeDocumentationBuilder().AddType(sut, namespaceBuilder.GetOrAddNamespace("Namespace1"), new SimpleTypeId("Namespace1", "Class1"));
-                var class2 = new TypeDocumentationBuilder().AddType(sut, namespaceBuilder.GetOrAddNamespace("Namespace1"), new SimpleTypeId("Namespace1", "Class1"));
+                var builder2 = new ApiReferenceBuilder();
+                _ = builder2.AddAssembly("Assembly", "1.0.0");
+                var class2 = builder2.AddType("Assembly", new SimpleTypeId("Namespace1", "Class1"));
 
                 // ACT
                 sut.Add(class1);
@@ -58,11 +61,10 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
                 // ARRANGE
                 var sut = new _AssemblyDocumentation("Assembly", "1.0.0");
 
-                var typeBuilder = new TypeDocumentationBuilder();
-                var namespaceBuilder = new NamespaceDocumentationBuilder();
-
-                var class1 = typeBuilder.AddType(sut, namespaceBuilder.GetOrAddNamespace("Namespace1"), new SimpleTypeId("Namespace1", "Class1"));
-                var class2 = typeBuilder.AddType(sut, namespaceBuilder.GetOrAddNamespace("Namespace2"), new SimpleTypeId("Namespace2", "Class2"));
+                var builder = new ApiReferenceBuilder();
+                _ = builder.AddAssembly("Assembly", "1.0.0");
+                var class1 = builder.AddType("Assembly", new SimpleTypeId("Namespace1", "Class1"));
+                var class2 = builder.AddType("Assembly", new SimpleTypeId("Namespace2", "Class2"));
 
                 // ACT
                 sut.Add(class1);

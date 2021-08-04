@@ -196,19 +196,13 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             public void Throws_DuplicateItemException_if_type_already_exists()
             {
                 // ARRANGE
-                var globalNamespace = new _NamespaceDocumentation(null, NamespaceId.GlobalNamespace);
-                var sut = new _NamespaceDocumentation(globalNamespace, new NamespaceId("Namespace1"));
+                var builder = new ApiReferenceBuilder();
+                var assembly = builder.AddAssembly("Assembly1", "1.0.0");
 
-                var class1 = new TypeDocumentationBuilder().AddType(
-                    new AssemblyDocumentationBuilder().AddAssembly("Assembly1", null),
-                    sut,
-                    new SimpleTypeId("Namespace1", "Class1")
-                );
-                var class2 = new TypeDocumentationBuilder().AddType(
-                    new AssemblyDocumentationBuilder().AddAssembly("Assembly1", null),
-                    sut,
-                    new SimpleTypeId("Namespace1", "Class1")
-                );
+                var sut = builder.GetOrAddNamespace("Namespace1");
+
+                var class1 = new _TypeDocumentation(assembly, sut, new SimpleTypeId("Namespace1", "Class1"));
+                var class2 = new _TypeDocumentation(assembly, sut, new SimpleTypeId("Namespace1", "Class1"));
 
                 // ACT
                 sut.Add(class1);
@@ -224,12 +218,13 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             public void Throws_InconsistentModelException_if_the_types_does_not_match_the_current_namespace()
             {
                 // ARRANGE
+                var builder = new ApiReferenceBuilder();
+                _ = builder.AddAssembly("Assembly1", "1.0.0");
+
+                var type = builder.AddType("Assembly1", new SimpleTypeId(NamespaceId.GlobalNamespace, "Class1"));
+
                 var globalNamespace = new _NamespaceDocumentation(null, NamespaceId.GlobalNamespace);
                 var sut = new _NamespaceDocumentation(globalNamespace, new NamespaceId("Namespace1"));
-
-                var assembly = new AssemblyDocumentationBuilder().AddAssembly("Assembly1", null);
-
-                var type = new TypeDocumentationBuilder().AddType(assembly, globalNamespace, new SimpleTypeId(NamespaceId.GlobalNamespace, "Class1"));
 
                 // ACT
                 var ex = Record.Exception(() => sut.Add(type));
@@ -244,14 +239,14 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             public void Adds_type()
             {
                 // ARRANGE
-                var globalNamespace = new _NamespaceDocumentation(null, NamespaceId.GlobalNamespace);
-                var sut = new _NamespaceDocumentation(globalNamespace, new NamespaceId("Namespace1"));
+                var builder = new ApiReferenceBuilder();
+                var assembly1 = builder.AddAssembly("Assembly1", "1.0.0");
+                var assembly2 = builder.AddAssembly("Assembly2", "1.0.0");
 
-                var typeBuilder = new TypeDocumentationBuilder();
-                var assemblyBuilder = new AssemblyDocumentationBuilder();
+                var sut = builder.AddNamespace("Namespace1");
 
-                var class1 = typeBuilder.AddType(assemblyBuilder.AddAssembly("Assembly1", null), sut, new SimpleTypeId("Namespace1", "Class1"));
-                var class2 = typeBuilder.AddType(assemblyBuilder.AddAssembly("Assembly2", null), sut, new SimpleTypeId("Namespace1", "Class2"));
+                var class1 = new _TypeDocumentation(assembly1, sut, new SimpleTypeId("Namespace1", "Class1"));
+                var class2 = new _TypeDocumentation(assembly2, sut, new SimpleTypeId("Namespace1", "Class2"));
 
                 // ACT
                 sut.Add(class1);

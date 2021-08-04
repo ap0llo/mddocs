@@ -22,8 +22,8 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
                 // ARRANGE
                 var typeId = new SimpleTypeId("Namespace1", "Class1");
 
-                var namespaceBuilder = new NamespaceDocumentationBuilder();
-                var @namespace = namespaceBuilder.GetOrAddNamespace("Namespace1");
+                var builder = new ApiReferenceBuilder();
+                var @namespace = builder.GetOrAddNamespace("Namespace1");
 
                 // ACT 
                 var ex = Record.Exception(() => new _TypeDocumentation(assembly: null!, @namespace: @namespace, typeId: typeId));
@@ -39,7 +39,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
                 // ARRANGE
                 var typeId = new SimpleTypeId("Namespace1", "Class1");
 
-                var assemblyBuilder = new AssemblyDocumentationBuilder();
+                var assemblyBuilder = new ApiReferenceBuilder();
                 var assembly = assemblyBuilder.AddAssembly("Assembly1", "1.0.0");
 
                 // ACT 
@@ -54,11 +54,9 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             public void TypeId_must_not_be_null()
             {
                 // ARRANGE
-                var namespaceBuilder = new NamespaceDocumentationBuilder();
-                var @namespace = namespaceBuilder.GetOrAddNamespace("Namespace1");
-
-                var assemblyBuilder = new AssemblyDocumentationBuilder();
-                var assembly = assemblyBuilder.AddAssembly("Assembly1", "1.0.0");
+                var builder = new ApiReferenceBuilder();
+                var assembly = builder.AddAssembly("Assembly1", "1.0.0");
+                var @namespace = builder.GetOrAddNamespace("Namespace1");
 
                 // ACT 
                 var ex = Record.Exception(() => new _TypeDocumentation(assembly: assembly, @namespace: @namespace, typeId: null!));
@@ -74,11 +72,9 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
                 // ARRANGE
                 var typeId = new SimpleTypeId("Namespace1", "Class1");
 
-                var namespaceBuilder = new NamespaceDocumentationBuilder();
-                var @namespace = namespaceBuilder.GetOrAddNamespace("Namespace2");
-
-                var assemblyBuilder = new AssemblyDocumentationBuilder();
-                var assembly = assemblyBuilder.AddAssembly("Assembly1", "1.0.0");
+                var builder = new ApiReferenceBuilder();
+                var assembly = builder.AddAssembly("Assembly1", "1.0.0");
+                var @namespace = builder.GetOrAddNamespace("Namespace2");
 
                 // ACT 
                 var ex = Record.Exception(() => new _TypeDocumentation(assembly, @namespace, typeId));
@@ -88,6 +84,5 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
                 Assert.Contains("Mismatch between namespace of type 'Namespace1.Class1' and id of parent namespace 'Namespace2'", ex.Message);
             }
         }
-
     }
 }
