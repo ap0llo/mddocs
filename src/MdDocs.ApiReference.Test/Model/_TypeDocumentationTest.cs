@@ -21,6 +21,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             {
                 // ARRANGE
                 var typeId = new SimpleTypeId("Namespace1", "Class1");
+
                 var namespaceBuilder = new NamespaceDocumentationBuilder();
                 var @namespace = namespaceBuilder.GetOrAddNamespace("Namespace1");
 
@@ -37,8 +38,9 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             {
                 // ARRANGE
                 var typeId = new SimpleTypeId("Namespace1", "Class1");
+
                 var assemblyBuilder = new AssemblyDocumentationBuilder();
-                var assembly = assemblyBuilder.GetOrAddAssembly("Assembly1", "1.0.0");
+                var assembly = assemblyBuilder.AddAssembly("Assembly1", "1.0.0");
 
                 // ACT 
                 var ex = Record.Exception(() => new _TypeDocumentation(assembly: assembly, @namespace: null!, typeId: typeId));
@@ -54,8 +56,9 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
                 // ARRANGE
                 var namespaceBuilder = new NamespaceDocumentationBuilder();
                 var @namespace = namespaceBuilder.GetOrAddNamespace("Namespace1");
+
                 var assemblyBuilder = new AssemblyDocumentationBuilder();
-                var assembly = assemblyBuilder.GetOrAddAssembly("Assembly1", "1.0.0");
+                var assembly = assemblyBuilder.AddAssembly("Assembly1", "1.0.0");
 
                 // ACT 
                 var ex = Record.Exception(() => new _TypeDocumentation(assembly: assembly, @namespace: @namespace, typeId: null!));
@@ -70,10 +73,12 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             {
                 // ARRANGE
                 var typeId = new SimpleTypeId("Namespace1", "Class1");
+
                 var namespaceBuilder = new NamespaceDocumentationBuilder();
                 var @namespace = namespaceBuilder.GetOrAddNamespace("Namespace2");
+
                 var assemblyBuilder = new AssemblyDocumentationBuilder();
-                var assembly = assemblyBuilder.GetOrAddAssembly("Assembly1", "1.0.0");
+                var assembly = assemblyBuilder.AddAssembly("Assembly1", "1.0.0");
 
                 // ACT 
                 var ex = Record.Exception(() => new _TypeDocumentation(assembly, @namespace, typeId));

@@ -250,8 +250,8 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
                 var typeBuilder = new TypeDocumentationBuilder();
                 var assemblyBuilder = new AssemblyDocumentationBuilder();
 
-                var class1 = typeBuilder.AddType(assemblyBuilder.GetOrAddAssembly("Assembly1", null), sut, new SimpleTypeId("Namespace1", "Class1"));
-                var class2 = typeBuilder.AddType(assemblyBuilder.GetOrAddAssembly("Assembly2", null), sut, new SimpleTypeId("Namespace1", "Class2"));
+                var class1 = typeBuilder.AddType(assemblyBuilder.AddAssembly("Assembly1", null), sut, new SimpleTypeId("Namespace1", "Class1"));
+                var class2 = typeBuilder.AddType(assemblyBuilder.AddAssembly("Assembly2", null), sut, new SimpleTypeId("Namespace1", "Class2"));
 
                 // ACT
                 sut.Add(class1);

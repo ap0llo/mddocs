@@ -35,7 +35,7 @@ namespace Grynwald.MdDocs.ApiReference.Loaders
 
         }
 
-        public _TypeDocumentation GetOrAddType(_AssemblyDocumentation assembly, _NamespaceDocumentation @namespace, TypeId typeId)
+        public _TypeDocumentation GetType(TypeId typeId)
         {
             if (typeId is null)
                 throw new ArgumentNullException(nameof(typeId));
@@ -44,11 +44,10 @@ namespace Grynwald.MdDocs.ApiReference.Loaders
             {
                 return existingType;
             }
-
-            var type = new _TypeDocumentation(assembly, @namespace, typeId);
-            m_Types.Add(typeId, type);
-            return type;
-
+            else
+            {
+                throw new ItemNotFoundException($"Type '{typeId}' was not found");
+            }
         }
 
     }

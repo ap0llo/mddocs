@@ -12,8 +12,7 @@ namespace Grynwald.MdDocs.ApiReference.Loaders
         public _AssemblyDocumentation AddAssembly(string assemblyName, string? assemblyVersion) =>
                 m_AssemblyBuilder.AddAssembly(assemblyName, assemblyVersion);
 
-        public _AssemblyDocumentation GetOrAddAssembly(string assemblyName, string? assemblyVersion) =>
-            m_AssemblyBuilder.GetOrAddAssembly(assemblyName, assemblyVersion);
+        public _AssemblyDocumentation GetAssembly(string assemblyName) => m_AssemblyBuilder.GetAssembly(assemblyName);
 
         public _NamespaceDocumentation GetOrAddNamespace(string namespaceName) =>
             m_NamespaceBuilder.GetOrAddNamespace(namespaceName);
@@ -23,7 +22,7 @@ namespace Grynwald.MdDocs.ApiReference.Loaders
 
         public _TypeDocumentation AddType(string assemblyName, TypeId typeId)
         {
-            var assembly = GetOrAddAssembly(assemblyName, null);
+            var assembly = GetAssembly(assemblyName);
             var @namespace = m_NamespaceBuilder.GetOrAddNamespace(typeId.Namespace);
 
             var type = m_TypeBuilder.AddType(assembly, @namespace, typeId);

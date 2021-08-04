@@ -35,7 +35,7 @@ namespace Grynwald.MdDocs.ApiReference.Loaders
             return assembly;
         }
 
-        public _AssemblyDocumentation GetOrAddAssembly(string assemblyName, string? assemblyVersion)
+        public _AssemblyDocumentation GetAssembly(string assemblyName)
         {
             if (String.IsNullOrWhiteSpace(assemblyName))
                 throw new ArgumentException("Value must not be null or whitespace", nameof(assemblyName));
@@ -44,11 +44,10 @@ namespace Grynwald.MdDocs.ApiReference.Loaders
             {
                 return existingAssembly;
             }
-
-            var assembly = new _AssemblyDocumentation(assemblyName, assemblyVersion);
-            m_Assemblies.Add(assemblyName, assembly);
-
-            return assembly;
+            else
+            {
+                throw new ItemNotFoundException($"Assembly '{assemblyName}' was not found");
+            }
         }
 
     }

@@ -1,6 +1,6 @@
 ﻿namespace Grynwald.MdDocs.ApiReference.Model
 {
-    public class InconsistentModelException : InvalidModelException
+    public class InconsistentModelException : ModelException
     {
         public InconsistentModelException(string message) : base(message)
         { }

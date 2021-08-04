@@ -39,8 +39,8 @@ namespace Grynwald.MdDocs.ApiReference.Test.Loaders
                 var sut = new AssemblySetDocumentationBuilder();
 
                 // ACT
-                _ = sut.GetOrAddAssembly("Assembly1", "1.2.3");
-                _ = sut.GetOrAddAssembly("Assembly2", "4.5.6");
+                _ = sut.AddAssembly("Assembly1", "1.2.3");
+                _ = sut.AddAssembly("Assembly2", "4.5.6");
                 _ = sut.GetOrAddNamespace("Namespace1");
                 _ = sut.GetOrAddNamespace("Namespace2");
                 _ = sut.GetOrAddNamespace("Namespace3.Namespace4");
@@ -74,6 +74,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Loaders
                 // ARRANGE
                 var sut = new AssemblySetDocumentationBuilder();
                 var assembly = sut.AddAssembly("Assembly1", null);
+
                 var @namespace = sut.AddNamespace("Namespace1");
 
                 // ACT 

@@ -86,7 +86,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Loaders
         }
 
 
-        public class GetOrAddAssembly
+        public class GetAssembly
         {
             [Theory]
             [InlineData(null)]
@@ -99,7 +99,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Loaders
                 var sut = new AssemblyDocumentationBuilder();
 
                 // ACT
-                var ex = Record.Exception(() => sut.GetOrAddAssembly(assemblyName: assemblyName, assemblyVersion: "1.0.0"));
+                var ex = Record.Exception(() => sut.GetAssembly(assemblyName: assemblyName));
 
                 // ASSERT
                 var argumentException = Assert.IsType<ArgumentException>(ex);
@@ -107,29 +107,17 @@ namespace Grynwald.MdDocs.ApiReference.Test.Loaders
             }
 
             [Fact]
-            public void Returns_new_assembly()
+            public void Throws_ItemNotFoundException_if_assembly_does_not_exist()
             {
                 // ARRANGE
                 var sut = new AssemblyDocumentationBuilder();
 
                 // ACT 
-                var addedAssembly1 = sut.GetOrAddAssembly("SomeAssemblyName1", assemblyVersion: null);
-                var addedAssembly2 = sut.GetOrAddAssembly("SomeAssemblyName2", assemblyVersion: "1.0.0");
+                var ex = Record.Exception(() => sut.GetAssembly("AssemblyName"));
 
                 // ASSERT
-                Assert.NotNull(addedAssembly1);
-                Assert.Equal("SomeAssemblyName1", addedAssembly1.Name);
-                Assert.Null(addedAssembly1.Version);
-
-                Assert.NotNull(addedAssembly2);
-                Assert.Equal("SomeAssemblyName2", addedAssembly2.Name);
-                Assert.Equal("1.0.0", addedAssembly2.Version);
-
-                Assert.Collection(
-                    sut.Assemblies.OrderBy(x => x.Name),
-                    assembly => Assert.Same(addedAssembly1, assembly),
-                    assembly => Assert.Same(addedAssembly2, assembly)
-                );
+                Assert.IsType<ItemNotFoundException>(ex);
+                Assert.Contains("Assembly 'AssemblyName' was not found", ex.Message);
             }
 
             [Fact]
@@ -137,18 +125,15 @@ namespace Grynwald.MdDocs.ApiReference.Test.Loaders
             {
                 // ARRANGE
                 var sut = new AssemblyDocumentationBuilder();
+                _ = sut.AddAssembly("SomeAssemblyName", "1.2.3");
 
                 // ACT 
-                var addedAssembly1 = sut.GetOrAddAssembly(assemblyName: "SomeAssemblyName", assemblyVersion: "1.0.0");
-                var addedAssembly2 = sut.GetOrAddAssembly(assemblyName: "someassemblyname", assemblyVersion: "1.0.0");
+                var assembly1 = sut.GetAssembly(assemblyName: "SomeAssemblyName");
+                var assembly2 = sut.GetAssembly(assemblyName: "someassemblyname");
 
                 // ASSERT
-                Assert.Same(addedAssembly1, addedAssembly2);
-                Assert.Equal("1.0.0", addedAssembly1.Version);
-                Assert.Collection(
-                    sut.Assemblies.OrderBy(x => x.Name),
-                    assembly => Assert.Same(addedAssembly1, assembly)
-                );
+                Assert.Same(assembly1, assembly2);
+                Assert.Equal("1.2.3", assembly1.Version);
             }
         }
 
