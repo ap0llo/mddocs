@@ -3,7 +3,9 @@ using System.Linq;
 using Grynwald.MdDocs.ApiReference.Loaders;
 using Grynwald.MdDocs.ApiReference.Model;
 using Grynwald.MdDocs.TestHelpers;
+using Microsoft.Extensions.Logging;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Grynwald.MdDocs.ApiReference.Test.Loaders
 {
@@ -12,6 +14,15 @@ namespace Grynwald.MdDocs.ApiReference.Test.Loaders
     /// </summary>
     public class MonoCecilDocumentationLoaderTest : DynamicCompilationTestBase
     {
+        private readonly ILogger m_Logger;
+
+
+        public MonoCecilDocumentationLoaderTest(ITestOutputHelper testOutputHelper)
+        {
+            m_Logger = new XunitLogger(testOutputHelper ?? throw new ArgumentNullException(nameof(testOutputHelper)));
+        }
+
+
         [Theory]
         [InlineData("Assembly1", "Assembly1")]
         [InlineData("Assembly1", "assembly1")]
@@ -22,7 +33,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Loaders
             var assembly1 = Compile("", assemblyName1);
             var assembly2 = Compile("", assemblyName2);
 
-            var sut = new MonoCecilDocumentationLoader();
+            var sut = new MonoCecilDocumentationLoader(m_Logger);
 
             // ACT 
             var ex = Record.Exception(() => sut.Load(new[] { assembly1, assembly2 }));
@@ -47,7 +58,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Loaders
             using var assembly1 = Compile(cs, "Assembly1");
             using var assembly2 = Compile(cs, "Assembly2");
 
-            var sut = new MonoCecilDocumentationLoader();
+            var sut = new MonoCecilDocumentationLoader(m_Logger);
 
             // ACT 
             var ex = Record.Exception(() => sut.Load(new[] { assembly1, assembly2 }));
@@ -80,7 +91,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Loaders
             using var assembly1 = Compile(cs1, "Assembly1");
             using var assembly2 = Compile(cs2, "Assembly2");
 
-            var sut = new MonoCecilDocumentationLoader();
+            var sut = new MonoCecilDocumentationLoader(m_Logger);
 
             // ACT 
             var assemblySet = sut.Load(new[] { assembly1, assembly2 });
@@ -96,7 +107,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Loaders
             var assembly1 = Compile("", "Assembly1");
             var assembly2 = Compile("", "Assembly2");
 
-            var sut = new MonoCecilDocumentationLoader();
+            var sut = new MonoCecilDocumentationLoader(m_Logger);
 
             // ACT
             var assemblySet = sut.Load(new[] { assembly1, assembly2 });
@@ -154,7 +165,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Loaders
             using var assembly1 = Compile(cs1, "Assembly1");
             using var assembly2 = Compile(cs2, "Assembly2");
 
-            var sut = new MonoCecilDocumentationLoader();
+            var sut = new MonoCecilDocumentationLoader(m_Logger);
 
             // ACT
             var assemblySet = sut.Load(new[] { assembly1, assembly2 });
@@ -219,7 +230,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Loaders
             using var assembly1 = Compile(cs1, "Assembly1");
             using var assembly2 = Compile(cs2, "Assembly2");
 
-            var sut = new MonoCecilDocumentationLoader();
+            var sut = new MonoCecilDocumentationLoader(m_Logger);
 
 
             // ACT
@@ -272,7 +283,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Loaders
 
             using var assemblyDefinition = Compile(cs, "Assembly1");
 
-            var sut = new MonoCecilDocumentationLoader();
+            var sut = new MonoCecilDocumentationLoader(m_Logger);
 
             var class1 = new SimpleTypeId(NamespaceId.GlobalNamespace, "Class1");
             var class2 = new SimpleTypeId(NamespaceId.GlobalNamespace, "Class2");
@@ -376,7 +387,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Loaders
             ";
 
             using var assembly = Compile(cs);
-            var sut = new MonoCecilDocumentationLoader();
+            var sut = new MonoCecilDocumentationLoader(m_Logger);
 
             // ACT
             var assemblySet = sut.Load(new[] { assembly });
@@ -404,7 +415,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Loaders
 
             using var assembly = Compile(cs);
 
-            var sut = new MonoCecilDocumentationLoader();
+            var sut = new MonoCecilDocumentationLoader(m_Logger);
 
             // ACT
             var assemblySet = sut.Load(new[] { assembly });

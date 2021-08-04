@@ -3,20 +3,33 @@ using System.Collections.Generic;
 using System.Linq;
 using Grynwald.MdDocs.ApiReference.Model;
 using Grynwald.MdDocs.Common;
+using Microsoft.Extensions.Logging;
 using Mono.Cecil;
 
 namespace Grynwald.MdDocs.ApiReference.Loaders
 {
-    //TODO 2021-08-04: Logging
     public class MonoCecilDocumentationLoader : IDocumentationLoader
     {
+        private readonly ILogger m_Logger;
+
+
+        public MonoCecilDocumentationLoader(ILogger logger)
+        {
+            m_Logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        }
+
+
         public _AssemblySetDocumentation Load(IEnumerable<AssemblyDefinition> assemblyDefinitions)
         {
+            m_Logger.LogDebug("Loading assembly set");
+
             var builder = new ApiReferenceBuilder();
 
             foreach (var assemblyDefinition in assemblyDefinitions)
             {
-                _ = builder.AddAssembly(assemblyDefinition.Name.Name, assemblyDefinition.GetInformationalVersionOrVersion());
+                var assemblyName = assemblyDefinition.Name.Name;
+                m_Logger.LogInformation($"Loading assembly '{assemblyName}'");
+                _ = builder.AddAssembly(assemblyName, assemblyDefinition.GetInformationalVersionOrVersion());
 
                 foreach (var typeDefinition in assemblyDefinition.MainModule.Types.Where(t => t.IsPublic))
                 {
@@ -30,8 +43,10 @@ namespace Grynwald.MdDocs.ApiReference.Loaders
 
         private void LoadTypeRecursively(ApiReferenceBuilder builder, TypeDefinition typeDefinition)
         {
+            var assemblyName = typeDefinition.Module.Assembly.Name.Name;
             var typeId = typeDefinition.ToTypeId();
-            _ = builder.AddType(typeDefinition.Module.Assembly.Name.Name, typeId);
+            m_Logger.LogDebug($"Loading type '{typeId}' from assembly '{assemblyName}'");
+            _ = builder.AddType(assemblyName, typeId);
 
             if (typeDefinition.HasNestedTypes)
             {
