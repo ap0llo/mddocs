@@ -46,5 +46,8 @@ namespace Grynwald.MdDocs.ApiReference.Model
             return other != null &&
                    StringComparer.Ordinal.Equals(Name, other.Name);
         }
+
+        /// <inheritdoc />
+        public override string ToString() => String.IsNullOrEmpty(Name) ? "<GlobalNamespace>" : Name;
     }
 }
