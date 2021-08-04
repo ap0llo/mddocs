@@ -292,7 +292,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Loaders
                 assembly =>
                 {
                     Assert.Equal("Assembly1", assembly.Name);
-                    Assert.Equal(5, assembly.Types.Count);
+                    Assert.Equal(8, assembly.Types.Count);
                     Assert.All(assemblySet.Types,
                         type => Assert.Contains(assembly.Types, x => x == type)
                     );
@@ -304,12 +304,14 @@ namespace Grynwald.MdDocs.ApiReference.Test.Loaders
                 ns =>
                 {
                     Assert.Equal(NamespaceId.GlobalNamespace, ns.NamespaceId);
-                    Assert.Equal(5, ns.Types.Count);
+                    Assert.Equal(8, ns.Types.Count);
                     Assert.All(assemblySet.Types,
                         type => Assert.Contains(ns.Types, x => x == type)
                     );
                 }
             );
+
+            var ordered = assemblySet.Types.Select(x => x.DisplayName).OrderBy(x => x).ToList();
 
             Assert.Collection(
                 assemblySet.Types.OrderBy(x => x.DisplayName),
@@ -323,6 +325,21 @@ namespace Grynwald.MdDocs.ApiReference.Test.Loaders
                 {
                     Assert.Equal(class2, type.TypeId);
                 },
+                // NestedClass1
+                type =>
+                {
+                    Assert.Equal(nestedClass1, type.TypeId);
+                },
+                // NestedClass2
+                type =>
+                {
+                    Assert.Equal(nestedClass2, type.TypeId);
+                },
+                // NestedClass3
+                type =>
+                {
+                    Assert.Equal(nestedClass3, type.TypeId);
+                },
                 // Enum1
                 type =>
                 {
@@ -333,12 +350,6 @@ namespace Grynwald.MdDocs.ApiReference.Test.Loaders
                 {
                     Assert.Equal(interface1, type.TypeId);
                 },
-                //// TODO 2021-08-04: NestedClass1
-                //type => { },
-                //// TODO 2021-08-04: NestedClass2
-                //type => { },
-                ////TODO 2021-08-04: NestedClass3
-                //type => { },
                 // Struct1
                 type =>
                 {

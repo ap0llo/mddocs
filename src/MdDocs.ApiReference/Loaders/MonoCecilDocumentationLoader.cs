@@ -20,7 +20,7 @@ namespace Grynwald.MdDocs.ApiReference.Loaders
 
                 foreach (var typeDefinition in assemblyDefinition.MainModule.Types.Where(t => t.IsPublic))
                 {
-                    LoadTypeRecursively(builder, typeDefinition, declaringType: null);
+                    LoadTypeRecursively(builder, typeDefinition);
                 }
             }
 
@@ -28,12 +28,18 @@ namespace Grynwald.MdDocs.ApiReference.Loaders
         }
 
 
-        private void LoadTypeRecursively(ApiReferenceBuilder builder, TypeDefinition typeDefinition, TypeDocumentation? declaringType)
+        private void LoadTypeRecursively(ApiReferenceBuilder builder, TypeDefinition typeDefinition)
         {
             var typeId = typeDefinition.ToTypeId();
-            var type = builder.AddType(typeDefinition.Module.Assembly.Name.Name, typeId);
+            _ = builder.AddType(typeDefinition.Module.Assembly.Name.Name, typeId);
 
-            // TODO 2021-08-04: Load nested types
+            if (typeDefinition.HasNestedTypes)
+            {
+                foreach (var nestedType in typeDefinition.NestedTypes.Where(x => x.IsNestedPublic))
+                {
+                    LoadTypeRecursively(builder, nestedType);
+                }
+            }
         }
     }
 }

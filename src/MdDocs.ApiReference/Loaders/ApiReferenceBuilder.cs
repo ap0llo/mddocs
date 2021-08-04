@@ -147,15 +147,37 @@ namespace Grynwald.MdDocs.ApiReference.Loaders
             }
 
             var assembly = GetAssembly(assemblyName);
-            var @namespace = GetOrAddNamespace(typeId.Namespace);
 
-            var type = new _TypeDocumentation(assembly, @namespace, typeId);
-            m_Types.Add(typeId, type);
+            if (typeId.IsNestedType)
+            {
+                _TypeDocumentation declaringType;
+                if (!m_Types.TryGetValue(typeId.DeclaringType!, out declaringType!))
+                {
+                    declaringType = AddType(assemblyName, typeId.DeclaringType!);
+                }
 
-            assembly.Add(type);
-            @namespace.Add(type);
+                var nestedType = new _TypeDocumentation(assembly, declaringType, typeId);
+                m_Types.Add(typeId, nestedType);
+                declaringType.AddNestedType(nestedType);
 
-            return type;
+                assembly.Add(nestedType);
+                nestedType.Namespace.Add(nestedType);
+
+                return nestedType;
+            }
+            else
+            {
+
+                var @namespace = GetOrAddNamespace(typeId.Namespace);
+
+                var type = new _TypeDocumentation(assembly, @namespace, typeId);
+                m_Types.Add(typeId, type);
+
+                assembly.Add(type);
+                @namespace.Add(type);
+
+                return type;
+            }
         }
 
         public _TypeDocumentation GetType(TypeId typeId)

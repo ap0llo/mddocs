@@ -1,11 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using Grynwald.MdDocs.ApiReference.Model.XmlDocs;
-using Grynwald.MdDocs.Common;
-using Grynwald.Utilities.Collections;
-using Microsoft.Extensions.Logging;
-using Mono.Cecil;
 
 namespace Grynwald.MdDocs.ApiReference.Model
 {
@@ -23,7 +17,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         //TODO 2021-08-04: private readonly IDictionary<string, IndexerDocumentation> m_Indexers;
         //TODO 2021-08-04: private readonly IDictionary<string, MethodDocumentation> m_Methods;
         //TODO 2021-08-04: private readonly IDictionary<OperatorKind, OperatorDocumentation> m_Operators;
-        //TODO 2021-08-04: private readonly List<TypeDocumentation> m_NestedTypes = new List<TypeDocumentation>();
+        private readonly List<_TypeDocumentation> m_NestedTypes = new List<_TypeDocumentation>();
 
 
         /// <summary>
@@ -147,32 +141,29 @@ namespace Grynwald.MdDocs.ApiReference.Model
         ///// <inheritdoc />
         //TODO 2021-08-04: public string? ObsoleteMessage { get; }
 
-        ///// <summary>
-        ///// Gets whether this type is a nested type
-        ///// </summary>
-        //TODO 2021-08-04: public bool IsNestedType => DeclaringType != null;
+        /// <summary>
+        /// Gets whether this type is a nested type
+        /// </summary>
+        public bool IsNestedType => DeclaringType != null;
 
-        ///// <summary>
-        ///// Gets the model object for the type this type is defined in if it is a nested type.
-        ///// </summary>
-        ///// <value>
-        ///// The model class for the declaring type if the type is a nested type, otherwise <c>null</c>.
-        ///// </value>
-        //TODO 2021-08-04: public TypeDocumentation? DeclaringType { get; }
+        /// <summary>
+        /// Gets the model object for the type this type is defined in if it is a nested type.
+        /// </summary>
+        /// <value>
+        /// The model class for the declaring type if the type is a nested type, otherwise <c>null</c>.
+        /// </value>
+        public _TypeDocumentation? DeclaringType { get; }
 
-        ///// <summary>
-        ///// Gets the type's nested types
-        ///// </summary>
-        //TODO 2021-08-04: public IReadOnlyCollection<TypeDocumentation> NestedTypes => m_NestedTypes;
+        /// <summary>
+        /// Gets the type's nested types
+        /// </summary>
+        public IReadOnlyCollection<_TypeDocumentation> NestedTypes => m_NestedTypes;
 
 
         /// <summary>
-        /// Initializes a new instance of <see cref="_TypeDocumentation"/>.
+        /// Initializes a new instance of <see cref="_TypeDocumentation"/> for a top-level type.
         /// </summary>
-        internal _TypeDocumentation(
-            _AssemblyDocumentation assembly,
-            _NamespaceDocumentation @namespace,
-            TypeId typeId)
+        internal _TypeDocumentation(_AssemblyDocumentation assembly, _NamespaceDocumentation @namespace, TypeId typeId)
         {
             if (assembly is null)
                 throw new ArgumentNullException(nameof(assembly));
@@ -189,25 +180,46 @@ namespace Grynwald.MdDocs.ApiReference.Model
             Assembly = assembly;
             Namespace = @namespace;
             TypeId = typeId;
-
+            DeclaringType = null;
         }
 
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="_TypeDocumentation"/> for a nested type.
+        /// </summary>
+        internal _TypeDocumentation(_AssemblyDocumentation assembly, _TypeDocumentation declaringType, TypeId typeId)
+        {
+            if (assembly is null)
+                throw new ArgumentNullException(nameof(assembly));
+
+            if (declaringType is null)
+                throw new ArgumentNullException(nameof(declaringType));
+
+            if (typeId is null)
+                throw new ArgumentNullException(nameof(typeId));
+
+            if (typeId.DeclaringType is null)
+                throw new InconsistentModelException($"Cannot initialize nested type for type '{typeId}' because it has no declaring type");
+
+            if (!typeId.DeclaringType.Equals(declaringType.TypeId))
+                throw new InconsistentModelException($"Mismatch between id of type '{typeId}' and id of declaring type '{declaringType.TypeId}'");
+
+            Assembly = assembly;
+            Namespace = declaringType.Namespace;
+            TypeId = typeId;
+            DeclaringType = declaringType;
+        }
 
 
+        internal void AddNestedType(_TypeDocumentation nestedType)
+        {
+            if (nestedType is null)
+                throw new ArgumentNullException(nameof(nestedType));
 
-        //TODO 2021-08-04: internal void AddNestedType(TypeDocumentation nestedType)
-        //{
-        //    if (nestedType is null)
-        //        throw new ArgumentNullException(nameof(nestedType));
+            if (!ReferenceEquals(nestedType.DeclaringType, this))
+                throw new InconsistentModelException("Cannot add nested type with a different declaring type");
 
-        //    if (ReferenceEquals(nestedType.DeclaringType, this))
-        //        throw new ArgumentException("Cannot add nested type with a different declaring type", nameof(nestedType));
-
-        //    m_NestedTypes.Add(nestedType);
-        //}
-
-
-
+            m_NestedTypes.Add(nestedType);
+        }
     }
 }

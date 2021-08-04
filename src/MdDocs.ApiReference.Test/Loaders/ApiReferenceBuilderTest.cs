@@ -143,7 +143,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Loaders
         public class AddNamespace
         {
             [Fact]
-            public void AddNamespace_returns_global_namespace_when_namespace_name_is_empty()
+            public void Returns_global_namespace_when_namespace_name_is_empty()
             {
                 // ARRANGE
                 var sut = new ApiReferenceBuilder();
@@ -160,7 +160,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Loaders
             }
 
             [Fact]
-            public void AddNamespace_implicitly_adds_the_global_namespace()
+            public void Implicitly_adds_the_global_namespace()
             {
                 // ARRANGE
                 var sut = new ApiReferenceBuilder();
@@ -177,7 +177,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Loaders
             }
 
             [Fact]
-            public void AddNamespace_implicitly_adds_all_parent_namespaces()
+            public void Implicitly_adds_all_parent_namespaces()
             {
                 // ARRANGE
                 var sut = new ApiReferenceBuilder();
@@ -196,7 +196,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Loaders
             }
 
             [Fact]
-            public void AddNamespace_throws_DuplicateItemException_when_namespace_already_exists()
+            public void Throws_DuplicateItemException_when_namespace_already_exists()
             {
                 // ARRANGE
                 var sut = new ApiReferenceBuilder();
@@ -211,7 +211,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Loaders
             }
 
             [Fact]
-            public void AddNamespace_reuses_parent_namespaces_if_they_were_already_added()
+            public void Reuses_parent_namespaces_if_they_were_already_added()
             {
                 // ARRANGE
                 var sut = new ApiReferenceBuilder();
@@ -251,7 +251,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Loaders
             }
 
             [Fact]
-            public void AddNamespace_adds_the_namespace_to_the_parent_namespace()
+            public void Adds_the_namespace_to_the_parent_namespace()
             {
                 // ARRANGE
                 var sut = new ApiReferenceBuilder();
@@ -314,7 +314,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Loaders
             // empty string is omitted here because a empty string is a valid namespace name (= global namespace)
             [InlineData(" ")]
             [InlineData("\t")]
-            public void AddNamespace_throws_ArgumentException_when_namespace_name_is_null_or_whitespace(string namespaceName)
+            public void Throws_ArgumentException_when_namespace_name_is_null_or_whitespace(string namespaceName)
             {
                 // ARRANGE
                 var sut = new ApiReferenceBuilder();
@@ -332,7 +332,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Loaders
         public class GetOrAddNamespace
         {
             [Fact]
-            public void GetOrAddNamespace_returns_global_namespace_when_namespace_name_is_empty()
+            public void Returns_global_namespace_when_namespace_name_is_empty()
             {
                 // ARRANGE
                 var sut = new ApiReferenceBuilder();
@@ -349,7 +349,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Loaders
             }
 
             [Fact]
-            public void GetOrAddNamespace_implicitly_adds_the_global_namespace()
+            public void Implicitly_adds_the_global_namespace()
             {
                 // ARRANGE
                 var sut = new ApiReferenceBuilder();
@@ -366,7 +366,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Loaders
             }
 
             [Fact]
-            public void GetOrAddNamespace_implicitly_adds_all_parent_namespaces()
+            public void Implicitly_adds_all_parent_namespaces()
             {
                 // ARRANGE
                 var sut = new ApiReferenceBuilder();
@@ -385,7 +385,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Loaders
             }
 
             [Fact]
-            public void GetOrAddNamespace_returns_existing_instance_when_adding_a_namespace_that_already_exists()
+            public void Returns_existing_instance_when_adding_a_namespace_that_already_exists()
             {
                 // ARRANGE
                 var sut = new ApiReferenceBuilder();
@@ -399,7 +399,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Loaders
             }
 
             [Fact]
-            public void GetOrAddNamespace_reuses_parent_namespaces_if_they_were_already_added()
+            public void Reuses_parent_namespaces_if_they_were_already_added()
             {
                 // ARRANGE
                 var sut = new ApiReferenceBuilder();
@@ -439,7 +439,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Loaders
             }
 
             [Fact]
-            public void GetOrAddNamespace_adds_the_namespace_to_the_parent_namespace()
+            public void Adds_the_namespace_to_the_parent_namespace()
             {
                 // ARRANGE
                 var sut = new ApiReferenceBuilder();
@@ -502,7 +502,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Loaders
             // empty string is omitted here because a empty string is a valid namespace name (= global namespace)
             [InlineData(" ")]
             [InlineData("\t")]
-            public void GetOrAddNamespace_throws_ArgumentException_when_namespace_name_is_null_or_whitespace(string namespaceName)
+            public void Throws_ArgumentException_when_namespace_name_is_null_or_whitespace(string namespaceName)
             {
                 // ARRANGE
                 var sut = new ApiReferenceBuilder();
@@ -520,7 +520,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Loaders
         public class AddType
         {
             [Fact]
-            public void AddType_returns_expected_type_and_adds_it_to_the_list_of_types()
+            public void Returns_expected_type_and_adds_it_to_the_list_of_types()
             {
                 // ARRANGE
                 var typeId = new SimpleTypeId("Namespace1", "Class1");
@@ -530,28 +530,30 @@ namespace Grynwald.MdDocs.ApiReference.Test.Loaders
                 var @namespace = sut.GetOrAddNamespace("Namespace1");
 
                 // ACT
-                var type = sut.AddType("Assembly1", typeId);
+                var addedType = sut.AddType("Assembly1", typeId);
 
                 // ASSERT
-                Assert.NotNull(type);
-                Assert.Same(assembly, type.Assembly);
-                Assert.Same(@namespace, type.Namespace);
-                Assert.Equal(typeId, type.TypeId);
-                Assert.Equal("Class1", type.DisplayName);
+                Assert.NotNull(addedType);
+                Assert.Same(assembly, addedType.Assembly);
+                Assert.Same(@namespace, addedType.Namespace);
+                Assert.Equal(typeId, addedType.TypeId);
+                Assert.Equal("Class1", addedType.DisplayName);
 
                 Assert.Collection(
                     sut.Types,
-                    t => Assert.Same(type, t)
+                    type => Assert.Same(addedType, type)
                 );
             }
 
             [Fact]
-            public void AddType_throws_DuplicateItemException_if_type_already_exists()
+            public void Throws_DuplicateItemException_if_type_already_exists()
             {
                 // ARRANGE
                 var typeId = new SimpleTypeId("Namespace1", "Class1");
 
                 var sut = new ApiReferenceBuilder();
+                _ = sut.AddAssembly("Assembly1", "1.0.0");
+                _ = sut.AddAssembly("Assembly2", "1.0.0");
                 _ = sut.AddType("Assembly1", typeId);
 
                 // ACT
@@ -561,12 +563,59 @@ namespace Grynwald.MdDocs.ApiReference.Test.Loaders
                 Assert.IsType<DuplicateItemException>(ex);
                 Assert.Contains("Type 'Namespace1.Class1' already exists", ex.Message);
             }
+
+            [Fact]
+            public void Adds_nested_type()
+            {
+                // ARRANGE
+                var typeId = new SimpleTypeId(new SimpleTypeId("Namespace1", "Class1"), "NestedClass2");
+
+                var sut = new ApiReferenceBuilder();
+                var assembly = sut.AddAssembly("Assembly1", null);
+                var @namespace = sut.GetOrAddNamespace("Namespace1");
+
+                // ACT
+                var addedType = sut.AddType("Assembly1", typeId);
+
+                // ASSERT
+                Assert.NotNull(addedType);
+                Assert.Same(assembly, addedType.Assembly);
+                Assert.Same(@namespace, addedType.Namespace);
+                Assert.True(addedType.IsNestedType);
+                Assert.NotNull(addedType.DeclaringType);
+                Assert.Equal(typeId, addedType.TypeId);
+                Assert.Equal("Class1.NestedClass2", addedType.DisplayName);
+
+                Assert.Collection(
+                    sut.Types.OrderBy(x => x.DisplayName),
+                    // Class1
+                    type =>
+                    {
+                        Assert.Same(addedType.DeclaringType, type);
+                        Assert.False(type.IsNestedType);
+                        Assert.Null(type.DeclaringType);
+                        Assert.Collection(
+                            type.NestedTypes,
+                            nestedType =>
+                            {
+                                Assert.Same(addedType, nestedType);
+                            }
+                        );
+                    },
+                    // NestedClass2
+                    type =>
+                    {
+                        Assert.Same(addedType, type);
+                        Assert.Same(sut.Types.Single(x => !x.IsNestedType), type.DeclaringType);
+                    });
+            }
+
         }
 
         public class GetType_
         {
             [Fact]
-            public void GetType_throws_ItemNotFoundException_if_type_does_not_exist()
+            public void Throws_ItemNotFoundException_if_type_does_not_exist()
             {
                 // ARRANGE                
                 var typeId = new SimpleTypeId("Namespace1", "Class1");
@@ -582,12 +631,13 @@ namespace Grynwald.MdDocs.ApiReference.Test.Loaders
             }
 
             [Fact]
-            public void GetType_returns_expected_type()
+            public void Returns_expected_type()
             {
                 // ARRANGE
                 var typeId = new SimpleTypeId("Namespace1", "Class1");
 
                 var sut = new ApiReferenceBuilder();
+                _ = sut.AddAssembly("Assembly1", "1.0.0");
                 var addedType = sut.AddType("Assembly1", typeId);
 
                 // ACT
