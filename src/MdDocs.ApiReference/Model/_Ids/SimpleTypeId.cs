@@ -47,6 +47,23 @@ namespace Grynwald.MdDocs.ApiReference.Model
             }
         }
 
+        /// <inheritdoc />
+        public override string FullName
+        {
+            get
+            {
+                if (IsNestedType)
+                {
+                    return $"{DeclaringType!.FullName}.{Name}";
+                }
+                else
+                {
+                    return Namespace.Equals(NamespaceId.GlobalNamespace)
+                        ? Name
+                        : $"{Namespace.Name}.{Name}";
+                }
+            }
+        }
 
         /// <summary>
         /// Gets whether this type id refers to <see cref="System.Void"/>

@@ -29,6 +29,8 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// <inheritdoc />
         public override bool IsVoid => false;
 
+        /// <inheritdoc />
+        public override string FullName => Name;
 
         /// <summary>
         /// Initializes a new instance of <see cref="GenericTypeParameterId"/>.

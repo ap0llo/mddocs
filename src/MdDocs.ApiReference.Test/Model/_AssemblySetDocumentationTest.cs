@@ -15,7 +15,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         {
             // ARRANGE
             var namespaces = Array.Empty<_NamespaceDocumentation>();
-            var types = Array.Empty<TypeDocumentation>();
+            var types = Array.Empty<_TypeDocumentation>();
 
             // ACT 
             var ex = Record.Exception(() => new _AssemblySetDocumentation(assemblies: null!, namespaces: namespaces, types: types));
@@ -30,7 +30,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         {
             // ARRANGE
             var assemblies = Array.Empty<_AssemblyDocumentation>();
-            var types = Array.Empty<TypeDocumentation>();
+            var types = Array.Empty<_TypeDocumentation>();
 
             // ACT 
             var ex = Record.Exception(() => new _AssemblySetDocumentation(assemblies: assemblies, namespaces: null!, types: types));
@@ -55,12 +55,11 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             Assert.Equal("types", argumentNullException.ParamName);
         }
 
-
         [Theory]
         [InlineData("Assembly1", "Assembly1")]
         [InlineData("Assembly1", "assembly1")]
         [InlineData("ASSEMBLY1", "Assembly1")]
-        public void Constructor_throws_InvalidAssemblySetException_if_assemblies_contains_duplicate_items(string assemblyName1, string assemblyName2)
+        public void Constructor_throws_DuplicateItemException_if_assemblies_contains_duplicate_items(string assemblyName1, string assemblyName2)
         {
             // ARRANGE
             var assembly1 = new _AssemblyDocumentation(assemblyName1, null);
@@ -68,13 +67,13 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
 
             var assemblies = new[] { assembly1, assembly2 };
             var namespaces = Array.Empty<_NamespaceDocumentation>();
-            var types = Array.Empty<TypeDocumentation>();
+            var types = Array.Empty<_TypeDocumentation>();
 
             // ACT
             var ex = Record.Exception(() => new _AssemblySetDocumentation(assemblies, namespaces, types));
 
             // ASSERT
-            Assert.IsType<InvalidAssemblySetException>(ex);
+            Assert.IsType<DuplicateItemException>(ex);
             Assert.Contains($"multiple assemblies named {assemblyName1}", ex.Message, StringComparison.OrdinalIgnoreCase);
         }
 

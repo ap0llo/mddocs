@@ -32,6 +32,20 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// <inheritdoc />
         public override bool IsVoid => false;
 
+        /// <inheritdoc />
+        public override string FullName
+        {
+            get
+            {
+                if (!IsNestedType && TypeArguments.Count == 1 && Namespace.IsSystem && Name.Equals("Nullable"))
+                {
+                    return $"{TypeArguments.Single().DisplayName}?";
+                }
+
+                var name = IsNestedType ? $"{DeclaringType!.FullName}.{Name}" : Name;
+                return $"{name}<{String.Join(", ", TypeArguments.Select(a => a.FullName))}>";
+            }
+        }
 
         /// <summary>
         /// Initializes a new instance of <see cref="GenericTypeInstanceId"/>.

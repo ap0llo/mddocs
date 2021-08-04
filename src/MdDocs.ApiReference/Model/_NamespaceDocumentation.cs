@@ -9,8 +9,8 @@ namespace Grynwald.MdDocs.ApiReference.Model
     /// </summary>
     public sealed class _NamespaceDocumentation
     {
-        // TODO 2021-08-04: Add types
-        private readonly IDictionary<NamespaceId, _NamespaceDocumentation> m_Namespaces = new Dictionary<NamespaceId, _NamespaceDocumentation>();
+        private readonly Dictionary<NamespaceId, _NamespaceDocumentation> m_Namespaces = new();
+        private readonly Dictionary<TypeId, _TypeDocumentation> m_Types = new();
 
 
         /// <summary>
@@ -40,6 +40,11 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// </summary>
         public IReadOnlyCollection<_NamespaceDocumentation> Namespaces { get; }
 
+        /// <summary>
+        /// Gets the types in the namespace
+        /// </summary>
+        public IReadOnlyCollection<_TypeDocumentation> Types { get; }
+
 
         /// <summary>
         /// Initializes a new instance of <see cref="NamespaceDocumentation"/>.
@@ -59,12 +64,12 @@ namespace Grynwald.MdDocs.ApiReference.Model
                 {
                     if (namespaceId.Name.Contains(".") || String.IsNullOrEmpty(namespaceId.Name))
                     {
-                        throw new ArgumentException($"Cannot initialize namespace '{namespaceId}' with parent namespace '{parentNamespace.NamespaceId}'");
+                        throw new InconsistentModelException($"Cannot initialize namespace '{namespaceId}' with parent namespace '{parentNamespace.NamespaceId}'");
                     }
                 }
                 else if (!namespaceId.Name.StartsWith($"{parentNamespace.Name}."))
                 {
-                    throw new ArgumentException($"Cannot initialize namespace '{namespaceId}' with parent namespace '{parentNamespace.NamespaceId}'");
+                    throw new InconsistentModelException($"Cannot initialize namespace '{namespaceId}' with parent namespace '{parentNamespace.NamespaceId}'");
                 }
             }
 
@@ -72,6 +77,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
             NamespaceId = namespaceId;
 
             Namespaces = ReadOnlyCollectionAdapter.Create(m_Namespaces.Values);
+            Types = ReadOnlyCollectionAdapter.Create(m_Types.Values);
             //TODO: Support XML docs for namespaces
         }
 
@@ -89,9 +95,29 @@ namespace Grynwald.MdDocs.ApiReference.Model
                 throw new ArgumentNullException(nameof(@namespace));
 
             if (!ReferenceEquals(@namespace.ParentNamespace, this))
-                throw new ArgumentException($"Cannot add namespace '{@namespace.NamespaceId}' as a child of namespace '{NamespaceId}' because the parent namespace if different from the current instance", nameof(@namespace));
+                throw new InconsistentModelException($"Cannot add namespace '{@namespace.NamespaceId}' as a child of namespace '{NamespaceId}' because the parent namespace is different from the current instance");
 
             m_Namespaces.Add(@namespace.NamespaceId, @namespace);
         }
+
+
+        /// <summary>
+        /// Adds the specified type to the namespace
+        /// </summary>
+        internal void Add(_TypeDocumentation type)
+        {
+            if (type is null)
+                throw new ArgumentNullException(nameof(type));
+
+            if (m_Types.ContainsKey(type.TypeId))
+                throw new DuplicateItemException($"Type '{type.DisplayName}' already exists");
+
+            if (!ReferenceEquals(type.Namespace, this))
+                throw new InconsistentModelException($"Cannot add type '{type.TypeId}' to namespace '{NamespaceId}' because the type's namespace is different from the current instance");
+
+
+            m_Types.Add(type.TypeId, type);
+        }
+
     }
 }

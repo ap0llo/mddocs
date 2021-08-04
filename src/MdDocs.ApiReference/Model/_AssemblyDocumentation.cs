@@ -9,7 +9,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
     /// </summary>
     public sealed class _AssemblyDocumentation
     {
-        private readonly Dictionary<TypeId, TypeDocumentation> m_Types = new();
+        private readonly Dictionary<TypeId, _TypeDocumentation> m_Types = new();
 
         /// <summary>
         /// The name of the assembly
@@ -24,7 +24,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// <summary>
         /// Gets the types defined in this assembly.
         /// </summary>
-        public IReadOnlyCollection<TypeDocumentation> Types { get; }
+        public IReadOnlyCollection<_TypeDocumentation> Types { get; }
 
 
         /// <summary>
@@ -41,6 +41,19 @@ namespace Grynwald.MdDocs.ApiReference.Model
             Types = ReadOnlyCollectionAdapter.Create(m_Types.Values);
         }
 
+        /// <summary>
+        /// Adds the specified type to the assembly
+        /// </summary>
+        internal void Add(_TypeDocumentation type)
+        {
+            if (type is null)
+                throw new ArgumentNullException(nameof(type));
+
+            if (m_Types.ContainsKey(type.TypeId))
+                throw new DuplicateItemException($"Type '{type.TypeId}' already exists");
+
+            m_Types.Add(type.TypeId, type);
+        }
 
 
     }

@@ -37,6 +37,11 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// </summary>
         public TypeId? DeclaringType { get; }
 
+        /// <summary>
+        /// Gets the type's full name (including the namespace)
+        /// </summary>
+        public abstract string FullName { get; }
+
 
         /// <summary>
         /// Initializes a new instance of <see cref="TypeId"/>.
@@ -103,5 +108,8 @@ namespace Grynwald.MdDocs.ApiReference.Model
                        StringComparer.Ordinal.Equals(Name, other.Name);
             }
         }
+
+        /// <inheritdoc />
+        public override string ToString() => FullName;
     }
 }

@@ -19,6 +19,10 @@ namespace Grynwald.MdDocs.ApiReference.Model
         public TypeId ElementType { get; }
 
 
+        /// <inheritdoc />
+        public override string FullName => ElementType.FullName;
+
+
         public ByReferenceTypeId(TypeId elementType) : base(elementType.Namespace, $"{elementType.Name}&")
         {
             ElementType = elementType ?? throw new ArgumentNullException(nameof(elementType));

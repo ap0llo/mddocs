@@ -21,6 +21,9 @@ namespace Grynwald.MdDocs.ApiReference.Model
         public override string DisplayName => $"{ElementType.DisplayName}[{new String(',', Dimensions - 1)}]";
 
         /// <inheritdoc />
+        public override string FullName => $"{ElementType.FullName}[{new String(',', Dimensions - 1)}]";
+
+        /// <inheritdoc />
         public override bool IsVoid => false;
 
 

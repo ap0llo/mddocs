@@ -19,6 +19,22 @@ namespace Grynwald.MdDocs.ApiReference.Loaders
         }
 
 
+        public _AssemblyDocumentation AddAssembly(string assemblyName, string? assemblyVersion)
+        {
+            if (String.IsNullOrWhiteSpace(assemblyName))
+                throw new ArgumentException("Value must not be null or whitespace", nameof(assemblyName));
+
+            if (m_Assemblies.ContainsKey(assemblyName))
+            {
+                throw new DuplicateItemException($"Assembly '{assemblyName}' already exists");
+            }
+
+            var assembly = new _AssemblyDocumentation(assemblyName, assemblyVersion);
+            m_Assemblies.Add(assemblyName, assembly);
+
+            return assembly;
+        }
+
         public _AssemblyDocumentation GetOrAddAssembly(string assemblyName, string? assemblyVersion)
         {
             if (String.IsNullOrWhiteSpace(assemblyName))

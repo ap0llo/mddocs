@@ -65,5 +65,35 @@ namespace Grynwald.MdDocs.ApiReference.Test.Loaders
                 Assert.Empty(assemblySet.Types);
             }
         }
+
+        public class AddType
+        {
+            [Fact]
+            public void Adds_the_type_to_the_assembly_and_namespace_type_lists()
+            {
+                // ARRANGE
+                var sut = new AssemblySetDocumentationBuilder();
+                var assembly = sut.AddAssembly("Assembly1", null);
+                var @namespace = sut.AddNamespace("Namespace1");
+
+                // ACT 
+                var addedType = sut.AddType("Assembly1", new SimpleTypeId("Namespace1", "Class1"));
+
+                // ASSERT
+                Assert.NotNull(addedType);
+                Assert.Same(assembly, addedType.Assembly);
+                Assert.Same(@namespace, addedType.Namespace);
+
+                Assert.Collection(
+                    assembly.Types,
+                    type => Assert.Same(addedType, type)
+                );
+
+                Assert.Collection(
+                    @namespace.Types,
+                    type => Assert.Same(addedType, type)
+                );
+            }
+        }
     }
 }

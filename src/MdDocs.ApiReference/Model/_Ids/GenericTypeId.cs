@@ -32,6 +32,21 @@ namespace Grynwald.MdDocs.ApiReference.Model
         }
 
         /// <inheritdoc />
+        public override string FullName
+        {
+            get
+            {
+                if (!IsNestedType && Arity == 1 && Namespace.IsSystem && Name.Equals("Nullable"))
+                {
+                    return $"{m_TypeParameterDisplayNames.Single()}?";
+                }
+
+                var name = IsNestedType ? $"{DeclaringType!.FullName}.{Name}" : Name;
+                return $"{name}<{String.Join(", ", m_TypeParameterDisplayNames)}>";
+            }
+        }
+
+        /// <inheritdoc />
         public override bool IsVoid => false;
 
 
