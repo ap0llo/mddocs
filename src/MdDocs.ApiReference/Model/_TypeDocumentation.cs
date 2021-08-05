@@ -14,7 +14,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
         //TODO 2021-08-04: private readonly ILogger m_Logger;
         private readonly Dictionary<MemberId, _FieldDocumentation> m_Fields = new();
         private readonly Dictionary<MemberId, _EventDocumentation> m_Events = new();
-        //TODO 2021-08-04: private readonly IDictionary<MemberId, PropertyDocumentation> m_Properties;
+        private readonly Dictionary<MemberId, _PropertyDocumentation> m_Properties = new();
         //TODO 2021-08-04: private readonly IDictionary<string, IndexerDocumentation> m_Indexers;
         //TODO 2021-08-04: private readonly IDictionary<string, MethodDocumentation> m_Methods;
         //TODO 2021-08-04: private readonly IDictionary<OperatorKind, OperatorDocumentation> m_Operators;
@@ -66,10 +66,10 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// </summary>
         public IReadOnlyCollection<_EventDocumentation> Events { get; }
 
-        ///// <summary>
-        ///// Gets the type's properties.
-        ///// </summary>
-        //TODO 2021-08-04: public IReadOnlyCollection<PropertyDocumentation> Properties { get; }
+        /// <summary>
+        /// Gets the type's properties.
+        /// </summary>
+        public IReadOnlyCollection<_PropertyDocumentation> Properties { get; }
 
         ///// <summary>
         ///// Gets the type's indexers.
@@ -184,6 +184,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
             DeclaringType = null;
             Fields = ReadOnlyCollectionAdapter.Create(m_Fields.Values);
             Events = ReadOnlyCollectionAdapter.Create(m_Events.Values);
+            Properties = ReadOnlyCollectionAdapter.Create(m_Properties.Values);
         }
 
 
@@ -213,6 +214,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
             DeclaringType = declaringType;
             Fields = ReadOnlyCollectionAdapter.Create(m_Fields.Values);
             Events = ReadOnlyCollectionAdapter.Create(m_Events.Values);
+            Properties = ReadOnlyCollectionAdapter.Create(m_Properties.Values);
         }
 
 
@@ -239,6 +241,11 @@ namespace Grynwald.MdDocs.ApiReference.Model
             m_Events.Add(@event.MemberId, @event);
         }
 
+        internal void Add(_PropertyDocumentation property)
+        {
+            property = VerifyMember(property, nameof(property));
+            m_Properties.Add(property.MemberId, property);
+        }
 
         private T VerifyMember<T>(T member, string paramName) where T : _SimpleMemberDocumentation
         {

@@ -204,6 +204,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         }
 
         [Fact]
+        // Ported to MonoCecilDocumentationLoaderTest
         public void Properties_returns_expected_properties_01()
         {
             // ARRANGE
@@ -244,6 +245,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         }
 
         [Fact]
+        // Ported to MonoCecilDocumentationLoaderTest
         public void Properties_returns_expected_properties_02()
         {
             // ARRANGE
@@ -278,6 +280,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         }
 
         [Fact]
+        // Ported to MonoCecilDocumentationLoaderTest
         public void Properties_returns_expected_properties_03()
         {
             // ARRANGE

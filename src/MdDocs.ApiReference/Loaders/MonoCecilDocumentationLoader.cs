@@ -50,8 +50,14 @@ namespace Grynwald.MdDocs.ApiReference.Loaders
 
             var type = builder.AddType(assemblyName, typeId);
 
+            //
+            // Load Type kind
+            //
             type.Kind = typeDefinition.Kind();
 
+            //
+            // Load Fields
+            //
             foreach (var fieldDefinition in typeDefinition.Fields.Where(field => field.IsPublic && !field.Attributes.HasFlag(FieldAttributes.SpecialName)))
             {
                 m_Logger.LogDebug($"Loading field '{fieldDefinition.Name}'");
@@ -59,6 +65,9 @@ namespace Grynwald.MdDocs.ApiReference.Loaders
                 type.Add(field);
             }
 
+            //
+            // Load Events
+            //
             foreach (var eventDefinition in typeDefinition.Events.Where(ev => (ev.AddMethod?.IsPublic == true || ev.RemoveMethod?.IsPublic == true)))
             {
                 m_Logger.LogDebug($"Loading event '{eventDefinition.Name}'");
@@ -66,6 +75,20 @@ namespace Grynwald.MdDocs.ApiReference.Loaders
                 type.Add(@event);
             }
 
+            //
+            // Load Properties
+            //
+            foreach (var propertyDefinition in typeDefinition.Properties.Where(property => (property.GetMethod?.IsPublic == true || property.SetMethod?.IsPublic == true) && !property.HasParameters))
+            {
+                m_Logger.LogDebug($"Loading property '{propertyDefinition.Name}'");
+                var property = new _PropertyDocumentation(type, propertyDefinition.Name, propertyDefinition.PropertyType.ToTypeId());
+                type.Add(property);
+            }
+
+
+            //
+            // Load Nested Types
+            //
             if (typeDefinition.HasNestedTypes)
             {
                 foreach (var nestedType in typeDefinition.NestedTypes.Where(x => x.IsNestedPublic))

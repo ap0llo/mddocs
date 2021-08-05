@@ -469,14 +469,14 @@ namespace Grynwald.MdDocs.ApiReference.Test.Loaders
         {
             // ARRANGE 
             var cs = @"
-	            using System;
+	                using System;
 
-	            public class Class1
-	            {
-                    public int Field1;
-                    private bool Field2;
-                }
-            ";
+	                public class Class1
+	                {
+                        public int Field1;
+                        private bool Field2;
+                    }
+                ";
 
             using var assembly = Compile(cs);
 
@@ -507,14 +507,14 @@ namespace Grynwald.MdDocs.ApiReference.Test.Loaders
         {
             // ARRANGE
             var cs = @"
-	            using System;
+	                using System;
 
-	            public enum Enum1
-	            {
-                    Value1,
-                    Value2
-                }
-            ";
+	                public enum Enum1
+	                {
+                        Value1,
+                        Value2
+                    }
+                ";
 
             using var assembly = Compile(cs);
 
@@ -546,6 +546,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Loaders
                         });
                 });
         }
+
 
         [Fact]
         public void Load_reads_a_types_events()
@@ -646,6 +647,165 @@ namespace Grynwald.MdDocs.ApiReference.Test.Loaders
                 {
                     Assert.NotNull(type.Events);
                     Assert.Empty(type.Events);
+                });
+        }
+
+        [Fact]
+        public void Load_reads_a_type_s_properties_01()
+        {
+            // ARRANGE
+            var cs = @"
+	            using System;
+
+	            public class Class1
+	            {
+                    public int Property1 { get; set; }
+
+                    public int Property2 { get; }
+
+                    internal int Property3 { get; }
+
+                    private int Property4 { get; }
+
+                    public int this[int foo] => throw new NotImplementedException();
+
+                    public int this[int foo, double bar] => throw new NotImplementedException();
+                }
+            ";
+
+            using var assembly = Compile(cs);
+
+            var sut = new MonoCecilDocumentationLoader(m_Logger);
+
+            // ACT
+            var assemblySet = sut.Load(new[] { assembly });
+
+            // ASSERT
+            Assert.Collection(
+                assemblySet.Types,
+                type =>
+                {
+                    Assert.Collection(
+                        type.Properties.OrderBy(x => x.Name),
+                        property =>
+                        {
+                            Assert.Equal("Property1", property.Name);
+                            Assert.Equal(new SimpleTypeId("System", "Int32"), property.Type);
+                            Assert.Equal(new PropertyId(type.TypeId, "Property1"), property.MemberId);
+                            Assert.Same(type, property.DeclaringType);
+                        },
+                        property =>
+                        {
+                            Assert.Equal("Property2", property.Name);
+                            Assert.Equal(new SimpleTypeId("System", "Int32"), property.Type);
+                            Assert.Equal(new PropertyId(type.TypeId, "Property2"), property.MemberId);
+                            Assert.Same(type, property.DeclaringType);
+                        });
+                });
+        }
+
+        [Fact]
+        public void Load_reads_a_type_s_properties_02()
+        {
+            // ARRANGE
+            var cs = @"
+	            using System;
+
+	            public interface Interface1
+	            {
+                    int Property1 { get; set; }
+
+                    int Property2 { get; }
+
+                    int this[int foo] { get; }
+
+                    int this[int foo, double bar] { get; }
+                }
+            ";
+
+            using var assembly = Compile(cs);
+
+            var sut = new MonoCecilDocumentationLoader(m_Logger);
+
+            // ACT
+            var assemblySet = sut.Load(new[] { assembly });
+
+
+            // ASSERT
+            Assert.Collection(
+                assemblySet.Types,
+                type =>
+                {
+                    Assert.Collection(
+                        type.Properties.OrderBy(x => x.Name),
+                        property =>
+                        {
+                            Assert.Equal("Property1", property.Name);
+                            Assert.Equal(new SimpleTypeId("System", "Int32"), property.Type);
+                            Assert.Equal(new PropertyId(type.TypeId, "Property1"), property.MemberId);
+                            Assert.Same(type, property.DeclaringType);
+                        },
+                        property =>
+                        {
+                            Assert.Equal("Property2", property.Name);
+                            Assert.Equal(new SimpleTypeId("System", "Int32"), property.Type);
+                            Assert.Equal(new PropertyId(type.TypeId, "Property2"), property.MemberId);
+                            Assert.Same(type, property.DeclaringType);
+                        });
+                });
+        }
+
+        [Fact]
+        public void Load_reads_a_type_s_properties_03()
+        {
+            // ARRANGE
+            var cs = @"
+	            using System;
+
+	            public struct Struct1
+	            {
+                    public int Property1 { get; set; }
+
+                    public int Property2 { get; }
+
+                    internal int Property3 { get; }
+
+                    private int Property4 { get; }
+
+                    public int this[int foo] => throw new NotImplementedException();
+
+                    public int this[int foo, double bar] => throw new NotImplementedException();
+                }
+            ";
+
+            using var assembly = Compile(cs);
+            var sut = new MonoCecilDocumentationLoader(m_Logger);
+
+            // ACT
+            var assemblySet = sut.Load(new[] { assembly });
+
+
+            // ASSERT
+            Assert.Collection(
+                assemblySet.Types,
+                type =>
+                {
+                    Assert.Collection(
+                        type.Properties.OrderBy(x => x.Name),
+                        property =>
+                        {
+                            Assert.Equal("Property1", property.Name);
+                            Assert.Equal(new SimpleTypeId("System", "Int32"), property.Type);
+                            Assert.Equal(new PropertyId(type.TypeId, "Property1"), property.MemberId);
+                            Assert.Same(type, property.DeclaringType);
+                        },
+                        property =>
+                        {
+                            Assert.Equal("Property2", property.Name);
+                            Assert.Equal(new SimpleTypeId("System", "Int32"), property.Type);
+                            Assert.Equal(new PropertyId(type.TypeId, "Property2"), property.MemberId);
+                            Assert.Same(type, property.DeclaringType);
+                        });
                 });
         }
 

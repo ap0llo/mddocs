@@ -345,5 +345,70 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             }
         }
 
+
+        public class Add_Property
+        {
+            [Fact]
+            public void Throws_ArgumentNullException_if_property_is_null()
+            {
+                // ARRANGE
+                var builder = new ApiReferenceBuilder();
+                _ = builder.AddAssembly("Assembly", "1.0.0");
+                var typeId = new SimpleTypeId("Namespace1", "Class1");
+                var sut = builder.AddType("Assembly", typeId);
+
+                // ACT 
+                var ex = Record.Exception(() => sut.Add(property: null!));
+
+                // ASSERT
+                var argumentNullException = Assert.IsType<ArgumentNullException>(ex);
+                Assert.Equal("property", argumentNullException.ParamName);
+            }
+
+            [Fact]
+            public void Adds_property()
+            {
+                // ARRANGE
+                var declaringTypeId = new SimpleTypeId("Namespace1", "Class1");
+                var propertyTypeId = new SimpleTypeId("System", "String");
+
+                var builder = new ApiReferenceBuilder();
+                var assembly = builder.AddAssembly("Assembly", "1.0.0");
+                var sut = builder.AddType(assembly.Name, declaringTypeId);
+
+
+                // ACT
+                var addedProperty = new _PropertyDocumentation(sut, "Property", propertyTypeId);
+                sut.Add(addedProperty);
+
+                // ASSERT
+                Assert.Collection(
+                    sut.Properties,
+                    property => Assert.Same(addedProperty, property)
+                );
+            }
+
+            [Fact]
+            public void Throws_InconsistentModelException_if_property_has_a_different_declaring_type()
+            {
+                // ARRANGE
+                var declaringTypeId = new SimpleTypeId("Namespace1", "Class1");
+                var propertyTypeId = new SimpleTypeId("System", "EventHandler");
+
+                var builder = new ApiReferenceBuilder();
+                var assembly = builder.AddAssembly("Assembly", "1.0.0");
+                var sut = builder.AddType(assembly.Name, declaringTypeId);
+                var someOtherType = builder.AddType(assembly.Name, new SimpleTypeId("Namespace1", "Class2"));
+
+                var invalidProperty = new _EventDocumentation(someOtherType, "Property1", propertyTypeId);
+
+                // ACT
+                var ex = Record.Exception(() => sut.Add(invalidProperty));
+
+                // ASSERT
+                Assert.IsType<InconsistentModelException>(ex);
+                Assert.Contains("Cannot add member with a declaring type of 'Namespace1.Class2' to type 'Namespace1.Class1'", ex.Message);
+            }
+        }
     }
 }
