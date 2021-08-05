@@ -6,7 +6,7 @@ using Grynwald.Utilities.Collections;
 
 namespace Grynwald.MdDocs.ApiReference.Loaders
 {
-    public sealed class ApiReferenceBuilder
+    internal sealed class ApiReferenceBuilder
     {
         private readonly Dictionary<string, _AssemblyDocumentation> m_Assemblies = new(StringComparer.OrdinalIgnoreCase);
         private readonly Dictionary<NamespaceId, _NamespaceDocumentation> m_Namespaces = new();
@@ -107,35 +107,6 @@ namespace Grynwald.MdDocs.ApiReference.Loaders
 
         }
 
-        //TODO 2021-08-04: Add tests
-        public _NamespaceDocumentation GetOrAddNamespace(NamespaceId namespaceId)
-        {
-            if (namespaceId is null)
-                throw new ArgumentNullException(nameof(namespaceId));
-
-            if (m_Namespaces.Count == 0)
-            {
-                m_Namespaces.Add(NamespaceId.GlobalNamespace, GlobalNamespace);
-            }
-
-            if (m_Namespaces.TryGetValue(namespaceId, out var existingNamespace))
-            {
-                return existingNamespace;
-            }
-
-            var names = namespaceId.Name.Split('.');
-            var parentNamespace = names.Length > 1
-                ? GetOrAddNamespace(names.Take(names.Length - 1).JoinToString("."))
-                : GlobalNamespace;
-
-            var @namespace = new _NamespaceDocumentation(parentNamespace, namespaceId);
-            m_Namespaces.Add(namespaceId, @namespace);
-            parentNamespace.Add(@namespace);
-
-            return @namespace;
-
-        }
-
         public _TypeDocumentation AddType(string assemblyName, TypeId typeId)
         {
             if (typeId is null)
@@ -168,7 +139,7 @@ namespace Grynwald.MdDocs.ApiReference.Loaders
             else
             {
 
-                var @namespace = GetOrAddNamespace(typeId.Namespace);
+                var @namespace = GetOrAddNamespace(typeId.Namespace.Name);
 
                 var type = new _TypeDocumentation(assembly, @namespace, typeId);
                 m_Types.Add(typeId, type);

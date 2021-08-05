@@ -45,8 +45,26 @@ namespace Grynwald.MdDocs.ApiReference.Loaders
         {
             var assemblyName = typeDefinition.Module.Assembly.Name.Name;
             var typeId = typeDefinition.ToTypeId();
+
             m_Logger.LogDebug($"Loading type '{typeId}' from assembly '{assemblyName}'");
-            _ = builder.AddType(assemblyName, typeId);
+
+            var type = builder.AddType(assemblyName, typeId);
+
+            type.Kind = typeDefinition.Kind();
+
+            foreach (var fieldDefinition in typeDefinition.Fields.Where(field => field.IsPublic && !field.Attributes.HasFlag(FieldAttributes.SpecialName)))
+            {
+                m_Logger.LogDebug($"Loading field '{fieldDefinition.Name}'");
+                var field = new _FieldDocumentation(type, fieldDefinition.Name, fieldDefinition.FieldType.ToTypeId());
+                type.Add(field);
+            }
+
+            foreach (var eventDefinition in typeDefinition.Events.Where(ev => (ev.AddMethod?.IsPublic == true || ev.RemoveMethod?.IsPublic == true)))
+            {
+                m_Logger.LogDebug($"Loading event '{eventDefinition.Name}'");
+                var @event = new _EventDocumentation(type, eventDefinition.Name, eventDefinition.EventType.ToTypeId());
+                type.Add(@event);
+            }
 
             if (typeDefinition.HasNestedTypes)
             {

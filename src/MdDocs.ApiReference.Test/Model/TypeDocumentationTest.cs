@@ -22,6 +22,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         [InlineData("public struct Struct1", TypeKind.Struct)]
         [InlineData("public interface Interface1", TypeKind.Interface)]
         [InlineData("public enum Enum1", TypeKind.Enum)]
+        // Ported to MonoCecilDocumentationLoaderTest
         public void Kind_returns_the_expected_value(string definition, TypeKind expectedKind)
         {
             // ARRANGE
@@ -65,6 +66,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         }
 
         [Fact]
+        // Ported to MonoCecilDocumentationLoaderTest
         public void Fields_returns_expected_fields_for_classes()
         {
             // ARRANGE 
@@ -88,6 +90,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         }
 
         [Fact]
+        // Ported to MonoCecilDocumentationLoaderTest
         public void Fields_returns_expected_fields_for_enums()
         {
             // ARRANGE
@@ -113,6 +116,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         }
 
         [Fact]
+        // Ported to MonoCecilDocumentationLoaderTest
         public void Events_returns_expected_events_for_classes()
         {
             var cs = @"
@@ -145,6 +149,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         }
 
         [Fact]
+        // Ported to MonoCecilDocumentationLoaderTest
         public void Events_returns_expected_events_for_interfaces()
         {
             // ARRANGE
@@ -174,6 +179,7 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         }
 
         [Fact]
+        // Ported to MonoCecilDocumentationLoaderTest
         public void Events_is_empty_for_enums()
         {
             // ARRANGE

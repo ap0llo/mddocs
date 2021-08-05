@@ -215,5 +215,135 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
             }
         }
 
+        public class Add_Field
+        {
+            [Fact]
+            public void Throws_ArgumentNullException_if_field_is_null()
+            {
+                // ARRANGE
+                var builder = new ApiReferenceBuilder();
+                _ = builder.AddAssembly("Assembly", "1.0.0");
+                var typeId = new SimpleTypeId("Namespace1", "Class1");
+                var sut = builder.AddType("Assembly", typeId);
+
+                // ACT 
+                var ex = Record.Exception(() => sut.Add(field: null!));
+
+                // ASSERT
+                var argumentNullException = Assert.IsType<ArgumentNullException>(ex);
+                Assert.Equal("field", argumentNullException.ParamName);
+            }
+
+            [Fact]
+            public void Adds_field()
+            {
+                // ARRANGE
+                var declaringTypeId = new SimpleTypeId("Namespace1", "Class1");
+                var fieldTypeId = new SimpleTypeId("System", "Int32");
+
+                var builder = new ApiReferenceBuilder();
+                var assembly = builder.AddAssembly("Assembly", "1.0.0");
+                var sut = builder.AddType(assembly.Name, declaringTypeId);
+
+
+                // ACT
+                var addedField = new _FieldDocumentation(sut, "Field1", fieldTypeId);
+                sut.Add(addedField);
+
+                // ASSERT
+                Assert.Collection(
+                    sut.Fields,
+                    field => Assert.Same(addedField, field)
+                );
+            }
+
+            [Fact]
+            public void Throws_InconsistentModelException_if_field_has_a_different_declaring_type()
+            {
+                // ARRANGE
+                var declaringTypeId = new SimpleTypeId("Namespace1", "Class1");
+                var fieldTypeId = new SimpleTypeId("System", "Int32");
+
+                var builder = new ApiReferenceBuilder();
+                var assembly = builder.AddAssembly("Assembly", "1.0.0");
+                var sut = builder.AddType(assembly.Name, declaringTypeId);
+                var someOtherType = builder.AddType(assembly.Name, new SimpleTypeId("Namespace1", "Class2"));
+
+                var invalidField = new _FieldDocumentation(someOtherType, "Field1", fieldTypeId);
+
+                // ACT
+                var ex = Record.Exception(() => sut.Add(invalidField));
+
+                // ASSERT
+                Assert.IsType<InconsistentModelException>(ex);
+                Assert.Contains("Cannot add member with a declaring type of 'Namespace1.Class2' to type 'Namespace1.Class1'", ex.Message);
+            }
+        }
+
+        public class Add_Event
+        {
+            [Fact]
+            public void Throws_ArgumentNullException_if_event_is_null()
+            {
+                // ARRANGE
+                var builder = new ApiReferenceBuilder();
+                _ = builder.AddAssembly("Assembly", "1.0.0");
+                var typeId = new SimpleTypeId("Namespace1", "Class1");
+                var sut = builder.AddType("Assembly", typeId);
+
+                // ACT 
+                var ex = Record.Exception(() => sut.Add(@event: null!));
+
+                // ASSERT
+                var argumentNullException = Assert.IsType<ArgumentNullException>(ex);
+                Assert.Equal("event", argumentNullException.ParamName);
+            }
+
+            [Fact]
+            public void Adds_event()
+            {
+                // ARRANGE
+                var declaringTypeId = new SimpleTypeId("Namespace1", "Class1");
+                var eventTypeId = new SimpleTypeId("System", "EventHandler");
+
+                var builder = new ApiReferenceBuilder();
+                var assembly = builder.AddAssembly("Assembly", "1.0.0");
+                var sut = builder.AddType(assembly.Name, declaringTypeId);
+
+
+                // ACT
+                var addedEvent = new _EventDocumentation(sut, "Event1", eventTypeId);
+                sut.Add(addedEvent);
+
+                // ASSERT
+                Assert.Collection(
+                    sut.Events,
+                    @event => Assert.Same(addedEvent, @event)
+                );
+            }
+
+            [Fact]
+            public void Throws_InconsistentModelException_if_event_has_a_different_declaring_type()
+            {
+                // ARRANGE
+                var declaringTypeId = new SimpleTypeId("Namespace1", "Class1");
+                var eventTypeId = new SimpleTypeId("System", "EventHandler");
+
+                var builder = new ApiReferenceBuilder();
+                var assembly = builder.AddAssembly("Assembly", "1.0.0");
+                var sut = builder.AddType(assembly.Name, declaringTypeId);
+                var someOtherType = builder.AddType(assembly.Name, new SimpleTypeId("Namespace1", "Class2"));
+
+                var invalidEvent = new _EventDocumentation(someOtherType, "Event1", eventTypeId);
+
+                // ACT
+                var ex = Record.Exception(() => sut.Add(invalidEvent));
+
+                // ASSERT
+                Assert.IsType<InconsistentModelException>(ex);
+                Assert.Contains("Cannot add member with a declaring type of 'Namespace1.Class2' to type 'Namespace1.Class1'", ex.Message);
+            }
+        }
+
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Grynwald.Utilities.Collections;
 
 namespace Grynwald.MdDocs.ApiReference.Model
 {
@@ -11,13 +12,13 @@ namespace Grynwald.MdDocs.ApiReference.Model
     {
         //TODO 2021-08-04: private readonly IXmlDocsProvider m_XmlDocsProvider;
         //TODO 2021-08-04: private readonly ILogger m_Logger;
-        //TODO 2021-08-04: private readonly IDictionary<MemberId, FieldDocumentation> m_Fields;
-        //TODO 2021-08-04: private readonly IDictionary<MemberId, EventDocumentation> m_Events;
+        private readonly Dictionary<MemberId, _FieldDocumentation> m_Fields = new();
+        private readonly Dictionary<MemberId, _EventDocumentation> m_Events = new();
         //TODO 2021-08-04: private readonly IDictionary<MemberId, PropertyDocumentation> m_Properties;
         //TODO 2021-08-04: private readonly IDictionary<string, IndexerDocumentation> m_Indexers;
         //TODO 2021-08-04: private readonly IDictionary<string, MethodDocumentation> m_Methods;
         //TODO 2021-08-04: private readonly IDictionary<OperatorKind, OperatorDocumentation> m_Operators;
-        private readonly List<_TypeDocumentation> m_NestedTypes = new List<_TypeDocumentation>();
+        private readonly List<_TypeDocumentation> m_NestedTypes = new();
 
 
         /// <summary>
@@ -50,20 +51,20 @@ namespace Grynwald.MdDocs.ApiReference.Model
         /// </summary>
         public string AssemblyName => Assembly.Name;
 
-        ///// <summary>
-        ///// Gets the kind of the type (class, struct, interface ...)
-        ///// </summary>
-        //TODO 2021-08-04: public TypeKind Kind { get; }
+        /// <summary>
+        /// Gets the kind of the type (class, struct, interface ...)
+        /// </summary>
+        public TypeKind Kind { get; internal set; }
 
-        ///// <summary>
-        ///// Gets the type's fields.
-        ///// </summary>
-        //TODO 2021-08-04: public IReadOnlyCollection<FieldDocumentation> Fields { get; }
+        /// <summary>
+        /// Gets the type's fields.
+        /// </summary>
+        public IReadOnlyCollection<_FieldDocumentation> Fields { get; }
 
-        ///// <summary>
-        ///// Gets the type's events.
-        ///// </summary>
-        //TODO 2021-08-04: public IReadOnlyCollection<EventDocumentation> Events { get; }
+        /// <summary>
+        /// Gets the type's events.
+        /// </summary>
+        public IReadOnlyCollection<_EventDocumentation> Events { get; }
 
         ///// <summary>
         ///// Gets the type's properties.
@@ -181,6 +182,8 @@ namespace Grynwald.MdDocs.ApiReference.Model
             Namespace = @namespace;
             TypeId = typeId;
             DeclaringType = null;
+            Fields = ReadOnlyCollectionAdapter.Create(m_Fields.Values);
+            Events = ReadOnlyCollectionAdapter.Create(m_Events.Values);
         }
 
 
@@ -208,6 +211,8 @@ namespace Grynwald.MdDocs.ApiReference.Model
             Namespace = declaringType.Namespace;
             TypeId = typeId;
             DeclaringType = declaringType;
+            Fields = ReadOnlyCollectionAdapter.Create(m_Fields.Values);
+            Events = ReadOnlyCollectionAdapter.Create(m_Events.Values);
         }
 
 
@@ -221,5 +226,30 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
             m_NestedTypes.Add(nestedType);
         }
+
+        internal void Add(_FieldDocumentation field)
+        {
+            field = VerifyMember(field, nameof(field));
+            m_Fields.Add(field.MemberId, field);
+        }
+
+        internal void Add(_EventDocumentation @event)
+        {
+            @event = VerifyMember(@event, nameof(@event));
+            m_Events.Add(@event.MemberId, @event);
+        }
+
+
+        private T VerifyMember<T>(T member, string paramName) where T : _SimpleMemberDocumentation
+        {
+            if (member is null)
+                throw new ArgumentNullException(paramName);
+
+            if (!ReferenceEquals(member.DeclaringType, this))
+                throw new InconsistentModelException($"Cannot add member with a declaring type of '{member.DeclaringType.TypeId}' to type '{TypeId}'");
+
+            return member;
+        }
+
     }
 }

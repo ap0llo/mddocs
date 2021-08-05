@@ -330,41 +330,49 @@ namespace Grynwald.MdDocs.ApiReference.Test.Loaders
                 type =>
                 {
                     Assert.Equal(class1, type.TypeId);
+                    Assert.Equal(TypeKind.Class, type.Kind);
                 },
                 // Class2
                 type =>
                 {
                     Assert.Equal(class2, type.TypeId);
+                    Assert.Equal(TypeKind.Class, type.Kind);
                 },
                 // NestedClass1
                 type =>
                 {
                     Assert.Equal(nestedClass1, type.TypeId);
+                    Assert.Equal(TypeKind.Class, type.Kind);
                 },
                 // NestedClass2
                 type =>
                 {
                     Assert.Equal(nestedClass2, type.TypeId);
+                    Assert.Equal(TypeKind.Class, type.Kind);
                 },
                 // NestedClass3
                 type =>
                 {
                     Assert.Equal(nestedClass3, type.TypeId);
+                    Assert.Equal(TypeKind.Class, type.Kind);
                 },
                 // Enum1
                 type =>
                 {
                     Assert.Equal(enum1, type.TypeId);
+                    Assert.Equal(TypeKind.Enum, type.Kind);
                 },
                 // Interface1
                 type =>
                 {
                     Assert.Equal(interface1, type.TypeId);
+                    Assert.Equal(TypeKind.Interface, type.Kind);
                 },
                 // Struct1
                 type =>
                 {
                     Assert.Equal(struct1, type.TypeId);
+                    Assert.Equal(TypeKind.Struct, type.Kind);
                 }
             );
         }
@@ -428,5 +436,218 @@ namespace Grynwald.MdDocs.ApiReference.Test.Loaders
         //TODO 2021-08-04: Load returns assemblies with expected names, version and type (also port over appropriate tests from AssemblyDocumentationTest)
         //TODO 2021-08-04: Loader loads expected types
         //TODO 2021-08-04: Loader adds types to namespaces
+
+        [Theory]
+        [InlineData("public class Class1", TypeKind.Class)]
+        [InlineData("public struct Struct1", TypeKind.Struct)]
+        [InlineData("public interface Interface1", TypeKind.Interface)]
+        [InlineData("public enum Enum1", TypeKind.Enum)]
+        public void Load_sets_the_Kind_property_on_types(string definition, TypeKind expectedKind)
+        {
+            // ARRANGE
+            var cs = $@"
+                using System;
+
+                {definition}
+                {{ }}
+            ";
+
+            using var assembly = Compile(cs);
+
+            var sut = new MonoCecilDocumentationLoader(m_Logger);
+
+            // ACT
+            var assemblySet = sut.Load(new[] { assembly });
+
+            // ASSERT
+
+            Assert.Collection(assemblySet.Types, type => Assert.Equal(expectedKind, type.Kind));
+        }
+
+        [Fact]
+        public void Load_reads_a_types_fields()
+        {
+            // ARRANGE 
+            var cs = @"
+	            using System;
+
+	            public class Class1
+	            {
+                    public int Field1;
+                    private bool Field2;
+                }
+            ";
+
+            using var assembly = Compile(cs);
+
+            var sut = new MonoCecilDocumentationLoader(m_Logger);
+
+            // ACT
+            var assemblySet = sut.Load(new[] { assembly });
+
+            // ASSERT
+            Assert.Collection(
+                assemblySet.Types,
+                type =>
+                {
+                    Assert.Collection(
+                        type.Fields,
+                        field =>
+                        {
+                            Assert.Equal("Field1", field.Name);
+                            Assert.Equal(new SimpleTypeId("System", "Int32"), field.Type);
+                            Assert.Equal(new FieldId(type.TypeId, "Field1"), field.MemberId);
+                            Assert.Same(type, field.DeclaringType);
+                        });
+                });
+        }
+
+        [Fact]
+        public void Load_adds_expected_fields_for_enums()
+        {
+            // ARRANGE
+            var cs = @"
+	            using System;
+
+	            public enum Enum1
+	            {
+                    Value1,
+                    Value2
+                }
+            ";
+
+            using var assembly = Compile(cs);
+
+            var sut = new MonoCecilDocumentationLoader(m_Logger);
+
+            // ACT
+            var assemblySet = sut.Load(new[] { assembly });
+
+            // ASSERT
+            Assert.Collection(
+                assemblySet.Types,
+                type =>
+                {
+                    Assert.Collection(
+                        type.Fields.OrderBy(x => x.Name),
+                        field =>
+                        {
+                            Assert.Equal("Value1", field.Name);
+                            Assert.Equal(new SimpleTypeId("", "Enum1"), field.Type);
+                            Assert.Equal(new FieldId(type.TypeId, "Value1"), field.MemberId);
+                            Assert.Same(type, field.DeclaringType);
+                        },
+                        field =>
+                        {
+                            Assert.Equal("Value2", field.Name);
+                            Assert.Equal(new SimpleTypeId("", "Enum1"), field.Type);
+                            Assert.Equal(new FieldId(type.TypeId, "Value2"), field.MemberId);
+                            Assert.Same(type, field.DeclaringType);
+                        });
+                });
+        }
+
+        [Fact]
+        public void Load_reads_a_types_events()
+        {
+            var cs = @"
+	            using System;
+
+	            public class Class1
+	            {
+                    public event EventHandler Event1;
+
+                    public event EventHandler<EventArgs> Event2;
+
+                    public event EventHandler Event3
+                    {
+                        add { throw new NotImplementedException(); }
+                        remove { throw new NotImplementedException(); }
+                    }
+                }
+
+	            public interface Interface1
+	            {
+                    event EventHandler Event1;
+
+                    event EventHandler<EventArgs> Event2;
+
+                    event EventHandler Event3;
+                }
+            ";
+
+            using var assembly = Compile(cs);
+
+            var sut = new MonoCecilDocumentationLoader(m_Logger);
+
+            // ACT
+            var assemblySet = sut.Load(new[] { assembly });
+
+            // ASSERT
+            Assert.All(
+                assemblySet.Types,
+                type =>
+                {
+                    Assert.Collection(
+                        type.Events.OrderBy(x => x.Name),
+                        ev =>
+                        {
+                            Assert.Equal("Event1", ev.Name);
+                            Assert.Equal(new SimpleTypeId("System", "EventHandler"), ev.Type);
+                            Assert.Equal(new ApiReference.Model.EventId(type.TypeId, "Event1"), ev.MemberId);
+                            Assert.Same(type, ev.DeclaringType);
+                        },
+                        ev =>
+                        {
+                            Assert.Equal("Event2", ev.Name);
+                            Assert.Equal(
+                                new GenericTypeInstanceId("System", "EventHandler", new[] { new SimpleTypeId("System", "EventArgs") }),
+                                ev.Type
+                            );
+                            Assert.Equal(new ApiReference.Model.EventId(type.TypeId, "Event2"), ev.MemberId);
+                            Assert.Same(type, ev.DeclaringType);
+                        },
+                        ev =>
+                        {
+                            Assert.Equal("Event3", ev.Name);
+                            Assert.Equal(new SimpleTypeId("System", "EventHandler"), ev.Type);
+                            Assert.Equal(new ApiReference.Model.EventId(type.TypeId, "Event3"), ev.MemberId);
+                            Assert.Same(type, ev.DeclaringType);
+                        }
+                    );
+
+                });
+        }
+
+        [Fact]
+        public void Loads_does_not_read_events_for_enums()
+        {
+            // ARRANGE
+            var cs = @"
+	            using System;
+
+	            public enum Enum1
+	            {
+                    Value1,
+                    Value2
+                }
+            ";
+
+            using var assembly = Compile(cs);
+            var sut = new MonoCecilDocumentationLoader(m_Logger);
+
+            // ACT
+            var assemblySet = sut.Load(new[] { assembly });
+
+            //ASSERT
+            Assert.Collection(
+                assemblySet.Types,
+                type =>
+                {
+                    Assert.NotNull(type.Events);
+                    Assert.Empty(type.Events);
+                });
+        }
+
     }
 }
