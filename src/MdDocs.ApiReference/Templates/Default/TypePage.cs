@@ -156,7 +156,7 @@ namespace Grynwald.MdDocs.ApiReference.Templates.Default
             {
                 var table = new MdTable(new MdTableRow("Name", "Description"));
 
-                foreach (var ctor in overloads.OrderBy(x => x.Signature))
+                foreach (var ctor in overloads.OrderBy(x => x.Signature, StringComparer.Ordinal))
                 {
                     table.Add(
                         new MdTableRow(
@@ -179,7 +179,7 @@ namespace Grynwald.MdDocs.ApiReference.Templates.Default
                 block.Add(new MdHeading(sectionHeading, 2));
 
                 var table = new MdTable(new MdTableRow("Name", "Description"));
-                foreach (var member in members.OrderBy(x => x.Name))
+                foreach (var member in members.OrderBy(x => x.Name, StringComparer.Ordinal))
                 {
                     table.Add(
                         new MdTableRow(
@@ -241,7 +241,7 @@ namespace Grynwald.MdDocs.ApiReference.Templates.Default
             block.Add(new MdHeading(2, "Nested Types"));
 
             var table = new MdTable(new MdTableRow("Name", "Description"));
-            foreach (var type in Model.NestedTypes.OrderBy(x => x.DisplayName))
+            foreach (var type in Model.NestedTypes.OrderBy(x => x.DisplayName, StringComparer.Ordinal))
             {
                 table.Add(
                     new MdTableRow(

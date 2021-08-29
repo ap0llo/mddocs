@@ -18,13 +18,13 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
 
         /// <inheritdoc />
         public IEnumerable<ParameterDocumentation> AllParameters =>
-            PositionalParameters.Concat(NamedParameters.Concat(SwitchParameters.Cast<INamedParameterDocumentation>()).OrderBy(x => x.Name).Cast<ParameterDocumentation>());
+            PositionalParameters.Concat(NamedParameters.Concat(SwitchParameters.Cast<INamedParameterDocumentation>()).OrderBy(x => x.Name, StringComparer.Ordinal).Cast<ParameterDocumentation>());
 
         /// <inheritdoc />
         public IEnumerable<NamedValuedParameterDocumentation> NamedParameters =>
             Enumerable.Concat(
-                m_NamedParameters.Where(p => p.HasName).OrderBy(x => x.Name),
-                m_NamedParameters.Where(x => !x.HasName).OrderBy(x => x.ShortName));
+                m_NamedParameters.Where(p => p.HasName).OrderBy(x => x.Name, StringComparer.Ordinal),
+                m_NamedParameters.Where(x => !x.HasName).OrderBy(x => x.ShortName, StringComparer.Ordinal));
 
 
         /// <inheritdoc />
@@ -33,8 +33,8 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
         /// <inheritdoc />
         public IEnumerable<SwitchParameterDocumentation> SwitchParameters =>
             Enumerable.Concat(
-                m_SwitchParameters.Where(x => x.HasName).OrderBy(x => x.Name),
-                m_SwitchParameters.Where(x => !x.HasName).OrderBy(x => x.ShortName));
+                m_SwitchParameters.Where(x => x.HasName).OrderBy(x => x.Name, StringComparer.Ordinal),
+                m_SwitchParameters.Where(x => !x.HasName).OrderBy(x => x.ShortName, StringComparer.Ordinal));
 
 
         /// <summary>
