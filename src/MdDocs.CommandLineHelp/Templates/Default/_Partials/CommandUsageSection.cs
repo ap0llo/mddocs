@@ -36,14 +36,14 @@ namespace Grynwald.MdDocs.CommandLineHelp.Templates.Default
                     .Append(' ', indent);
             }
 
-            foreach (var option in m_Model.NamedParameters.OrderBy(x => x.Required ? 0 : 1).ThenBy(x => x.HasName ? x.Name : x.ShortName))
+            foreach (var option in m_Model.NamedParameters.OrderBy(x => x.Required ? 0 : 1).ThenBy(x => x.HasName ? x.Name : x.ShortName, StringComparer.Ordinal))
             {
                 stringBuilder
                     .Apply(AppendUsage, option)
                     .Append(' ', indent);
             }
 
-            foreach (var option in m_Model.SwitchParameters.OrderBy(x => x.HasName ? x.Name : x.ShortName))
+            foreach (var option in m_Model.SwitchParameters.OrderBy(x => x.HasName ? x.Name : x.ShortName, StringComparer.Ordinal))
             {
                 stringBuilder
                     .Apply(AppendUsage, option)

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Grynwald.MarkdownGenerator;
 using Grynwald.MdDocs.ApiReference.Configuration;
@@ -63,7 +64,7 @@ namespace Grynwald.MdDocs.ApiReference.Templates.Default
             block.Add(
                 new MdBulletList(
                     Model.Namespaces
-                        .OrderBy(x => x.Name)
+                        .OrderBy(x => x.Name, StringComparer.Ordinal)
                         .Select(@namespace => new MdListItem(GetMdSpan(@namespace.NamespaceId))
             )));
 
@@ -77,7 +78,7 @@ namespace Grynwald.MdDocs.ApiReference.Templates.Default
             block.Add(new MdHeading(2, heading));
 
             var table = new MdTable(new MdTableRow("Name", "Description"));
-            foreach (var type in types.OrderBy(x => x.DisplayName))
+            foreach (var type in types.OrderBy(x => x.DisplayName, StringComparer.Ordinal))
             {
                 table.Add(
                     new MdTableRow(

@@ -229,7 +229,7 @@ namespace Grynwald.MdDocs.ApiReference.Templates.Default
             }
             else
             {
-                var orderedOverloads = Model.Overloads.OrderBy(x => x.Signature).ToArray();
+                var orderedOverloads = Model.Overloads.OrderBy(x => x.Signature, StringComparer.Ordinal).ToArray();
 
                 AddOverloadsTableSection(document.Root, orderedOverloads, headingLevel: 2);
 

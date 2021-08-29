@@ -14,7 +14,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Model
         /// <summary>
         /// Gets the application's commands
         /// </summary>
-        public IEnumerable<CommandDocumentation> Commands => m_Commands.Values.OrderBy(x => x.Name);
+        public IEnumerable<CommandDocumentation> Commands => m_Commands.Values.OrderBy(x => x.Name, StringComparer.Ordinal);
 
 
         /// <summary>
