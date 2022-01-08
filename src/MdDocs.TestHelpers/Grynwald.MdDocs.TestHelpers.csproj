@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.0.1" />
-    <PackageReference Include="Grynwald.Utilities" Version="1.6.11-pre" />
+    <PackageReference Include="Grynwald.Utilities" Version="1.6.122" />
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="Mono.Cecil" Version="0.11.4" />
     <PackageReference Include="ApprovalTests" Version="5.7.1" />
