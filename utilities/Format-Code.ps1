@@ -7,17 +7,11 @@
 # Imports
 . (Join-Path $PSScriptRoot "common.ps1")
 
-# Variables
-$srcFolder = "./src" # The path of the folder to format (relative to the repository root)
-
 # Main script
 Push-Location (Get-RepositoryRoot)
 try {
-    log "Restoring tools"
-    exec "dotnet tool restore"
-
     log "Running dotnet format"
-    exec "dotnet format `"$srcFolder`" --folder"
+    exec "dotnet format src\MdDocs.sln --no-restore"
 }
 finally {
     Pop-Location

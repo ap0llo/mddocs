@@ -91,15 +91,16 @@ jobs:
   - script: dotnet tool run nbgv cloud --all-vars
     displayName: Set Version
 
-  # Check the formatting using dotnet-format
-  - script: dotnet format ./src --folder --check
-    displayName: 🕵️ Check code formatting
-
   # Restore, Build, Test
   - task: CmdLine@2
     displayName: 📥 Restore NuGet packages
     inputs:
       script: dotnet restore $(solutionPath) /warnaserror
+
+  # Check the formatting using dotnet-format
+  - script: dotnet format $(solutionPath) --verify-no-changes --no-restore
+    displayName: 🕵️ Check code formatting
+      
   - task: DotNetCoreCLI@2
     displayName: 🏗 Build
     inputs:
