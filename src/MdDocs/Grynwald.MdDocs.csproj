@@ -17,7 +17,7 @@
 
 
   <ItemGroup>
-    <PackageReference Include="CommandLineParser" Version="2.8.0" />
+    <PackageReference Include="CommandLineParser" Version="2.9.1" />
     <PackageReference Include="Grynwald.Utilities.Logging" Version="1.6.122" />
   </ItemGroup>
 
