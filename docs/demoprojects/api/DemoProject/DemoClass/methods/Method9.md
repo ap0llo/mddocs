@@ -14,7 +14,7 @@
 Example of an method with a optional parameters.
 
 ```csharp
-public void Method9(string value1 = "someString", string value2 = null);
+public void Method9(string value1 = "someString", string value2 = null, decimal? value3 = -792281625142643.37593543950335, decimal? value4 = null, CancellationToken value5 = default);
 ```
 
 ## Parameters
@@ -26,6 +26,18 @@ The `value1` parameter is optional and has a default value of `someString`.
 `value2`  string
 
 The `value2` parameter is optional and has a default value of `null`.
+
+`value3`  Nullable\<decimal\>
+
+The `value3` parameter is optional and has a default value of `-792281625142643.37593543950335`.
+
+`value4`  Nullable\<decimal\>
+
+The `value4` parameter is optional and has a default value of `null`.
+
+`value5`  CancellationToken
+
+The `value5` parameter is optional and has a default value of `null`.
 
 ## Remarks
 

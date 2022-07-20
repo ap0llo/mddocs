@@ -330,7 +330,7 @@
             Example of an method with a <c>in</c> parameter.
             </summary>
         </member>
-        <member name="M:DemoProject.DemoClass.Method9(System.String,System.String)">
+        <member name="M:DemoProject.DemoClass.Method9(System.String,System.String,System.Nullable{System.Decimal},System.Nullable{System.Decimal},System.Threading.CancellationToken)">
             <summary>
             Example of an method with a optional parameters.
             </summary>
@@ -341,6 +341,9 @@
             </remarks>
             <param name="value1">The <paramref name="value1"/> parameter is optional and has a default value of <c>someString</c>.</param>
             <param name="value2">The <paramref name="value2"/> parameter is optional and has a default value of <c>null</c>.</param>
+            <param name="value3">The <paramref name="value3"/> parameter is optional and has a default value of <c>-792281625142643.37593543950335</c>.</param>
+            <param name="value4">The <paramref name="value4"/> parameter is optional and has a default value of <c>null</c>.</param>
+            <param name="value5">The <paramref name="value5"/> parameter is optional and has a default value of <c>null</c>.</param>
         </member>
         <member name="M:DemoProject.DemoClass.op_Addition(DemoProject.DemoClass,DemoProject.DemoClass)">
             <summary>

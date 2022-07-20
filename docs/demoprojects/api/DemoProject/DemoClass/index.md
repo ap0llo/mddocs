@@ -81,18 +81,18 @@ Similar pages are also generated for interfaces (see [IDemoInterface](../IDemoIn
 
 ## Methods
 
-| Name                                                | Description                                                    |
-| --------------------------------------------------- | -------------------------------------------------------------- |
-| [Method1()](methods/Method1.md#method1)             | Example of an overloaded method without parameters             |
-| [Method1(string)](methods/Method1.md#method1string) | Example of an overloaded method accepting one parameter.       |
-| [Method2()](methods/Method2.md)                     | Example of an non\-overloaded methods with a custom attribute. |
-| [Method3\<T\>(T)](methods/Method3.md)               | Example of a generic method.                                   |
-| [Method4()](methods/Method4.md)                     | Example of an obsolete method.                                 |
-| [Method5(string)](methods/Method5.md)               | Example of an method with a `out` parameter.                   |
-| [Method6(string)](methods/Method6.md)               | Example of an method with a `ref` parameter.                   |
-| [Method7(string\[\])](methods/Method7.md)           | Example of an method with a `ref` parameter.                   |
-| [Method8(string)](methods/Method8.md)               | Example of an method with a `in` parameter.                    |
-| [Method9(string, string)](methods/Method9.md)       | Example of an method with a optional parameters.               |
+| Name                                                                                 | Description                                                    |
+| ------------------------------------------------------------------------------------ | -------------------------------------------------------------- |
+| [Method1()](methods/Method1.md#method1)                                              | Example of an overloaded method without parameters             |
+| [Method1(string)](methods/Method1.md#method1string)                                  | Example of an overloaded method accepting one parameter.       |
+| [Method2()](methods/Method2.md)                                                      | Example of an non\-overloaded methods with a custom attribute. |
+| [Method3\<T\>(T)](methods/Method3.md)                                                | Example of a generic method.                                   |
+| [Method4()](methods/Method4.md)                                                      | Example of an obsolete method.                                 |
+| [Method5(string)](methods/Method5.md)                                                | Example of an method with a `out` parameter.                   |
+| [Method6(string)](methods/Method6.md)                                                | Example of an method with a `ref` parameter.                   |
+| [Method7(string\[\])](methods/Method7.md)                                            | Example of an method with a `ref` parameter.                   |
+| [Method8(string)](methods/Method8.md)                                                | Example of an method with a `in` parameter.                    |
+| [Method9(string, string, decimal?, decimal?, CancellationToken)](methods/Method9.md) | Example of an method with a optional parameters.               |
 
 ## Operators
 

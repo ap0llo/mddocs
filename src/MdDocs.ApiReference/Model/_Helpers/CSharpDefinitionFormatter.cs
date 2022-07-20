@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using Grynwald.MdDocs.Common;
 using Grynwald.Utilities.Text;
@@ -593,17 +594,17 @@ namespace Grynwald.MdDocs.ApiReference.Model
         {
             var typeDefinition = typeReference.Resolve();
 
-            // string => put in quotation marks
-            if (typeReference.FullName == SystemTypeNames.StringFullName)
+            // special handling for nulls
+            if (value is null)
             {
-                if (value is null)
-                {
-                    return "null";
-                }
-                else
-                {
-                    return $"\"{value}\"";
-                }
+                return typeDefinition.IsValueType && typeDefinition.FullName != SystemTypeNames.NullableFullName
+                    ? "default"
+                    : "null";
+            }
+            // string => put in quotation marks
+            else if (typeReference.FullName == SystemTypeNames.StringFullName)
+            {
+                return $"\"{value}\"";
             }
             // special handling for enums
             else if (typeDefinition != null && typeDefinition.Kind() == TypeKind.Enum)
@@ -684,18 +685,18 @@ namespace Grynwald.MdDocs.ApiReference.Model
                 // on error (e.g. a value not defined in the enum), just return the plain value
                 else
                 {
-                    return value?.ToString() ?? "";
+                    return value.ToString() ?? "";
                 }
             }
             // for boolean values, return value as lower-case string (e.g. C# uses "true" but 'true.ToString()' yields "True")
             else if (typeReference.FullName == SystemTypeNames.BooleanFullName)
             {
-                return value?.ToString()?.ToLowerInvariant() ?? "";
+                return value.ToString()?.ToLowerInvariant() ?? "";
             }
             // otherwise: convert value to string
             else
             {
-                return value?.ToString() ?? "";
+                return value.ToString() ?? "";
             }
         }
 
@@ -711,16 +712,22 @@ namespace Grynwald.MdDocs.ApiReference.Model
             var definitionBuilder = new StringBuilder();
             var parameterType = parameter.ParameterType;
 
+            var defaultDecimalValue = GetDefaultDecimalValue();
+
             // If the parameter is optional, but does not have a default value
             // display it as [Optional] attribute at the before the parameter.
             // If the parameter is optional AND has a default parameter,
             // render it as " = <VALUE>" after the parameter (see below).
-            if (parameter.Attributes.HasFlag(ParameterAttributes.Optional) && !parameter.Attributes.HasFlag(ParameterAttributes.HasDefault))
+            if (parameter.Attributes.HasFlag(ParameterAttributes.Optional)
+                && !parameter.Attributes.HasFlag(ParameterAttributes.HasDefault)
+                && defaultDecimalValue is null)
             {
                 definitionBuilder.Append("[Optional]");
             }
 
-            AppendCustomAttributes(definitionBuilder, parameter.GetCustomAttributes(), singleLine: true);
+            var customAttributes = parameter.GetCustomAttributes()
+                .Where(a => defaultDecimalValue is null || a.AttributeType.FullName != SystemTypeNames.DecimalConstantAttribute);
+            AppendCustomAttributes(definitionBuilder, customAttributes, singleLine: true);
 
             // add "params" prefix if method allows multiple values
             if (parameter.CustomAttributes.Any(a => a.AttributeType.FullName == SystemTypeNames.ParamArrayAttributeFullName))
@@ -757,14 +764,65 @@ namespace Grynwald.MdDocs.ApiReference.Model
             definitionBuilder.Append(parameter.Name);
 
             // if parameter has a default value, include it in the definition
-            if (parameter.Attributes.HasFlag(ParameterAttributes.Optional) &&
-                parameter.Attributes.HasFlag(ParameterAttributes.HasDefault))
+            if (parameter.Attributes.HasFlag(ParameterAttributes.Optional)
+                && (parameter.Attributes.HasFlag(ParameterAttributes.HasDefault) || defaultDecimalValue is not null))
             {
                 definitionBuilder.Append(" = ");
-                definitionBuilder.Append(GetLiteral(parameter.ParameterType, parameter.Constant));
+                definitionBuilder.Append(GetLiteral(parameter.ParameterType, defaultDecimalValue ?? parameter.Constant));
             }
 
             return definitionBuilder.ToString();
+
+            decimal? GetDefaultDecimalValue()
+            {
+                if (!parameter.Attributes.HasFlag(ParameterAttributes.Optional)
+                    || !IsDecimalOrNullableDecimal(parameterType))
+                {
+                    return null;
+                }
+
+                var decimalConstantAttribute = parameter.CustomAttributes.FirstOrDefault(a => a.AttributeType.FullName == SystemTypeNames.DecimalConstantAttribute);
+                if (decimalConstantAttribute is null)
+                {
+                    return null;
+                }
+
+                var arguments = decimalConstantAttribute.ConstructorArguments;
+                if (arguments.Count == 5 && arguments[0].Value is byte scale && arguments[1].Value is byte sign)
+                {
+                    // DecimalConstantAttribute has 2 constructors: one with int, one with uint
+                    if (arguments[2].Value is int hi
+                        && arguments[3].Value is int mid
+                        && arguments[4].Value is int low)
+                    {
+                        return new DecimalConstantAttribute(scale: scale, sign: sign, hi: hi, mid: mid, low: low).Value;
+                    }
+                    if (arguments[2].Value is uint uhi
+                        && arguments[3].Value is uint umid
+                        && arguments[4].Value is uint ulow)
+                    {
+                        return new DecimalConstantAttribute(scale: scale, sign: sign, hi: uhi, mid: umid, low: ulow).Value;
+                    }
+                }
+
+                return null;
+            }
+        }
+
+        static bool IsDecimalOrNullableDecimal(TypeReference type)
+        {
+            if (type.FullName == SystemTypeNames.DecimalFullName)
+            {
+                return true;
+            }
+
+            if (type.Resolve().FullName != SystemTypeNames.NullableFullName)
+            {
+                return false;
+            }
+
+            return type is GenericInstanceType genericInstanceType
+                && genericInstanceType.GenericArguments[0].FullName == SystemTypeNames.DecimalFullName;
         }
     }
 }
