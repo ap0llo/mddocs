@@ -725,8 +725,12 @@ namespace Grynwald.MdDocs.ApiReference.Model
                 definitionBuilder.Append("[Optional]");
             }
 
-            var customAttributes = parameter.GetCustomAttributes()
+            // Append custom attributes to the parameter,.
+            // In case of a decimal value, omit the [DecimalConstant] attribute if a default value could be determined
+            var customAttributes = parameter
+                .GetCustomAttributes()
                 .Where(a => defaultDecimalValue is null || a.AttributeType.FullName != SystemTypeNames.DecimalConstantAttribute);
+
             AppendCustomAttributes(definitionBuilder, customAttributes, singleLine: true);
 
             // add "params" prefix if method allows multiple values
@@ -764,8 +768,8 @@ namespace Grynwald.MdDocs.ApiReference.Model
             definitionBuilder.Append(parameter.Name);
 
             // if parameter has a default value, include it in the definition
-            if (parameter.Attributes.HasFlag(ParameterAttributes.Optional)
-                && (parameter.Attributes.HasFlag(ParameterAttributes.HasDefault) || defaultDecimalValue is not null))
+            if ( parameter.Attributes.HasFlag(ParameterAttributes.Optional) &&
+                (parameter.Attributes.HasFlag(ParameterAttributes.HasDefault) || defaultDecimalValue is not null))
             {
                 definitionBuilder.Append(" = ");
                 definitionBuilder.Append(GetLiteral(parameter.ParameterType, defaultDecimalValue ?? parameter.Constant));
@@ -775,8 +779,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
             decimal? GetDefaultDecimalValue()
             {
-                if (!parameter.Attributes.HasFlag(ParameterAttributes.Optional)
-                    || !IsDecimalOrNullableDecimal(parameterType))
+                if (!parameter.Attributes.HasFlag(ParameterAttributes.Optional) || !IsDecimalOrNullableDecimal(parameterType))
                 {
                     return null;
                 }
@@ -791,15 +794,15 @@ namespace Grynwald.MdDocs.ApiReference.Model
                 if (arguments.Count == 5 && arguments[0].Value is byte scale && arguments[1].Value is byte sign)
                 {
                     // DecimalConstantAttribute has 2 constructors: one with int, one with uint
-                    if (arguments[2].Value is int hi
-                        && arguments[3].Value is int mid
-                        && arguments[4].Value is int low)
+                    if (arguments[2].Value is int hi &&
+                        arguments[3].Value is int mid &&
+                        arguments[4].Value is int low)
                     {
                         return new DecimalConstantAttribute(scale: scale, sign: sign, hi: hi, mid: mid, low: low).Value;
                     }
-                    if (arguments[2].Value is uint uhi
-                        && arguments[3].Value is uint umid
-                        && arguments[4].Value is uint ulow)
+                    if (arguments[2].Value is uint uhi &&
+                        arguments[3].Value is uint umid &&
+                        arguments[4].Value is uint ulow)
                     {
                         return new DecimalConstantAttribute(scale: scale, sign: sign, hi: uhi, mid: umid, low: ulow).Value;
                     }
@@ -811,18 +814,20 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
         static bool IsDecimalOrNullableDecimal(TypeReference type)
         {
+            // decimal
             if (type.FullName == SystemTypeNames.DecimalFullName)
             {
                 return true;
             }
 
-            if (type.Resolve().FullName != SystemTypeNames.NullableFullName)
+            // Check if type if a decimal? / Nullable<decimal>
+            if (type.Resolve()?.FullName != SystemTypeNames.NullableFullName)
             {
                 return false;
             }
 
-            return type is GenericInstanceType genericInstanceType
-                && genericInstanceType.GenericArguments[0].FullName == SystemTypeNames.DecimalFullName;
+            return type is GenericInstanceType genericInstanceType &&
+                   genericInstanceType.GenericArguments[0].FullName == SystemTypeNames.DecimalFullName;
         }
     }
 }
