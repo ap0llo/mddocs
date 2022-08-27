@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 
 namespace DemoProject
 {
@@ -341,7 +342,10 @@ namespace DemoProject
         /// </remarks>
         /// <param name="value1">The <paramref name="value1"/> parameter is optional and has a default value of <c>someString</c>.</param>
         /// <param name="value2">The <paramref name="value2"/> parameter is optional and has a default value of <c>null</c>.</param>
-        public void Method9(string value1 = "someString", string value2 = null) => throw new NotImplementedException();
+        /// <param name="value3">The <paramref name="value3"/> parameter is optional and has a default value of <c>-792281625142643.37593543950335</c>.</param>
+        /// <param name="value4">The <paramref name="value4"/> parameter is optional and has a default value of <c>null</c>.</param>
+        /// <param name="value5">The <paramref name="value5"/> parameter is optional and has a default value of <c>null</c>.</param>
+        public void Method9(string value1 = "someString", string value2 = null, decimal? value3 = -792281625142643.37593543950335M, decimal? value4 = null, CancellationToken value5 = default) => throw new NotImplementedException();
 
         /// <summary>
         /// Example of an overload of the binary + operator.

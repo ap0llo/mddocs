@@ -14,6 +14,10 @@ namespace Grynwald.MdDocs.Common
         public const string EnumFullName = "System.Enum";
         public const string Int32FullName = "System.Int32";
         public const string BooleanFullName = "System.Boolean";
+        public const string SingleFullName = "System.Single";
+        public const string DoubleFullName = "System.Double";
+        public const string DecimalFullName = "System.Decimal";
+        public const string ByteFullName = "System.Byte";
         public const string NullableFullName = "System.Nullable`1";
 
         // Common Attribute types
@@ -25,6 +29,7 @@ namespace Grynwald.MdDocs.Common
         public const string ParamArrayAttributeFullName = "System.ParamArrayAttribute";
         public const string AssemblyTitleAttributeFullName = "System.Reflection.AssemblyTitleAttribute";
         public const string AssemblyInformationalVersionAttribute = "System.Reflection.AssemblyInformationalVersionAttribute";
+        public const string DecimalConstantAttribute = "System.Runtime.CompilerServices.DecimalConstantAttribute";
     }
 }
 #pragma warning restore IDE1006 // Naming Styles

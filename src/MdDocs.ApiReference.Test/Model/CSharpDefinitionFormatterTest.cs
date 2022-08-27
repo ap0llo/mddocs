@@ -659,6 +659,16 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
         [InlineData("public void Method(string stringParameter = null, int intParameter = 23);")]
         [InlineData("public void Method(Enum1 parameter = Enum1.Value1);")]
         [InlineData("public void Method([Optional]string stringParameter);")]
+        [InlineData("void Method(byte byteParameter = 0);")]
+        [InlineData("void Method(byte? byteParameter = null);")]
+        [InlineData("void Method(int intParameter = 0);")]
+        [InlineData("void Method(int? intParameter = null);")]
+        [InlineData("void Method(float floatParameter = 1.2f);")]
+        [InlineData("void Method(float? floatParameter = 1.2f);")]
+        [InlineData("void Method(double floatParameter = 1.2);")]
+        [InlineData("void Method(double? floatParameter = 1.2);")]
+        [InlineData("void Method(decimal decimalParameter = 1.2M);")]
+        [InlineData("void Method(decimal? decimalParameter = 1.2M);")]
         public void GetDefinition_returns_the_expected_definition_for_methods_with_optional_parameters(string expected)
         {
             // ARRANGE
