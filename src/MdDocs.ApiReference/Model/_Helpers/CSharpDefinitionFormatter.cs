@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -693,6 +694,19 @@ namespace Grynwald.MdDocs.ApiReference.Model
             {
                 return value.ToString()?.ToLowerInvariant() ?? "";
             }
+            // System.Single = float
+            else if (IsValueTypeNullableValueType(typeReference, SystemTypeNames.SingleFullName))
+            {
+                return ((float)value).ToString(CultureInfo.InvariantCulture) + "f";
+            }
+            else if (IsValueTypeNullableValueType(typeReference, SystemTypeNames.DoubleFullName))
+            {
+                return ((double)value).ToString(CultureInfo.InvariantCulture);
+            }
+            else if (IsValueTypeNullableValueType(typeReference, SystemTypeNames.DecimalFullName))
+            {
+                return ((decimal)value).ToString(CultureInfo.InvariantCulture) + "M";
+            }
             // otherwise: convert value to string
             else
             {
@@ -768,7 +782,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
             definitionBuilder.Append(parameter.Name);
 
             // if parameter has a default value, include it in the definition
-            if ( parameter.Attributes.HasFlag(ParameterAttributes.Optional) &&
+            if (parameter.Attributes.HasFlag(ParameterAttributes.Optional) &&
                 (parameter.Attributes.HasFlag(ParameterAttributes.HasDefault) || defaultDecimalValue is not null))
             {
                 definitionBuilder.Append(" = ");
@@ -779,7 +793,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
 
             decimal? GetDefaultDecimalValue()
             {
-                if (!parameter.Attributes.HasFlag(ParameterAttributes.Optional) || !IsDecimalOrNullableDecimal(parameterType))
+                if (!parameter.Attributes.HasFlag(ParameterAttributes.Optional) || !IsValueTypeNullableValueType(parameterType, SystemTypeNames.DecimalFullName))
                 {
                     return null;
                 }
@@ -812,22 +826,20 @@ namespace Grynwald.MdDocs.ApiReference.Model
             }
         }
 
-        static bool IsDecimalOrNullableDecimal(TypeReference type)
+        static bool IsValueTypeNullableValueType(TypeReference type, string valueTypeName)
         {
-            // decimal
-            if (type.FullName == SystemTypeNames.DecimalFullName)
+            if (type.FullName == valueTypeName)
             {
                 return true;
             }
 
-            // Check if type if a decimal? / Nullable<decimal>
             if (type.Resolve()?.FullName != SystemTypeNames.NullableFullName)
             {
                 return false;
             }
 
             return type is GenericInstanceType genericInstanceType &&
-                   genericInstanceType.GenericArguments[0].FullName == SystemTypeNames.DecimalFullName;
+                   genericInstanceType.GenericArguments[0].FullName == valueTypeName;
         }
     }
 }
