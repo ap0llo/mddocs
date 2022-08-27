@@ -12,11 +12,20 @@
 
   <ItemGroup>
     <PackageReference Include="Grynwald.MarkdownGenerator" Version="2.5.34" />
-    <PackageReference Include="Grynwald.Utilities.Configuration" Version="1.6.122" />
     <PackageReference Include="Mono.Cecil" Version="0.11.4" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.1" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="6.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
+
+    <!--
+      Important: Keep version at 3.1.0, do not upgrade to newer versions of the 3.1.* line.
+      Using later versions causes assembly load errors when MSBuild attemps to load the assemblies.
+      https://github.com/ap0llo/mddocs/issues/75
+
+      The preview version 5 of these packages does not seem to have this issue,
+      so this should be revisited after the relesae of .NET 5
+    -->
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="3.1.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.0" />
   </ItemGroup>
 
 
