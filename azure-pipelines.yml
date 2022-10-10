@@ -92,7 +92,7 @@ jobs:
     displayName: Set Version
 
   # Restore, Build, Test
-  - task: CmdLine@2
+  - task: CmdLine@2.212.0
     displayName: 📥 Restore NuGet packages
     inputs:
       script: dotnet restore $(solutionPath) /warnaserror
@@ -130,7 +130,7 @@ jobs:
       failIfCoverageEmpty: true
 
   # Create NuGet Package and  publish as build artifact
-  - task: CmdLine@2
+  - task: CmdLine@2.212.0
     displayName: 📦 Pack NuGet package
     inputs:
       script: >-
@@ -145,7 +145,7 @@ jobs:
       artifactName: $(artifactsName_Binaries)
 
   # Generate changelog and publish as build artifact
-  - task: CmdLine@2
+  - task: CmdLine@2.212.0
     displayName: 📝 Generate Change Log
     inputs:
       script: >-
