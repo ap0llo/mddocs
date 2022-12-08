@@ -16,7 +16,7 @@
     </PackageReference>
     <PackageReference Include="CommandLineParser" Version="2.9.1" />
     <PackageReference Include="Xunit.Combinatorial" Version="1.4.1" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
   </ItemGroup>
 
   <ItemGroup Label="Project references">
