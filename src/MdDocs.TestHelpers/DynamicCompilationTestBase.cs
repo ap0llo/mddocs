@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
+using Basic.Reference.Assemblies;
 using Grynwald.Utilities.Collections;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -22,16 +23,14 @@ namespace Grynwald.MdDocs.TestHelpers
 
         protected static readonly Lazy<IReadOnlyList<MetadataReference>> s_DefaultMetadataReferences = new Lazy<IReadOnlyList<MetadataReference>>(() =>
         {
-            var paths = new HashSet<string>()
-            {
-                Assembly.Load("netstandard").Location,
-                Assembly.Load("System.Runtime").Location,
-                typeof(object).Assembly.Location,
-                typeof(DirectoryInfo).Assembly.Location,
-                typeof(ConsoleColor).Assembly.Location,
-            };
 
-            return paths.Select(p => MetadataReference.CreateFromFile(p)).ToArray();
+#if NET472
+            return ReferenceAssemblies.Net472.ToList();
+#elif NET6_0_OR_GREATER
+            return ReferenceAssemblies.Net60.ToList();
+#else
+            throw new NotImplementedException(); 
+#endif
         });
 
 
