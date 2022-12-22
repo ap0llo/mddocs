@@ -33,7 +33,7 @@ namespace Grynwald.MdDocs.MSBuild.IntegrationTest
             {
                 yield return new MSBuildRuntimeInfo(MSBuildRuntimeType.Core, Version.Parse("6.0.100"));
                 yield return new MSBuildRuntimeInfo(MSBuildRuntimeType.Core, Version.Parse("7.0.100"));
-                yield return new MSBuildRuntimeInfo(MSBuildRuntimeType.Full, Version.Parse("16.0"));
+                yield return new MSBuildRuntimeInfo(MSBuildRuntimeType.Full, Version.Parse("17.0"));
             }
         }
 
