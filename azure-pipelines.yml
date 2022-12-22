@@ -30,7 +30,7 @@ variables:
   # Build settings
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE : true    # do not populate NuGet caches on build agents (VM will be deleted afterwards anyways)
   configuration: Release                      # the configuration (Debug/Release) to build
-  solutionPath : src/MdDocs.sln               # The path of the solution to be built
+  solutionPath : MdDocs.sln               # The path of the solution to be built
   artifactsName_Binaries: Binaries
   artifactsName_ChangeLog: ChangeLog
 

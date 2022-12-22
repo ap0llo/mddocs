@@ -3,44 +3,44 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28705.295
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grynwald.MdDocs.ApiReference", "MdDocs.ApiReference\Grynwald.MdDocs.ApiReference.csproj", "{C9C174E1-75AA-48A1-ACC7-448D5ED19D9D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grynwald.MdDocs.ApiReference", "src\MdDocs.ApiReference\Grynwald.MdDocs.ApiReference.csproj", "{C9C174E1-75AA-48A1-ACC7-448D5ED19D9D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grynwald.MdDocs.ApiReference.Test", "MdDocs.ApiReference.Test\Grynwald.MdDocs.ApiReference.Test.csproj", "{3C7495C3-B003-4F6F-A92D-ECD60317C8D9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grynwald.MdDocs.ApiReference.Test", "src\MdDocs.ApiReference.Test\Grynwald.MdDocs.ApiReference.Test.csproj", "{3C7495C3-B003-4F6F-A92D-ECD60317C8D9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Solution Items", "_Solution Items", "{8A1D31E5-70CC-48A6-8122-501D7751F39D}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grynwald.MdDocs.ApiReference.DemoProject", "MdDocs.ApiReference.DemoProject\Grynwald.MdDocs.ApiReference.DemoProject.csproj", "{57CC9151-8248-450D-83DC-5574D2191680}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grynwald.MdDocs.ApiReference.DemoProject", "src\MdDocs.ApiReference.DemoProject\Grynwald.MdDocs.ApiReference.DemoProject.csproj", "{57CC9151-8248-450D-83DC-5574D2191680}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grynwald.MdDocs", "MdDocs\Grynwald.MdDocs.csproj", "{1F1998ED-451E-4415-AF41-8F5302EBB637}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grynwald.MdDocs", "src\MdDocs\Grynwald.MdDocs.csproj", "{1F1998ED-451E-4415-AF41-8F5302EBB637}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grynwald.MdDocs.CommandLineHelp", "MdDocs.CommandLineHelp\Grynwald.MdDocs.CommandLineHelp.csproj", "{C553D6FC-3B33-48B4-BA61-1E19748B4AC0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grynwald.MdDocs.CommandLineHelp", "src\MdDocs.CommandLineHelp\Grynwald.MdDocs.CommandLineHelp.csproj", "{C553D6FC-3B33-48B4-BA61-1E19748B4AC0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grynwald.MdDocs.CommandLineHelp.Test", "MdDocs.CommandLineHelp.Test\Grynwald.MdDocs.CommandLineHelp.Test.csproj", "{1119C2C7-FAF0-494C-BCA4-0F8A6C5081A2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grynwald.MdDocs.CommandLineHelp.Test", "src\MdDocs.CommandLineHelp.Test\Grynwald.MdDocs.CommandLineHelp.Test.csproj", "{1119C2C7-FAF0-494C-BCA4-0F8A6C5081A2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ApiReference", "ApiReference", "{B6343CCB-9BDB-464E-BF00-278865B3C744}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CommandLineHelp", "CommandLineHelp", "{01D2D9A6-BD71-4F7C-8E0A-8BEF813EB62F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grynwald.MdDocs.Common", "MdDocs.Common\Grynwald.MdDocs.Common.csproj", "{F98031C2-44D1-4B45-A64E-D60D44103F11}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grynwald.MdDocs.Common", "src\MdDocs.Common\Grynwald.MdDocs.Common.csproj", "{F98031C2-44D1-4B45-A64E-D60D44103F11}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{8868EC20-6906-4687-A288-4B9470B773B6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grynwald.MdDocs.CommandLineHelp.DemoProject", "MdDocs.CommandLineHelp.DemoProject\Grynwald.MdDocs.CommandLineHelp.DemoProject.csproj", "{811BFCAE-B1D5-48D6-8CA5-5B0B163D1C0F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grynwald.MdDocs.CommandLineHelp.DemoProject", "src\MdDocs.CommandLineHelp.DemoProject\Grynwald.MdDocs.CommandLineHelp.DemoProject.csproj", "{811BFCAE-B1D5-48D6-8CA5-5B0B163D1C0F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grynwald.MdDocs.MSBuild", "MdDocs.MSBuild\Grynwald.MdDocs.MSBuild.csproj", "{F6EDF79B-917F-426C-8FC0-B49727878D79}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grynwald.MdDocs.MSBuild", "src\MdDocs.MSBuild\Grynwald.MdDocs.MSBuild.csproj", "{F6EDF79B-917F-426C-8FC0-B49727878D79}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grynwald.MdDocs.TestHelpers", "MdDocs.TestHelpers\Grynwald.MdDocs.TestHelpers.csproj", "{FA76500E-BBE8-48B5-813A-803F5650C40D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grynwald.MdDocs.TestHelpers", "src\MdDocs.TestHelpers\Grynwald.MdDocs.TestHelpers.csproj", "{FA76500E-BBE8-48B5-813A-803F5650C40D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grynwald.MdDocs.Common.Test", "MdDocs.Common.Test\Grynwald.MdDocs.Common.Test.csproj", "{F1A978DC-EFA0-47D3-BD73-AE269543FC21}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grynwald.MdDocs.Common.Test", "src\MdDocs.Common.Test\Grynwald.MdDocs.Common.Test.csproj", "{F1A978DC-EFA0-47D3-BD73-AE269543FC21}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grynwald.MdDocs.Test", "MdDocs.Test\Grynwald.MdDocs.Test.csproj", "{33878214-C315-4C90-ABEA-A3D2A4FDAC78}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grynwald.MdDocs.Test", "src\MdDocs.Test\Grynwald.MdDocs.Test.csproj", "{33878214-C315-4C90-ABEA-A3D2A4FDAC78}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grynwald.MdDocs.MSBuild.Test", "MdDocs.MSBuild.Test\Grynwald.MdDocs.MSBuild.Test.csproj", "{15EDB45F-5F29-4DE0-BA1C-F05880219224}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grynwald.MdDocs.MSBuild.Test", "src\MdDocs.MSBuild.Test\Grynwald.MdDocs.MSBuild.Test.csproj", "{15EDB45F-5F29-4DE0-BA1C-F05880219224}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grynwald.MdDocs.MSBuild.IntegrationTest", "MdDocs.MSBuild.IntegrationTest\Grynwald.MdDocs.MSBuild.IntegrationTest.csproj", "{36DE9F53-7D40-4E72-846D-54F3422143E0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grynwald.MdDocs.MSBuild.IntegrationTest", "src\MdDocs.MSBuild.IntegrationTest\Grynwald.MdDocs.MSBuild.IntegrationTest.csproj", "{36DE9F53-7D40-4E72-846D-54F3422143E0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
