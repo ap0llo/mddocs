@@ -342,3 +342,7 @@ MigrationBackup/
 /src/MdDoc/Properties/launchSettings.json
 /src/MdDoc.Test.TestData/MdDoc.Test.TestData.xml
 /src/MdDocs/Properties/launchSettings.json
+
+
+# Cake Build tools directory
+tools/

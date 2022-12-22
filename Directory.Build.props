@@ -1,61 +1,67 @@
 <Project>
 
-	<PropertyGroup>
-		<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-		<!-- Output paths -->
-		<BaseOutputPath Condition="'$(BUILD_BINARIESDIRECTORY)' != '' ">$(BUILD_BINARIESDIRECTORY)</BaseOutputPath>
-		<BaseOutputPath Condition="'$(BaseOutputPath)' == '' ">$(MSBuildThisFileDirectory)Binaries/</BaseOutputPath>
-		<BaseOutputPath Condition="!HasTrailingSlash('BaseOutputPath')">$(BaseOutputPath)/</BaseOutputPath>
-		<OutputPath>$(BaseOutputPath)$(Configuration)/$(MSBuildProjectName)/</OutputPath>
-		<PackageOutputPath>$(BaseOutputPath)$(Configuration)/packages/</PackageOutputPath>
-		<VSTestResultsDirectory>$(BaseOutputPath)TestResults/</VSTestResultsDirectory>
-		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    		<!--
-    		   Suppressed warnings:
-    		     - NU5125: "The 'licenseUrl' element will be deprecated. Consider using the 'license' element instead"
-    		-->
-    		<NoWarn>NU5125</NoWarn>
-    		<!-- Make NuGet packaging opt-in instead of opt-out. -->
-    		<IsPackable>false</IsPackable>
-	</PropertyGroup>
+  <!--
+		Configure Output paths :
+			Output paths of the build needs to match the expectations of the Cake-based build.
+			See https://github.com/ap0llo/shared-build#project-output-structure for details
+	-->
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <!-- Output paths -->
+    <BaseOutputPath Condition="'$(BUILD_BINARIESDIRECTORY)' != '' ">$(BUILD_BINARIESDIRECTORY)</BaseOutputPath>
+    <BaseOutputPath Condition="'$(BaseOutputPath)' == '' ">$(MSBuildThisFileDirectory)Binaries/</BaseOutputPath>
+    <BaseOutputPath Condition="!HasTrailingSlash('BaseOutputPath')">$(BaseOutputPath)/</BaseOutputPath>
+    <OutputPath>$(BaseOutputPath)$(Configuration)/$(MSBuildProjectName)/</OutputPath>
+    <PackageOutputPath>$(BaseOutputPath)$(Configuration)/packages/</PackageOutputPath>
+    <VSTestResultsDirectory>$(BaseOutputPath)TestResults/</VSTestResultsDirectory>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <!--
+		    Suppressed warnings:
+		        - NU5125: "The 'licenseUrl' element will be deprecated. Consider using the 'license' element instead"
+		-->
+    <NoWarn>NU5125</NoWarn>
+    <!-- Make NuGet packaging opt-in instead of opt-out. -->
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
 
-	<!-- Nerdbank.GitVersioning -->	
-	<ItemGroup>
-		<PackageReference Include="Nerdbank.GitVersioning" Version="3.5.119" PrivateAssets="all" />
-		<PackageReference Include="Microsoft.DotNet.Analyzers.Compatibility" Version="0.2.12-alpha" PrivateAssets="all" />
-	</ItemGroup>
+  <!-- Reference Nerdbank.GitVersioning -->
+  <ItemGroup>
+    <PackageReference Include="Nerdbank.GitVersioning" Version="3.5.119" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.DotNet.Analyzers.Compatibility" Version="0.2.12-alpha" PrivateAssets="all" />
+  </ItemGroup>
 
-	<!-- Compiler settings-->
-	<PropertyGroup>
-		<LangVersion>11.0</LangVersion>
-		<Nullable>enable</Nullable>
-		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-	</PropertyGroup>
+  <!-- Compiler settings-->
+  <PropertyGroup>
+    <LangVersion>11.0</LangVersion>
+    <Nullable>enable</Nullable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
 
-	<!-- Enable deterministic builds when building in Azure DevOps-->
-	<PropertyGroup Condition=" '$(TF_BUILD)' == 'true' ">
-		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
-		<Deterministic>true</Deterministic>
-	</PropertyGroup>
-	<!-- SourceLink  (https://github.com/dotnet/sourcelink) -->
-	<PropertyGroup>
-		<PublishRepositoryUrl>true</PublishRepositoryUrl>
-		<AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
-		<EmbedUntrackedSources>true</EmbedUntrackedSources>
-	</PropertyGroup>
-	<ItemGroup>
-		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
-	</ItemGroup>
+  <!-- Enable deterministic builds when building in Azure DevOps-->
+  <PropertyGroup Condition=" '$(TF_BUILD)' == 'true' ">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
 
-	<!--NuGet package properties -->
-	<PropertyGroup>
-		<Authors>Andreas Gruenwald</Authors>
-		<PackageProjectUrl>https://github.com/ap0llo/mddocs</PackageProjectUrl>
-		<PackageLicenseUrl>https://github.com/ap0llo/mddocs/blob/master/LICENSE</PackageLicenseUrl>
-		<Description>A tool to generate documentaton as Markdown</Description>
-		<Copyright>Copyright (c) 2018-2022, Andreas Gruenwald</Copyright>
-		<PackageTags>markdown dotnet api documentation</PackageTags>
-		<Product>MdDocs</Product>
-	</PropertyGroup>
+  <!-- Reference SourceLink (see https://github.com/dotnet/sourcelink) -->
+  <PropertyGroup>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
+  </ItemGroup>
+
+  <!--NuGet package properties -->
+  <PropertyGroup>
+    <Authors>Andreas Gruenwald</Authors>
+    <PackageProjectUrl>https://github.com/ap0llo/mddocs</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/ap0llo/mddocs/blob/master/LICENSE</PackageLicenseUrl>
+    <Description>A tool to generate documentaton as Markdown</Description>
+    <Copyright>Copyright (c) 2018-2022, Andreas Gruenwald</Copyright>
+    <PackageTags>markdown dotnet api documentation</PackageTags>
+    <Product>MdDocs</Product>
+  </PropertyGroup>
 
 </Project>

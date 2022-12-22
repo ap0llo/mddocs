@@ -16,19 +16,19 @@
   </ItemGroup>
 
 
-    <ItemGroup>
-        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
-            <_Parameter1>$(MSBuildProjectName).Test</_Parameter1>
-        </AssemblyAttribute>
-        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
-            <_Parameter1>DynamicProxyGenAssembly2</_Parameter1>
-        </AssemblyAttribute>
-    </ItemGroup>
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>$(MSBuildProjectName).Test</_Parameter1>
+    </AssemblyAttribute>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>DynamicProxyGenAssembly2</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
 
 
-    <!-- Adjust NuGet package properties -->
+  <!-- Adjust NuGet package properties -->
   <PropertyGroup>
-    <Description>MdDocs is a tool generate documentation as markdown files. This package integrates the generation of documentation into the build process.</Description>    
+    <Description>MdDocs is a tool generate documentation as markdown files. This package integrates the generation of documentation into the build process.</Description>
     <PackageTags>$(PackageTags) msbuild</PackageTags>
     <DevelopmentDependency>true</DevelopmentDependency>
   </PropertyGroup>
@@ -42,24 +42,24 @@
     <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
     <!-- Place assemblies into the 'build' directory-->
     <BuildOutputTargetFolder>build</BuildOutputTargetFolder>
-    
+
     <!-- Register additional targets-->
     <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);IncludeDependenciesInPackage</TargetsForTfmSpecificBuildOutput>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
-  
+
   <!-- Include files from the 'build' directory-->
   <ItemGroup>
     <Content Include="build\*" Pack="true" PackagePath="build\" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
-  
+
   <!-- Include all assemblies in the output directory in the package-->
   <Target Name="IncludeDependenciesInPackage" DependsOnTargets="GetTargetPath">
     <ItemGroup>
       <BuildOutputInPackage Include="$(OutputPath)*.dll" Exclude="$(OutputPath)$(AssemblyName).dll" />
     </ItemGroup>
   </Target>
-  
-    
+
+
 </Project>

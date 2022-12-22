@@ -28,11 +28,11 @@
       <_Parameter1>Grynwald.MdDocs.Test</_Parameter1>
     </AssemblyAttribute>
   </ItemGroup>
-    
+
   <ItemGroup>
     <Compile Include="../shared/Nullable.cs" />
   </ItemGroup>
-  
+
   <!--
     Include Grynwald.Utilities.Configuration as source instead of using the NuGet package.
     
@@ -46,5 +46,5 @@
   <ItemGroup>
     <Compile Include="..\..\deps\utilities\src\Utilities.Configuration\**\*.cs" />
   </ItemGroup>
-    
+
 </Project>

@@ -21,7 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\MdDocs.Common\Grynwald.MdDocs.Common.csproj" />
   </ItemGroup>
-  
+
 
 
   <ItemGroup>
