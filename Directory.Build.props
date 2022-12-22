@@ -64,4 +64,12 @@
     <Product>MdDocs</Product>
   </PropertyGroup>
 
+
+  <!-- Use NuGet lock file -->
+  <PropertyGroup>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    <!-- When running in Azure Pipelines, use locked mode -->
+    <RestoreLockedMode Condition=" '$(TF_BUILD)' == 'true' ">true</RestoreLockedMode>
+  </PropertyGroup>
+
 </Project>
