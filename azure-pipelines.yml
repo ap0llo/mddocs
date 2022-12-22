@@ -67,7 +67,7 @@ jobs:
       packageType: sdk
       useGlobalJson: true
 
-  # Also install the .NET Core 3.1 SDK and the .NET 5 SDK because MSBuild integration tests run on multiple .NET SDKs
+  # Also install the .NET Core 3.1 SDK the .NET 5 SDK and the .NET 6 SDK because MSBuild integration tests run on multiple .NET SDKs
   - task: UseDotNet@2
     displayName: 'Install .NET Core 3.1 SDK'
     inputs:
@@ -78,6 +78,11 @@ jobs:
     inputs:
       packageType: sdk
       version: 5.0.403
+  - task: UseDotNet@2
+    displayName: 'Install .NET 6 SDK'
+    inputs:
+      packageType: sdk
+      version: 6.0.100     
 
   # Restore local .NET Core tools
   - task: DotNetCoreCLI@2
