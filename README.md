@@ -14,11 +14,8 @@
 *MdDocs* is a tool to generate documentation in the form of Markdown documents.
 It currently supports:
 
-- Generating API reference from a .NET assembly and the corresponding XML
-  documentation file
-- Generating command line help for projects that use the
-  [CommandLineParser package](https://www.nuget.org/packages/CommandLineParser/)
-  for parsing
+- Generating API reference from a .NET assembly and the corresponding XML documentation file
+- Generating command line help for projects that use the [CommandLineParser package](https://www.nuget.org/packages/CommandLineParser/) for parsing
   
 For an example of what the output looks like, have a look at the [demoprojects](docs/demoprojects) directory.
 
@@ -35,7 +32,7 @@ corresponding sub-pages:
 
 ℹ This repository uses git submodules. Use `git clone --recursive` to check out submodules as well.
 
-MdDocs is a .NET Core application and can be built using the .NET SDK 3.1 (see [global.json](./global.json))
+MdDocs can be built using the .NET 7 SDK (see [global.json](./global.json))
 
 ```ps1
 dotnet restore .\src\MdDocs.sln
@@ -45,8 +42,8 @@ dotnet build .\src\MdDocs.sln
 dotnet pack .\src\MdDocs.sln
 ```
 
-To run tests, the .NET SK 2.1 (version 2.1.800) and a installation of Visual Studio 2019 is requried as well.
-(this only applies to the `MdDocs.MSBuild.IntegrationTest` project, all other test project should be executable with only the .NET Core 3.1 SDK).
+To run tests, the .NET 6 SDK and a installation of Visual Studio 2022 is requried as well.
+(this only applies to the `MdDocs.MSBuild.IntegrationTest` project, all other test project should be executable with only the .NET 7 SDK).
 
 ```ps1
 dotnet test .\src\MdDocs.sln
@@ -54,12 +51,9 @@ dotnet test .\src\MdDocs.sln
 
 ## Issues
 
-If you run into any issues or if you are missing a feature, feel free
-to open an [issue](https://github.com/ap0llo/mddocs/issues).
+If you run into any issues or if you are missing a feature, feel free to open an [issue](https://github.com/ap0llo/mddocs/issues).
 
-I'm also using issues as a backlog of things that come into my mind or
-things I plan to implement, so don't be surprised if many issues were
-created by me without anyone else being involved in the discussion.
+I'm also using issues as a backlog of things that come into my mind or things I plan to implement, so don't be surprised if many issues were created by me without anyone else being involved in the discussion.
 
 ## Acknowledgments
 
@@ -88,20 +82,15 @@ created by me without anyone else being involved in the discussion.
 
 ## Versioning and Branching
 
-The version of the library is automatically derived from git and the information
-in `version.json` using [Nerdbank.GitVersioning](https://github.com/AArnott/Nerdbank.GitVersioning):
+The version of the library is automatically derived from git and the information in `version.json` using [Nerdbank.GitVersioning](https://github.com/dotnet/Nerdbank.GitVersioning):
 
-- The master branch  always contains the latest version. Packages produced from
-  master are always marked as pre-release versions (using the `-pre` suffix).
-- Stable versions are built from release branches. Build from release branches
-  will have no `-pre` suffix
-- Builds from any other branch will have both the `-pre` prerelease tag and the git
-  commit hash included in the version string
+- The master branch  always contains the latest version. Packages produced from master are always marked as pre-release versions (using the `-pre` suffix).
+- Stable versions are built from release branches. Build from release branches will have no `-pre` suffix
+- Builds from any other branch will have both the `-pre` prerelease tag and the git commit hash included in the version string
 
-To create a new release branch use the [`nbgv` tool](https://www.nuget.org/packages/nbgv/)
-(at least version `3.0.4-beta`):
+To create a new release branch use the [`nbgv` tool](https://www.nuget.org/packages/nbgv/):
 
 ```ps1
-dotnet tool install --global nbgv --version 3.0.4-beta
+dotnet tool install --global nbgv
 nbgv prepare-release
 ```

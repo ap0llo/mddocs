@@ -3,7 +3,7 @@
   <!-- Select appropriate task assembly -->
   <PropertyGroup>
     <!-- Default to .NET Framework build-->
-    <MdDocsTasksDirectory>$(MSBuildThisFileDirectory)net461/</MdDocsTasksDirectory>
+    <MdDocsTasksDirectory>$(MSBuildThisFileDirectory)net472/</MdDocsTasksDirectory>
     <!-- Overwrite property when running in .NET Core MSBuild-->
     <MdDocsTasksDirectory Condition="'$(MSBuildRuntimeType)' == 'Core'">$(MSBuildThisFileDirectory)netstandard2.0/</MdDocsTasksDirectory>
     

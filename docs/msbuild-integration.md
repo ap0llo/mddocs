@@ -1,6 +1,6 @@
 # MdDocs MSBuild Integration
 
-**Applies to:** Version 0.4 and later
+**Applies to:** Version 0.5 and later
 
 ## Installation
 
@@ -9,13 +9,13 @@
 - Prerelease builds are available on [MyGet](https://www.myget.org/feed/ap0llo-mddocs/package/nuget/Grynwald.Utilities)
 - Release versions are available on [NuGet.org](https://www.nuget.org/packages/Grynwald.MdDocs)
 
-MdDocs can be used either as .NET Core (global) tool (see
-[MdDocs .NET CLI tool](./net-cli-tool.md)) or integrated into
-the project build as a set of MSBuild targets.
+MdDocs can be used either as .NET CLI tool (see [MdDocs .NET CLI tool](./net-cli-tool.md)) or integrated into the project build as a set of MSBuild targets.
 
 [![NuGet](https://img.shields.io/nuget/v/Grynwald.MdDocs.MSBuild.svg)](https://www.nuget.org/packages/Grynwald.MdDocs.MSBuild)
 
-The package `Grynwald.MdDocs.MSBuild` allows generating documentation as part of the build process. To install the package, run
+The package `Grynwald.MdDocs.MSBuild` allows generating documentation as part of the build process. 
+
+To install the package, run
 
 ```ps1
 dotnet add package Grynwald.MdDocs.MSBuild

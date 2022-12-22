@@ -9,12 +9,11 @@
 - Prerelease builds are available on [MyGet](https://www.myget.org/feed/ap0llo-mddocs/package/nuget/Grynwald.Utilities)
 - Release versions are available on [NuGet.org](https://www.nuget.org/packages/Grynwald.MdDocs)
 
-MdDocs can be used either as .NET Core CLI tool or integrated into
-the project build as a set of MSBuild targets (see [MdDocs MSBuild-integration](./msbuild-integration.md)).
+MdDocs can be used either as .NET Core CLI tool or integrated into the project build as a set of MSBuild targets (see [MdDocs MSBuild-integration](./msbuild-integration.md)).
 
 [![NuGet](https://img.shields.io/nuget/v/Grynwald.MdDocs.svg)](https://www.nuget.org/packages/Grynwald.MdDocs)
 
-The package `Grynwald.MdDocs` provides MdDocs as a .NET Core (global) tool.
+The package `Grynwald.MdDocs` provides MdDocs as a .NET CLI tool.
 To install it, run
 
 ```ps1

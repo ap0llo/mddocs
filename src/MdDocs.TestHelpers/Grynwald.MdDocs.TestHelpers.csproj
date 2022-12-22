@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net461;netcoreapp3.1;net5.0;net6.0;net7.0</TargetFrameworks>
+    <TargetFrameworks>net472;net6.0;net7.0</TargetFrameworks>
     <IsPackable>false</IsPackable>
     <IsTestProject>false</IsTestProject>
   </PropertyGroup>
@@ -12,6 +12,7 @@
     <PackageReference Include="xunit" Version="2.4.2" />
     <PackageReference Include="Mono.Cecil" Version="0.11.4" />
     <PackageReference Include="ApprovalTests" Version="5.7.3" />
+    <PackageReference Include="Basic.Reference.Assemblies" Version="1.4.1" />
   </ItemGroup>
     
 </Project>
