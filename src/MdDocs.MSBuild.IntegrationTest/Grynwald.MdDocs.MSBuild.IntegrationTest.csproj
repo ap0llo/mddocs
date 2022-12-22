@@ -11,8 +11,6 @@
         <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5" />
         <PackageReference Include="coverlet.collector" Version="3.2.0" />
         <PackageReference Include="NuGet.Packaging" Version="6.4.0" />
-        <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
-        <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="6.0.0" />
     </ItemGroup>
 
     <ItemGroup>
