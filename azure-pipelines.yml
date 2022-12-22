@@ -15,8 +15,11 @@ jobs:
   pool:
     vmImage: windows-latest
     
-
   steps:
+  - checkout: self
+    fetchDepth: 0
+    submodules: true
+    displayName: Checkout
   - task: PowerShell@2
     displayName: Cake Build
     inputs:
