@@ -32,22 +32,19 @@ corresponding sub-pages:
 
 ℹ This repository uses git submodules. Use `git clone --recursive` to check out submodules as well.
 
-MdDocs can be built using the .NET 7 SDK (see [global.json](./global.json))
-
-```ps1
-dotnet restore .\src\MdDocs.sln
-
-dotnet build .\src\MdDocs.sln
-
-dotnet pack .\src\MdDocs.sln
-```
+Building MdDocs from source requires the .NET 7 SDK (at lease version 7.0.101 as specified in [global.json](./global.json)) and uses [Cake](https://cakebuild.net/) for the build.
 
 To run tests, the .NET 6 SDK and a installation of Visual Studio 2022 is requried as well.
 (this only applies to the `MdDocs.MSBuild.IntegrationTest` project, all other test project should be executable with only the .NET 7 SDK).
 
+To execute the default task, run
+
 ```ps1
-dotnet test .\src\MdDocs.sln
+.\build.ps1
 ```
+
+This will build the project, run all tests and pack the NuGet package.
+
 
 ## Issues
 
@@ -79,6 +76,8 @@ I'm also using issues as a backlog of things that come into my mind or things I 
 - [SourceLink](https://github.com/dotnet/sourcelink)
 - [NuGet](https://github.com/NuGet/NuGet.Client)
 - [Newtonsoft.Json](https://www.newtonsoft.com/json)
+- [Cake](https://cakebuild.net/)
+- [Cake.BuildSystems.Module](https://github.com/cake-contrib/Cake.BuildSystems.Module)
 
 ## Versioning and Branching
 
