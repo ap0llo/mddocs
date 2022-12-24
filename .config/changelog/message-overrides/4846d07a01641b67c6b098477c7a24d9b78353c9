@@ -1,0 +1,7 @@
+fix: Make sorting in output consistent across different frameworks
+
+.NET 5 changed the default sorting behavior for strings causing the output of MdDocs to be different when running on net5.0 vs. running on earlier .NET Core versions or .NET Framework.
+
+Make sorting consistent by explicitly using "Ordinal" comparisons for all sort operations.
+
+See-Also: https://docs.microsoft.com/en-us/dotnet/standard/base-types/string-comparison-net-5-plus

@@ -1,0 +1,5 @@
+feat: Add .NET 6 support
+
+Add support for running MdDocs on .NET 6
+
+Pull-Request: #180

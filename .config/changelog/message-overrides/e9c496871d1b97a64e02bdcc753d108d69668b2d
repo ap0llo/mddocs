@@ -1,0 +1,12 @@
+feat(apireference): Add multi-assembly support
+
+Add support for rendering API reference documentation for multiple assemblies. 
+When multiple assemblies are specified, documentation is generated for all types from all assemblies.
+The file layout of the output is unchanged and is based on a symbol's name and namespace.
+
+Specifying multiple input assemblies is supported in the MdDocs command line tool but not in the MdDocs MSBuild task which continues to generate documentation for the current project's output assembly.
+
+BREAKING CHANGE: The mddocs:apireference:assemblyPath setting was renamed to mddocs:apireference:assemblyPaths and its type was changed from a string to an array of strings
+BREAKING CHANGE: The '--assembly' command line parameter of the apireference command has been renamed to '--assemblies'
+Closes: #112
+Pull-Request: #123

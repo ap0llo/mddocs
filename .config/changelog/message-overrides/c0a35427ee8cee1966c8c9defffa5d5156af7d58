@@ -1,0 +1,7 @@
+fix(apireference): Fix rendering of default values of value type and decimal parameters
+
+Fixes rendering of value type and decimal parameters in method default values
+
+Thanks @madelson
+
+Pull-Request: #205

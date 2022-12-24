@@ -1,0 +1,10 @@
+------- Ignore commit for change log (.NET 5 Support has been dropped by now) -------
+
+feat: Add .NET 5 support
+
+Add .NET 5 version of the MdDocs .NET CLI tool - previously supported .NET Core versions (2.1 and 3.1) continue to be supported.
+
+Additionally, expand tests to ensure the MdDocs MSBuild task works in conjunction with the .NET 5 SDK.
+
+Closes: #102
+Pull-Request: #121
