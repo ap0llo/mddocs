@@ -14,5 +14,5 @@
     <PackageReference Include="ApprovalTests" Version="5.8.0" />
     <PackageReference Include="Basic.Reference.Assemblies" Version="1.4.1" />
   </ItemGroup>
-    
+
 </Project>
