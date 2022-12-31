@@ -50,6 +50,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{DC2AECAE
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Build", "build\Build.csproj", "{2166FFBB-4986-44ED-9B15-26A4DF8D22BC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grynwald.MdDocs.BuildVerification", "src\MdDocs.BuildVerification\Grynwald.MdDocs.BuildVerification.csproj", "{8192BF1D-F762-49FE-9838-7CF020C4F566}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -114,6 +116,10 @@ Global
 		{36DE9F53-7D40-4E72-846D-54F3422143E0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2166FFBB-4986-44ED-9B15-26A4DF8D22BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2166FFBB-4986-44ED-9B15-26A4DF8D22BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8192BF1D-F762-49FE-9838-7CF020C4F566}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8192BF1D-F762-49FE-9838-7CF020C4F566}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8192BF1D-F762-49FE-9838-7CF020C4F566}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8192BF1D-F762-49FE-9838-7CF020C4F566}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -137,6 +143,7 @@ Global
 		{15EDB45F-5F29-4DE0-BA1C-F05880219224} = {3560D538-F1D7-4AB1-9B82-D9A5D6B69D26}
 		{36DE9F53-7D40-4E72-846D-54F3422143E0} = {3560D538-F1D7-4AB1-9B82-D9A5D6B69D26}
 		{2166FFBB-4986-44ED-9B15-26A4DF8D22BC} = {DC2AECAE-7982-4845-830D-B340ADD7A220}
+		{8192BF1D-F762-49FE-9838-7CF020C4F566} = {3560D538-F1D7-4AB1-9B82-D9A5D6B69D26}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6774E9D8-488A-4F3B-9F91-41065B9DE8BE}
