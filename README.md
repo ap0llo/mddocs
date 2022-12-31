@@ -78,6 +78,7 @@ I'm also using issues as a backlog of things that come into my mind or things I 
 - [Newtonsoft.Json](https://www.newtonsoft.com/json)
 - [Cake](https://cakebuild.net/)
 - [Cake.BuildSystems.Module](https://github.com/cake-contrib/Cake.BuildSystems.Module)
+- [Verify](https://github.com/VerifyTests/Verify)
 
 ## Versioning and Branching
 
