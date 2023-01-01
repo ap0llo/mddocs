@@ -46,6 +46,12 @@
         "resolved": "3.5.119",
         "contentHash": "x8k4zV6YKZA5Rr810439lG9NngdbyPtFv0QpIYz32m1Im59kvSbEHO8gKGZoNvsfZSquayjEDUCa8acbut372g=="
       },
+      "NuGetizer": {
+        "type": "Direct",
+        "requested": "[0.9.1, )",
+        "resolved": "0.9.1",
+        "contentHash": "wRvu14/VCIDz3iUfTwj61f+hBc+8zh2Zm+KwmHT2M5EJa3hgEz5txYDUTpjh0jINxBqsPo73A+i2qLLnF/PAuQ=="
+      },
       "Grynwald.MarkdownGenerator": {
         "type": "Transitive",
         "resolved": "2.5.34",
@@ -403,6 +409,12 @@
         "dependencies": {
           "Microsoft.NETCore.Platforms": "1.1.0"
         }
+      },
+      "NuGetizer": {
+        "type": "Direct",
+        "requested": "[0.9.1, )",
+        "resolved": "0.9.1",
+        "contentHash": "wRvu14/VCIDz3iUfTwj61f+hBc+8zh2Zm+KwmHT2M5EJa3hgEz5txYDUTpjh0jINxBqsPo73A+i2qLLnF/PAuQ=="
       },
       "Grynwald.MarkdownGenerator": {
         "type": "Transitive",

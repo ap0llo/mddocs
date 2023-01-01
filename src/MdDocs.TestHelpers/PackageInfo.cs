@@ -23,7 +23,7 @@ namespace Grynwald.MdDocs.TestHelpers
                 return new FrameworkReference()
                 {
                     TargetFramework = frameworkSpecificGroup.TargetFramework.DotNetFrameworkName,
-                    Assemblies = frameworkSpecificGroup.Items.ToList()
+                    Assemblies = frameworkSpecificGroup.Items.OrderBy(x => x, StringComparer.Ordinal).ToList()
                 };
             }
         }
@@ -60,9 +60,9 @@ namespace Grynwald.MdDocs.TestHelpers
             {
                 IsDevelopmentDependency = packageReader.GetDevelopmentDependency(),
                 Dependencies = packageReader.GetPackageDependencies(),
-                PackageTypes = packageReader.GetPackageTypes().Select(x => x.Name).ToList(),
-                Files = GetPackageFiles(packageReader).ToList(),
-                FrameworkReferences = packageReader.GetFrameworkItems().Select(FrameworkReference.FromFrameworkSpecificGroup).ToList()
+                PackageTypes = packageReader.GetPackageTypes().Select(x => x.Name).OrderBy(x => x, StringComparer.Ordinal).ToList(),
+                Files = GetPackageFiles(packageReader).OrderBy(x => x, StringComparer.Ordinal).ToList(),
+                FrameworkReferences = packageReader.GetFrameworkItems().Select(FrameworkReference.FromFrameworkSpecificGroup).OrderBy(x => x.TargetFramework, StringComparer.Ordinal).ToList()
             };
         }
 
