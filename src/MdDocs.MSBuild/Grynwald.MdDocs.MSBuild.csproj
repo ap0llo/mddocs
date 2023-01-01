@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Build.Utilities.Core" Version="17.0.0" ExcludeAssets="runtime" />
+    <PackageReference Include="nugetizer" Version="0.9.1" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup>
@@ -23,40 +24,30 @@
   </PropertyGroup>
 
 
-  <!-- NuGet Packaging -->
+  <!-- NuGet Packaging settings (see https://www.clarius.org/nugetizer/) -->
   <PropertyGroup>
-    <!-- Copy all referenced assemblies to the output directory -->
-    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-    <!-- Do not include dependencies as package dependencies-->
-    <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
-    <!-- Place assemblies into the 'build' directory-->
-    <BuildOutputTargetFolder>build</BuildOutputTargetFolder>
-
-    <!-- Register additional targets-->
-    <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);IncludeDependenciesInPackage</TargetsForTfmSpecificBuildOutput>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <CopyLockFileAssemblies>true</CopyLockFileAssemblies>
+    <PackProjectReferences>false</PackProjectReferences>
+    <PackDependencies>false</PackDependencies>
+    <PackFrameworkReferences>false</PackFrameworkReferences>
+    <EnablePackInference>false</EnablePackInference>
   </PropertyGroup>
 
   <!-- Include files from the 'build' directory-->
   <ItemGroup>
-    <Content Include="build\*" Pack="true" PackagePath="build\" CopyToOutputDirectory="PreserveNewest" />
+    <None Remove="build\**\*" />
+    <PackageFile Include="build\**\*" Pack="true" />
   </ItemGroup>
 
 
-  <!-- Include all assemblies in the output directory in the package-->
-  <Target Name="IncludeDependenciesInPackage" DependsOnTargets="GetTargetPath">
+  <!-- Include all assemblies in the output directory in the package -->
+  <Target Name="AddPackageContents" BeforeTargets="GetPackageContents" Condition=" '$(TargetFramework)' != '' ">
     <ItemGroup>
-      <BuildOutputInPackage Include="$(OutputPath)*.dll" Exclude="$(OutputPath)$(AssemblyName).dll" />
+      <_BuildOutputFile Remove="*" />
+      <_BuildOutputFile Include="$(OutputPath)\**\*.*" Exclude="$(OutputPath)\**\*.deps.json" />
     </ItemGroup>
-  </Target>
-
-  <!-- Remove framework references from the output NuGet package (not required for a build tools package)-->
-  <PropertyGroup>
-    <GenerateNuspecDependsOn>$(GenerateNuspecDependsOn);RemoveFrameworkAssemblyReferences</GenerateNuspecDependsOn>
-  </PropertyGroup>
-  <Target Name="RemoveFrameworkAssemblyReferences">
     <ItemGroup>
-      <_FrameworkAssemblyReferences Remove="@(_FrameworkAssemblyReferences)" />
+      <PackageFile Include="@(_BuildOutputFile)" PackagePath="build\$(TargetFramework)\%(RecursiveDir)%(FileName)%(Extension)" />
     </ItemGroup>
   </Target>
 
