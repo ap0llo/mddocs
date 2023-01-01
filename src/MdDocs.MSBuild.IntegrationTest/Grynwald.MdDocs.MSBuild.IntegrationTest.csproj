@@ -15,13 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MdDocs.MSBuild\Grynwald.MdDocs.MSBuild.csproj" />
+    <ProjectReference Include="..\MdDocs.TestHelpers\Grynwald.MdDocs.TestHelpers.csproj" />
   </ItemGroup>
-
-  <Target Name="BuildPackageToTestOutput" AfterTargets="Build">
-
-    <RemoveDir Directories="$(OutputPath)/packages/" />
-
-    <MSBuild Projects="..\MdDocs.MSBuild\Grynwald.MdDocs.MSBuild.csproj" Properties="PackageOutputPath=$(OutputPath)/packages/" Targets="Build;Pack" />
-  </Target>
 
 </Project>
