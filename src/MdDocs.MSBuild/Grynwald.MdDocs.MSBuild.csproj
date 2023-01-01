@@ -14,7 +14,7 @@
     <ProjectReference Include="..\MdDocs.CommandLineHelp\Grynwald.MdDocs.CommandLineHelp.csproj" />
     <ProjectReference Include="..\MdDocs.Common\Grynwald.MdDocs.Common.csproj" />
   </ItemGroup>
-  
+
   <!-- Adjust NuGet package properties -->
   <PropertyGroup>
     <Description>MdDocs is a tool generate documentation as markdown files. This package integrates the generation of documentation into the build process.</Description>
@@ -50,5 +50,14 @@
     </ItemGroup>
   </Target>
 
+  <!-- Remove framework references from the output NuGet package (not required for a build tools package)-->
+  <PropertyGroup>
+    <GenerateNuspecDependsOn>$(GenerateNuspecDependsOn);RemoveFrameworkAssemblyReferences</GenerateNuspecDependsOn>
+  </PropertyGroup>
+  <Target Name="RemoveFrameworkAssemblyReferences">
+    <ItemGroup>
+      <_FrameworkAssemblyReferences Remove="@(_FrameworkAssemblyReferences)" />
+    </ItemGroup>
+  </Target>
 
 </Project>
