@@ -26,7 +26,8 @@
 
   <!-- NuGet Packaging settings (see https://www.clarius.org/nugetizer/) -->
   <PropertyGroup>
-    <CopyLockFileAssemblies>true</CopyLockFileAssemblies>
+    <!-- Copy all referenced assemblies to the output directory -->
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <PackProjectReferences>false</PackProjectReferences>
     <PackDependencies>false</PackDependencies>
     <PackFrameworkReferences>false</PackFrameworkReferences>
