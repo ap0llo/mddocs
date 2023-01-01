@@ -11,7 +11,10 @@
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5" PrivateAssets="all" />
     <PackageReference Include="coverlet.collector" Version="3.1.2" PrivateAssets="all" />
     <PackageReference Include="Verify.Xunit" Version="19.5.0" />
-    <PackageReference Include="NuGet.Packaging" Version="6.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MdDocs.TestHelpers\Grynwald.MdDocs.TestHelpers.csproj" />
   </ItemGroup>
 
 </Project>

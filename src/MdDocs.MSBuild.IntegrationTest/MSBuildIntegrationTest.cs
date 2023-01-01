@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using Grynwald.MdDocs.TestHelpers;
 using Grynwald.Utilities.IO;
 using NuGet.Common;
 using NuGet.Packaging;
@@ -11,31 +12,29 @@ using Xunit.Abstractions;
 
 namespace Grynwald.MdDocs.MSBuild.IntegrationTest
 {
-
-
-    public class MSBuildIntegrationTest : IDisposable
+    public class MSBuildIntegrationTest : IClassFixture<PackagesFixture>, IDisposable
     {
         private readonly TemporaryDirectory m_WorkingDirectory = new TemporaryDirectory();
         private readonly ITestOutputHelper m_OutputHelper;
+        private readonly PackagesFixture m_PackagesFixture;
 
-        public MSBuildIntegrationTest(ITestOutputHelper outputHelper)
+
+        public MSBuildIntegrationTest(ITestOutputHelper outputHelper, PackagesFixture packagesFixture)
         {
             m_OutputHelper = outputHelper;
+            m_PackagesFixture = packagesFixture;
         }
 
 
         public void Dispose() => m_WorkingDirectory.Dispose();
 
 
-        private static IEnumerable<MSBuildRuntimeInfo> MSBuildRuntimes
+        private static IEnumerable<MSBuildRuntimeInfo> MSBuildRuntimes { get; } = new[]
         {
-            get
-            {
-                yield return new MSBuildRuntimeInfo(MSBuildRuntimeType.Core, Version.Parse("6.0.400"));
-                yield return new MSBuildRuntimeInfo(MSBuildRuntimeType.Core, Version.Parse("7.0.100"));
-                yield return new MSBuildRuntimeInfo(MSBuildRuntimeType.Full, Version.Parse("17.0"));
-            }
-        }
+            new MSBuildRuntimeInfo(MSBuildRuntimeType.Core, Version.Parse("6.0.400")),
+            new MSBuildRuntimeInfo(MSBuildRuntimeType.Core, Version.Parse("7.0.100")),
+            new MSBuildRuntimeInfo(MSBuildRuntimeType.Full, Version.Parse("17.0"))
+        };
 
         public static IEnumerable<object[]> TestCases()
         {
@@ -69,8 +68,10 @@ namespace Grynwald.MdDocs.MSBuild.IntegrationTest
         public void Documentation_is_generated_during_build(MSBuildRuntimeInfo runtime, string msbuildArgs, string[] expectedFiles)
         {
             // ARRANGE
-            var packageFilePath = Directory.GetFiles("packages", "*.nupkg").Single();
-            var packageId = ExtractNuGetPackage(packageFilePath);
+            var package = m_PackagesFixture.TryGetPackage("Grynwald.MdDocs.MSBuild");
+            Assert.NotNull(package);
+
+            var packageId = ExtractNuGetPackage(package.PackageFilePath);
 
             CreateFile("Class1.cs",
                 @"
