@@ -3,18 +3,7 @@
   IsDevelopmentDependency: true,
   PackageTypes: [],
   Dependencies: [],
-  FrameworkReferences: [
-    {
-      TargetFramework: .NETFramework,Version=v4.7.2,
-      Assemblies: [
-        System.IO,
-        System.Runtime,
-        System.Security.Cryptography.Algorithms,
-        System.Security.Cryptography.Encoding,
-        System.Security.Cryptography.Primitives
-      ]
-    }
-  ],
+  FrameworkReferences: [],
   Files: [
     build/net472/Grynwald.MdDocs.MSBuild.pdb,
     build/netstandard2.0/Grynwald.MdDocs.MSBuild.pdb,
