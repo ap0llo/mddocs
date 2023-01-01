@@ -40,8 +40,15 @@
     <PackageFile Include="build\**\*" Pack="true" />
   </ItemGroup>
 
+  <!--
+    =================================================================================================
+      Target "AddPackageContents"
+    =================================================================================================
+      Include the MSBuild tasks assembly and all it's dependencies in the NuGet package.
 
-  <!-- Include all assemblies in the output directory in the package -->
+      Use Condition '$(TargetFramework)' != '' so the target only runs in the "inner build" 
+      of this multi-targted project (so we include the task assembly in all versions we build)
+  -->
   <Target Name="AddPackageContents" BeforeTargets="GetPackageContents" Condition=" '$(TargetFramework)' != '' ">
     <ItemGroup>
       <_BuildOutputFile Remove="*" />
@@ -50,6 +57,40 @@
     <ItemGroup>
       <PackageFile Include="@(_BuildOutputFile)" PackagePath="build\$(TargetFramework)\%(RecursiveDir)%(FileName)%(Extension)" />
     </ItemGroup>
+  </Target>
+
+  <!--
+    =================================================================================================
+      Target "AddMdDocsCliToPackage"
+    =================================================================================================
+      Include the MdDocs CLI tool and all its dependencies in the NuGet package under "tools\"
+
+      Use Condition '$(TargetFramework)' == 'net472' so the target only runs once 
+      in this multi-targted project (so we include tool only once)
+  -->
+  <Target Name="AddMdDocsCliToPackage"
+          BeforeTargets="GetPackageContents"
+          Condition=" '$(TargetFramework)' == 'net472' ">
+
+    <PropertyGroup>
+      <MdDocsCliTargetFramework>net6.0</MdDocsCliTargetFramework>
+      <MdDocsPublishDir>$(OutputPath)..\tools\$(MdDocsCliTargetFramework)\</MdDocsPublishDir>
+    </PropertyGroup>
+
+    <Message Text="Publishing MdDocs CLI to '$(MdDocsPublishDir)'" />
+    <MSBuild Projects="..\MdDocs\Grynwald.MdDocs.csproj"
+             Targets="Publish"
+             Properties="TargetFramework=$(MdDocsCliTargetFramework);PublishDir=$(MdDocsPublishDir);NoBuild=$(NoBuild)" />
+
+    <ItemGroup>
+      <_PublishedFile Remove="@(_PublishedFile)" />
+      <_PublishedFile Include="$(MdDocsPublishDir)\**\*.*"
+                      Exclude="$(MdDocsPublishDir)\mddocs.deps.json;$(MdDocsPublishDir)\mddocs.exe"/>
+    </ItemGroup>
+    <ItemGroup>
+      <PackageFile Include="@(_PublishedFile)" PackagePath="tools\$(MdDocsCliTargetFramework)\%(RecursiveDir)%(FileName)%(Extension)" />
+    </ItemGroup>
+
   </Target>
 
 </Project>
