@@ -43,6 +43,6 @@ namespace Grynwald.MdDocs.TestHelpers
         }
 
 
-        public PackageInfo? TryGetPackage(string packageId) => Packages.SingleOrDefault(x => x.Id.Equals(packageId, StringComparison.OrdinalIgnoreCase));
+        public PackageInfo GetPackage(string packageId) => Packages.Single(x => x.Id.Equals(packageId, StringComparison.OrdinalIgnoreCase));
     }
 }

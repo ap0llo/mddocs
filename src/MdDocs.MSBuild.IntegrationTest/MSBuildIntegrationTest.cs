@@ -12,7 +12,7 @@ using Xunit.Abstractions;
 
 namespace Grynwald.MdDocs.MSBuild.IntegrationTest
 {
-    public class MSBuildIntegrationTest : IClassFixture<PackagesFixture>, IDisposable
+    public partial class MSBuildIntegrationTest : IClassFixture<PackagesFixture>, IDisposable
     {
         private readonly TemporaryDirectory m_WorkingDirectory = new TemporaryDirectory();
         private readonly ITestOutputHelper m_OutputHelper;
@@ -35,6 +35,8 @@ namespace Grynwald.MdDocs.MSBuild.IntegrationTest
             new MSBuildRuntimeInfo(MSBuildRuntimeType.Core, Version.Parse("7.0.100")),
             new MSBuildRuntimeInfo(MSBuildRuntimeType.Full, Version.Parse("17.0"))
         };
+
+        public static IEnumerable<object[]> MSBuildRuntimesData() => MSBuildRuntimes.Select(x => new object[] { x });
 
         public static IEnumerable<object[]> TestCases()
         {
@@ -68,8 +70,7 @@ namespace Grynwald.MdDocs.MSBuild.IntegrationTest
         public void Documentation_is_generated_during_build(MSBuildRuntimeInfo runtime, string msbuildArgs, string[] expectedFiles)
         {
             // ARRANGE
-            var package = m_PackagesFixture.TryGetPackage("Grynwald.MdDocs.MSBuild");
-            Assert.NotNull(package);
+            var package = m_PackagesFixture.GetPackage("Grynwald.MdDocs.MSBuild");
 
             var packageId = ExtractNuGetPackage(package.PackageFilePath);
 

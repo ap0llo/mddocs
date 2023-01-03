@@ -34,6 +34,18 @@
           "Microsoft.SourceLink.Common": "1.1.1"
         }
       },
+      "MSBuild.StructuredLogger": {
+        "type": "Direct",
+        "requested": "[2.1.758, )",
+        "resolved": "2.1.758",
+        "contentHash": "8RrHyZdJg7miLoTzky1Jm30w9cGQJUgHbR1QtDT4XVUzjIBXfcST8Zcq4M0GYuoRi/Ma2UzaY+9Hw2+sNn9WkQ==",
+        "dependencies": {
+          "Microsoft.Build": "16.10.0",
+          "Microsoft.Build.Framework": "16.10.0",
+          "Microsoft.Build.Tasks.Core": "16.10.0",
+          "Microsoft.Build.Utilities.Core": "16.10.0"
+        }
+      },
       "Nerdbank.GitVersioning": {
         "type": "Direct",
         "requested": "[3.5.119, )",
@@ -123,12 +135,48 @@
         "resolved": "1.6.122",
         "contentHash": "mToOFiNgw43Tcvo1FA+hnNHEO4TrcK7QJi/pXony2B/4ui7d66/MVUrVWIGIxE1LT6jW776d74t/c3E99G9hLQ=="
       },
+      "Microsoft.Build": {
+        "type": "Transitive",
+        "resolved": "16.10.0",
+        "contentHash": "ugn2Mk+4Cw8l5MOqNW6xmj2NR/jMWsNdTdyFoOkkGqxR2zB5tJINlRzOydCJNL0HN7E1Y6ErKwdiT+Bn3tpbDQ==",
+        "dependencies": {
+          "Microsoft.Build.Framework": "16.10.0",
+          "Microsoft.NET.StringTools": "1.0.0",
+          "Microsoft.Win32.Registry": "4.3.0",
+          "System.Collections.Immutable": "5.0.0",
+          "System.Configuration.ConfigurationManager": "4.7.0",
+          "System.Reflection.Metadata": "1.6.0",
+          "System.Security.Principal.Windows": "4.7.0",
+          "System.Text.Encoding.CodePages": "4.0.1",
+          "System.Text.Json": "4.7.0",
+          "System.Threading.Tasks.Dataflow": "4.9.0"
+        }
+      },
       "Microsoft.Build.Framework": {
         "type": "Transitive",
         "resolved": "17.0.0",
         "contentHash": "XbFA0z+6Ws2pNeRXYcDF3lKlNgRoSGMm2Q5HKzZD+EbwYMKPKrl/BJnnkMuDJHU0KravYHfhzBnLLJpPeZ3E7A==",
         "dependencies": {
           "System.Security.Permissions": "4.7.0"
+        }
+      },
+      "Microsoft.Build.Tasks.Core": {
+        "type": "Transitive",
+        "resolved": "16.10.0",
+        "contentHash": "kd/QrucJV10+lPOg/AwXmPo2My/XdLnTS7pE0Sw7YI0SZpmKkYpynWbt2QUbgna9lh2t3McXBP1Z/ricAV3gBw==",
+        "dependencies": {
+          "Microsoft.Build.Framework": "16.10.0",
+          "Microsoft.Build.Utilities.Core": "16.10.0",
+          "Microsoft.NET.StringTools": "1.0.0",
+          "Microsoft.Win32.Registry": "4.3.0",
+          "System.CodeDom": "4.4.0",
+          "System.Collections.Immutable": "5.0.0",
+          "System.Reflection.Metadata": "1.6.0",
+          "System.Resources.Extensions": "4.6.0",
+          "System.Security.Cryptography.Pkcs": "4.7.0",
+          "System.Security.Cryptography.Xml": "4.7.0",
+          "System.Security.Permissions": "4.7.0",
+          "System.Threading.Tasks.Dataflow": "4.9.0"
         }
       },
       "Microsoft.Build.Tasks.Git": {
@@ -1013,6 +1061,11 @@
           "System.Runtime": "4.3.0"
         }
       },
+      "System.Resources.Extensions": {
+        "type": "Transitive",
+        "resolved": "4.6.0",
+        "contentHash": "6aVCk8oTFZNT3Tx1jjiPi6+aipiJ3qMZYttAREKTRJidP50YvNeOn4PXrqzfA5qC23fLReq2JYp+nJwzj62HGw=="
+      },
       "System.Resources.ResourceManager": {
         "type": "Transitive",
         "resolved": "4.3.0",
@@ -1254,6 +1307,15 @@
           "runtime.native.System.Security.Cryptography.OpenSsl": "4.3.0"
         }
       },
+      "System.Security.Cryptography.Xml": {
+        "type": "Transitive",
+        "resolved": "4.7.0",
+        "contentHash": "B6pAyxMvXGbZemb+ER877KSr6OKis+qAdxhhKKK36I6sgj2js8mbcEVviZEHYV8XRTWjbKsAq8Z/zoaegA30dA==",
+        "dependencies": {
+          "System.Security.Cryptography.Pkcs": "4.7.0",
+          "System.Security.Permissions": "4.7.0"
+        }
+      },
       "System.Security.Permissions": {
         "type": "Transitive",
         "resolved": "4.7.0",
@@ -1340,6 +1402,11 @@
           "Microsoft.NETCore.Targets": "1.1.0",
           "System.Runtime": "4.3.0"
         }
+      },
+      "System.Threading.Tasks.Dataflow": {
+        "type": "Transitive",
+        "resolved": "4.9.0",
+        "contentHash": "dTS+3D/GtG2/Pvc3E5YzVvAa7aQJgLDlZDIzukMOJjYudVOQOUXEU68y6Zi3Nn/jqIeB5kOCwrGbQFAKHVzXEQ=="
       },
       "System.Threading.Tasks.Extensions": {
         "type": "Transitive",

@@ -46,8 +46,7 @@ namespace Grynwald.MdDocs.BuildVerification
         [MemberData(nameof(KnownPackageIdsTestData))]
         public Task Package_has_the_expected_content(string packageId)
         {
-            var package = m_PackagesFixture.TryGetPackage(packageId);
-            Assert.NotNull(package);
+            var package = m_PackagesFixture.GetPackage(packageId);
 
             return Verify(package)
                 .DontIgnoreEmptyCollections()

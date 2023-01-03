@@ -80,6 +80,7 @@ I'm also using issues as a backlog of things that come into my mind or things I 
 - [Cake.BuildSystems.Module](https://github.com/cake-contrib/Cake.BuildSystems.Module)
 - [Verify](https://github.com/VerifyTests/Verify)
 - [nugetizer](https://www.clarius.org/nugetizer/)
+- [MSBuildStructuredLog](https://github.com/KirillOsenkov/MSBuildStructuredLog)
 
 ## Versioning and Branching
 

@@ -9,9 +9,26 @@
           DependsOnTargets="GetTargetPath"
           Condition=" '$(TargetFramework)' != ''">  <!-- Only run in the "inner" build -->
 
-    <GenerateApiReferenceDocumentation Assembly="@(TargetPathWithTargetPlatformMoniker->'%(FullPath)')" 
-                                       OutputDirectory="$(ApiReferenceDocumentationOutputPath)"
-                                       ConfigurationFile="$(MdDocsConfigurationFilePath)" />
+    <!-- Resolve relative paths -->
+    <PropertyGroup>
+      <MdDocsConfigurationFilePath Condition=" '$(MdDocsConfigurationFilePath)' != '' ">$([System.IO.Path]::GetFullPath('$(MdDocsConfigurationFilePath)'))</MdDocsConfigurationFilePath>
+      <MdDocsCliPath Condition=" '$(MdDocsCliPath)' != '' ">$([System.IO.Path]::GetFullPath('$(MdDocsCliPath)'))</MdDocsCliPath>
+      <ApiReferenceDocumentationOutputPath Condition=" '$(ApiReferenceDocumentationOutputPath)' != '' ">$([System.IO.Path]::GetFullPath('$(ApiReferenceDocumentationOutputPath)'))</ApiReferenceDocumentationOutputPath>
+      <ApiReferenceDocumentationOutputPath Condition=" '$(ApiReferenceDocumentationOutputPath)' != '' ">$(ApiReferenceDocumentationOutputPath.TrimEnd('\'))</ApiReferenceDocumentationOutputPath>
+    </PropertyGroup>
+
+    <PropertyGroup>
+      <_MdDocsCommand>dotnet &quot;$(MdDocsCliPath)&quot;</_MdDocsCommand>
+      <_MdDocsArgs>apireference</_MdDocsArgs>
+      <_MdDocsArgs>$(_MdDocsArgs) --assemblies @(TargetPathWithTargetPlatformMoniker->'&quot;%(FullPath)&quot;', ' ')</_MdDocsArgs>
+      <_MdDocsArgs Condition=" '$(MdDocsConfigurationFilePath)' != '' ">$(_MdDocsArgs) --configurationFilePath &quot;$(MdDocsConfigurationFilePath)&quot;</_MdDocsArgs>
+      <_MdDocsArgs>$(_MdDocsArgs) --outdir &quot;$(ApiReferenceDocumentationOutputPath)&quot;</_MdDocsArgs>
+      
+    </PropertyGroup>
+
+    <Message Text="Starting MdDocs with arguments '$(_MdDocsArgs)'"  />
+    <Exec Command="$(_MdDocsCommand) $(_MdDocsArgs)" />
+
   </Target>
 
   <!--
