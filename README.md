@@ -72,7 +72,6 @@ I'm also using issues as a backlog of things that come into my mind or things I 
 - [ApprovalTests](https://github.com/approvals/ApprovalTests.Net)
 - [Microsoft.CodeAnalysis.CSharp](https://github.com/dotnet/roslyn)
 - [Coverlet](https://github.com/tonerdo/coverlet)
-- [MSBuild](https://github.com/dotnet/msbuild/)
 - [SourceLink](https://github.com/dotnet/sourcelink)
 - [NuGet](https://github.com/NuGet/NuGet.Client)
 - [Newtonsoft.Json](https://www.newtonsoft.com/json)
@@ -80,6 +79,7 @@ I'm also using issues as a backlog of things that come into my mind or things I 
 - [Cake.BuildSystems.Module](https://github.com/cake-contrib/Cake.BuildSystems.Module)
 - [Verify](https://github.com/VerifyTests/Verify)
 - [nugetizer](https://www.clarius.org/nugetizer/)
+- [MSBuildStructuredLog](https://github.com/KirillOsenkov/MSBuildStructuredLog)
 
 ## Versioning and Branching
 

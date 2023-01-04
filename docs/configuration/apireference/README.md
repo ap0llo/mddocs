@@ -1,6 +1,6 @@
 # API Reference Configuration
 
-**Applies to:** Version 0.5 an later
+**Applies to:** Version 0.5 and later
 
 ## Available Settings
 
@@ -31,9 +31,9 @@
 </table>
 <br>
 
-The *Assembly Paths* setting sets the path to the assemblies to load in order to generate documentation.
+The *Assembly Paths* setting specifies the paths of the assemblies to load in order to generate documentation.
 
-**ℹ️ Note:** When using [MdDocs MSBuild integration](../../msbuild-integration.md), setting the assembly paths has **no effect** because the MSBuild targets use the target path of the current project.
+**ℹ Note:** When using [MdDocs MSBuild Integration](../../msbuild-integration.md), setting the assembly paths has **no effect** because the MSBuild targets use the target path of the current project.
 
 ## Output Path
 

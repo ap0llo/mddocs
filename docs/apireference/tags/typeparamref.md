@@ -1,7 +1,7 @@
 # `typeparamref` Tag
 
 The `typeparamref` allows referencing a type parameter of a generic type or
-method' inside a text block.
+method inside a text block.
 
 In the generated documentation, the tag will be rendered as link to the
 documentation section for the corresponding type parameter.

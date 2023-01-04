@@ -1,6 +1,6 @@
 # MdDocs .NET CLI tool
 
-**Applies to:** Version 0.5 and later
+**Applies to:** Version 0.6 and later
 
 ## Installation
 
@@ -9,7 +9,7 @@
 - Prerelease builds are available on [MyGet](https://www.myget.org/feed/ap0llo-mddocs/package/nuget/Grynwald.Utilities)
 - Release versions are available on [NuGet.org](https://www.nuget.org/packages/Grynwald.MdDocs)
 
-MdDocs can be used either as .NET Core CLI tool or integrated into the project build as a set of MSBuild targets (see [MdDocs MSBuild-integration](./msbuild-integration.md)).
+MdDocs can be used either as .NET Core CLI tool or integrated into the project build as a set of MSBuild targets (see [MdDocs MSBuild Integration](./msbuild-integration.md)).
 
 [![NuGet](https://img.shields.io/nuget/v/Grynwald.MdDocs.svg)](https://www.nuget.org/packages/Grynwald.MdDocs)
 
@@ -19,6 +19,9 @@ To install it, run
 ```ps1
 dotnet tool install --global Grynwald.MdDocs
 ```
+## Prerequisites
+
+The `Grynwald.MdDocs` package requires the .NET 6 (or later) SDK to be installed.
 
 ## Usage
 
@@ -53,6 +56,6 @@ For an example of what the output looks like, have a look at the [demo project](
 
 ## See Also
 
-- [MdDocs MSBuild-integration](./msbuild-integration.md)
+- [MdDocs MSBuild Integration](./msbuild-integration.md)
 - [Command Line Reference](./commandline/index.md)
 - [Configuration](./configuration/README.md)

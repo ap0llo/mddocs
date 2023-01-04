@@ -1,6 +1,6 @@
 # MdDocs MSBuild Integration
 
-**Applies to:** Version 0.5 and later
+**Applies to:** Version 0.6 and later
 
 ## Installation
 
@@ -21,7 +21,12 @@ To install the package, run
 dotnet add package Grynwald.MdDocs.MSBuild
 ```
 
-or install it through the Visual Studio NuGet package manager
+or install it through the Visual Studio NuGet Package Manager
+
+## Prerequisites
+
+The `Grynwald.MdDocs.MSBuild` package works in both the .NET Framework version of MSBuild included with Visual Studio and the version of MSBuild that ships with the .NET SDK.
+However, in both cases the MdDocs CLI is started as a child-process of the build which requires the .NET 6 (or later) runtime to be installed. 
 
 ## Usage
 
@@ -38,11 +43,11 @@ dotnet msbuild <PROJECT> /t:GenerateApiReferenceDocumentation
 
 The behaviour of the target can be customized by setting the following MSBuild properties:
 
-| Property Name                              | Default Value                        | Description                                                                               |
-|--------------------------------------------|--------------------------------------|-------------------------------------------------------------------------------------------|
-| `GenerateApiReferenceDocumentationOnBuild` | `false`                              | Set the to `true` to automatically generate API documentation when the project is built.  |
-| `MdDocsConfigurationFilePath`              | `mddocs.settings.json` <sup>1</sup>  | Specifies the path of the configuration file to use. See [Configuration](./configuration/README.md) for details .|
-| `ApiReferenceDocumentationOutputPath`      | -                                    | The directory to save the generated documetation to. Overwrites the [Output Path setting](./configuration/apireference/README.md#output-path) |
+| Property Name                              | Default Value                       | Description                                                                                                                                    |
+|--------------------------------------------|-------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------|
+| `GenerateApiReferenceDocumentationOnBuild` | `false`                             | Set the to `true` to automatically generate API documentation when the project is built.                                                       |
+| `MdDocsConfigurationFilePath`              | `mddocs.settings.json` <sup>1</sup> | Specifies the path of the configuration file to use. See [Configuration](./configuration/README.md) for details .                              |
+| `ApiReferenceDocumentationOutputPath`      | -                                   | The directory to save the generated documentation to. Overwrites the [Output Path setting](./configuration/apireference/README.md#output-path) |
 
 <sup>1)</sup> When `MdDocsConfigurationFilePath` is not set, the MSBuild targets look for a file named `mddocs.settings.json` in the project directory or any parent directory of the project.
 
@@ -61,11 +66,11 @@ dotnet msbuild <PROJECT> /t:GenerateCommandLineDocumentation
 
 The behaviour of the target can be customized by setting the following MSBuild properties:
 
-| Property Name                             | Default Value                        | Description |
-|-------------------------------------------|--------------------------------------|-----------------------------------------------------------------------------------------------|
-| `GenerateCommandLineDocumentationOnBuild` | `false`                              | Set to `true` to automatically generate command line documentation when the project is built. |
-| `MdDocsConfigurationFilePath`             | `mddocs.settings.json` <sup>1</sup>  | Specifies the path of the configuration file to use. See [Configuration](./configuration/README.md) for details .|
-| `CommandLineDocumentationOutputPath`      | -                                    | The directory to save the generated documetation to. Overwrites the [Output Path setting](./configuration/commandlinehelp/README.md#output-path) |
+| Property Name                             | Default Value                        | Description                                                                                                                                       |
+|-------------------------------------------|--------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|
+| `GenerateCommandLineDocumentationOnBuild` | `false`                              | Set to `true` to automatically generate command line documentation when the project is built.                                                     |
+| `MdDocsConfigurationFilePath`             | `mddocs.settings.json` <sup>1</sup>  | Specifies the path of the configuration file to use. See [Configuration](./configuration/README.md) for details .                                 |
+| `CommandLineDocumentationOutputPath`      | -                                    | The directory to save the generated documentation to. Overwrites the [Output Path setting](./configuration/commandlinehelp/README.md#output-path) |
 
 <sup>1)</sup> When `MdDocsConfigurationFilePath` is not set, the MSBuild targets look for a file named `mddocs.settings.json` in the project directory or any parent directory of the project.
 

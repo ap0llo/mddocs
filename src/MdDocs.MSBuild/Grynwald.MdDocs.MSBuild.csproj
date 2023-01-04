@@ -1,19 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net472;netstandard2.0</TargetFrameworks>
+    <!-- 
+      TargetFramework is not really relevant since it has no influence on the package output.
+      The package built from this project contains only MSBuild props/targets that work for any TFM and 
+      the MdDocs CLI tool (which's target framework is also independent of this project's target framework)
+    -->
+    <TargetFramework>net7.0</TargetFramework>
     <IsPackable>true</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="17.0.0" ExcludeAssets="runtime" />
     <PackageReference Include="nugetizer" Version="0.9.1" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MdDocs.ApiReference\Grynwald.MdDocs.ApiReference.csproj" />
-    <ProjectReference Include="..\MdDocs.CommandLineHelp\Grynwald.MdDocs.CommandLineHelp.csproj" />
-    <ProjectReference Include="..\MdDocs.Common\Grynwald.MdDocs.Common.csproj" />
+    <ProjectReference Include="..\MdDocs\Grynwald.MdDocs.csproj" />
   </ItemGroup>
 
   <!-- Adjust NuGet package properties -->
@@ -27,7 +29,6 @@
   <!-- NuGet Packaging settings (see https://www.clarius.org/nugetizer/) -->
   <PropertyGroup>
     <!-- Copy all referenced assemblies to the output directory -->
-    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <PackProjectReferences>false</PackProjectReferences>
     <PackDependencies>false</PackDependencies>
     <PackFrameworkReferences>false</PackFrameworkReferences>
@@ -40,16 +41,33 @@
     <PackageFile Include="build\**\*" Pack="true" />
   </ItemGroup>
 
+  <!--
+    =================================================================================================
+      Target "AddMdDocsCliToPackage"
+    =================================================================================================
+      Include the MdDocs CLI tool and all its dependencies in the NuGet package under "tools\"
 
-  <!-- Include all assemblies in the output directory in the package -->
-  <Target Name="AddPackageContents" BeforeTargets="GetPackageContents" Condition=" '$(TargetFramework)' != '' ">
+      Use Condition '$(TargetFramework)' == 'net472' so the target only runs once 
+      in this multi-targted project (so we include tool only once)
+  -->
+  <Target Name="AddMdDocsCliToPackage" BeforeTargets="GetPackageContents">
+
+    <PropertyGroup>
+      <MdDocsCliTargetFramework>net6.0</MdDocsCliTargetFramework>
+      <MdDocsPublishDir>$(OutputPath)..\tools\$(MdDocsCliTargetFramework)\</MdDocsPublishDir>
+    </PropertyGroup>
+
+    <Message Text="Publishing MdDocs CLI to '$(MdDocsPublishDir)'" />
+    <MSBuild Projects="..\MdDocs\Grynwald.MdDocs.csproj" Targets="Publish" Properties="TargetFramework=$(MdDocsCliTargetFramework);PublishDir=$(MdDocsPublishDir);NoBuild=$(NoBuild)" />
+
     <ItemGroup>
-      <_BuildOutputFile Remove="*" />
-      <_BuildOutputFile Include="$(OutputPath)\**\*.*" Exclude="$(OutputPath)\**\*.deps.json" />
+      <_PublishedFile Remove="@(_PublishedFile)" />
+      <_PublishedFile Include="$(MdDocsPublishDir)\**\*.*" Exclude="$(MdDocsPublishDir)\mddocs.deps.json;$(MdDocsPublishDir)\mddocs.exe" />
     </ItemGroup>
     <ItemGroup>
-      <PackageFile Include="@(_BuildOutputFile)" PackagePath="build\$(TargetFramework)\%(RecursiveDir)%(FileName)%(Extension)" />
+      <PackageFile Include="@(_PublishedFile)" PackagePath="tools\$(MdDocsCliTargetFramework)\%(RecursiveDir)%(FileName)%(Extension)" />
     </ItemGroup>
+
   </Target>
 
 </Project>
