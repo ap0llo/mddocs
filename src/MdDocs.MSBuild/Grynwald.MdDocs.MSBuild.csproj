@@ -46,9 +46,6 @@
       Target "AddMdDocsCliToPackage"
     =================================================================================================
       Include the MdDocs CLI tool and all its dependencies in the NuGet package under "tools\"
-
-      Use Condition '$(TargetFramework)' == 'net472' so the target only runs once 
-      in this multi-targted project (so we include tool only once)
   -->
   <Target Name="AddMdDocsCliToPackage" BeforeTargets="GetPackageContents">
 

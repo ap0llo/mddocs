@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net6.0;net7.0</TargetFrameworks>
+    <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
     <RootNamespace>$(MSBuildProjectName)</RootNamespace>
   </PropertyGroup>
 
@@ -19,10 +19,6 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
   </ItemGroup>
 
-
-  <ItemGroup>
-    <Compile Include="../shared/Nullable.cs" />
-  </ItemGroup>
 
   <!--
     Include Grynwald.Utilities.Configuration as source instead of using the NuGet package.
