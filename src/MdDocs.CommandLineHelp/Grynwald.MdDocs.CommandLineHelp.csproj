@@ -15,8 +15,4 @@
     <ProjectReference Include="..\MdDocs.Common\Grynwald.MdDocs.Common.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Include="../shared/Nullable.cs" />
-  </ItemGroup>
-
 </Project>

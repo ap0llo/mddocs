@@ -23,10 +23,7 @@ namespace Grynwald.MdDocs.TestHelpers
 
         protected static readonly Lazy<IReadOnlyList<MetadataReference>> s_DefaultMetadataReferences = new Lazy<IReadOnlyList<MetadataReference>>(() =>
         {
-
-#if NET472
-            return ReferenceAssemblies.Net472.ToList();
-#elif NET6_0_OR_GREATER
+#if NET6_0_OR_GREATER
             return ReferenceAssemblies.Net60.ToList();
 #else
             throw new NotImplementedException(); 
