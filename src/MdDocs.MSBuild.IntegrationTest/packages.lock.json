@@ -111,6 +111,11 @@
           "Microsoft.CodeAnalysis.Common": "3.9.0"
         }
       },
+      "CommandLineParser": {
+        "type": "Transitive",
+        "resolved": "2.9.1",
+        "contentHash": "OE0sl1/sQ37bjVsPKKtwQlWDgqaxWgtme3xZz7JssWUzg5JpMIyHgCTY9MVMxOg48fJ1AgGT3tgdH5m/kQ5xhA=="
+      },
       "DiffEngine": {
         "type": "Transitive",
         "resolved": "11.0.0",
@@ -135,6 +140,14 @@
         "resolved": "1.6.122",
         "contentHash": "mToOFiNgw43Tcvo1FA+hnNHEO4TrcK7QJi/pXony2B/4ui7d66/MVUrVWIGIxE1LT6jW776d74t/c3E99G9hLQ=="
       },
+      "Grynwald.Utilities.Logging": {
+        "type": "Transitive",
+        "resolved": "1.6.122",
+        "contentHash": "r9lg3afsHlvAKqlWTWwYQ/IzSZAuzXkPoo38DRWD1Wo9ZWqklpxD1mjl1/gv7Lh0/4WbBLK5XSExqN0Th/WqGw==",
+        "dependencies": {
+          "Microsoft.Extensions.Logging.Abstractions": "6.0.0"
+        }
+      },
       "Microsoft.Build": {
         "type": "Transitive",
         "resolved": "16.10.0",
@@ -154,8 +167,8 @@
       },
       "Microsoft.Build.Framework": {
         "type": "Transitive",
-        "resolved": "17.0.0",
-        "contentHash": "XbFA0z+6Ws2pNeRXYcDF3lKlNgRoSGMm2Q5HKzZD+EbwYMKPKrl/BJnnkMuDJHU0KravYHfhzBnLLJpPeZ3E7A==",
+        "resolved": "16.10.0",
+        "contentHash": "uD2GUw3AYlFSpU42c/80DouuJL6w1Kb06q4FEjQhW/9wjhBwukgx13T5MPIpSvQ8ssahKINanHfMUL89EVQHgQ==",
         "dependencies": {
           "System.Security.Permissions": "4.7.0"
         }
@@ -186,10 +199,10 @@
       },
       "Microsoft.Build.Utilities.Core": {
         "type": "Transitive",
-        "resolved": "17.0.0",
-        "contentHash": "+eqDvecetKfsZR9WqLQ96F9xhxFb3m9VOjkyzuaA/2D1cub1aW9XyegZb8+gEpBa+o7dHnIN9FskC+tRXtqLSQ==",
+        "resolved": "16.10.0",
+        "contentHash": "R8eATgdaGCfdepd67LMe1qhJz6iQOTuI9gVoOqXrHwhc77sBDqG0XD9zKvrgOqfS6NJ03KKTAhbbXnLgD5fKCA==",
         "dependencies": {
-          "Microsoft.Build.Framework": "17.0.0",
+          "Microsoft.Build.Framework": "16.10.0",
           "Microsoft.NET.StringTools": "1.0.0",
           "Microsoft.Win32.Registry": "4.3.0",
           "System.Collections.Immutable": "5.0.0",
@@ -1525,6 +1538,16 @@
           "xunit.extensibility.core": "[2.4.2]"
         }
       },
+      "grynwald.mddocs": {
+        "type": "Project",
+        "dependencies": {
+          "CommandLineParser": "[2.9.1, )",
+          "Grynwald.MdDocs.ApiReference": "[1.0.0, )",
+          "Grynwald.MdDocs.CommandLineHelp": "[1.0.0, )",
+          "Grynwald.MdDocs.Common": "[1.0.0, )",
+          "Grynwald.Utilities.Logging": "[1.6.122, )"
+        }
+      },
       "grynwald.mddocs.apireference": {
         "type": "Project",
         "dependencies": {
@@ -1557,10 +1580,7 @@
       "grynwald.mddocs.msbuild": {
         "type": "Project",
         "dependencies": {
-          "Grynwald.MdDocs.ApiReference": "[1.0.0, )",
-          "Grynwald.MdDocs.CommandLineHelp": "[1.0.0, )",
-          "Grynwald.MdDocs.Common": "[1.0.0, )",
-          "Microsoft.Build.Utilities.Core": "[17.0.0, )"
+          "Grynwald.MdDocs": "[1.0.0, )"
         }
       },
       "grynwald.mddocs.testhelpers": {
