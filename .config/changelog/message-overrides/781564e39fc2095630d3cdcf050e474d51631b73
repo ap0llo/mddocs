@@ -1,0 +1,8 @@
+feat(cli): Allow mddocs to run on newer versions of .NET by default
+
+Enable .NET runtime setting to allow running mddocs on newer versions of .NET if none of the supported runtimes are available.
+
+This means - while currently, the mddocs CLI tool supports .NET 6 and .NET 7, it will use the .NET 8 or newer runtime when no version of .NET 6 or .NET 7 is installed.
+
+See-Also: https://learn.microsoft.com/en-us/dotnet/core/whats-new/dotnet-core-2-1#roll-forward
+
