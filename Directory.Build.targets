@@ -1,22 +1,5 @@
 <Project>
 
-  <!--
-      Disable nullable support on .NET Core 2.1, .NET Standard 2.0 and .NET Framework
-      because the BCL on these frameworks does not have nullable annotations
-      leading to false-positives in the nullable analysis.
-
-      Note: this is implemented as target instead of a plain property group in Directory.Build.props
-      becasue the condition requires $(TargetFrameworkIdentifier) to be set which it is not
-      at the time properties are evaluated
-  -->
-  <Target Name="DisableNullableSupportOnUnsupportedPlatforms" BeforeTargets="CoreCompile">
-    <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.1' OR '$(TargetFramework)' == 'netstandard2.0' OR '$(TargetFrameworkIdentifier)' == '.NETFramework' ">
-      <Nullable>disable</Nullable>
-      <NoWarn>8632</NoWarn>
-      <!-- Suppress warning about nullable annotation in the source code although nullable is disabled-->
-    </PropertyGroup>
-
-  </Target>
 
   <!-- 
       Target required to make coverlet work with deterministic builds.
