@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using Microsoft.Build.Logging.StructuredLogger;
 using Xunit;
 
 namespace Grynwald.MdDocs.MSBuild.IntegrationTest
@@ -86,7 +87,7 @@ namespace Grynwald.MdDocs.MSBuild.IntegrationTest
             }
 
             // ACT
-            var result = project.Build(MSBuildRuntimes.DotNet7SDK);
+            var result = project.Build(MSBuildRuntimes.Default);
 
             // ASSERT
             AssertCommandLineArguments(expectedArguments, result, "GenerateApiReferenceDocumentation");
@@ -99,7 +100,6 @@ namespace Grynwald.MdDocs.MSBuild.IntegrationTest
             using var project = new MSBuildTestProject(m_OutputHelper);
 
             var package = m_PackagesFixture.GetPackage("Grynwald.MdDocs.MSBuild");
-            var mddocsCliAssemblyPath = project.ResolveFileFromPackage(package.Identity, "tools/net6.0/mddocs.dll");
 
             // Paths
             var configuredApiReferenceOutputDirectory = "api/";
@@ -124,7 +124,7 @@ namespace Grynwald.MdDocs.MSBuild.IntegrationTest
                 });
 
             // ACT
-            var result = project.Build(MSBuildRuntimes.DotNet7SDK);
+            var result = project.Build(MSBuildRuntimes.Default);
 
             // ASSERT
             Assert.Equal(0, result.ExitCode);
@@ -141,6 +141,66 @@ namespace Grynwald.MdDocs.MSBuild.IntegrationTest
                 x => Assert.Equal("MyNamespace/Class1/index.md", x),
                 x => Assert.Equal("MyNamespace/index.md", x)
             );
+        }
+
+        [Fact]
+        public void Warnings_written_to_the_console_are_emitted_as_MSBuild_warnings()
+        {
+            // ARRANGE
+            using var project = new MSBuildTestProject(m_OutputHelper);
+
+            var package = m_PackagesFixture.GetPackage("Grynwald.MdDocs.MSBuild");
+
+            // Paths
+            var configuredApiReferenceOutputDirectory = "api/";
+            var absoluteApiReferenceOutputDirectory = project.ProjectDirectory.PathCombine(configuredApiReferenceOutputDirectory).GetFullPath().TrimEndingDirectorySeparator();
+
+            // Set up project
+            project
+                .InstallNuGetPackage(package)
+                .ConfigureMdDocs(x =>
+                {
+                    x.GenerateApiReferenceDocumentationOnBuild = true;
+                    x.ApiReferenceDocumentationOutputPath = configuredApiReferenceOutputDirectory;
+                });
+
+            // ACT
+            var result = project.Build(MSBuildRuntimes.Default);
+
+            // ASSERT
+            var target = Assert.Single(result.BinaryLog.GetTargets("GenerateApiReferenceDocumentation"));
+            var execTask = Assert.Single(target.GetTasks("Exec"));
+
+            var warnings = execTask.FindChildrenRecursive<Warning>();
+            Assert.Contains(warnings, warning => warning.Text.Contains("WARNING - No XML documentation file for assembly found"));
+
+        }
+
+        [Fact]
+        public void Errors_written_to_the_console_are_emitted_as_MSBuild_errors()
+        {
+            // ARRANGE
+            using var project = new MSBuildTestProject(m_OutputHelper);
+
+            var package = m_PackagesFixture.GetPackage("Grynwald.MdDocs.MSBuild");
+
+            // Set up project
+            project
+                .InstallNuGetPackage(package)
+                .ConfigureMdDocs(x =>
+                {
+                    x.GenerateApiReferenceDocumentationOnBuild = true;
+                });
+
+            // ACT
+            var result = project.Build(MSBuildRuntimes.Default);
+
+            // ASSERT
+            var target = Assert.Single(result.BinaryLog.GetTargets("GenerateApiReferenceDocumentation"));
+            var execTask = Assert.Single(target.GetTasks("Exec"));
+
+            var errors = execTask.FindChildrenRecursive<Error>();
+            Assert.Contains(errors, err => err.Text.Contains("ERROR - Invalid output directory"));
         }
 
 

@@ -27,8 +27,9 @@
     </PropertyGroup>
 
     <Message Text="Starting MdDocs with arguments '$(_MdDocsArgs)'"  />
-    <Exec Command="$(_MdDocsCommand) $(_MdDocsArgs)" />
-
+    <Exec Command="$(_MdDocsCommand) $(_MdDocsArgs)" 
+          CustomErrorRegularExpression="(ERROR|CRITICAL) - .*"
+          CustomWarningRegularExpression="WARNING - .*" />
   </Target>
 
   <!--
