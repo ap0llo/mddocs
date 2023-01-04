@@ -3,7 +3,9 @@
     "changelog": {
         "scopes" : {
             "apireference" : { "displayName":  "API Reference" },
-            "commandlinehelp": {"displayName":  "Command Line Help" }
+            "commandlinehelp": { "displayName":  "Command Line Help" },
+            "msbuild" : { "displayName": "MSBuild Integration" },
+            "cli" : { "displayName": ".NET CLI tool" }
         },
         "messageOverrides": {
             "provider": "FileSystem"
