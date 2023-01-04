@@ -1,219 +1,394 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Grynwald.MdDocs.TestHelpers;
-using Grynwald.Utilities.IO;
-using NuGet.Common;
-using NuGet.Packaging;
+using Microsoft.Build.Logging.StructuredLogger;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace Grynwald.MdDocs.MSBuild.IntegrationTest
 {
-    public partial class MSBuildIntegrationTest : IClassFixture<PackagesFixture>, IDisposable
+    public class MSBuildIntegrationTest : IClassFixture<PackagesFixture>
     {
-        private readonly TemporaryDirectory m_WorkingDirectory = new TemporaryDirectory();
         private readonly ITestOutputHelper m_OutputHelper;
-        private readonly PackagesFixture m_PackagesFixture;
+        private readonly PackageInfo m_MdDocsPackage;
 
 
         public MSBuildIntegrationTest(ITestOutputHelper outputHelper, PackagesFixture packagesFixture)
         {
             m_OutputHelper = outputHelper;
-            m_PackagesFixture = packagesFixture;
+            m_MdDocsPackage = packagesFixture.GetPackage("Grynwald.MdDocs.MSBuild");
         }
 
-
-        public void Dispose() => m_WorkingDirectory.Dispose();
-
-
-        private static class MSBuildRuntimes
-        {
-            public static readonly MSBuildRuntimeInfo DotNet6SDK = new MSBuildRuntimeInfo(MSBuildRuntimeType.Core, Version.Parse("6.0.400"));
-            public static readonly MSBuildRuntimeInfo DotNet7SDK = new MSBuildRuntimeInfo(MSBuildRuntimeType.Core, Version.Parse("7.0.100"));
-            public static readonly MSBuildRuntimeInfo VisualStudio2022 = new MSBuildRuntimeInfo(MSBuildRuntimeType.Full, Version.Parse("17.0"));
-            public static readonly MSBuildRuntimeInfo Default = DotNet7SDK;
-
-            public static IEnumerable<MSBuildRuntimeInfo> All { get; } = new[]
-            {
-                DotNet6SDK,
-                DotNet7SDK,
-                VisualStudio2022
-            };
-        }
 
         public static IEnumerable<object[]> MSBuildRuntimesData() => MSBuildRuntimes.All.Select(x => new object[] { x });
 
-        public static IEnumerable<object[]> TestCases()
-        {
-            object[] TestCase(MSBuildRuntimeInfo runtime, string msbuildArgs, string[] expectedFiles)
-            {
-                return new object[] { runtime, msbuildArgs, expectedFiles };
-            }
-
-            var apiReferenceExpectedFiles = new[]
-            {
-                "api/MyNamespace/index.md",
-                "api/MyNamespace/Class1/index.md",
-                "api/MyNamespace/Class1/constructors/index.md"
-            };
-
-            var commandlineHelpExpectedFiles = new[]
-            {
-                "commandlinehelp/index.md"
-            };
-
-            foreach (var runtime in MSBuildRuntimes.All)
-            {
-                yield return TestCase(runtime, "/p:GenerateApiReferenceDocumentationOnBuild=true", apiReferenceExpectedFiles);
-                yield return TestCase(runtime, "/p:GenerateCommandLineDocumentationOnBuild=true", commandlineHelpExpectedFiles);
-            }
-        }
-
 
         [Theory]
-        [MemberData(nameof(TestCases))]
-        public void Documentation_is_generated_during_build(MSBuildRuntimeInfo runtime, string msbuildArgs, string[] expectedFiles)
+        [MemberData(nameof(MSBuildRuntimesData))]
+        public void ApiReference_command_is_started_during_build(MSBuildRuntimeInfo msbuildRuntime)
         {
             // ARRANGE
-            var package = m_PackagesFixture.GetPackage("Grynwald.MdDocs.MSBuild");
+            using var project = new MSBuildTestProject(m_OutputHelper);
 
-            var packageId = ExtractNuGetPackage(package.PackageFilePath);
+            var mddocsCliAssemblyPath = project.ResolveFileFromPackage(m_MdDocsPackage.Identity, "tools/net6.0/mddocs.dll");
 
-            CreateFile("Class1.cs",
-                @"
-                namespace MyNamespace
+            // Paths
+            var configuredApiReferenceOutputDirectory = "api/";
+            var absoluteApiReferenceOutputDirectory = project.ProjectDirectory.PathCombine(configuredApiReferenceOutputDirectory).GetFullPath().TrimEndingDirectorySeparator();
+
+            // Expected arguments
+            var expectedArguments = new ProcessArgumentsBuilder()
+                .Append("dotnet").AppendQuoted(mddocsCliAssemblyPath)
+                .Append("apireference")
+                .Append("--assemblies").AppendQuoted(project.TargetPath)
+                .Append("--outdir").AppendQuoted(absoluteApiReferenceOutputDirectory);
+
+            // Set up project
+            project
+                .InstallNuGetPackage(m_MdDocsPackage)
+                .ConfigureMdDocs(x =>
                 {
-                    public class Class1
-                    {
-                    }
-                }
-                ");
-
-            CreateFile("myproject.csproj",
-                $@"<Project Sdk=""Microsoft.NET.Sdk"">
-
-                    <Import Project=""$(MSBuildThisFileDirectory)\\{packageId}\\build\\{packageId}.props"" />
-
-                    <PropertyGroup>
-                        <TargetFramework>netstandard2.0</TargetFramework>
-                        <IsPackable>false</IsPackable>
-                        <ApiReferenceDocumentationOutputPath>api/</ApiReferenceDocumentationOutputPath>
-                        <CommandLineDocumentationOutputPath>commandlinehelp/</CommandLineDocumentationOutputPath>
-                    </PropertyGroup>
-
-                    <Import Project=""$(MSBuildThisFileDirectory)\\{packageId}\\build\\{packageId}.targets"" />
-
-                </Project>");
+                    x.GenerateApiReferenceDocumentationOnBuild = true;
+                    x.ApiReferenceDocumentationOutputPath = configuredApiReferenceOutputDirectory;
+                });
 
             // ACT
-            var exitCode = RunBuild(runtime, "myproject.csproj", msbuildArgs);
+            var result = project.Build(msbuildRuntime);
 
             // ASSERT
-            Assert.Equal(0, exitCode);
-            foreach (var file in expectedFiles)
-            {
-                Assert.True(File.Exists(Path.Combine(m_WorkingDirectory, file)));
-            }
+            Assert.Equal(0, result.ExitCode);
+            AssertCommandLineArguments(expectedArguments, result, "GenerateApiReferenceDocumentation");
         }
 
-
-        private int RunBuild(MSBuildRuntimeInfo runtime, string project, string msbuildArgs)
+        [Theory]
+        [InlineData(new string[0], null, null)]
+        [InlineData(new string[] { "mddocs.settings.json" }, null, "mddocs.settings.json")]
+        [InlineData(new string[] { "mddocs.settings.json", "config/mddocs/settings.json" }, null, "mddocs.settings.json")]
+        [InlineData(new string[] { "mddocs.settings.json", "config/mddocs/settings.json" }, "config/mddocs/settings.json", "config/mddocs/settings.json")]
+        public void ApiReference_command_is_started_with_the_expected_configuration_file_parameter(string[] configurationFilesOnDisk, string? configuredConfigurationFile, string expectedConfigurationFile)
         {
-            return runtime.Type switch
+            // ARRANGE
+            using var project = new MSBuildTestProject(m_OutputHelper);
+
+            var mddocsCliAssemblyPath = project.ResolveFileFromPackage(m_MdDocsPackage.Identity, "tools/net6.0/mddocs.dll");
+
+            // Expected arguments
+            var expectedArguments = new ProcessArgumentsBuilder()
+                .Append("dotnet").AppendQuoted(mddocsCliAssemblyPath)
+                .Append("apireference")
+                .Append("--assemblies").AppendQuoted(project.TargetPath);
+
+            if (expectedConfigurationFile is not null)
             {
-                MSBuildRuntimeType.Full => RunMSBuild(runtime.Version, project, msbuildArgs),
-                MSBuildRuntimeType.Core => RunDotnetBuild(runtime.Version, project, msbuildArgs),
-                _ => throw new NotImplementedException()
-            };
-        }
-
-        private void CreateFile(string name, string content)
-        {
-            var outputPath = Path.Combine(m_WorkingDirectory, name);
-            File.WriteAllText(outputPath, content);
-        }
-
-        private string ExtractNuGetPackage(string packageFilePath)
-        {
-            using var stream = File.Open(packageFilePath, FileMode.Open, FileAccess.Read, FileShare.Read);
-            using var reader = new PackageArchiveReader(stream);
-
-            var packageId = reader.GetIdentity().Id;
-
-            foreach (var file in reader.GetFiles())
-            {
-                var targetPath = Path.Combine(m_WorkingDirectory, packageId, file);
-                reader.ExtractFile(file, targetPath, NullLogger.Instance);
+                expectedArguments
+                    .Append("--configurationFilePath")
+                    .AppendQuoted(project.ProjectDirectory.PathCombine(expectedConfigurationFile).GetFullPath());
             }
 
-            return packageId;
-        }
+            // Set up project
+            project
+                .InstallNuGetPackage(m_MdDocsPackage)
+                .ConfigureMdDocs(x =>
+                {
+                    x.GenerateApiReferenceDocumentationOnBuild = true;
+                    x.ConfigurationFilePath = configuredConfigurationFile;
+                });
 
-        private int Exec(string fileName, string arguments)
-        {
-            var startInfo = new ProcessStartInfo()
+            foreach (var configurationFile in configurationFilesOnDisk)
             {
-                FileName = fileName,
-                Arguments = arguments,
-                WorkingDirectory = m_WorkingDirectory,
-                CreateNoWindow = true,
-                UseShellExecute = false,
-                RedirectStandardOutput = true,
-                RedirectStandardError = true
-            };
+                project.AddFile(configurationFile, "{ }");
+            }
 
-            // The build process inherits the environment variables of the test process.
-            // Because the test process is itself running on .NET,
-            // some of the inherited environment varibales cause errors,
-            // especially when the test uses a different .NET Core SDK than the test process.
-            // To avoid these errors, remove environment variables that are not set
-            // when a process is started from the commandline from the child process.
-            startInfo.EnvironmentVariables.Remove("DOTNET_CLI_TELEMETRY_SESSIONID");
-            startInfo.EnvironmentVariables.Remove("DOTNET_HOST_PATH");
-            startInfo.EnvironmentVariables.Remove("MSBUILDENSURESTDOUTFORTASKPROCESSES");
-            startInfo.EnvironmentVariables.Remove("MSBuildExtensionsPath");
-            startInfo.EnvironmentVariables.Remove("MSBuildLoadMicrosoftTargetsReadOnly");
-            startInfo.EnvironmentVariables.Remove("MSBuildSDKsPath");
+            // ACT
+            var result = project.Build(MSBuildRuntimes.Default);
 
-            var process = Process.Start(startInfo);
-
-            if (process is null)
-                throw new Exception($"Failed to start '{startInfo.FileName}'");
-
-            process.OutputDataReceived += (s, e) => m_OutputHelper.WriteLine(e?.Data ?? "");
-            process.ErrorDataReceived += (s, e) => m_OutputHelper.WriteLine(e?.Data ?? "");
-
-            process.BeginOutputReadLine();
-            process.BeginErrorReadLine();
-
-
-            process.WaitForExit();
-
-            process.CancelErrorRead();
-            process.CancelOutputRead();
-
-            return process.ExitCode;
+            // ASSERT
+            AssertCommandLineArguments(expectedArguments, result, "GenerateApiReferenceDocumentation");
         }
 
-        private int RunMSBuild(Version msbuildVersion, string project, string args)
+        [Fact]
+        public void ApiReference_Expected_files_are_generated_during_build()
         {
-            var msbuildPath = VSWhere.GetMSBuildPath(msbuildVersion.Major);
-            return Exec(msbuildPath, $"{project} {args} /restore");
+            // ARRANGE
+            using var project = new MSBuildTestProject(m_OutputHelper);
+
+            // Paths
+            var configuredApiReferenceOutputDirectory = "api/";
+            var absoluteApiReferenceOutputDirectory = project.ProjectDirectory.PathCombine(configuredApiReferenceOutputDirectory).GetFullPath().TrimEndingDirectorySeparator();
+
+            // Set up project
+            project
+                .InstallNuGetPackage(m_MdDocsPackage)
+                .AddFile("Class1.cs",
+                    """
+                    namespace MyNamespace
+                    {
+                        public class Class1
+                        {
+                        }
+                    }
+                    """)
+                .ConfigureMdDocs(x =>
+                {
+                    x.GenerateApiReferenceDocumentationOnBuild = true;
+                    x.ApiReferenceDocumentationOutputPath = configuredApiReferenceOutputDirectory;
+                });
+
+            // ACT
+            var result = project.Build(MSBuildRuntimes.Default);
+
+            // ASSERT
+            Assert.Equal(0, result.ExitCode);
+
+            var files = Directory
+                    .GetFiles(absoluteApiReferenceOutputDirectory, "*", SearchOption.AllDirectories)
+                    .Select(x => Path.GetRelativePath(absoluteApiReferenceOutputDirectory, x))
+                    .Select(x => x.Replace("\\", "/"))
+                    .Order(StringComparer.Ordinal);
+
+            Assert.Collection(
+                files,
+                x => Assert.Equal("MyNamespace/Class1/constructors/index.md", x),
+                x => Assert.Equal("MyNamespace/Class1/index.md", x),
+                x => Assert.Equal("MyNamespace/index.md", x)
+            );
         }
 
-        private int RunDotnetBuild(Version sdkVersion, string project, string args)
+        [Fact]
+        public void ApiReference_Warnings_written_to_the_console_are_emitted_as_MSBuild_warnings()
         {
-            CreateFile("global.json",
-               $@"{{
-                    ""sdk"": {{
-                        ""version"": ""{sdkVersion}""
-                    }}
-                }}");
+            // ARRANGE
+            using var project = new MSBuildTestProject(m_OutputHelper);
 
-            return Exec("dotnet", $"build {project} {args}");
+            // Set up project
+            project
+                .InstallNuGetPackage(m_MdDocsPackage)
+                .ConfigureMdDocs(x =>
+                {
+                    x.GenerateApiReferenceDocumentationOnBuild = true;
+                    x.ApiReferenceDocumentationOutputPath = "api/";
+                });
+
+            // ACT
+            var result = project.Build(MSBuildRuntimes.Default);
+
+            // ASSERT
+            var target = Assert.Single(result.BinaryLog.GetTargets("GenerateApiReferenceDocumentation"));
+            var execTask = Assert.Single(target.GetTasks("Exec"));
+
+            var warnings = execTask.FindChildrenRecursive<Warning>();
+            Assert.Contains(warnings, warning => warning.Text.Contains("WARNING - No XML documentation file for assembly found"));
+
+        }
+
+        [Fact]
+        public void ApiReference_Errors_written_to_the_console_are_emitted_as_MSBuild_errors()
+        {
+            // ARRANGE
+            using var project = new MSBuildTestProject(m_OutputHelper);
+
+            // Set up project
+            project
+                .InstallNuGetPackage(m_MdDocsPackage)
+                .ConfigureMdDocs(x => x.GenerateApiReferenceDocumentationOnBuild = true);
+
+            // ACT
+            var result = project.Build(MSBuildRuntimes.Default);
+
+            // ASSERT
+            var target = Assert.Single(result.BinaryLog.GetTargets("GenerateApiReferenceDocumentation"));
+            var execTask = Assert.Single(target.GetTasks("Exec"));
+
+            var errors = execTask.FindChildrenRecursive<Error>();
+            Assert.Contains(errors, err => err.Text.Contains("ERROR - Invalid output directory"));
+        }
+
+        [Theory]
+        [MemberData(nameof(MSBuildRuntimesData))]
+        public void CommandLineHelp_command_is_started_during_build(MSBuildRuntimeInfo msbuildRuntime)
+        {
+            // ARRANGE
+            using var project = new MSBuildTestProject(m_OutputHelper);
+
+            var mddocsCliAssemblyPath = project.ResolveFileFromPackage(m_MdDocsPackage.Identity, "tools/net6.0/mddocs.dll");
+
+            // Paths
+            var configuredOutputDirectory = "commandlinehelp/";
+            var absoluteOutputDirectory = project.ProjectDirectory.PathCombine(configuredOutputDirectory).GetFullPath().TrimEndingDirectorySeparator();
+
+            // Expected arguments
+            var expectedArguments = new ProcessArgumentsBuilder()
+                .Append("dotnet").AppendQuoted(mddocsCliAssemblyPath)
+                .Append("commandlinehelp")
+                .Append("--assembly").AppendQuoted(project.TargetPath)
+                .Append("--outdir").AppendQuoted(absoluteOutputDirectory);
+
+            // Set up project
+            project
+                .InstallNuGetPackage(m_MdDocsPackage)
+                .ConfigureMdDocs(x =>
+                {
+                    x.GenerateCommandLineDocumentationOnBuild = true;
+                    x.CommandLineDocumentationOutputPath = configuredOutputDirectory;
+                });
+
+            // ACT
+            var result = project.Build(msbuildRuntime);
+
+            // ASSERT
+            Assert.Equal(0, result.ExitCode);
+            AssertCommandLineArguments(expectedArguments, result, "GenerateCommandLineDocumentation");
+        }
+
+        [Theory]
+        [InlineData(new string[0], null, null)]
+        [InlineData(new string[] { "mddocs.settings.json" }, null, "mddocs.settings.json")]
+        [InlineData(new string[] { "mddocs.settings.json", "config/mddocs/settings.json" }, null, "mddocs.settings.json")]
+        [InlineData(new string[] { "mddocs.settings.json", "config/mddocs/settings.json" }, "config/mddocs/settings.json", "config/mddocs/settings.json")]
+        public void CommandLineHelp_command_is_started_with_the_expected_configuration_file_parameter(string[] configurationFilesOnDisk, string? configuredConfigurationFile, string expectedConfigurationFile)
+        {
+            // ARRANGE
+            using var project = new MSBuildTestProject(m_OutputHelper);
+
+            var mddocsCliAssemblyPath = project.ResolveFileFromPackage(m_MdDocsPackage.Identity, "tools/net6.0/mddocs.dll");
+
+            // Expected arguments
+            var expectedArguments = new ProcessArgumentsBuilder()
+                .Append("dotnet").AppendQuoted(mddocsCliAssemblyPath)
+                .Append("commandlinehelp")
+                .Append("--assembly").AppendQuoted(project.TargetPath);
+
+            if (expectedConfigurationFile is not null)
+            {
+                expectedArguments
+                    .Append("--configurationFilePath")
+                    .AppendQuoted(project.ProjectDirectory.PathCombine(expectedConfigurationFile).GetFullPath());
+            }
+
+            // Set up project
+            project
+                .InstallNuGetPackage(m_MdDocsPackage)
+                .ConfigureMdDocs(x =>
+                {
+                    x.GenerateCommandLineDocumentationOnBuild = true;
+                    x.ConfigurationFilePath = configuredConfigurationFile;
+                });
+
+            foreach (var configurationFile in configurationFilesOnDisk)
+            {
+                project.AddFile(configurationFile, "{ }");
+            }
+
+            // ACT
+            var result = project.Build(MSBuildRuntimes.Default);
+
+            // ASSERT
+            AssertCommandLineArguments(expectedArguments, result, "GenerateCommandLineDocumentation");
+        }
+
+        [Fact]
+        public void CommandLineHelp_Expected_files_are_generated_during_build()
+        {
+            // ARRANGE
+            using var project = new MSBuildTestProject(m_OutputHelper);
+
+            // Paths
+            var configuredOutputDirectory = "commandlinehelp/";
+            var absoluteOutputDirectory = project.ProjectDirectory.PathCombine(configuredOutputDirectory).GetFullPath().TrimEndingDirectorySeparator();
+
+            // Set up project
+            project
+                .InstallNuGetPackage(m_MdDocsPackage)
+                .AddFile("Class1.cs",
+                    """
+                    namespace MyNamespace
+                    {
+                        public class Class1
+                        {
+                        }
+                    }
+                    """)
+                .ConfigureMdDocs(x =>
+                {
+                    x.GenerateCommandLineDocumentationOnBuild = true;
+                    x.CommandLineDocumentationOutputPath = configuredOutputDirectory;
+                });
+
+            // ACT
+            var result = project.Build(MSBuildRuntimes.Default);
+
+            // ASSERT
+            Assert.Equal(0, result.ExitCode);
+
+            var files = Directory
+                    .GetFiles(absoluteOutputDirectory, "*", SearchOption.AllDirectories)
+                    .Select(x => Path.GetRelativePath(absoluteOutputDirectory, x))
+                    .Select(x => x.Replace("\\", "/"))
+                    .Order(StringComparer.Ordinal);
+
+            Assert.Collection(
+                files,
+                x => Assert.Equal("index.md", x)
+            );
+        }
+
+        [Fact]
+        public void CommandLineHelp_Warnings_written_to_the_console_are_emitted_as_MSBuild_warnings()
+        {
+            // ARRANGE
+            using var project = new MSBuildTestProject(m_OutputHelper);
+
+            // Set up project
+            project
+                .InstallNuGetPackage(m_MdDocsPackage)
+                .ConfigureMdDocs(x =>
+                {
+                    x.GenerateCommandLineDocumentationOnBuild = true;
+                    x.CommandLineDocumentationOutputPath = "commandlinehelp/";
+                });
+
+            // ACT
+            var result = project.Build(MSBuildRuntimes.Default);
+
+            // ASSERT
+            var target = Assert.Single(result.BinaryLog.GetTargets("GenerateCommandLineDocumentation"));
+            var execTask = Assert.Single(target.GetTasks("Exec"));
+
+            var warnings = execTask.FindChildrenRecursive<Warning>();
+            Assert.Contains(warnings, warning => warning.Text.Contains("WARNING - No option classes found"));
+
+        }
+
+        [Fact]
+        public void CommandLineHelp_Errors_written_to_the_console_are_emitted_as_MSBuild_errors()
+        {
+            // ARRANGE
+            using var project = new MSBuildTestProject(m_OutputHelper);
+
+            // Set up project
+            project
+                .InstallNuGetPackage(m_MdDocsPackage)
+                .ConfigureMdDocs(x => x.GenerateCommandLineDocumentationOnBuild = true);
+
+            // ACT
+            var result = project.Build(MSBuildRuntimes.Default);
+
+            // ASSERT
+            var target = Assert.Single(result.BinaryLog.GetTargets("GenerateCommandLineDocumentation"));
+            var execTask = Assert.Single(target.GetTasks("Exec"));
+
+            var errors = execTask.FindChildrenRecursive<Error>();
+            Assert.Contains(errors, err => err.Text.Contains("ERROR - Invalid output directory"));
+        }
+
+
+        private void AssertCommandLineArguments(ProcessArgumentsBuilder expected, MSBuildExecutionResult msbuildResult, string targetName)
+        {
+            var target = Assert.Single(msbuildResult.BinaryLog.GetTargets(targetName));
+            var execTask = Assert.Single(target.GetTasks("Exec"));
+            Assert.Equal(expected.ToString(), execTask.CommandLineArguments);
         }
     }
 }
