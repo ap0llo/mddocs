@@ -1,6 +1,6 @@
 # Configuration
 
-**Applies to:** Version 0.5 an later
+**Applies to:** Version 0.5 and later
 
 The behaviour of MdDocs can be customized by changing the configuration.
 Most settings are optional and MdDocs aims to use sensible default values or all of them.

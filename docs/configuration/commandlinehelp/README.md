@@ -1,6 +1,6 @@
 # Command Line Help Configuration
 
-**Applies to:** Version 0.4 an later
+**Applies to:** Version 0.4 and later
 
 ## Available Settings
 
@@ -31,9 +31,9 @@
 </table>
 <br>
 
-The *Assembly Path* setting sets the path to the assembly to load in order to generate documentation.
+The *Assembly Path* setting specifies the path of the assembly to load in order to generate documentation.
 
-**ℹ️ Note:** When using [MdDocs MSBuild integration](../../msbuild-integration.md), setting the assembly path has **no effect** because the MSBuild targets use the target path of the current project.
+**ℹ Note:** When using [MdDocs MSBuild Integration](../../msbuild-integration.md), setting the assembly path has **no effect** because the MSBuild targets use the target path of the current project.
 
 ## Output Path
 
