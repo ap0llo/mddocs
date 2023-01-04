@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using System.Linq;
 using Xunit;
 
 namespace Grynwald.MdDocs.MSBuild.IntegrationTest
@@ -7,17 +9,17 @@ namespace Grynwald.MdDocs.MSBuild.IntegrationTest
     {
         [Theory]
         [MemberData(nameof(MSBuildRuntimesData))]
-        public void MdDocs_is_started_to_generate_Api_Reference_during_build(MSBuildRuntimeInfo msbuildRuntime)
+        public void Apireference_command_is_started_during_build(MSBuildRuntimeInfo msbuildRuntime)
         {
             // ARRANGE
-            var package = m_PackagesFixture.GetPackage("Grynwald.MdDocs.MSBuild");
-
             using var project = new MSBuildTestProject(m_OutputHelper);
+
+            var package = m_PackagesFixture.GetPackage("Grynwald.MdDocs.MSBuild");
+            var mddocsCliAssemblyPath = project.ResolveFileFromPackage(package.Identity, "tools/net6.0/mddocs.dll");
 
             // Paths
             var configuredApiReferenceOutputDirectory = "api/";
             var absoluteApiReferenceOutputDirectory = project.ProjectDirectory.PathCombine(configuredApiReferenceOutputDirectory).GetFullPath().TrimEndingDirectorySeparator();
-            var mddocsCliAssemblyPath = Path.Combine(project.NuGetCachePath, package.Id.ToLowerInvariant(), package.Identity.Version.ToString(), "tools", "net6.0", "mddocs.dll");
 
             // Expected arguments
             var expectedArguments = new ProcessArgumentsBuilder()
@@ -28,7 +30,7 @@ namespace Grynwald.MdDocs.MSBuild.IntegrationTest
 
             // Set up project
             project
-                .InstallNuGetPackage(package.PackageFilePath)
+                .InstallNuGetPackage(package)
                 .ConfigureMdDocs(x =>
                 {
                     x.ApiReferenceDocumentationOutputPath = configuredApiReferenceOutputDirectory;
@@ -40,11 +42,113 @@ namespace Grynwald.MdDocs.MSBuild.IntegrationTest
 
             // ASSERT
             Assert.Equal(0, result.ExitCode);
+            AssertCommandLineArguments(expectedArguments, result, "GenerateApiReferenceDocumentation");
+        }
 
-            // Find the log of the "Exec" task inside the "GenerateApiReferenceDocumentation" target
-            var target = Assert.Single(result.BinaryLog.GetTargets("GenerateApiReferenceDocumentation"));
+        [Theory]
+        [InlineData(new string[0], null, null)]
+        [InlineData(new string[] { "mddocs.settings.json" }, null, "mddocs.settings.json")]
+        [InlineData(new string[] { "mddocs.settings.json", "config/mddocs/settings.json" }, null, "mddocs.settings.json")]
+        [InlineData(new string[] { "mddocs.settings.json", "config/mddocs/settings.json" }, "config/mddocs/settings.json", "config/mddocs/settings.json")]
+        public void Apireference_command_is_started_with_the_expected_configuration_file(string[] configurationFilesOnDisk, string? configuredConfigurationFile, string expectedConfigurationFile)
+        {
+            // ARRANGE
+            using var project = new MSBuildTestProject(m_OutputHelper);
+
+            var package = m_PackagesFixture.GetPackage("Grynwald.MdDocs.MSBuild");
+            var mddocsCliAssemblyPath = project.ResolveFileFromPackage(package.Identity, "tools/net6.0/mddocs.dll");
+
+            // Expected arguments
+            var expectedArguments = new ProcessArgumentsBuilder()
+                .Append("dotnet").AppendQuoted(mddocsCliAssemblyPath)
+                .Append("apireference")
+                .Append("--assemblies").AppendQuoted(project.TargetPath);
+
+            if (expectedConfigurationFile is not null)
+            {
+                expectedArguments
+                    .Append("--configurationFilePath")
+                    .AppendQuoted(project.ProjectDirectory.PathCombine(expectedConfigurationFile).GetFullPath());
+            }
+
+            // Set up project
+            project
+                .InstallNuGetPackage(package)
+                .ConfigureMdDocs(x =>
+                {
+                    x.GenerateApiReferenceDocumentationOnBuild = true;
+                    x.ConfigurationFilePath = configuredConfigurationFile;
+                });
+
+            foreach (var configurationFile in configurationFilesOnDisk)
+            {
+                project.AddFile(configurationFile, "{ }");
+            }
+
+            // ACT
+            var result = project.Build(MSBuildRuntimes.DotNet7SDK);
+
+            // ASSERT
+            AssertCommandLineArguments(expectedArguments, result, "GenerateApiReferenceDocumentation");
+        }
+
+        [Fact]
+        public void Expected_documentation_is_generated_during_build()
+        {
+            // ARRANGE
+            using var project = new MSBuildTestProject(m_OutputHelper);
+
+            var package = m_PackagesFixture.GetPackage("Grynwald.MdDocs.MSBuild");
+            var mddocsCliAssemblyPath = project.ResolveFileFromPackage(package.Identity, "tools/net6.0/mddocs.dll");
+
+            // Paths
+            var configuredApiReferenceOutputDirectory = "api/";
+            var absoluteApiReferenceOutputDirectory = project.ProjectDirectory.PathCombine(configuredApiReferenceOutputDirectory).GetFullPath().TrimEndingDirectorySeparator();
+
+            // Set up project
+            project
+                .InstallNuGetPackage(package)
+                .AddFile("Class1.cs",
+                    """
+                    namespace MyNamespace
+                    {
+                        public class Class1
+                        {
+                        }
+                    }
+                    """)
+                .ConfigureMdDocs(x =>
+                {
+                    x.ApiReferenceDocumentationOutputPath = configuredApiReferenceOutputDirectory;
+                    x.GenerateApiReferenceDocumentationOnBuild = true;
+                });
+
+            // ACT
+            var result = project.Build(MSBuildRuntimes.DotNet7SDK);
+
+            // ASSERT
+            Assert.Equal(0, result.ExitCode);
+
+            var files = Directory
+                    .GetFiles(absoluteApiReferenceOutputDirectory, "*", SearchOption.AllDirectories)
+                    .Select(x => Path.GetRelativePath(absoluteApiReferenceOutputDirectory, x))
+                    .Select(x => x.Replace("\\", "/"))
+                    .Order(StringComparer.Ordinal);
+
+            Assert.Collection(
+                files,
+                x => Assert.Equal("MyNamespace/Class1/constructors/index.md", x),
+                x => Assert.Equal("MyNamespace/Class1/index.md", x),
+                x => Assert.Equal("MyNamespace/index.md", x)
+            );
+        }
+
+
+        private void AssertCommandLineArguments(ProcessArgumentsBuilder expected, MSBuildExecutionResult msbuildResult, string targetName)
+        {
+            var target = Assert.Single(msbuildResult.BinaryLog.GetTargets(targetName));
             var execTask = Assert.Single(target.GetTasks("Exec"));
-            Assert.Equal(expectedArguments.ToString(), execTask.CommandLineArguments);
+            Assert.Equal(expected.ToString(), execTask.CommandLineArguments);
         }
     }
 }

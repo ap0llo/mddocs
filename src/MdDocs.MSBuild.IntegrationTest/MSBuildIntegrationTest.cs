@@ -29,14 +29,21 @@ namespace Grynwald.MdDocs.MSBuild.IntegrationTest
         public void Dispose() => m_WorkingDirectory.Dispose();
 
 
-        private static IEnumerable<MSBuildRuntimeInfo> MSBuildRuntimes { get; } = new[]
+        private static class MSBuildRuntimes
         {
-            new MSBuildRuntimeInfo(MSBuildRuntimeType.Core, Version.Parse("6.0.400")),
-            new MSBuildRuntimeInfo(MSBuildRuntimeType.Core, Version.Parse("7.0.100")),
-            new MSBuildRuntimeInfo(MSBuildRuntimeType.Full, Version.Parse("17.0"))
-        };
+            public static readonly MSBuildRuntimeInfo DotNet6SDK = new MSBuildRuntimeInfo(MSBuildRuntimeType.Core, Version.Parse("6.0.400"));
+            public static readonly MSBuildRuntimeInfo DotNet7SDK = new MSBuildRuntimeInfo(MSBuildRuntimeType.Core, Version.Parse("7.0.100"));
+            public static readonly MSBuildRuntimeInfo VisualStudio2022 = new MSBuildRuntimeInfo(MSBuildRuntimeType.Full, Version.Parse("17.0"));
 
-        public static IEnumerable<object[]> MSBuildRuntimesData() => MSBuildRuntimes.Select(x => new object[] { x });
+            public static IEnumerable<MSBuildRuntimeInfo> All { get; } = new[]
+            {
+                DotNet6SDK,
+                DotNet7SDK,
+                VisualStudio2022
+            };
+        }
+
+        public static IEnumerable<object[]> MSBuildRuntimesData() => MSBuildRuntimes.All.Select(x => new object[] { x });
 
         public static IEnumerable<object[]> TestCases()
         {
@@ -57,7 +64,7 @@ namespace Grynwald.MdDocs.MSBuild.IntegrationTest
                 "commandlinehelp/index.md"
             };
 
-            foreach (var runtime in MSBuildRuntimes)
+            foreach (var runtime in MSBuildRuntimes.All)
             {
                 yield return TestCase(runtime, "/p:GenerateApiReferenceDocumentationOnBuild=true", apiReferenceExpectedFiles);
                 yield return TestCase(runtime, "/p:GenerateCommandLineDocumentationOnBuild=true", commandlineHelpExpectedFiles);

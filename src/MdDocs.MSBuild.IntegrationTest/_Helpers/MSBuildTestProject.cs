@@ -4,8 +4,10 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
+using Grynwald.MdDocs.TestHelpers;
 using Grynwald.Utilities.IO;
 using NuGet.Packaging;
+using NuGet.Packaging.Core;
 using Xunit.Abstractions;
 
 namespace Grynwald.MdDocs.MSBuild.IntegrationTest
@@ -39,7 +41,7 @@ namespace Grynwald.MdDocs.MSBuild.IntegrationTest
         private readonly List<string> m_PropertyImports = new();
         private readonly List<string> m_TargetImports = new();
         private readonly Dictionary<string, string> m_Files = new(StringComparer.OrdinalIgnoreCase);
-        private readonly HashSet<(string id, string version, string filePath)> m_NuGetPackages = new();
+        private readonly HashSet<PackageInfo> m_NuGetPackages = new();
         private readonly MdDocsProjectSettings m_MdDocsSettings = new();
 
 
@@ -137,16 +139,12 @@ namespace Grynwald.MdDocs.MSBuild.IntegrationTest
         /// <summary>
         /// Adds the specifiec NuGet package to the project's NuGet package source and adds a reference to the package to the project file.
         /// </summary>
-        /// <param name="packageFilePath">The path of the NuGet package file (.nupkg) to add.</param>
-        public MSBuildTestProject InstallNuGetPackage(string packageFilePath)
+        public MSBuildTestProject InstallNuGetPackage(PackageInfo package)
         {
-            if (String.IsNullOrWhiteSpace(packageFilePath))
-                throw new ArgumentException("Value must not be null or whitespace", nameof(packageFilePath));
+            if (package is null)
+                throw new ArgumentNullException(nameof(package));
 
-            using var packageReader = new PackageArchiveReader(packageFilePath);
-
-            var packageIdentity = packageReader.GetIdentity();
-            m_NuGetPackages.Add((id: packageIdentity.Id, version: packageIdentity.Version.ToString(), packageFilePath));
+            m_NuGetPackages.Add(package);
 
             return this;
         }
@@ -184,14 +182,14 @@ namespace Grynwald.MdDocs.MSBuild.IntegrationTest
             }
 
             // Add NuGet packages to local package source
-            foreach (var (id, version, sourcePath) in m_NuGetPackages)
+            foreach (var package in m_NuGetPackages)
             {
-                var destinationPath = LocalNuGetPackageSourcePath.PathCombine($"{id}.{version}.nupkg");
+                var destinationPath = LocalNuGetPackageSourcePath.PathCombine($"{package.Id}.{package.Identity.Version}.nupkg");
 
                 Directory.CreateDirectory(LocalNuGetPackageSourcePath);
                 if (!File.Exists(destinationPath))
                 {
-                    File.Copy(sourcePath, destinationPath);
+                    File.Copy(package.PackageFilePath, destinationPath);
                 }
             }
 
@@ -211,6 +209,18 @@ namespace Grynwald.MdDocs.MSBuild.IntegrationTest
                 MSBuildRuntimeType.Core => RunDotnetBuild(runtime.Version, msbuildArgs),
                 _ => throw new NotImplementedException()
             };
+        }
+
+        /// <summary>
+        /// Gets the absolute path in the project director for the file restored from a NuGet package
+        /// </summary>
+        public string ResolveFileFromPackage(PackageIdentity packageIdentity, string relativePath)
+        {
+            return NuGetCachePath
+                .PathCombine(packageIdentity.Id.ToLowerInvariant())
+                .PathCombine(packageIdentity.Version.ToString())
+                .PathCombine(relativePath)
+                .GetFullPath();
         }
 
         /// <inheritdoc />
@@ -285,9 +295,9 @@ namespace Grynwald.MdDocs.MSBuild.IntegrationTest
             AddOptionalBoolProperty("GenerateCommandLineDocumentationOnBuild", m_MdDocsSettings.GenerateCommandLineDocumentationOnBuild);
 
             // Add PackageReferences
-            foreach (var (id, version, _) in m_NuGetPackages)
+            foreach (var package in m_NuGetPackages)
             {
-                AddPackageReference(id, version);
+                AddPackageReference(package.Id, package.Identity.Version.ToString());
             }
 
             // Add imports of .targets files

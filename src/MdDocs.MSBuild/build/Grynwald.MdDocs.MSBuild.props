@@ -9,7 +9,7 @@
     
     <MdDocsTasksPath Condition="'$(MdDocsTasksPath)' == '' ">$(MdDocsTasksDirectory)Grynwald.MdDocs.MSBuild.dll</MdDocsTasksPath>    
 
-    <MdDocsCliPath Condition=" '$(MdDocsCliPath)' == '' ">$(MSBuildThisFileDirectory)..\tools\net6.0\mddocs.dll</MdDocsCliPath>
+    <MdDocsCliPath>$(MSBuildThisFileDirectory)..\tools\net6.0\mddocs.dll</MdDocsCliPath>
   </PropertyGroup>
 
   <!-- Load custom task assembly -->

@@ -1,4 +1,5 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
   <!--
     ============================================================================================================  
       Target "GenerateApiReferenceDocumentation"
@@ -21,9 +22,8 @@
       <_MdDocsCommand>dotnet &quot;$(MdDocsCliPath)&quot;</_MdDocsCommand>
       <_MdDocsArgs>apireference</_MdDocsArgs>
       <_MdDocsArgs>$(_MdDocsArgs) --assemblies @(TargetPathWithTargetPlatformMoniker->'&quot;%(FullPath)&quot;', ' ')</_MdDocsArgs>
-      <_MdDocsArgs Condition=" '$(MdDocsConfigurationFilePath)' != '' ">$(_MdDocsArgs) --configurationFilePath &quot;$(MdDocsConfigurationFilePath)&quot;</_MdDocsArgs>
-      <_MdDocsArgs>$(_MdDocsArgs) --outdir &quot;$(ApiReferenceDocumentationOutputPath)&quot;</_MdDocsArgs>
-      
+      <_MdDocsArgs Condition=" '$(ApiReferenceDocumentationOutputPath)' != '' ">$(_MdDocsArgs) --outdir &quot;$(ApiReferenceDocumentationOutputPath)&quot;</_MdDocsArgs>
+      <_MdDocsArgs Condition=" '$(MdDocsConfigurationFilePath)' != '' ">$(_MdDocsArgs) --configurationFilePath &quot;$(MdDocsConfigurationFilePath)&quot;</_MdDocsArgs>      
     </PropertyGroup>
 
     <Message Text="Starting MdDocs with arguments '$(_MdDocsArgs)'"  />
