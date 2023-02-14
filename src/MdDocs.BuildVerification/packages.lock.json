@@ -42,12 +42,12 @@
       },
       "Verify.Xunit": {
         "type": "Direct",
-        "requested": "[19.5.0, )",
-        "resolved": "19.5.0",
-        "contentHash": "tYXahRzYzqXGFg0KkWm9PgSRpRj7j16ul1tuXOqa4uEIV2vUy5Ywg7+JNAEtJzuZn/jZatvzMfr9yo3iP8Dm1A==",
+        "requested": "[19.9.3, )",
+        "resolved": "19.9.3",
+        "contentHash": "eC16lPSDgI3MRtRumbGjdGXv721v2FkKk3/R21Oj5MPRPvR4zhLA3Olb2/8WwrKsVVD4RWRbOvfd3+cppN4t8g==",
         "dependencies": {
           "EmptyFiles": "4.1.0",
-          "Verify": "19.5.0",
+          "Verify": "19.9.3",
           "xunit.abstractions": "2.0.3",
           "xunit.extensibility.execution": "2.4.2"
         }
@@ -92,8 +92,8 @@
       },
       "Argon": {
         "type": "Transitive",
-        "resolved": "0.1.0",
-        "contentHash": "TYJwenjm6RTjs3hEphb4mL3h4jdSMWSvoRkuNRGXXD6ZcuMNWOR4UTzf6OGF+ReTYsE2c1Q3brLSD3cfIPjfdw=="
+        "resolved": "0.4.0",
+        "contentHash": "gkGsTpDQnkIBl4HAr/Z06LQGdzyTB1vDHB1z+w0sUMZLJCPPzSCCH77ecmTzUXNhMat809BkkuIUv/zcoEwW4w=="
       },
       "Basic.Reference.Assemblies": {
         "type": "Transitive",
@@ -105,10 +105,10 @@
       },
       "DiffEngine": {
         "type": "Transitive",
-        "resolved": "11.0.0",
-        "contentHash": "FKhanyE6mYmPe/MWWKKHc7Ol6WECHsE+WN6tK1L5FksrZd+DG4UMsc2luunnuUkVZ6bXi0XO6nyuy6HSXDmkiw==",
+        "resolved": "11.1.0",
+        "contentHash": "3h07x0TNZSGY+SVjjKWJq26eGrph2gzSuVJjtld5KteGpan3wTzku6c78NikNvJI3KY1wYyZ0DNYNM9sB4GvQQ==",
         "dependencies": {
-          "EmptyFiles": "4.0.0",
+          "EmptyFiles": "4.1.0",
           "System.Management": "5.0.0"
         }
       },
@@ -450,8 +450,8 @@
       },
       "SimpleInfoName": {
         "type": "Transitive",
-        "resolved": "2.0.0",
-        "contentHash": "sXzz3+zns3HWmv+8wzhF1f4up8NjXHeD1X7w9zBjmnpwMk08zuCw5PPmZUAv8ou6F0AgG/8QpvZQr4hC82Wwqg=="
+        "resolved": "2.1.0",
+        "contentHash": "N6pwZI8i3yFje7IiQk17y40dIxh01PWLlIhDGthziJ3+olLmcWiu/Q6a6eppYopRQhD3WW/OlmAGMBXJ8IH/9Q=="
       },
       "System.AppContext": {
         "type": "Transitive",
@@ -1255,13 +1255,13 @@
       },
       "Verify": {
         "type": "Transitive",
-        "resolved": "19.5.0",
-        "contentHash": "ntyRBxtFvOjADiMD3LjYaASHCSCfL34zX6vSRfUKcJlswfRU9jnL6PIY6cGhuKdCrU5sNpB3ZxevCprxDvGzAw==",
+        "resolved": "19.9.3",
+        "contentHash": "0IHkn2KeTYoPvXMWhaHay5vx1//Lxhkoul/PvVajYJ3I1wvKHafkpwPTwRG8bzE9Cd56nvQM2bfduC1YfqWOJw==",
         "dependencies": {
-          "Argon": "0.1.0",
-          "DiffEngine": "11.0.0",
+          "Argon": "0.4.0",
+          "DiffEngine": "11.1.0",
           "EmptyFiles": "4.1.0",
-          "SimpleInfoName": "2.0.0"
+          "SimpleInfoName": "2.1.0"
         }
       },
       "xunit.abstractions": {
