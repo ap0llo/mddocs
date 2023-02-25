@@ -141,8 +141,8 @@
       },
       "Grynwald.MarkdownGenerator": {
         "type": "Transitive",
-        "resolved": "2.5.34",
-        "contentHash": "2esww+F8jCv2bfFkQJ7lAUfk7adbjI70i4cXdsd6TQIKIUIVgLNbLw0sZuvjbXpRfjrKu3nOTYiehS5Ua1l0Mw=="
+        "resolved": "3.0.106",
+        "contentHash": "rwpMqWHIrgnFdwpSE9HtDvBUjxqX+nNC0qsWtrQvJm6F8Jv/j6Id5eCuLVLWcGozPD6zkrIO94EMlc4zeCinLA=="
       },
       "Grynwald.Utilities": {
         "type": "Transitive",
@@ -1420,7 +1420,6 @@
       "grynwald.mddocs.apireference": {
         "type": "Project",
         "dependencies": {
-          "Grynwald.MarkdownGenerator": "[2.5.34, )",
           "Grynwald.MdDocs.Common": "[1.0.0, )",
           "Grynwald.Utilities": "[1.6.122, )",
           "Mono.Cecil": "[0.11.4, )"
@@ -1429,7 +1428,7 @@
       "grynwald.mddocs.common": {
         "type": "Project",
         "dependencies": {
-          "Grynwald.MarkdownGenerator": "[2.5.34, )",
+          "Grynwald.MarkdownGenerator": "[3.0.106, )",
           "Microsoft.Extensions.Configuration": "[6.0.0, )",
           "Microsoft.Extensions.Configuration.Binder": "[6.0.0, )",
           "Microsoft.Extensions.Configuration.Json": "[6.0.0, )",
@@ -1590,8 +1589,8 @@
       },
       "Grynwald.MarkdownGenerator": {
         "type": "Transitive",
-        "resolved": "2.5.34",
-        "contentHash": "2esww+F8jCv2bfFkQJ7lAUfk7adbjI70i4cXdsd6TQIKIUIVgLNbLw0sZuvjbXpRfjrKu3nOTYiehS5Ua1l0Mw=="
+        "resolved": "3.0.106",
+        "contentHash": "rwpMqWHIrgnFdwpSE9HtDvBUjxqX+nNC0qsWtrQvJm6F8Jv/j6Id5eCuLVLWcGozPD6zkrIO94EMlc4zeCinLA=="
       },
       "Grynwald.Utilities": {
         "type": "Transitive",
@@ -2869,7 +2868,6 @@
       "grynwald.mddocs.apireference": {
         "type": "Project",
         "dependencies": {
-          "Grynwald.MarkdownGenerator": "[2.5.34, )",
           "Grynwald.MdDocs.Common": "[1.0.0, )",
           "Grynwald.Utilities": "[1.6.122, )",
           "Mono.Cecil": "[0.11.4, )"
@@ -2878,7 +2876,7 @@
       "grynwald.mddocs.common": {
         "type": "Project",
         "dependencies": {
-          "Grynwald.MarkdownGenerator": "[2.5.34, )",
+          "Grynwald.MarkdownGenerator": "[3.0.106, )",
           "Microsoft.Extensions.Configuration": "[6.0.0, )",
           "Microsoft.Extensions.Configuration.Binder": "[6.0.0, )",
           "Microsoft.Extensions.Configuration.Json": "[6.0.0, )",
