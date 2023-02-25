@@ -42,12 +42,12 @@
       },
       "Verify.Xunit": {
         "type": "Direct",
-        "requested": "[19.9.3, )",
-        "resolved": "19.9.3",
-        "contentHash": "eC16lPSDgI3MRtRumbGjdGXv721v2FkKk3/R21Oj5MPRPvR4zhLA3Olb2/8WwrKsVVD4RWRbOvfd3+cppN4t8g==",
+        "requested": "[19.10.0, )",
+        "resolved": "19.10.0",
+        "contentHash": "MHahmhhKESeo4hOucvRGywhKlk18B27E3mw+8eC8YijLukrbXNncVNHzl7ef+dM36Q4MFe+Pzty2H4Lk/Iiltw==",
         "dependencies": {
-          "EmptyFiles": "4.1.0",
-          "Verify": "19.9.3",
+          "EmptyFiles": "4.2.0",
+          "Verify": "19.10.0",
           "xunit.abstractions": "2.0.3",
           "xunit.extensibility.execution": "2.4.2"
         }
@@ -114,8 +114,8 @@
       },
       "EmptyFiles": {
         "type": "Transitive",
-        "resolved": "4.1.0",
-        "contentHash": "mwnB0PowYoKVD0t/ImcAbwBNNHRpmRrbiuCSosy6m5YoGJ/29k45RTU/8arLrhcPWH1JVCwPfmMsW06/IdDaZA=="
+        "resolved": "4.2.0",
+        "contentHash": "VWXAwhdItSlxEbRLoQBmeNGTCb2Rhp0Nry+4xtKvpTRkWmeC0Ut9fiBeMtTtARLTxC5JyQ6HsgcmhdcNxYqNRg=="
       },
       "Grynwald.Utilities": {
         "type": "Transitive",
@@ -1255,12 +1255,12 @@
       },
       "Verify": {
         "type": "Transitive",
-        "resolved": "19.9.3",
-        "contentHash": "0IHkn2KeTYoPvXMWhaHay5vx1//Lxhkoul/PvVajYJ3I1wvKHafkpwPTwRG8bzE9Cd56nvQM2bfduC1YfqWOJw==",
+        "resolved": "19.10.0",
+        "contentHash": "0TmGkePJHe9ros8R+Pnsav84+oF8odDaZMlNeUz0lYnCFqrCmToEN85KsMI0uT8TU1aCr/9ezgoyHplhMV+liA==",
         "dependencies": {
           "Argon": "0.4.0",
           "DiffEngine": "11.1.0",
-          "EmptyFiles": "4.1.0",
+          "EmptyFiles": "4.2.0",
           "SimpleInfoName": "2.1.0"
         }
       },
