@@ -6,7 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Grynwald.MarkdownGenerator" Version="2.5.34" />
     <PackageReference Include="Grynwald.Utilities" Version="1.6.122" />
     <PackageReference Include="Mono.Cecil" Version="0.11.4" />
   </ItemGroup>

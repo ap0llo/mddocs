@@ -956,33 +956,39 @@ namespace Grynwald.MdDocs.ApiReference.Test.Model
 
             // ACT / ASSERT
             Assert.Equal(
-                "[Flags]\r\n" +
-                "public enum Enum1 : short\r\n" +
-                "{\r\n" +
-                "    Value1 = 0x1,\r\n" +
-                "    Value2 = 0x2,\r\n" +
-                "    Value3 = 0x4\r\n" +
-                "}\r\n",
+                """
+                [Flags]
+                public enum Enum1 : short
+                {
+                    Value1 = 0x1,
+                    Value2 = 0x2,
+                    Value3 = 0x4
+                }
+                """,
                 CSharpDefinitionFormatter.GetDefinition(enum1));
 
             Assert.Equal(
-                "[Flags]\r\n" +
-                "public enum Enum2 : short\r\n" +
-                "{\r\n" +
-                "    Value1 = 0x1,\r\n" +
-                "    Value2 = 0x2,\r\n" +
-                "    Value3 = 0x4,\r\n" +
-                "    All = 0x7\r\n" +
-                "}\r\n",
+                """
+                [Flags]
+                public enum Enum2 : short
+                {
+                    Value1 = 0x1,
+                    Value2 = 0x2,
+                    Value3 = 0x4,
+                    All = 0x7
+                }
+                """,
                 CSharpDefinitionFormatter.GetDefinition(enum2));
 
             Assert.Equal(
-                "public enum Enum3\r\n" +
-                "{\r\n" +
-                "    Value1 = 1,\r\n" +
-                "    Value2 = 2,\r\n" +
-                "    Value3 = 3\r\n" +
-                "}\r\n",
+                """
+                public enum Enum3
+                {
+                    Value1 = 1,
+                    Value2 = 2,
+                    Value3 = 3
+                }
+                """,
                 CSharpDefinitionFormatter.GetDefinition(enum3));
         }
 

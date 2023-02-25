@@ -2,12 +2,6 @@
   "version": 1,
   "dependencies": {
     "net6.0": {
-      "Grynwald.MarkdownGenerator": {
-        "type": "Direct",
-        "requested": "[2.5.34, )",
-        "resolved": "2.5.34",
-        "contentHash": "2esww+F8jCv2bfFkQJ7lAUfk7adbjI70i4cXdsd6TQIKIUIVgLNbLw0sZuvjbXpRfjrKu3nOTYiehS5Ua1l0Mw=="
-      },
       "Grynwald.Utilities": {
         "type": "Direct",
         "requested": "[1.6.122, )",
@@ -41,6 +35,11 @@
         "requested": "[3.5.119, )",
         "resolved": "3.5.119",
         "contentHash": "x8k4zV6YKZA5Rr810439lG9NngdbyPtFv0QpIYz32m1Im59kvSbEHO8gKGZoNvsfZSquayjEDUCa8acbut372g=="
+      },
+      "Grynwald.MarkdownGenerator": {
+        "type": "Transitive",
+        "resolved": "3.0.106",
+        "contentHash": "rwpMqWHIrgnFdwpSE9HtDvBUjxqX+nNC0qsWtrQvJm6F8Jv/j6Id5eCuLVLWcGozPD6zkrIO94EMlc4zeCinLA=="
       },
       "Microsoft.Build.Tasks.Git": {
         "type": "Transitive",
@@ -162,7 +161,7 @@
       "grynwald.mddocs.common": {
         "type": "Project",
         "dependencies": {
-          "Grynwald.MarkdownGenerator": "[2.5.34, )",
+          "Grynwald.MarkdownGenerator": "[3.0.106, )",
           "Microsoft.Extensions.Configuration": "[6.0.0, )",
           "Microsoft.Extensions.Configuration.Binder": "[6.0.0, )",
           "Microsoft.Extensions.Configuration.Json": "[6.0.0, )",
@@ -172,12 +171,6 @@
       }
     },
     "net7.0": {
-      "Grynwald.MarkdownGenerator": {
-        "type": "Direct",
-        "requested": "[2.5.34, )",
-        "resolved": "2.5.34",
-        "contentHash": "2esww+F8jCv2bfFkQJ7lAUfk7adbjI70i4cXdsd6TQIKIUIVgLNbLw0sZuvjbXpRfjrKu3nOTYiehS5Ua1l0Mw=="
-      },
       "Grynwald.Utilities": {
         "type": "Direct",
         "requested": "[1.6.122, )",
@@ -211,6 +204,11 @@
         "requested": "[3.5.119, )",
         "resolved": "3.5.119",
         "contentHash": "x8k4zV6YKZA5Rr810439lG9NngdbyPtFv0QpIYz32m1Im59kvSbEHO8gKGZoNvsfZSquayjEDUCa8acbut372g=="
+      },
+      "Grynwald.MarkdownGenerator": {
+        "type": "Transitive",
+        "resolved": "3.0.106",
+        "contentHash": "rwpMqWHIrgnFdwpSE9HtDvBUjxqX+nNC0qsWtrQvJm6F8Jv/j6Id5eCuLVLWcGozPD6zkrIO94EMlc4zeCinLA=="
       },
       "Microsoft.Build.Tasks.Git": {
         "type": "Transitive",
@@ -332,7 +330,7 @@
       "grynwald.mddocs.common": {
         "type": "Project",
         "dependencies": {
-          "Grynwald.MarkdownGenerator": "[2.5.34, )",
+          "Grynwald.MarkdownGenerator": "[3.0.106, )",
           "Microsoft.Extensions.Configuration": "[6.0.0, )",
           "Microsoft.Extensions.Configuration.Binder": "[6.0.0, )",
           "Microsoft.Extensions.Configuration.Json": "[6.0.0, )",

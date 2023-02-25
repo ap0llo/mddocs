@@ -5,7 +5,6 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using Grynwald.MdDocs.Common;
-using Grynwald.Utilities.Text;
 using Mono.Cecil;
 
 namespace Grynwald.MdDocs.ApiReference.Model
@@ -528,7 +527,7 @@ namespace Grynwald.MdDocs.ApiReference.Model
                 type.GetEnumValues().Select(x => $"    {x.name} = {(isFlagsEnum ? "0x" + x.value.ToString("X") : x.value.ToString())}")
             );
             definitionBuilder.AppendLine();
-            definitionBuilder.AppendLine("}");
+            definitionBuilder.Append("}");
         }
 
         private static string GetOperatorString(OperatorKind kind)
