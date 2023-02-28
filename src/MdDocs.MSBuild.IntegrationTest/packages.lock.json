@@ -36,9 +36,9 @@
       },
       "MSBuild.StructuredLogger": {
         "type": "Direct",
-        "requested": "[2.1.768, )",
-        "resolved": "2.1.768",
-        "contentHash": "Wx3mLxrqWsE4TDXF/WQCbhpsdaAjzh+MNK5Xvlv+VyMlcfl+pd1EMXkjDA4c5eoL8aV69enCeh80ww+eBbTI3A==",
+        "requested": "[2.1.787, )",
+        "resolved": "2.1.787",
+        "contentHash": "EAxyf/RvKGo41FSY9VfZaz5/GrPPCd5dz5RXoiC5S3d5gX2VqHQFUw/2BxhqS1SaX4x86YZrvLWeAbkc7iqx4g==",
         "dependencies": {
           "Microsoft.Build.Framework": "16.10.0",
           "Microsoft.Build.Utilities.Core": "16.10.0"
