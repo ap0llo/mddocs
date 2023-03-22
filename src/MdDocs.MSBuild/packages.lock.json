@@ -26,14 +26,22 @@
       },
       "NuGetizer": {
         "type": "Direct",
-        "requested": "[0.9.1, )",
-        "resolved": "0.9.1",
-        "contentHash": "wRvu14/VCIDz3iUfTwj61f+hBc+8zh2Zm+KwmHT2M5EJa3hgEz5txYDUTpjh0jINxBqsPo73A+i2qLLnF/PAuQ=="
+        "requested": "[1.0.0, )",
+        "resolved": "1.0.0",
+        "contentHash": "cc3YJjTNb9PzrYcKMkd3XA8H4/mTyl5TGG00edeWsByAWv6kNV1XsPr+iHc1hQ9G5Q1hw4CKwz5V5/EEzGj2mA==",
+        "dependencies": {
+          "Devlooped.SponsorLink": "0.10.2"
+        }
       },
       "CommandLineParser": {
         "type": "Transitive",
         "resolved": "2.9.1",
         "contentHash": "OE0sl1/sQ37bjVsPKKtwQlWDgqaxWgtme3xZz7JssWUzg5JpMIyHgCTY9MVMxOg48fJ1AgGT3tgdH5m/kQ5xhA=="
+      },
+      "Devlooped.SponsorLink": {
+        "type": "Transitive",
+        "resolved": "0.10.2",
+        "contentHash": "LxX9wXJtw0EppHZlwPcfQ10OW6ZcJXv4w/9ACOhkrIk4PHBWIp2X5R9T2HSaB1AA2JOwAl1+r8U9Kprr62xhRw=="
       },
       "Grynwald.MarkdownGenerator": {
         "type": "Transitive",
