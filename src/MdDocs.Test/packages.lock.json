@@ -247,8 +247,8 @@
       },
       "Mono.Cecil": {
         "type": "Transitive",
-        "resolved": "0.11.4",
-        "contentHash": "IC1h5g0NeJGHIUgzM1P82ld57knhP0IcQfrYITDPXlNpMYGUrsG5TxuaWTjaeqDNQMBDNZkB8L0rBnwsY6JHuQ=="
+        "resolved": "0.11.5",
+        "contentHash": "fxfX+0JGTZ8YQeu1MYjbBiK2CYTSzDyEeIixt+yqKKTn7FW8rv7JMY70qevup4ZJfD7Kk/VG/jDzQQTpfch87g=="
       },
       "NETStandard.Library": {
         "type": "Transitive",
@@ -1230,7 +1230,7 @@
         "dependencies": {
           "Grynwald.MdDocs.Common": "[1.0.0, )",
           "Grynwald.Utilities": "[1.6.122, )",
-          "Mono.Cecil": "[0.11.4, )"
+          "Mono.Cecil": "[0.11.5, )"
         }
       },
       "grynwald.mddocs.commandlinehelp": {
@@ -1238,7 +1238,7 @@
         "dependencies": {
           "Grynwald.MdDocs.Common": "[1.0.0, )",
           "Grynwald.Utilities": "[1.6.122, )",
-          "Mono.Cecil": "[0.11.4, )"
+          "Mono.Cecil": "[0.11.5, )"
         }
       },
       "grynwald.mddocs.common": {
@@ -1249,7 +1249,7 @@
           "Microsoft.Extensions.Configuration.Binder": "[6.0.0, )",
           "Microsoft.Extensions.Configuration.Json": "[6.0.0, )",
           "Microsoft.Extensions.Logging.Abstractions": "[7.0.0, )",
-          "Mono.Cecil": "[0.11.4, )"
+          "Mono.Cecil": "[0.11.5, )"
         }
       }
     },
@@ -1499,8 +1499,8 @@
       },
       "Mono.Cecil": {
         "type": "Transitive",
-        "resolved": "0.11.4",
-        "contentHash": "IC1h5g0NeJGHIUgzM1P82ld57knhP0IcQfrYITDPXlNpMYGUrsG5TxuaWTjaeqDNQMBDNZkB8L0rBnwsY6JHuQ=="
+        "resolved": "0.11.5",
+        "contentHash": "fxfX+0JGTZ8YQeu1MYjbBiK2CYTSzDyEeIixt+yqKKTn7FW8rv7JMY70qevup4ZJfD7Kk/VG/jDzQQTpfch87g=="
       },
       "NETStandard.Library": {
         "type": "Transitive",
@@ -2482,7 +2482,7 @@
         "dependencies": {
           "Grynwald.MdDocs.Common": "[1.0.0, )",
           "Grynwald.Utilities": "[1.6.122, )",
-          "Mono.Cecil": "[0.11.4, )"
+          "Mono.Cecil": "[0.11.5, )"
         }
       },
       "grynwald.mddocs.commandlinehelp": {
@@ -2490,7 +2490,7 @@
         "dependencies": {
           "Grynwald.MdDocs.Common": "[1.0.0, )",
           "Grynwald.Utilities": "[1.6.122, )",
-          "Mono.Cecil": "[0.11.4, )"
+          "Mono.Cecil": "[0.11.5, )"
         }
       },
       "grynwald.mddocs.common": {
@@ -2501,7 +2501,7 @@
           "Microsoft.Extensions.Configuration.Binder": "[6.0.0, )",
           "Microsoft.Extensions.Configuration.Json": "[6.0.0, )",
           "Microsoft.Extensions.Logging.Abstractions": "[7.0.0, )",
-          "Mono.Cecil": "[0.11.4, )"
+          "Mono.Cecil": "[0.11.5, )"
         }
       }
     }
