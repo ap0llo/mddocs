@@ -216,8 +216,8 @@
       },
       "Mono.Cecil": {
         "type": "Transitive",
-        "resolved": "0.11.4",
-        "contentHash": "IC1h5g0NeJGHIUgzM1P82ld57knhP0IcQfrYITDPXlNpMYGUrsG5TxuaWTjaeqDNQMBDNZkB8L0rBnwsY6JHuQ=="
+        "resolved": "0.11.5",
+        "contentHash": "fxfX+0JGTZ8YQeu1MYjbBiK2CYTSzDyEeIixt+yqKKTn7FW8rv7JMY70qevup4ZJfD7Kk/VG/jDzQQTpfch87g=="
       },
       "NETStandard.Library": {
         "type": "Transitive",
@@ -1317,7 +1317,7 @@
           "Basic.Reference.Assemblies": "[1.4.1, )",
           "Grynwald.Utilities": "[1.6.122, )",
           "Microsoft.CodeAnalysis.CSharp": "[4.5.0, )",
-          "Mono.Cecil": "[0.11.4, )",
+          "Mono.Cecil": "[0.11.5, )",
           "NuGet.Packaging": "[6.5.0, )",
           "xunit": "[2.4.2, )"
         }
