@@ -17,9 +17,9 @@
       },
       "Basic.Reference.Assemblies": {
         "type": "Direct",
-        "requested": "[1.4.1, )",
-        "resolved": "1.4.1",
-        "contentHash": "ROWJL9Q5ZRXZzzVAeIYPefyKl1pW078Ny2u14CFAY7uDRqWfv1i7CQ+lYMsLxXUYZ0RFyQiq0Tz1uatD36Tj4Q==",
+        "requested": "[1.4.2, )",
+        "resolved": "1.4.2",
+        "contentHash": "LTLR2ax/I124zg8gzqzQdF3T9//DxYZ6Phd9ZueoyU/dwu82Kz5/Ci0N8xqKWLNz2o6d8jWY6pjj4UPNnFJ+Mw==",
         "dependencies": {
           "Microsoft.CodeAnalysis.Common": "3.9.0"
         }
@@ -1255,9 +1255,9 @@
       },
       "Basic.Reference.Assemblies": {
         "type": "Direct",
-        "requested": "[1.4.1, )",
-        "resolved": "1.4.1",
-        "contentHash": "ROWJL9Q5ZRXZzzVAeIYPefyKl1pW078Ny2u14CFAY7uDRqWfv1i7CQ+lYMsLxXUYZ0RFyQiq0Tz1uatD36Tj4Q==",
+        "requested": "[1.4.2, )",
+        "resolved": "1.4.2",
+        "contentHash": "LTLR2ax/I124zg8gzqzQdF3T9//DxYZ6Phd9ZueoyU/dwu82Kz5/Ci0N8xqKWLNz2o6d8jWY6pjj4UPNnFJ+Mw==",
         "dependencies": {
           "Microsoft.CodeAnalysis.Common": "3.9.0"
         }
