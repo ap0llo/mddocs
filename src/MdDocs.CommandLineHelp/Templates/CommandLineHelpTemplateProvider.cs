@@ -13,7 +13,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Templates
             switch (configuration.Template.Name)
             {
                 case CommandLineHelpConfiguration.TemplateName.Default:
-                    return new CommandLineHelpDefaultTemplate(configuration, new DefaultCommandLineHelpPathProvider(), logger);
+                    return new CommandLineHelpDefaultTemplate(configuration, new DefaultCommandLineHelpPathProvider(configuration.Template.Default.ApplicationMdFileName), logger);
 
                 default:
                     throw new InvalidTemplateConfigurationException($"Unknown template '{configuration.Template.Name}'");

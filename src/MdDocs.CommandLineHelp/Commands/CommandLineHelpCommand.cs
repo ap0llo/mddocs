@@ -38,7 +38,7 @@ namespace Grynwald.MdDocs.CommandLineHelp.Commands
                 .Render(model)
                 .Save(
                     m_Configuration.OutputPath,
-                    cleanOutputDirectory: true,
+                    cleanOutputDirectory: m_Configuration.ShouldDeleteOutputPathBeforeGeneration,
                     markdownOptions: m_Configuration.Template.Default.GetSerializationOptions(m_Logger)
                 );
 
